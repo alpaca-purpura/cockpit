@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>CK-02 Stage 1 — cómo conviven Cockpit y DevHub</title>
+<style>
+  :root {
+    --bg: #0b1220;
+    --panel: #121a2b;
+    --panel2: #182338;
+    --border: #26334a;
+    --text: #e6edf5;
+    --muted: #8a97ab;
+    --teal: #2dd4bf;
+    --teal-dim: #14b8a680;
+    --amber: #f59e0b;
+    --red: #f87171;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 32px 24px 64px;
+  }
+  h1 {
+    font-size: 20px;
+    margin: 0 0 4px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--teal);
+    margin: 40px 0 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+  .col {
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .box {
+    width: 100%;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13px;
+    position: relative;
+  }
+  .box .label {
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .box .path {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 12px;
+    color: var(--teal);
+  }
+  .box .note {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  .arrow {
+    color: var(--muted);
+    font-size: 12px;
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .arrow::before, .arrow::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--teal-dim);
+    color: #04352f;
+    background: var(--teal);
+    color: #04241f;
+    font-weight: 700;
+  }
+  .badge.new {
+    background: var(--amber);
+    color: #3a2400;
+  }
+
+  /* runtime diagram */
+  .runtime-outer {
+    border: 2px solid var(--teal);
+    border-radius: 10px;
+    padding: 20px;
+    background: var(--panel);
+  }
+  .runtime-title {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 13px;
+    color: var(--teal);
+    margin-bottom: 4px;
+  }
+  .runtime-sub {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+  .lenses {
+    display: flex;
+    gap: 16px;
+  }
+  .lens {
+    flex: 1;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .lens h3 {
+    font-size: 13px;
+    margin: 0 0 8px;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+  .lens ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .lens .file {
+    color: var(--teal);
+    font-family: ui-monospace, Menlo, monospace;
+  }
+  .shared-note {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .shared-note .file { color: var(--amber); font-family: ui-monospace, Menlo, monospace; }
+
+  /* contrast row */
+  .contrast {
+    display: flex;
+    gap: 20px;
+    margin-top: 28px;
+  }
+  .contrast > div {
+    flex: 1;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 13px;
+  }
+  .no {
+    border: 1px solid var(--red);
+    background: #2a1414;
+  }
+  .no .tag { color: var(--red); font-weight: 700; }
+  .yes {
+    border: 1px solid var(--teal);
+    background: #0f2420;
+  }
+  .yes .tag { color: var(--teal); font-weight: 700; }
+
+  /* future stage */
+  .future {
+    border: 1px dashed var(--muted);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 20px;
+    opacity: 0.75;
+  }
+  .future h3 {
+    font-size: 13px;
+    margin: 0 0 8px;
+    color: var(--muted);
+  }
+  .future ol {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .gate {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--amber);
+    border: 1px solid var(--amber);
+    border-radius: 4px;
+    padding: 2px 8px;
+  }
+</style>
+</head>
+<body>
+<div class="col">
+
+  <h1>Cómo conviven Cockpit y DevHub — hoy (CK-02, Stage 1)</h1>
+  <div class="subtitle">1 archivo cambió de carpeta. 0 runtimes nuevos. Esto es lo que en verdad pasó.</div>
+
+  <h2>① Build time — dónde vive el código vs. dónde termina compilado</h2>
+  <div class="pipeline">
+
+    <div class="box" style="border-color: var(--amber);">
+      <div class="label"><span class="badge new">NUEVO</span> <span class="path">products/cockpit/ui/lib/portfolio.ts</span></div>
+      <div class="note">Funciones/tipos puros (modelo Empresa→Sistema). Sin package.json, sin build propio — es solo un archivo fuente físico dentro de la célula P1.</div>
+    </div>
+
+    <div class="arrow">import vía alias <code>@cockpit/lib/portfolio</code> (tsconfig <code>paths</code> + <code>turbopack.root</code>)</div>
+
+    <div class="box">
+      <div class="label"><span class="path">products/devhub/ui/</span> — la app Next (ÚNICA)</div>
+      <div class="note">
+        <code>package.json</code>, <code>next.config.js</code>, <code>tsconfig.json</code> propios — TODOS de DevHub.<br>
+        Contiene <b>ambos</b> route-groups: <code>(sistema)/</code> [board·roadmap·map·drift…] y <code>(directorio)/</code> [negocio].<br>
+        Importa <code>portfolio.ts</code> desde fuera de su propia raíz — por eso hizo falta <code>turbopack.root</code>.
+      </div>
+    </div>
+
+    <div class="arrow"><code>COCKPIT_STATIC=1 next build</code> (output: 'export')</div>
+
+    <div class="box">
+      <div class="label"><span class="path">products/devhub/ui/out/</span> — HTML/JS estático</div>
+      <div class="note">Un solo bundle. No hay un "bundle de cockpit" separado — portfolio.ts quedó embebido adentro de este mismo bundle de DevHub.</div>
+    </div>
+
+    <div class="arrow"><code>cp -r out/ → products/devhub/go/ui/</code></div>
+
+    <div class="box">
+      <div class="label"><span class="path">products/devhub/go/</span> — el binario Go (ÚNICO)</div>
+      <div class="note"><code>go.mod</code> único (<code>cockpit-go</code>), paquete <code>main</code> único. <code>go:embed</code> mete el UI estático adentro. <code>go build</code> → <code>./cockpit</code>.</div>
+    </div>
+
+  </div>
+
+  <h2>② Runtime — un solo proceso, dos lentes</h2>
+
+  <div class="runtime-outer">
+    <div class="runtime-title">$ ./cockpit &nbsp;→&nbsp; :4000 &nbsp;(UN proceso, UN puerto)</div>
+    <div class="runtime-sub">Arrancás UN binario. Adentro conviven las dos lentes — no hay "arrancar cockpit" por separado.</div>
+    <div class="lenses">
+      <div class="lens">
+        <h3>(sistema) — P2 DevHub</h3>
+        <ul>
+          <li>/board · /roadmap · /map · /drift</li>
+          <li>/learnings · /harness · /evolucion</li>
+          <li>lee <span class="file">?sistema=</span></li>
+        </ul>
+      </div>
+      <div class="lens">
+        <h3>(directorio) — P1 Cockpit (embrión)</h3>
+        <ul>
+          <li>/negocio — Vista de Negocio</li>
+          <li>Hilo de Oro · Brechas · Mapa vivo</li>
+          <li>lee <span class="file">?empresa=</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="shared-note">
+      Ambas lentes comparten la MISMA navegación (<span class="file">SistemaProvider</span>, <span class="file">AppShell</span>, <span class="file">Sidebar</span>) y el MISMO árbol de datos (<span class="file">GET /api/portfolio</span>). Ahí adentro es donde vive <span class="file">portfolio.ts</span> — por eso no se pudo mover "todo P1" de un tirón: ese archivo es el SSoT de navegación de LAS DOS lentes, no solo de negocio.
+    </div>
+  </div>
+
+  <div class="contrast">
+    <div class="no">
+      <div class="tag">✗ Lo que NO es</div>
+      Dos servidores, dos puertos, "arrancar cockpit aparte de devhub". Eso sería Stage 4 — no existe todavía.
+    </div>
+    <div class="yes">
+      <div class="tag">✓ Lo que SÍ es</div>
+      Un archivo fuente movido de carpeta (organización), consumido por el mismo build de siempre vía un alias. Cero cambio de comportamiento.
+    </div>
+  </div>
+
+  <h2>③ Lo que falta para que sí sean 2 sistemas (diferido, CK-02)</h2>
+  <div class="future">
+    <h3>Stage 2 → 3 → 4 (capturadas en CK-02, NO ejecutadas)</h3>
+    <ol>
+      <li><b>Stage 2</b> — mover <span class="file" style="color:var(--muted)">portfolio.go</span> / <span class="file" style="color:var(--muted)">handlers_negocio.go</span> a un binario/paquete Go propio de cockpit.</li>
+      <li><b>Stage 3</b> — mover <span class="file" style="color:var(--muted)">NegocioView.tsx</span> / <span class="file" style="color:var(--muted)">SystemOverview.tsx</span> a su propia app Next, con shell/nav propio (roles Directorio/Área/Consultor).</li>
+      <li><b>Stage 4</b> — correr los DOS binarios/apps en paralelo de verdad (launcher, puerto o proxy propio).</li>
+    </ol>
+    <div class="gate">🔒 Gate: no arranca hasta llenar TBDs de CK-01 (comprador · pricing · éxito-12m) — regla de graduación I-64, "una plataforma, un binario" hasta tener clientes+cadencia propios.</div>
+  </div>
+
+</div>
+</body>
+</html>

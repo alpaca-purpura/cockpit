@@ -1,0 +1,538 @@
+# methodologies.yaml — registro de metodologías  ·  L1 · INSTANCIA
+#
+# SSoT de las metodologías (conforma a schema/methodology.schema.yaml).
+# Backbone = objeto del sistema (O1-O7 hilo · T1-T3 transversal). principios[] = tag secundario.
+# combina_con[] = el grafo (cómo se componen). La sección §4 de METODOLOGIA.md se GENERA de aquí.
+#
+# Editar AQUÍ, no en el .md. Validar:  python3 tooling/scripts/validate_schema.py
+
+_meta:
+  fuente_humana: "service/methodology/METODOLOGIA.md §4 (compendio narrativo)"
+  total: 31
+  backbone: "objeto (capa de contexto / Hilo de Oro)"
+
+# ====================== A · Descubrimiento & Producto ======================
+
+M01:
+  nombre: "Dual Track Agile"
+  familia: A
+  fuente: { autor: "Sy/Miller; pop. Cagan & Patton", obra: "Dual Track Agile (2007/2012)", url: "https://productschool.com/blog/product-fundamentals/dual-track-agile" }
+  que: "separa discovery (qué vale construir) de delivery (construirlo bien)"
+  aporte_unico: "el CORTE discovery/delivery — cuándo dejar de explorar y empezar a construir (=G1)"
+  cuando_usar: "decidir el límite entre exploración y construcción"
+  objeto_primario: O1
+  objetos_secundarios: [O7]
+  principios: [P1, P7]
+  combina_con:
+    - { m: M02, como: "el discovery alimenta el delivery" }
+    - { m: M18, como: "delivery = SDD tras el gate G1" }
+  donde: { modulos: [m3], etapas: [], capa_contexto: false }
+  modo: columna
+
+M02:
+  nombre: "Continuous Discovery / Opportunity Solution Tree (OST)"
+  familia: A
+  fuente: { autor: "Teresa Torres", obra: "Continuous Discovery Habits (2021)", url: "https://www.producttalk.org/" }
+  que: "árbol Outcome→Oportunidades→Soluciones→Assumption Tests"
+  aporte_unico: "el ÁRBOL que estructura la exploración de valor y conecta solución↔outcome"
+  cuando_usar: "etapa 1 — exploración de valor; artefacto central del cockpit"
+  objeto_primario: O1
+  objetos_secundarios: [O2]
+  principios: [P1, P2]
+  combina_con:
+    - { m: M05, como: "JTBD ancla la oportunidad en el trabajo real" }
+    - { m: M06, como: "impact mapping da la cadena de valor" }
+  donde: { modulos: [m1, m3], etapas: [e1], capa_contexto: false }
+  modo: columna
+
+M03:
+  nombre: "Product Operating Model"
+  familia: A
+  fuente: { autor: "Marty Cagan / SVPG", obra: "Transformed (2024)", url: "https://www.svpg.com/books/transformed-moving-to-the-product-operating-model/" }
+  que: "modelo operativo: discovery + delivery + equipos empoderados; outcomes > outputs"
+  aporte_unico: "el PARAGUAS que justifica equipos-por-outcome (IA + consultor = el 'equipo')"
+  cuando_usar: "encuadre del modus operandi de M3"
+  objeto_primario: T3
+  objetos_secundarios: [O1]
+  principios: [P1]
+  combina_con:
+    - { m: M02, como: "su discovery es continuo" }
+    - { m: M04, como: "su delivery apuesta con appetite" }
+  donde: { modulos: [m3], etapas: [], capa_contexto: false }
+  modo: paraguas
+
+M04:
+  nombre: "Shape Up"
+  familia: A
+  fuente: { autor: "Ryan Singer / Basecamp", obra: "Shape Up (2019)", url: "https://basecamp.com/shapeup" }
+  que: "shaping (solución a grueso), appetite (tiempo fijo), no-gos, betting, ciclos"
+  aporte_unico: "el APPETITE — tiempo fijo / alcance variable, y los no-gos de la apuesta"
+  cuando_usar: "etapa 0/3 — apostar y dar forma al pitch"
+  objeto_primario: O1
+  objetos_secundarios: [O6]
+  principios: [P1, P7]
+  combina_con:
+    - { m: M02, como: "la oportunidad a apostar sale del OST" }
+    - { m: M21, como: "el appetite se ata a mover un KR" }
+  donde: { modulos: [m3], etapas: [e0, e3], capa_contexto: false }
+  modo: columna
+
+M05:
+  nombre: "Jobs-to-be-Done (JTBD)"
+  familia: A
+  fuente: { autor: "Clayton Christensen", obra: "Know Your Customers' Jobs to Be Done (HBR 2016)", url: "https://hbr.org/2016/09/know-your-customers-jobs-to-be-done" }
+  que: "enmarca la necesidad como el 'trabajo' que el usuario contrata, no como feature"
+  aporte_unico: "el TRABAJO (job, no feature) — evita soluciones disfrazadas de problema"
+  cuando_usar: "etapa 1, junto al OST, para anclar la oportunidad"
+  objeto_primario: O1
+  objetos_secundarios: [T2, O2]
+  principios: [P1]
+  combina_con:
+    - { m: M02, como: "alimenta el árbol de oportunidades" }
+    - { m: M24, como: "el job informa persona y journey" }
+  donde: { modulos: [m1, m3], etapas: [e1], capa_contexto: false }
+  modo: columna
+
+M06:
+  nombre: "Impact Mapping"
+  familia: A
+  fuente: { autor: "Gojko Adzic", obra: "Impact Mapping", url: "https://www.impactmapping.org/" }
+  que: "mapa Goal → Actor → Impact → Deliverable"
+  aporte_unico: "la CADENA Goal→Deliverable que permite atribuir aporte por capability"
+  cuando_usar: "Hilo de Oro; etapa 1; loop de valor"
+  objeto_primario: O2
+  objetos_secundarios: [O1]
+  principios: [P1, P2]
+  combina_con:
+    - { m: M21, como: "el impact aterriza en KR trimestral" }
+    - { m: M15, como: "comparte el goals cascade" }
+    - { m: M22, como: "atribuye el aporte por capability" }
+  donde: { modulos: [m1, m3], etapas: [e1], capa_contexto: true }
+  modo: columna
+
+# ====================== B · Dominio & Proceso ======================
+
+M07:
+  nombre: "Event Storming"
+  familia: B
+  fuente: { autor: "Alberto Brandolini", obra: "Event Storming", url: "https://www.eventstorming.com/" }
+  que: "taller: eventos de dominio → comandos → actores → políticas → agregados"
+  aporte_unico: "los EVENTOS de dominio → bounded contexts (rompe en multi-sistema)"
+  cuando_usar: "AS-IS de procesos (paso 4) y descomposición (etapa 3)"
+  objeto_primario: O3
+  objetos_secundarios: [O5]
+  principios: [P3, P4]
+  combina_con:
+    - { m: M08, como: "los eventos revelan los bounded contexts" }
+    - { m: M09, como: "el flujo de eventos es el value stream" }
+  donde: { modulos: [m1, m3], etapas: [e3], capa_contexto: true }
+  modo: columna
+
+M08:
+  nombre: "Domain-Driven Design (DDD)"
+  familia: B
+  fuente: { autor: "Eric Evans", obra: "Domain-Driven Design (2003)", url: "https://www.domainlanguage.com/" }
+  que: "modelado del dominio; bounded contexts; lenguaje ubicuo"
+  aporte_unico: "los BOUNDED CONTEXTS + lenguaje ubicuo — dónde están las costuras de integración"
+  cuando_usar: "etapa 3; arquitectura de sistemas"
+  objeto_primario: O5
+  objetos_secundarios: [O3]
+  principios: [P4]
+  combina_con:
+    - { m: M07, como: "del event storming salen los contexts" }
+    - { m: M13, como: "los contexts mapean a aplicaciones" }
+  donde: { modulos: [m1, m3], etapas: [e3], capa_contexto: true }
+  modo: columna
+
+M09:
+  nombre: "Value Stream Mapping (VSM)"
+  familia: B
+  fuente: { autor: "Rother & Shook", obra: "Learning to See (LEI)", url: "https://www.lean.org/" }
+  que: "técnica lean: visualiza flujo de valor y desperdicio; future-state map"
+  aporte_unico: "el FUTURE-STATE + desperdicio — qué se elimina/automatiza/combina (vende el ahorro)"
+  cuando_usar: "AS-IS de procesos y modelado de future-state (etapa 3)"
+  objeto_primario: O3
+  objetos_secundarios: [O6]
+  principios: [P3, P1]
+  combina_con:
+    - { m: M10, como: "el blueprint dice dónde duele; VSM optimiza el proceso detrás" }
+    - { m: M07, como: "comparten el flujo de valor" }
+  donde: { modulos: [m1, m2], etapas: [e3], capa_contexto: true }
+  modo: columna
+
+M10:
+  nombre: "Service Blueprint"
+  familia: B
+  fuente: { autor: "Nielsen Norman Group", obra: "Service Blueprints", url: "https://www.nngroup.com/articles/service-blueprints-definition/" }
+  que: "mapea la experiencia del cliente contra los procesos internos (inside-out)"
+  aporte_unico: "el INSIDE-OUT (experiencia ↔ proceso) — revela dónde duele"
+  cuando_usar: "AS-IS de procesos (paso 4)"
+  objeto_primario: O3
+  objetos_secundarios: [T2]
+  principios: [P3, P4]
+  combina_con:
+    - { m: M09, como: "tras el dolor, VSM optimiza el proceso detrás" }
+    - { m: M24, como: "TiSDD lo extiende a frontstage/backstage + interfaces" }
+  donde: { modulos: [m1], etapas: [], capa_contexto: true }
+  modo: columna
+
+M11:
+  nombre: "BPMN"
+  familia: B
+  fuente: { autor: "Object Management Group", obra: "BPMN 2.0", url: "https://www.bpmn.org/" }
+  que: "notación estándar para modelar procesos de negocio"
+  aporte_unico: "la NOTACIÓN común cuando un proceso necesita formalizarse con rigor"
+  cuando_usar: "documentación de procesos (M1/M2); opcional sobre Event Storming/VSM"
+  objeto_primario: O3
+  objetos_secundarios: []
+  principios: [P4]
+  combina_con:
+    - { m: M07, como: "formaliza lo que emergió en el storming" }
+    - { m: M09, como: "notación sobre el value stream" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+
+M12:
+  nombre: "APQC Process Classification Framework (PCF)"
+  familia: B
+  fuente: { autor: "APQC", obra: "Process Classification Framework", url: "https://www.apqc.org/process-frameworks" }
+  que: "taxonomía universal de procesos (12 categorías, ~1000 procesos), open standard"
+  aporte_unico: "la TAXONOMÍA universal — el esqueleto para no perderse en el 1GB + cobertura"
+  cuando_usar: "AS-IS de procesos — clasificar cada proceso hallado"
+  objeto_primario: O3
+  objetos_secundarios: []
+  principios: [P4]
+  combina_con:
+    - { m: M07, como: "esqueleto donde cuelgan los eventos" }
+    - { m: M10, como: "clasifica los procesos del blueprint" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+
+# ====================== C · Arquitectura & Sistemas ======================
+
+M13:
+  nombre: "ArchiMate / TOGAF"
+  familia: C
+  fuente: { autor: "The Open Group", obra: "ArchiMate / TOGAF", url: "https://www.opengroup.org/" }
+  que: "lenguaje y framework de arquitectura empresarial; capas negocio/aplicación/tecnología"
+  aporte_unico: "el MAPEO negocio↔aplicación — responde cuáles procesos son digitales"
+  cuando_usar: "AS-IS de sistemas (paso 3)"
+  objeto_primario: O5
+  objetos_secundarios: [O3]
+  principios: [P4, P2]
+  combina_con:
+    - { m: M14, como: "da el marco que el SYSTEM-MAP puebla" }
+    - { m: M08, como: "capa-aplicación ↔ bounded contexts" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+
+M14:
+  nombre: "SYSTEM-MAP + document-project (propio)"
+  familia: C
+  fuente: { autor: "prenter-harness (propio); insp. BMAD document-project", obra: "SYSTEM-MAP", url: "https://github.com/bmad-code-org/BMAD-METHOD" }
+  que: "mapa vivo de sistemas + capabilities, leyendo el código real (reverse-engineer)"
+  aporte_unico: "el MAPA VIVO desde el código + drift código↔docs"
+  cuando_usar: "AS-IS de sistemas (paso 3); plano Análisis"
+  objeto_primario: O5
+  objetos_secundarios: [T1]
+  principios: [P5, P3]
+  combina_con:
+    - { m: M13, como: "ArchiMate da el marco; el bot lo puebla" }
+    - { m: M23, como: "cada dato del mapa lleva fuente + confianza" }
+  donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
+  modo: columna
+
+# ====================== D · Gobierno, Calidad & Madurez ======================
+
+M15:
+  nombre: "COBIT 2019"
+  familia: D
+  fuente: { autor: "ISACA", obra: "COBIT 2019", url: "https://www.isaca.org/resources/cobit" }
+  que: "gobierno de IT; goals cascade (empresa→IT); niveles de capability/madurez"
+  aporte_unico: "el GOALS CASCADE + niveles de madurez (el semáforo del gap)"
+  cuando_usar: "Hilo de Oro + Gap Analysis (madurez digital). Modo lite, sin certificación"
+  objeto_primario: O6
+  objetos_secundarios: [O2]
+  principios: [P2, P3]
+  combina_con:
+    - { m: M21, como: "cascade + OKR = el hilo hacia arriba" }
+    - { m: M06, como: "comparten la cadena objetivo→valor" }
+  donde: { modulos: [m1], etapas: [], capa_contexto: true }
+  modo: columna
+
+M16:
+  nombre: "ISO 9001"
+  familia: D
+  fuente: { autor: "ISO", obra: "ISO 9001:2015", url: "https://www.iso.org/iso-9001-quality-management.html" }
+  que: "gestión de calidad; enfoque a procesos; PDCA (cl.10); contexto (cl.4); objetivos (cl.6.2); autoridad (cl.5.3)"
+  aporte_unico: "la ONTOLOGÍA de contexto (cl.4) + el ciclo PDCA — robamos ontología, rechazamos aparato"
+  cuando_usar: "capa de contexto (vocabulario) y M2/M3 (mejora continua)"
+  objeto_primario: T3
+  objetos_secundarios: [O4]
+  principios: [P4, P7]
+  combina_con:
+    - { m: M21, como: "objetivos cl.6.2 se expresan como OKR" }
+    - { m: M25, como: "roles/autoridad cl.5.3 = RACI" }
+  donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
+  modo: columna
+
+M17:
+  nombre: "ITIL 4"
+  familia: D
+  fuente: { autor: "Axelos / PeopleCert", obra: "ITIL 4", url: "https://www.peoplecert.org/" }
+  que: "gestión de servicios IT; Service Value System; value streams de servicio"
+  aporte_unico: "la rebanada para operar servicios IT que ya corren (helpdesk/incidentes/cambios)"
+  cuando_usar: "situacional — solo si el cliente opera servicios IT. NO es la columna"
+  objeto_primario: T3
+  objetos_secundarios: []
+  principios: [P7]
+  combina_con:
+    - { m: M16, como: "service value system sobre el ciclo PDCA" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: false }
+  modo: situacional
+
+# ====================== E · Especificación & Construcción ======================
+
+M18:
+  nombre: "Spec-Driven Development (SDD)"
+  familia: E
+  fuente: { autor: "GitHub Spec Kit · Amazon Kiro · BMAD", obra: "Spec-Driven Development", url: "https://github.com/github/spec-kit" }
+  que: "el spec/intent es la fuente de verdad; el código es la última milla"
+  aporte_unico: "el SPEC=CONTRATO — gates validan el código contra el spec en cada commit"
+  cuando_usar: "etapas 4–5 (contrato → construcción); núcleo del harness"
+  objeto_primario: O7
+  objetos_secundarios: [O2]
+  principios: [P6, P2]
+  combina_con:
+    - { m: M19, como: "los criterios EARS pueblan el spec" }
+    - { m: M20, como: "los ejemplos BDD prueban el spec" }
+  donde: { modulos: [m3], etapas: [e4, e5], capa_contexto: false }
+  modo: columna
+
+M19:
+  nombre: "EARS (Easy Approach to Requirements Syntax)"
+  familia: E
+  fuente: { autor: "Alistair Mavin / Rolls-Royce", obra: "EARS (2009)", url: "https://alistairmavin.com/ears/" }
+  que: "sintaxis de criterios atómicos testeables: WHEN [cond] THE SYSTEM SHALL [comportamiento]"
+  aporte_unico: "la SINTAXIS sin ambigüedad, directamente testeable (NASA/Airbus)"
+  cuando_usar: "etapa 4 — escribir criterios de aceptación"
+  objeto_primario: O7
+  objetos_secundarios: []
+  principios: [P6]
+  combina_con:
+    - { m: M18, como: "puebla el contrato/spec" }
+    - { m: M20, como: "EARS + ejemplo = criterio vivo" }
+  donde: { modulos: [m3], etapas: [e4], capa_contexto: false }
+  modo: columna
+
+M20:
+  nombre: "Specification by Example / BDD"
+  familia: E
+  fuente: { autor: "Gojko Adzic", obra: "Specification by Example (2011)", url: "https://gojko.net/books/specification-by-example/" }
+  que: "ejemplos concretos acordados se vuelven pruebas de aceptación ejecutables"
+  aporte_unico: "los EJEMPLOS ejecutables — documentan y prueban a la vez"
+  cuando_usar: "etapas 4–5; complementa EARS"
+  objeto_primario: O7
+  objetos_secundarios: []
+  principios: [P6]
+  combina_con:
+    - { m: M19, como: "ejemplos sobre los criterios EARS" }
+    - { m: M18, como: "tests de aceptación del spec" }
+  donde: { modulos: [m3], etapas: [e4, e5], capa_contexto: false }
+  modo: columna
+
+# ====================== F · Valor, Costo & Alineación ======================
+
+M21:
+  nombre: "OKR (Objectives & Key Results)"
+  familia: F
+  fuente: { autor: "John Doerr; Christina Wodtke", obra: "Measure What Matters / Radical Focus", url: "https://www.whatmatters.com/" }
+  que: "objetivo cualitativo + key results medibles por trimestre"
+  aporte_unico: "el KR TRIMESTRAL — el indicador a mover, target de etapa 0 y destino del roll-up"
+  cuando_usar: "encuadre (paso 1) + Hilo de Oro"
+  objeto_primario: O2
+  objetos_secundarios: []
+  principios: [P1, P2]
+  combina_con:
+    - { m: M15, como: "el KR baja del goals cascade" }
+    - { m: M22, como: "el roll-up sube el aporte real al KR" }
+    - { m: M06, como: "impact conecta KR ↔ deliverable" }
+  donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
+  modo: columna
+
+M22:
+  nombre: "FinOps — Quantify Business Value"
+  familia: F
+  fuente: { autor: "FinOps Foundation", obra: "Quantify Business Value", url: "https://www.finops.org/framework/domains/quantify-business-value/" }
+  que: "empareja gasto tecnológico con valor de negocio; unit economics; atribución"
+  aporte_unico: "el UNIT ECONOMICS — costo real + ahorro contrafactual (vs devs) + aporte por capability"
+  cuando_usar: "loop de valor (aceptación, paso 11)"
+  objeto_primario: O2
+  objetos_secundarios: [T3]
+  principios: [P1, P2]
+  combina_con:
+    - { m: M21, como: "el aporte sube al KR" }
+    - { m: M06, como: "atribución por capability" }
+  donde: { modulos: [m2, m3], etapas: [], capa_contexto: true }
+  modo: columna
+
+# ====================== G · IA: Grounding & Anti-alucinación ======================
+
+M23:
+  nombre: "Grounding / RAG + Provenance"
+  familia: G
+  fuente: { autor: "investigación 2026 (Braintrust)", obra: "Grounding / RAG + Provenance", url: "https://www.braintrust.dev/articles/best-hallucination-detection-tools-2026" }
+  que: "funda las salidas del LLM en fuentes reales (RAG, citas, juez en runtime)"
+  aporte_unico: "FUENTE + CONFIANZA + FRESCURA por dato — el grounding anula lo que lo contradiga"
+  cuando_usar: "todo el AS-IS (paso 2) y como regla transversal"
+  objeto_primario: T1
+  objetos_secundarios: []
+  principios: [P5]
+  combina_con:
+    - { m: M14, como: "el drift código↔docs es una señal de confianza" }
+  donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
+  modo: columna
+
+# ====================== H · Diseño de Servicio & Experiencia ======================
+
+M24:
+  nombre: "This Is Service Design Doing (TiSDD)"
+  familia: H
+  fuente: { autor: "Stickdorn, Hormess, Lawrence, Schneider", obra: "This Is Service Design Doing (O'Reilly 2018)", url: "https://www.thisisservicedesigndoing.com/" }
+  que: "manual práctico del service design; toolkit personas/journey/stakeholder/blueprint"
+  aporte_unico: "el TOOLKIT que revela qué pantallas existen, quién las usa y qué procesos las sostienen"
+  cuando_usar: "productizar cada etapa (interfaces frontend + actores + experiencia del sponsor)"
+  objeto_primario: T2
+  objetos_secundarios: [O3, O4]
+  principios: [P3, P4, P1]
+  combina_con:
+    - { m: M10, como: "extiende el service blueprint a frontstage/backstage" }
+    - { m: M05, como: "el job ancla persona y journey" }
+    - { m: M25, como: "el stakeholder map se cruza con RACI" }
+  donde: { modulos: [m1, m3], etapas: [], capa_contexto: false }
+  modo: columna
+
+# ====================== I · Personas & Autoridad (hueco O4 cerrado, I-25) ======================
+
+M25:
+  nombre: "RACI (Responsibility Assignment Matrix)"
+  familia: D
+  fuente: { autor: "PMI", obra: "PMBOK Guide — Responsibility Assignment Matrix", url: "https://www.pmi.org/" }
+  que: "matriz de asignación de responsabilidad: Responsible · Accountable · Consulted · Informed"
+  aporte_unico: "la AUTORIDAD explícita — quién es Accountable habilita y ejecuta cada gate humano"
+  cuando_usar: "encuadre (autoridad) y en cada gate (quién ratifica/apuesta/acepta)"
+  objeto_primario: O4
+  objetos_secundarios: [T3]
+  principios: [P7, P2]
+  combina_con:
+    - { m: M16, como: "formaliza roles/autoridad ISO cl.5.3" }
+    - { m: M15, como: "el Accountable del KR ejecuta el gate" }
+    - { m: M24, como: "alimenta el stakeholder map" }
+  donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
+  modo: columna
+
+# ====================== Capa estratégica (I-29) — directorio→OKR→org · evolución · priorización ======================
+
+M26:
+  nombre: "Hoshin Kanri (Strategy Deployment)"
+  familia: F
+  fuente: { autor: "Yoji Akao (orígenes) · práctica Lean/Toyota", obra: "Hoshin Kanri — Policy Deployment (X-matrix · catchball)", url: "https://blog.i-nexus.com/hoshin-kanri-x-matrix-explained" }
+  que: "traduce la visión a 3-5 años → breakthrough anual → prioridades → métricas, en cascada por niveles con catchball (ida y vuelta)"
+  aporte_unico: "la CASCADA estrategia→toda-la-org — baja las metas del directorio hasta el último peldaño, con acuerdo bidireccional (catchball)"
+  cuando_usar: "etapa 1 — alinear el TO-BE a los objetivos del directorio; plan a 3 años → slice anual → OKR trimestral"
+  objeto_primario: O2
+  objetos_secundarios: [O4, T3]
+  principios: [P1, P2]
+  combina_con:
+    - { m: M21, como: "Hoshin da la dirección multi-año; OKR ejecuta el trimestre dentro de ella" }
+    - { m: M15, como: "comparte el goals cascade (empresa→IT)" }
+    - { m: M30, como: "BSC traduce cada nivel a KPIs por perspectiva" }
+  donde: { modulos: [m1], etapas: [], capa_contexto: true }
+  modo: columna
+
+M27:
+  nombre: "Wardley Mapping"
+  familia: F
+  fuente: { autor: "Simon Wardley", obra: "Wardley Maps (value chain × evolución · CC-BY-SA)", url: "https://www.wardleymaps.com/glossary/evolution-stages" }
+  que: "mapea la cadena de valor contra la evolución de cada componente (génesis→custom→producto→commodity); situational awareness"
+  aporte_unico: "la EVOLUCIÓN de cada componente en el tiempo → qué construir (génesis), qué comprar (producto), qué tercerizar (commodity)"
+  cuando_usar: "etapa 1 — el plan a 3 años; cómo la 'maquinaria' (procesos·sistemas) evoluciona según los objetivos"
+  objeto_primario: O5
+  objetos_secundarios: [O2, O6]
+  principios: [P3, P2]
+  combina_con:
+    - { m: M31, como: "el mapa de capacidades alimenta la cadena de valor" }
+    - { m: M13, como: "ArchiMate da las capas; Wardley les pone evolución" }
+    - { m: M15, como: "la madurez COBIT informa la posición evolutiva" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+
+M28:
+  nombre: "WSJF / Cost of Delay"
+  familia: F
+  fuente: { autor: "Don Reinertsen (Cost of Delay) · SAFe (WSJF)", obra: "Weighted Shortest Job First = CoD ÷ tamaño", url: "https://framework.scaledagile.com/wsjf" }
+  que: "priorización económica: costo de retraso (valor + criticidad-tiempo + reducción-riesgo) ÷ tamaño del trabajo"
+  aporte_unico: "la PRIORIZACIÓN económica de los gaps — qué atacar primero por retorno/urgencia ÷ esfuerzo (vs orden por capricho)"
+  cuando_usar: "etapa 2 — priorizar los gaps detectados antes de pasarlos a discovery/delivery"
+  objeto_primario: O6
+  objetos_secundarios: [O1, O2]
+  principios: [P1]
+  combina_con:
+    - { m: M22, como: "FinOps cuantifica el valor/ahorro que entra al CoD" }
+    - { m: M04, como: "el appetite de Shape Up acota el tamaño del trabajo" }
+    - { m: M06, como: "Impact Mapping da el valor de negocio del numerador" }
+  donde: { modulos: [m3], etapas: [], capa_contexto: false }
+  modo: columna
+
+M29:
+  nombre: "Process / Task Mining"
+  familia: B
+  fuente: { autor: "Wil van der Aalst (process mining) · Celonis (líder Gartner MQ 2025)", obra: "Process & Task Mining — descubrimiento desde datos", url: "https://www.celonis.com/process-mining/what-is-process-mining/" }
+  que: "descubre el proceso REAL desde logs de sistemas y clicks de escritorio; halla desviaciones, cuellos de botella y oportunidades de automatización"
+  aporte_unico: "el AS-IS REAL desde DATOS (no declarado) + dónde automatizar — los 'agentes' que recorren sistemas para mapear de verdad"
+  cuando_usar: "etapa 1 (mapeo automático del AS-IS) + etapa 3 (detectar puestos/tareas automatizables con IA)"
+  objeto_primario: T1
+  objetos_secundarios: [O3, O6]
+  principios: [P5, P3]
+  combina_con:
+    - { m: M12, como: "clasifica los procesos hallados en la taxonomía APQC" }
+    - { m: M09, como: "VSM optimiza el flujo que el mining reveló" }
+    - { m: M14, como: "alimenta el SYSTEM-MAP con uso real" }
+    - { m: M23, como: "el dato minado lleva fuente·confianza (grounding)" }
+  donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
+  modo: columna
+
+M30:
+  nombre: "Balanced Scorecard"
+  familia: F
+  fuente: { autor: "Robert Kaplan & David Norton", obra: "The Balanced Scorecard (HBR 1992 · libro 1996)", url: "https://balancedscorecard.org/bsc-basics-overview/" }
+  que: "traduce la estrategia a objetivos+métricas ligados en 4 perspectivas (financiera · cliente · procesos · aprendizaje), vía un strategy map"
+  aporte_unico: "el STRATEGY MAP — liga aprendizaje→procesos→cliente→finanzas y cascada a unidades/personas (el 'por qué' detrás de cada KPI)"
+  cuando_usar: "etapa 1 — traducir la estrategia del directorio a KPIs por perspectiva; complementa OKR/Hoshin"
+  objeto_primario: O2
+  objetos_secundarios: [T3]
+  principios: [P1, P2]
+  combina_con:
+    - { m: M26, como: "Hoshin despliega la estrategia; BSC la mide por perspectiva" }
+    - { m: M21, como: "los KR se anclan a los objetivos del scorecard" }
+    - { m: M06, como: "Impact conecta objetivo→entregable" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+
+M31:
+  nombre: "Business Capability Modeling"
+  familia: C
+  fuente: { autor: "The Open Group (TOGAF Business Architecture) · práctica LeanIX", obra: "Business Capability Map + heatmap de gaps", url: "https://pubs.opengroup.org/togaf-standard/business-architecture/business-capabilities.html" }
+  que: "modela QUÉ hace la empresa (capacidades, no cómo) en un mapa; aplica heatmap de madurez/desempeño/dolor para ubicar gaps"
+  aporte_unico: "el MAPA DE CAPACIDADES con HEATMAP — dónde están los gaps/dolores y dónde conviene invertir, estable frente al cómo"
+  cuando_usar: "etapa 1 — el mapa de la organización + heatmap de gaps alineado a los objetivos"
+  objeto_primario: O5
+  objetos_secundarios: [O3, O6]
+  principios: [P4, P3]
+  combina_con:
+    - { m: M13, como: "vive en la capa-negocio de ArchiMate/TOGAF" }
+    - { m: M12, como: "las capacidades se sostienen en procesos APQC" }
+    - { m: M27, como: "Wardley pone evolución a cada capacidad" }
+    - { m: M15, como: "el heatmap usa niveles de madurez COBIT" }
+  donde: { modulos: [m1], etapas: [], capa_contexto: true }
+  modo: columna

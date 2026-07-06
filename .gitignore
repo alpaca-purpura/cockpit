@@ -1,0 +1,20 @@
+# Node / UI
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+.env.local
+.env*.local
+coverage/
+
+# Go
+bin/
+*.exe
+go/cmd/directorio/ui/
+
+# Local
+.DS_Store
+*.log
+.env
+.env.*
