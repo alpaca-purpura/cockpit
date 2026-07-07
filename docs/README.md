@@ -3,8 +3,10 @@
 Zona CAPABILITIES de la tríada (CK-11): documentation-as-code de lo **ya desarrollado y
 funcional** (el código vive en `go/` y `ui/`).
 
-- [`INCREMENT.md`](./INCREMENT.md) — **Product Increment**: registro de capabilities funcionales
-  verificadas. La puerta de entrada: nada figura aquí sin correr de verdad.
+- [`increment.yaml`](./increment.yaml) — **Product Increment** (SSoT, as-code): capabilities
+  funcionales verificadas (`CAP-NN`), cada una cableada a los componentes `estado: activo` de
+  `sistema/arquitectura/arquitectura.yaml`. Vista humana: [`INCREMENT.md`](./INCREMENT.md)
+  (mismo evento). La puerta de entrada: nada figura aquí sin correr de verdad.
 - Documentación por capability — a medida que crezcan (hoy el arranque está en el
   [`README.md`](../README.md) raíz: puertos, scripts, dev).
 

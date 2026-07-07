@@ -21,7 +21,8 @@ Los otros dos documentos de proyecto viven en la raíz por convención del arné
    evento.
 3. **Construir** → ítem `en-curso`. Toda capability se construye contra el sistema as-code
    (`sistema/arquitectura/`, `sistema/schema/`, design system cuando exista — BL-04).
-4. **Terminado Y verificado** → ítem `hecho` + entrada en [`../docs/INCREMENT.md`](../docs/INCREMENT.md)
-   si es capability funcional.
+4. **Terminado Y verificado** → ítem `hecho` + capability `CAP-NN` en
+   [`../docs/increment.yaml`](../docs/increment.yaml) (SSoT) y su vista
+   [`../docs/INCREMENT.md`](../docs/INCREMENT.md), mismo evento.
 
 La prioridad la firma el operador — el agente propone, no decide.

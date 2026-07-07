@@ -1,0 +1,83 @@
+# increment.yaml — Product Increment de Cockpit como dato (CK-11)
+#
+# QUÉ ES: SSoT de las capabilities YA construidas y VERIFICADAS — lo que corre de verdad.
+# Vista humana: INCREMENT.md (se edita en el MISMO evento, jamás divergen).
+# Espejo operativo de sistema/arquitectura/arquitectura.yaml: cada capability referencia por
+# `componentes:` los ids de componente (estado: activo) que la materializan.
+#
+# DISCIPLINA: una capability entra aquí SOLO al quedar `hecho` + verificada (ítem del backlog →
+# entrada acá, mismo evento). Nada aspiracional — lo pendiente vive en proyecto/backlog.yaml.
+
+meta:
+  id: cockpit-increment
+  nombre: "Product Increment — Cockpit"
+  version: 0.1.0
+  creado: CK-11
+  verificacion_base: "2026-07-06 (CK-10) — go build/vet/test + UI tsc/vitest + export estático real, standalone sin monorepo"
+
+capabilities:
+
+  - id: CAP-01
+    nombre: "Runtime propio — binario `directorio`"
+    que_hace: >-
+      Servidor HTTP puerto 4100: sirve las APIs JSON + la UI embebida (go:embed, export estático
+      Next). Modos single-workspace (-workspace/WORKSPACE_ROOT) y multi (registry
+      ~/.cockpit/cockpit.yaml). Solo lectura — sin auth, sin DB.
+    rutas: [go/cmd/directorio/]
+    componentes: [cockpit-runtime-propio]
+    fichas: [CK-07, CK-08]
+    verificada: 2026-07-06
+
+  - id: CAP-02
+    nombre: "API portfolio — GET /api/portfolio"
+    que_hace: >-
+      Árbol Dueño→Empresa→Sistema; distingue sistemas navegables (instrumentados) vs gaps de
+      digitalización (Odoo compartido/externo/terciarizado/propio sin instrumentar). Registry
+      fresh de disco por request.
+    rutas: [go/portfolio.go]
+    componentes: [portfolio-api, cockpit-go-module]
+    fichas: [CK-02, CK-05]
+    verificada: 2026-07-06
+
+  - id: CAP-03
+    nombre: "API negocio — GET /api/negocio?empresa="
+    que_hace: >-
+      Lee empresa/negocio.yaml, valida (warnings no fatales sobre enums/refs — espejo de
+      negocio.schema), sirve el diagnóstico: objetivos + áreas/procesos + brechas. Sin archivo →
+      empty-state (negocio: null).
+    rutas: [go/negocio.go]
+    componentes: [negocio-api, cockpit-go-module]
+    fichas: [CK-05]
+    verificada: 2026-07-06
+
+  - id: CAP-04
+    nombre: "Vista de Negocio (/negocio)"
+    que_hace: >-
+      Objetivos del directorio (KR from→to) que tensan el Hilo de Oro sobre 3 sub-tabs: Mapa vivo
+      (semáforo de digitalización) · Hilo de oro (cascada objetivo→procesos + huérfanos) · Brechas
+      (caso de negocio + prioridad). Drawer de drill-down por proceso (procedencia/confianza);
+      banner de warnings de negocio.yaml.
+    rutas: [ui/components/negocio/NegocioView.tsx, ui/app/negocio/]
+    componentes: [negocio-view]
+    fichas: [CK-06]
+    verificada: 2026-07-06
+
+  - id: CAP-05
+    nombre: "Shell por rol + selector de empresa"
+    que_hace: >-
+      Sidebar con selector de Empresa y nav por rol — Directorio vivo; Área/Consultor placeholders
+      "próximamente".
+    rutas: [ui/components/shell/]
+    componentes: [cockpit-shell]
+    fichas: [CK-06]
+    verificada: 2026-07-06
+
+  - id: CAP-06
+    nombre: "Modelo de portfolio (TS puro)"
+    que_hace: >-
+      Funciones/tipos de navegación Empresa→Sistema, deep-link URL. Cero runtime React/Next.
+      25 tests vitest.
+    rutas: [ui/lib/portfolio.ts]
+    componentes: [portfolio-model]
+    fichas: [CK-02]
+    verificada: 2026-07-06

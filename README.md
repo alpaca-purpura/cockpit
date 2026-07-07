@@ -19,7 +19,8 @@ PDCA, sin el aparato de certificación).
   (`sistema/arquitectura/`), método del servicio/auditor (`sistema/metodo/`), schemas de dominio
   (`sistema/schema/`).
 - **Capabilities construidas** — código (`go/`, `ui/`) + [`docs/`](./docs/) (documentation-as-code;
-  registro funcional en [`docs/INCREMENT.md`](./docs/INCREMENT.md)).
+  Product Increment en [`docs/increment.yaml`](./docs/increment.yaml), vista
+  [`docs/INCREMENT.md`](./docs/INCREMENT.md)).
 - [`proyecto/`](./proyecto/) — organización del trabajo: **System Backlog**
   ([`proyecto/backlog.yaml`](./proyecto/backlog.yaml), vista en
   [`proyecto/BACKLOG.md`](./proyecto/BACKLOG.md)) + research heredada

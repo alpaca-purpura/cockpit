@@ -13,14 +13,15 @@ multi-fuente → As-Is → To-Be → proyectos desde la brecha.
 **Organización — la tríada (CK-11, "nacemos ordenados"):**
 - `sistema/` — el sistema as-code: arquitectura/despliegue, método del auditor, schemas. Cambiarlo
   = decisión → ficha `CK-NN` en el mismo evento.
-- Capabilities construidas — código (`go/`, `ui/`) + `docs/` (documentation-as-code; registro
-  funcional = `docs/INCREMENT.md`).
+- Capabilities construidas — código (`go/`, `ui/`) + `docs/` (documentation-as-code; Product
+  Increment = `docs/increment.yaml` SSoT `CAP-NN` + `INCREMENT.md` vista).
 - `proyecto/` — organización del trabajo: `proyecto/backlog.yaml` (System Backlog, SSoT, columnas
   por subsistema; vista `BACKLOG.md` mismo evento) + `proyecto/research/`.
 
-**Disciplina de trabajo:** toda sesión arranca leyendo `proyecto/backlog.yaml`. Idea nueva →
-backlog primero, construir después. Ítem terminado Y verificado → `hecho` + entrada en
-`docs/INCREMENT.md`. Capabilities nuevas se construyen contra el sistema as-code (arquitectura,
+**Disciplina de trabajo:** toda sesión arranca leyendo `proyecto/backlog.yaml` — única fuente de
+la verdad del pendiente (los "Siguiente:" de fichas del LEDGER son narrativa histórica, no
+tracking). Idea nueva → backlog primero, construir después. Ítem terminado Y verificado → `hecho`
++ capability en `docs/increment.yaml`+`INCREMENT.md`. Capabilities nuevas se construyen contra el sistema as-code (arquitectura,
 schemas, design system cuando exista — BL-04). Prioridades las firma el operador.
 
 **Decisiones técnicas vigentes:**

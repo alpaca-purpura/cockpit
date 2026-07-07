@@ -134,15 +134,18 @@ viajó de ese material es la versión ya genérica/ficticia (persona "Mateo Sala
 Inmobiliaria Vértice") usada en `proyecto/research/service-design/` y
 `sistema/metodo/proceso/_sample/`.
 
-## TBD — el hueco más grande a cerrar
+## TBD — huecos abiertos
 
-- **Persona/puesto como entidad de primera clase.** Hoy `negocio.schema` modela objetivo · área ·
-  proceso · brecha, con "puesto" como texto libre suelto dentro de proceso — no existe todavía un
-  modelo de dato real para el pilar Personas. Es la brecha más concreta entre esta visión y el
-  código actual; candidato a primera ficha sustantiva post-graduación.
-- **Comprador con nombre y cara, pricing, éxito a 12 meses** — TBD heredado de CK-01, sigue sin
-  gate bloqueante (I-71 lo derogó), pero sigue siendo contexto útil para priorizar.
-- **Motor de Discovery (N1)** — sin fecha, campaña propia.
+Desde CK-11, el detalle, estado y prioridad de TODO lo pendiente viven en el System Backlog
+([`proyecto/backlog.yaml`](./proyecto/backlog.yaml)) — única fuente de la verdad del trabajo.
+Aquí queda solo el porqué estratégico de los tres huecos mayores:
+
+- **Persona/puesto como entidad de primera clase** (→ BL-01) — hoy `negocio.schema` modela
+  objetivo · área · proceso · brecha, con "puesto" como texto libre; la brecha más concreta entre
+  esta visión y el código actual.
+- **Comprador con nombre y cara, pricing, éxito a 12 meses** (→ BL-10) — heredado de CK-01, sin
+  gate bloqueante (I-71 lo derogó); contexto para priorizar.
+- **Motor de Discovery (N1)** (→ BL-13) — sin fecha, campaña propia.
 
 ## Gestión
 
@@ -152,4 +155,5 @@ Desde CK-11 ("nacemos ordenados"):
   (SSoT, columnas por subsistema; vista humana [`proyecto/BACKLOG.md`](./proyecto/BACKLOG.md)).
 - **Decisiones** — fichas `CK-NN` en el [`LEDGER.md`](./LEDGER.md) de este repo (continúa la
   numeración de la célula original — CK-10 en adelante).
-- **Capabilities funcionales** — [`docs/INCREMENT.md`](./docs/INCREMENT.md) (solo lo verificado).
+- **Capabilities funcionales** — Product Increment en [`docs/increment.yaml`](./docs/increment.yaml)
+  (SSoT, `CAP-NN`; vista humana [`docs/INCREMENT.md`](./docs/INCREMENT.md)) — solo lo verificado.

@@ -97,6 +97,14 @@ PROCESS-AS-DATA,proceso/}`, refs `service/methodology/*` reescritas); **reorgani
   jamás divergen); disciplina cableada en `CLAUDE.md` y `proyecto/README.md`.
 - **Migración de servicio = copiar ya, destilar en el camino** (BL-07 queda `en-curso`).
 
+*Addendum (misma sesión, v2):* el operador pidió cerrar dos huecos de la propia CK-11 — (1)
+**única fuente de la verdad del pendiente**: VISION §TBD desduplicado (ahora apunta a BL-NN, el
+detalle vive solo en el backlog; los "Siguiente:" de fichas quedan como narrativa histórica,
+regla escrita en el header de backlog.yaml y en CLAUDE.md); (2) **Product Increment as-code**:
+`docs/increment.yaml` (SSoT, CAP-01..CAP-06, cada capability cableada a los componentes
+`estado: activo` de arquitectura.yaml) + `INCREMENT.md` degradado a vista humana — mismo patrón
+SSoT-yaml/vista-md que el backlog.
+
 **Deudas declaradas:**
 - Research sin destilar del todo — mezcla narrativa de campaña con salidas de sistema (BL-07).
 - `NODOS.md` sigue reflejando estados pre-Stage-4 en varias fichas de nodo (p.ej. contrato de

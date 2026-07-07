@@ -6,9 +6,11 @@
 # actualiza en el mismo evento, jamás divergen.
 #
 # DISCIPLINA ("nacemos ordenados", CK-11):
+# - Este archivo es la ÚNICA fuente de la verdad del pendiente. Los "Siguiente:" de fichas del
+#   LEDGER y el §TBD de VISION son narrativa/contexto — apuntan a ítems BL-NN, no los duplican.
 # - Idea/necesidad nueva → entra aquí PRIMERO (estado: pendiente). Se construye después.
 # - Tomar trabajo → estado: en-curso. Terminado Y verificado → estado: hecho; si es capability
-#   funcional, entrada en docs/INCREMENT.md en el mismo evento.
+#   funcional, entrada CAP-NN en docs/increment.yaml (+ vista INCREMENT.md) en el mismo evento.
 # - Decisión de alcance/arquitectura/visión → ficha CK-NN en LEDGER.md; el ítem la referencia.
 # - La PRIORIDAD la firma el operador. Las de abajo son propuesta inicial (auditoría CK-11).
 
