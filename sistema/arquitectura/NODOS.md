@@ -5,7 +5,7 @@
 > antes de bajar a funcionalidades. Insumo para volver al diseño de servicio (backstage/endpoints) con
 > los límites ya claros.
 > **Docs base:** [`ARCHITECTURE.md`](./ARCHITECTURE.md) · `PRODUCT-VISION.md` (legacy `prenter-harness/tooling/strategy/`) · [`METODOLOGIA.md`](../metodo/METODOLOGIA.md)
-> **Última actualización:** 2026-07-02 — corregido post-I-69: N5 predataba la partición en células P1(Cockpit)/P2(DevHub) y describía "el Cockpit completo" como un solo binario. **N5 ahora = DevHub/Delivery (P2) exclusivamente; N13 (nuevo) = Cockpit/Vista-Negocio (P1).** Ver `I-74`/`CK-07` (`products/cockpit/LEDGER.md`) — dos binarios independientes, DevHub llega a Cockpit vía contrato de datos, no import de código.
+> **Última actualización:** 2026-07-07 (**CK-14**, cierra BL-03) — arquitectura terminada: **N14 · App del Auditor** incorporada al mapa (nueva responsabilidad R16/R17); estados post-Stage-4 corregidos en N5/N13 (CK-07 **ejecutado** — dos binarios independientes, andamiaje desmontado; contrato de datos **diseñado** en CK-08, sin código; `/api/objeto` CK-12/CK-13); `despliegue.html` portado del legacy y actualizado. Histórico 2026-07-02: post-I-69, N5 quedó acotado a DevHub/Delivery (P2) y nació N13 = Cockpit/Vista-Negocio (P1) — ver `I-74`/`CK-07`.
 
 ---
 
@@ -39,20 +39,21 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 | **N6** | Repo del cliente | Data | artefacto/dato | existe | ★datos |
 | **N7** | Agentes de análisis / levantamiento | Data | agente efímero | no-construido | — |
 | **N12** | Depósito de fuentes (landing zone) | Data | artefacto/dato | no-construido | ★datos |
-| **N13** | Cockpit — Vista Negocio (server Go + UI embebida, propio) | Data | servicio/exec-env | existe (parcial) | — |
+| **N13** | Cockpit — Vista Negocio (binario `directorio`, propio) | Data | servicio/exec-env | existe | — |
 | **N8** | Runtime de Delivery (Claude Code) | Edge (laptop) | runtime edge | existe | — |
+| **N14** | App del Auditor (app instalable del Consultor) | Edge (máquina del consultor) | runtime edge / exec-env | no-construido | ★IP |
 | **N9** | Consultor | Edge | actor | existe | — |
 | **N10** | Developer | Edge | actor | existe | — |
 | **N11** | CEO / sponsor | Edge (thin) | actor | existe | — |
 
 ---
 
-## Responsabilidades del sistema — R1–R15 (el responsibility-walk)
+## Responsabilidades del sistema — R1–R17 (el responsibility-walk)
 
 > El flujo de la data **objetivo → producción**, una responsabilidad por eslabón, con su nodo dueño.
 > Es **cómo se asignó cada nodo** (recorrer el flujo, no ir nodo-por-nodo). Cada `[R#]` en las fichas
 > de abajo **resuelve a esta tabla** (lo valida `scripts/validate_schema.py`, ref-check — no más punteros
-> colgantes). Etapas: E1 = Levantamiento (M1) · E2 = Ejecución (M3).
+> colgantes). Etapas: E1 = Levantamiento (M1) · E2 = Ejecución (M3) · E3 = Mantenimiento (M2).
 
 | R | Responsabilidad | Nodo(s) dueño | Etapa |
 |---|---|---|---|
@@ -71,6 +72,8 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 | **R13** | Discovery: guiar el diseño de la solución → spec | N1 | E2 |
 | **R14** | Producir el SPEC "comidito" + despacharlo al data plane | N1 | E2 |
 | **R15** | Construir historias → tests → producción | N8/N10 | E2 |
+| **R16** | Operar el método del engagement (m1 levantamiento · m2 mantenimiento · m3 espinazo) como flujo con carriles/provenance | N14 | E1/E3 |
+| **R17** | Publicar el resultado (procesos/roles/objetivos/personas) al repo del cliente — "deploy de procesos" | N14→N6 | E1/E3 |
 
 ---
 
@@ -159,23 +162,23 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 
 ## N5 · DevHub — Delivery (server Go + UI embebida)
 
-> ⚠ **Corregido 2026-07-02 (I-74/CK-07):** esta ficha predataba I-69 (partición P1 Cockpit / P2 DevHub) y describía "el Cockpit completo" (Delivery + Vista CEO) como un binario único. Vista Negocio/CEO ahora es **N13** (binario propio de Cockpit) — DevHub llega a Cockpit como fuente de datos vía contrato explícito (a diseñar, CK-07), no como el mismo proceso. N5 queda acotado a Delivery.
+> ⚠ **Corregido 2026-07-02 (I-74/CK-07):** esta ficha predataba I-69 (partición P1 Cockpit / P2 DevHub) y describía "el Cockpit completo" (Delivery + Vista CEO) como un binario único. Vista Negocio/CEO ahora es **N13** (binario propio de Cockpit) — DevHub llega a Cockpit como fuente de datos vía contrato explícito (diseñado en CK-08, sin código — BL-18), no como el mismo proceso. N5 queda acotado a Delivery. DevHub graduado a repo propio; esta ficha se mantiene por el mapa de ecosistema, su evolución se gobierna en el ledger DH-NN.
 
 - **objetivo** — Un binario Go que se "dropa" en la red del cliente y sirve **Delivery** (tablero SDD 10 estados, mapa de capabilities, roadmap, releases — vistas que varían **por ROL**: CTO ve/edita todo, developer una rebanada), leyendo el repo git (N6) como SSoT y reflejando cambios en tiempo real. Cero npm/python/Docker en el cliente.
-- **resumen** — HTTP server `net/http` que: embebe la SPA (`go:embed`), expone APIs JSON que leen/escriben el repo, y corre un watcher (`fsnotify`) que hace push por SSE a los navegadores. Módulo Go `cockpit` (P1, `products/cockpit/go`) hoy vive embebido aquí vía `require`+`replace` (CK-05) — **a desmontar en Stage 4** (CK-07) hacia el contrato de datos con N13.
+- **resumen** — HTTP server `net/http` que: embebe la SPA (`go:embed`), expone APIs JSON que leen/escriben el repo, y corre un watcher (`fsnotify`) que hace push por SSE a los navegadores. El módulo Go de Cockpit que vivía embebido aquí vía `require`+`replace` (CK-05) fue **desmontado en Stage 4 (CK-07, ejecutado)** — hoy son binarios independientes; DevHub graduado a repo propio (`~/Proyectos/devhub`, ledger DH-NN).
 - **plano · tipo · madurez** — Data · servicio/exec-env · **existe (parcial)**. Binario Go funcional; fsnotify+SSE implementados. **Corrección de premisa: SQLite NO existe hoy** — el binario lee el filesystem directo en cada request. Deuda Go/Next confirmada (abajo). Vistas por-rol: NO construidas (hoy sin auth, todo visible) — trabajo propio de P2, independiente de la extracción de N13.
 - **responsabilidades** — Servir la SPA embebida con fallback de client-side routing · API JSON de Delivery (stories/capabilities/releases/roadmap) · watcher filesystem → SSE en tiempo real (ya existe: debounce 200ms, docType, filtro por brand) · (futuro) proyección SQLite reconstruible · (futuro) resolución de vista por ROL.
 - **no_objetivos** — NO es el SSoT (lo es N6; su DB es desechable) · NO multi-tenant hyperscale (1 PyME/despliegue) · NO hace SSR/SEO (herramienta interna tras login → SPA pura) · NO orquesta agentes (lee/escribe el mismo repo) · NO sirve la Vista Negocio/CEO (eso es N13, aplicación separada).
 - **stack** — `net/http` stdlib (basta a esta escala; chi/gin sería gold-plating) · `go:embed all:ui` + fallback SPA · `fsnotify` v1.8 (no recursivo → camina subdirs) · **SSE** (no WebSocket: unidireccional server→cliente, reconexión automática, atraviesa proxies; añadir keep-alive `:ping` cada ~25s + cleanup vía `r.Context().Done()`) · **proyección: SQLite con `modernc.org/sqlite` (pure-Go, sin cgo)** para preservar el single-binary y cross-compile (cgo rompe Alpine/cross/`-race`); `journal_mode=WAL` + `busy_timeout`; DB 100% derivada → si falta/corrupta/cambió versión, se reproyecta recorriendo el repo. Introducir "cuando duela" (agregaciones de roadmap/coverage), no antes.
-- **expone** — HTTP/JSON ~24 rutas (paridad con las `route.ts`): `/api/stories`, `/api/capabilities/*`, `/api/releases`, `/api/transition`, `/api/system-map`, `/api/value-stream`, `/api/file`, `/api/open`, etc. · **(a diseñar, CK-07) el contrato de datos que N13 consumirá** — capabilities/sistemas/estado del tablero, versionado. · SSE: `GET /api/watch?brand=…` · estáticos SPA shell + assets.
+- **expone** — HTTP/JSON ~24 rutas (paridad con las `route.ts`): `/api/stories`, `/api/capabilities/*`, `/api/releases`, `/api/transition`, `/api/system-map`, `/api/value-stream`, `/api/file`, `/api/open`, etc. · **el contrato de datos que N13 consumirá — DISEÑADO (CK-08), sin implementar:** `GET /api/contrato/directorio?sistema=…`, envelope `{contract_version, data}`, auth mismo-host + bearer token LAN; gatillo = primer consumidor real (BL-18). · SSE: `GET /api/watch?brand=…` · estáticos SPA shell + assets.
 - **estado + persistencia** — Verdad: archivos en N6 (lectura/escritura al filesystem). Derivado (futuro): SQLite WAL local, reconstruible, desechable. Memoria: clientes SSE, caché de workspace root, brands.
 - **escala + disponibilidad** — 1 empresa, 3-30 devs, decenas-cientos de historias, pocos concurrentes. Proceso único con daemon (ya hay `daemon_unix/windows.go` + PID files); crash → restart sin estado que perder. **Sobreingeniería a evitar:** réplicas, LB, Redis pub/sub, colas, K8s.
 - **integraciones_externas** — `git` (resuelve root vía `git rev-parse`) · editor del SO (`/api/open`).
 - **seguridad** — Vive en la red del cliente. Riesgo: server con lectura/escritura al filesystem. **Endurecer:** validar/normalizar paths (`filepath.Clean` + verificar dentro de `WORKSPACE_ROOT`) en `/api/file` y `/api/open` (anti path-traversal); bind por defecto a `127.0.0.1`; si se expone en LAN, token simple. **Pendiente (P2):** auth/permisos por rol (CTO vs developer) — hoy no existe.
-- **comunicacion** — Request/response JSON (CRUD) · SSE (server→cliente) · fsnotify (eventos internos) · **(futuro) el contrato de datos hacia N13** — dirección/mecanismo (N13 jala vía API, o N5 exporta) a diseñar en Stage 4.
+- **comunicacion** — Request/response JSON (CRUD) · SSE (server→cliente) · fsnotify (eventos internos) · **el contrato de datos hacia N13** — Pull API en vivo (N13 jala), diseñado en CK-08, sin código todavía.
 - **depende_de / consumido_por** — depende_de: N6, `git`, filesystem. consumido_por: navegadores de devs/operadores (Delivery, por rol) · **N13** (jala datos de capabilities/sistemas, futuro).
 - **🔧 RECOMENDACIÓN (deuda Go/Next)** — **Matar el doble backend. Migrar la UI de Next.js static-export → SPA pura con Vite + React 19 + React Router, embebida con `go:embed`. Go queda como único backend.** Razones: hoy `build-ui.sh` esconde `app/api` en `.api-stash` porque `output:'export'` prohíbe API routes → mantienes ~24 `route.ts` (dev) + 10 handlers Go (prod) "sin sync"; la regla "lo que no corre en el binario Go no cuenta" ya hace muertas las `route.ts` en prod; DevHub es el caso de libro de Vite SPA (interna, tras login, sin SSR). **Plan:** Vite+React 19+Router reusando componentes (Tailwind 4 se mantiene) → dev con `vite` proxy `/api`→`:4000` (un solo backend desde día 1) → borrar `devhub/ui/app/api/**` → simplificar `build-ui.sh` (`vite build` → `cp dist`) → handler embed con fallback SPA estándar. *Auditar las 24 `route.ts` vs los 10 handlers Go antes de borrar.* Misma deuda existe en paralelo en N13 (hereda el mismo patrón Next static-export) — resolución independiente, mismo playbook.
-- **riesgos_abiertos** — Migración Next→Vite (re-cablear routing/data-fetch; auditar paridad antes de borrar) · SQLite (disparador de rebuild por versión de esquema; invalidación incremental consistente) · SSE (falta keep-alive/ping + re-watch robusto de dirs nuevos) · path traversal (ver seguridad) · **contrato de datos hacia N13 sin diseñar todavía** (CK-07) · vistas por-rol sin auth (P2, abierto).
+- **riesgos_abiertos** — Migración Next→Vite (re-cablear routing/data-fetch; auditar paridad antes de borrar) · SQLite (disparador de rebuild por versión de esquema; invalidación incremental consistente) · SSE (falta keep-alive/ping + re-watch robusto de dirs nuevos) · path traversal (ver seguridad) · **contrato de datos hacia N13 diseñado (CK-08) pero sin implementar** — se cablea con el primer consumidor real (BL-18) · vistas por-rol sin auth (P2, abierto).
 - **fuentes** — [SPA en binario Go](https://dev.to/aryaprakasa/serving-single-page-application-in-a-single-binary-file-with-go-12ij) · [SQLite WAL](https://sqlite.org/wal.html) · [pure-Go SQLite](https://github.com/gogs/gogs/issues/7882) · [Vite vs Next 2026](https://techsy.io/en/blog/nextjs-vs-react-vite)
 
 ---
@@ -191,7 +194,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **propietario + clasificacion** — Cliente (la PyME). El consultor/agente escribe, el cliente posee. ★ datos del cliente, confidencial, **nunca sale de su red**.
 - **residencia + retencion** — Red/infra del cliente (su git server, o local-first). Retención indefinida vía historia git (es el valor: trazabilidad objetivo→producción). Sin TTL; el repo ES el archivo histórico.
 - **versionado** — Git (commits, branches, tags, blame, diff). **Límite del patrón:** git degrada con archivos enormes, alta frecuencia de escritura, o merges concurrentes con semántica de fila (ahí brillan Dolt/lakeFS, **innecesarios a esta escala** = sobreingeniería). Para decenas-cientos de historias en md/yaml con equipo 3-30, git plano es el ajuste correcto.
-- **quién_escribe / quién_lee** — Escriben: agentes de levantamiento/diseño (N7: AS-IS, gaps, specs), devs (N10: código + spec), DevHub (N5: transiciones de Delivery), Cockpit (N13: transiciones de Vista Negocio). Leen: N5 y N13 (ambos proyectan), agentes Claude, humanos. **Concurrencia:** mismo archivo por agente+dev+N5+N13 → resolver con git + escrituras atómicas (write-temp-then-rename) en cada binario.
+- **quién_escribe / quién_lee** — Escriben: agentes de levantamiento/diseño (N7: AS-IS, gaps, specs), devs (N10: código + spec), DevHub (N5: transiciones de Delivery), Cockpit (N13: transiciones de Vista Negocio), **App del Auditor (N14: publica procesos/roles/objetivos ratificados — "deploy de procesos" [R17])**. Leen: N5 y N13 (ambos proyectan), agentes Claude, humanos. **Concurrencia:** mismo archivo por agente+dev+N5+N13 → resolver con git + escrituras atómicas (write-temp-then-rename) en cada binario.
 - **comunicacion** — No es servicio: filesystem + protocolo git. N5 lo lee/escribe directo; los agentes como archivos.
 - **depende_de / consumido_por** — depende_de: git, filesystem. consumido_por: N5, agentes Claude (N7/N8), herramientas dev.
 - **riesgos_abiertos** — Escritura concurrente (disciplina de commits + escritura atómica) · drift de formato yaml/frontmatter sin validación (los gates SDD apuntan a esto) · tentación de meter high-churn/binarios (degrada el patrón) · rebuild de la proyección depende de repo parseable → parsing tolerante a errores, no fallo total.
@@ -237,24 +240,24 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 
 ---
 
-## N13 · Cockpit — Vista Negocio (server Go + UI embebida, propio)
+## N13 · Cockpit — Vista Negocio (binario `directorio`, propio)
 
-> Nodo nuevo (2026-07-02, I-74/CK-07) — antes vivía indiferenciado dentro de N5. Es el binario de **P1 Cockpit**: hoy sirve la Vista Negocio/Directorio construida (Stage 1-3, CK-02/05/06); a futuro absorbe el Motor de Discovery (N1) cuando ese se construya — N13 es la mitad *data-plane* de P1, N1 es su mitad *control-plane*, ambas son el mismo producto (P1), no productos distintos.
+> Nodo nuevo (2026-07-02, I-74/CK-07) — antes vivía indiferenciado dentro de N5. Es el binario de **P1 Cockpit**: sirve la Vista Negocio/Directorio construida (Stage 1-4 ejecutados; repo propio `~/Proyectos/cockpit` desde la graduación CK-09/CK-10, 2026-07-06); a futuro absorbe el Motor de Discovery (N1) cuando ese se construya — N13 es la mitad *data-plane* de P1, N1 es su mitad *control-plane*, ambas son el mismo producto (P1), no productos distintos.
 
 - **objetivo** — Binario Go propio que sirve la Vista Negocio/Directorio (Hilo de Oro, Brechas, mapa Empresa→Sistema, roles Directorio·Área·Consultor) al CEO/directorio en la red del cliente, con mantenimiento de datos propio de organización/áreas/procesos — independiente del binario de Delivery (N5). Cero npm/python/Docker en el cliente (mismo principio que N5).
-- **resumen** — Hoy: el módulo `products/cockpit/go` (`package cockpit`, `Deps` struct, CK-05) + la UI `products/cockpit/ui` (`CockpitShell`/`NegocioView`, CK-06) — código YA escrito, pero embebido dentro del binario `cockpit` de N5/DevHub vía `require`+`replace`. Stage 4 (CK-07) le da su propio `cmd/` + launcher + puerto, y reemplaza el import de Go por un contrato de datos explícito hacia N5.
-- **plano · tipo · madurez** — Data · servicio/exec-env · **existe (parcial), embebido en N5** — código construido (CK-02/05/06), runtime propio NO construido (Stage 4, CK-07 — pendiente).
-- **responsabilidades** — Servir la SPA embebida (misma técnica que N5: `go:embed` + fallback SPA) · API JSON de Vista Negocio (`/api/portfolio`, `/api/negocio` — contrato ya vigente desde CK-05, dueño = esta célula) · **(futuro, Stage 4)** consumir el contrato de datos de N5 (capabilities/sistemas/estado del tablero de Delivery) en vez de leerlo vía import de Go · **(futuro, campaña aparte)** absorber el Motor de Discovery (N1: ingesta multi-fuente, As-Is/To-Be, gaps) como su propio backend de razonamiento.
+- **resumen** — Binario `directorio` (`go/cmd/directorio`, puerto 4100 por defecto): `package cockpit` (handlers, CK-05/CK-12/CK-13) + UI propia (`CockpitShell`/`NegocioView`, CK-06) embebida como export estático vía `go:embed`. El andamiaje transicional que lo ataba a N5 (`Deps` struct, route-group adapter, alias npm, symlink) quedó **desmontado en Stage 4 (CK-07, ejecutado)**; código migrado y verificado standalone en el repo propio (CK-10).
+- **plano · tipo · madurez** — Data · servicio/exec-env · **existe** — Vista Negocio construida y verificada standalone (Go build/vet/test + UI tsc/vitest/export estático); lo no-construido de P1 (Motor de Discovery) es N1, nodo aparte.
+- **responsabilidades** — Servir la SPA embebida (misma técnica que N5: `go:embed` + fallback SPA) · API JSON de Vista Negocio (`/api/portfolio`, `/api/negocio`, `/api/objeto` — contratos vigentes, dueño = esta célula) · leer y validar el **objeto normalizado completo** (9 entidades de `objeto.schema`, CK-13) · **(futuro)** consumir el contrato de datos de N5 (capabilities/sistemas/estado del tablero de Delivery) cuando haya consumidor real (BL-18) · **(futuro, campaña aparte)** absorber el Motor de Discovery (N1: ingesta multi-fuente, As-Is/To-Be, gaps) como su propio backend de razonamiento (BL-13).
 - **no_objetivos** — NO sirve Delivery (tablero SDD/capabilities/releases — eso es N5, aplicación separada) · NO es el SSoT de datos de DevHub (los consume, no los posee) · NO multiplexa Claude Code (si/cuando construya N1, hereda las mismas restricciones de N1: API frontier, no suscripción).
-- **stack** — Misma resolución que N5 (mismo linaje de código, CK-05/06): `net/http` stdlib · `go:embed all:ui` + fallback SPA · Next.js static-export hoy (misma deuda Go/Next que N5, resolución independiente vía el mismo playbook Vite). **(futuro)** proyección propia si la Vista Negocio necesita agregaciones (roll-up de OKRs por área) — introducir cuando duela, no antes.
-- **expone** — HTTP/JSON: `/api/portfolio` (árbol Empresa→Sistema), `/api/negocio` (Hilo de Oro + Brechas) — contrato ya vigente (CK-05) · estáticos SPA (`CockpitShell`) · **(a diseñar, Stage 4)** el lado consumidor del contrato de datos de N5.
-- **estado + persistencia** — Verdad: repo git (N6, mismo patrón que N5) + lo que N5 exponga vía el contrato de datos (futuro). Sin DB propia hoy.
-- **escala + disponibilidad** — Misma escala que N5 (1 empresa/despliegue). Proceso único; **sin daemon propio todavía** (hereda el de N5 hasta Stage 4).
+- **stack** — Misma resolución que N5 (mismo linaje de código, CK-05/06): `net/http` stdlib · `go:embed all:ui` + fallback SPA · Next.js static-export hoy (misma deuda Go/Next que N5, resolución independiente vía el mismo playbook Vite — BL-20). **(futuro)** proyección propia si la Vista Negocio necesita agregaciones (roll-up de OKRs por área) — introducir cuando duela, no antes.
+- **expone** — HTTP/JSON: `/api/portfolio` (árbol Empresa→Sistema, CK-05), `/api/negocio` (Hilo de Oro + Brechas, CK-05), `/api/objeto` (el objeto normalizado completo — 9 entidades validadas juntas, CK-12/CK-13) · estáticos SPA (`CockpitShell`) · **(futuro)** el lado consumidor del contrato de datos de N5 (`devhubclient.go`, BL-18).
+- **estado + persistencia** — Verdad: repo git (N6, mismo patrón que N5; instancias del objeto en `empresa/<tipo>/` del shell — D-15) + lo que N5 exponga vía el contrato de datos (futuro). Sin DB propia hoy.
+- **escala + disponibilidad** — Misma escala que N5 (1 empresa/despliegue). Proceso único, launcher propio (`directorio -workspace … -port 4100`); crash → restart sin estado que perder.
 - **integraciones_externas** — `git` (resuelve root, mismo patrón que N5) · N5 (contrato de datos, futuro) · N1 (cuando exista, mismo producto P1).
-- **seguridad** — Vive en la red del cliente, mismo perímetro que N5. Superficie nueva a evaluar en Stage 4: el contrato de datos hacia N5 (¿mismo proceso/host, o red? define si aplica auth).
-- **comunicacion** — Hoy: llamada de función in-process (`Deps`, CK-05) — cero red, cero serialización. **Objetivo (Stage 4):** contrato de datos explícito con N5 (API que N13 consume, o export versionado) — mecanismo exacto a diseñar en Plan mode.
-- **depende_de / consumido_por** — depende_de: N6 (repo) · N5 (datos de Delivery, futuro) · N1 (razonamiento, cuando exista). consumido_por: **N11** (CEO/sponsor, Vista Negocio) · **N9** (Consultor, vista consultor).
-- **riesgos_abiertos** — (1) El contrato de datos con N5 sin diseñar — mecanismo (pull API vs export), formato, versionado, autenticación si cruza red (CK-07, siguiente). (2) Migración fuera de `Deps`/require-replace sin romper `/api/portfolio`+`/api/negocio` en vivo (Strangler Fig — CK-05 sigue funcionando mientras se construye el reemplazo). (3) Deuda Go/Next propia (ver nota en N5). (4) Cuándo/si absorbe N1 — campaña aparte, sin fecha.
+- **seguridad** — Vive en la red del cliente, mismo perímetro que N5. El contrato de datos hacia N5 ya resolvió su auth en diseño (CK-08): mismo-host por default, bearer token (`DIRECTORIO_FEED_TOKEN`) si cruza LAN.
+- **comunicacion** — Binario independiente — cero import de código de/hacia N5 (el in-process `Deps` de CK-05 fue transicional, desmontado). **Contrato de datos con N5: DISEÑADO (CK-08)** — Pull API en vivo, `GET /api/contrato/directorio?sistema=…`, envelope `{contract_version, data}`; **sin código** hasta el primer consumidor real (BL-18, disciplina anti-código-especulativo).
+- **depende_de / consumido_por** — depende_de: N6 (repo) · N5 (datos de Delivery, futuro) · N1 (razonamiento, cuando exista). consumido_por: **N11** (CEO/sponsor, Vista Negocio) · **N9** (Consultor, vista consultor) · **N14** (App del Auditor: lo que publica al repo, N13 lo renderiza).
+- **riesgos_abiertos** — (1) Contrato de datos con N5 diseñado pero sin implementar — validarlo contra el primer consumidor real (BL-18). (2) Deuda Go/Next propia (ver nota en N5; BL-20). (3) Cuándo/si absorbe N1 — campaña aparte, sin fecha (BL-13). (4) Sin auth/roles reales todavía (BL-12) — gate para despliegue multi-usuario.
 - **fuentes** — Mismas que N5 (SPA en binario Go, Vite vs Next) · Strangler Fig (Fowler, vía CK-07) · Bounded Context/Conway's Law (vía I-74).
 
 ---
@@ -279,14 +282,36 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 
 ---
 
+## N14 · App del Auditor — aplicación instalable del Consultor ★IP
+
+> Nodo nuevo (2026-07-07, CK-11/CK-14) — el subsistema declarado en CK-11 ("App del Auditor"),
+> incorporado al mapa de despliegue al terminar la arquitectura (BL-03). Definición de producto
+> pendiente (BL-15) — esta ficha fija los **límites arquitectónicos** que esa definición debe respetar.
+
+- **objetivo** — Darle al Consultor (N9) su herramienta de trabajo propia: una aplicación **instalable en su máquina** (patrón harness-studio/dev-studio) que **opera el método del servicio** (`sistema/metodo/proceso/` — m1 levantamiento · m2 mantenimiento · m3 espinazo) durante el engagement y **publica el resultado al repositorio de la empresa cliente (N6)** — "deploy de procesos": como un programador que carga código a producción, pero el artefacto son procesos/roles/objetivos/personas que Cockpit (N13) entiende y renderiza.
+- **resumen** — El "IDE del auditor": el proceso-como-dato de `sistema/metodo/proceso/` ejecutable como flujo operable (carriles consultor/cliente/sistema, provenance por dato, AS-IS sellado) + publicación git al repo del cliente. Método **embebido en la app** (CK-11: "las cosas de servicio estarán embebidas en la aplicación del auditor").
+- **plano · tipo · madurez** — Edge (máquina del consultor) · runtime edge / exec-env (app instalable) · **no-construido** (declarada CK-11; producto por definir — BL-15).
+- **responsabilidades** — Embeber el método como flujo operable: guiar el engagement paso a paso, carriles por actor, provenance de cada dato, AS-IS sellado **[R16]** (BL-16) · producir/editar las instancias del **objeto normalizado** (`objeto.schema`, 9 entidades — el formato que N13 valida y renderiza) · **publicar** procesos/roles/objetivos ratificados al repo del cliente (N6) vía git — commits revisables, "deploy de procesos" **[R17]** (BL-17) · ser la superficie del consultor para las operaciones de levantamiento que hoy son manuales (depositar crudo en N12 **[R2]**, operar/validar N7 **[R7]/[R10]**) cuando el Motor (N1) exista.
+- **no_objetivos** — NO publica el MÉTODO al cliente — solo el resultado: cruza el QUÉ, jamás el CÓMO (mismo límite de IP que N2/N7) · NO es multi-usuario/SaaS (una instalación por consultor, como N8 es una suscripción por dev) · NO reemplaza a N1 (la app opera y edita; el razonamiento server-side multi-tenant es N1) · NO renderiza la Vista Negocio (eso es N13 — la app produce lo que N13 muestra) · NO retiene crudo del cliente en la máquina del consultor (el crudo aterriza en N12, mismo límite que N9).
+- **runtime + licencia** — App local instalable (patrón harness-studio/dev-studio, P4 del ecosistema). Stack por decidir en BL-15. Si incorpora agentes LLM: interactivo bajo la suscripción del consultor firmado (reglas de N8) o API key comercial si algo corre desatendido — hereda la doctrina ToS del sistema, decisión exacta en BL-15.
+- **qué_construye / contra_qué** — Construye/edita instancias del objeto normalizado (`empresa/<tipo>/` del shell, D-15) + artefactos del método (actas, AS-IS sellado, provenance); contra el repo del cliente (N6), vía git.
+- **local_vs_remoto** — Local: la app, el método embebido, el trabajo en curso del engagement. Remoto: el repo del cliente (push git) · (futuro) N1 para razonamiento server-side · (futuro) canal de actualización de la app (¿N3? — abierto).
+- **seguridad** — El método embebido viaja en la app del consultor (persona nuestra, perímetro nuestro) — NO queda en infra del cliente; al cliente solo llegan commits con el resultado. Credenciales git least-privilege contra N6. Crudo del cliente fuera de la app (va a N12). Actualización de la app firmada (si se distribuye vía N3, hereda TUF).
+- **comunicacion** — App → N6: git (push de procesos/roles/objetivos — el "deploy"). App → N12: depósito de crudo (operación de N9). App ↔ N1: HTTPS (futuro, cuando N1 exista). App → N3: pull de releases (futuro, si se distribuye por ahí).
+- **depende_de / consumido_por** — depende_de: `sistema/metodo/` (embebido en build — el repo Cockpit es su fuente), N6 (destino del deploy), N1 (futuro, razonamiento). consumido_por: **N9** (su único operador) · aguas abajo **N13** (renderiza lo publicado) y el cliente (procesos vivos en su repo).
+- **riesgos_abiertos** — (1) Definición de producto sin arrancar — alcance/stack/patrón exacto (BL-15). (2) Cadencia de actualización del método embebido: ¿la app se actualiza vía N3 como los binarios del data plane, o por reinstalación? (3) Frontera con N1: qué opera la app localmente vs qué razona el motor server-side — se resuelve al diseñar ambos. (4) Modelo de publicación al repo cliente: ¿push directo o PR con review del cliente? (BL-17). (5) Método embebido en app instalable = más expuesto que en control plane — dimensionar cuánto método baja al binario vs se sirve en runtime (espejo del riesgo de granularidad de N1/N2).
+- **fuentes** — CK-11 (declaración del subsistema) · BL-15..BL-17 (backlog) · patrón harness-studio/dev-studio (P4, `~/Proyectos/harness-studio`).
+
+---
+
 ## N9 · Consultor — actor
 
 - **objetivo_del_actor** — Conducir el levantamiento y el diseño del spec; operar el Discovery desde el control plane. Lleva el método al cliente.
 - **resumen** — El experto (Prenter) que opera Discovery + levantamiento.
 - **plano · tipo · madurez** — Edge (su máquina) · actor · existe.
 - **responsabilidades / no_objetivos** — **Recolecta y cura las fuentes crudas** (correo/USB/empresa) → las deposita en **N12 [R2]** · **opera** N7 (dispara el procesamiento y lo supervisa) **sin que el crudo toque su laptop** (lo corre en la máquina del data plane) **[R7]** · **valida y corrige** el mapa que produce N7 · **ratifica** el AS-IS y el SPEC **[R10]** · conduce/acompaña las entrevistas (la voz la pone N4) · aporta contexto político/estratégico. **NO procesa él mismo** (procesa N7; él opera y valida) · NO construye (N10) · NO posee los datos (del cliente).
-- **permisos / RACI** — Máxima autoridad del **método** (A/R en Discovery/levantamiento). Opera N1, N4 y N7; deposita en N12.
-- **interfaces_que_usa** — N1 (Discovery), N4 (entrevistas), **N7 (lo opera)**, **N12 (deposita el crudo)**, **N13** (Cockpit, vista consultor).
+- **permisos / RACI** — Máxima autoridad del **método** (A/R en Discovery/levantamiento). Opera N1, N4 y N7; deposita en N12; **su herramienta propia es N14** (App del Auditor — opera el método y publica el resultado [R16]/[R17]).
+- **interfaces_que_usa** — **N14 (App del Auditor — su aplicación propia, futura)**, N1 (Discovery), N4 (entrevistas), **N7 (lo opera)**, **N12 (deposita el crudo)**, **N13** (Cockpit, vista consultor).
 - **momentos** — Etapa 1 (levantamiento) + Etapa 2 (Discovery).
 - **comunicacion** — HTTPS al control plane.
 - **riesgos_abiertos** — Dependencia del consultor experto = límite de escala; el producto busca reducirla con el **método como dato** (N2) — cuánto se logra es una pregunta abierta del modelo de negocio.
@@ -326,7 +351,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 Las fichas no son solo docs: permiten verificar las 3 decisiones de arquitectura ya tomadas.
 
 ### 1 · IP protegida ← `clasificacion_dato` + `residencia_retencion` + `plano`
-✅ Coherente. El ★IP (N1, N2) vive solo en el control plane y se **inyecta efímero** a N7 (memoria/tmpfs, destruido al teardown). Ningún nodo del data plane tiene `clasificacion=IP-nuestra` con `retencion=persiste`.
+✅ Coherente. El ★IP (N1, N2) vive solo en el control plane y se **inyecta efímero** a N7 (memoria/tmpfs, destruido al teardown). Ningún nodo del data plane tiene `clasificacion=IP-nuestra` con `retencion=persiste`. **N14 (nuevo, CK-14) no rompe el chequeo:** el método embebido reside en la máquina del consultor (persona nuestra, plano edge — no infra del cliente); al repo del cliente (N6) solo cruza el **resultado** (procesos/roles/objetivos), nunca el método [R17]. Riesgo residual documentado en su ficha (cuánto método baja al binario instalable — espejo de la granularidad N1/N2).
 
 ### 2 · BYOC (el dato no sale) ← `plano` + `comunicacion`
 ✅ Coherente en el camino del dato persistente. Toda comunicación cliente↔nosotros es **outbound del cliente / PULL** (N3 releases+telemetría, N1 despacho, N4 webhook→pull). El control plane nunca disca a la red del cliente; ningún arco control→data está en el camino del dato.
@@ -385,11 +410,16 @@ NO traer el dato a equipo/bases nuestras: **operar dentro del entorno del client
 
 ---
 
-# Pendientes consolidados (orden sugerido)
+# Pendientes consolidados (narrativa de arquitectura — el tracking vive en el backlog)
+
+> **Disciplina (CK-11/CK-14):** el pendiente de Cockpit se trackea en `proyecto/backlog.yaml` (BL-NN),
+> única fuente de la verdad. Esta lista queda como narrativa del ecosistema: qué está decidido, qué
+> sigue abierto y dónde se trackea. Lo que es de DevHub (P2) se gobierna en su repo/ledger (DH-NN).
 
 1. ✅ **Decidido (2026-06-21):** "datos no persisten, transitan" (zero-retention + minimización; Claude frontier). LLM on-premise = opción futura, no ahora.
-2. **Contrato del handoff Discovery→Delivery (el SPEC "comidito")** — qué cruza exactamente del control plane al data plane (gaps priorizados → spec ratificado → backlog); donde la protección de IP se vuelve tangible (granularidad del despacho de N1/N2).
-3. **Resolver la deuda Go/Next de N5 y N13** (matar el doble backend → Vite SPA + Go único, mismo playbook en ambos binarios, independiente uno del otro). Decidir antes de construir vistas nuevas.
-4. **¿El developer (N10) es del cliente o nuestro?** — define modelo de entrega + quién paga N8.
+2. **Contrato del handoff Discovery→Delivery (el SPEC "comidito")** — qué cruza exactamente del control plane al data plane (gaps priorizados → spec ratificado → backlog); donde la protección de IP se vuelve tangible (granularidad del despacho de N1/N2). Se resuelve al diseñar N1 (BL-13).
+3. **Resolver la deuda Go/Next de N5 y N13** (matar el doble backend → Vite SPA + Go único, mismo playbook en ambos binarios, independiente uno del otro). Decidir antes de construir vistas nuevas. Lado Cockpit (N13) = **BL-20**; lado DevHub (N5) se gobierna en su repo.
+4. **¿El developer (N10) es del cliente o nuestro?** — define modelo de entrega + quién paga N8. Decisión de modelo de negocio, sin BL (no es trabajo de sistema todavía).
 5. **Diferidos:** SQLite en N5/N13 (cuando el roadmap/OKR-rollup duela) · voz en N4 (v2, tras texto-primero) · modo Etapa-1 vs Etapa-2 del plano conversación.
-6. **✅ Decidido (2026-07-02, I-74/CK-07):** N5 (DevHub/Delivery) y N13 (Cockpit/Vista-Negocio) son binarios independientes — el runtime único de antes era transicional (Stage 1-3), no destino. **Pendiente:** diseñar el contrato de datos N5→N13 (mecanismo, formato, versionado) — Plan mode, próxima sesión de célula.
+6. **✅ Decidido (2026-07-02 → 2026-07-06, I-74/CK-07/CK-08):** N5 (DevHub/Delivery) y N13 (Cockpit/Vista-Negocio) son binarios independientes — Stage 4 **ejecutado**, andamiaje transicional desmontado. El contrato de datos N5→N13 quedó **diseñado** (CK-08: Pull API, envelope `{contract_version, data}`); implementación diferida al primer consumidor real (**BL-18**).
+7. **Definir la App del Auditor (N14)** — alcance, stack, cómo embebe el método, modelo de publicación al repo cliente (**BL-15 · BL-16 · BL-17**). Los límites arquitectónicos ya están fijados en su ficha.

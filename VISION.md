@@ -96,7 +96,7 @@ Heredado de CK-07/CK-08 (Stage 4, ejecutado) y ampliado por CK-11 — ver
   detallado (stack candidato, endpoints, riesgos abiertos) heredado en
   `sistema/arquitectura/NODOS.md#n1`. Campaña propia, sin fecha — sigue siendo Cockpit, no un
   producto aparte.
-- **App del Auditor (declarada CK-11, sin construir)** — la aplicación instalable **propia del
+- **App del Auditor (N14, declarada CK-11, sin construir)** — la aplicación instalable **propia del
   Consultor** (patrón harness-studio/dev-studio): opera el método del servicio
   (`sistema/metodo/` — levantamiento m1, mantenimiento m2, espinazo m3) durante el engagement y
   **publica su resultado al repositorio propio de la empresa cliente** para actualizar el

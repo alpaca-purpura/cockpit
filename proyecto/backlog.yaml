@@ -78,10 +78,14 @@ items:
     detalle: >-
       NODOS.md (13 nodos, BYOC) heredado incompleto — el operador lo declara "falta terminar".
       Incluye incorporar la App del Auditor al mapa de despliegue.
+      CERRADO (CK-14): N14 App del Auditor fichada e incorporada (R16/R17, etapa E3); estados
+      post-Stage-4 corregidos (contrato CK-08 diseñado, N13 = binario directorio + /api/objeto);
+      despliegue.html portado estático y actualizado; ARCHITECTURE/README al día. La deuda
+      Go/Next del lado Cockpit se consolidó como BL-20.
     origen: "operador, sesión CK-11"
     prioridad: alta
-    estado: pendiente
-    fichas: [CK-11]
+    estado: hecho
+    fichas: [CK-11, CK-14]
 
   - id: BL-04
     subsistema: sistema
@@ -191,6 +195,20 @@ items:
     prioridad: media
     estado: pendiente
     fichas: []
+
+  - id: BL-20
+    subsistema: vista-negocio
+    titulo: "Resolver deuda Go/Next de N13 — migrar UI a Vite SPA"
+    detalle: >-
+      Matar el doble backend heredado: Next.js static-export → SPA Vite + React Router embebida
+      con go:embed, Go como único backend (playbook documentado en NODOS.md N5, mismo linaje).
+      Vivía solo como narrativa en NODOS "Pendientes consolidados"; consolidada al backlog en
+      CK-14 (disciplina CK-11). Decidir antes de construir vistas nuevas; conecta con BL-04
+      (design system — misma ventana de re-estilizado).
+    origen: "NODOS.md N13/N5 (deuda heredada) · consolidada en CK-14"
+    prioridad: media
+    estado: pendiente
+    fichas: [CK-14]
 
   # — motor-discovery (N1) —
   - id: BL-13

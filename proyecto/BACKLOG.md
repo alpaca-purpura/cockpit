@@ -7,8 +7,8 @@
 
 | Columna | Pendiente | En curso | Lo más urgente |
 |---|---|---|---|
-| **Sistema (transversal)** | 8 | 1 | BL-03 arquitectura · BL-04 design system |
-| **Vista Negocio (N13)** | 2 | — | BL-11 rol Área · BL-12 auth |
+| **Sistema (transversal)** | 7 | 1 | BL-04 design system · BL-05 poblar método |
+| **Vista Negocio (N13)** | 3 | — | BL-11 rol Área · BL-12 auth |
 | **Motor Discovery (N1 ★IP)** | 2 | — | BL-13 campaña (decidir arranque) |
 | **App del Auditor** | 3 | — | BL-15 definir producto |
 | **Contrato datos DevHub→Cockpit** | 1 | — | BL-18 (gatillo: consumidor real) |
@@ -19,7 +19,7 @@
 |---|---|---|---|
 | BL-01 | Persona/puesto como entidad de primera clase | alta | **hecho** (CK-12 · CAP-07) |
 | BL-02 | Reconciliar objeto.schema (9 entidades) ↔ negocio.schema (4) | alta | **hecho** (CK-13 · CAP-08) |
-| BL-03 | Terminar arquitectura / diagrama de despliegue (incluir App Auditor) | alta | pendiente |
+| BL-03 | Terminar arquitectura / diagrama de despliegue (incluir App Auditor) | alta | **hecho** (CK-14) |
 | BL-04 | Design system + atomic design + Storybook as-code | media | pendiente |
 | BL-05 | Poblar método: M1 beats 2-3 · M3 etapas 1-5 | media | pendiente |
 | BL-06 | negocio.schema: decidir SSoT (plugin vs repo) | media | pendiente |
@@ -35,6 +35,7 @@
 |---|---|---|---|
 | BL-11 | Rol Área real (hoy placeholder) | media | pendiente |
 | BL-12 | Auth / roles reales | media | pendiente |
+| BL-20 | Deuda Go/Next: UI → Vite SPA (consolidada de NODOS en CK-14; conecta BL-04) | media | pendiente |
 
 ## Motor de Discovery (N1 ★IP) — sin construir
 

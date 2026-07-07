@@ -197,7 +197,57 @@ PROYECCIÓN generada del objeto (mecanismo D-04: archivo generado vs join-en-viv
 
 *Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
 
-<!-- Próximas: CK-14, … -->
+### CK-14 · Arquitectura terminada — N14 App del Auditor al mapa + estados post-Stage-4 (cierra BL-03) — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-07):* "Quiero realizar el BL-03 del backlog."
+
+*Desarrollo:* lo encontrado — `NODOS.md` con 13 nodos y fichas reflejando estados pre-Stage-4
+(deuda declarada en CK-11: contrato de datos "a diseñar" cuando CK-08 ya lo diseñó; N13 "embebido
+en N5" cuando Stage 4 ya desmontó el andamiaje; `/api/objeto` de CK-12/CK-13 ausente); la App del
+Auditor declarada subsistema (CK-11) pero **fuera del mapa de despliegue**; y el link a
+`despliegue.html` muerto — el diagrama quedó en el monorepo legacy, también desactualizado
+(binario único pre-I-74, drawer dependiente de `nodos.data.js` generado, generador no portado).
+Ejecutado:
+
+- **N14 · App del Auditor** — ficha completa en `NODOS.md` (Edge/máquina del consultor · app
+  instalable · no-construido · ★IP): método embebido viaja con nuestra persona, al repo del
+  cliente solo cruza el resultado; **R16** (operar el método m1·m2·m3 con carriles/provenance) y
+  **R17** ("deploy de procesos" → N6) en el responsibility-walk, con etapa nueva **E3 =
+  Mantenimiento (M2)**. Cableada en N6 (escritor), N9 (su herramienta), N13 (consumidor), chequeo
+  de consistencia IP (no lo rompe: edge nuestro, no infra del cliente). Los límites quedan fijados
+  ANTES de definir el producto (BL-15) — la definición se hace contra estos límites.
+- **Estados post-Stage-4 corregidos**: N5 (andamiaje desmontado, DevHub graduado, contrato
+  diseñado CK-08 con endpoint/envelope/auth explícitos, BL-18), N13 (reescrito: binario
+  `directorio` puerto 4100, madurez `existe`, expone `/api/objeto` con las 9 entidades, repo
+  propio CK-09/CK-10), pendientes consolidados (#6 cerrado por CK-08; lista degradada a narrativa
+  — el tracking vive en el backlog, regla CK-11 aplicada también aquí).
+- **`despliegue.html` portado y actualizado**: dos binarios independientes en el data plane,
+  contrato CK-08 como pieza diseñada-sin-código, N14 en el edge del consultor con su flujo de
+  publicación, tabla de protocolos con columna de estado, decisiones al día (2026-06-20 → CK-14).
+- **`ARCHITECTURE.md` al día** (14 nodos, R1–R17, diagrama ASCII con los dos binarios + N14,
+  links del monorepo anotados como legacy, decisiones ampliadas) + `README.md` de arquitectura
+  reescrito + refs `CK-14`/`N14` en `arquitectura.yaml` y `VISION.md`.
+
+**Forks firmados (AskUserQuestion):**
+- **Diagrama = portar estático actualizado, sin drawer.** El drawer del legacy lee
+  `nodos.data.js`/`interfaces.data.js` GENERADOS desde NODOS.md; sin el generador,
+  hand-escribirlos = segunda SSoT que driftea. Fichas → `NODOS.md` (SSoT); el HTML es la vista
+  visual, curada a mano en el mismo evento que la decisión que la cambia.
+
+**Deuda consolidada al backlog:** la deuda Go/Next del lado Cockpit (N13 → Vite SPA) vivía solo
+como narrativa en NODOS; nace **BL-20** (disciplina CK-11: el pendiente se trackea en el backlog).
+
+**Verificación (2026-07-07):** revisión cruzada de refs — índice/fichas/R-walk consistentes (14
+nodos, R1–R17 resuelven), `despliegue.html` sin dependencias muertas, YAMLs parsean, links
+relativos válidos.
+
+*Conecta:* CK-11 (deuda declarada + App del Auditor declarada + disciplina backlog-SSoT) ·
+CK-07/CK-08 (los estados que se corrigieron) · CK-12/CK-13 (`/api/objeto` a la ficha N13) ·
+BL-03 (cierra) · BL-20 (nace) · BL-15..BL-17 (límites arquitectónicos listos para la definición).
+
+*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
+
+<!-- Próximas: CK-15, … -->
 
 ## Log
 
@@ -207,3 +257,4 @@ PROYECCIÓN generada del objeto (mecanismo D-04: archivo generado vs join-en-viv
 | 2026-07-07 | Nacemos ordenados: tríada `sistema/`·capabilities·`proyecto/`; método del auditor completado desde el legacy (M3, PROCESS-AS-DATA, proceso m1/m2/m3); System Backlog as-code (BL-01..BL-18, 5 columnas) + `docs/INCREMENT.md`; App del Auditor declarada como subsistema. | CK-11 |
 | 2026-07-07 | Personas de primera clase (cierra BL-01): `/api/personas` + lente Personas leen persona/rol del objeto normalizado (`empresa/<tipo>/` del shell, layout D-15); objeto.schema reconciliado; CAP-07; primera rebanada de la convergencia BL-02. | CK-12 |
 | 2026-07-07 | El objeto completo (cierra BL-02): `/api/objeto` sirve y valida las 9 entidades JUNTAS (refs del Hilo cruzan entidades, RACI A==1, enums, ciclos); supersede `/api/personas`; CAP-08; verificado contra prenter (12 procesos, cero warnings). Nace BL-19 (negocio.yaml → proyección). | CK-13 |
+| 2026-07-07 | Arquitectura terminada (cierra BL-03): N14 App del Auditor al mapa (R16/R17 + etapa E3); estados post-Stage-4 corregidos en NODOS.md (contrato CK-08 diseñado, N13 = binario `directorio` con `/api/objeto`); `despliegue.html` portado estático y actualizado; ARCHITECTURE/README al día. Nace BL-20 (deuda Go/Next N13). | CK-14 |

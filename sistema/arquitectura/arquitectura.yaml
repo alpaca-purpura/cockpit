@@ -148,8 +148,8 @@ componentes:
     plano: cockpit-app
     nombre: "App del Auditor (Consultor)"
     estado: pendiente
-    fichas: [CK-11]
-    proposito: "Aplicación instalable propia del consultor (patrón harness-studio/dev-studio) — opera el método (sistema/metodo/proceso) y publica su resultado al repo de la empresa cliente: 'deploy de procesos', como código a producción pero con procesos/roles/objetivos que Cockpit entiende y renderiza. BL-15..BL-17."
+    fichas: [CK-11, CK-14]
+    proposito: "Aplicación instalable propia del consultor (patrón harness-studio/dev-studio) — opera el método (sistema/metodo/proceso) y publica su resultado al repo de la empresa cliente: 'deploy de procesos', como código a producción pero con procesos/roles/objetivos que Cockpit entiende y renderiza. Nodo N14 en NODOS.md (CK-14: límites arquitectónicos fijados, R16/R17). BL-15..BL-17."
   - id: prep-auditoria
     tipo: backend
     plano: cockpit-app

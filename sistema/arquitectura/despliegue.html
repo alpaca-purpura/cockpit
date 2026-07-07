@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagrama de despliegue — distribución del sistema (Control Plane / Data Plane)</title>
+<!--
+  Curado a mano (CK-14, cierra BL-03). SSoT de las fichas de nodo = NODOS.md — este diagrama es la
+  vista visual y se edita en el MISMO evento que la decisión que lo cambia (misma disciplina que
+  arquitectura.yaml). Portado del legacy prenter-harness/products/docs/architecture/despliegue.html
+  y actualizado: dos binarios en el data plane (I-74/CK-07), contrato de datos diseñado (CK-08),
+  N14 App del Auditor (CK-11/CK-14). El drawer interactivo del legacy se eliminó: dependía de
+  nodos.data.js GENERADO desde NODOS.md y el generador no se portó — hand-escribirlo sería una
+  segunda SSoT que driftea.
+-->
+<style>
+  :root{
+    --bg:#0e1116;--panel:#161b22;--panel2:#1b212b;--line:#2b3340;--ink:#e6edf3;--dim:#8b949e;
+    --ours:#a371f7;--client:#58a6ff;--edge:#3fb950;--conv:#d29922;--ip:#f0a35e;--open:#f85149;--data:#58a6ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:13.5px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;padding-bottom:50px}
+  header{padding:18px 26px;border-bottom:1px solid var(--line)}
+  h1{margin:0 0 4px;font-size:20px}
+  .sub{color:var(--dim);font-size:13px;max-width:1000px}
+  .principle{margin:14px 26px;padding:12px 16px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;font-size:13px}
+  .principle b{color:#fff}
+  .legend{display:flex;gap:14px 20px;flex-wrap:wrap;padding:10px 26px;font-size:11.5px;color:var(--dim);border-bottom:1px solid var(--line)}
+  .legend .k{display:inline-flex;align-items:center;gap:5px}
+  .sw{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .wrap{max-width:1180px;margin:18px auto;padding:0 18px}
+  .node{border:2px solid var(--line);border-radius:12px;padding:13px 15px;margin:0 0 4px;position:relative}
+  .node.ours{border-color:var(--ours);background:rgba(163,113,247,.06)}
+  .node.client{border-color:var(--client);background:rgba(88,166,255,.06)}
+  .node.edge{border-color:var(--edge);background:rgba(63,185,80,.06)}
+  .stereo{font-size:10px;letter-spacing:.06em;color:var(--dim);text-transform:none}
+  .ntitle{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;margin:2px 0 3px}
+  .nmeta{font-size:11px;color:var(--dim);margin-bottom:10px}
+  .arts{display:flex;gap:10px;flex-wrap:wrap}
+  .art{flex:1;min-width:220px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+  .art .as{font-size:9.5px;color:#6e7681;letter-spacing:.05em}
+  .art .at{font-weight:600;font-size:12.5px;margin:1px 0}
+  .art .ad{color:var(--dim);font-size:11px}
+  .art.ip{border-color:var(--ip);border-left:3px solid var(--ip)}
+  .art.data{border-color:var(--data);border-left:3px solid var(--data)}
+  .art.open{border-color:var(--open);border-left:3px solid var(--open);border-style:dashed}
+  .bdg{display:inline-block;font-size:9.5px;padding:1px 6px;border-radius:10px;margin-left:4px;vertical-align:middle}
+  .bdg.ip{background:rgba(240,163,94,.15);color:var(--ip)}
+  .bdg.data{background:rgba(88,166,255,.15);color:var(--data)}
+  .bdg.open{background:rgba(248,81,73,.15);color:var(--open)}
+  .runtime{margin-top:9px;font-size:11px;color:var(--dim);border-top:1px dashed var(--line);padding-top:7px}
+  .conn{display:flex;flex-direction:column;align-items:center;margin:8px 0;color:var(--dim);font-size:11px}
+  .conn .ar{color:var(--dim);font-size:18px;line-height:1}
+  .conn .pill{border:1px solid var(--line);border-radius:20px;padding:3px 12px;background:var(--panel)}
+  .conn.pull .pill{border-color:var(--ours);color:#c9aef9}
+  .cols{display:flex;gap:12px;flex-wrap:wrap}
+  .col{flex:1;min-width:280px}
+  h2.sec{font-size:14px;margin:24px 26px 8px;border-top:1px solid var(--line);padding-top:16px}
+  table.proto{width:calc(100% - 52px);margin:0 26px;border-collapse:collapse;font-size:12px}
+  table.proto th,table.proto td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  table.proto th{background:var(--panel);color:var(--dim)}
+  .open-dec{margin:0 26px;padding:14px 16px;border:1px dashed var(--open);border-radius:10px;background:rgba(248,81,73,.05)}
+  .open-dec h3{margin:0 0 8px;font-size:13.5px;color:#ff9b95}
+  .open-dec li{margin:6px 0;font-size:12.5px}
+  code{background:#0c0f14;padding:1px 5px;border-radius:4px;font-size:11.5px;color:#c9d4e0}
+  .nid{font-size:10px;color:var(--dim);border:1px solid var(--line);border-radius:4px;padding:0 4px;margin-right:4px;vertical-align:middle}
+  .fwrap{margin:0 26px 16px}
+  .fhint{color:var(--dim);font-size:12px;margin-bottom:10px}
+  .frow{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:8px;font-size:12px}
+  .fpill{border:1px solid var(--line);border-radius:7px;padding:5px 9px;background:var(--panel);white-space:nowrap}
+  .farr{font-size:11px;white-space:nowrap}
+  .flbl{color:var(--dim);font-size:10.5px;margin-left:4px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🗺️ Diagrama de despliegue — cómo se distribuye el sistema</h1>
+  <div class="sub">Antes que funcionalidades: <b>qué corre dónde</b>, qué datos viven dónde, y cómo se comunican los nodos. Patrón <b>Control Plane / Data Plane (BYOC)</b> — el estándar B2B para "el vendor opera, los datos del cliente no salen de su red". &nbsp;·&nbsp; Ficha de cada nodo (<span class="nid">N#</span>) = <b><code>NODOS.md</code></b> (SSoT). Actualizado <b>2026-07-07 (CK-14)</b>: dos binarios en el data plane (I-74/CK-07), contrato de datos diseñado (CK-08), App del Auditor (N14, CK-11).</div>
+</header>
+
+<div class="principle">
+  <b>Principio rector (state-of-the-art):</b> el sistema se parte en dos planos.
+  <b style="color:var(--ours)">Control Plane = nuestro</b> (lo operamos, vive el know-how, NO toca datos del cliente).
+  <b style="color:var(--client)">Data Plane = del cliente</b> (corre en SU red, sus datos NUNCA salen).
+  El control plane <b>NO está en el camino del dato</b>; el data plane <b>jala</b> (pull TLS) updates/config/specs — el cliente no abre puertos. Así se logran <b>IP protegida</b> y <b>soberanía de datos</b> a la vez. Precisión firmada (2026-06-21): los datos <b>"transitan, no persisten"</b> — la inferencia frontier los procesa con zero-retention, jamás los almacena fuera.
+</div>
+
+<div class="legend">
+  <span class="k"><span class="sw" style="background:var(--ours)"></span>Nuestro (control plane)</span>
+  <span class="k"><span class="sw" style="background:var(--client)"></span>Cliente (data plane)</span>
+  <span class="k"><span class="sw" style="background:var(--edge)"></span>Edge (laptop/dispositivo)</span>
+  <span class="k"><span class="sw" style="background:var(--ip)"></span>≪IP / know-how≫</span>
+  <span class="k"><span class="sw" style="background:var(--data)"></span>≪datos del cliente≫</span>
+  <span class="k"><span class="sw" style="background:var(--open)"></span>≪diseñado / sin construir≫</span>
+</div>
+
+<div class="wrap">
+
+  <!-- CONTROL PLANE -->
+  <div class="node ours">
+    <div class="stereo">≪execution environment≫ · nube del vendor (Prenter)</div>
+    <div class="ntitle">☁️ CONTROL PLANE — lo operamos nosotros <span class="bdg ip">IP aquí</span></div>
+    <div class="nmeta">Opera, versiona y orquesta. NO almacena datos crudos del cliente. Si se cae, el data plane del cliente sigue (no está en el request path).</div>
+    <div class="arts">
+      <div class="art ip"><div class="as"><span class="nid">N1</span>≪artifact≫ · no-construido</div><div class="at">Motor de Discovery / Levantamiento</div><div class="ad">la "fábrica": diseña el spec + orquesta el levantamiento (como servicio) — mitad control-plane de Cockpit (P1)</div></div>
+      <div class="art ip"><div class="as"><span class="nid">N2</span>≪artifact≫ · existe (parcial)</div><div class="at">Playbook + metodología</div><div class="ad">proceso-como-dato (m1·m2·m3) · M-cards · schemas = el CÓMO — hoy en <code>sistema/metodo/</code> del repo Cockpit</div></div>
+      <div class="art"><div class="as"><span class="nid">N3</span>≪artifact≫ · no-construido</div><div class="at">Distribución + telemetría</div><div class="ad">releases firmadas (TUF) que el data plane jala — ahora DOS binarios que actualizar (N5 y N13) · telemetría agregada, NO datos crudos</div></div>
+      <div class="art"><div class="as"><span class="nid">N4</span>≪exec env≫ hosted · no-construido</div><div class="at">Plano Conversación</div><div class="ad">entrevistas de levantamiento (LangGraph + voz) · transcripción → data plane, método → control plane</div></div>
+    </div>
+    <div class="runtime">⚙️ Runtime de razonamiento server-side: <b>API frontier</b> — decidido (híbrido, forzado por ToS)</div>
+  </div>
+
+  <div class="conn pull">
+    <div class="ar">⇵</div>
+    <div class="pill">PULL por TLS — el data plane jala: SPEC "comidito" · updates de los binarios · config &nbsp;(el cliente NO abre puertos · el control plane NO ve el dato crudo)</div>
+  </div>
+
+  <!-- DATA PLANE -->
+  <div class="node client">
+    <div class="stereo">≪device≫ · on-prem (su servidor) O su nube — <b>configurable por cliente</b></div>
+    <div class="ntitle">🏢 DATA PLANE — en la red privada del cliente <span class="bdg data">datos aquí</span></div>
+    <div class="nmeta">Sus datos NUNCA salen de su red. Aquí viven los productos que opera el cliente — <b>dos binarios independientes</b> (I-74/CK-07, Stage 4 ejecutado): DevHub (P2) y Cockpit (P1) no comparten proceso ni importan código entre sí.</div>
+    <div class="arts">
+      <div class="art"><div class="as"><span class="nid">N13</span>≪execution environment≫ · existe</div><div class="at">Cockpit — binario <code>directorio</code> (P1)</div><div class="ad">Vista Negocio: Hilo de Oro · Brechas · Empresa→Sistema · objeto normalizado completo (<code>/api/objeto</code>, 9 entidades) · puerto 4100 · ESTE repo</div></div>
+      <div class="art"><div class="as"><span class="nid">N5</span>≪execution environment≫ · existe (parcial)</div><div class="at">DevHub — binario <code>cockpit</code> (P2)</div><div class="ad">Delivery: tablero SDD · capabilities · releases · watcher + SSE — célula/repo propio (<code>~/Proyectos/devhub</code>)</div></div>
+      <div class="art open"><div class="as">≪contrato≫ · diseñado (CK-08), sin código</div><div class="at">Contrato de datos DevHub→Cockpit <span class="bdg open">BL-18</span></div><div class="ad">Pull API en vivo: <code>directorio</code> jala <code>GET /api/contrato/directorio?sistema=…</code> · envelope <code>{contract_version, data}</code> · gatillo: primer consumidor real</div></div>
+      <div class="art data"><div class="as"><span class="nid">N6</span>≪artifact≫ · existe</div><div class="at">Repo del cliente</div><div class="ad">AS-IS · gaps · specs · código · OKRs · procesos/roles/objetivos publicados — SSoT, sus datos</div></div>
+      <div class="art"><div class="as"><span class="nid">N7</span>≪execution environment≫ · no-construido</div><div class="at">Agentes de análisis / levantamiento</div><div class="ad">efímeros, server-side vía API frontier · leen sistemas, escriben el AS-IS al repo (método inyectado, teardown sin rastro)</div></div>
+      <div class="art data"><div class="as"><span class="nid">N12</span>≪artifact≫ · no-construido</div><div class="at">Depósito de fuentes (landing zone)</div><div class="ad">crudo de entrada (docs/USB/correo) que deposita el consultor · transitorio · se destruye tras el mapa</div></div>
+    </div>
+    <div class="runtime">El control plane inyecta el MÉTODO para el levantamiento; los agentes corren aquí (efímeros) y escriben el AS-IS al repo del cliente. El CÓMO no persiste en el cliente.</div>
+  </div>
+
+  <!-- EDGES -->
+  <div class="cols">
+    <div class="col">
+      <div class="conn"><div class="ar">▼</div><div class="pill">git (push de procesos) + HTTPS</div></div>
+      <div class="node edge">
+        <div class="stereo">≪device≫ · máquina del consultor (Prenter)</div>
+        <div class="ntitle">🧑 Consultor <span class="nid">N9</span></div>
+        <div class="nmeta">Conduce levantamiento + Discovery. Deposita el crudo en N12, opera/valida N7, ratifica AS-IS y SPEC.</div>
+        <div class="arts">
+          <div class="art open ip"><div class="as"><span class="nid">N14</span>≪exec env≫ app instalable · no-construido</div><div class="at">App del Auditor <span class="bdg ip">método embebido</span> <span class="bdg open">BL-15..17</span></div><div class="ad">opera el método (m1·m2·m3) con carriles/provenance [R16] · publica procesos/roles/objetivos al repo del cliente — "deploy de procesos" [R17] · patrón harness-studio</div></div>
+          <div class="art"><div class="at">Navegador → Discovery / Cockpit</div><div class="ad">opera N1 (futuro) · vista consultor de N13</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="conn"><div class="ar">▼</div><div class="pill">git/SSH + HTTPS</div></div>
+      <div class="node edge">
+        <div class="stereo">≪device≫ · laptop del developer</div>
+        <div class="ntitle">💻 Developer <span class="nid">N10</span></div>
+        <div class="nmeta">Construye contra el repo del cliente (su red).</div>
+        <div class="arts">
+          <div class="art"><div class="at">DevHub UI (navegador)</div><div class="ad">tablero Delivery, servido por el binario <code>cockpit</code> (N5)</div></div>
+          <div class="art"><div class="as"><span class="nid">N8</span>≪runtime edge≫ · existe</div><div class="at">Claude Code (suscripción, local)</div><div class="ad">el dev humano construye: historias → testing → prod (la mitad "local" del híbrido — ToS: una suscripción, un humano)</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="conn"><div class="ar">▼</div><div class="pill">HTTPS (navegador)</div></div>
+      <div class="node edge">
+        <div class="stereo">≪device≫ · dispositivo del usuario de negocio</div>
+        <div class="ntitle">🖥️ CEO / sponsor <span class="nid">N11</span></div>
+        <div class="nmeta">Thin — solo navegador. No instala nada.</div>
+        <div class="arts">
+          <div class="art"><div class="at">Vista Negocio (N13)</div><div class="ad">Hilo de Oro · Brechas · drill-down — servida del data plane</div></div>
+          <div class="art"><div class="at">Discovery conversacional</div><div class="ad">la interfaz que guía a diseñar funcionalidad → spec (futuro, N1/N4)</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="sec">🔀 Flujo de la data — Etapa 1 (Levantamiento)</h2>
+<div class="fwrap">
+  <div class="fhint">Cómo fluye la data, nodo a nodo (ficha de cada uno en <code>NODOS.md</code>). Aristas: <b style="color:#f85149">crudo</b> (sensible) · <b style="color:#58a6ff">derivado</b> · <b style="color:#a371f7">método/IP</b> (efímero) · <b style="color:#8b949e">control/operación</b>.</div>
+  <div class="frow">
+    <span class="fpill">N11 · CEO</span>
+    <span class="farr" style="color:#58a6ff">──objetivos──▶</span>
+    <span class="fpill">N9 · Consultor</span>
+    <span class="farr" style="color:#f85149">──recolecta──▶</span>
+    <span class="fpill">N12 · Depósito</span>
+    <span class="farr" style="color:#f85149">──crudo──▶</span>
+    <span class="fpill">N7 · Agentes</span>
+    <span class="farr" style="color:#58a6ff">──mapa/gaps──▶</span>
+    <span class="fpill">N6 · Repo</span>
+    <span class="farr" style="color:#58a6ff">──▶</span>
+    <span class="fpill">N13 · Cockpit</span>
+    <span class="farr" style="color:#58a6ff">──vista──▶</span>
+    <span class="fpill">N11 · CEO</span>
+  </div>
+  <div class="frow">
+    <span class="flbl">alimentan ▸</span>
+    <span class="fpill">N2 · Playbook</span>
+    <span class="farr" style="color:#a371f7">──método──▶</span>
+    <span class="fpill">N1 · Motor</span>
+    <span class="farr" style="color:#a371f7">──método efímero──▶</span>
+    <span class="fpill">N7 · Agentes</span>
+    <span class="farr" style="color:#8b949e">· N1 orquesta y reconcilia ·</span>
+    <span class="fpill">N4 · Entrevistas</span>
+    <span class="farr" style="color:#58a6ff">──transcripción──▶</span>
+    <span class="fpill">N6 · Repo</span>
+  </div>
+  <div class="frow">
+    <span class="flbl">opera ▸</span>
+    <span class="fpill">N9 · Consultor</span>
+    <span class="farr" style="color:#8b949e">──opera desde──▶</span>
+    <span class="fpill">N14 · App del Auditor</span>
+    <span class="farr" style="color:#58a6ff">──publica procesos/roles/objetivos (git) [R17]──▶</span>
+    <span class="fpill">N6 · Repo</span>
+    <span class="farr" style="color:#58a6ff">──lee/valida──▶</span>
+    <span class="fpill">N13 · Cockpit</span>
+    <span class="flbl">— el "deploy de procesos": el resultado cruza, el método jamás</span>
+  </div>
+  <div class="frow">
+    <span class="flbl">delivery ▸</span>
+    <span class="fpill">N10 · Developer</span>
+    <span class="farr" style="color:#8b949e">──gobierna──▶</span>
+    <span class="fpill">N8 · Claude Code</span>
+    <span class="farr" style="color:#58a6ff">──historias→prod──▶</span>
+    <span class="fpill">N6 · Repo</span>
+    <span class="farr" style="color:#58a6ff">──▶</span>
+    <span class="fpill">N5 · DevHub</span>
+    <span class="flbl">— crudo y mapa viven en el data plane; nunca en nuestras bases</span>
+  </div>
+</div>
+
+<h2 class="sec">🔌 Conexiones (con protocolo) — el dato manda</h2>
+<table class="proto">
+  <tr><th>De → A</th><th>Protocolo</th><th>Qué cruza</th><th>Quién inicia</th><th>Estado</th></tr>
+  <tr><td>Data plane → Control plane</td><td>TLS (outbound, pull)</td><td>jala SPEC + updates de los binarios + config</td><td><b>el cliente</b> (no abre puertos inbound)</td><td>diseñado (N3 no-construido)</td></tr>
+  <tr><td>N13 <code>directorio</code> → N5 <code>cockpit</code></td><td>HTTP Pull API (mismo host o LAN + bearer)</td><td>capabilities/sistemas/releases — envelope <code>{contract_version, data}</code></td><td>N13 (jala en vivo)</td><td><b>diseñado CK-08, sin código (BL-18)</b></td></tr>
+  <tr><td>N14 App del Auditor → N6</td><td>git (push/PR)</td><td>procesos/roles/objetivos/personas ratificados — el "deploy de procesos" [R17]</td><td>consultor desde su app</td><td><b>no-construido (BL-15..17)</b></td></tr>
+  <tr><td>Consultor → Control plane</td><td>HTTPS</td><td>opera Discovery/levantamiento</td><td>consultor</td><td>futuro (N1)</td></tr>
+  <tr><td>Agentes levantamiento → sistemas del cliente</td><td>según sistema (API/DB/FS)</td><td>leen AS-IS real; escriben al repo del cliente</td><td>data plane (método inyectado)</td><td>futuro (N7)</td></tr>
+  <tr><td>Developer ↔ Data plane</td><td>git/SSH + HTTPS</td><td>código · DevHub UI</td><td>developer</td><td>vivo</td></tr>
+  <tr><td>Usuario negocio → Data plane</td><td>HTTPS (navegador)</td><td>Vista Negocio (N13) / Discovery conversacional</td><td>usuario</td><td>Vista Negocio viva</td></tr>
+  <tr><td>Plano conversación → Data plane</td><td>HTTPS (webhook firmado → pull)</td><td>transcripción de entrevistas</td><td>hosted</td><td>futuro (N4)</td></tr>
+</table>
+
+<h2 class="sec">✅ Decisiones de arquitectura tomadas</h2>
+<div class="open-dec" style="border-color:var(--edge);background:rgba(63,185,80,.05)">
+  <h3 style="color:#8be39b">Decididas</h3>
+  <ol>
+    <li><b>Patrón base = BYOC (Control Plane / Data Plane)</b> — 2026-06-20. El vendor opera el control plane (IP); el data plane corre en la red del cliente (sus datos no salen); comunicación por <b>pull TLS</b> (sin puertos inbound).</li>
+    <li><b>Runtime de agentes = HÍBRIDO</b> — 2026-06-20. <code>API frontier</code> para lo server-side (Discovery, levantamiento, análisis) — Claude Code suscripción NO se multiplexa server-side (ToS). <code>Claude Code suscripción</code> para el dev humano en su laptop.</li>
+    <li><b>Data Plane = configurable por cliente</b> (on-prem O su nube) — 2026-06-20. Mismo artefacto, dos destinos.</li>
+    <li><b>"Transitan, no persisten"</b> — 2026-06-21. Los datos del cliente transitan a la API frontier con zero-retention + minimización; jamás persisten fuera de su red. LLM on-premise = opción futura para regulados.</li>
+    <li><b>Dos binarios independientes en el data plane</b> — 2026-07-02, I-74/CK-07 (Stage 4 <b>ejecutado</b>). DevHub (<code>cockpit</code>, P2) y Cockpit (<code>directorio</code>, P1) no comparten proceso ni código; el runtime único fue transicional.</li>
+    <li><b>Contrato de datos DevHub→Cockpit = Pull API versionada</b> — CK-08 (diseñado, sin código). Envelope <code>{contract_version, data}</code>; se implementa con el primer consumidor real (BL-18) — disciplina anti-código-especulativo.</li>
+    <li><b>App del Auditor = subsistema propio (N14)</b> — CK-11, incorporada al mapa en CK-14. App instalable del consultor; el método embebido viaja con nuestra persona, al cliente solo cruza el resultado.</li>
+  </ol>
+  <h3 style="color:var(--dim);margin-top:10px">Pendiente (tracking = <code>proyecto/backlog.yaml</code>)</h3>
+  <ul>
+    <li><b>Definir la App del Auditor</b> — alcance/stack/publicación (BL-15 · BL-16 · BL-17).</li>
+    <li><b>Contrato del handoff</b> (SPEC "comidito") Discovery→Delivery — se resuelve al diseñar N1 (BL-13).</li>
+    <li><b>Deuda Go/Next</b> — Vite SPA + Go único; lado Cockpit = BL-20, lado DevHub en su repo.</li>
+    <li><b>Auth/roles reales en N13</b> (BL-12) — gate para despliegue multi-usuario.</li>
+  </ul>
+</div>
+</body>
+</html>
