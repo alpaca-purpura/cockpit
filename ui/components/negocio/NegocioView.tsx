@@ -6,6 +6,7 @@ import { Card } from '../ui/Card';
 import { Tabs } from '../ui/Tabs';
 import { Drawer } from '../ui/Drawer';
 import { cn } from '../../lib/cn';
+import { PersonasTab } from './PersonasTab';
 import { getNegocio } from '../../lib/negocio';
 import type {
   Negocio,
@@ -23,10 +24,11 @@ import type {
  * /api/negocio. Sin archivo → empty-state honesto.
  *
  * Slice 1: objetivos del directorio + mapa vivo de áreas/procesos con semáforo.
- * Slice 2 (este): el Hilo de Oro (§19) hecho INTERACTIVO — elegir un objetivo del
+ * Slice 2: el Hilo de Oro (§19) hecho INTERACTIVO — elegir un objetivo del
  * directorio ilumina los procesos que lo sostienen (en el mapa y en la cascada) y
- * resalta las brechas que lo bloquean. Tres lentes en sub-tabs (Mapa vivo · Hilo de
- * oro · Brechas) + drawer de drill-down por proceso (procedencia sin falsa certeza, §14).
+ * resalta las brechas que lo bloquean. Cuatro lentes en sub-tabs (Mapa vivo · Hilo de
+ * oro · Brechas · Personas) + drawer de drill-down por proceso (procedencia sin falsa
+ * certeza, §14). Personas (BL-01 · CK-12) lee del objeto normalizado, no del negocio.yaml.
  */
 
 const SEMAFORO: Record<Digital, { dot: string; label: string }> = {
@@ -100,7 +102,7 @@ export function NegocioView({ empresa }: { empresa: string }) {
 
   if (!negocio) {
     return (
-      <div className="p-6">
+      <div className="mx-auto max-w-6xl space-y-5 p-6">
         <EmptyState>
           {empresa ? (
             <>
@@ -113,6 +115,16 @@ export function NegocioView({ empresa }: { empresa: string }) {
             <>Elegí una empresa en el selector para ver su diagnóstico de negocio.</>
           )}
         </EmptyState>
+        {/* El pilar Personas vive UPSTREAM del negocio.yaml (objeto normalizado,
+            BL-01 · CK-12): puede estar poblado aunque el diagnóstico no exista aún. */}
+        {empresa && (
+          <section className="space-y-2">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-[#a1a1aa]">
+              Personas
+            </h2>
+            <PersonasTab empresa={empresa} negocio={null} />
+          </section>
+        )}
       </div>
     );
   }
@@ -151,6 +163,11 @@ export function NegocioView({ empresa }: { empresa: string }) {
           objById={objById}
         />
       ),
+    },
+    {
+      id: 'personas',
+      label: 'Personas',
+      content: <PersonasTab empresa={empresa} negocio={negocio} />,
     },
   ];
 
@@ -215,7 +232,8 @@ export function NegocioView({ empresa }: { empresa: string }) {
         </div>
       </section>
 
-      {/* Tres lentes del mismo diagnóstico, gobernadas por el objetivo jalado. */}
+      {/* Cuatro lentes del mismo diagnóstico; las tres primeras gobernadas por el
+          objetivo jalado, Personas lee el objeto normalizado (BL-01 · CK-12). */}
       <section className="min-h-[20rem]">
         <Tabs tabs={tabs} variant="line" />
       </section>

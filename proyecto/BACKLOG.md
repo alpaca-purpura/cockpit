@@ -7,7 +7,7 @@
 
 | Columna | Pendiente | En curso | Lo más urgente |
 |---|---|---|---|
-| **Sistema (transversal)** | 9 | 1 | BL-01 persona/puesto · BL-02 schemas · BL-03 arquitectura |
+| **Sistema (transversal)** | 8 | 1 | BL-02 schemas (arrancado CK-12) · BL-03 arquitectura |
 | **Vista Negocio (N13)** | 2 | — | BL-11 rol Área · BL-12 auth |
 | **Motor Discovery (N1 ★IP)** | 2 | — | BL-13 campaña (decidir arranque) |
 | **App del Auditor** | 3 | — | BL-15 definir producto |
@@ -17,8 +17,8 @@
 
 | ID | Ítem | Prioridad | Estado |
 |---|---|---|---|
-| BL-01 | Persona/puesto como entidad de primera clase | alta | pendiente |
-| BL-02 | Reconciliar objeto.schema (9 entidades) ↔ negocio.schema (4) | alta | pendiente |
+| BL-01 | Persona/puesto como entidad de primera clase | alta | **hecho** (CK-12 · CAP-07) |
+| BL-02 | Reconciliar objeto.schema (9 entidades) ↔ negocio.schema (4) — arrancado CK-12 (persona+rol) | alta | pendiente |
 | BL-03 | Terminar arquitectura / diagrama de despliegue (incluir App Auditor) | alta | pendiente |
 | BL-04 | Design system + atomic design + Storybook as-code | media | pendiente |
 | BL-05 | Poblar método: M1 beats 2-3 · M3 etapas 1-5 | media | pendiente |

@@ -55,8 +55,8 @@ items:
       proceso. Modelar el pilar Personas de verdad. El hueco más grande declarado.
     origen: "VISION §TBD · CK-10 'Siguiente'"
     prioridad: alta
-    estado: pendiente
-    fichas: [CK-10]
+    estado: hecho
+    fichas: [CK-10, CK-12]
 
   - id: BL-02
     subsistema: sistema
@@ -65,10 +65,12 @@ items:
       sistema/schema/objeto.schema.yaml se declara SSoT (9 entidades: empresa/persona/rol/área/
       proceso/sistema/objetivo/capability/brecha) pero el código solo implementa 4. Decidir cuál
       es el contrato vigente y el camino de convergencia. Conecta con BL-01.
+      Convergencia ARRANCADA en CK-12: contrato vigente = objeto.schema; persona+rol ya se leen
+      del objeto normalizado (/api/personas). Falta el resto de entidades + negocio.yaml→proyección.
     origen: "auditoría CK-11"
     prioridad: alta
     estado: pendiente
-    fichas: []
+    fichas: [CK-12]
 
   - id: BL-03
     subsistema: sistema

@@ -117,7 +117,51 @@ I-05 (límite de prep-auditoria) · I-39 (Prospera sigue fuera, sin cambio).
 *Siguiente:* operador firma prioridades del backlog · arrancar BL-15 (definir App del Auditor) o
 BL-01/BL-02 (modelo de datos persona/puesto + reconciliación de schemas) como primera campaña.
 
-<!-- Próximas: CK-12, … -->
+### CK-12 · Personas de primera clase — slice vertical persona/rol (cierra BL-01) — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-07):* "Ok, vayamos con el BL-01" — primera firma de prioridad sobre el
+System Backlog (CK-11); alcance firmado por AskUserQuestion: **slice vertical con UI**.
+
+*Desarrollo:* la campaña modelo-objeto ya había clavado el diseño (D-09: cadena
+persona→rol→proceso; D-11: objeto.schema aditivo; D-13: negocio.yaml = proyección, el pilar
+Personas vive upstream, en las entidades; D-15: instancias en `<shell>/empresa/<tipo>/` layout
+plano). Lo que faltaba era implementación: el cockpit solo leía negocio.yaml y `puesto` era texto
+libre dentro de proceso. Ejecutado:
+
+- **Reconciliación D-15**: `sistema/schema/objeto.schema.yaml` corrige `meta.aplica_a` de
+  `data/<tipo>/` a `empresa/<tipo>/` (el desajuste interno que D-15 dejó anotado).
+- **`go/personas.go` — GET /api/personas?empresa=**: lee persona + rol un-archivo-por-entidad del
+  shell de la empresa, valida el subset que rompe silencioso (ids únicos, `persona.roles[].rol` y
+  `reporta_a` resuelven, sin ciclos de `reporta_a`, enums conf/fuente) como warnings no-fatales —
+  espejo del patrón `validateNegocio`. Carpetas ausentes → listas vacías = empty-state honesto;
+  archivo YAML roto → warning con nombre de archivo, la respuesta no rompe.
+- **Cuarta lente "Personas" en la Vista de Negocio** (`PersonasTab.tsx` + modelo puro
+  `ui/lib/personas.ts`, 7 tests vitest): roles con quién los cumple (inverso por scan,
+  un-hecho-un-lugar), vacantes delatadas ("sin persona asignada" — caso rol cumplido externamente
+  por el holding), procesos que corre cada rol (match `puesto`↔`rol.nombre` — puente consciente
+  hasta que negocio.yaml se genere del objeto, D-13). La lente es visible AUN SIN negocio.yaml,
+  porque el pilar vive upstream (caso dogfood: prenter tiene personas/roles y no tiene diagnóstico).
+- Componente `personas-api` registrado en `arquitectura.yaml`; capability **CAP-07** al increment.
+
+**Forks firmados:**
+- **Alcance = slice vertical con UI**, sabiendo que el design system (BL-04) no existe aún: la
+  lente extiende NegocioView (no es vista nueva); se re-estiliza contra el design system cuando
+  exista — deuda de estilo declarada, no silenciosa.
+- **La convergencia BL-02 arranca por acá**: contrato vigente = objeto.schema; persona+rol son las
+  primeras 2 de 9 entidades leídas del objeto normalizado. BL-02 sigue abierto para el resto.
+
+**Verificación (2026-07-07):** go build/vet/test + tsc + vitest (32 tests) + export estático,
+todos verdes; binario `directorio` contra el shell real de prenter — `/api/personas` sirve
+1 persona + 7 roles con cero warnings, la lente renderiza con la data real, empty-states honestos
+en empresas sin pilar poblado, 400 en empresa desconocida.
+
+*Conecta:* CK-11 (backlog/increment as-code, promoción de objeto.schema) · D-09/D-11/D-13/D-15
+(campaña modelo-objeto) · BL-01 (cierra) · BL-02 (avanza, no cierra) · BL-04 (deuda de estilo).
+
+*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml` (BL-02 reconciliación
+completa del objeto · BL-04 design system antes de la próxima vista nueva).
+
+<!-- Próximas: CK-13, … -->
 
 ## Log
 
@@ -125,3 +169,4 @@ BL-01/BL-02 (modelo de datos persona/puesto + reconciliación de schemas) como p
 |---|---|---|
 | 2026-07-06 | Graduación de P1 con visión ampliada (4 pilares: procesos/roles/objetivos/personas, marco ISO intermedio); código migrado y verificado standalone; investigación/mockups heredados curados en `docs/`; kit dev como plugin. | CK-10 |
 | 2026-07-07 | Nacemos ordenados: tríada `sistema/`·capabilities·`proyecto/`; método del auditor completado desde el legacy (M3, PROCESS-AS-DATA, proceso m1/m2/m3); System Backlog as-code (BL-01..BL-18, 5 columnas) + `docs/INCREMENT.md`; App del Auditor declarada como subsistema. | CK-11 |
+| 2026-07-07 | Personas de primera clase (cierra BL-01): `/api/personas` + lente Personas leen persona/rol del objeto normalizado (`empresa/<tipo>/` del shell, layout D-15); objeto.schema reconciliado; CAP-07; primera rebanada de la convergencia BL-02. | CK-12 |

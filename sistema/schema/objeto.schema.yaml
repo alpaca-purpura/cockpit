@@ -5,7 +5,8 @@
 # se vuelve una PROYECCIÓN delgada (expand-contract, D-06) — por eso este schema es ADITIVO:
 # no toca el negocio.yaml vivo que el cockpit valida hoy (bajo acoplamiento).
 #
-# DÓNDE VIVEN LAS INSTANCIAS: <empresa-shell>/data/<tipo>/<id>.yaml (un archivo por entidad).
+# DÓNDE VIVEN LAS INSTANCIAS: <empresa-shell>/empresa/<tipo>/<id>.yaml (un archivo por entidad,
+# layout PLANO — D-15; el `data/` que decía antes era el desajuste interno que D-15 dejó anotado).
 # La carpeta = el tipo = la tabla; la carpeta-empresa = la partición (tenant). I-39: viven en
 # repos HERMANOS (shells), no en la fábrica. El dogfood (Proyecto #0 = prenter-harness) vive
 # in-repo enrejado (D-01). Validación = AL LEER, en el puerto/cockpit (como negocio.yaml).
@@ -21,7 +22,7 @@ meta:
   nombre: objeto
   version: 1
   capa: "L0 · dominio"
-  aplica_a: "<empresa-shell>/data/<tipo>/<id>.yaml (un archivo por entidad)"
+  aplica_a: "<empresa-shell>/empresa/<tipo>/<id>.yaml (un archivo por entidad, layout plano — D-15 · CK-12)"
   instancias_externas: true            # I-39: instancias en shells hermanos (+ dogfood in-repo, D-01)
   ssot: true                           # este es el SSoT; negocio.yaml = su proyección (D-06)
   proyeccion: "negocio.schema.yaml (thin) se DERIVA de este — no al revés"

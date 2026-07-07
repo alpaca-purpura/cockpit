@@ -104,6 +104,14 @@ componentes:
     ruta: go/negocio.go
     fichas: [CK-05]
     proposito: "Hilo de Oro + Brechas por empresa — resuelve contra snapshot de activos del arranque."
+  - id: personas-api
+    tipo: contrato
+    plano: cockpit-app
+    nombre: "Contrato /api/personas"
+    estado: activo
+    ruta: go/personas.go
+    fichas: [CK-12]
+    proposito: "Personas + roles del objeto normalizado (empresa/<tipo>/ del shell, objeto.schema · D-15) — primera rebanada de la convergencia BL-02; valida refs persona↔rol y reporta_a al leer."
   - id: cockpit-shell
     tipo: vista
     plano: cockpit-app

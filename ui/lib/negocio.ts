@@ -91,7 +91,8 @@ export class NegocioApiError extends Error {
   }
 }
 
-async function request<T>(input: string, init?: RequestInit): Promise<T> {
+/** Compartido con lib/personas.ts (mismo envelope {error} del runtime propio). */
+export async function request<T>(input: string, init?: RequestInit): Promise<T> {
   const res = await fetch(input, {
     ...init,
     headers: {

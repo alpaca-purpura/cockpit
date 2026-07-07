@@ -53,10 +53,10 @@ capabilities:
   - id: CAP-04
     nombre: "Vista de Negocio (/negocio)"
     que_hace: >-
-      Objetivos del directorio (KR from→to) que tensan el Hilo de Oro sobre 3 sub-tabs: Mapa vivo
+      Objetivos del directorio (KR from→to) que tensan el Hilo de Oro sobre 4 sub-tabs: Mapa vivo
       (semáforo de digitalización) · Hilo de oro (cascada objetivo→procesos + huérfanos) · Brechas
-      (caso de negocio + prioridad). Drawer de drill-down por proceso (procedencia/confianza);
-      banner de warnings de negocio.yaml.
+      (caso de negocio + prioridad) · Personas (CAP-07). Drawer de drill-down por proceso
+      (procedencia/confianza); banner de warnings de negocio.yaml.
     rutas: [ui/components/negocio/NegocioView.tsx, ui/app/negocio/]
     componentes: [negocio-view]
     fichas: [CK-06]
@@ -81,3 +81,17 @@ capabilities:
     componentes: [portfolio-model]
     fichas: [CK-02]
     verificada: 2026-07-06
+
+  - id: CAP-07
+    nombre: "API + lente Personas — pilar Personas de primera clase"
+    que_hace: >-
+      GET /api/personas?empresa= lee persona + rol un-archivo-por-entidad del shell
+      (empresa/personas/ + empresa/roles/, objeto.schema · layout plano D-15), valida refs/enums/
+      ciclos de reporta_a (warnings no fatales, espejo de validateNegocio) y los sirve. Cuarta
+      lente "Personas" en la Vista de Negocio: roles con quién los cumple (inverso por scan),
+      vacantes delatadas, procesos que corre cada rol (match puesto↔rol.nombre — puente D-13);
+      visible aun sin negocio.yaml (el pilar vive upstream). Modelo puro TS, 7 tests vitest.
+    rutas: [go/personas.go, ui/lib/personas.ts, ui/components/negocio/PersonasTab.tsx]
+    componentes: [personas-api, negocio-view, cockpit-go-module]
+    fichas: [CK-12]
+    verificada: 2026-07-07
