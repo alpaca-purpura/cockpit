@@ -52,7 +52,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 
 > El flujo de la data **objetivo → producción**, una responsabilidad por eslabón, con su nodo dueño.
 > Es **cómo se asignó cada nodo** (recorrer el flujo, no ir nodo-por-nodo). Cada `[R#]` en las fichas
-> de abajo **resuelve a esta tabla** (lo valida `scripts/validate_schema.py`, ref-check — no más punteros
+> de abajo **resuelve a esta tabla** (lo valida `gen_arquitectura.py`, ref-check — no más punteros
 > colgantes). Etapas: E1 = Levantamiento (M1) · E2 = Ejecución (M3) · E3 = Mantenimiento (M2).
 
 | R | Responsabilidad | Nodo(s) dueño | Etapa |

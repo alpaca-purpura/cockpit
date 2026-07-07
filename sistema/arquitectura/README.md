@@ -35,6 +35,25 @@ DevHub en el mismo binario, antes de Stage 4). Histórico, útil para entender p
 está estructurado como está.
 
 [`arquitectura.yaml`](./arquitectura.yaml) — el modelo de la arquitectura DE LA CÉLULA como dato
-(NODOS.md = ecosistema; este YAML = qué posee/consume Cockpit). El generador que lo
-validaba/renderizaba (`gen_arquitectura_cockpit.py`) no se portó; queda como documentación curada
-a mano hasta decidir si vale un render propio (BL-08).
+(NODOS.md = ecosistema; este YAML = qué posee/consume Cockpit).
+
+## Render de la arquitectura-as-code (CK-15, cierra BL-08)
+
+`gen_arquitectura.py` valida las dos SSoT y genera las vistas visuales:
+
+```
+python3 sistema/arquitectura/gen_arquitectura.py            # valida + regenera
+python3 sistema/arquitectura/gen_arquitectura.py --check    # gate anti-drift (exit 1)
+```
+
+- `NODOS.md` → **`nodos.data.js`** — alimenta el drawer de `despliegue.html` (clic en un nodo =
+  su ficha completa). GENERADO, no editar a mano.
+- `arquitectura.yaml` → **`arquitectura.html`** — vista de la célula: planos como bandas,
+  componentes como tarjetas coloreadas por estado, relaciones, drawer con fichas/relaciones por
+  componente. GENERADO, no editar a mano.
+- Gate: índice↔fichas de NODOS, refs `[R#]` resuelven al responsibility-walk, relaciones joinean,
+  estados/tipos en vocabulario, rutas existen, fichas `CK-10+` resuelven en `LEDGER.md`
+  (CK-01..CK-09 = historia congelada del monorepo, se aceptan sin verificar).
+
+**Disciplina:** editar NODOS.md o arquitectura.yaml ⇒ correr el generador en el MISMO evento
+(los generados se commitean juntos; `--check` delata drift).

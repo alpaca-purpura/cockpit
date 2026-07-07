@@ -7,13 +7,13 @@
 # nada lo consume todavía. Curado a eventos de decisión: cada elemento lleva `fichas:` (CK-NN de
 # esta célula, o I-NN/DH-NN cuando cruza célula). NO se cosecha — su SSoT son las fichas del ledger.
 #
-# QUIÉN LO CONSUME: hoy nadie automático — el generador que lo validaba/renderizaba
-# (gen_arquitectura_cockpit.py) quedó en el monorepo legacy y no se portó (deuda CK-10, BL-08).
-# Documentación curada a mano. Rutas actualizadas al repo propio en CK-11 (antes apuntaban a
-# products/cockpit/* del monorepo).
+# QUIÉN LO CONSUME: gen_arquitectura.py (CK-15, cierra BL-08) — lo valida (relaciones joinean,
+# estados/tipos en vocabulario, rutas existen, fichas CK-10+ resuelven en LEDGER.md) y lo
+# renderiza a arquitectura.html (vista visual de la célula). Rutas actualizadas al repo propio
+# en CK-11 (antes apuntaban a products/cockpit/* del monorepo).
 #
 # CÓMO SE MANTIENE: al firmar una ficha CK-NN que cambia esto, se edita ESTE archivo en el MISMO
-# evento (misma disciplina que I-73). Sin gate automático hasta resolver BL-08.
+# evento (misma disciplina que I-73) y se corre gen_arquitectura.py (gate: --check).
 
 meta:
   id: cockpit-p1

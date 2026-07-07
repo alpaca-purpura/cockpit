@@ -247,7 +247,46 @@ BL-03 (cierra) · BL-20 (nace) · BL-15..BL-17 (límites arquitectónicos listos
 
 *Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
 
-<!-- Próximas: CK-15, … -->
+### CK-15 · Render de la arquitectura-as-code — gen_arquitectura.py (cierra BL-08) — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-07):* "¿Hay forma de que el mockup lea de la arquitectura as-code para
+visualizarla? … Sí, arranca — necesito ver todo de forma visual para poder confirmar o pedir
+cambios sobre la arquitectura del sistema."
+
+*Desarrollo:* el legacy ya resolvía esto (gen_nodos.py + gen_arquitectura_cockpit.py, no portados
+en CK-10); el render de célula dependía del shell de harness-studio (P4, otro producto) —
+copiarlo sería fork silencioso, así que el render aquí es propio y self-contained. Ejecutado:
+
+- **`sistema/arquitectura/gen_arquitectura.py`** — un script, dos SSoT, dos salidas GENERADAS:
+  `NODOS.md` → `nodos.data.js` (fichas para el drawer) y `arquitectura.yaml` →
+  `arquitectura.html` (vista de la célula: planos como bandas, tarjetas coloreadas por estado
+  activo/declarado/pendiente, fichas CK-NN como chips, tabla de relaciones, drawer por componente
+  con propósito/fichas/relaciones entrantes y salientes). Modo `--check` = gate anti-drift
+  (exit 1 sin escribir).
+- **El diente del gate** (heredado de la doctrina del legacy): índice↔fichas de NODOS ambos
+  sentidos · toda ref `[R#]` resuelve al responsibility-walk · relaciones joinean (from/to) ·
+  `tipo ∈ {usa,compone,adapta,alimenta,gobierna}` · `estado ∈ {activo,declarado,pendiente}` ·
+  rutas existen · fichas `CK-10+` resuelven en LEDGER.md. **CK-01..CK-09 = historia congelada**
+  del monorepo (este ledger arranca en CK-10) — se aceptan sin verificar; el primer run del gate
+  las delató, prueba de que muerde.
+- **Drawer de `despliegue.html` restaurado**: clic en cualquier nodo (N1..N14, también las
+  píldoras del flujo) → su ficha completa de NODOS.md. La razón del fork CK-14 (no hand-escribir
+  el data.js) desaparece: ahora es generado.
+- **Verificación en navegador real** (Chrome, `file://`): despliegue.html renderiza y el drawer
+  abre N14 con sus 13 campos; arquitectura.html renderiza 4 planos · 17 componentes · 17
+  relaciones y el drawer de componente funciona. `--check` en verde tras regenerar.
+
+**Doctrina:** los `.data.js`/`.html` generados se commitean JUNTO con la edición de su SSoT
+(mismo evento); jamás se editan a mano. Regla escrita en `README.md` de arquitectura y en los
+headers de ambos artefactos.
+
+*Conecta:* CK-10 (deuda del generador no portado) · CK-14 (fork "sin drawer" — superseded en la
+parte del drawer: ya hay generador) · CK-11 (disciplina mismo-evento) · BL-08 (cierra) ·
+I-73/I-60 (arquitectura-como-dato y DIP del legacy, espíritu heredado).
+
+*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
+
+<!-- Próximas: CK-16, … -->
 
 ## Log
 
@@ -258,3 +297,4 @@ BL-03 (cierra) · BL-20 (nace) · BL-15..BL-17 (límites arquitectónicos listos
 | 2026-07-07 | Personas de primera clase (cierra BL-01): `/api/personas` + lente Personas leen persona/rol del objeto normalizado (`empresa/<tipo>/` del shell, layout D-15); objeto.schema reconciliado; CAP-07; primera rebanada de la convergencia BL-02. | CK-12 |
 | 2026-07-07 | El objeto completo (cierra BL-02): `/api/objeto` sirve y valida las 9 entidades JUNTAS (refs del Hilo cruzan entidades, RACI A==1, enums, ciclos); supersede `/api/personas`; CAP-08; verificado contra prenter (12 procesos, cero warnings). Nace BL-19 (negocio.yaml → proyección). | CK-13 |
 | 2026-07-07 | Arquitectura terminada (cierra BL-03): N14 App del Auditor al mapa (R16/R17 + etapa E3); estados post-Stage-4 corregidos en NODOS.md (contrato CK-08 diseñado, N13 = binario `directorio` con `/api/objeto`); `despliegue.html` portado estático y actualizado; ARCHITECTURE/README al día. Nace BL-20 (deuda Go/Next N13). | CK-14 |
+| 2026-07-07 | Render de la arquitectura-as-code (cierra BL-08): `gen_arquitectura.py` valida (refs R#, fichas CK-10+, relaciones, rutas) y genera `nodos.data.js` (drawer de despliegue.html restaurado) + `arquitectura.html` (vista de célula desde arquitectura.yaml); `--check` = gate anti-drift; verificado en navegador real. | CK-15 |

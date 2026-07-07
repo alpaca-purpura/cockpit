@@ -138,10 +138,14 @@ items:
     detalle: >-
       gen_arquitectura_cockpit.py quedó en el monorepo; el YAML es documentación curada a mano.
       ¿Vale un render propio?
+      CERRADO (CK-15): sí valía — gen_arquitectura.py propio y self-contained (el shell del
+      legacy es de harness-studio, copiarlo = fork). Valida ambas SSoT y genera nodos.data.js
+      (drawer de despliegue.html restaurado) + arquitectura.html (vista de célula); --check =
+      gate anti-drift. Verificado en navegador real.
     origen: "deuda CK-10"
     prioridad: baja
-    estado: pendiente
-    fichas: [CK-10]
+    estado: hecho
+    fichas: [CK-10, CK-15]
 
   - id: BL-09
     subsistema: sistema
