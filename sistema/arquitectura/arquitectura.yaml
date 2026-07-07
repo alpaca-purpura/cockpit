@@ -7,13 +7,13 @@
 # nada lo consume todavía. Curado a eventos de decisión: cada elemento lleva `fichas:` (CK-NN de
 # esta célula, o I-NN/DH-NN cuando cruza célula). NO se cosecha — su SSoT son las fichas del ledger.
 #
-# QUIÉN LO CONSUME: tooling/scripts/gen_arquitectura_cockpit.py VALIDA (fichas resuelven en
-# products/cockpit/LEDGER.md o tooling/strategy/LEDGER.md o products/devhub/LEDGER.md · joins ·
-# enums del harness-descriptor) y emite products/docs/architecture/arquitectura-cockpit.data.js
-# → el shell de products/harness-studio/shell/ lo renderiza (cero código nuevo — I-60 DIP).
+# QUIÉN LO CONSUME: hoy nadie automático — el generador que lo validaba/renderizaba
+# (gen_arquitectura_cockpit.py) quedó en el monorepo legacy y no se portó (deuda CK-10, BL-08).
+# Documentación curada a mano. Rutas actualizadas al repo propio en CK-11 (antes apuntaban a
+# products/cockpit/* del monorepo).
 #
 # CÓMO SE MANTIENE: al firmar una ficha CK-NN que cambia esto, se edita ESTE archivo en el MISMO
-# evento (misma disciplina que I-73). El gate (gen_all.py --check) bloquea fichas rotas y drift.
+# evento (misma disciplina que I-73). Sin gate automático hasta resolver BL-08.
 
 meta:
   id: cockpit-p1
@@ -77,7 +77,7 @@ componentes:
     plano: cockpit-app
     nombre: "Modelo de portfolio (Empresa→Sistema)"
     estado: activo
-    ruta: products/cockpit/ui/lib/portfolio.ts
+    ruta: ui/lib/portfolio.ts
     fichas: [CK-02]
     proposito: "Funciones/tipos puros, SSoT de navegación — extraído Stage 1, cero runtime React/Next."
   - id: cockpit-go-module
@@ -85,7 +85,7 @@ componentes:
     plano: cockpit-app
     nombre: "Módulo Go `cockpit`"
     estado: activo
-    ruta: products/cockpit/go
+    ruta: go
     fichas: [CK-05]
     proposito: "package cockpit — handlers HTTP de Directorio (Portfolio+Negocio), dueño del contrato de esos endpoints desde Stage 2."
   - id: portfolio-api
@@ -93,7 +93,7 @@ componentes:
     plano: cockpit-app
     nombre: "Contrato /api/portfolio"
     estado: activo
-    ruta: products/cockpit/go/portfolio.go
+    ruta: go/portfolio.go
     fichas: [CK-05]
     proposito: "Árbol Empresa→Sistema — RegistryProjects fresh de disco por request (contrato asimétrico documentado en CK-05)."
   - id: negocio-api
@@ -101,7 +101,7 @@ componentes:
     plano: cockpit-app
     nombre: "Contrato /api/negocio"
     estado: activo
-    ruta: products/cockpit/go/negocio.go
+    ruta: go/negocio.go
     fichas: [CK-05]
     proposito: "Hilo de Oro + Brechas por empresa — resuelve contra snapshot de activos del arranque."
   - id: cockpit-shell
@@ -109,7 +109,7 @@ componentes:
     plano: cockpit-app
     nombre: "CockpitShell"
     estado: activo
-    ruta: products/cockpit/ui/components/shell/CockpitShell.tsx
+    ruta: ui/components/shell/CockpitShell.tsx
     fichas: [CK-06]
     proposito: "Shell + nav por rol (Directorio vivo; Área/Consultor placeholder), cockpit-owned, consume COCKPIT_NAV."
   - id: negocio-view
@@ -117,7 +117,7 @@ componentes:
     plano: cockpit-app
     nombre: "NegocioView"
     estado: activo
-    ruta: products/cockpit/ui/components/negocio/NegocioView.tsx
+    ruta: ui/components/negocio/NegocioView.tsx
     fichas: [CK-06]
     proposito: "Hilo de Oro navegable + Brechas — runtime inyectado por props (empresa/tree/setEmpresa), no llama useSistema() directo."
   - id: cockpit-runtime-propio
@@ -125,7 +125,7 @@ componentes:
     plano: cockpit-app
     nombre: "Runtime propio de Cockpit — binario `directorio`"
     estado: activo
-    ruta: products/cockpit/go/cmd/directorio
+    ruta: go/cmd/directorio
     fichas: [CK-07]
     proposito: "cmd/launcher/puerto propios (4100) — el binario N13 (NODOS.md). Envuelve cockpit-go-module + cockpit-shell (ahora Next app independiente), sin pasar por el binario de DevHub ni importar su paquete."
   - id: motor-discovery
@@ -135,6 +135,20 @@ componentes:
     estado: pendiente
     fichas: [I-74]
     proposito: "La mitad de P1 aún no construida — As-Is/To-Be/gaps, razonamiento server-side (N1 en NODOS.md). Campaña propia, sin fecha; sigue siendo P1, no un tercer producto."
+  - id: app-auditor
+    tipo: servicio
+    plano: cockpit-app
+    nombre: "App del Auditor (Consultor)"
+    estado: pendiente
+    fichas: [CK-11]
+    proposito: "Aplicación instalable propia del consultor (patrón harness-studio/dev-studio) — opera el método (sistema/metodo/proceso) y publica su resultado al repo de la empresa cliente: 'deploy de procesos', como código a producción pero con procesos/roles/objetivos que Cockpit entiende y renderiza. BL-15..BL-17."
+  - id: prep-auditoria
+    tipo: backend
+    plano: cockpit-app
+    nombre: "Preparación para auditoría (gap-check vs norma)"
+    estado: pendiente
+    fichas: [CK-10]
+    proposito: "Capability futura declarada en VISION §ISO: compara el estado modelado del cliente contra cláusulas de la norma y reporta gaps. Se activa solo con demanda real; NUNCA emite certificados (límite I-05). BL-14."
 
   # — contrato de datos (destino, a diseñar) —
   - id: contrato-datos
@@ -158,7 +172,7 @@ componentes:
     plano: devhub-externo
     nombre: "DevHub — Delivery (binario `cockpit`, N5)"
     estado: activo
-    ruta: products/devhub/go
+    ruta: "~/Proyectos/devhub/go (repo propio, externo)"
     fichas: [DH-01]
     proposito: "Tablero SDD, capabilities, releases — creciendo por ROL (CTO vs developer). Fuente de datos de Cockpit, célula y ledger propios (DH-NN)."
 
@@ -168,6 +182,9 @@ relaciones:
   - { from: rol-area,              to: cockpit-shell,           tipo: usa }
   - { from: rol-consultor,         to: cockpit-shell,           tipo: usa }
   - { from: rol-consultor,         to: motor-discovery,         tipo: usa }        # futuro
+  - { from: rol-consultor,         to: app-auditor,             tipo: usa }        # futuro — su aplicación propia (CK-11)
+  - { from: app-auditor,           to: cockpit-runtime-propio,  tipo: alimenta }   # futuro — publica procesos al repo cliente que `directorio` lee
+  - { from: prep-auditoria,        to: negocio-api,             tipo: usa }        # futuro — compara estado modelado vs cláusulas
   - { from: cockpit-shell,         to: negocio-view,            tipo: compone }
   - { from: cockpit-shell,         to: portfolio-model,         tipo: usa }
   - { from: negocio-view,          to: negocio-api,             tipo: usa }

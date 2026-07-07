@@ -1,24 +1,16 @@
-# docs/ — investigación, mockups, arquitectura y metodología heredados
+# docs/ — documentación de las capabilities construidas
 
-Material rescatado de la incubadora (`prenter-harness`) y de campañas efímeras en `~/Proyectos/`
-al graduar Cockpit a repo propio (2026-07-06, CK-10). Objetivo: no re-gastar tokens
-redescubriendo investigación ya hecha. Lee el `README.md` de cada subcarpeta antes de investigar
-un tema a fondo — probablemente ya se investigó.
+Zona CAPABILITIES de la tríada (CK-11): documentation-as-code de lo **ya desarrollado y
+funcional** (el código vive en `go/` y `ui/`).
 
-- [`research/`](./research/) — campañas de investigación y decisiones de producto (cockpit-negocio,
-  modelo-objeto, service design).
-- [`mockups/`](./mockups/) — vacío a propósito: ver nota abajo sobre Prospera.
-- [`architecture/`](./architecture/) — arquitectura BYOC del ecosistema y el Motor de Discovery
-  (N1) heredados del monorepo.
-- [`methodology/`](./methodology/) — catálogo de metodologías (BPMN, APQC PCF, ISO 9001/30414,
-  RACI, OKR, Hoshin Kanri, BSC, COBIT, TiSDD, etc.) y el precedente ISO (I-05).
+- [`INCREMENT.md`](./INCREMENT.md) — **Product Increment**: registro de capabilities funcionales
+  verificadas. La puerta de entrada: nada figura aquí sin correr de verdad.
+- Documentación por capability — a medida que crezcan (hoy el arranque está en el
+  [`README.md`](../README.md) raíz: puertos, scripts, dev).
 
-## Lo que NO viajó, deliberadamente (doctrina "cero data de cliente")
+Las otras zonas: [`../sistema/`](../sistema/) (arquitectura, schemas, método — el sistema
+as-code) · [`../proyecto/`](../proyecto/) (backlog, research — organización del trabajo).
 
-El mockup visual real del deal Prospera (`mockup-cockpit-prospera.html`), su deck comercial y su
-pricing siguen en el repo hermano `prenter/clientes/prospera/` (la EMPRESA, no el producto) —
-consultar ahí para ver la referencia visual real de la Vista de Negocio. Tampoco viajaron
-`prenter/marketing/source/{offerings/dashboard-directorio.md,pricing.yaml}` (posicionamiento y
-precio del producto vendido) — son GTM de la empresa, no del motor. Lo que SÍ viajó es la versión
-ya genérica/ficticia del mismo patrón (persona "Mateo Salas / Inmobiliaria Vértice" en
-`research/service-design/`).
+> Nota histórica: hasta CK-11 este directorio contenía la herencia de la incubadora
+> (architecture/methodology/research/mockups). Se redistribuyó en la tríada: architecture y
+> methodology → `sistema/` · research y mockups → `proyecto/research/`.

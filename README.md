@@ -12,9 +12,18 @@ PDCA, sin el aparato de certificación).
 - Visión — [`VISION.md`](./VISION.md)
 - Decisiones — [`LEDGER.md`](./LEDGER.md) (fichas `CK-NN` — historia CK-01..CK-09 en la incubadora
   `prenter-harness`)
-- Investigación y mockups heredados — [`docs/research/`](./docs/research/) ·
-  [`docs/mockups/`](./docs/mockups/) · [`docs/architecture/`](./docs/architecture/) ·
-  [`docs/methodology/`](./docs/methodology/)
+
+## Las tres zonas (CK-11)
+
+- [`sistema/`](./sistema/) — el sistema as-code: arquitectura y despliegue
+  (`sistema/arquitectura/`), método del servicio/auditor (`sistema/metodo/`), schemas de dominio
+  (`sistema/schema/`).
+- **Capabilities construidas** — código (`go/`, `ui/`) + [`docs/`](./docs/) (documentation-as-code;
+  registro funcional en [`docs/INCREMENT.md`](./docs/INCREMENT.md)).
+- [`proyecto/`](./proyecto/) — organización del trabajo: **System Backlog**
+  ([`proyecto/backlog.yaml`](./proyecto/backlog.yaml), vista en
+  [`proyecto/BACKLOG.md`](./proyecto/BACKLOG.md)) + research heredada
+  ([`proyecto/research/`](./proyecto/research/)).
 
 ## Código
 

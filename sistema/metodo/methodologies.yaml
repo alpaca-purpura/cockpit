@@ -7,7 +7,7 @@
 # Editar AQUÍ, no en el .md. Validar:  python3 tooling/scripts/validate_schema.py
 
 _meta:
-  fuente_humana: "service/methodology/METODOLOGIA.md §4 (compendio narrativo)"
+  fuente_humana: "sistema/metodo/METODOLOGIA.md §4 (compendio narrativo)"
   total: 31
   backbone: "objeto (capa de contexto / Hilo de Oro)"
 

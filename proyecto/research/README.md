@@ -14,14 +14,16 @@ campaña. `phases/phase-4.md` es el que linkea el mockup Prospera como referenci
 ## [`modelo-objeto/`](./modelo-objeto/)
 El modelo de datos detrás de la Vista de Negocio: 9 entidades (empresa · persona · rol · área ·
 proceso · sistema · objetivo · capability · brecha). Empieza por `INDICE.md` y `DECISIONES.md`
-(D-01..D-16). `objeto.schema.yaml` es el contrato de forma; `ejemplo-vertice.yaml` es fixture
-ficticia (Inmobiliaria Vértice, no Prospera real). `metodologia/` tiene 5 documentos temáticos
-(brechas, objetivos, entidades, glosario, procesos).
+(D-01..D-16). El contrato de forma (`objeto.schema.yaml`) se promovió a
+[`sistema/schema/`](../../sistema/schema/objeto.schema.yaml) en CK-11 — aquí queda la campaña que
+lo produjo. `ejemplo-vertice.yaml` es fixture ficticia (Inmobiliaria Vértice, no Prospera real).
+`metodologia/` tiene 5 documentos temáticos (brechas, objetivos, entidades, glosario, procesos).
 
 ## [`service-design/`](./service-design/)
 Cómo Cockpit se diseña a sí mismo con This Is Service Design Doing (mapa de actores → persona →
 journey map → service blueprint → interfaces). `SERVICE-DESIGN.md` es el documento más avanzado
 del monorepo de origen — persona ficticia "Mateo Salas, dueño Inmobiliaria Vértice" (no confundir
-con la Prospera real). `M1-LEVANTAMIENTO.md` es el diseño del módulo de levantamiento con el motor
-de gap analysis (objeto-gap: nodo·tipo·nivel AS-IS·nivel TO-BE·delta·severidad·confianza). Este
-conjunto es la base directa de la mecánica As-Is→To-Be→brecha de `VISION.md`.
+con la Prospera real). El diseño del módulo de levantamiento con el motor de gap analysis
+(`M1-LEVANTAMIENTO.md`) y la fixture Vértice se promovieron a
+[`sistema/metodo/`](../../sistema/metodo/) en CK-11 (método as-code). Este conjunto es la base
+directa de la mecánica As-Is→To-Be→brecha de `VISION.md`.

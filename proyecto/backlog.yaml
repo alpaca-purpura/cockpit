@@ -1,0 +1,249 @@
+# backlog.yaml — System Backlog de Cockpit como dato (CK-11)
+#
+# QUÉ ES: SSoT del trabajo pendiente del sistema, organizado por subsistema ("columna").
+# Mismo patrón que sistema/arquitectura/arquitectura.yaml (as-code, curado a mano): se edita
+# en el MISMO evento que la decisión que lo cambia. La vista humana es BACKLOG.md — se
+# actualiza en el mismo evento, jamás divergen.
+#
+# DISCIPLINA ("nacemos ordenados", CK-11):
+# - Idea/necesidad nueva → entra aquí PRIMERO (estado: pendiente). Se construye después.
+# - Tomar trabajo → estado: en-curso. Terminado Y verificado → estado: hecho; si es capability
+#   funcional, entrada en docs/INCREMENT.md en el mismo evento.
+# - Decisión de alcance/arquitectura/visión → ficha CK-NN en LEDGER.md; el ítem la referencia.
+# - La PRIORIDAD la firma el operador. Las de abajo son propuesta inicial (auditoría CK-11).
+
+meta:
+  id: cockpit-backlog
+  nombre: "System Backlog — Cockpit"
+  version: 0.1.0
+  creado: CK-11
+  proposito: >-
+    Un solo lugar para saber qué falta del SISTEMA (transversal) y qué falta de cada
+    subsistema/aplicación. Reemplaza el backlog fragmentado que la auditoría CK-11 encontró
+    repartido entre VISION §TBD, arquitectura.yaml (estado: pendiente), LEDGER "Siguiente:" y
+    campañas de research.
+
+# ---- SUBSISTEMAS = las columnas ----
+subsistemas:
+  - id: sistema
+    nombre: "Sistema (transversal)"
+    sub: "lo que define el sistema, no una app: arquitectura, schemas, método, design system, disciplina"
+  - id: vista-negocio
+    nombre: "Vista Negocio (N13)"
+    sub: "binario `directorio` + UI embebida — construida, en evolución"
+  - id: motor-discovery
+    nombre: "Motor de Discovery (N1 ★IP)"
+    sub: "ingesta multi-fuente, As-Is→To-Be→gaps, razonamiento server-side — sin construir"
+  - id: app-auditor
+    nombre: "App del Auditor (Consultor)"
+    sub: "aplicación instalable propia del consultor (patrón harness-studio/dev-studio); opera el método y publica procesos al repo del cliente — declarada CK-11, sin construir"
+  - id: contrato-datos
+    nombre: "Contrato de datos DevHub→Cockpit"
+    sub: "Pull API diseñada (CK-08), sin código — gatillo: primer consumidor real"
+
+# ---- ITEMS ----
+items:
+
+  # — sistema (transversal) —
+  - id: BL-01
+    subsistema: sistema
+    titulo: "Persona/puesto como entidad de primera clase"
+    detalle: >-
+      negocio.schema modela objetivo/área/proceso/brecha; "puesto" es texto libre dentro de
+      proceso. Modelar el pilar Personas de verdad. El hueco más grande declarado.
+    origen: "VISION §TBD · CK-10 'Siguiente'"
+    prioridad: alta
+    estado: pendiente
+    fichas: [CK-10]
+
+  - id: BL-02
+    subsistema: sistema
+    titulo: "Reconciliar objeto.schema (9 entidades) ↔ negocio.schema implementado (4)"
+    detalle: >-
+      sistema/schema/objeto.schema.yaml se declara SSoT (9 entidades: empresa/persona/rol/área/
+      proceso/sistema/objetivo/capability/brecha) pero el código solo implementa 4. Decidir cuál
+      es el contrato vigente y el camino de convergencia. Conecta con BL-01.
+    origen: "auditoría CK-11"
+    prioridad: alta
+    estado: pendiente
+    fichas: []
+
+  - id: BL-03
+    subsistema: sistema
+    titulo: "Terminar arquitectura / diagrama de despliegue"
+    detalle: >-
+      NODOS.md (13 nodos, BYOC) heredado incompleto — el operador lo declara "falta terminar".
+      Incluye incorporar la App del Auditor al mapa de despliegue.
+    origen: "operador, sesión CK-11"
+    prioridad: alta
+    estado: pendiente
+    fichas: [CK-11]
+
+  - id: BL-04
+    subsistema: sistema
+    titulo: "Design system + atomic design + Storybook as-code"
+    detalle: >-
+      No existe aún en el repo. Toda capability nueva de UI debe construirse contra él
+      (doctrina CK-11). Definirlo antes de la próxima vista nueva.
+    origen: "operador, sesión CK-11"
+    prioridad: media
+    estado: pendiente
+    fichas: [CK-11]
+
+  - id: BL-05
+    subsistema: sistema
+    titulo: "Poblar el método: M1 beats 2-3 · M3 etapas 1-5"
+    detalle: >-
+      sistema/metodo/proceso/ tiene poblados M1 Beat 1 (6 pasos) y M3 Etapa 0. El resto son
+      esqueletos (_etapa.md sin pasos).
+    origen: "sistema/metodo/proceso/README.md"
+    prioridad: media
+    estado: pendiente
+    fichas: []
+
+  - id: BL-06
+    subsistema: sistema
+    titulo: "negocio.schema vive en el plugin del harness, no en el repo"
+    detalle: >-
+      go/negocio.go valida contra una reimplementación (validateNegocio); el schema YAML lo
+      aporta el plugin. Decidir SSoT: ¿traer el schema al repo (sistema/schema/) o dejarlo en
+      el kit?
+    origen: "auditoría CK-11"
+    prioridad: media
+    estado: pendiente
+    fichas: []
+
+  - id: BL-07
+    subsistema: sistema
+    titulo: "Destilar research: separar salidas de sistema vs narrativa de campaña"
+    detalle: >-
+      proyecto/research/ mezcla material de organización con artefactos cristalizados de
+      sistema. objeto.schema ya se promovió (CK-11); revisar el resto sobre la marcha.
+    origen: "operador: 'vamos destilando en el camino'"
+    prioridad: media
+    estado: en-curso
+    fichas: [CK-11]
+
+  - id: BL-08
+    subsistema: sistema
+    titulo: "Decidir render de arquitectura.yaml (generador no portado)"
+    detalle: >-
+      gen_arquitectura_cockpit.py quedó en el monorepo; el YAML es documentación curada a mano.
+      ¿Vale un render propio?
+    origen: "deuda CK-10"
+    prioridad: baja
+    estado: pendiente
+    fichas: [CK-10]
+
+  - id: BL-09
+    subsistema: sistema
+    titulo: "Borrar carpetas ~/Proyectos/campaign-* originales"
+    detalle: >-
+      Contenido ya rescatado en proyecto/research/. Borrado pendiente — decisión del operador.
+    origen: "deuda CK-10"
+    prioridad: baja
+    estado: pendiente
+    fichas: [CK-10]
+
+  - id: BL-10
+    subsistema: sistema
+    titulo: "Comprador con nombre y cara · pricing · éxito a 12 meses"
+    detalle: >-
+      TBD heredado de CK-01, sin gate bloqueante (I-71 lo derogó). Contexto útil para priorizar
+      este backlog.
+    origen: "VISION §TBD"
+    prioridad: baja
+    estado: pendiente
+    fichas: []
+
+  # — vista-negocio (N13) —
+  - id: BL-11
+    subsistema: vista-negocio
+    titulo: "Rol Área real (hoy placeholder 'próximamente')"
+    detalle: "Su rebanada de procesos/sistemas. Declarado desde CK-01, placeholder en CockpitShell."
+    origen: "arquitectura.yaml (rol-area: declarado)"
+    prioridad: media
+    estado: pendiente
+    fichas: [CK-01, CK-06]
+
+  - id: BL-12
+    subsistema: vista-negocio
+    titulo: "Auth / roles reales"
+    detalle: "No hay auth. Gate para cualquier despliegue multi-usuario en cliente."
+    origen: "auditoría CK-11"
+    prioridad: media
+    estado: pendiente
+    fichas: []
+
+  # — motor-discovery (N1) —
+  - id: BL-13
+    subsistema: motor-discovery
+    titulo: "Campaña N1: diseño → construcción del Motor de Discovery"
+    detalle: >-
+      La mitad ★IP sin construir: ingesta multi-fuente, As-Is→To-Be→gaps sobre los 4 pilares.
+      Diseño heredado en sistema/arquitectura/NODOS.md#n1. Decidir arranque de campaña.
+    origen: "VISION §TBD · CK-10 'Siguiente'"
+    prioridad: tbd
+    estado: pendiente
+    fichas: [CK-10]
+
+  - id: BL-14
+    subsistema: motor-discovery
+    titulo: "Capability 'preparación para auditoría' (gap-check vs cláusulas ISO)"
+    detalle: >-
+      Declarada CK-10, se activa solo con demanda real de un cliente. Nunca emite certificados
+      (límite I-05).
+    origen: "VISION §ISO (CK-10)"
+    prioridad: tbd
+    estado: pendiente
+    fichas: [CK-10]
+
+  # — app-auditor —
+  - id: BL-15
+    subsistema: app-auditor
+    titulo: "Definir el producto App del Auditor"
+    detalle: >-
+      Aplicación instalable propia del consultor (patrón harness-studio/dev-studio): alcance,
+      stack, cómo embebe el método (sistema/metodo/). Primera ficha de diseño del subsistema.
+    origen: "operador, sesión CK-11"
+    prioridad: alta
+    estado: pendiente
+    fichas: [CK-11]
+
+  - id: BL-16
+    subsistema: app-auditor
+    titulo: "Embeber el método como flujo operable (m1 levantamiento · m2 mantenimiento · m3 espinazo)"
+    detalle: >-
+      El proceso-como-dato de sistema/metodo/proceso/ ejecutable desde la app: carriles
+      consultor/cliente/sistema, provenance, AS-IS sellado.
+    origen: "operador, sesión CK-11"
+    prioridad: alta
+    estado: pendiente
+    depende: [BL-15]
+    fichas: [CK-11]
+
+  - id: BL-17
+    subsistema: app-auditor
+    titulo: "Publicación al repo del cliente — 'deploy de procesos'"
+    detalle: >-
+      El resultado del trabajo del consultor se conecta al repositorio propio de la empresa
+      cliente para actualizar el sistema — como un programador que carga código a producción,
+      pero el artefacto son procesos/roles/objetivos que Cockpit entiende y renderiza.
+    origen: "operador, sesión CK-11"
+    prioridad: alta
+    estado: pendiente
+    depende: [BL-15]
+    fichas: [CK-11]
+
+  # — contrato-datos —
+  - id: BL-18
+    subsistema: contrato-datos
+    titulo: "Implementar Pull API DevHub→Cockpit"
+    detalle: >-
+      GET /api/contrato/directorio?sistema=... con envelope {contract_version, data} + cliente
+      devhubclient.go. Gatillo explícito: primera vista que necesite dato real de DevHub (p.ej.
+      Motor de Discovery). No antes — disciplina anti-código-especulativo.
+    origen: "CK-08 (diseño congelado)"
+    prioridad: tbd
+    estado: pendiente
+    fichas: [CK-08]

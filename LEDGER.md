@@ -59,10 +59,61 @@ heredado y ampliado aquí).
 *Siguiente:* modelar persona/puesto como entidad de primera clase (CK-11) · decidir si el Motor de
 Discovery (N1) arranca campaña propia.
 
-<!-- Próximas: CK-11, … -->
+### CK-11 · Nacemos ordenados — tríada sistema/capabilities/proyecto · método del auditor migrado · System Backlog — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-07):* "¿Tenemos product backlog y product increment? Audita — y no
+confundas lo que es SISTEMA (arquitectura, metodología, doctrina as-code; se llama sistema porque
+tiene múltiples puntos de despliegue) con los capabilities YA desarrollados (documentation-as-code)
+ni con los documentos de cómo me organizo para construir ('Proyecto'). Organiza el trabajo
+pendiente en un system backlog con una columna por subsistema/aplicación y dame un medio para
+hacerlo contigo de forma ordenada — nacemos ordenados. Antes, audita la migración desde
+`prenter-harness` (legacy): las cosas de servicio deberían venir también, ya que estará embebida
+en la aplicación del auditor."
+
+*Desarrollo:* auditoría de 2 subagentes (inventario cockpit + legacy). Hallazgos: (1) migración de
+código completa y verificada (módulo renombrado, tests verdes), pero **método de servicio
+incompleto** — faltaban `M3-ESPINAZO.md`, `PROCESS-AS-DATA.md` y `service/process/` completo
+(proceso-como-dato m1/m2/m3); (2) **no existía backlog ni increment** como artefactos — el trabajo
+pendiente estaba fragmentado en VISION §TBD, `arquitectura.yaml` (`estado: pendiente`), LEDGER
+"Siguiente:" y campañas de research; (3) la tríada estaba mezclada (`objeto.schema.yaml` enterrado
+bajo research; VISION declaraba la capability prep-auditoría "en arquitectura.yaml" pero el YAML
+no la tenía — drift). Ejecutado: migración completada (`sistema/metodo/{M3-ESPINAZO,
+PROCESS-AS-DATA,proceso/}`, refs `service/methodology/*` reescritas); **reorganización en tríada**
+— `sistema/` (arquitectura + metodo + schema), capabilities = código + `docs/`
+(`docs/INCREMENT.md` nuevo, 6 capabilities verificadas), `proyecto/` (backlog + research);
+`objeto.schema.yaml` promovido a `sistema/schema/`; fixture Vértice deduplicada (SSoT en
+`sistema/metodo/proceso/_sample/`); **System Backlog** sembrado con BL-01..BL-18 en 5 columnas
+(sistema · vista-negocio · motor-discovery · app-auditor · contrato-datos); drift corregido en
+`arquitectura.yaml` (rutas `products/cockpit/*` → rutas del repo; componentes `app-auditor` y
+`prep-auditoria` añadidos).
+
+**Forks firmados (respuestas del operador en sesión):**
+- **App del Auditor = subsistema propio.** Aplicación instalable del Consultor (patrón
+  harness-studio/dev-studio); su resultado se publica al repositorio de la empresa cliente —
+  "deploy de procesos": como código a producción, pero el artefacto son procesos/roles/objetivos
+  que Cockpit entiende y renderiza. Nueva columna del backlog + componente en arquitectura.yaml +
+  VISION §Arquitectura (que pasa de "dos mitades" a "las piezas").
+- **Backlog = as-code.** `proyecto/backlog.yaml` SSoT + `BACKLOG.md` vista curada (mismo evento,
+  jamás divergen); disciplina cableada en `CLAUDE.md` y `proyecto/README.md`.
+- **Migración de servicio = copiar ya, destilar en el camino** (BL-07 queda `en-curso`).
+
+**Deudas declaradas:**
+- Research sin destilar del todo — mezcla narrativa de campaña con salidas de sistema (BL-07).
+- `NODOS.md` sigue reflejando estados pre-Stage-4 en varias fichas de nodo (p.ej. contrato de
+  datos "a diseñar" cuando CK-08 ya lo diseñó) — se corrige al terminar la arquitectura (BL-03).
+- Prioridades del backlog = propuesta de la auditoría; faltan firmas del operador.
+
+*Conecta:* CK-10 (deudas heredadas → BL-01/BL-08/BL-09) · CK-08 (contrato de datos → BL-18) ·
+I-05 (límite de prep-auditoria) · I-39 (Prospera sigue fuera, sin cambio).
+
+*Siguiente:* operador firma prioridades del backlog · arrancar BL-15 (definir App del Auditor) o
+BL-01/BL-02 (modelo de datos persona/puesto + reconciliación de schemas) como primera campaña.
+
+<!-- Próximas: CK-12, … -->
 
 ## Log
 
 | Fecha | Decisión | Fichas |
 |---|---|---|
 | 2026-07-06 | Graduación de P1 con visión ampliada (4 pilares: procesos/roles/objetivos/personas, marco ISO intermedio); código migrado y verificado standalone; investigación/mockups heredados curados en `docs/`; kit dev como plugin. | CK-10 |
+| 2026-07-07 | Nacemos ordenados: tríada `sistema/`·capabilities·`proyecto/`; método del auditor completado desde el legacy (M3, PROCESS-AS-DATA, proceso m1/m2/m3); System Backlog as-code (BL-01..BL-18, 5 columnas) + `docs/INCREMENT.md`; App del Auditor declarada como subsistema. | CK-11 |

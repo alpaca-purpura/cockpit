@@ -9,7 +9,7 @@ exclusivos de Cockpit. Al leerlos, los nodos relevantes para ESTE producto son:
   ya documentados — es la especificación más detallada que existe de la mitad de Cockpit que falta
   construir (`VISION.md` la llama Motor de Discovery).
 - **N2 · Playbook + Metodología** — la base de conocimiento como dato versionado que N1
-  compilaría en instrucciones — hoy vive en [`../methodology/`](../methodology/).
+  compilaría en instrucciones — hoy vive en [`../metodo/`](../metodo/).
 - **N4 · Plano Conversación** — entrevistas de levantamiento por voz.
 - **N7 · Agentes de análisis/levantamiento** — trabajadores efímeros que leen sistemas del cliente
   y escriben AS-IS.
@@ -26,8 +26,9 @@ de este repo.
 DevHub en el mismo binario, antes de Stage 4). Histórico, útil para entender por qué el código
 está estructurado como está.
 
-`../../arquitectura.yaml` (raíz del repo) — el modelo de la arquitectura de Cockpit como dato,
+[`arquitectura.yaml`](./arquitectura.yaml) — el modelo de la arquitectura de Cockpit como dato,
 heredado de la disciplina "arquitectura-como-dato" del monorepo. Sus `fichas:` (CK-NN) referencian
 todavía la historia congelada (CK-01..CK-08) — el generador que lo validaba/renderizaba
 (`gen_arquitectura_cockpit.py`) no se portó; queda como documentación curada a mano hasta decidir
-si vale la pena un render propio en este repo (deuda declarada en `LEDGER.md` CK-10).
+si vale la pena un render propio en este repo (deuda declarada en `LEDGER.md` CK-10, ítem BL-08
+del backlog).

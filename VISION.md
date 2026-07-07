@@ -20,7 +20,7 @@ y mejora continua** de los cuatro objetos que sostienen a cualquier empresa:
 El eje es **gestión empresarial basada en buenas prácticas de normas ISO** — no como aparato de
 certificación, sino como **ontología y disciplina operativa** (ver §ISO más abajo). Es un sistema
 de **gran escala** con arquitectura empresarial: se despliega en la infraestructura del cliente
-(BYOC — arquitectura de referencia heredada en `docs/architecture/`).
+(BYOC — arquitectura de referencia heredada en `sistema/arquitectura/`).
 
 **Core del sistema:** acompañar a la empresa mediante la **ingesta de datos de múltiples
 fuentes** (sistemas manuales, documentos, interfaces conversacionales) para modelar su estado
@@ -35,7 +35,7 @@ medida (histórico: P2 · DevHub, hoy graduado y externo).
 ## Los cuatro pilares
 
 Cada pilar tiene metodologías de respaldo ya investigadas y curadas en
-[`docs/methodology/`](./docs/methodology/) (portadas desde el catálogo de 31 fichas del monorepo,
+[`sistema/metodo/`](./sistema/metodo/) (portadas desde el catálogo de 31 fichas del monorepo,
 filtradas a las que aplican a gestión empresarial — se dejaron atrás las de construcción de
 software, que son dominio de DevHub/Kit):
 
@@ -53,7 +53,7 @@ y sistemas en una sola vista para el Directorio.
 **This Is Service Design Doing** es el método con el que Cockpit se diseña A SÍ MISMO (mapa de
 actores → persona → journey map → service blueprint → interfaces) — no es una metodología que el
 producto le enseñe al cliente, es la disciplina interna con la que cada pantalla nueva se
-justifica antes de construirse (ver `docs/research/service-design/`).
+justifica antes de construirse (ver `proyecto/research/service-design/`).
 
 ## ISO — marco entre ambos (decisión CK-10)
 
@@ -66,8 +66,9 @@ capital humano para el pilar Personas. Esto se usa como **estructura del dato** 
 **Decisión CK-10 (ampliación sobre I-05):** Cockpit declara, además, una capability **futura**
 de "preparación para auditoría" — un módulo que compara el estado modelado del cliente contra
 las cláusulas de la norma y reporta gaps — sin construir el aparato de certificación/control
-documental completo. Es una capability `estado: pendiente` en `arquitectura.yaml` desde el día
-uno: se activa cuando exista demanda real de un cliente que la pida, nunca antes (disciplina
+documental completo. Es una capability `estado: pendiente` en
+`sistema/arquitectura/arquitectura.yaml` desde el día uno: se activa cuando exista demanda real
+de un cliente que la pida, nunca antes (disciplina
 anti-código-especulativo, heredada del monorepo). El sistema **nunca** emite certificados ni
 sustituye a un auditor — el veredicto I-05 sigue rigiendo el límite.
 
@@ -76,11 +77,13 @@ sustituye a un auditor — el veredicto I-05 sigue rigiendo el límite.
 - **Directorio** — el mapa vivo de la organización: objetivos, cumplimiento, drill-down. Vivo hoy
   (Vista Negocio).
 - **Área** — su rebanada de procesos/sistemas. Declarado, placeholder en el shell.
-- **Consultor** (nuestro) — en la fase de implantación; a futuro opera el Motor de Discovery.
+- **Consultor** (nuestro) — en la fase de implantación; a futuro opera el Motor de Discovery
+  desde su aplicación propia (App del Auditor, CK-11 — §Arquitectura).
 
-## Arquitectura — las dos mitades de Cockpit
+## Arquitectura — las piezas de Cockpit
 
-Heredado de CK-07/CK-08 (Stage 4, ejecutado — ver `docs/architecture/NODOS.md`):
+Heredado de CK-07/CK-08 (Stage 4, ejecutado) y ampliado por CK-11 — ver
+`sistema/arquitectura/NODOS.md`:
 
 - **Vista Negocio (N13)** — la mitad **ya construida**: binario propio `directorio` (Go, puerto
   4100) + Next.js standalone (puerto 4101, embebido como export estático vía `go:embed`). Sirve
@@ -91,8 +94,14 @@ Heredado de CK-07/CK-08 (Stage 4, ejecutado — ver `docs/architecture/NODOS.md`
 - **Motor de Discovery (N1, ★IP)** — la mitad **aún no construida**: backend de razonamiento
   server-side (ingesta multi-fuente, orquesta AS-IS→TO-BE→gaps sobre los 4 pilares). Diseño
   detallado (stack candidato, endpoints, riesgos abiertos) heredado en
-  `docs/architecture/NODOS.md#n1`. Campaña propia, sin fecha — sigue siendo Cockpit, no un
+  `sistema/arquitectura/NODOS.md#n1`. Campaña propia, sin fecha — sigue siendo Cockpit, no un
   producto aparte.
+- **App del Auditor (declarada CK-11, sin construir)** — la aplicación instalable **propia del
+  Consultor** (patrón harness-studio/dev-studio): opera el método del servicio
+  (`sistema/metodo/` — levantamiento m1, mantenimiento m2, espinazo m3) durante el engagement y
+  **publica su resultado al repositorio propio de la empresa cliente** para actualizar el
+  sistema — como un programador que carga código a producción, solo que el artefacto son
+  procesos/roles/objetivos que Cockpit entiende y renderiza (BL-15..BL-17 del backlog).
 
 El contrato de datos que alimenta a Cockpit desde sistemas externos ya está diseñado (Pull API,
 envelope versionado `{contract_version, data}`, CK-08) aunque sin implementar — nada lo consume
@@ -114,15 +123,16 @@ Todo Stage 1-4 (CK-02, CK-05, CK-06, CK-07/CK-08 en la historia congelada) migra
 standalone en este repo**: modelo de portfolio (`ui/lib/portfolio.ts`, 25 tests), módulo Go propio
 (`go/`, handlers `/api/portfolio`+`/api/negocio`), vistas + shell propio (`ui/components/`), runtime
 propio (binario `directorio`, sin dependencia de ningún otro binario). Investigación y mockups
-previos rescatados en [`docs/research/`](./docs/research/) (campañas "cockpit-negocio" y
-"modelo-objeto") y [`docs/mockups/`](./docs/mockups/) — ver el índice de cada carpeta antes de
-retomar una investigación a fondo, para no re-gastar tokens redescubriendo lo ya hecho.
+previos rescatados en [`proyecto/research/`](./proyecto/research/) (campañas "cockpit-negocio" y
+"modelo-objeto") — ver el índice de cada carpeta antes de retomar una investigación a fondo,
+para no re-gastar tokens redescubriendo lo ya hecho.
 
 **No migrado deliberadamente (doctrina "cero data de cliente" — I-39 del monorepo):** el mockup
 visual real del deal Prospera y su pricing/deck comercial siguen en
 `prenter/clientes/prospera/` (repo hermano, EMPRESA) — se referencian, no se copian. Lo que SÍ
 viajó de ese material es la versión ya genérica/ficticia (persona "Mateo Salas /
-Inmobiliaria Vértice") usada en `docs/research/service-design/`.
+Inmobiliaria Vértice") usada en `proyecto/research/service-design/` y
+`sistema/metodo/proceso/_sample/`.
 
 ## TBD — el hueco más grande a cerrar
 
@@ -136,5 +146,10 @@ Inmobiliaria Vértice") usada en `docs/research/service-design/`.
 
 ## Gestión
 
-Backlog vivo: fichas `CK-NN` en el [`LEDGER.md`](./LEDGER.md) de este repo (continúa la numeración
-de la célula original — CK-10 en adelante).
+Desde CK-11 ("nacemos ordenados"):
+
+- **Trabajo pendiente** — System Backlog en [`proyecto/backlog.yaml`](./proyecto/backlog.yaml)
+  (SSoT, columnas por subsistema; vista humana [`proyecto/BACKLOG.md`](./proyecto/BACKLOG.md)).
+- **Decisiones** — fichas `CK-NN` en el [`LEDGER.md`](./LEDGER.md) de este repo (continúa la
+  numeración de la célula original — CK-10 en adelante).
+- **Capabilities funcionales** — [`docs/INCREMENT.md`](./docs/INCREMENT.md) (solo lo verificado).

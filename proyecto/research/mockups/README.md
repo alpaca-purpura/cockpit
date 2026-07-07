@@ -7,4 +7,4 @@ monorepo: "cero data de cliente" en la CLASE). Consultar ahí directamente cuand
 referencia visual real de la Vista de Negocio.
 
 El diagrama de arquitectura de la extracción Stage 1 (no es mockup de producto, es de ingeniería)
-vive en [`../architecture/ck-02-stage1-diagram.html`](../architecture/ck-02-stage1-diagram.html).
+vive en [`sistema/arquitectura/ck-02-stage1-diagram.html`](../../../sistema/arquitectura/ck-02-stage1-diagram.html).

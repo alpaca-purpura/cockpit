@@ -4,7 +4,7 @@
 > monitor — es una **solución que se inserta en la organización y ejecuta el proceso de desarrollo
 > completo** (de empresa desconocida → empresa monitoreada con todos sus gaps → cockpit que mueve KPIs).
 > **Docs base:** [`VISION-DESARROLLOS.md`](../../../tooling/strategy/VISION-DESARROLLOS.md) (§17 planos, §12 contexto, §19 mapa) · [`PRODUCT-VISION.md`](../../../tooling/strategy/PRODUCT-VISION.md) ·
-> [`SERVICE-DESIGN.md`](../../../service/methodology/SERVICE-DESIGN.md) · [`METODOLOGIA.md`](../../../service/methodology/METODOLOGIA.md) · **[`NODOS.md`](./NODOS.md) (12 nodos a nivel arquitecto) · [`despliegue.html`](./despliegue.html)**.
+> [`SERVICE-DESIGN.md`](../../proyecto/research/service-design/SERVICE-DESIGN.md) · [`METODOLOGIA.md`](../metodo/METODOLOGIA.md) · **[`NODOS.md`](./NODOS.md) (12 nodos a nivel arquitecto) · `despliegue.html` (no portado — quedó en el legacy `prenter-harness/products/docs/architecture/`)**.
 > **Decisiones de arquitectura:** producto → [`PRODUCT-VISION.md`](../../../tooling/strategy/PRODUCT-VISION.md) (ledger **I-NN**) · fábrica → [`.claude/harness/DECISIONS.md`](../../../.claude/harness/DECISIONS.md) (**H-NN**). *No hay ADRs en formato MADR; los ledgers I-NN/H-NN son el equivalente (append-only, linteado).*
 > **Hermano (no confundir):** [`.claude/harness/ARCHITECTURE.md`](../../../.claude/harness/ARCHITECTURE.md) = arquitectura del **tooling de fábrica** (Clean+Hexagonal) con que se construye esto; **este** doc = arquitectura del **producto/sistema**.
 > **Última actualización:** 2026-06-21

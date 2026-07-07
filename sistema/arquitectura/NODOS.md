@@ -4,7 +4,7 @@
 > ([`despliegue.html`](./despliegue.html)). Cada ficha permite un *drilldown* para entender el sistema
 > antes de bajar a funcionalidades. Insumo para volver al diseño de servicio (backstage/endpoints) con
 > los límites ya claros.
-> **Docs base:** [`ARCHITECTURE.md`](./ARCHITECTURE.md) · [`PRODUCT-VISION.md`](../../../tooling/strategy/PRODUCT-VISION.md) · [`METODOLOGIA.md`](../../../service/methodology/METODOLOGIA.md)
+> **Docs base:** [`ARCHITECTURE.md`](./ARCHITECTURE.md) · `PRODUCT-VISION.md` (legacy `prenter-harness/tooling/strategy/`) · [`METODOLOGIA.md`](../metodo/METODOLOGIA.md)
 > **Última actualización:** 2026-07-02 — corregido post-I-69: N5 predataba la partición en células P1(Cockpit)/P2(DevHub) y describía "el Cockpit completo" como un solo binario. **N5 ahora = DevHub/Delivery (P2) exclusivamente; N13 (nuevo) = Cockpit/Vista-Negocio (P1).** Ver `I-74`/`CK-07` (`products/cockpit/LEDGER.md`) — dos binarios independientes, DevHub llega a Cockpit vía contrato de datos, no import de código.
 
 ---
