@@ -65,12 +65,12 @@ items:
       sistema/schema/objeto.schema.yaml se declara SSoT (9 entidades: empresa/persona/rol/área/
       proceso/sistema/objetivo/capability/brecha) pero el código solo implementa 4. Decidir cuál
       es el contrato vigente y el camino de convergencia. Conecta con BL-01.
-      Convergencia ARRANCADA en CK-12: contrato vigente = objeto.schema; persona+rol ya se leen
-      del objeto normalizado (/api/personas). Falta el resto de entidades + negocio.yaml→proyección.
+      CERRADO: contrato vigente = objeto.schema (CK-12); /api/objeto lee y valida las 9 entidades
+      JUNTAS (CK-13, CAP-08). El tramo restante (negocio.yaml → proyección generada) = BL-19.
     origen: "auditoría CK-11"
     prioridad: alta
-    estado: pendiente
-    fichas: [CK-12]
+    estado: hecho
+    fichas: [CK-12, CK-13]
 
   - id: BL-03
     subsistema: sistema
@@ -159,6 +159,19 @@ items:
     prioridad: baja
     estado: pendiente
     fichas: []
+
+  - id: BL-19
+    subsistema: sistema
+    titulo: "Voltear negocio.yaml a proyección GENERADA del objeto"
+    detalle: >-
+      El último tramo de la convergencia D-13: negocio.yaml deja de curarse a mano y se deriva
+      del objeto (mecanismo por decidir, D-04: archivo generado vs join-en-vivo en el cockpit).
+      Gatillo: objeto poblado con objetivos y brechas (hoy prenter tiene 0 y 0 — el AS-IS de
+      procesos/roles/sistemas ya está).
+    origen: "CK-13 (deuda declarada) · D-13"
+    prioridad: media
+    estado: pendiente
+    fichas: [CK-13]
 
   # — vista-negocio (N13) —
   - id: BL-11

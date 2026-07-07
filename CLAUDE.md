@@ -29,9 +29,9 @@ schemas, design system cuando exista — BL-04). Prioridades las firma el operad
   Discovery (N1, ★IP, sin construir) y App del Auditor (CK-11, sin construir — instalable, patrón
   harness-studio/dev-studio, publica procesos al repo cliente) — ver `sistema/arquitectura/NODOS.md`.
 - Contrato de datos DevHub→Cockpit: Pull API versionada, diseñada, sin implementar (CK-08).
-- `negocio.schema` modela objetivo/área/proceso/brecha; persona/rol ya son de primera clase
-  (CK-12, CAP-07: `/api/personas` lee el objeto normalizado de `empresa/<tipo>/` del shell —
-  D-15); la convergencia del resto del objeto (9 entidades) sigue en BL-02.
+- El objeto normalizado COMPLETO (9 entidades de `objeto.schema`) se lee y valida entero en
+  `/api/objeto` (CK-13, CAP-08; instancias en `empresa/<tipo>/` del shell — D-15). `negocio.yaml`
+  sigue curado a mano como proyección (D-13); voltearlo a generado = BL-19.
 
 **Estado:** código migrado y verificado standalone (Go build/vet/test + UI tsc/vitest/export
 estático, todos verdes sin dependencias del monorepo de origen). Método del auditor completado

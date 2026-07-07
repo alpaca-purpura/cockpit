@@ -79,7 +79,7 @@ export function PersonasTab({
       {data._warnings && data._warnings.length > 0 && (
         <div className="rounded-md border border-[#5e4a22] bg-[#f5a524]/[0.08] p-3">
           <div className="text-xs font-semibold text-[#f5a524]">
-            ⚠ personas/roles mal formados · {data._warnings.length}{' '}
+            ⚠ objeto mal formado · {data._warnings.length}{' '}
             {data._warnings.length === 1 ? 'aviso' : 'avisos'}
           </div>
           <ul className="mt-1.5 space-y-0.5 font-mono text-[11px] text-[#d4d4d8]">

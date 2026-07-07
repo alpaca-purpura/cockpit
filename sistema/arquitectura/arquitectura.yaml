@@ -104,14 +104,14 @@ componentes:
     ruta: go/negocio.go
     fichas: [CK-05]
     proposito: "Hilo de Oro + Brechas por empresa — resuelve contra snapshot de activos del arranque."
-  - id: personas-api
+  - id: objeto-api
     tipo: contrato
     plano: cockpit-app
-    nombre: "Contrato /api/personas"
+    nombre: "Contrato /api/objeto"
     estado: activo
-    ruta: go/personas.go
-    fichas: [CK-12]
-    proposito: "Personas + roles del objeto normalizado (empresa/<tipo>/ del shell, objeto.schema · D-15) — primera rebanada de la convergencia BL-02; valida refs persona↔rol y reporta_a al leer."
+    ruta: go/objeto.go
+    fichas: [CK-12, CK-13]
+    proposito: "El objeto normalizado COMPLETO (9 entidades de objeto.schema, empresa/<tipo>/ del shell · D-15), validado entero al leer (refs del Hilo cruzan entidades, RACI A==1, enums, ciclos). Nació como /api/personas (CK-12), generalizado y superseded en CK-13."
   - id: cockpit-shell
     tipo: vista
     plano: cockpit-app

@@ -83,15 +83,28 @@ capabilities:
     verificada: 2026-07-06
 
   - id: CAP-07
-    nombre: "API + lente Personas — pilar Personas de primera clase"
+    nombre: "Lente Personas — pilar Personas de primera clase en la Vista de Negocio"
     que_hace: >-
-      GET /api/personas?empresa= lee persona + rol un-archivo-por-entidad del shell
-      (empresa/personas/ + empresa/roles/, objeto.schema · layout plano D-15), valida refs/enums/
-      ciclos de reporta_a (warnings no fatales, espejo de validateNegocio) y los sirve. Cuarta
-      lente "Personas" en la Vista de Negocio: roles con quién los cumple (inverso por scan),
-      vacantes delatadas, procesos que corre cada rol (match puesto↔rol.nombre — puente D-13);
-      visible aun sin negocio.yaml (el pilar vive upstream). Modelo puro TS, 7 tests vitest.
-    rutas: [go/personas.go, ui/lib/personas.ts, ui/components/negocio/PersonasTab.tsx]
-    componentes: [personas-api, negocio-view, cockpit-go-module]
-    fichas: [CK-12]
+      Cuarta lente "Personas" en la Vista de Negocio, consumiendo la rebanada personas/roles de
+      /api/objeto (CAP-08): roles con quién los cumple (inverso por scan), vacantes delatadas
+      ("sin persona asignada"), procesos que corre cada rol (match puesto↔rol.nombre — puente
+      D-13); visible aun sin negocio.yaml (el pilar vive upstream). Modelo puro TS, 7 tests
+      vitest.
+    rutas: [ui/lib/personas.ts, ui/components/negocio/PersonasTab.tsx]
+    componentes: [objeto-api, negocio-view]
+    fichas: [CK-12, CK-13]
+    verificada: 2026-07-07
+
+  - id: CAP-08
+    nombre: "API objeto — GET /api/objeto?empresa= (las 9 entidades)"
+    que_hace: >-
+      El objeto normalizado COMPLETO del shell de la empresa (empresa.yaml = raíz del tenant + 8
+      carpetas un-archivo-por-entidad, objeto.schema · layout plano D-15), validado ENTERO al
+      leer — las refs del Hilo cruzan entidades: ids únicos, toda ref FK/local resuelve, enums,
+      key_results ≥ 1, RACI A exactamente 1, sin ciclos (reporta_a · area.parent_ref),
+      empresa.id == slug. Warnings no fatales. Nació como /api/personas (CK-12), generalizado en
+      CK-13. Verificado contra el shell real de prenter (9 rebanadas, 12 procesos, cero warnings).
+    rutas: [go/objeto.go]
+    componentes: [objeto-api, cockpit-go-module]
+    fichas: [CK-12, CK-13]
     verificada: 2026-07-07

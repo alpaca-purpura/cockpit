@@ -161,7 +161,43 @@ en empresas sin pilar poblado, 400 en empresa desconocida.
 *Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml` (BL-02 reconciliación
 completa del objeto · BL-04 design system antes de la próxima vista nueva).
 
-<!-- Próximas: CK-13, … -->
+### CK-13 · El objeto completo — /api/objeto con las 9 entidades (cierra BL-02) — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-07):* "Termina el resto de entidades."
+
+*Desarrollo:* CK-12 dejó leídas 2 de 9 entidades (persona/rol en `/api/personas`). Las refs del
+Hilo de Oro cruzan entidades (`brecha.against_ref` → capability|proceso|sistema|objetivo;
+`kr.driver_refs` → proceso|capability; `actividad.carril_ref` → rol; `area.lider_ref` → rol…) →
+la validación necesita el objeto ENTERO en un solo chokepoint. Ejecutado:
+
+- **`go/objeto.go` — GET /api/objeto?empresa=**: las 9 entidades (`empresa.yaml` = raíz del
+  tenant + 8 carpetas un-archivo-por-entidad, layout plano D-15), validadas JUNTAS al leer: ids
+  únicos por tipo, toda ref FK y ref local (`#`) resuelve, enums (digital · conf · prio ·
+  procedencia · fuente · sirve_a · tipo_actividad · gap_tipo), `key_results ≥ 1`, RACI A
+  exactamente 1, ids locales únicos dentro del padre, sin ciclos (`reporta_a` ·
+  `area.parent_ref`), `empresa.id == slug`. Warnings no-fatales (patrón `validateNegocio`).
+- **`/api/personas` superseded** la misma sesión en que nació (cero consumidores externos): la
+  lente Personas consume la rebanada personas/roles de `/api/objeto`; componente `personas-api` →
+  `objeto-api` en arquitectura.yaml. Los warnings que ve la lente son ahora del objeto entero —
+  un `carril_ref` colgante en un proceso también delata al pilar Personas.
+- Increment reacomodado: **CAP-07 = la lente Personas** (UI) · **CAP-08 = el API del objeto**.
+
+**Verificación (2026-07-07):** go build/vet/test + tsc + vitest (32 tests) + export estático,
+todos verdes; binario contra el shell real de prenter — el objeto entero servido: empresa +
+1 persona + 7 roles + 5 áreas + 12 procesos (con actividades/RACI) + 8 sistemas + 5 capabilities,
+**cero warnings** (el objeto dogfood está íntegro: todas las refs del Hilo resuelven); la lente
+Personas renderiza igual contra el endpoint nuevo.
+
+**Deuda/siguiente declarado:** el último tramo de la convergencia D-13 — voltear `negocio.yaml` a
+PROYECCIÓN generada del objeto (mecanismo D-04: archivo generado vs join-en-vivo) — nace como
+**BL-19** (gatillo: objeto poblado con objetivos/brechas; hoy prenter tiene 0 y 0).
+
+*Conecta:* CK-12 (primera rebanada) · D-04/D-13/D-15 (mecanismo, proyección, layout) · BL-02
+(cierra) · BL-19 (nace).
+
+*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
+
+<!-- Próximas: CK-14, … -->
 
 ## Log
 
@@ -170,3 +206,4 @@ completa del objeto · BL-04 design system antes de la próxima vista nueva).
 | 2026-07-06 | Graduación de P1 con visión ampliada (4 pilares: procesos/roles/objetivos/personas, marco ISO intermedio); código migrado y verificado standalone; investigación/mockups heredados curados en `docs/`; kit dev como plugin. | CK-10 |
 | 2026-07-07 | Nacemos ordenados: tríada `sistema/`·capabilities·`proyecto/`; método del auditor completado desde el legacy (M3, PROCESS-AS-DATA, proceso m1/m2/m3); System Backlog as-code (BL-01..BL-18, 5 columnas) + `docs/INCREMENT.md`; App del Auditor declarada como subsistema. | CK-11 |
 | 2026-07-07 | Personas de primera clase (cierra BL-01): `/api/personas` + lente Personas leen persona/rol del objeto normalizado (`empresa/<tipo>/` del shell, layout D-15); objeto.schema reconciliado; CAP-07; primera rebanada de la convergencia BL-02. | CK-12 |
+| 2026-07-07 | El objeto completo (cierra BL-02): `/api/objeto` sirve y valida las 9 entidades JUNTAS (refs del Hilo cruzan entidades, RACI A==1, enums, ciclos); supersede `/api/personas`; CAP-08; verificado contra prenter (12 procesos, cero warnings). Nace BL-19 (negocio.yaml → proyección). | CK-13 |

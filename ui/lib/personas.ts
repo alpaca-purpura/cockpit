@@ -1,8 +1,9 @@
 // Personas — pilar Personas del objeto normalizado (BL-01 · CK-12): persona + rol
 // un-archivo-por-entidad en el shell de la empresa (empresa/personas/ + empresa/roles/,
-// sistema/schema/objeto.schema.yaml · layout plano D-15), servidos por
-// /api/personas?empresa=. A diferencia del negocio.yaml (proyección curada, D-13),
-// esto ES la fuente: las entidades upstream del objeto.
+// sistema/schema/objeto.schema.yaml · layout plano D-15). Desde CK-13 se sirven como
+// rebanada de /api/objeto?empresa= (el objeto completo, 9 entidades — /api/personas
+// quedó superseded). A diferencia del negocio.yaml (proyección curada, D-13), esto ES
+// la fuente: las entidades upstream del objeto.
 
 import { request } from './negocio';
 import type { Negocio, NegocioProceso } from './negocio';
@@ -50,10 +51,12 @@ export interface PersonasData {
 }
 
 /**
- * Personas + roles de una EMPRESA (cuelga de ?empresa=, como el negocio). Carpetas
- * ausentes en el shell → listas vacías = empty-state honesto (nunca null: a diferencia
- * del negocio.yaml —un archivo—, acá "no hay carpeta" y "carpeta vacía" son el mismo
- * hecho: el pilar no está poblado).
+ * Personas + roles de una EMPRESA (cuelga de ?empresa=, como el negocio) — la
+ * rebanada Personas de /api/objeto (CK-13). Carpetas ausentes en el shell → listas
+ * vacías = empty-state honesto (nunca null: a diferencia del negocio.yaml —un
+ * archivo—, acá "no hay carpeta" y "carpeta vacía" son el mismo hecho: el pilar no
+ * está poblado). Los warnings son del objeto ENTERO (la validación cruza entidades:
+ * un carril_ref colgante de un proceso también delata al pilar Personas).
  */
 export async function getPersonas(empresa: string): Promise<PersonasData> {
   const data = await request<{
@@ -61,7 +64,7 @@ export async function getPersonas(empresa: string): Promise<PersonasData> {
     roles: Rol[];
     path: string;
     warnings?: string[];
-  }>(`/api/personas?empresa=${encodeURIComponent(empresa)}`);
+  }>(`/api/objeto?empresa=${encodeURIComponent(empresa)}`);
   return {
     personas: data.personas ?? [],
     roles: data.roles ?? [],

@@ -141,8 +141,9 @@ Desde CK-11, el detalle, estado y prioridad de TODO lo pendiente viven en el Sys
 Aquí queda solo el porqué estratégico de los tres huecos mayores:
 
 - **Persona/puesto como entidad de primera clase** (→ BL-01, **cerrado en CK-12**) — persona +
-  rol se leen del objeto normalizado y son visibles en la Vista de Negocio (CAP-07); la
-  convergencia del resto del objeto sigue en BL-02.
+  rol se leen del objeto normalizado y son visibles en la Vista de Negocio (CAP-07). La
+  convergencia de lectura del objeto completo también cerró (BL-02 → CK-13, CAP-08); queda
+  voltear negocio.yaml a proyección generada (BL-19).
 - **Comprador con nombre y cara, pricing, éxito a 12 meses** (→ BL-10) — heredado de CK-01, sin
   gate bloqueante (I-71 lo derogó); contexto para priorizar.
 - **Motor de Discovery (N1)** (→ BL-13) — sin fecha, campaña propia.

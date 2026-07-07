@@ -15,11 +15,12 @@
 | CAP-04 | **Vista de Negocio** (`/negocio`) | Objetivos del directorio (KR from→to) que tensan el Hilo de Oro sobre 4 sub-tabs: Mapa vivo (semáforo de digitalización) · Hilo de oro (cascada objetivo→procesos + huérfanos) · Brechas (caso de negocio + prioridad) · Personas (CAP-07); drawer de drill-down por proceso (procedencia/confianza); banner de warnings. | `ui/components/negocio/NegocioView.tsx` | CK-06 |
 | CAP-05 | **Shell por rol + selector de empresa** | Sidebar con selector de Empresa y nav por rol — Directorio vivo; Área/Consultor placeholders "próximamente". | `ui/components/shell/` | CK-06 |
 | CAP-06 | **Modelo de portfolio** (TS puro) | Funciones/tipos de navegación Empresa→Sistema, deep-link URL. 25 tests vitest. | `ui/lib/portfolio.ts` | CK-02 |
-| CAP-07 | **API + lente Personas** — `GET /api/personas?empresa=` | Persona + rol un-archivo-por-entidad del shell (`empresa/personas/` + `empresa/roles/`, objeto.schema · D-15), validados al leer (refs/enums/ciclos, warnings no fatales). Cuarta lente en la Vista de Negocio: quién cumple cada rol, vacantes delatadas, procesos que corre (match puesto↔rol.nombre); visible aun sin negocio.yaml. Verificada contra el shell real de prenter (1 persona · 7 roles). | `go/personas.go` · `ui/components/negocio/PersonasTab.tsx` | CK-12 |
+| CAP-07 | **Lente Personas** (Vista de Negocio) | Cuarta lente consumiendo la rebanada personas/roles de CAP-08: quién cumple cada rol (inverso por scan), vacantes delatadas, procesos que corre (match puesto↔rol.nombre); visible aun sin negocio.yaml (el pilar vive upstream). | `ui/components/negocio/PersonasTab.tsx` | CK-12, CK-13 |
+| CAP-08 | **API objeto** — `GET /api/objeto?empresa=` | El objeto normalizado COMPLETO (9 entidades de objeto.schema, `empresa/<tipo>/` del shell · D-15), validado ENTERO al leer: refs del Hilo cruzan entidades, enums, key_results ≥ 1, RACI A == 1, ciclos. Warnings no fatales. Verificado contra el shell real de prenter (12 procesos con actividades/RACI, cero warnings). | `go/objeto.go` | CK-12, CK-13 |
 
 ## Lo que NO está construido (no confundir con lo de arriba)
 
 Motor de Discovery (N1) · App del Auditor · contrato de datos DevHub→Cockpit · ingesta
-multi-fuente As-Is/To-Be · roles Área/Consultor reales · auth · preparación-auditoría · las 7
-entidades del objeto que faltan en código (persona+rol ya, CAP-07; el resto = BL-02). Todo eso
-vive en [`proyecto/backlog.yaml`](../proyecto/backlog.yaml).
+multi-fuente As-Is/To-Be · roles Área/Consultor reales · auth · preparación-auditoría ·
+negocio.yaml como proyección GENERADA del objeto (BL-19, gatillo: objeto poblado con
+objetivos/brechas). Todo eso vive en [`proyecto/backlog.yaml`](../proyecto/backlog.yaml).

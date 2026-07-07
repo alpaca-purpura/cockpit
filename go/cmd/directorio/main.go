@@ -136,7 +136,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/portfolio", directorioAPI.HandlePortfolio)
 	mux.HandleFunc("GET /api/negocio", directorioAPI.HandleNegocio)
-	mux.HandleFunc("GET /api/personas", directorioAPI.HandlePersonas)
+	mux.HandleFunc("GET /api/objeto", directorioAPI.HandleObjeto)
 	mux.Handle("/", uiHandler())
 
 	addr := fmt.Sprintf(":%d", *port)
