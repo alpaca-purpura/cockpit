@@ -582,7 +582,7 @@ window.NODOS = {
     ]
   },
   "N8": {
-    "titulo": "Runtime de Delivery (Claude Code)",
+    "titulo": "Runtime de agente local (Claude Code — motor de N5 y N14)",
     "plano": "Edge (laptop)",
     "tipo": "runtime edge",
     "madurez": "existe",
@@ -590,11 +590,11 @@ window.NODOS = {
     "campos": [
       [
         "objetivo",
-        "Construir las N historias → testing → producción contra N6, usando Claude Code con la **suscripción del developer humano**. Es la mitad \"local\" del runtime híbrido; complementa a N7 (server-side, API)."
+        "Ejecutar el trabajo de agente **en la máquina del humano firmado**, con SU suscripción: en delivery construye las N historias → testing → producción contra N6 **[R15]**; en el engagement es el motor con el que N14 opera el método. Es la mitad \"local\" del runtime híbrido; complementa a N7 (server-side, API)."
       ],
       [
         "resumen",
-        "Cada dev corre Claude Code (Pro/Max) en su laptop contra el repo del cliente. Local-por-dev **por restricción de licencia, no por preferencia técnica**. **Gestionado por DevStudio (N5) desde CK-16:** el dev no opera el CLI a pelo — DevStudio **se cuelga sobre N8 para programar** (driver CLI-nativo: spawnea el `claude` del propio dev, stdin/stdout stream-json) y es la superficie de trabajo; N8 queda como el **motor** debajo. Sigue siendo la licencia del humano firmado, coherente con esta ficha."
+        "Cada humano firmado (dev o consultor) corre Claude Code (Pro/Max) en su laptop. Local-por-humano **por restricción de licencia, no por preferencia técnica**. Nadie opera el CLI a pelo: la app de su rol **se cuelga sobre N8** vía driver CLI-nativo (spawnea el `claude` del propio usuario, stdin/stdout stream-json) — **N5/DevStudio** gestiona la instancia del dev, **N14/App del Auditor** la del consultor. N8 es el **motor** debajo de ambas superficies."
       ],
       [
         "plano · tipo · madurez",
@@ -602,11 +602,11 @@ window.NODOS = {
       ],
       [
         "responsabilidades",
-        "Implementar historias, escribir/correr tests, llevar a prod contra N6, bajo gobierno humano **[R15]**."
+        "Delivery (instancia del dev, gestionada por N5): implementar historias, escribir/correr tests, llevar a prod contra N6, bajo gobierno humano **[R15]** · Método (instancia del consultor, gestionada por N14): ejecutar las sesiones que N14 parametrice — el dueño de R16/R17 es N14; N8 solo presta el motor."
       ],
       [
         "no_objetivos",
-        "NO se ejecuta server-side como servicio compartido · NO se multiplexa una suscripción entre varios devs/usuarios · NO sustituye a N7."
+        "NO se ejecuta server-side como servicio compartido · NO se multiplexa una suscripción entre varios humanos/usuarios · NO sustituye a N7 · NO es dueño del método (N14) ni del proceso de desarrollo (N5) — es motor, no superficie."
       ],
       [
         "runtime + licencia (restricción ToS — sección crítica)",
@@ -614,7 +614,7 @@ window.NODOS = {
       ],
       [
         "qué_construye / contra_qué",
-        "Construye historias, tests, releases · contra N6 (que ya tiene el AS-IS de N7 + el \"qué\")."
+        "Instancia dev: historias, tests, releases · contra N6 (que ya tiene el AS-IS de N7 + el \"qué\"). Instancia consultor: lo que N14 le parametrice del método — el resultado lo publica N14 [R17], no N8."
       ],
       [
         "local_vs_remoto",
@@ -626,11 +626,11 @@ window.NODOS = {
       ],
       [
         "comunicacion",
-        "Laptop ↔ Anthropic (suscripción, inferencia) · laptop ↔ N6 (git) · laptop ↔ control plane (skills/método de delivery). Humano gobierna las transiciones."
+        "Laptop ↔ Anthropic (suscripción, inferencia) · laptop ↔ N6 (git) · app gestora → N8: stdin/stdout (stream-json, driver CLI-nativo). Humano gobierna las transiciones."
       ],
       [
         "depende_de / consumido_por",
-        "depende_de: suscripción del dev, N6 (con AS-IS de N7), control plane (método/skills), sistemas del cliente para test/deploy. consumido_por: **N5 (DevStudio — su gestor: parametriza, dispara y supervisa las sesiones)**; el cliente (software en prod); el proceso/cockpit (evidencia de gates)."
+        "depende_de: suscripción del humano, N6 (con AS-IS de N7), sistemas del cliente para test/deploy. consumido_por: **N5 (DevStudio — gestor de la instancia del dev)** · **N14 (App del Auditor — gestor de la instancia del consultor)** · el cliente (software en prod); el proceso/cockpit (evidencia de gates)."
       ],
       [
         "riesgos_abiertos",
@@ -671,7 +671,7 @@ window.NODOS = {
       ],
       [
         "runtime + licencia",
-        "App local instalable (patrón harness-studio/dev-studio, P4 del ecosistema). **Firmado (CK-16 addendum): se cuelga del Claude Code instalado en la máquina del consultor, igual que DevStudio** — driver CLI-nativo (spawnea el `claude` del propio consultor, stdin/stdout stream-json), **BYO licencia**: la app jamás toca credenciales de Anthropic; misma mecánica que N8 (suscripción del humano firmado, ToS-OK). Trabajo desatendido/server-side, si algún día existe, va por N1 con API key — no por la app. Stack restante por decidir en BL-15."
+        "App local instalable (patrón harness-studio/dev-studio, P4 del ecosistema). **Firmado (CK-16 addendum): se cuelga de N8 — el Claude Code instalado en la máquina del consultor, igual que DevStudio** — driver CLI-nativo (spawnea el `claude` del propio consultor, stdin/stdout stream-json), **BYO licencia**: la app jamás toca credenciales de Anthropic (suscripción del humano firmado, ToS-OK — ficha N8). Trabajo desatendido/server-side, si algún día existe, va por N1 con API key — no por la app. Stack restante por decidir en BL-15."
       ],
       [
         "qué_construye / contra_qué",
@@ -687,11 +687,11 @@ window.NODOS = {
       ],
       [
         "comunicacion",
-        "App → **Claude Code local**: stdin/stdout (stream-json, driver CLI-nativo — el agente que ejecuta el método). App → N6: git (push de procesos/roles/objetivos — el \"deploy\"). App → N12: depósito de crudo (operación de N9). App ↔ N1: HTTPS (futuro, cuando N1 exista). App → N3: pull de releases (futuro, si se distribuye por ahí)."
+        "App → **N8** (instancia del consultor): stdin/stdout (stream-json, driver CLI-nativo — el motor que ejecuta el método). App → N6: git (push de procesos/roles/objetivos — el \"deploy\"). App → N12: depósito de crudo (operación de N9). App ↔ N1: HTTPS (futuro, cuando N1 exista). App → N3: pull de releases (futuro, si se distribuye por ahí)."
       ],
       [
         "depende_de / consumido_por",
-        "depende_de: `sistema/metodo/` (embebido en build — el repo Cockpit es su fuente), **Claude Code instalado + suscripción del consultor** (el motor de agente, misma mecánica que N8), N6 (destino del deploy), N1 (futuro, razonamiento server-side). consumido_por: **N9** (su único operador) · aguas abajo **N13** (renderiza lo publicado) y el cliente (procesos vivos en su repo)."
+        "depende_de: `sistema/metodo/` (embebido en build — el repo Cockpit es su fuente), **N8** (el runtime de agente local — instancia + suscripción del consultor), N6 (destino del deploy), N1 (futuro, razonamiento server-side). consumido_por: **N9** (su único operador) · aguas abajo **N13** (renderiza lo publicado) y el cliente (procesos vivos en su repo)."
       ],
       [
         "riesgos_abiertos",
@@ -732,7 +732,7 @@ window.NODOS = {
       ],
       [
         "interfaces_que_usa",
-        "**N14 (App del Auditor — su aplicación propia, futura)**, N1 (Discovery), N4 (entrevistas), **N7 (lo opera)**, **N12 (deposita el crudo)**, **N13** (Cockpit, vista consultor)."
+        "**N14 (App del Auditor — su aplicación propia, futura)** con **N8** debajo (su Claude Code, el motor que N14 gestiona), N1 (Discovery), N4 (entrevistas), **N7 (lo opera)**, **N12 (deposita el crudo)**, **N13** (Cockpit, vista consultor)."
       ],
       [
         "momentos",

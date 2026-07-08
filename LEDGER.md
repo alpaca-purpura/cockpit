@@ -338,6 +338,14 @@ Anthropic; lo desatendido/server-side, si existe algún día, va por N1 con API 
 licencia = del humano firmado (N5/dev, N14/consultor) — registrado en el chequeo de consistencia
 3 de NODOS.md. BL-15 queda con el resto (alcance/stack/UX).
 
+*Addendum 3 (misma sesión):* el operador preguntó por la asimetría del diagrama — el Developer
+mostraba DevStudio + Claude Code como dos cajas y el Consultor solo N14. Causa: N8 estaba fichado
+como runtime *de Delivery* (específico del dev) y el claude del consultor era solo dependencia de
+N14. Fork firmado = **B: generalizar N8 → "Runtime de agente local (Claude Code)"** — motor común
+con una instancia por humano firmado: la del dev la gestiona N5, la del consultor N14; N8 presta
+el motor, jamás es dueño del método (N14) ni del proceso (N5). Índice, fichas N8/N14/N9, chequeo
+3 y diagrama (columna consultor ahora muestra N14 + su N8) actualizados.
+
 *Conecta:* I-74/CK-07 (frontera P1/P2 — sigue; el runtime de P2 cambió de forma) · CK-08
 (**deroga** su diseño; la ficha vive en la historia congelada del monorepo, la derogación se
 registra aquí) · CK-14 (mapa que se re-ficha) · DH-10/DH-12 (decisiones de P2 citadas) ·
