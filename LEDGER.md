@@ -329,6 +329,15 @@ DevStudio **se cuelga sobre N8 para programar**". Cableado en N8 (resumen + cons
 su gestor — parametriza, dispara y supervisa las sesiones; el dev trabaja desde DevStudio, no el
 CLI a pelo; N8 = el motor debajo), en N5 (responsabilidades) y en el diagrama.
 
+*Addendum 2 (misma sesión):* "la App del Auditor (N14) también funcionará igual — se cuelga del
+Claude Code instalado en la máquina, como DevStudio". Esto **cierra la decisión de runtime que
+N14 tenía abierta** (¿suscripción interactiva o API key? — quedaba para BL-15): firmado = driver
+CLI-nativo sobre el `claude` del consultor, BYO licencia, la app jamás toca credenciales de
+Anthropic; lo desatendido/server-side, si existe algún día, va por N1 con API key. Emergió el
+**patrón común del ecosistema**: app instalable = superficie · Claude Code local = motor ·
+licencia = del humano firmado (N5/dev, N14/consultor) — registrado en el chequeo de consistencia
+3 de NODOS.md. BL-15 queda con el resto (alcance/stack/UX).
+
 *Conecta:* I-74/CK-07 (frontera P1/P2 — sigue; el runtime de P2 cambió de forma) · CK-08
 (**deroga** su diseño; la ficha vive en la historia congelada del monorepo, la derogación se
 registra aquí) · CK-14 (mapa que se re-ficha) · DH-10/DH-12 (decisiones de P2 citadas) ·

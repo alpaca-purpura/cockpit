@@ -655,7 +655,7 @@ window.NODOS = {
       ],
       [
         "resumen",
-        "El \"IDE del auditor\": el proceso-como-dato de `sistema/metodo/proceso/` ejecutable como flujo operable (carriles consultor/cliente/sistema, provenance por dato, AS-IS sellado) + publicación git al repo del cliente. Método **embebido en la app** (CK-11: \"las cosas de servicio estarán embebidas en la aplicación del auditor\")."
+        "El \"IDE del auditor\": el proceso-como-dato de `sistema/metodo/proceso/` ejecutable como flujo operable (carriles consultor/cliente/sistema, provenance por dato, AS-IS sellado) + publicación git al repo del cliente. Método **embebido en la app** (CK-11: \"las cosas de servicio estarán embebidas en la aplicación del auditor\"). **Misma mecánica de agente que DevStudio (CK-16): la app se cuelga del Claude Code instalado en la máquina del consultor** — driver CLI-nativo, BYO licencia."
       ],
       [
         "plano · tipo · madurez",
@@ -671,7 +671,7 @@ window.NODOS = {
       ],
       [
         "runtime + licencia",
-        "App local instalable (patrón harness-studio/dev-studio, P4 del ecosistema). Stack por decidir en BL-15. Si incorpora agentes LLM: interactivo bajo la suscripción del consultor firmado (reglas de N8) o API key comercial si algo corre desatendido — hereda la doctrina ToS del sistema, decisión exacta en BL-15."
+        "App local instalable (patrón harness-studio/dev-studio, P4 del ecosistema). **Firmado (CK-16 addendum): se cuelga del Claude Code instalado en la máquina del consultor, igual que DevStudio** — driver CLI-nativo (spawnea el `claude` del propio consultor, stdin/stdout stream-json), **BYO licencia**: la app jamás toca credenciales de Anthropic; misma mecánica que N8 (suscripción del humano firmado, ToS-OK). Trabajo desatendido/server-side, si algún día existe, va por N1 con API key — no por la app. Stack restante por decidir en BL-15."
       ],
       [
         "qué_construye / contra_qué",
@@ -687,11 +687,11 @@ window.NODOS = {
       ],
       [
         "comunicacion",
-        "App → N6: git (push de procesos/roles/objetivos — el \"deploy\"). App → N12: depósito de crudo (operación de N9). App ↔ N1: HTTPS (futuro, cuando N1 exista). App → N3: pull de releases (futuro, si se distribuye por ahí)."
+        "App → **Claude Code local**: stdin/stdout (stream-json, driver CLI-nativo — el agente que ejecuta el método). App → N6: git (push de procesos/roles/objetivos — el \"deploy\"). App → N12: depósito de crudo (operación de N9). App ↔ N1: HTTPS (futuro, cuando N1 exista). App → N3: pull de releases (futuro, si se distribuye por ahí)."
       ],
       [
         "depende_de / consumido_por",
-        "depende_de: `sistema/metodo/` (embebido en build — el repo Cockpit es su fuente), N6 (destino del deploy), N1 (futuro, razonamiento). consumido_por: **N9** (su único operador) · aguas abajo **N13** (renderiza lo publicado) y el cliente (procesos vivos en su repo)."
+        "depende_de: `sistema/metodo/` (embebido en build — el repo Cockpit es su fuente), **Claude Code instalado + suscripción del consultor** (el motor de agente, misma mecánica que N8), N6 (destino del deploy), N1 (futuro, razonamiento server-side). consumido_por: **N9** (su único operador) · aguas abajo **N13** (renderiza lo publicado) y el cliente (procesos vivos en su repo)."
       ],
       [
         "riesgos_abiertos",
