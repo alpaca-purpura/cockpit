@@ -557,7 +557,7 @@ window.NODOS = {
       ],
       [
         "responsabilidades",
-        "Operar el ciclo de desarrollo como proceso-as-code (estados/gates/dueños/transiciones) **[R15 junto a N8/N10]** · orquestar sesiones de Claude Code vía **driver CLI-nativo** (spawnea el `claude` del propio usuario, stdin/stdout stream-json, **BYO licencia** — DH-10) · leer/escribir el repo GitHub del cliente (N6) · (PM, en construcción) refinamiento + priorización → historias asignadas visibles en la app de cada dev."
+        "Operar el ciclo de desarrollo como proceso-as-code (estados/gates/dueños/transiciones) **[R15 junto a N8/N10]** · **gestionar el runtime de delivery (N8): DevStudio se cuelga sobre Claude Code para programar** — driver CLI-nativo (spawnea el `claude` del propio usuario, stdin/stdout stream-json, **BYO licencia** — DH-10); el dev trabaja desde DevStudio, no el CLI a pelo · leer/escribir el repo GitHub del cliente (N6) · (PM, en construcción) refinamiento + priorización → historias asignadas visibles en la app de cada dev."
       ],
       [
         "no_objetivos",
@@ -594,7 +594,7 @@ window.NODOS = {
       ],
       [
         "resumen",
-        "Cada dev corre Claude Code (Pro/Max) en su laptop contra el repo del cliente. Local-por-dev **por restricción de licencia, no por preferencia técnica**. Desde CK-16, DevStudio (N5) lo orquesta vía driver CLI-nativo (spawnea el `claude` del propio dev, stdin/stdout) — sigue siendo la licencia del humano firmado, coherente con esta ficha."
+        "Cada dev corre Claude Code (Pro/Max) en su laptop contra el repo del cliente. Local-por-dev **por restricción de licencia, no por preferencia técnica**. **Gestionado por DevStudio (N5) desde CK-16:** el dev no opera el CLI a pelo — DevStudio **se cuelga sobre N8 para programar** (driver CLI-nativo: spawnea el `claude` del propio dev, stdin/stdout stream-json) y es la superficie de trabajo; N8 queda como el **motor** debajo. Sigue siendo la licencia del humano firmado, coherente con esta ficha."
       ],
       [
         "plano · tipo · madurez",
@@ -630,7 +630,7 @@ window.NODOS = {
       ],
       [
         "depende_de / consumido_por",
-        "depende_de: suscripción del dev, N6 (con AS-IS de N7), control plane (método/skills), sistemas del cliente para test/deploy. consumido_por: el cliente (software en prod); el proceso/cockpit (evidencia de gates)."
+        "depende_de: suscripción del dev, N6 (con AS-IS de N7), control plane (método/skills), sistemas del cliente para test/deploy. consumido_por: **N5 (DevStudio — su gestor: parametriza, dispara y supervisa las sesiones)**; el cliente (software en prod); el proceso/cockpit (evidencia de gates)."
       ],
       [
         "riesgos_abiertos",

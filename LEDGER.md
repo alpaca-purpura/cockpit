@@ -324,6 +324,11 @@ arquitectura.yaml (componente `devhub-delivery`→DevStudio, `contrato-datos`→
 mecanismo; regenerado `arquitectura.html`) · VISION §Ecosistema · CLAUDE.md · INCREMENT.md ·
 backlog (BL-18 + columna renombrada) + BACKLOG.md.
 
+*Addendum (misma sesión):* aclaración del operador sobre N8 — "es DevStudio el que lo gestiona;
+DevStudio **se cuelga sobre N8 para programar**". Cableado en N8 (resumen + consumido_por: N5 es
+su gestor — parametriza, dispara y supervisa las sesiones; el dev trabaja desde DevStudio, no el
+CLI a pelo; N8 = el motor debajo), en N5 (responsabilidades) y en el diagrama.
+
 *Conecta:* I-74/CK-07 (frontera P1/P2 — sigue; el runtime de P2 cambió de forma) · CK-08
 (**deroga** su diseño; la ficha vive en la historia congelada del monorepo, la derogación se
 registra aquí) · CK-14 (mapa que se re-ficha) · DH-10/DH-12 (decisiones de P2 citadas) ·
