@@ -25,10 +25,13 @@ relevantes para ESTE producto son:
   Consultor: opera el método (`../metodo/proceso/`) y publica el resultado al repo del cliente
   ("deploy de procesos", R16/R17). Definición de producto = BL-15..BL-17.
 
-Los nodos **N3, N5, N6, N8, N10** son mayormente de DevHub (ya graduado, repo propio
-`~/Proyectos/devhub`) — se mantienen en el documento porque el mapa es del ecosistema; sus hechos
-cruzados (Stage 4, contrato de datos CK-08) se corrigieron en CK-14, pero su evolución se gobierna
-en el ledger de DevHub (DH-NN).
+Los nodos **N3, N5, N8, N10** son mayormente de P2 — hoy **DevStudio** (`~/Proyectos/dev-studio`,
+app de escritorio que reemplazó al server DevHub; re-fichado N5 en CK-16) — se mantienen en el
+documento porque el mapa es del ecosistema, pero su evolución se gobierna en el ledger DH-NN de
+ese repo. **N6** es compartido: el repo GitHub del cliente — SSoT que Cockpit lee y conector de
+la orquestación de DevStudio. El contrato de datos CK-08 quedó **derogado** en CK-16 (se diseñó
+contra el server que ya no existirá); la conexión DevStudio/GitHub→Cockpit se diseña con el
+primer consumidor real (BL-18).
 
 `ck-02-stage1-diagram.html` — diagrama de la extracción física Stage 1 (cómo convivían Cockpit y
 DevHub en el mismo binario, antes de Stage 4). Histórico, útil para entender por qué el código

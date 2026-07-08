@@ -6,7 +6,7 @@
 > **Docs base:** `VISION-DESARROLLOS.md` (§17 planos, §12 contexto, §19 mapa) y `PRODUCT-VISION.md` (legacy, monorepo `prenter-harness/tooling/strategy/` — congelado) ·
 > [`SERVICE-DESIGN.md`](../../proyecto/research/service-design/SERVICE-DESIGN.md) · [`METODOLOGIA.md`](../metodo/METODOLOGIA.md) · **[`NODOS.md`](./NODOS.md) (14 nodos a nivel arquitecto, SSoT de fichas) · [`despliegue.html`](./despliegue.html) (diagrama visual, portado y actualizado en CK-14)**.
 > **Decisiones de arquitectura:** este repo → [`LEDGER.md`](../../LEDGER.md) (fichas **CK-NN**) · historia previa → ledgers **I-NN** (producto) y **H-NN** (fábrica) del monorepo legacy `prenter-harness` (congelado). *No hay ADRs en formato MADR; los ledgers son el equivalente (append-only).*
-> **Última actualización:** 2026-07-07 (**CK-14**, cierra BL-03) — N14 App del Auditor al mapa; dos binarios en el data plane (Stage 4 ejecutado); contrato de datos diseñado (CK-08); despliegue.html portado.
+> **Última actualización:** 2026-07-07 (**CK-16**) — P2 = **DevStudio** (app de escritorio, GitHub como conector; el server DevHub murió sin desplegarse); contrato CK-08 **derogado** (conexión TBD, BL-18); N6 = repo GitHub del cliente (matiz BYOC). Mismo día: CK-14 (N14 App del Auditor, cierra BL-03) · CK-15 (render as-code, cierra BL-08).
 
 ---
 
@@ -99,14 +99,16 @@ datos** con la misma decisión. Diagrama visual: [`despliegue.html`](./despliegu
         ⇵  PULL por TLS — el data plane JALA: SPEC "comidito" · updates · config
            (el cliente NO abre puertos · el control plane NO está en el camino del dato)
    ───────────────────────────────────────────────────────────────────────────────────
-🏢  DATA PLANE — red del cliente (on-prem O su nube · CONFIGURABLE)   ★ datos aquí
+🏢  DATA PLANE — red del cliente + su GitHub (org propia) · CONFIGURABLE   ★ datos aquí
    ≪exec env≫ Cockpit N13 (binario `directorio`, P1): Vista Negocio · objeto completo (9 ent.)
-   ≪exec env≫ DevHub  N5  (binario `cockpit`, P2):    Delivery · watcher+SSE — binarios
-              INDEPENDIENTES (I-74/CK-07); N13→N5 = Pull API diseñada CK-08, sin código (BL-18)
-   ≪artifact≫ Repo del cliente N6: AS-IS · gaps · specs · código · OKRs (SSoT, NUNCA sale)
+              — ÚNICO binario nuestro en el data plane (CK-16)
+   ≪artifact≫ Repo del cliente N6 (GitHub, org del cliente): AS-IS · gaps · specs · código ·
+              OKRs · historias — SSoT + conector de la orquestación ("en SU GitHub, no en
+              infra nuestra"); datos de delivery → Cockpit: mecanismo TBD (CK-08 derogado, BL-18)
    ≪exec env≫ Agentes N7 — API frontier, efímeros, método inyectado (no-construido)
         ↙ git/SSH + HTTPS               ↘ HTTPS (navegador)          ↖ git push "deploy de procesos"
-   💻 LAPTOP DEV: DevHub UI + Claude Code N8 (suscripción) → construye N historias
+   💻 LAPTOP DEV: DevStudio N5 (P2, app instalable: repos + historias, PM refina/prioriza vía
+              GitHub) → orquesta Claude Code N8 (suscripción propia) → construye N historias
    🖥️ USUARIO NEGOCIO (CEO/sponsor N11): thin, navegador → Vista Negocio / Discovery conversacional
    🧑 CONSULTOR N9: App del Auditor N14 (instalable, método embebido ★IP) → publica a N6 [R17]
 ```
@@ -117,17 +119,22 @@ datos** con la misma decisión. Diagrama visual: [`despliegue.html`](./despliegu
    Code suscripción **no se puede multiplexar server-side (ToS)**; **Claude Code suscripción** para el dev
    humano que construye en su laptop. *No casados a un solo runtime.*
 3. **Data plane configurable** — mismo artefacto se despliega on-prem (su servidor) o en su nube.
-4. **Dos binarios independientes en el data plane** (I-74/CK-07, Stage 4 ejecutado) — DevHub (P2) y Cockpit
-   (P1) no comparten proceso ni importan código; N13→N5 vía Pull API versionada (diseñada CK-08, BL-18).
+4. **P1/P2 = productos independientes, cero import de código** (I-74/CK-07, Stage 4 ejecutado). **Evolucionado
+   CK-16:** el server DevHub murió sin desplegarse — P2 = **DevStudio** (app de escritorio por usuario,
+   `~/Proyectos/dev-studio`, GitHub como conector); queda UN binario nuestro en el data plane (`directorio`).
+   El contrato Pull API (CK-08) quedó **derogado** — conexión DevStudio/GitHub→Cockpit TBD (BL-18).
 5. **App del Auditor = subsistema propio (N14, CK-11/CK-14)** — app instalable del consultor con el método
    embebido; al repo del cliente solo cruza el **resultado** ("deploy de procesos", R17), jamás el método.
+6. **N6 = repo GitHub del cliente (CK-16)** — matiz BYOC firmado: *"sus datos viven en SU GitHub y sus
+   sistemas, no en infra nuestra"*; el crudo sensible (N12) nunca toca GitHub; git self-hosted = opción
+   para regulados.
 
 **Protección de IP por arquitectura (no por candado):** el motor de Discovery, el playbook y los agentes
 *como método* viven en el control plane; al data plane se le **inyecta** el método para correr el levantamiento
 (efímero) pero el CÓMO **no persiste** con el cliente. El cliente recibe el **QUÉ** (spec + su mapa + backlog).
 Coherente con el negocio **híbrido** (producto Delivery/CEO + acompañamiento Discovery).
 
-**Pendiente (tracking = `proyecto/backlog.yaml`):** contrato del handoff (SPEC "comidito" — con N1, BL-13) · deuda Go/Next (lo que no corre en el binario no cuenta — BL-20 lado Cockpit) · definir N14 (BL-15..17).
+**Pendiente (tracking = `proyecto/backlog.yaml`):** contrato del handoff (SPEC "comidito" — con N1, BL-13) · deuda Go/Next de N13 (lo que no corre en el binario no cuenta — BL-20) · definir N14 (BL-15..17) · conexión DevStudio/GitHub→Cockpit (BL-18, TBD).
 
 ---
 
@@ -137,7 +144,7 @@ Coherente con el negocio **híbrido** (producto Delivery/CEO + acompañamiento D
 | Capa | Tech | Por qué |
 |---|---|---|
 | Cockpit backend | **Go** (1 binario, `embed` SPA) · *destino* | "se inserta en la org": dropas 1 binario, cero npm/python en cliente; watcher+SSE+SQLite+dispatch. (Roadmap ya lo pedía → skills `samber/cc-skills-golang`.) |
-| Cockpit UI | **React + Tailwind** (frontend-design + Stitch) | ya existe (`devhub/ui`, Next.js 16/React 19/Tailwind 4); se compila y **embebe** en el binario. *Ahora Next.js; destino: SPA estática embebida.* |
+| Cockpit UI | **React + Tailwind** (frontend-design + Stitch) | ya existe (`ui/` de este repo, linaje devhub/ui del monorepo legacy; Next.js 16/React 19/Tailwind 4); se compila y **embebe** en el binario. *Ahora Next.js; destino: SPA estática embebida (BL-20).* |
 | SSoT | **Markdown + YAML/JSON en git** | verdad humana+agente, audit/sync gratis, portable |
 | Proyección | **SQLite embebida** | grafo Hilo de Oro, rollups, tiempo real; reconstruible; cero infra |
 | Ejecución | **Claude Code local** (suscripción) | costo plano, hace acciones; planos Análisis+Construcción |
@@ -159,9 +166,11 @@ implementación como IP** y el **producto en manos del cliente**. No es "Jira bo
 **Cerrado** (detalle a nivel arquitecto en [`NODOS.md`](./NODOS.md) — 14 nodos):
 - Patrón de despliegue = **BYOC** (I-31) · runtime **híbrido** · data plane **configurable**.
 - **14 nodos** con responsabilidades R1–R17 — modelo **cerebro/manos**: N1 piensa, N7 ejecuta, N9 opera/valida
-  desde su app (N14), N12 deposita el crudo, N13/N5 sirven (binarios independientes).
+  desde su app (N14), N12 deposita el crudo, N13 sirve la Vista Negocio (único binario del data plane),
+  N5/DevStudio orquesta el ciclo de desarrollo desde el edge.
 - **Datos "no persisten, transitan"** (I-32) — cerrada la grieta de inferencia del BYOC.
-- **Stage 4 ejecutado + contrato de datos diseñado** (I-74/CK-07/CK-08) — la frontera P1/P2 es física.
+- **Frontera P1/P2 física** (I-74/CK-07) y evolucionada en CK-16: P2 = DevStudio (edge, GitHub conector);
+  contrato CK-08 derogado — la conexión se diseña con el primer consumidor real (BL-18).
 - **App del Auditor en el mapa** (N14, CK-11/CK-14) — límites arquitectónicos fijados; producto por definir.
 
 **Abierto — cerrar antes de pasar a diseño de servicio:**
@@ -169,8 +178,8 @@ implementación como IP** y el **producto en manos del cliente**. No es "Jira bo
    plane (gaps priorizados → spec ratificado → backlog), el QUÉ sin el CÓMO. Donde la IP se vuelve tangible.
    **Es el último corte de arquitectura** — se resuelve al diseñar N1 (BL-13).
 
-**Abierto — no bloquea el diseño de servicio:** deuda Go/Next (BL-20 lado Cockpit; N5 en su repo) · retención
-de N12 · ¿developer del cliente o nuestro? (N10) · diferidos (SQLite/voz/modo conversación). **El tracking del
+**Abierto — no bloquea el diseño de servicio:** deuda Go/Next de N13 (BL-20) · conexión DevStudio/GitHub→Cockpit
+(BL-18) · retención de N12 · ¿developer del cliente o nuestro? (N10) · diferidos (SQLite/voz/modo conversación). **El tracking del
 pendiente de Cockpit = `proyecto/backlog.yaml` (BL-NN)**; la narrativa de ecosistema vive en
 [`NODOS.md` → «Pendientes consolidados»](./NODOS.md) — no se re-numera aquí (evita el drift).
 

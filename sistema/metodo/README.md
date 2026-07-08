@@ -8,7 +8,7 @@ desde el legacy `prenter-harness/service/` en CK-11 (antes solo había catálogo
 
 `methodologies.yaml` es el catálogo COMPLETO (31 fichas, M01-M31) tal como vivía en el registry del
 monorepo de origen — incluye metodologías de construcción de software (Dual Track, Shape Up, JTBD,
-EARS, BDD, WSJF, Wardley) que son dominio de DevHub/Kit, no de Cockpit. `METODOLOGIA.md` es la
+EARS, BDD, WSJF, Wardley) que son dominio de DevStudio/Kit, no de Cockpit. `METODOLOGIA.md` es la
 narrativa completa generada de ese catálogo. Se dejaron íntegros (no se recortó el YAML) para no
 perder contexto ni relaciones (`combina_con`) — pero las que aplican directo a los 4 pilares de
 `VISION.md` son:

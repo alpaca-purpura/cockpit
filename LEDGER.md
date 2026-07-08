@@ -286,7 +286,52 @@ I-73/I-60 (arquitectura-como-dato y DIP del legacy, espíritu heredado).
 
 *Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
 
-<!-- Próximas: CK-16, … -->
+### CK-16 · P2 = DevStudio — re-fichado N5 (server→app de escritorio) · contrato CK-08 derogado · N6 = GitHub — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-07):* "Hemos creado DevStudio, que reemplaza al devhub (antes cockpit)
+— repo `~/Proyectos/dev-studio`. Los desarrolladores tendrán a la mano los repositorios que
+manejan y las historias que tienen que desarrollar; estamos haciendo una versión para el Product
+Manager con el refinamiento y priorización, para que los developers en sus propias aplicaciones
+ya puedan revisar qué les tocó — todo a través de GitHub como canalizador. (Cómo conectamos
+lo veremos cuando se implemente esa parte.) Si tienes dudas, grill me."
+
+*Desarrollo:* recon del repo P2 — DevStudio continúa el ledger DH-NN (graduación DH-12; el repo
+`~/Proyectos/devhub` ya no existe): **app de escritorio multiplataforma** (binario Go + UI
+embebida, instalador = el binario) para CTO/developer/devops/PO trabajando orquestados, GitHub
+como punto de encuentro, Claude Code vía **driver CLI-nativo BYO-licencia** (DH-10). El cambio
+rompe dos supuestos del mapa: N5 era *server en el data plane del cliente* (ahora es app edge
+por usuario) y el contrato CK-08 era *Pull API contra ese server en vivo* (ya no hay host).
+
+**Forks firmados (grill vía AskUserQuestion):**
+1. **N5 se re-ficha** (conserva número e historia) → "DevStudio — app de escritorio de
+   desarrollo (P2)", plano Data→**Edge**; el rol de punto compartido pasa a GitHub/N6. Ficha
+   deliberadamente magra: fija la frontera con Cockpit, el detalle lo gobierna P2 (DH-NN).
+2. **Contrato CK-08 = DEROGADO.** BL-18 redefinido: "diseñar+implementar la conexión
+   DevStudio/GitHub→Cockpit, mecanismo TBD con el primer consumidor real" — coherente con el
+   "veremos cuando se implemente" del operador. Disciplina anti-código-especulativo intacta.
+3. **N6 = repo GitHub del cliente** (org propia) + **matiz BYOC firmado**: la promesa pasa de
+   "nunca sale de su red" a *"sus datos viven en SU GitHub y sus sistemas, no en infra
+   nuestra"* — misma soberanía, residencia explícita; el crudo sensible (N12) nunca toca
+   GitHub; git self-hosted = opción documentada para regulados (espejo del "LLM on-premise").
+4. **Versión PM = nota en la ficha de N5**, sin nodo/actor propio — se modela cuando la
+   conexión se implemente (anti-especulación).
+
+Ejecutado: NODOS.md (N5 movido a EDGE y reescrito; N6 re-fichado; N13 "único binario del data
+plane"; N3/N8/N10 ajustados; chequeo BYOC con el matiz; pendientes consolidados #3/#5/#6) ·
+`despliegue.html` (data plane con un binario; DevStudio en la laptop del dev; flujo delivery
+PM→dev→Claude Code; tabla de conexiones; decisiones) · ARCHITECTURE.md · README arquitectura ·
+arquitectura.yaml (componente `devhub-delivery`→DevStudio, `contrato-datos`→conexión sin
+mecanismo; regenerado `arquitectura.html`) · VISION §Ecosistema · CLAUDE.md · INCREMENT.md ·
+backlog (BL-18 + columna renombrada) + BACKLOG.md.
+
+*Conecta:* I-74/CK-07 (frontera P1/P2 — sigue; el runtime de P2 cambió de forma) · CK-08
+(**deroga** su diseño; la ficha vive en la historia congelada del monorepo, la derogación se
+registra aquí) · CK-14 (mapa que se re-ficha) · DH-10/DH-12 (decisiones de P2 citadas) ·
+BL-18 (redefine) · BL-20 (sin cambio — la deuda Go/Next quedó solo del lado N13).
+
+*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
+
+<!-- Próximas: CK-17, … -->
 
 ## Log
 
@@ -298,3 +343,4 @@ I-73/I-60 (arquitectura-como-dato y DIP del legacy, espíritu heredado).
 | 2026-07-07 | El objeto completo (cierra BL-02): `/api/objeto` sirve y valida las 9 entidades JUNTAS (refs del Hilo cruzan entidades, RACI A==1, enums, ciclos); supersede `/api/personas`; CAP-08; verificado contra prenter (12 procesos, cero warnings). Nace BL-19 (negocio.yaml → proyección). | CK-13 |
 | 2026-07-07 | Arquitectura terminada (cierra BL-03): N14 App del Auditor al mapa (R16/R17 + etapa E3); estados post-Stage-4 corregidos en NODOS.md (contrato CK-08 diseñado, N13 = binario `directorio` con `/api/objeto`); `despliegue.html` portado estático y actualizado; ARCHITECTURE/README al día. Nace BL-20 (deuda Go/Next N13). | CK-14 |
 | 2026-07-07 | Render de la arquitectura-as-code (cierra BL-08): `gen_arquitectura.py` valida (refs R#, fichas CK-10+, relaciones, rutas) y genera `nodos.data.js` (drawer de despliegue.html restaurado) + `arquitectura.html` (vista de célula desde arquitectura.yaml); `--check` = gate anti-drift; verificado en navegador real. | CK-15 |
+| 2026-07-07 | P2 = DevStudio (app de escritorio, GitHub como conector — reemplaza al server DevHub): N5 re-fichado Data→Edge; contrato CK-08 DEROGADO (BL-18 redefinido: mecanismo TBD con primer consumidor); N6 = repo GitHub del cliente + matiz BYOC "sus datos viven en SU GitHub, no en infra nuestra"; versión PM como nota (anti-especulación). | CK-16 |

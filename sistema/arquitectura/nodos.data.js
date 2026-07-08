@@ -143,7 +143,7 @@ window.NODOS = {
     "campos": [
       [
         "objetivo",
-        "El cockpit (N5) corre en la red del cliente y debe actualizarse sin que nadie abra puertos hacia el cliente y sin que el vendor empuje nada por sorpresa. A la vez, necesitamos saber si la flota está sana **sin** exfiltrar datos (eso rompería el BYOC). Este nodo publica releases firmadas que el data plane *jala*, y recibe telemetría agregada opt-in."
+        "El binario del data plane (N13 `directorio`) corre en la red del cliente y debe actualizarse sin que nadie abra puertos hacia el cliente y sin que el vendor empuje nada por sorpresa. A la vez, necesitamos saber si la flota está sana **sin** exfiltrar datos (eso rompería el BYOC). Este nodo publica releases firmadas que el data plane *jala*, y recibe telemetría agregada opt-in."
       ],
       [
         "resumen",
@@ -191,7 +191,7 @@ window.NODOS = {
       ],
       [
         "depende_de / consumido_por",
-        "depende_de: object storage/CDN + KMS + pipeline de build del binario. consumido_por: **N5** y **N13** en cada data plane (dos binarios que actualizar por separado)."
+        "depende_de: object storage/CDN + KMS + pipeline de build del binario. consumido_por: **N13** (el binario del data plane). La distribución de DevStudio (N5, instalables de escritorio) la gobierna P2 — si reusa este nodo se decide allá (CK-16)."
       ],
       [
         "riesgos_abiertos",
@@ -272,81 +272,8 @@ window.NODOS = {
       ]
     ]
   },
-  "N5": {
-    "titulo": "DevHub — Delivery (server Go + UI embebida)",
-    "plano": "Data",
-    "tipo": "servicio/exec-env",
-    "madurez": "existe (parcial)",
-    "marca": "—",
-    "campos": [
-      [
-        "objetivo",
-        "Un binario Go que se \"dropa\" en la red del cliente y sirve **Delivery** (tablero SDD 10 estados, mapa de capabilities, roadmap, releases — vistas que varían **por ROL**: CTO ve/edita todo, developer una rebanada), leyendo el repo git (N6) como SSoT y reflejando cambios en tiempo real. Cero npm/python/Docker en el cliente."
-      ],
-      [
-        "resumen",
-        "HTTP server `net/http` que: embebe la SPA (`go:embed`), expone APIs JSON que leen/escriben el repo, y corre un watcher (`fsnotify`) que hace push por SSE a los navegadores. El módulo Go de Cockpit que vivía embebido aquí vía `require`+`replace` (CK-05) fue **desmontado en Stage 4 (CK-07, ejecutado)** — hoy son binarios independientes; DevHub graduado a repo propio (`~/Proyectos/devhub`, ledger DH-NN)."
-      ],
-      [
-        "plano · tipo · madurez",
-        "Data · servicio/exec-env · **existe (parcial)**. Binario Go funcional; fsnotify+SSE implementados. **Corrección de premisa: SQLite NO existe hoy** — el binario lee el filesystem directo en cada request. Deuda Go/Next confirmada (abajo). Vistas por-rol: NO construidas (hoy sin auth, todo visible) — trabajo propio de P2, independiente de la extracción de N13."
-      ],
-      [
-        "responsabilidades",
-        "Servir la SPA embebida con fallback de client-side routing · API JSON de Delivery (stories/capabilities/releases/roadmap) · watcher filesystem → SSE en tiempo real (ya existe: debounce 200ms, docType, filtro por brand) · (futuro) proyección SQLite reconstruible · (futuro) resolución de vista por ROL."
-      ],
-      [
-        "no_objetivos",
-        "NO es el SSoT (lo es N6; su DB es desechable) · NO multi-tenant hyperscale (1 PyME/despliegue) · NO hace SSR/SEO (herramienta interna tras login → SPA pura) · NO orquesta agentes (lee/escribe el mismo repo) · NO sirve la Vista Negocio/CEO (eso es N13, aplicación separada)."
-      ],
-      [
-        "stack",
-        "`net/http` stdlib (basta a esta escala; chi/gin sería gold-plating) · `go:embed all:ui` + fallback SPA · `fsnotify` v1.8 (no recursivo → camina subdirs) · **SSE** (no WebSocket: unidireccional server→cliente, reconexión automática, atraviesa proxies; añadir keep-alive `:ping` cada ~25s + cleanup vía `r.Context().Done()`) · **proyección: SQLite con `modernc.org/sqlite` (pure-Go, sin cgo)** para preservar el single-binary y cross-compile (cgo rompe Alpine/cross/`-race`); `journal_mode=WAL` + `busy_timeout`; DB 100% derivada → si falta/corrupta/cambió versión, se reproyecta recorriendo el repo. Introducir \"cuando duela\" (agregaciones de roadmap/coverage), no antes."
-      ],
-      [
-        "expone",
-        "HTTP/JSON ~24 rutas (paridad con las `route.ts`): `/api/stories`, `/api/capabilities/*`, `/api/releases`, `/api/transition`, `/api/system-map`, `/api/value-stream`, `/api/file`, `/api/open`, etc. · **el contrato de datos que N13 consumirá — DISEÑADO (CK-08), sin implementar:** `GET /api/contrato/directorio?sistema=…`, envelope `{contract_version, data}`, auth mismo-host + bearer token LAN; gatillo = primer consumidor real (BL-18). · SSE: `GET /api/watch?brand=…` · estáticos SPA shell + assets."
-      ],
-      [
-        "estado + persistencia",
-        "Verdad: archivos en N6 (lectura/escritura al filesystem). Derivado (futuro): SQLite WAL local, reconstruible, desechable. Memoria: clientes SSE, caché de workspace root, brands."
-      ],
-      [
-        "escala + disponibilidad",
-        "1 empresa, 3-30 devs, decenas-cientos de historias, pocos concurrentes. Proceso único con daemon (ya hay `daemon_unix/windows.go` + PID files); crash → restart sin estado que perder. **Sobreingeniería a evitar:** réplicas, LB, Redis pub/sub, colas, K8s."
-      ],
-      [
-        "integraciones_externas",
-        "`git` (resuelve root vía `git rev-parse`) · editor del SO (`/api/open`)."
-      ],
-      [
-        "seguridad",
-        "Vive en la red del cliente. Riesgo: server con lectura/escritura al filesystem. **Endurecer:** validar/normalizar paths (`filepath.Clean` + verificar dentro de `WORKSPACE_ROOT`) en `/api/file` y `/api/open` (anti path-traversal); bind por defecto a `127.0.0.1`; si se expone en LAN, token simple. **Pendiente (P2):** auth/permisos por rol (CTO vs developer) — hoy no existe."
-      ],
-      [
-        "comunicacion",
-        "Request/response JSON (CRUD) · SSE (server→cliente) · fsnotify (eventos internos) · **el contrato de datos hacia N13** — Pull API en vivo (N13 jala), diseñado en CK-08, sin código todavía."
-      ],
-      [
-        "depende_de / consumido_por",
-        "depende_de: N6, `git`, filesystem. consumido_por: navegadores de devs/operadores (Delivery, por rol) · **N13** (jala datos de capabilities/sistemas, futuro)."
-      ],
-      [
-        "🔧 RECOMENDACIÓN (deuda Go/Next)",
-        "**Matar el doble backend. Migrar la UI de Next.js static-export → SPA pura con Vite + React 19 + React Router, embebida con `go:embed`. Go queda como único backend.** Razones: hoy `build-ui.sh` esconde `app/api` en `.api-stash` porque `output:'export'` prohíbe API routes → mantienes ~24 `route.ts` (dev) + 10 handlers Go (prod) \"sin sync\"; la regla \"lo que no corre en el binario Go no cuenta\" ya hace muertas las `route.ts` en prod; DevHub es el caso de libro de Vite SPA (interna, tras login, sin SSR). **Plan:** Vite+React 19+Router reusando componentes (Tailwind 4 se mantiene) → dev con `vite` proxy `/api`→`:4000` (un solo backend desde día 1) → borrar `devhub/ui/app/api/**` → simplificar `build-ui.sh` (`vite build` → `cp dist`) → handler embed con fallback SPA estándar. *Auditar las 24 `route.ts` vs los 10 handlers Go antes de borrar.* Misma deuda existe en paralelo en N13 (hereda el mismo patrón Next static-export) — resolución independiente, mismo playbook."
-      ],
-      [
-        "riesgos_abiertos",
-        "Migración Next→Vite (re-cablear routing/data-fetch; auditar paridad antes de borrar) · SQLite (disparador de rebuild por versión de esquema; invalidación incremental consistente) · SSE (falta keep-alive/ping + re-watch robusto de dirs nuevos) · path traversal (ver seguridad) · **contrato de datos hacia N13 diseñado (CK-08) pero sin implementar** — se cablea con el primer consumidor real (BL-18) · vistas por-rol sin auth (P2, abierto)."
-      ],
-      [
-        "fuentes",
-        "[SPA en binario Go](https://dev.to/aryaprakasa/serving-single-page-application-in-a-single-binary-file-with-go-12ij) · [SQLite WAL](https://sqlite.org/wal.html) · [pure-Go SQLite](https://github.com/gogs/gogs/issues/7882) · [Vite vs Next 2026](https://techsy.io/en/blog/nextjs-vs-react-vite)"
-      ]
-    ]
-  },
   "N6": {
-    "titulo": "Repo del cliente",
+    "titulo": "Repo del cliente (GitHub)",
     "plano": "Data",
     "tipo": "artefacto/dato",
     "madurez": "existe",
@@ -354,11 +281,11 @@ window.NODOS = {
     "campos": [
       [
         "objetivo",
-        "Ser la **única fuente de verdad** del cliente: AS-IS, gaps, specs (SDD), código, OKRs, journey, capacidades, releases. Repositorio git versionado, legible por humanos Y agentes, del que todo lo demás (la DB del cockpit) es proyección desechable."
+        "Ser la **única fuente de verdad** del cliente: AS-IS, gaps, specs (SDD), código, OKRs, journey, capacidades, releases, procesos/roles/objetivos publicados. Repositorio git versionado, legible por humanos Y agentes, del que todo lo demás (la DB del cockpit) es proyección desechable. Desde CK-16 también: **punto de encuentro** de los usuarios de DevStudio (GitHub como canalizador)."
       ],
       [
         "resumen",
-        "\"Git como base de datos + vista materializada\": datos como `markdown` (prosa) + `yaml`/`json` (estructura). Git aporta versionado, autoría, historia, branch/merge, diffs revisables."
+        "\"Git como base de datos + vista materializada\": datos como `markdown` (prosa) + `yaml`/`json` (estructura). Git aporta versionado, autoría, historia, branch/merge, diffs revisables; GitHub aporta el multi-usuario (org, permisos, API)."
       ],
       [
         "plano · tipo · madurez",
@@ -378,11 +305,11 @@ window.NODOS = {
       ],
       [
         "propietario + clasificacion",
-        "Cliente (la PyME). El consultor/agente escribe, el cliente posee. ★ datos del cliente, confidencial, **nunca sale de su red**."
+        "Cliente (la PyME). El consultor/agente escribe, el cliente posee. ★ datos del cliente, confidencial. **Matiz BYOC (CK-16):** la promesa pasa de \"nunca sale de su red\" a **\"sus datos viven en SU GitHub (org propia), no en infra nuestra\"** — mismo espíritu (soberanía: el cliente posee, controla acceso y puede revocar), residencia explícita en la nube de GitHub. Cliente regulado que prohíba cloud → GitLab/git self-hosted como opción documentada (espejo del \"LLM on-premise: opción futura\")."
       ],
       [
         "residencia + retencion",
-        "Red/infra del cliente (su git server, o local-first). Retención indefinida vía historia git (es el valor: trazabilidad objetivo→producción). Sin TTL; el repo ES el archivo histórico."
+        "**GitHub, organización del cliente** + clones locales (laptops, data plane). Retención indefinida vía historia git (es el valor: trazabilidad objetivo→producción). Sin TTL; el repo ES el archivo histórico."
       ],
       [
         "versionado",
@@ -390,11 +317,11 @@ window.NODOS = {
       ],
       [
         "quién_escribe / quién_lee",
-        "Escriben: agentes de levantamiento/diseño (N7: AS-IS, gaps, specs), devs (N10: código + spec), DevHub (N5: transiciones de Delivery), Cockpit (N13: transiciones de Vista Negocio), **App del Auditor (N14: publica procesos/roles/objetivos ratificados — \"deploy de procesos\" [R17])**. Leen: N5 y N13 (ambos proyectan), agentes Claude, humanos. **Concurrencia:** mismo archivo por agente+dev+N5+N13 → resolver con git + escrituras atómicas (write-temp-then-rename) en cada binario."
+        "Escriben: agentes de levantamiento/diseño (N7: AS-IS, gaps, specs), devs (N10: código + spec), DevStudio (N5: proceso/historias/priorización — el PM refina, los devs reciben), Cockpit (N13: transiciones de Vista Negocio), **App del Auditor (N14: publica procesos/roles/objetivos ratificados — \"deploy de procesos\" [R17])**. Leen: N5 y N13 (ambos proyectan), agentes Claude, humanos. **Concurrencia:** el flujo multi-usuario lo media GitHub (branches/PRs/permisos); escrituras locales con git + write-temp-then-rename."
       ],
       [
         "comunicacion",
-        "No es servicio: filesystem + protocolo git. N5 lo lee/escribe directo; los agentes como archivos."
+        "No es servicio nuestro: protocolo git + API de GitHub. DevStudio (N5) lo usa como conector; N13 lee su clon/checkout local; los agentes como archivos."
       ],
       [
         "depende_de / consumido_por",
@@ -402,7 +329,7 @@ window.NODOS = {
       ],
       [
         "riesgos_abiertos",
-        "Escritura concurrente (disciplina de commits + escritura atómica) · drift de formato yaml/frontmatter sin validación (los gates SDD apuntan a esto) · tentación de meter high-churn/binarios (degrada el patrón) · rebuild de la proyección depende de repo parseable → parsing tolerante a errores, no fallo total."
+        "Escritura concurrente (disciplina de commits + escritura atómica) · drift de formato yaml/frontmatter sin validación (los gates SDD apuntan a esto) · tentación de meter high-churn/binarios (degrada el patrón) · rebuild de la proyección depende de repo parseable → parsing tolerante a errores, no fallo total · **residencia GitHub-cloud (CK-16):** la tensión con el discurso BYOC queda documentada — para el material más sensible el crudo sigue en N12 (data plane, nunca GitHub); revisar la frase de venta con el primer cliente regulado."
       ],
       [
         "fuentes",
@@ -549,7 +476,7 @@ window.NODOS = {
     "campos": [
       [
         "objetivo",
-        "Binario Go propio que sirve la Vista Negocio/Directorio (Hilo de Oro, Brechas, mapa Empresa→Sistema, roles Directorio·Área·Consultor) al CEO/directorio en la red del cliente, con mantenimiento de datos propio de organización/áreas/procesos — independiente del binario de Delivery (N5). Cero npm/python/Docker en el cliente (mismo principio que N5)."
+        "Binario Go propio que sirve la Vista Negocio/Directorio (Hilo de Oro, Brechas, mapa Empresa→Sistema, roles Directorio·Área·Consultor) al CEO/directorio en la red del cliente, con mantenimiento de datos propio de organización/áreas/procesos — independiente de los productos de desarrollo (DevStudio, N5). Cero npm/python/Docker en el cliente. **Único binario del data plane desde CK-16** (el server DevHub murió sin desplegarse; DevStudio es app de escritorio)."
       ],
       [
         "resumen",
@@ -561,51 +488,96 @@ window.NODOS = {
       ],
       [
         "responsabilidades",
-        "Servir la SPA embebida (misma técnica que N5: `go:embed` + fallback SPA) · API JSON de Vista Negocio (`/api/portfolio`, `/api/negocio`, `/api/objeto` — contratos vigentes, dueño = esta célula) · leer y validar el **objeto normalizado completo** (9 entidades de `objeto.schema`, CK-13) · **(futuro)** consumir el contrato de datos de N5 (capabilities/sistemas/estado del tablero de Delivery) cuando haya consumidor real (BL-18) · **(futuro, campaña aparte)** absorber el Motor de Discovery (N1: ingesta multi-fuente, As-Is/To-Be, gaps) como su propio backend de razonamiento (BL-13)."
+        "Servir la SPA embebida (`go:embed` + fallback SPA) · API JSON de Vista Negocio (`/api/portfolio`, `/api/negocio`, `/api/objeto` — contratos vigentes, dueño = esta célula) · leer y validar el **objeto normalizado completo** (9 entidades de `objeto.schema`, CK-13) · **(futuro)** consumir datos de delivery de DevStudio/GitHub — mecanismo TBD, se diseña con el primer consumidor real (BL-18; el contrato CK-08 quedó derogado en CK-16) · **(futuro, campaña aparte)** absorber el Motor de Discovery (N1: ingesta multi-fuente, As-Is/To-Be, gaps) como su propio backend de razonamiento (BL-13)."
       ],
       [
         "no_objetivos",
-        "NO sirve Delivery (tablero SDD/capabilities/releases — eso es N5, aplicación separada) · NO es el SSoT de datos de DevHub (los consume, no los posee) · NO multiplexa Claude Code (si/cuando construya N1, hereda las mismas restricciones de N1: API frontier, no suscripción)."
+        "NO sirve el ciclo de desarrollo (repos/historias/priorización — eso es DevStudio, N5, producto aparte) · NO es el SSoT de los datos de delivery (los consumirá, no los posee) · NO multiplexa Claude Code (si/cuando construya N1, hereda las mismas restricciones de N1: API frontier, no suscripción)."
       ],
       [
         "stack",
-        "Misma resolución que N5 (mismo linaje de código, CK-05/06): `net/http` stdlib · `go:embed all:ui` + fallback SPA · Next.js static-export hoy (misma deuda Go/Next que N5, resolución independiente vía el mismo playbook Vite — BL-20). **(futuro)** proyección propia si la Vista Negocio necesita agregaciones (roll-up de OKRs por área) — introducir cuando duela, no antes."
+        "`net/http` stdlib · `go:embed all:ui` + fallback SPA · Next.js static-export hoy — **deuda Go/Next heredada** (playbook: migrar a Vite SPA + React Router, Go como único backend — BL-20). **(futuro)** proyección propia si la Vista Negocio necesita agregaciones (roll-up de OKRs por área) — introducir cuando duela, no antes."
       ],
       [
         "expone",
-        "HTTP/JSON: `/api/portfolio` (árbol Empresa→Sistema, CK-05), `/api/negocio` (Hilo de Oro + Brechas, CK-05), `/api/objeto` (el objeto normalizado completo — 9 entidades validadas juntas, CK-12/CK-13) · estáticos SPA (`CockpitShell`) · **(futuro)** el lado consumidor del contrato de datos de N5 (`devhubclient.go`, BL-18)."
+        "HTTP/JSON: `/api/portfolio` (árbol Empresa→Sistema, CK-05), `/api/negocio` (Hilo de Oro + Brechas, CK-05), `/api/objeto` (el objeto normalizado completo — 9 entidades validadas juntas, CK-12/CK-13) · estáticos SPA (`CockpitShell`) · **(futuro)** el lado consumidor de datos de delivery (mecanismo TBD, BL-18)."
       ],
       [
         "estado + persistencia",
-        "Verdad: repo git (N6, mismo patrón que N5; instancias del objeto en `empresa/<tipo>/` del shell — D-15) + lo que N5 exponga vía el contrato de datos (futuro). Sin DB propia hoy."
+        "Verdad: repo git (N6; instancias del objeto en `empresa/<tipo>/` del shell — D-15) + datos de delivery que lleguen de DevStudio/GitHub (futuro, TBD). Sin DB propia hoy."
       ],
       [
         "escala + disponibilidad",
-        "Misma escala que N5 (1 empresa/despliegue). Proceso único, launcher propio (`directorio -workspace … -port 4100`); crash → restart sin estado que perder."
+        "1 empresa/despliegue. Proceso único, launcher propio (`directorio -workspace … -port 4100`); crash → restart sin estado que perder."
       ],
       [
         "integraciones_externas",
-        "`git` (resuelve root, mismo patrón que N5) · N5 (contrato de datos, futuro) · N1 (cuando exista, mismo producto P1)."
+        "`git` (resuelve root) · DevStudio/GitHub (datos de delivery, futuro) · N1 (cuando exista, mismo producto P1)."
       ],
       [
         "seguridad",
-        "Vive en la red del cliente, mismo perímetro que N5. El contrato de datos hacia N5 ya resolvió su auth en diseño (CK-08): mismo-host por default, bearer token (`DIRECTORIO_FEED_TOKEN`) si cruza LAN."
+        "Vive en la red del cliente. La conexión a datos de delivery definirá su auth cuando se diseñe el mecanismo (BL-18); endurecimiento propio: bind local por default, token simple si se expone en LAN."
       ],
       [
         "comunicacion",
-        "Binario independiente — cero import de código de/hacia N5 (el in-process `Deps` de CK-05 fue transicional, desmontado). **Contrato de datos con N5: DISEÑADO (CK-08)** — Pull API en vivo, `GET /api/contrato/directorio?sistema=…`, envelope `{contract_version, data}`; **sin código** hasta el primer consumidor real (BL-18, disciplina anti-código-especulativo)."
+        "Binario independiente — cero import de código de/hacia otros productos (el in-process `Deps` de CK-05 fue transicional, desmontado). **Datos de delivery: SIN mecanismo firmado** — el contrato Pull API de CK-08 quedó derogado (CK-16, el server contra el que se diseñó ya no existirá); se diseña con el primer consumidor real (BL-18, disciplina anti-código-especulativo), probablemente vía GitHub."
       ],
       [
         "depende_de / consumido_por",
-        "depende_de: N6 (repo) · N5 (datos de Delivery, futuro) · N1 (razonamiento, cuando exista). consumido_por: **N11** (CEO/sponsor, Vista Negocio) · **N9** (Consultor, vista consultor) · **N14** (App del Auditor: lo que publica al repo, N13 lo renderiza)."
+        "depende_de: N6 (repo) · DevStudio/GitHub (datos de delivery, futuro, TBD) · N1 (razonamiento, cuando exista). consumido_por: **N11** (CEO/sponsor, Vista Negocio) · **N9** (Consultor, vista consultor) · **N14** (App del Auditor: lo que publica al repo, N13 lo renderiza)."
       ],
       [
         "riesgos_abiertos",
-        "(1) Contrato de datos con N5 diseñado pero sin implementar — validarlo contra el primer consumidor real (BL-18). (2) Deuda Go/Next propia (ver nota en N5; BL-20). (3) Cuándo/si absorbe N1 — campaña aparte, sin fecha (BL-13). (4) Sin auth/roles reales todavía (BL-12) — gate para despliegue multi-usuario."
+        "(1) Conexión a datos de delivery sin mecanismo (CK-08 derogado) — diseñar con el primer consumidor real (BL-18). (2) Deuda Go/Next propia (BL-20). (3) Cuándo/si absorbe N1 — campaña aparte, sin fecha (BL-13). (4) Sin auth/roles reales todavía (BL-12) — gate para despliegue multi-usuario."
       ],
       [
         "fuentes",
         "Mismas que N5 (SPA en binario Go, Vite vs Next) · Strangler Fig (Fowler, vía CK-07) · Bounded Context/Conway's Law (vía I-74)."
+      ]
+    ]
+  },
+  "N5": {
+    "titulo": "DevStudio — app de escritorio de desarrollo (P2)",
+    "plano": "Edge (máquina del usuario)",
+    "tipo": "runtime edge / exec-env",
+    "madurez": "existe (parcial)",
+    "marca": "—",
+    "campos": [
+      [
+        "objetivo",
+        "Darle a cada usuario del ciclo de desarrollo (CTO · developer · devops · product owner) su consola **instalable** para construir y mantener software basado en **proceso, arquitectura y documentación as-code**, trabajando orquestados sobre el repo GitHub como punto de encuentro."
+      ],
+      [
+        "resumen",
+        "App de escritorio multiplataforma (binario Go + UI embebida `go:embed`; instalador = el binario). Cada developer tiene a la mano **sus repositorios y sus historias**; la **versión Product Manager (en construcción)** concentra refinamiento y priorización — los developers ven \"qué les tocó\" en su propia app, con **GitHub como canalizador**."
+      ],
+      [
+        "plano · tipo · madurez",
+        "Edge (máquina de cada usuario) · runtime edge / exec-env (app instalable) · **existe (parcial)** — esqueleto F1 + dogfooding (DH-13..DH-17)."
+      ],
+      [
+        "responsabilidades",
+        "Operar el ciclo de desarrollo como proceso-as-code (estados/gates/dueños/transiciones) **[R15 junto a N8/N10]** · orquestar sesiones de Claude Code vía **driver CLI-nativo** (spawnea el `claude` del propio usuario, stdin/stdout stream-json, **BYO licencia** — DH-10) · leer/escribir el repo GitHub del cliente (N6) · (PM, en construcción) refinamiento + priorización → historias asignadas visibles en la app de cada dev."
+      ],
+      [
+        "no_objetivos",
+        "NO es server compartido en el data plane (ese modelo murió con el re-fichado) · NO toca credenciales de Anthropic (BYO licencia — hereda la doctrina ToS de N8) · NO es fuente de datos de Cockpit por API en vivo (el contrato CK-08 quedó **derogado**, ver comunicación) · NO lo gobierna este repo (célula P2, ledger DH-NN)."
+      ],
+      [
+        "comunicacion",
+        "App ⇄ **GitHub (N6)**: git + API de GitHub — el conector de la orquestación multi-usuario. App → **Claude Code (N8)**: stdin/stdout (stream-json), bajo la licencia del propio usuario. **Cockpit ⇄ DevStudio: SIN mecanismo firmado** — el contrato Pull API de CK-08 (diseñado contra el server que ya no existirá) quedó derogado en CK-16; la conexión se diseña cuando exista el primer consumidor real (BL-18), probablemente vía GitHub."
+      ],
+      [
+        "depende_de / consumido_por",
+        "depende_de: N6 (GitHub), N8 (Claude Code del usuario). consumido_por: N10 (developer) y los demás roles del ciclo (CTO/devops/PO) · a futuro **N13** como consumidor de datos de delivery (mecanismo TBD, BL-18)."
+      ],
+      [
+        "riesgos_abiertos",
+        "(1) Conexión DevStudio/GitHub→Cockpit sin diseñar (BL-18 redefinido en CK-16). (2) Modelo de organización/sync multi-usuario vía GitHub — TBD de P2. (3) Distribución/updates de instalables de escritorio: N3 se diseñó para binarios del data plane; si aplica a DevStudio lo decide P2."
+      ],
+      [
+        "fuentes",
+        "`~/Proyectos/dev-studio` (`VISION.md` · `LEDGER.md` DH-12..DH-17) · DH-10 (driver CLI-nativo, BYO licencia)."
       ]
     ]
   },
@@ -622,7 +594,7 @@ window.NODOS = {
       ],
       [
         "resumen",
-        "Cada dev corre Claude Code (Pro/Max) en su laptop contra el repo del cliente. Local-por-dev **por restricción de licencia, no por preferencia técnica**."
+        "Cada dev corre Claude Code (Pro/Max) en su laptop contra el repo del cliente. Local-por-dev **por restricción de licencia, no por preferencia técnica**. Desde CK-16, DevStudio (N5) lo orquesta vía driver CLI-nativo (spawnea el `claude` del propio dev, stdin/stdout) — sigue siendo la licencia del humano firmado, coherente con esta ficha."
       ],
       [
         "plano · tipo · madurez",
@@ -805,7 +777,7 @@ window.NODOS = {
       ],
       [
         "interfaces_que_usa",
-        "N8 (Claude Code), N5 (cockpit UI), N6 (repo vía git)."
+        "N5 (DevStudio, su app de escritorio: sus repos + sus historias asignadas), N8 (Claude Code, orquestado desde N5), N6 (repo GitHub vía git)."
       ],
       [
         "momentos",

@@ -11,7 +11,7 @@
 | **Vista Negocio (N13)** | 3 | — | BL-11 rol Área · BL-12 auth |
 | **Motor Discovery (N1 ★IP)** | 2 | — | BL-13 campaña (decidir arranque) |
 | **App del Auditor** | 3 | — | BL-15 definir producto |
-| **Contrato datos DevHub→Cockpit** | 1 | — | BL-18 (gatillo: consumidor real) |
+| **Conexión delivery DevStudio/GitHub→Cockpit** | 1 | — | BL-18 (gatillo: consumidor real) |
 
 ## Sistema (transversal)
 
@@ -52,8 +52,8 @@
 | BL-16 | Embeber el método como flujo operable (← BL-15) | alta | pendiente |
 | BL-17 | Publicación al repo del cliente — "deploy de procesos" (← BL-15) | alta | pendiente |
 
-## Contrato de datos DevHub→Cockpit — diseñado CK-08
+## Conexión de delivery DevStudio/GitHub→Cockpit — sin mecanismo (CK-08 derogado, CK-16)
 
 | ID | Ítem | Prioridad | Estado |
 |---|---|---|---|
-| BL-18 | Implementar Pull API + devhubclient.go (gatillo: consumidor real) | tbd | pendiente |
+| BL-18 | Diseñar + implementar la conexión (gatillo: consumidor real; probablemente vía GitHub) | tbd | pendiente |

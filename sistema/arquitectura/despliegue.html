@@ -75,7 +75,7 @@
 <body>
 <header>
   <h1>🗺️ Diagrama de despliegue — cómo se distribuye el sistema</h1>
-  <div class="sub">Antes que funcionalidades: <b>qué corre dónde</b>, qué datos viven dónde, y cómo se comunican los nodos. Patrón <b>Control Plane / Data Plane (BYOC)</b> — el estándar B2B para "el vendor opera, los datos del cliente no salen de su red". &nbsp;·&nbsp; <b style="color:var(--ours)">Clic en cualquier nodo</b> para su ficha (de <code>NODOS.md</code>, SSoT — drawer generado). Actualizado <b>2026-07-07 (CK-14/CK-15)</b>: dos binarios en el data plane (I-74/CK-07), contrato de datos diseñado (CK-08), App del Auditor (N14, CK-11).</div>
+  <div class="sub">Antes que funcionalidades: <b>qué corre dónde</b>, qué datos viven dónde, y cómo se comunican los nodos. Patrón <b>Control Plane / Data Plane (BYOC)</b> — el estándar B2B para "el vendor opera, los datos del cliente no salen de su red". &nbsp;·&nbsp; <b style="color:var(--ours)">Clic en cualquier nodo</b> para su ficha (de <code>NODOS.md</code>, SSoT — drawer generado). Actualizado <b>2026-07-07 (CK-14/15/16)</b>: App del Auditor (N14) · N5 re-fichado = <b>DevStudio</b> (P2, app de escritorio, GitHub como conector) · contrato CK-08 derogado (mecanismo TBD, BL-18).</div>
 </header>
 
 <div class="principle">
@@ -119,12 +119,11 @@
   <div class="node client">
     <div class="stereo">≪device≫ · on-prem (su servidor) O su nube — <b>configurable por cliente</b></div>
     <div class="ntitle">🏢 DATA PLANE — en la red privada del cliente <span class="bdg data">datos aquí</span></div>
-    <div class="nmeta">Sus datos NUNCA salen de su red. Aquí viven los productos que opera el cliente — <b>dos binarios independientes</b> (I-74/CK-07, Stage 4 ejecutado): DevHub (P2) y Cockpit (P1) no comparten proceso ni importan código entre sí.</div>
+    <div class="nmeta">Sus datos viven en SU GitHub y sus sistemas — no en infra nuestra (matiz CK-16). Un solo binario nuestro en el data plane: <code>directorio</code> (P1). El server DevHub (P2) murió sin desplegarse — hoy P2 = DevStudio, app de escritorio (edge).</div>
     <div class="arts">
       <div class="art" data-nodo="N13"><div class="as"><span class="nid">N13</span>≪execution environment≫ · existe</div><div class="at">Cockpit — binario <code>directorio</code> (P1)</div><div class="ad">Vista Negocio: Hilo de Oro · Brechas · Empresa→Sistema · objeto normalizado completo (<code>/api/objeto</code>, 9 entidades) · puerto 4100 · ESTE repo</div></div>
-      <div class="art" data-nodo="N5"><div class="as"><span class="nid">N5</span>≪execution environment≫ · existe (parcial)</div><div class="at">DevHub — binario <code>cockpit</code> (P2)</div><div class="ad">Delivery: tablero SDD · capabilities · releases · watcher + SSE — célula/repo propio (<code>~/Proyectos/devhub</code>)</div></div>
-      <div class="art open"><div class="as">≪contrato≫ · diseñado (CK-08), sin código</div><div class="at">Contrato de datos DevHub→Cockpit <span class="bdg open">BL-18</span></div><div class="ad">Pull API en vivo: <code>directorio</code> jala <code>GET /api/contrato/directorio?sistema=…</code> · envelope <code>{contract_version, data}</code> · gatillo: primer consumidor real</div></div>
-      <div class="art data" data-nodo="N6"><div class="as"><span class="nid">N6</span>≪artifact≫ · existe</div><div class="at">Repo del cliente</div><div class="ad">AS-IS · gaps · specs · código · OKRs · procesos/roles/objetivos publicados — SSoT, sus datos</div></div>
+      <div class="art open"><div class="as">≪conexión≫ · sin mecanismo (CK-08 derogado, CK-16)</div><div class="at">Datos de delivery → Cockpit <span class="bdg open">BL-18</span></div><div class="ad">La Pull API de CK-08 se diseñó contra el server DevHub que ya no existirá. Se rediseña con el primer consumidor real — probablemente vía GitHub (N6)</div></div>
+      <div class="art data" data-nodo="N6"><div class="as"><span class="nid">N6</span>≪artifact≫ · existe</div><div class="at">Repo del cliente (GitHub, org del cliente)</div><div class="ad">AS-IS · gaps · specs · código · OKRs · procesos publicados — SSoT + conector de la orquestación DevStudio (PM prioriza → devs reciben)</div></div>
       <div class="art" data-nodo="N7"><div class="as"><span class="nid">N7</span>≪execution environment≫ · no-construido</div><div class="at">Agentes de análisis / levantamiento</div><div class="ad">efímeros, server-side vía API frontier · leen sistemas, escriben el AS-IS al repo (método inyectado, teardown sin rastro)</div></div>
       <div class="art data" data-nodo="N12"><div class="as"><span class="nid">N12</span>≪artifact≫ · no-construido</div><div class="at">Depósito de fuentes (landing zone)</div><div class="ad">crudo de entrada (docs/USB/correo) que deposita el consultor · transitorio · se destruye tras el mapa</div></div>
     </div>
@@ -150,10 +149,10 @@
       <div class="node edge" data-nodo="N10">
         <div class="stereo">≪device≫ · laptop del developer</div>
         <div class="ntitle">💻 Developer <span class="nid">N10</span></div>
-        <div class="nmeta">Construye contra el repo del cliente (su red).</div>
+        <div class="nmeta">Construye contra el repo GitHub del cliente.</div>
         <div class="arts">
-          <div class="art"><div class="at">DevHub UI (navegador)</div><div class="ad">tablero Delivery, servido por el binario <code>cockpit</code> (N5)</div></div>
-          <div class="art" data-nodo="N8"><div class="as"><span class="nid">N8</span>≪runtime edge≫ · existe</div><div class="at">Claude Code (suscripción, local)</div><div class="ad">el dev humano construye: historias → testing → prod (la mitad "local" del híbrido — ToS: una suscripción, un humano)</div></div>
+          <div class="art" data-nodo="N5"><div class="as"><span class="nid">N5</span>≪exec env≫ app instalable · existe (parcial)</div><div class="at">DevStudio (P2)</div><div class="ad">sus repos + sus historias asignadas · proceso/arquitectura/doc as-code · orquesta Claude Code (driver CLI-nativo, BYO licencia) · versión PM en construcción (refina/prioriza → devs reciben vía GitHub) · <code>~/Proyectos/dev-studio</code></div></div>
+          <div class="art" data-nodo="N8"><div class="as"><span class="nid">N8</span>≪runtime edge≫ · existe</div><div class="at">Claude Code (suscripción, local)</div><div class="ad">el dev humano construye: historias → testing → prod (la mitad "local" del híbrido — ToS: una suscripción, un humano; DevStudio lo spawnea)</div></div>
         </div>
       </div>
     </div>
@@ -215,14 +214,14 @@
   </div>
   <div class="frow">
     <span class="flbl">delivery ▸</span>
-    <span class="fpill" data-nodo="N10">N10 · Developer</span>
-    <span class="farr" style="color:#8b949e">──gobierna──▶</span>
+    <span class="fpill" data-nodo="N5">N5 · DevStudio (PM refina/prioriza)</span>
+    <span class="farr" style="color:#58a6ff">──historias vía GitHub──▶</span>
+    <span class="fpill" data-nodo="N5">N5 · DevStudio (dev: qué le tocó)</span>
+    <span class="farr" style="color:#8b949e">──orquesta──▶</span>
     <span class="fpill" data-nodo="N8">N8 · Claude Code</span>
     <span class="farr" style="color:#58a6ff">──historias→prod──▶</span>
-    <span class="fpill" data-nodo="N6">N6 · Repo</span>
-    <span class="farr" style="color:#58a6ff">──▶</span>
-    <span class="fpill" data-nodo="N5">N5 · DevHub</span>
-    <span class="flbl">— crudo y mapa viven en el data plane; nunca en nuestras bases</span>
+    <span class="fpill" data-nodo="N6">N6 · Repo (GitHub)</span>
+    <span class="flbl">— N10 gobierna; crudo y mapa nunca en nuestras bases</span>
   </div>
 </div>
 
@@ -230,11 +229,12 @@
 <table class="proto">
   <tr><th>De → A</th><th>Protocolo</th><th>Qué cruza</th><th>Quién inicia</th><th>Estado</th></tr>
   <tr><td>Data plane → Control plane</td><td>TLS (outbound, pull)</td><td>jala SPEC + updates de los binarios + config</td><td><b>el cliente</b> (no abre puertos inbound)</td><td>diseñado (N3 no-construido)</td></tr>
-  <tr><td>N13 <code>directorio</code> → N5 <code>cockpit</code></td><td>HTTP Pull API (mismo host o LAN + bearer)</td><td>capabilities/sistemas/releases — envelope <code>{contract_version, data}</code></td><td>N13 (jala en vivo)</td><td><b>diseñado CK-08, sin código (BL-18)</b></td></tr>
+  <tr><td>DevStudio/GitHub → N13 <code>directorio</code></td><td>TBD (probablemente vía GitHub)</td><td>datos de delivery (historias/capabilities/releases)</td><td>TBD</td><td><b>sin mecanismo — CK-08 derogado (CK-16); se diseña con el primer consumidor real (BL-18)</b></td></tr>
+  <tr><td>DevStudio (PM) ⇄ DevStudio (devs)</td><td>GitHub (git + API)</td><td>refinamiento · priorización · historias asignadas</td><td>cada app de usuario</td><td>en construcción (P2)</td></tr>
   <tr><td>N14 App del Auditor → N6</td><td>git (push/PR)</td><td>procesos/roles/objetivos/personas ratificados — el "deploy de procesos" [R17]</td><td>consultor desde su app</td><td><b>no-construido (BL-15..17)</b></td></tr>
   <tr><td>Consultor → Control plane</td><td>HTTPS</td><td>opera Discovery/levantamiento</td><td>consultor</td><td>futuro (N1)</td></tr>
   <tr><td>Agentes levantamiento → sistemas del cliente</td><td>según sistema (API/DB/FS)</td><td>leen AS-IS real; escriben al repo del cliente</td><td>data plane (método inyectado)</td><td>futuro (N7)</td></tr>
-  <tr><td>Developer ↔ Data plane</td><td>git/SSH + HTTPS</td><td>código · DevHub UI</td><td>developer</td><td>vivo</td></tr>
+  <tr><td>Developer ↔ Repo (GitHub)</td><td>git/SSH + HTTPS</td><td>código · proceso · historias</td><td>developer (desde DevStudio)</td><td>vivo</td></tr>
   <tr><td>Usuario negocio → Data plane</td><td>HTTPS (navegador)</td><td>Vista Negocio (N13) / Discovery conversacional</td><td>usuario</td><td>Vista Negocio viva</td></tr>
   <tr><td>Plano conversación → Data plane</td><td>HTTPS (webhook firmado → pull)</td><td>transcripción de entrevistas</td><td>hosted</td><td>futuro (N4)</td></tr>
 </table>
@@ -247,15 +247,17 @@
     <li><b>Runtime de agentes = HÍBRIDO</b> — 2026-06-20. <code>API frontier</code> para lo server-side (Discovery, levantamiento, análisis) — Claude Code suscripción NO se multiplexa server-side (ToS). <code>Claude Code suscripción</code> para el dev humano en su laptop.</li>
     <li><b>Data Plane = configurable por cliente</b> (on-prem O su nube) — 2026-06-20. Mismo artefacto, dos destinos.</li>
     <li><b>"Transitan, no persisten"</b> — 2026-06-21. Los datos del cliente transitan a la API frontier con zero-retention + minimización; jamás persisten fuera de su red. LLM on-premise = opción futura para regulados.</li>
-    <li><b>Dos binarios independientes en el data plane</b> — 2026-07-02, I-74/CK-07 (Stage 4 <b>ejecutado</b>). DevHub (<code>cockpit</code>, P2) y Cockpit (<code>directorio</code>, P1) no comparten proceso ni código; el runtime único fue transicional.</li>
-    <li><b>Contrato de datos DevHub→Cockpit = Pull API versionada</b> — CK-08 (diseñado, sin código). Envelope <code>{contract_version, data}</code>; se implementa con el primer consumidor real (BL-18) — disciplina anti-código-especulativo.</li>
+    <li><b>P1 y P2 = productos independientes, cero import de código</b> — 2026-07-02, I-74/CK-07 (Stage 4 <b>ejecutado</b>). <b>Evolucionado en CK-16:</b> el server DevHub (P2 en data plane) murió sin desplegarse — P2 es <b>DevStudio</b>, app de escritorio por usuario; queda UN binario nuestro en el data plane (<code>directorio</code>).</li>
+    <li><b>Contrato de datos CK-08 = DEROGADO (CK-16)</b> — la Pull API se diseñó contra el server que ya no existirá. La conexión DevStudio/GitHub→Cockpit se diseña con el primer consumidor real (BL-18) — disciplina anti-código-especulativo intacta.</li>
     <li><b>App del Auditor = subsistema propio (N14)</b> — CK-11, incorporada al mapa en CK-14. App instalable del consultor; el método embebido viaja con nuestra persona, al cliente solo cruza el resultado.</li>
+    <li><b>P2 = DevStudio con GitHub como conector (CK-16)</b> — cada usuario del ciclo (CTO/dev/devops/PO) con su app instalable; el repo GitHub del cliente (N6) es el punto de encuentro. Matiz BYOC firmado: <em>"sus datos viven en SU GitHub y sus sistemas, no en infra nuestra"</em>; el crudo sensible (N12) nunca toca GitHub.</li>
   </ol>
   <h3 style="color:var(--dim);margin-top:10px">Pendiente (tracking = <code>proyecto/backlog.yaml</code>)</h3>
   <ul>
     <li><b>Definir la App del Auditor</b> — alcance/stack/publicación (BL-15 · BL-16 · BL-17).</li>
     <li><b>Contrato del handoff</b> (SPEC "comidito") Discovery→Delivery — se resuelve al diseñar N1 (BL-13).</li>
-    <li><b>Deuda Go/Next</b> — Vite SPA + Go único; lado Cockpit = BL-20, lado DevHub en su repo.</li>
+    <li><b>Deuda Go/Next de N13</b> — Vite SPA + Go único (BL-20). El lado DevHub murió con el server; DevStudio es otra base de código (P2).</li>
+    <li><b>Conexión DevStudio/GitHub→Cockpit</b> — mecanismo TBD, se diseña con el primer consumidor real (BL-18).</li>
     <li><b>Auth/roles reales en N13</b> (BL-12) — gate para despliegue multi-usuario.</li>
   </ul>
 </div>

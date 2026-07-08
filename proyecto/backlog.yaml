@@ -40,8 +40,8 @@ subsistemas:
     nombre: "App del Auditor (Consultor)"
     sub: "aplicación instalable propia del consultor (patrón harness-studio/dev-studio); opera el método y publica procesos al repo del cliente — declarada CK-11, sin construir"
   - id: contrato-datos
-    nombre: "Contrato de datos DevHub→Cockpit"
-    sub: "Pull API diseñada (CK-08), sin código — gatillo: primer consumidor real"
+    nombre: "Conexión de delivery DevStudio/GitHub→Cockpit"
+    sub: "sin mecanismo (diseño CK-08 derogado en CK-16) — se diseña con el primer consumidor real"
 
 # ---- ITEMS ----
 items:
@@ -277,12 +277,14 @@ items:
   # — contrato-datos —
   - id: BL-18
     subsistema: contrato-datos
-    titulo: "Implementar Pull API DevHub→Cockpit"
+    titulo: "Diseñar e implementar la conexión de delivery DevStudio/GitHub→Cockpit"
     detalle: >-
-      GET /api/contrato/directorio?sistema=... con envelope {contract_version, data} + cliente
-      devhubclient.go. Gatillo explícito: primera vista que necesite dato real de DevHub (p.ej.
+      REDEFINIDO en CK-16: el diseño original (CK-08, Pull API contra el server DevHub en vivo)
+      quedó derogado — el server murió sin desplegarse; P2 es DevStudio (app de escritorio) con
+      GitHub como conector. Mecanismo por diseñar (probablemente Cockpit leyendo del repo GitHub
+      del cliente). Gatillo explícito: primera vista que necesite dato real de delivery (p.ej.
       Motor de Discovery). No antes — disciplina anti-código-especulativo.
-    origen: "CK-08 (diseño congelado)"
+    origen: "CK-08 (diseño derogado) · CK-16 (redefinición)"
     prioridad: tbd
     estado: pendiente
-    fichas: [CK-08]
+    fichas: [CK-08, CK-16]

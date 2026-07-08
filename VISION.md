@@ -37,7 +37,7 @@ medida (histórico: P2 · DevHub, hoy graduado y externo).
 Cada pilar tiene metodologías de respaldo ya investigadas y curadas en
 [`sistema/metodo/`](./sistema/metodo/) (portadas desde el catálogo de 31 fichas del monorepo,
 filtradas a las que aplican a gestión empresarial — se dejaron atrás las de construcción de
-software, que son dominio de DevHub/Kit):
+software, que son dominio de DevStudio/Kit):
 
 | Pilar | Pregunta que responde | Metodologías de respaldo |
 |---|---|---|
@@ -103,15 +103,17 @@ Heredado de CK-07/CK-08 (Stage 4, ejecutado) y ampliado por CK-11 — ver
   sistema — como un programador que carga código a producción, solo que el artefacto son
   procesos/roles/objetivos que Cockpit entiende y renderiza (BL-15..BL-17 del backlog).
 
-El contrato de datos que alimenta a Cockpit desde sistemas externos ya está diseñado (Pull API,
-envelope versionado `{contract_version, data}`, CK-08) aunque sin implementar — nada lo consume
-todavía.
+La conexión de datos de delivery hacia Cockpit está **sin mecanismo firmado**: el contrato Pull
+API de CK-08 se diseñó contra el server DevHub que ya no existirá y quedó **derogado** (CK-16);
+se diseña con el primer consumidor real (BL-18), probablemente vía el repo GitHub del cliente.
 
 ## Ecosistema (contrato, no implementación — el detalle de cada producto vive en SU repo)
 
-- **P2 · DevHub** (`~/Proyectos/devhub`, graduado) — fuente de datos: Cockpit puede extraer sus
-  capabilities/sistemas/releases si el cliente lo tiene, vía el contrato Pull API ya diseñado.
-  Sistemas separados, sin import de código cruzado.
+- **P2 · DevStudio** (`~/Proyectos/dev-studio`, reemplazó al server DevHub — CK-16) — app de
+  escritorio por usuario del ciclo de desarrollo (CTO/dev/devops/PO): cada developer ve sus
+  repos y sus historias; la versión Product Manager (en construcción) concentra refinamiento y
+  priorización, con **GitHub como canalizador**. Futura fuente de datos de delivery de Cockpit
+  (mecanismo TBD, BL-18). Sistemas separados, sin import de código cruzado.
 - **P3 · Kit** (`~/Proyectos/harness-repo`, graduado) — el entregable final del pilar Personas: los
   arneses por puesto que resuelven una brecha detectada se conectan aquí como respuesta a un gap.
 - **P4 · Harness Studio** (`~/Proyectos/harness-studio`, graduado) — no es fuente de datos de

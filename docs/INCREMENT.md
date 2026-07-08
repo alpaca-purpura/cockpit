@@ -20,7 +20,7 @@
 
 ## Lo que NO está construido (no confundir con lo de arriba)
 
-Motor de Discovery (N1) · App del Auditor · contrato de datos DevHub→Cockpit · ingesta
+Motor de Discovery (N1) · App del Auditor · conexión de delivery DevStudio/GitHub→Cockpit · ingesta
 multi-fuente As-Is/To-Be · roles Área/Consultor reales · auth · preparación-auditoría ·
 negocio.yaml como proyección GENERADA del objeto (BL-19, gatillo: objeto poblado con
 objetivos/brechas). Todo eso vive en [`proyecto/backlog.yaml`](../proyecto/backlog.yaml).

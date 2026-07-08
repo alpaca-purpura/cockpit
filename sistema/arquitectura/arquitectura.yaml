@@ -1,11 +1,12 @@
 # arquitectura.yaml — el modelo de LA CÉLULA Cockpit (P1) como dato (arquitectura-como-dato · I-73 replicado — CK-07)
 #
 # QUÉ ES: el mismo patrón de tooling/strategy/arquitectura.yaml (I-73), a nivel célula. Modela
-# el estado ACTUAL — Stage 4 (CK-07) ejecutado: dos binarios independientes (`cockpit`/DevHub y
-# `directorio`/Cockpit), el andamiaje transicional (Deps/route-group-adapter/alias-npm/symlink)
-# desmontado. El contrato de datos DevHub→Cockpit (destino) queda diseñado (CK-08) sin código —
-# nada lo consume todavía. Curado a eventos de decisión: cada elemento lleva `fichas:` (CK-NN de
-# esta célula, o I-NN/DH-NN cuando cruza célula). NO se cosecha — su SSoT son las fichas del ledger.
+# el estado ACTUAL — Stage 4 (CK-07) ejecutado y evolucionado en CK-16: Cockpit = binario
+# `directorio` (único binario del data plane); P2 = DevStudio (app de escritorio, reemplazó al
+# server DevHub; GitHub como conector). La conexión de datos de delivery hacia Cockpit quedó SIN
+# mecanismo (diseño CK-08 derogado en CK-16) — se diseña con el primer consumidor real (BL-18).
+# Curado a eventos de decisión: cada elemento lleva `fichas:` (CK-NN de esta célula, o
+# I-NN/DH-NN cuando cruza célula). NO se cosecha — su SSoT son las fichas del ledger.
 #
 # QUIÉN LO CONSUME: gen_arquitectura.py (CK-15, cierra BL-08) — lo valida (relaciones joinean,
 # estados/tipos en vocabulario, rutas existen, fichas CK-10+ resuelven en LEDGER.md) y lo
@@ -20,20 +21,20 @@ meta:
   nombre: "Arquitectura de la célula — Cockpit (P1)"
   version: 0.1.0
   proposito: >-
-    Cockpit (P1, "Discovery") y DevHub (P2, "Delivery") son aplicaciones independientes
-    (Candidata A, I-74) — no un binario compartido. Stage 4 (CK-07) ejecutado: Cockpit tiene
-    runtime propio (binario `directorio`, N13) — el andamiaje transicional (`Deps`, route-group
-    adapter, alias npm, symlink) quedó desmontado, no solo diseñado. El contrato de datos
-    DevHub→Cockpit (para cuando exista un consumidor real de capabilities/releases) queda
-    diseñado (CK-08) pero sin código — nada lo consume todavía. Este modelo existe para que esa
-    frontera nunca vuelva a leerse como "un solo sistema" — el error que corrigieron I-74/CK-07 v2.
+    Cockpit (P1, "Discovery") y P2 ("Delivery") son productos independientes (Candidata A,
+    I-74) — cero import de código. Stage 4 (CK-07) ejecutado: Cockpit tiene runtime propio
+    (binario `directorio`, N13). Evolución CK-16: P2 = DevStudio (app de escritorio por usuario,
+    reemplazó al server DevHub; GitHub como conector de la orquestación) — el contrato de datos
+    CK-08 quedó derogado y la conexión de delivery hacia Cockpit se diseña con el primer
+    consumidor real (BL-18). Este modelo existe para que esa frontera nunca vuelva a leerse como
+    "un solo sistema" — el error que corrigieron I-74/CK-07 v2.
 
 # ---- PLANOS = las bandas del render ----
 planos:
   - { id: actores,        nombre: "Roles",                     sub: "quién usa Cockpit — Directorio · Área · Consultor (CK-01)" }
   - { id: cockpit-app,    nombre: "Cockpit (P1) — propio",      sub: "código y runtime que esta célula posee, hoy y a futuro" }
-  - { id: contrato,       nombre: "Contrato de datos (DESTINO)", sub: "cómo DevHub llega a Cockpit una vez separados — diseñado, sin código (CK-08)" }
-  - { id: devhub-externo, nombre: "DevHub (P2) — externo",      sub: "fuente de datos de Cockpit; célula distinta, ledger distinto (DH-NN)" }
+  - { id: contrato,       nombre: "Conexión de datos (DESTINO)", sub: "cómo llegan los datos de delivery a Cockpit — sin mecanismo (CK-08 derogado en CK-16, TBD con BL-18)" }
+  - { id: devhub-externo, nombre: "DevStudio (P2) — externo",    sub: "app de escritorio de desarrollo; futura fuente de datos de Cockpit vía GitHub; célula distinta, ledger DH-NN" }
 
 # ---- TIPOS ----
 tipos:
@@ -135,7 +136,7 @@ componentes:
     estado: activo
     ruta: go/cmd/directorio
     fichas: [CK-07]
-    proposito: "cmd/launcher/puerto propios (4100) — el binario N13 (NODOS.md). Envuelve cockpit-go-module + cockpit-shell (ahora Next app independiente), sin pasar por el binario de DevHub ni importar su paquete."
+    proposito: "cmd/launcher/puerto propios (4100) — el binario N13 (NODOS.md), único binario del data plane desde CK-16. Envuelve cockpit-go-module + cockpit-shell (Next app independiente), sin depender de ningún otro producto ni importar su código."
   - id: motor-discovery
     tipo: backend
     plano: cockpit-app
@@ -162,10 +163,10 @@ componentes:
   - id: contrato-datos
     tipo: contrato
     plano: contrato
-    nombre: "Contrato de datos DevHub→Cockpit"
+    nombre: "Conexión de datos de delivery (DevStudio/GitHub→Cockpit)"
     estado: pendiente
-    fichas: [CK-07, CK-08]
-    proposito: "Diseñado (CK-08), sin código: Pull API — `directorio` llama GET /api/contrato/directorio?sistema=... a `cockpit` (devhub) en vivo. Envelope versionado ({contract_version,data}), auth mismo-host default + bearer token LAN (DIRECTORIO_FEED_TOKEN). Sin implementar: cero consumidor real hoy (Motor de Discovery, sin fecha)."
+    fichas: [CK-07, CK-08, CK-16]
+    proposito: "SIN mecanismo firmado. El diseño CK-08 (Pull API contra el server DevHub en vivo) quedó DEROGADO en CK-16 — el host contra el que se diseñó ya no existirá (P2 = DevStudio, app de escritorio; GitHub como conector). Se diseña con el primer consumidor real (BL-18), probablemente leyendo del repo GitHub del cliente."
   - id: graduacion-repo
     tipo: contrato
     plano: contrato
@@ -174,15 +175,15 @@ componentes:
     fichas: [I-64, I-71]
     proposito: "Mitad-1 (frontera por carpetas) vigente — separar RUNTIME no implica separar REPO. Mitad-2 (cadencia comercial propia) derogada por I-71. Gobierna el alcance de Stage 4: dos binarios, un monorepo."
 
-  # — DevHub (externo) —
+  # — DevStudio (P2, externo) —
   - id: devhub-delivery
     tipo: sistema-externo
     plano: devhub-externo
-    nombre: "DevHub — Delivery (binario `cockpit`, N5)"
+    nombre: "DevStudio — app de escritorio de desarrollo (P2, N5)"
     estado: activo
-    ruta: "~/Proyectos/devhub/go (repo propio, externo)"
-    fichas: [DH-01]
-    proposito: "Tablero SDD, capabilities, releases — creciendo por ROL (CTO vs developer). Fuente de datos de Cockpit, célula y ledger propios (DH-NN)."
+    ruta: "~/Proyectos/dev-studio (repo propio, externo)"
+    fichas: [DH-12, CK-16]
+    proposito: "Reemplaza al server DevHub (re-fichado N5, CK-16): app de escritorio por usuario (CTO/dev/devops/PO) para construir con proceso/arquitectura/doc as-code; GitHub como conector (PM refina/prioriza → devs reciben sus historias). Futura fuente de datos de delivery de Cockpit (mecanismo TBD, BL-18). Célula y ledger propios (DH-NN)."
 
 # ---- RELACIONES ----
 relaciones:

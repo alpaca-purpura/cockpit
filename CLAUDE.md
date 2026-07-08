@@ -29,7 +29,9 @@ schemas, design system cuando exista — BL-04). Prioridades las firma el operad
   Discovery (N1, ★IP, sin construir) y App del Auditor (N14 desde CK-14; CK-11, sin construir —
   instalable, patrón harness-studio/dev-studio, publica procesos al repo cliente) — ver
   `sistema/arquitectura/NODOS.md` + `despliegue.html` (arquitectura terminada, BL-03/CK-14).
-- Contrato de datos DevHub→Cockpit: Pull API versionada, diseñada, sin implementar (CK-08).
+- Datos de delivery→Cockpit: SIN mecanismo — el contrato Pull API (CK-08) quedó derogado en
+  CK-16 (P2 = DevStudio, app de escritorio con GitHub como conector; el server DevHub murió).
+  Se diseña con el primer consumidor real (BL-18).
 - El objeto normalizado COMPLETO (9 entidades de `objeto.schema`) se lee y valida entero en
   `/api/objeto` (CK-13, CAP-08; instancias en `empresa/<tipo>/` del shell — D-15). `negocio.yaml`
   sigue curado a mano como proyección (D-13); voltearlo a generado = BL-19.
