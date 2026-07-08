@@ -57,6 +57,13 @@ python3 sistema/arquitectura/gen_arquitectura.py --check    # gate anti-drift (e
 - Gate: índice↔fichas de NODOS, refs `[R#]` resuelven al responsibility-walk, relaciones joinean,
   estados/tipos en vocabulario, rutas existen, fichas `CK-10+` resuelven en `LEDGER.md`
   (CK-01..CK-09 = historia congelada del monorepo, se aceptan sin verificar).
+- `despliegue.html` (curado a mano) **se valida, no se genera** (CK-17): todo nodo del índice
+  aparece en el diagrama (`data-nodo`) y viceversa, y la madurez de cada art coincide con
+  NODOS.md — si divergen, el gate bloquea y el diagrama se corrige a mano en el mismo evento.
 
-**Disciplina:** editar NODOS.md o arquitectura.yaml ⇒ correr el generador en el MISMO evento
-(los generados se commitean juntos; `--check` delata drift).
+**Gate automático (CK-17):** hook versionado en [`.githooks/pre-commit`](../../.githooks/pre-commit)
+— en cada commit valida todo lo anterior, regenera los derivados y los agrega al commit; si algo
+no valida, bloquea. Activación por clone (una vez): `git config core.hooksPath .githooks`.
+
+**Disciplina:** editar NODOS.md o arquitectura.yaml ⇒ el hook regenera y stagea solo; editar el
+layout de despliegue.html sigue siendo curación manual (mismo evento que la decisión).

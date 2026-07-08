@@ -11,6 +11,8 @@ Y el diente del gate (falla con exit 1 antes de escribir):
   · arquitectura.yaml: relaciones joinean (from/to existen) · tipo ∈ RELACION_TIPOS ·
     estado ∈ ESTADOS · plano/tipo declarados · rutas existen · toda ficha CK-NN resuelve
     en LEDGER.md (fichas de otros ledgers — I/DH/H/D-NN — son externas, no se verifican)
+  · despliegue.html (curado a mano — se VALIDA, no se genera): todo nodo del índice tiene
+    data-nodo en el diagrama y viceversa; la madurez de cada art coincide con NODOS.md (CK-17)
 
 Heredero de gen_nodos.py + gen_arquitectura_cockpit.py del monorepo legacy (no portados en
 CK-10); render propio self-contained porque el shell de harness-studio es otro producto (P4)
@@ -94,6 +96,33 @@ def render_nodos_js(nodos):
     body = json.dumps(nodos, ensure_ascii=False, indent=2)
     return ("// GENERADO desde NODOS.md por sistema/arquitectura/gen_arquitectura.py — NO editar a mano.\n"
             "window.NODOS = " + body + ";\n")
+
+
+# ---------- despliegue.html: validación (curado a mano — se valida, no se genera) ----------
+
+DESPLIEGUE = os.path.join(HERE, "despliegue.html")
+ART = re.compile(r'<div class="art[^"]*" data-nodo="(N\d+)"><div class="as">(.*?)</div>', re.S)
+DATA_NODO = re.compile(r'data-nodo="(N\d+)"')
+
+
+def validar_despliegue(nodos):
+    html = open(DESPLIEGUE, encoding="utf-8").read()
+    en_diagrama = set(DATA_NODO.findall(html))
+    for nid in nodos:
+        if nid not in en_diagrama:
+            err(f"despliegue.html: {nid} está en NODOS.md pero no aparece en el diagrama (data-nodo)")
+    for nid in en_diagrama:
+        if nid not in nodos:
+            err(f"despliegue.html: data-nodo '{nid}' no existe en NODOS.md")
+    # madurez de cada art sincronizada con el índice (los nodos-actor no llevan art con madurez)
+    for nid, as_text in ART.findall(html):
+        madurez = (nodos.get(nid) or {}).get("madurez", "")
+        if not madurez:
+            continue
+        if madurez not in as_text:
+            err(f"despliegue.html: art de {nid} dice otra madurez — NODOS.md dice '{madurez}'")
+        elif madurez == "existe" and "existe (parcial)" in as_text:
+            err(f"despliegue.html: art de {nid} dice 'existe (parcial)' — NODOS.md dice 'existe'")
 
 
 # ---------- arquitectura.yaml → arquitectura.html ----------
@@ -296,6 +325,7 @@ def main():
     nodos = parse_nodos(open(NODOS_MD, encoding="utf-8").read())
     modelo = yaml.safe_load(open(MODELO, encoding="utf-8"))
     validar_modelo(modelo)
+    validar_despliegue(nodos)
     if errors:
         for e in errors:
             print(f"  ERR   {e}")

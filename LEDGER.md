@@ -353,7 +353,33 @@ BL-18 (redefine) · BL-20 (sin cambio — la deuda Go/Next quedó solo del lado 
 
 *Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
 
-<!-- Próximas: CK-17, … -->
+### CK-17 · Gate anti-drift automático — pre-commit hook + validación de despliegue.html — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-07):* "¿arquitectura.html también se renderiza automático ante los
+cambios como despliegue?" → aclarado el modelo (arquitectura.html = 100% generado; despliegue =
+curado con drawer generado; nada corre solo sin invocar el script) → "Me parece bien, hagámoslo
+[pre-commit hook], y que actualice despliegue también si fuera posible."
+
+*Desarrollo:* dos piezas —
+
+1. **Validación de `despliegue.html` en el generador.** El layout es curado a mano (generarlo
+   destruiría la narrativa visual), así que "actualizarlo automático" se resuelve como **gate**:
+   todo nodo del índice de NODOS.md aparece en el diagrama (`data-nodo`) y viceversa, y la
+   **madurez** de cada art coincide con la del índice (incluye el caso `existe` vs `existe
+   (parcial)`). Si divergen → exit 1 con mensaje puntual; el diagrama se corrige a mano en el
+   mismo evento. Test negativo ejecutado: madurez adulterada de N13 → el gate la delató.
+2. **Hook versionado `.githooks/pre-commit`** (+ `git config core.hooksPath .githooks`, config
+   local documentada en el README para clones nuevos): en cada commit corre el generador —
+   valida las tres fuentes, **regenera `nodos.data.js` + `arquitectura.html` y los agrega al
+   commit** (mismo evento, sin paso manual); si algo no valida, **bloquea el commit**. Patrón
+   heredado del `gen_all.py --check` del monorepo, en versión regenera-y-stagea.
+
+*Conecta:* CK-15 (el generador que se extiende) · CK-14 (despliegue.html curado que ahora se
+valida) · CK-11 (disciplina mismo-evento, ahora con diente automático).
+
+*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
+
+<!-- Próximas: CK-18, … -->
 
 ## Log
 
@@ -365,4 +391,5 @@ BL-18 (redefine) · BL-20 (sin cambio — la deuda Go/Next quedó solo del lado 
 | 2026-07-07 | El objeto completo (cierra BL-02): `/api/objeto` sirve y valida las 9 entidades JUNTAS (refs del Hilo cruzan entidades, RACI A==1, enums, ciclos); supersede `/api/personas`; CAP-08; verificado contra prenter (12 procesos, cero warnings). Nace BL-19 (negocio.yaml → proyección). | CK-13 |
 | 2026-07-07 | Arquitectura terminada (cierra BL-03): N14 App del Auditor al mapa (R16/R17 + etapa E3); estados post-Stage-4 corregidos en NODOS.md (contrato CK-08 diseñado, N13 = binario `directorio` con `/api/objeto`); `despliegue.html` portado estático y actualizado; ARCHITECTURE/README al día. Nace BL-20 (deuda Go/Next N13). | CK-14 |
 | 2026-07-07 | Render de la arquitectura-as-code (cierra BL-08): `gen_arquitectura.py` valida (refs R#, fichas CK-10+, relaciones, rutas) y genera `nodos.data.js` (drawer de despliegue.html restaurado) + `arquitectura.html` (vista de célula desde arquitectura.yaml); `--check` = gate anti-drift; verificado en navegador real. | CK-15 |
-| 2026-07-07 | P2 = DevStudio (app de escritorio, GitHub como conector — reemplaza al server DevHub): N5 re-fichado Data→Edge; contrato CK-08 DEROGADO (BL-18 redefinido: mecanismo TBD con primer consumidor); N6 = repo GitHub del cliente + matiz BYOC "sus datos viven en SU GitHub, no en infra nuestra"; versión PM como nota (anti-especulación). | CK-16 |
+| 2026-07-07 | P2 = DevStudio (app de escritorio, GitHub como conector — reemplaza al server DevHub): N5 re-fichado Data→Edge; contrato CK-08 DEROGADO (BL-18 redefinido: mecanismo TBD con primer consumidor); N6 = repo GitHub del cliente + matiz BYOC "sus datos viven en SU GitHub, no en infra nuestra"; versión PM como nota (anti-especulación). Addendums: DevStudio gestiona N8 · N14 misma mecánica · N8 generalizado a runtime de agente local (motor de N5 y N14). | CK-16 |
+| 2026-07-07 | Gate anti-drift automático: hook `.githooks/pre-commit` (valida fuentes, regenera derivados y los stagea; bloquea si no valida) + `despliegue.html` curado ahora SE VALIDA (cobertura data-nodo ↔ índice, madurez por art vs NODOS.md; test negativo verificado). | CK-17 |
