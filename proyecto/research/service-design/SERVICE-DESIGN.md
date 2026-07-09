@@ -1,5 +1,12 @@
 # Service Design — M3 · Etapa 0 (Apuesta) + on-ramp
 
+> ⚠ **SUPERSEDED EN PARTE por CK-18 (2026-07-08) — narrativa de diseño histórica, NO cableado vigente.**
+> El método (M1/M3) se promovió a `../../../sistema/metodo/`. Las tablas de interfaces de este doc cablean
+> motores **N1/N4/N7 (nodos MUERTOS en CK-18)** y asumen un gap-engine server-side; los enlaces a
+> `../../products/…`, `interfaces.yaml`, `process/**`, `PRODUCT-VISION.md` son del monorepo de origen
+> (muertos). Sigue valiendo como **personas · journey · service blueprint · wireframe de la Vista**; el
+> SSoT del modelo vigente es `../../../sistema/arquitectura/NODOS.md`.
+
 > **Qué es:** el diseño de **servicio** (no el de proceso) para llevar la Etapa 0 del Espinazo a algo
 > **implementable en una empresa real**. Responde: ¿qué le pedimos al sponsor, cómo, con quién
 > interactúa, y qué **interfaces frontend** necesita el sistema? Es el puente de "metodología" → "producto".

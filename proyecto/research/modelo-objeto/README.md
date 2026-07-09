@@ -1,5 +1,10 @@
 # Campaña · Modelo del OBJETO + Norte de Producto
 
+> ⚠ **CONGELADO — campaña cerrada, PRE-CK-18.** Sus salidas de sistema ya se promovieron a
+> [`../../../sistema/schema/`](../../../sistema/schema/) (cierre BL-07): el contrato `objeto.schema.yaml`
+> (CK-11), el fixture END-TO-END `ejemplo-vertice.yaml` y el book `metodologia/` (5 docs). Lo que queda
+> aquí es narrativa de campaña; SSoT del modelo = `../../../sistema/schema/`.
+
 > Carpeta-plan **efímera** (hermana del repo `prenter-harness`, fuera del gate). Coordina un trabajo
 > **multi-sesión**. El **contenido** que produzca esta campaña es **producto** y *gradúa* hacia
 > `prenter-harness` cuando construyamos. Esto es el andamio; el edificio es el producto.

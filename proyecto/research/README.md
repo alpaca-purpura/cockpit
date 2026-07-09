@@ -9,10 +9,14 @@ instalada): repositorio oficial (git/Forgejo), data lakehouse (dlt+DuckLake), kn
 (files-first), distribución/licencias/telemetría (go-tuf v2 + Tauri + Ed25519 + OTLP), auth/RBAC
 (embebida policy-as-data), gestión de cambios ISO, y proceso-como-arnés. Empieza por su `README.md`.
 
-## Campañas heredadas del monorepo
+## Campañas heredadas del monorepo — ⚠ CONGELADAS / PRE-CK-18
 
-Tres campañas rescatadas. Lee el `README.md`/`NEXT-PROMPT.md`/`INDICE.md` de cada una antes de
-retomar una investigación — es probable que ya exista una decisión o un aprendizaje capturado.
+Tres campañas rescatadas. **Son históricas: anteriores al rediseño CK-18 (2026-07-08) y pueden
+contradecir el modelo vigente** (SSoT = [`../../sistema/arquitectura/NODOS.md`](../../sistema/arquitectura/NODOS.md)).
+No citarlas como verdad actual — su valor es narrativa/aprendizaje. Salidas de sistema ya destiladas:
+`objeto.schema.yaml` → [`sistema/schema/`](../../sistema/schema/), M1/M3 + método →
+[`sistema/metodo/`](../../sistema/metodo/) (BL-07). Lee el `README.md`/`NEXT-PROMPT.md`/`INDICE.md` de
+cada una antes de retomar — es probable que ya exista una decisión o un aprendizaje capturado.
 
 ## [`cockpit-negocio/`](./cockpit-negocio/)
 Campaña que llevó a Cockpit de "visor SDD" a "herramienta de negocio" (Fases 0-5). Empieza por
@@ -27,8 +31,10 @@ El modelo de datos detrás de la Vista de Negocio: 9 entidades (empresa · perso
 proceso · sistema · objetivo · capability · brecha). Empieza por `INDICE.md` y `DECISIONES.md`
 (D-01..D-16). El contrato de forma (`objeto.schema.yaml`) se promovió a
 [`sistema/schema/`](../../sistema/schema/objeto.schema.yaml) en CK-11 — aquí queda la campaña que
-lo produjo. `ejemplo-vertice.yaml` es fixture ficticia (Inmobiliaria Vértice, no Prospera real).
-`metodologia/` tiene 5 documentos temáticos (brechas, objetivos, entidades, glosario, procesos).
+lo produjo. También se promovieron a `sistema/schema/` en el cierre de BL-07: `ejemplo-vertice.yaml`
+(fixture END-TO-END del schema — Inmobiliaria Vértice ficticia, no Prospera real) y `metodologia/`
+(5 docs del *porqué* de cada campo: brechas, objetivos, entidades, glosario, procesos). Lo que queda
+aquí es narrativa de campaña.
 
 ## [`service-design/`](./service-design/)
 Cómo Cockpit se diseña a sí mismo con This Is Service Design Doing (mapa de actores → persona →

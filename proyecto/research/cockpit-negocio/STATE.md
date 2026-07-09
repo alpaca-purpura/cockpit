@@ -1,5 +1,9 @@
 # STATE — realidad actual (handoff para sesión fría)
 
+> ⚠ **CONGELADO 2026-06-27 — foto de la campaña en el monorepo `prenter-harness`, PRE-CK-18.** "Realidad
+> actual" se refiere a esa época, NO al repo Cockpit standalone ni al modelo vigente (SSoT =
+> `../../../sistema/arquitectura/NODOS.md`). Consérvese como historia.
+
 > Snapshot al cierre de **Fase 5 slice 2** (2026-06-27) — **Vista de Negocio COMPLETA**. Actualízalo al cerrar cada fase. Memoria persistente relacionada: `[[portfolio-holding-model]]`, `[[cockpit-business-tool-campaign]]` (índice en `~/.claude/.../memory/MEMORY.md`).
 
 > 🔴 **RENAME GRANDE (rebrand `ed8ab81`, ejecutado por el operador a mitad de Fase 5):** el repo de la fábrica se renombró **`alpaca-harness` → `prenter-harness`** y se MOVIÓ a **`~/Proyectos/prenter-harness`** (`~/Proyectos/alpaca-harness` **ya no existe**). El remoto (`penter`→`prenter-harness`, typo corregido), el módulo Go (`…/prenter-harness/cockpit-go`), PRODUCT-VISION y gen_ledger ya migrados en el rebrand. El dir de memoria migró también (`-prenter-harness`). El sistema-fábrica de Prenter pasó de slug `alpaca-harness` a **`prenter-harness`** (reconciliado en Fase 5 — el rebrand había dejado su `workspace` en path muerto).

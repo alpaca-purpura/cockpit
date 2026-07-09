@@ -138,6 +138,11 @@ cliente?"; si sólo existe por cómo está armado el dogfood/laptop → contamin
 **(c) Orden de autoridad** — un *open* informal de checkpoint **no** supera una decisión clavada; re-derivar
 todo open heredado contra el ledger antes de actuar. Carga: ARCHITECTURE.md (BYOC) · I-39 · D-01.
 
+**Addendum CK-18 (2026-07-08):** el rótulo *«en su servidor, patrón BYOC»* quedó **superseded** — el modelo
+vigente es «Organización instalada» con el **Repositorio Oficial (N6) = git self-hosted confidencial
+(Forgejo)**, ya no GitHub. La **decisión de fondo sigue intacta**: objeto autocontenido, un tenant, sin
+`cuenta_ref`.
+
 ## D-15 · Topología del objeto: prenter-harness = SISTEMA, prenter = EMPRESA — `clavada` (corrige mi sobre-aplicación de D-01)
 **prenter-harness es un SISTEMA** (producto), NO la empresa. **prenter (sibling) = la EMPRESA**, dueña de su objeto de
 negocio. Homes: **(1)** objeto de negocio de Prenter (`empresa·objetivo·rol·persona·area·proceso·brecha`) →

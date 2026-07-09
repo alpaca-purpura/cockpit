@@ -1,5 +1,8 @@
 # Prompt maestro — continuar los pendientes (post-campaña)
 
+> ⚠ **CONGELADO — PRE-CK-18.** Los pendientes de abajo son de la época del monorepo `prenter-harness`;
+> el tracking vigente es `../../backlog.yaml`. No leer como trabajo activo.
+
 > 🎉 La campaña Cockpit→Negocio está CERRADA (Fase 5 completa) y la Limpieza de fábrica también.
 > Lo que sigue son **pendientes sueltos repartidos en VARIOS repos**. Regla dura: **una conversación = un dominio/cwd** (abrir Claude en otro cwd rompe el aislamiento). Por eso este prompt **orienta y deja elegir**; arrancá UNO por conversación, en su cwd.
 >

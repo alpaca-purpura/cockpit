@@ -20,7 +20,7 @@ y mejora continua** de los cuatro objetos que sostienen a cualquier empresa:
 El eje es **gestión empresarial basada en buenas prácticas de normas ISO** — no como aparato de
 certificación, sino como **ontología y disciplina operativa** (ver §ISO más abajo). Es un sistema
 de **gran escala** con arquitectura empresarial: se despliega en la infraestructura del cliente
-(BYOC — arquitectura de referencia heredada en `sistema/arquitectura/`).
+(modelo CK-18 «Fábrica + Organización instalada» — ver §Arquitectura y `sistema/arquitectura/NODOS.md`).
 
 **Core del sistema:** acompañar a la empresa mediante la **ingesta de datos de múltiples
 fuentes** (sistemas manuales, documentos, interfaces conversacionales) para modelar su estado

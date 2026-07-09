@@ -1,7 +1,8 @@
 # metodo/ — el método del servicio/auditor as-code
 
 El método con que se levanta, diagnostica y mejora una empresa cliente. Es SISTEMA (define qué
-hace Cockpit), no documentación de features. Se embebe en la App del Auditor (BL-16). Completado
+hace Cockpit), no documentación de features. Se empaqueta en arneses (Arnesia/N15) para las apps del
+edge — Consultio (N14, ex App del Auditor, BL-15/16/26). Completado
 desde el legacy `prenter-harness/service/` en CK-11 (antes solo había catálogo + veredicto ISO).
 
 ## Doctrina y catálogo

@@ -20,7 +20,9 @@
 
 ## Lo que NO está construido (no confundir con lo de arriba)
 
-Motor de Discovery (N1) · App del Auditor · conexión de delivery DevStudio/GitHub→Cockpit · ingesta
-multi-fuente As-Is/To-Be · roles Área/Consultor reales · auth · preparación-auditoría ·
+Consultio (N14, ex App del Auditor) + Colab Studio (N17) · Repositorio Oficial (N6) + Data Lakehouse
+(N16) · Gestión de Cambios ISO + niveles de acceso (N13) · Arnesia + distribución/licencias (N15/N3) ·
+ingesta multi-fuente As-Is/To-Be · roles Área/Consultor reales · auth · preparación-auditoría ·
 negocio.yaml como proyección GENERADA del objeto (BL-19, gatillo: objeto poblado con
-objetivos/brechas). Todo eso vive en [`proyecto/backlog.yaml`](../proyecto/backlog.yaml).
+objetivos/brechas). Todo eso vive en [`proyecto/backlog.yaml`](../proyecto/backlog.yaml). (N1 Motor de
+Discovery quedó **derogado** en CK-18 — su razonamiento vive como arneses, no es pendiente.)

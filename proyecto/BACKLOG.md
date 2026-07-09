@@ -8,10 +8,10 @@
 
 | Columna | Pendiente | En curso | Lo más urgente |
 |---|---|---|---|
-| **Sistema (transversal)** | 6 | 1 | BL-04 design system · BL-05 poblar método |
-| **Cockpit (N13)** | 5 | — | BL-12 niveles de acceso (alta) · BL-24 Gestión de Cambios |
+| **Sistema (transversal)** | 6 | — | BL-04 design system · BL-05 poblar método |
+| **Cockpit (N13)** | 6 | — | BL-12 niveles de acceso (alta) · BL-24 Gestión de Cambios |
 | **Consultio (N14)** | 3 | — | BL-15 clon de DevStudio (arranca cuando DevStudio esté listo) |
-| **Repositorio Oficial (N6)** | 2 | — | BL-21 Forgejo self-hosted |
+| **Repositorio Oficial (N6)** | 3 | — | BL-21 Forgejo self-hosted · BL-29 Depósito/DPA |
 | **Data Lakehouse (N16)** | 2 | — | BL-22 dlt + DuckLake |
 | **Colab Studio (N17)** | 1 | — | BL-23 app del trabajador |
 | **Plano del Fabricante (N2/N3/N15)** | 2 (+1 derogado) | — | BL-25 distribución/licencias · BL-26 pipeline de arneses |
@@ -26,7 +26,7 @@
 | BL-04 | Design system + atomic design + Storybook as-code | media | pendiente |
 | BL-05 | Poblar método: M1 beats 2-3 · M3 etapas 1-5 | media | pendiente |
 | BL-06 | negocio.schema: decidir SSoT (plugin vs repo) | media | pendiente |
-| BL-07 | Destilar research (sistema vs campaña) | media | en-curso |
+| BL-07 | Destilar research (sistema vs campaña) | media | **hecho** (cierre de etapa) |
 | BL-08 | Render de arquitectura.yaml | baja | **hecho** (CK-15) |
 | BL-09 | Borrar carpetas campaign-* originales | baja | pendiente |
 | BL-10 | Comprador/pricing/éxito-12-meses (+ licencia Arnesia, CK-18) | baja | pendiente |
@@ -57,6 +57,7 @@
 |---|---|---|---|
 | BL-21 | Forgejo self-hosted + BD vs archivos (git/archivos = SSoT) | media | pendiente |
 | BL-27 | Knowledge Database (know-how, files-first) | tbd | pendiente |
+| BL-29 | Depósito de fuentes (landing zone N12) + retención/destrucción DPA | media | pendiente |
 
 ## Data Lakehouse (N16) — dlt + DuckLake, sin construir
 

@@ -1,5 +1,9 @@
 # ▶ Punto de entrada — próxima sesión
 
+> ⚠ **CONGELADO — campaña cerrada, PRE-CK-18.** El schema vive hoy en
+> `../../../sistema/schema/objeto.schema.yaml` (ya NO `.claude/harness/schema/`). No leer como sesión
+> activa; SSoT = `../../../sistema/schema/` + `../../../sistema/arquitectura/NODOS.md`.
+
 > Arranca leyendo ESTE archivo. Luego, según necesites: `DECISIONES.md` (D-01..D-16) · `MODELO.md` · `GLOSARIO.md`.
 > Contrato: `.claude/harness/schema/objeto.schema.yaml` (en el repo prenter-harness). **NO recargues el repo entero.**
 > ⚠ Este folder vive en `~/Documentos/campaign-modelo-objeto/` (se movió de `~/Proyectos/` el 2026-06-30).

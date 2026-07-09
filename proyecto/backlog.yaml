@@ -59,7 +59,7 @@ items:
   - id: BL-01
     subsistema: sistema
     titulo: "Persona/puesto como entidad de primera clase"
-    detalle: "negocio.schema modela objetivo/área/proceso/brecha; modelar el pilar Personas de verdad."
+    detalle: "CERRADO (CK-12, CAP-07): el pilar Personas quedó modelado de verdad (entidades persona/rol en objeto.schema + Lente Personas), más allá de objetivo/área/proceso/brecha."
     origen: "VISION §TBD · CK-10 'Siguiente'"
     prioridad: alta
     estado: hecho
@@ -120,10 +120,15 @@ items:
   - id: BL-07
     subsistema: sistema
     titulo: "Destilar research: separar salidas de sistema vs narrativa de campaña"
-    detalle: "proyecto/research/ mezcla material de organización con artefactos de sistema. Revisar sobre la marcha."
+    detalle: >-
+      CERRADO (cierre de etapa). Salidas de sistema promovidas a sistema/schema/: objeto.schema.yaml
+      (CK-11) + ejemplo-vertice.yaml (fixture) + metodologia/ (5 docs). Narrativa de campaña
+      (cockpit-negocio, modelo-objeto, service-design) etiquetada CONGELADA/PRE-CK-18 con banners;
+      SERVICE-DESIGN.md marcado superseded (cablea nodos muertos N1/N4/N7). rediseno-total/ queda como
+      SOTA vigente. Deuda de limpieza aparte: BL-09 (borrar carpetas campaign-* ORIGINALES fuera del repo).
     origen: "operador: 'vamos destilando en el camino'"
     prioridad: media
-    estado: en-curso
+    estado: hecho
     fichas: [CK-11]
 
   - id: BL-08
@@ -255,7 +260,9 @@ items:
     detalle: >-
       REDEFINIDO CK-18. Consultio opera m1·m2·m3 con carriles/provenance y construye el objeto
       normalizado + documentos oficiales + arneses de la org, con preview local de Cockpit (patrón
-      dev-server). El método viaja como arneses (no embebido en build rígido).
+      dev-server). Incluye el cálculo de la brecha (TO-BE − AS-IS) + severidad y los proyectos que
+      nacen de ella (R6, el flujo As-Is→To-Be→proyectos de VISION). El método viaja como arneses
+      (no embebido en build rígido).
     origen: "operador, sesión CK-11 · redefinido CK-18"
     prioridad: alta
     estado: pendiente
@@ -267,7 +274,9 @@ items:
     titulo: "Publicación al Repositorio Oficial — 'deploy de procesos'"
     detalle: >-
       REDEFINIDO CK-18. Consultio publica el resultado ratificado a N6 (git self-hosted) vía commit+tag;
-      se une a la Gestión de Cambios (BL-24) para el gobierno del cambio del lado del cliente.
+      se une a la Gestión de Cambios (BL-24) para el gobierno del cambio del lado del cliente. Incluye
+      la transferencia consultor→Analista de Calidad (N9→N19): qué arneses/permisos cambian al entregar
+      la operación al cliente.
     origen: "operador, sesión CK-11 · redefinido CK-18"
     prioridad: alta
     estado: pendiente
@@ -299,6 +308,21 @@ items:
       crecer (+200-500 notas). NO vector DB antes de demanda. Investigación aplicada al activarse.
     origen: "operador CK-18 (D5, #8)"
     prioridad: tbd
+    estado: pendiente
+    fichas: [CK-18]
+
+  - id: BL-29
+    subsistema: repositorio-oficial
+    titulo: "Depósito de fuentes (landing zone N12) + retención/destrucción DPA"
+    detalle: >-
+      NUEVO. Hueco detectado al cerrar BL-07 (auditoría CK-18): N12 (responsabilidades R2/R3) no tenía
+      casa en el backlog, a diferencia de los demás nodos no-construidos de Organización. Zona donde
+      aterriza el crudo del levantamiento (N9 deposita, Consultio procesa): cifrado at-rest, audit de
+      quién depositó qué, y DESTRUCCIÓN post-mapa que materializa la cláusula de no-retención del DPA.
+      NO git (binarios/voluminoso). Separado de N6 (verdad curada) a propósito. Se diseña con el primer
+      despliegue real.
+    origen: "auditoría cierre BL-07 · NODOS.md N12/R3"
+    prioridad: media
     estado: pendiente
     fichas: [CK-18]
 
