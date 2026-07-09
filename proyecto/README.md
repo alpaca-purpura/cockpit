@@ -7,8 +7,9 @@ no el edificio.
 - [`backlog.yaml`](./backlog.yaml) — **System Backlog** (SSoT, as-code): trabajo pendiente por
   subsistema. [`BACKLOG.md`](./BACKLOG.md) es su vista humana (mismo evento de edición, jamás
   divergen).
-- [`research/`](./research/) — campañas de investigación heredadas (cockpit-negocio,
-  modelo-objeto, service-design) + mockups. Leer índices antes de investigar desde cero.
+- [`research/`](./research/) — investigación viva: [`rediseno-total/`](./research/rediseno-total/)
+  (SOTA del rediseño CK-18). Las campañas heredadas (cockpit-negocio, modelo-objeto, service-design)
+  se destilaron a `sistema/` y se borraron en el cierre de BL-07.
 
 Los otros dos documentos de proyecto viven en la raíz por convención del arnés:
 [`../VISION.md`](../VISION.md) (norte) y [`../LEDGER.md`](../LEDGER.md) (decisiones `CK-NN`).

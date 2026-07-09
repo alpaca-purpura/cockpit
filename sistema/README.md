@@ -18,8 +18,9 @@ Oficial, Data Lakehouse) · **Edge** (Consultio, Colab Studio, DevStudio sobre C
   (N14, ex App del Auditor) y Colab Studio (N17) (BL-15/16/26).
 - [`schema/`](./schema/) — esquemas de datos del dominio: `objeto.schema.yaml` (el modelo de
   negocio normalizado, 9 entidades — SSoT declarado; su reconciliación con el código es BL-02),
-  `ejemplo-vertice.yaml` (fixture de validación END-TO-END del contrato) y `metodologia/` (el *porqué*
-  de cada campo — norma/marco, 5 docs). Los tres promovidos desde `research/modelo-objeto/` (BL-07).
+  `ejemplo-vertice.yaml` (fixture de validación END-TO-END del contrato), `metodologia/` (el *porqué*
+  de cada campo — norma/marco, 5 docs) y `DECISIONES.md` (ADR del modelo, D-01..D-16). Destilados de la
+  campaña `modelo-objeto` al cerrar BL-07 (la campaña se borró; esto es el hogar del modelo).
 
 Regla: cambiar algo aquí = decisión de sistema → ficha `CK-NN` en el mismo evento. Las otras dos
 zonas: código + [`../docs/`](../docs/) (capabilities construidas) · [`../proyecto/`](../proyecto/)

@@ -1,7 +1,11 @@
-# Decisiones Mapeadas (pre-ledger)
+# Decisiones del modelo del objeto — ADR de `objeto.schema.yaml`
 
-> Estas decisiones **gradúan a fichas I-NN** en `tooling/strategy/PRODUCT-VISION.md` cuando construyamos.
-> Estados: `clavada · en-discusión · diferida`.
+> **Log de decisiones D-NN detrás del contrato** [`objeto.schema.yaml`](./objeto.schema.yaml): los campos
+> `met:` del schema citan estos códigos inline (~30 refs). Promovido a `sistema/schema/` desde la campaña
+> `modelo-objeto` (destilada, cierre BL-07). Son decisiones **PRE-CK-18 que produjeron el schema** —
+> históricas por naturaleza (ADR); donde una quedó superseded por CK-18 lleva addendum (ver **D-14**).
+> Estados: `clavada · en-discusión · diferida`. Menciones a `checkpoints`/`cp-NN`/`ESTRUCTURA-INICIAL`/
+> `NEXT-PROMPT` en el cuerpo son de la campaña original (ya borrada) — contexto histórico, no enlaces.
 
 ## D-01 · Ubicación del objeto de prenter-harness — `clavada`
 El plano-objeto de prenter-harness-sobre-sí-mismo vive **in-repo, enrejado** (no en `prenter`, no en repo
@@ -86,7 +90,7 @@ Record/Differentiation/Innovation) parqueado = otro eje (evolución/ritmo), por 
 M13 ArchiMate (App Component / Product). **Ajusta D-02.**
 
 ## D-11 · Materialización v1 — `objeto.schema.yaml` (aditivo) — `clavada`
-Materializado el modelo normalizado en `.claude/harness/schema/objeto.schema.yaml` (L0), **ADITIVO**: NO toca
+Materializado el modelo normalizado en [`objeto.schema.yaml`](./objeto.schema.yaml) (L0 — hoy en `sistema/schema/`), **ADITIVO**: NO toca
 el `negocio.yaml` vivo del cockpit (bajo acoplamiento) — `negocio` se vuelve su **proyección** (D-06). 8 nodos
 (empresa·persona·rol·proceso·sistema·objetivo·capability·brecha) anclados a **O1-O7 + ArchiMate**; `met:`
 (metodología) por campo; provenance `fuente·conf` (M23) obligatorio; Hilo de Oro = 8 relaciones (un-extremo +

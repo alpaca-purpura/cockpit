@@ -45,8 +45,9 @@ nodos, SSoT) + `despliegue.html` + fichas SOTA en `proyecto/research/rediseno-to
 
 **Estado:** código migrado y verificado standalone (Go build/vet/test + UI tsc/vitest/export
 estático, todos verdes sin dependencias del monorepo de origen). Método del auditor completado
-desde el legacy (CK-11). Investigación heredada indexada en `proyecto/research/` — leer los
-índices antes de investigar desde cero.
+desde el legacy (CK-11). La investigación heredada se **destiló a `sistema/`** y se borró (cierre
+BL-07): schema+fixture+`metodologia/`+`DECISIONES.md` → `sistema/schema/`, `SERVICE-DESIGN.md` →
+`sistema/metodo/`. Investigación viva = `proyecto/research/rediseno-total/` (SOTA del rediseño CK-18).
 
 **Arnés de construcción:** kit dev — plugin del marketplace `alpacapurpura/prenter-marketplace`
 (`harness@prenter-marketplace`, canal estable). Evoluciona con el producto — mejoras al arnés se

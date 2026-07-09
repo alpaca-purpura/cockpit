@@ -33,6 +33,10 @@ aparato de certificación no) y que `VISION.md §ISO` hereda y amplía (CK-10).
   6 etapas.
 - [`PROCESS-AS-DATA.md`](./PROCESS-AS-DATA.md) — el patrón plantilla(IP)/instancia(cliente) que
   vuelve el engagement dato estructurado.
+- [`SERVICE-DESIGN.md`](./SERVICE-DESIGN.md) — el diseño de **servicio** del método (TiSDD): mapa de
+  actores, persona del sponsor/consultor, journey maps, service blueprint y la spec de pantalla de la
+  **Vista Apuesta** (§8). Destilado de la campaña `service-design` al cerrar BL-07; los `ref:` de
+  `proceso/**` (§8/§9) apuntan aquí. (Las columnas *Nodo* de §6/§9.5 son pre-CK-18 — ver `../arquitectura/NODOS.md`.)
 - [`proceso/`](./proceso/) — el proceso-como-dato mismo (módulos→etapas→pasos, front-matter MD):
   `m1/` levantamiento · `m2/` mantenimiento · `m3/` espinazo. Poblado: m1/b1 (6 pasos) + m3/e0.
   Resto = esqueleto (BL-05). Fixture ficticia en `proceso/_sample/inmobiliaria-vertice.yaml`.

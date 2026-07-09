@@ -15,4 +15,6 @@ as-code) · [`../proyecto/`](../proyecto/) (backlog, research — organización 
 
 > Nota histórica: hasta CK-11 este directorio contenía la herencia de la incubadora
 > (architecture/methodology/research/mockups). Se redistribuyó en la tríada: architecture y
-> methodology → `sistema/` · research y mockups → `proyecto/research/`.
+> methodology → `sistema/` · research y mockups → `proyecto/research/`. En BL-07 las campañas
+> heredadas se destilaron a `sistema/` y se borraron; queda solo la investigación viva
+> (`proyecto/research/rediseno-total/`).

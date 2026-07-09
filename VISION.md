@@ -53,7 +53,7 @@ y sistemas en una sola vista para el Directorio.
 **This Is Service Design Doing** es el método con el que Cockpit se diseña A SÍ MISMO (mapa de
 actores → persona → journey map → service blueprint → interfaces) — no es una metodología que el
 producto le enseñe al cliente, es la disciplina interna con la que cada pantalla nueva se
-justifica antes de construirse (ver `proyecto/research/service-design/`).
+justifica antes de construirse (ver `sistema/metodo/SERVICE-DESIGN.md`).
 
 ## ISO — marco entre ambos (decisión CK-10)
 
@@ -130,17 +130,17 @@ método nunca al cliente"; protección = licencia + contrato). Tres planos — v
 Todo Stage 1-4 (CK-02, CK-05, CK-06, CK-07/CK-08 en la historia congelada) migrado y **verificado
 standalone en este repo**: modelo de portfolio (`ui/lib/portfolio.ts`, 25 tests), módulo Go propio
 (`go/`, handlers `/api/portfolio`+`/api/negocio`), vistas + shell propio (`ui/components/`), runtime
-propio (binario `directorio`, sin dependencia de ningún otro binario). Investigación y mockups
-previos rescatados en [`proyecto/research/`](./proyecto/research/) (campañas "cockpit-negocio" y
-"modelo-objeto") — ver el índice de cada carpeta antes de retomar una investigación a fondo,
-para no re-gastar tokens redescubriendo lo ya hecho.
+propio (binario `directorio`, sin dependencia de ningún otro binario). La investigación heredada se
+**destiló a `sistema/`** y se borró (cierre BL-07: schema+fixture+`metodologia/`+`DECISIONES.md` →
+`sistema/schema/`, `SERVICE-DESIGN.md` → `sistema/metodo/`); la investigación viva es
+[`proyecto/research/rediseno-total/`](./proyecto/research/rediseno-total/) (SOTA del rediseño CK-18).
 
 **No migrado deliberadamente (doctrina "cero data de cliente" — I-39 del monorepo):** el mockup
 visual real del deal Prospera y su pricing/deck comercial siguen en
 `prenter/clientes/prospera/` (repo hermano, EMPRESA) — se referencian, no se copian. Lo que SÍ
 viajó de ese material es la versión ya genérica/ficticia (persona "Mateo Salas /
-Inmobiliaria Vértice") usada en `proyecto/research/service-design/` y
-`sistema/metodo/proceso/_sample/`.
+Inmobiliaria Vértice") usada en `sistema/metodo/SERVICE-DESIGN.md`, `sistema/schema/ejemplo-vertice.yaml`
+y `sistema/metodo/proceso/_sample/`.
 
 ## TBD — huecos abiertos
 

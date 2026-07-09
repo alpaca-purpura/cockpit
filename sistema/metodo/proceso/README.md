@@ -6,7 +6,7 @@ De aquí se renderizan las dos vistas del cockpit (consultor / cliente) y la pro
 
 - **Modelo + esquema:** [`PROCESS-AS-DATA.md`](../PROCESS-AS-DATA.md).
 - **Narrativa de diseño (el *por qué*):** [`M1-LEVANTAMIENTO.md`](../M1-LEVANTAMIENTO.md) ·
-  [`M3-ESPINAZO.md`](../M3-ESPINAZO.md) · `SERVICE-DESIGN.md` (en `proyecto/research/service-design/`).
+  [`M3-ESPINAZO.md`](../M3-ESPINAZO.md) · [`SERVICE-DESIGN.md`](../SERVICE-DESIGN.md).
 - **No confundir con `core-harness/process/`** = el ciclo SDD de 10 estados (lifecycle de una *historia*, G1–G8). Esto es la capa **por encima** (el engagement). Conectan en los gates.
 
 ```

@@ -1,11 +1,10 @@
 # Service Design — M3 · Etapa 0 (Apuesta) + on-ramp
 
-> ⚠ **SUPERSEDED EN PARTE por CK-18 (2026-07-08) — narrativa de diseño histórica, NO cableado vigente.**
-> El método (M1/M3) se promovió a `../../../sistema/metodo/`. Las tablas de interfaces de este doc cablean
-> motores **N1/N4/N7 (nodos MUERTOS en CK-18)** y asumen un gap-engine server-side; los enlaces a
-> `../../products/…`, `interfaces.yaml`, `process/**`, `PRODUCT-VISION.md` son del monorepo de origen
-> (muertos). Sigue valiendo como **personas · journey · service blueprint · wireframe de la Vista**; el
-> SSoT del modelo vigente es `../../../sistema/arquitectura/NODOS.md`.
+> **Nota (CK-18):** el diseño de servicio del método, promovido a `sistema/metodo/` desde la campaña
+> service-design (destilada). Personas · journeys · service blueprint · Vista Apuesta (§8) = vigentes.
+> Las columnas *Nodo (host·motor)* de los inventarios de interfaces (§6, §9.5) citan el mapa de nodos
+> **pre-CK-18** (N1/N4/N7 ya muertos) — el cableado vigente es
+> [`../arquitectura/NODOS.md`](../arquitectura/NODOS.md); léelas como diseño de interfaz, no de despliegue.
 
 > **Qué es:** el diseño de **servicio** (no el de proceso) para llevar la Etapa 0 del Espinazo a algo
 > **implementable en una empresa real**. Responde: ¿qué le pedimos al sponsor, cómo, con quién
@@ -14,8 +13,8 @@
 > **Alcance:** Etapa 0 (Apuesta) + su **on-ramp** (los inputs de M1 que la alimentan: objetivos/KR/
 > autoridad declarados + el Diagnóstico que lee).
 > **Docs base:** [`M3-ESPINAZO.md`](./M3-ESPINAZO.md) (Etapa 0) · [`M1-LEVANTAMIENTO.md`](./M1-LEVANTAMIENTO.md)
-> (on-ramp) · [`PRODUCT-VISION.md`](../../tooling/strategy/PRODUCT-VISION.md) · [`METODOLOGIA.md`](./METODOLOGIA.md) (M10, M24).
-> **Última actualización:** 2026-06-19
+> (on-ramp) · [`PROCESS-AS-DATA.md`](./PROCESS-AS-DATA.md) · [`METODOLOGIA.md`](./METODOLOGIA.md) (M10, M24).
+> **Última actualización:** 2026-06-19 · promovido a `sistema/metodo/` en CK-18 (cierre BL-07).
 
 ---
 
@@ -140,8 +139,8 @@ ahí el servicio se gana (o pierde) la confianza.
 
 ## 5. Service blueprint — Etapa 0 en detalle (los 6 pasos)
 
-> **Fuente estructurada = `process/m3/e0/` (bloque `blueprint:` de cada paso).** Esta tabla es narrativa;
-> el blueprint vivo lo genera `scripts/gen_prototypes.py` → `prototypes/service-blueprint.html`. No dupliques aquí.
+> **Fuente estructurada = [`proceso/m3/e0/`](./proceso/m3/e0/) (bloque `blueprint:` de cada paso).** Esta
+> tabla es narrativa; no la dupliques — el proceso-como-dato manda.
 
 | Carril ↓ / Paso → | 1. Prep async | 2. Presentar candidato | 3. Elegir/ajustar outcome | 4. Señal appetite | 5. Sellar apuesta | 6. Sembrar OST |
 |---|---|---|---|---|---|---|
@@ -161,10 +160,10 @@ ahí el servicio se gana (o pierde) la confianza.
 
 ## 6. Inventario de interfaces frontend (derivado del blueprint)
 
-> Con quién interactúa cada pantalla + **qué nodo la sirve/potencia** (columna Nodo = el cableado al
-> [diagrama de despliegue](../../products/docs/architecture/despliegue.html)). **Tabla GENERADA** desde [`interfaces.yaml`](../../products/docs/architecture/interfaces.yaml) —
-> no editar a mano; corre `python3 scripts/gen_interfaces.py`. La llave `id` es la misma que el campo
-> `interfaz:` en `process/**` y la que agrupa el drawer del diagrama.
+> Con quién interactúa cada pantalla. La llave `id` es la misma que el campo `interfaz:` en
+> [`proceso/**`](./proceso/). **La columna *Nodo (host·motor)* es pre-CK-18** (cita nodos hoy muertos
+> N1/N4/N7); el cableado vigente vive en [`../arquitectura/NODOS.md`](../arquitectura/NODOS.md) — léela
+> como diseño de interfaz, no de despliegue.
 
 <!-- GEN:iface-e0 -->
 | # | `id` | Interfaz | Usa | Plano | Qué muestra / hace | Nodo (host·motor) | Estado |
@@ -177,7 +176,7 @@ ahí el servicio se gana (o pierde) la confianza.
 | 6 | `editor-contexto-org` | **Editor de contexto org** | Consultor | UI/filesystem | objetivos/KR/RACI/stakeholders (docs/org/); versionado por git | N5 · motor N6 | nuevo † |
 | 7 | `confirmacion-ost` | **Confirmación / handoff a OST** | CEO/Sponsor · Consultor | UI | outcome apostado → raíz del OST; arranca Etapa 1 | N5 · motor N1 | nuevo |
 
-*† aún sin paso en `service/process/` (interfaz declarada en el diseño, todavía sin instanciar).*
+*† aún sin paso en `proceso/` (interfaz declarada en el diseño, todavía sin instanciar).*
 <!-- /GEN:iface-e0 -->
 
 **Superficies por actor:**
@@ -366,8 +365,8 @@ el sponsor/ops son actores de entrada (encuadre + accesos), no la lente.
 
 ### 9.4 Service blueprint
 
-> **Fuente estructurada = `process/m1/b1/` (bloque `blueprint:` de cada paso).** Esta tabla es narrativa;
-> el swimlane vivo lo genera `scripts/gen_prototypes.py` → `prototypes/service-blueprint.html`. No dupliques aquí.
+> **Fuente estructurada = [`proceso/m1/b1/`](./proceso/m1/b1/) (bloque `blueprint:` de cada paso).** Esta
+> tabla es narrativa; no la dupliques — el proceso-como-dato manda.
 
 | Carril ↓ / Fase → | 1. Encuadre | 2. Conectar | 3. Triage | 4. doc-project | 5. AS-IS | 6. Revisión |
 |---|---|---|---|---|---|---|
@@ -386,7 +385,7 @@ consultor+máquina. Casi todo vive en backstage (plano Análisis) → el valor �
 (provenance + confianza). Las **interfaces** son pocas y densas → §9.5.
 
 ### 9.5 Inventario de interfaces frontend
-> **GENERADA** desde [`interfaces.yaml`](../../products/docs/architecture/interfaces.yaml) (`python3 scripts/gen_interfaces.py`). Llave `id` = campo `interfaz:` de `process/m1/b1/p*.md`.
+> Llave `id` = campo `interfaz:` de [`proceso/m1/b1/p*.md`](./proceso/m1/b1/). Columna *Nodo* pre-CK-18 (ver [`../arquitectura/NODOS.md`](../arquitectura/NODOS.md)).
 
 <!-- GEN:iface-b1 -->
 | # | `id` | Interfaz | Usa | Plano | Qué muestra / hace | Nodo (host·motor) | Estado |
@@ -410,5 +409,5 @@ triage + confianza) · SYSTEM-MAP (M14) + ArchiMate (M13) (document-project) · 
 - (Heredadas de I-13 / M1 Beat 1: encuadre híbrido · índice de basura consultor-first · value stream tras el borrador · triage del resto indexado mínimo.)
 
 ### 9.8 Handoff (a las otras 2 capas)
-- **Proceso (dato):** estos 6 pasos → `process/m1/b1/p1..p6.md` (con `actor/plano/interfaz/fricciones` de este blueprint).
+- **Proceso (dato):** estos 6 pasos → `proceso/m1/b1/p1..p6.md` (con `actor/plano/interfaz/fricciones` de este blueprint).
 - **Sistema:** interfaces #1-6 → vistas del cockpit; planos = Conversación (encuadre) + Análisis (triage/doc-project); artefactos (AS-IS, índice, lista de huecos) → filesystem.
