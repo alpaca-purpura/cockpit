@@ -1,41 +1,34 @@
-# arquitectura/ — la arquitectura BYOC del sistema
+# arquitectura/ — el sistema como Fábrica + Organización instalada (CK-18)
 
-`ARCHITECTURE.md` (visión CTO) y `NODOS.md` (14 fichas de nodo, SSoT del detalle) describen el
-ecosistema COMPLETO tal como se diseñó en el monorepo de origen y se **terminó aquí en CK-14**
-(cierra BL-03): estados post-Stage-4 corregidos, App del Auditor incorporada al mapa.
-[`despliegue.html`](./despliegue.html) es el diagrama visual (portado del legacy y actualizado en
-CK-14; curado a mano, mismo evento que la decisión que lo cambia). Al leerlos, los nodos
-relevantes para ESTE producto son:
+`ARCHITECTURE.md` (visión CTO — con banner: sus secciones Control/Data Plane son historia pre-CK-18)
+y `NODOS.md` (**16 fichas de nodo, SSoT del detalle**) describen el ecosistema. Rediseñado de fondo en
+**CK-18**: de "BYOC con motor server-side" a **Fábrica de software + Organización instalada + Edge**.
+El método **se entrega al cliente** en arneses (deroga el límite de IP). [`despliegue.html`](./despliegue.html)
+es el diagrama visual (curado a mano, mismo evento que la decisión). Los nodos por plano:
 
-- **N1 · Motor de Discovery/Levantamiento** — ★IP, no construido. El backend de razonamiento
-  (ingesta multi-fuente, orquesta AS-IS→TO-BE→gaps). Stack candidato, endpoints y riesgos abiertos
-  ya documentados — es la especificación más detallada que existe de la mitad de Cockpit que falta
-  construir (`VISION.md` la llama Motor de Discovery). Campaña = BL-13.
-- **N2 · Playbook + Metodología** — la base de conocimiento como dato versionado que N1
-  compilaría en instrucciones — hoy vive en [`../metodo/`](../metodo/).
-- **N4 · Plano Conversación** — entrevistas de levantamiento por voz.
-- **N7 · Agentes de análisis/levantamiento** — trabajadores efímeros que leen sistemas del cliente
-  y escriben AS-IS.
-- **N9 / N11** — actores (Consultor, CEO/sponsor) con su RACI.
-- **N12 · Depósito de fuentes** — landing zone de la ingesta multi-fuente.
-- **N13 · Cockpit — Vista Negocio** — la mitad YA CONSTRUIDA: binario `directorio` + UI, en
-  [`../../go/`](../../go/) y [`../../ui/`](../../ui/) de este repo (puerto 4100; expone
-  `/api/portfolio`, `/api/negocio`, `/api/objeto`).
-- **N14 · App del Auditor** — ★IP, no construido (CK-11/CK-14). La aplicación instalable del
-  Consultor: opera el método (`../metodo/proceso/`) y publica el resultado al repo del cliente
-  ("deploy de procesos", R16/R17). Definición de producto = BL-15..BL-17.
+**Fabricante (nuestro):**
+- **N15 · Arnesia** — fábrica de arneses por rol-en-proceso (`~/Proyectos/harness-studio`).
+- **N2 · Repositorio Maestro** — método + arneses plantilla + código, SSoT nuestro (hoy `../metodo/`).
+- **N3 · Distribución + telemetría + licencias** — releases firmadas + entitlements + telemetría opt-in.
 
-Los nodos **N3, N5, N8, N10** son mayormente de P2 — hoy **DevStudio** (`~/Proyectos/dev-studio`,
-app de escritorio que reemplazó al server DevHub; re-fichado N5 en CK-16) — se mantienen en el
-documento porque el mapa es del ecosistema, pero su evolución se gobierna en el ledger DH-NN de
-ese repo. **N6** es compartido: el repo GitHub del cliente — SSoT que Cockpit lee y conector de
-la orquestación de DevStudio. El contrato de datos CK-08 quedó **derogado** en CK-16 (se diseñó
-contra el server que ya no existirá); la conexión DevStudio/GitHub→Cockpit se diseña con el
-primer consumidor real (BL-18).
+**Organización (cliente):**
+- **N6 · Repositorio Oficial** — git self-hosted confidencial (Forgejo), SSoT de la estructura (ya no GitHub).
+- **N13 · Cockpit** — Visualización + Gestión de Cambios (ISO) + niveles de acceso; binario `directorio`
+  + UI en [`../../go/`](../../go/) y [`../../ui/`](../../ui/) (puerto 4100; `/api/portfolio`, `/api/negocio`, `/api/objeto`).
+- **N16 · Data Lakehouse** — dlt + DuckLake; reúne la operación (N18) y nutre a Cockpit.
+- **N12 · Depósito de fuentes** — landing zone del crudo transitorio.
+- **N18 · Sistemas operacionales** — SaaS/ERP/a medida/Excels: fuentes del lakehouse.
 
-`ck-02-stage1-diagram.html` — diagrama de la extracción física Stage 1 (cómo convivían Cockpit y
-DevHub en el mismo binario, antes de Stage 4). Histórico, útil para entender por qué el código
-está estructurado como está.
+**Edge (apps sobre Claude Code local):**
+- **N14 · Consultio** — App del Consultor (clon de DevStudio): construye el mapa completo y lo publica a N6.
+- **N17 · Colab Studio** — app del trabajador operativo (arneses por puesto).
+- **N5 · DevStudio** — app de desarrollo (P2, `~/Proyectos/dev-studio`, ledger DH-NN); también a devs del cliente.
+- **N8** — Claude Code, motor común. **N9/N19/N10/N11** — actores (Consultor→Analista de Calidad, Developer, Usuarios 4 niveles).
+
+**Muertos (CK-18):** N1 (Motor de Discovery server-side → arneses), N4 (voz, diferida), N7 (agentes efímeros).
+El SOTA de cada pieza está en [`../../proyecto/research/rediseno-total/`](../../proyecto/research/rediseno-total/).
+
+`ck-02-stage1-diagram.html` — diagrama de la extracción física Stage 1 (histórico, pre-Stage-4).
 
 [`arquitectura.yaml`](./arquitectura.yaml) — el modelo de la arquitectura DE LA CÉLULA como dato
 (NODOS.md = ecosistema; este YAML = qué posee/consume Cockpit).

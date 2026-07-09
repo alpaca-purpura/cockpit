@@ -379,7 +379,75 @@ valida) · CK-11 (disciplina mismo-evento, ahora con diente automático).
 
 *Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
 
-<!-- Próximas: CK-18, … -->
+### CK-18 · Rediseño de fondo — Fábrica + Organización instalada · el método se entrega en arneses · mueren N1/N4/N7 — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-08):* rediseño del ecosistema tras varias sesiones de revisión de
+`despliegue.html`/`arquitectura.html`. "Voy a construir una aplicación para el consultor propia, que
+se cuelgue sobre Claude Code, con arneses creados por Arnesia (`~/Proyectos/harness-studio`), desde
+la cual el consultor podrá hacer todo el levantamiento y 'construir' todo el mapa completo, como un
+desarrollador hace software … y lo colgaría en el Repositorio del cliente (que ya no sería GitHub,
+sino un repositorio confidencial en un servidor/máquina del cliente). N7 lo eliminamos de momento,
+todo será a través del consultor. Agregamos un 'Data Lakehouse' que nutra al Cockpit para mostrar no
+solo la organización sino cómo vamos día a día. El Cockpit sería solo Cockpit, con niveles de acceso
+por rol." + diagrama `mapaCockpitTotal`.
+
+*Desarrollo:* el cambio deroga el eje BYOC-con-motor-server-side. Se lanzaron **7 investigaciones
+SOTA** (2026-07-08, en [`proyecto/research/rediseno-total/`](../cockpit/proyecto/research/rediseno-total/)):
+repositorio oficial (git/Forgejo), data lakehouse (dlt+DuckLake), knowledge DB (files-first),
+distribución/licencias/telemetría (go-tuf v2 + Tauri + Ed25519 + OTLP), auth/RBAC (embebida
+policy-as-data), gestión de cambios ISO (git + UI que oculta git), proceso-como-arnés (skill=proc,
+plugin=rol; hueco competitivo real). El mapa nuevo se propuso visualmente (artefacto) y el operador
+firmó 5 decisiones.
+
+**Decisiones firmadas (D1..D5, AskUserQuestion + confirmación directa):**
+1. **D1 — Deroga el límite de IP "el método nunca al cliente".** El método SÍ cruza, empaquetado en
+   arneses que corren en el edge del cliente (Consultio/N14, Colab Studio/N17), y **Arnesia se
+   entrega** al cliente para que los mantenga. La protección pasa de **arquitectura** a **licencia +
+   contrato** (canal N3 revocable). Riesgo residual documentado en las fichas (chequeo 1 de NODOS).
+2. **D2 — N18 (Sistemas operacionales) y N19 (Analista de Calidad) = nodos propios** (RACI/fuentes
+   distintos, merecen ficha).
+3. **D3 — Data Lakehouse:** default en la infra del cliente; "hosteado por nosotros" = modalidad
+   comercial documentada, no el default.
+4. **D4 — App del Consultor = "Consultio"** (clon de DevStudio con adaptación propia; arranca cuando
+   DevStudio esté terminado).
+5. **D5 — Knowledge Database:** declarada `pendiente`, files-first en el repo cuando haya demanda;
+   vector DB nunca antes (el operador: "intuyo que será importante pronto").
+
+**El mapa nuevo (tres planos):**
+- **Fabricante (nuestro):** N15 Arnesia (nace, fábrica de arneses), N2 Repositorio Maestro (re-ficha,
+  era Playbook+Metodología — ahora guarda también arneses plantilla + código; el motor de discovery
+  vive aquí como arneses), N3 Distribución+telemetría+**licencias** (re-ficha, crece).
+- **Organización (cliente):** N6 Repositorio Oficial (re-ficha, ya no GitHub — git self-hosted
+  confidencial), N13 Cockpit (re-ficha — Visualización + **Gestión de Cambios** + niveles de acceso),
+  N16 Data Lakehouse (nace), N12 Depósito (sigue), N18 Sistemas operacionales (nace).
+- **Edge:** N14 Consultio (re-ficha, era App del Auditor), N17 Colab Studio (nace), N5 DevStudio
+  (amplía — también a devs del cliente), N8 Claude Code (sigue, motor común), N9 Consultor
+  (transferible → N19), N19 Analista de Calidad (nace), N10 Developer (sigue), N11 Usuarios de la
+  organización (re-ficha — 4 niveles).
+- **Mueren:** N1 (Motor de Discovery server-side → arneses; deroga BL-13), N4 (voz, diferida), N7
+  (agentes efímeros → todo el levantamiento es vía consultor).
+
+*Ejecutado:* NODOS.md (reescrito: header, índice de 16 nodos, R-walk R1..R15 nuevo, fichas, chequeos
+de consistencia — el chequeo 1 pasa de "IP por arquitectura" a "IP por licencia+contrato", el hallazgo
+"transitan no persisten" reencuadrado a la inferencia local N8) · `despliegue.html` (curado a mano:
+tres planos, edges por humano, flujo objetivos→operación, tabla de conexiones, decisiones D1..D5;
+data-nodo de los 16 nodos, madurez sincronizada) · `arquitectura.yaml` v0.2.0 (célula: plano
+`fuentes` nuevo, componentes Consultio/Arnesia/Distribución/Repositorio Oficial/Data Lakehouse/Gestión
+de Cambios/niveles-acceso, `motor-discovery` y `app-auditor`/`contrato-datos` retirados) + regenerados
+`nodos.data.js` + `arquitectura.html` (gate verde) · 7 informes SOTA en `proyecto/research/rediseno-total/`
+· backlog (columnas + BLs redefinidos/nuevos) + BACKLOG.md · VISION.md · CLAUDE.md · ARCHITECTURE.md
+· README de arquitectura.
+
+*Conecta:* CK-14/15/16/17 (el mapa que se rediseña) · CK-11 (disciplina mismo-evento + backlog-SSoT) ·
+CK-08 (ya derogado en CK-16; el contrato de datos se reemplaza por las conexiones N6/N16→Cockpit) ·
+BL-13 (**derogado**: N1 no se construye como servicio) · BL-15/16/17 (redefinidos: Consultio) · BL-18
+(redefinido: Lakehouse→Cockpit) · BL-12 (sube a alta: niveles de acceso). Nota disciplina: en fase de
+construcción no se corta ficha por cada cambio (memoria `ledger-ligero`); esta es de fondo — cambio de
+rumbo del ecosistema — por eso lleva ficha.
+
+*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
+
+<!-- Próximas: CK-19, … -->
 
 ## Log
 
@@ -393,3 +461,4 @@ valida) · CK-11 (disciplina mismo-evento, ahora con diente automático).
 | 2026-07-07 | Render de la arquitectura-as-code (cierra BL-08): `gen_arquitectura.py` valida (refs R#, fichas CK-10+, relaciones, rutas) y genera `nodos.data.js` (drawer de despliegue.html restaurado) + `arquitectura.html` (vista de célula desde arquitectura.yaml); `--check` = gate anti-drift; verificado en navegador real. | CK-15 |
 | 2026-07-07 | P2 = DevStudio (app de escritorio, GitHub como conector — reemplaza al server DevHub): N5 re-fichado Data→Edge; contrato CK-08 DEROGADO (BL-18 redefinido: mecanismo TBD con primer consumidor); N6 = repo GitHub del cliente + matiz BYOC "sus datos viven en SU GitHub, no en infra nuestra"; versión PM como nota (anti-especulación). Addendums: DevStudio gestiona N8 · N14 misma mecánica · N8 generalizado a runtime de agente local (motor de N5 y N14). | CK-16 |
 | 2026-07-07 | Gate anti-drift automático: hook `.githooks/pre-commit` (valida fuentes, regenera derivados y los stagea; bloquea si no valida) + `despliegue.html` curado ahora SE VALIDA (cobertura data-nodo ↔ índice, madurez por art vs NODOS.md; test negativo verificado). | CK-17 |
+| 2026-07-08 | Rediseño de fondo: Fábrica de software (Plano del Fabricante) + Organización instalada. El método se entrega al cliente en arneses (deroga el límite de IP). Mueren N1 (motor→arneses)/N4/N7; nacen Arnesia (N15)/Data Lakehouse (N16)/Colab Studio (N17)/Sistemas org (N18)/Analista de Calidad (N19); N6 = Repositorio Oficial confidencial (ya no GitHub); N13 Cockpit = Visualización + Gestión de Cambios + niveles de acceso; N14 = Consultio (clon DevStudio). 7 investigaciones SOTA. Decisiones D1..D5. | CK-18 |

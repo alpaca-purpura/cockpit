@@ -24,14 +24,21 @@ tracking). Idea nueva → backlog primero, construir después. Ítem terminado Y
 + capability en `docs/increment.yaml`+`INCREMENT.md`. Capabilities nuevas se construyen contra el sistema as-code (arquitectura,
 schemas, design system cuando exista — BL-04). Prioridades las firma el operador.
 
-**Decisiones técnicas vigentes:**
-- Tres piezas: Vista Negocio (N13, construida — binario `directorio` + Next.js embebido), Motor de
-  Discovery (N1, ★IP, sin construir) y App del Auditor (N14 desde CK-14; CK-11, sin construir —
-  instalable, patrón harness-studio/dev-studio, publica procesos al repo cliente) — ver
-  `sistema/arquitectura/NODOS.md` + `despliegue.html` (arquitectura terminada, BL-03/CK-14).
-- Datos de delivery→Cockpit: SIN mecanismo — el contrato Pull API (CK-08) quedó derogado en
-  CK-16 (P2 = DevStudio, app de escritorio con GitHub como conector; el server DevHub murió).
-  Se diseña con el primer consumidor real (BL-18).
+**Decisiones técnicas vigentes (rediseño CK-18 — Fábrica + Organización instalada):** el modelo dejó
+de ser "BYOC con motor server-side". Ahora tres planos — ver `sistema/arquitectura/NODOS.md` (16
+nodos, SSoT) + `despliegue.html` + fichas SOTA en `proyecto/research/rediseno-total/`:
+- **Fabricante (nuestro):** Arnesia (N15, fábrica de arneses), Repositorio Maestro (N2, método +
+  arneses + código), Distribución+telemetría+**licencias** (N3). No razona en runtime — es fábrica
+  de software. El método **se entrega al cliente** empaquetado en arneses (CK-18/D1 derogó el límite
+  de IP "el método nunca al cliente"; la protección pasa a **licencia + contrato**).
+- **Organización (cliente):** Repositorio Oficial (N6, git self-hosted confidencial — ya NO GitHub),
+  Cockpit (N13 = Visualización + Gestión de Cambios ISO + niveles de acceso), Data Lakehouse (N16,
+  nutre a Cockpit con la operación día a día), Depósito (N12), Sistemas operacionales (N18).
+- **Edge (apps sobre Claude Code local, BYO licencia):** Consultio (N14, App del Consultor = clon de
+  DevStudio; construye el mapa completo y lo publica a N6), Colab Studio (N17, app del trabajador),
+  DevStudio (N5, también a devs del cliente), N8 motor común, actores N9/N19/N10/N11 (4 niveles).
+- **Muertos (CK-18):** N1 (Motor de Discovery server-side → vive como arneses), N4 (voz, diferida),
+  N7 (agentes efímeros → todo el levantamiento es vía consultor).
 - El objeto normalizado COMPLETO (9 entidades de `objeto.schema`) se lee y valida entero en
   `/api/objeto` (CK-13, CAP-08; instancias en `empresa/<tipo>/` del shell — D-15). `negocio.yaml`
   sigue curado a mano como proyección (D-13); voltearlo a generado = BL-19.

@@ -1,40 +1,43 @@
 # arquitectura.yaml — el modelo de LA CÉLULA Cockpit (P1) como dato (arquitectura-como-dato · I-73 replicado — CK-07)
 #
-# QUÉ ES: el mismo patrón de tooling/strategy/arquitectura.yaml (I-73), a nivel célula. Modela
-# el estado ACTUAL — Stage 4 (CK-07) ejecutado y evolucionado en CK-16: Cockpit = binario
-# `directorio` (único binario del data plane); P2 = DevStudio (app de escritorio, reemplazó al
-# server DevHub; GitHub como conector). La conexión de datos de delivery hacia Cockpit quedó SIN
-# mecanismo (diseño CK-08 derogado en CK-16) — se diseña con el primer consumidor real (BL-18).
-# Curado a eventos de decisión: cada elemento lleva `fichas:` (CK-NN de esta célula, o
-# I-NN/DH-NN cuando cruza célula). NO se cosecha — su SSoT son las fichas del ledger.
+# QUÉ ES: el mismo patrón de tooling/strategy/arquitectura.yaml (I-73), a nivel célula. Modela el
+# estado de Cockpit (P1) y su frontera con el ecosistema. Rediseñado en CK-18: el sistema pasa de
+# "BYOC con motor server-side" a "Fábrica de software + Organización instalada". El método se
+# entrega al cliente empaquetado en arneses; Cockpit lee la estructura del Repositorio Oficial
+# (confidencial, infra del cliente) y la operación del Data Lakehouse, y sirve por niveles de acceso;
+# gana un módulo de Gestión de Cambios (ISO). Mueren N1 (motor server-side → arneses), N4, N7.
+# Curado a eventos de decisión: cada elemento lleva `fichas:` (CK-NN de esta célula, o I/DH-NN cuando
+# cruza célula). NO se cosecha — su SSoT son las fichas del ledger.
 #
 # QUIÉN LO CONSUME: gen_arquitectura.py (CK-15, cierra BL-08) — lo valida (relaciones joinean,
-# estados/tipos en vocabulario, rutas existen, fichas CK-10+ resuelven en LEDGER.md) y lo
-# renderiza a arquitectura.html (vista visual de la célula). Rutas actualizadas al repo propio
-# en CK-11 (antes apuntaban a products/cockpit/* del monorepo).
+# estados/tipos en vocabulario, rutas existen, fichas CK-10+ resuelven en LEDGER.md) y lo renderiza a
+# arquitectura.html. Vista ecosistema/despliegue = despliegue.html (curada, valida contra NODOS.md).
 #
 # CÓMO SE MANTIENE: al firmar una ficha CK-NN que cambia esto, se edita ESTE archivo en el MISMO
-# evento (misma disciplina que I-73) y se corre gen_arquitectura.py (gate: --check).
+# evento y se corre gen_arquitectura.py (gate: --check).
 
 meta:
   id: cockpit-p1
   nombre: "Arquitectura de la célula — Cockpit (P1)"
-  version: 0.1.0
+  version: 0.2.0
   proposito: >-
-    Cockpit (P1, "Discovery") y P2 ("Delivery") son productos independientes (Candidata A,
-    I-74) — cero import de código. Stage 4 (CK-07) ejecutado: Cockpit tiene runtime propio
-    (binario `directorio`, N13). Evolución CK-16: P2 = DevStudio (app de escritorio por usuario,
-    reemplazó al server DevHub; GitHub como conector de la orquestación) — el contrato de datos
-    CK-08 quedó derogado y la conexión de delivery hacia Cockpit se diseña con el primer
-    consumidor real (BL-18). Este modelo existe para que esa frontera nunca vuelva a leerse como
-    "un solo sistema" — el error que corrigieron I-74/CK-07 v2.
+    Cockpit (P1) es el binario que sirve el tablero de la organización en la red del cliente. Modelo
+    CK-18: es una Fábrica de software (Plano del Fabricante — nuestro) que construye el sistema
+    operativo de la organización y lo instala en su red (Plano de la Organización). El método se
+    entrega al cliente empaquetado en arneses (deroga el límite de IP "el método nunca al cliente");
+    el consultor construye el mapa completo con Consultio (clon de DevStudio sobre Claude Code) y lo
+    publica al Repositorio Oficial confidencial (N6, git self-hosted); Cockpit cruza esa estructura
+    con la operación del Data Lakehouse (N16) y sirve por niveles de acceso, más un módulo de Gestión
+    de Cambios (ISO). Mueren el motor de discovery server-side (N1 → arneses), la voz (N4) y los
+    agentes efímeros (N7 → todo el levantamiento es vía consultor). SOTA en
+    proyecto/research/rediseno-total/. Vista de despliegue = despliegue.html.
 
 # ---- PLANOS = las bandas del render ----
 planos:
-  - { id: actores,        nombre: "Roles",                     sub: "quién usa Cockpit — Directorio · Área · Consultor (CK-01)" }
-  - { id: cockpit-app,    nombre: "Cockpit (P1) — propio",      sub: "código y runtime que esta célula posee, hoy y a futuro" }
-  - { id: contrato,       nombre: "Conexión de datos (DESTINO)", sub: "cómo llegan los datos de delivery a Cockpit — sin mecanismo (CK-08 derogado en CK-16, TBD con BL-18)" }
-  - { id: devhub-externo, nombre: "DevStudio (P2) — externo",    sub: "app de escritorio de desarrollo; futura fuente de datos de Cockpit vía GitHub; célula distinta, ledger DH-NN" }
+  - { id: actores,       nombre: "Roles",                       sub: "quién usa Cockpit — Gobernanza/Área/Consultor/Analista de Calidad (CK-01/CK-18)" }
+  - { id: cockpit-app,   nombre: "Cockpit (P1) — propio",       sub: "código y runtime que esta célula posee: Visualización + Gestión de Cambios + niveles de acceso" }
+  - { id: fuentes,       nombre: "Fuentes que Cockpit lee",      sub: "de dónde toma la verdad: Repositorio Oficial (estructura) + Data Lakehouse (operación) — infra del cliente" }
+  - { id: ecosistema,    nombre: "Ecosistema (externo, célula distinta)", sub: "Fabricante (Arnesia, Distribución) y apps hermanas (Consultio, DevStudio) — ledgers propios" }
 
 # ---- TIPOS ----
 tipos:
@@ -53,24 +56,31 @@ componentes:
   - id: rol-directorio
     tipo: actor
     plano: actores
-    nombre: "Directorio"
+    nombre: "Gobernanza (Directorio)"
     estado: activo
     fichas: [CK-01]
-    proposito: "El mapa vivo de la organización: objetivos, cumplimiento, drill-down. Consume la Vista Negocio."
+    proposito: "El mapa vivo de la organización: objetivos, cumplimiento, drill-down. Máximo nivel de acceso; consume la Visualización."
   - id: rol-area
     tipo: actor
     plano: actores
-    nombre: "Área"
+    nombre: "Niveles Estratégico/Táctico/Operativo"
     estado: declarado
-    fichas: [CK-01, CK-06]
-    proposito: "Su rebanada de procesos/sistemas. Placeholder 'próximamente' en CockpitShell (CK-06) — sin auth real todavía."
+    fichas: [CK-01, CK-06, CK-18]
+    proposito: "Los demás niveles de la organización (C-level, jefaturas, operativos). Cada uno ve lo que su nivel permite (niveles de acceso, CK-18). Placeholder 'próximamente' en el shell."
   - id: rol-consultor
     tipo: actor
     plano: actores
-    nombre: "Consultor"
+    nombre: "Consultor (transferible)"
     estado: declarado
-    fichas: [CK-01, CK-06]
-    proposito: "En fase de implantación. Placeholder 'próximamente' en CockpitShell; a futuro opera el Motor de Discovery."
+    fichas: [CK-01, CK-06, CK-18]
+    proposito: "Construye el sistema de la organización con Consultio y lo publica. Rol transferible: inicia Prenter, lo hereda el Analista de Calidad del cliente."
+  - id: rol-analista-calidad
+    tipo: actor
+    plano: actores
+    nombre: "Analista de Calidad (del cliente)"
+    estado: pendiente
+    fichas: [CK-18]
+    proposito: "Hereda Consultio al cerrar el engagement; mantiene lo oficial con la Gestión de Cambios (ISO §7.5/§6.3). Nodo N19 en NODOS.md."
 
   # — cockpit-app (propio, P1) —
   - id: portfolio-model
@@ -88,7 +98,7 @@ componentes:
     estado: activo
     ruta: go
     fichas: [CK-05]
-    proposito: "package cockpit — handlers HTTP de Directorio (Portfolio+Negocio), dueño del contrato de esos endpoints desde Stage 2."
+    proposito: "package cockpit — handlers HTTP (Portfolio+Negocio+Objeto), dueño del contrato de esos endpoints desde Stage 2."
   - id: portfolio-api
     tipo: contrato
     plano: cockpit-app
@@ -112,7 +122,7 @@ componentes:
     estado: activo
     ruta: go/objeto.go
     fichas: [CK-12, CK-13]
-    proposito: "El objeto normalizado COMPLETO (9 entidades de objeto.schema, empresa/<tipo>/ del shell · D-15), validado entero al leer (refs del Hilo cruzan entidades, RACI A==1, enums, ciclos). Nació como /api/personas (CK-12), generalizado y superseded en CK-13."
+    proposito: "El objeto normalizado COMPLETO (9 entidades de objeto.schema, empresa/<tipo>/ del shell · D-15), validado entero al leer. Nació como /api/personas (CK-12), generalizado en CK-13."
   - id: cockpit-shell
     tipo: vista
     plano: cockpit-app
@@ -120,7 +130,7 @@ componentes:
     estado: activo
     ruta: ui/components/shell/CockpitShell.tsx
     fichas: [CK-06]
-    proposito: "Shell + nav por rol (Directorio vivo; Área/Consultor placeholder), cockpit-owned, consume COCKPIT_NAV."
+    proposito: "Shell + nav por rol, cockpit-owned, consume COCKPIT_NAV. A futuro, la nav se filtra por nivel de acceso (CK-18)."
   - id: negocio-view
     tipo: vista
     plano: cockpit-app
@@ -128,7 +138,7 @@ componentes:
     estado: activo
     ruta: ui/components/negocio/NegocioView.tsx
     fichas: [CK-06]
-    proposito: "Hilo de Oro navegable + Brechas — runtime inyectado por props (empresa/tree/setEmpresa), no llama useSistema() directo."
+    proposito: "Hilo de Oro navegable + Brechas — runtime inyectado por props, no llama useSistema() directo."
   - id: cockpit-runtime-propio
     tipo: servicio
     plano: cockpit-app
@@ -136,71 +146,108 @@ componentes:
     estado: activo
     ruta: go/cmd/directorio
     fichas: [CK-07]
-    proposito: "cmd/launcher/puerto propios (4100) — el binario N13 (NODOS.md), único binario del data plane desde CK-16. Envuelve cockpit-go-module + cockpit-shell (Next app independiente), sin depender de ningún otro producto ni importar su código."
-  - id: motor-discovery
+    proposito: "cmd/launcher/puerto propios (4100) — el binario N13. Envuelve el módulo Go + shell (Next app independiente). A futuro cruza estructura (N6) × operación (N16) y sirve por nivel de acceso (CK-18)."
+  - id: gestion-cambios
     tipo: backend
     plano: cockpit-app
-    nombre: "Motor de Discovery (ingesta multi-fuente)"
+    nombre: "Módulo Gestión de Cambios (ISO)"
     estado: pendiente
-    fichas: [I-74]
-    proposito: "La mitad de P1 aún no construida — As-Is/To-Be/gaps, razonamiento server-side (N1 en NODOS.md). Campaña propia, sin fecha; sigue siendo P1, no un tercer producto."
-  - id: app-auditor
-    tipo: servicio
+    fichas: [CK-18]
+    proposito: "El Analista de Calidad mantiene lo oficial: solicitud→aprobación→publicación de versiones sobre el Repositorio Oficial, siguiendo ISO §7.5/§6.3. Git de backend + UI que oculta git; firma persistida en DB además de git. SOTA: research/rediseno-total/06."
+  - id: niveles-acceso
+    tipo: backend
     plano: cockpit-app
-    nombre: "App del Auditor (Consultor)"
+    nombre: "Auth + niveles de acceso"
     estado: pendiente
-    fichas: [CK-11, CK-14]
-    proposito: "Aplicación instalable propia del consultor (patrón harness-studio/dev-studio) — opera el método (sistema/metodo/proceso) y publica su resultado al repo de la empresa cliente: 'deploy de procesos', como código a producción pero con procesos/roles/objetivos que Cockpit entiende y renderiza. Nodo N14 en NODOS.md (CK-14: límites arquitectónicos fijados, R16/R17). BL-15..BL-17."
+    fichas: [CK-18]
+    proposito: "Auth embebida (argon2id + scs/SQLite) + autorización policy-as-data derivada del Repositorio Oficial (el rol organizacional ES la política; 4 niveles Gobernanza>Estratégico>Táctico>Operativo). Ex-BL-12, sube a alta. SOTA: research/rediseno-total/05."
   - id: prep-auditoria
     tipo: backend
     plano: cockpit-app
     nombre: "Preparación para auditoría (gap-check vs norma)"
     estado: pendiente
     fichas: [CK-10]
-    proposito: "Capability futura declarada en VISION §ISO: compara el estado modelado del cliente contra cláusulas de la norma y reporta gaps. Se activa solo con demanda real; NUNCA emite certificados (límite I-05). BL-14."
+    proposito: "Capability futura (VISION §ISO): compara el estado modelado contra cláusulas de la norma y reporta gaps. Se activa con demanda real; NUNCA emite certificados (I-05). BL-14."
 
-  # — contrato de datos (destino, a diseñar) —
-  - id: contrato-datos
-    tipo: contrato
-    plano: contrato
-    nombre: "Conexión de datos de delivery (DevStudio/GitHub→Cockpit)"
-    estado: pendiente
-    fichas: [CK-07, CK-08, CK-16]
-    proposito: "SIN mecanismo firmado. El diseño CK-08 (Pull API contra el server DevHub en vivo) quedó DEROGADO en CK-16 — el host contra el que se diseñó ya no existirá (P2 = DevStudio, app de escritorio; GitHub como conector). Se diseña con el primer consumidor real (BL-18), probablemente leyendo del repo GitHub del cliente."
-  - id: graduacion-repo
-    tipo: contrato
-    plano: contrato
-    nombre: "Condición de graduación a repo propio"
-    estado: activo
-    fichas: [I-64, I-71]
-    proposito: "Mitad-1 (frontera por carpetas) vigente — separar RUNTIME no implica separar REPO. Mitad-2 (cadencia comercial propia) derogada por I-71. Gobierna el alcance de Stage 4: dos binarios, un monorepo."
-
-  # — DevStudio (P2, externo) —
-  - id: devhub-delivery
+  # — fuentes que Cockpit lee (infra del cliente) —
+  - id: repositorio-oficial
     tipo: sistema-externo
-    plano: devhub-externo
-    nombre: "DevStudio — app de escritorio de desarrollo (P2, N5)"
+    plano: fuentes
+    nombre: "Repositorio Oficial (N6, confidencial)"
+    estado: pendiente
+    fichas: [CK-18]
+    proposito: "Git self-hosted (Forgejo) en la infra del cliente: Arneses · Metadata Organizada (objeto normalizado) · Documentos Oficiales versionados · Knowledge DB (futura). SSoT de la estructura que Cockpit lee. Ya no es GitHub (re-fichado CK-18). SOTA: research/rediseno-total/01."
+  - id: data-lakehouse
+    tipo: sistema-externo
+    plano: fuentes
+    nombre: "Data Lakehouse (N16)"
+    estado: pendiente
+    fichas: [CK-18]
+    proposito: "dlt (ingesta) + DuckLake/DuckDB (catálogo SQLite→Postgres) en la infra del cliente; reúne la operación de todos los sistemas. Cockpit lo lee con DuckDB embebido y cruza con la estructura. Default cliente; hosteado por nosotros = opción. SOTA: research/rediseno-total/03."
+  - id: sistemas-org
+    tipo: sistema-externo
+    plano: fuentes
+    nombre: "Sistemas operacionales de la org (N18)"
+    estado: activo
+    fichas: [CK-18]
+    proposito: "SaaS externo · ERP enlatado · sistema a medida · Excels — las fuentes que nutren el lakehouse. El a medida además recibe capabilities de los devs (DevStudio)."
+
+  # — ecosistema externo (célula distinta, ledger propio) —
+  - id: consultio
+    tipo: sistema-externo
+    plano: ecosistema
+    nombre: "Consultio — App del Consultor (N14)"
+    estado: pendiente
+    fichas: [CK-11, CK-18]
+    proposito: "Clon de DevStudio con nombre propio (CK-18, D4): el consultor construye el mapa completo (objeto normalizado + documentos + arneses) sobre su Claude Code y lo publica al Repositorio Oficial — 'deploy de procesos', con preview local de Cockpit. Transferible al Analista de Calidad. BL-15..17."
+  - id: arnesia
+    tipo: sistema-externo
+    plano: ecosistema
+    nombre: "Arnesia — fábrica de arneses (N15)"
+    estado: activo
+    ruta: "~/Proyectos/harness-studio (repo propio, externo)"
+    fichas: [CK-18]
+    proposito: "La fábrica (P4): produce y versiona los arneses por rol-en-proceso (skill=proc, plugin=rol). Compila doc+arnés desde la misma fuente (anti-drift). Se entrega al cliente para que mantenga los suyos. SOTA: research/rediseno-total/07."
+  - id: distribucion-fabricante
+    tipo: sistema-externo
+    plano: ecosistema
+    nombre: "Distribución + telemetría + licencias (N3)"
+    estado: pendiente
+    fichas: [CK-18]
+    proposito: "El Plano del Fabricante operable: releases firmadas (go-tuf v2/Tauri) que el cliente jala, marketplace de arneses revocable, licencias Ed25519, telemetría OTLP/mTLS opt-in. Habilita el contrato de mantenimiento. SOTA: research/rediseno-total/04."
+  - id: devstudio
+    tipo: sistema-externo
+    plano: ecosistema
+    nombre: "DevStudio — app de desarrollo (P2, N5)"
     estado: activo
     ruta: "~/Proyectos/dev-studio (repo propio, externo)"
-    fichas: [DH-12, CK-16]
-    proposito: "Reemplaza al server DevHub (re-fichado N5, CK-16): app de escritorio por usuario (CTO/dev/devops/PO) para construir con proceso/arquitectura/doc as-code; GitHub como conector (PM refina/prioriza → devs reciben sus historias). Futura fuente de datos de delivery de Cockpit (mecanismo TBD, BL-18). Célula y ledger propios (DH-NN)."
+    fichas: [DH-12, CK-16, CK-18]
+    proposito: "App de escritorio de desarrollo (CTO/dev/devops/PO). CK-18: también se entrega a los devs del cliente para el sistema a medida; sus arneses de dev se modifican en Arnesia. Linaje del que se clona Consultio. Célula y ledger propios (DH-NN)."
 
 # ---- RELACIONES ----
 relaciones:
-  - { from: rol-directorio,        to: cockpit-shell,           tipo: usa }
-  - { from: rol-area,              to: cockpit-shell,           tipo: usa }
-  - { from: rol-consultor,         to: cockpit-shell,           tipo: usa }
-  - { from: rol-consultor,         to: motor-discovery,         tipo: usa }        # futuro
-  - { from: rol-consultor,         to: app-auditor,             tipo: usa }        # futuro — su aplicación propia (CK-11)
-  - { from: app-auditor,           to: cockpit-runtime-propio,  tipo: alimenta }   # futuro — publica procesos al repo cliente que `directorio` lee
-  - { from: prep-auditoria,        to: negocio-api,             tipo: usa }        # futuro — compara estado modelado vs cláusulas
-  - { from: cockpit-shell,         to: negocio-view,            tipo: compone }
-  - { from: cockpit-shell,         to: portfolio-model,         tipo: usa }
-  - { from: negocio-view,          to: negocio-api,             tipo: usa }
-  - { from: negocio-api,           to: cockpit-go-module,       tipo: compone }
-  - { from: portfolio-api,         to: cockpit-go-module,       tipo: compone }
-  - { from: cockpit-runtime-propio, to: cockpit-go-module,      tipo: adapta }     # Stage 4: launcher propio envuelve el mismo módulo
-  - { from: cockpit-runtime-propio, to: motor-discovery,        tipo: compone }    # futuro: el runtime propio absorbe el motor cuando exista
-  - { from: cockpit-runtime-propio, to: contrato-datos,         tipo: usa }        # destino
-  - { from: contrato-datos,        to: devhub-delivery,         tipo: adapta }     # reemplaza deps-go/route-group-adapter/alias-npm/symlink
-  - { from: graduacion-repo,       to: cockpit-runtime-propio,  tipo: gobierna }   # runtime≠repo — por qué Stage 4 no salta a repo propio
+  - { from: rol-directorio,         to: cockpit-shell,          tipo: usa }
+  - { from: rol-area,               to: cockpit-shell,          tipo: usa }
+  - { from: rol-consultor,          to: consultio,              tipo: usa }
+  - { from: rol-analista-calidad,   to: gestion-cambios,        tipo: usa }
+  - { from: cockpit-shell,          to: negocio-view,           tipo: compone }
+  - { from: cockpit-shell,          to: portfolio-model,        tipo: usa }
+  - { from: negocio-view,           to: negocio-api,            tipo: usa }
+  - { from: negocio-api,            to: cockpit-go-module,      tipo: compone }
+  - { from: portfolio-api,          to: cockpit-go-module,      tipo: compone }
+  - { from: objeto-api,             to: cockpit-go-module,      tipo: compone }
+  - { from: cockpit-runtime-propio, to: cockpit-go-module,      tipo: adapta }
+  - { from: cockpit-runtime-propio, to: gestion-cambios,        tipo: compone }    # futuro — módulo dentro del binario
+  - { from: cockpit-runtime-propio, to: niveles-acceso,         tipo: compone }    # futuro — auth/RBAC dentro del binario
+  - { from: cockpit-runtime-propio, to: repositorio-oficial,    tipo: usa }        # lee la estructura (git read-only)
+  - { from: cockpit-runtime-propio, to: data-lakehouse,         tipo: usa }        # lee la operación (DuckDB embebido)
+  - { from: niveles-acceso,         to: repositorio-oficial,    tipo: usa }        # policy-as-data: el rol org = la política
+  - { from: gestion-cambios,        to: repositorio-oficial,    tipo: alimenta }   # publica versiones oficiales
+  - { from: prep-auditoria,         to: negocio-api,            tipo: usa }
+  - { from: data-lakehouse,         to: sistemas-org,           tipo: usa }        # ingesta read-only
+  - { from: consultio,              to: repositorio-oficial,    tipo: alimenta }   # deploy de procesos
+  - { from: arnesia,                to: repositorio-oficial,    tipo: alimenta }   # siembra arneses de la org
+  - { from: arnesia,                to: consultio,              tipo: alimenta }   # produce los arneses del método que Consultio carga
+  - { from: distribucion-fabricante, to: consultio,             tipo: alimenta }   # releases firmadas (pull)
+  - { from: distribucion-fabricante, to: devstudio,             tipo: alimenta }
+  - { from: devstudio,              to: sistemas-org,           tipo: usa }        # construye el sistema a medida

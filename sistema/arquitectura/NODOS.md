@@ -4,8 +4,17 @@
 > ([`despliegue.html`](./despliegue.html)). Cada ficha permite un *drilldown* para entender el sistema
 > antes de bajar a funcionalidades. Insumo para volver al diseño de servicio (backstage/endpoints) con
 > los límites ya claros.
-> **Docs base:** [`ARCHITECTURE.md`](./ARCHITECTURE.md) · `PRODUCT-VISION.md` (legacy `prenter-harness/tooling/strategy/`) · [`METODOLOGIA.md`](../metodo/METODOLOGIA.md)
-> **Última actualización:** 2026-07-07 (**CK-16**) — **N5 re-fichado: DevHub server → DevStudio** (P2, app de escritorio por usuario, `~/Proyectos/dev-studio`; el punto compartido pasa al repo GitHub = N6); **contrato de datos CK-08 derogado** (era Pull API contra el server que ya no existirá — mecanismo TBD con el primer consumidor real, BL-18); N6 re-fichado como repo GitHub del cliente (matiz BYOC: "sus datos viven en SU GitHub, no en infra nuestra"). Histórico mismo día (**CK-14**, cierra BL-03): N14 App del Auditor al mapa (R16/R17), estados post-Stage-4 corregidos, `despliegue.html` portado. Histórico 2026-07-02: post-I-69, N5 quedó acotado a Delivery (P2) y nació N13 (P1) — ver `I-74`/`CK-07`.
+> **Docs base:** [`ARCHITECTURE.md`](./ARCHITECTURE.md) · [`METODOLOGIA.md`](../metodo/METODOLOGIA.md) · SOTA del rediseño en [`../../proyecto/research/rediseno-total/`](../../proyecto/research/rediseno-total/)
+> **Última actualización:** 2026-07-08 (**CK-18**) — **rediseño de fondo**. El modelo pasa de "BYOC con
+> motor server-side" a **Fábrica de software (Plano del Fabricante) + Organización instalada**. El método
+> **se entrega al cliente** empaquetado en arneses (deroga el límite de IP "el método nunca al cliente").
+> **Mueren:** N1 (Motor de Discovery como servicio → renace como arneses), N4 (voz, diferida), N7
+> (agentes efímeros → todo el levantamiento es vía consultor). **Nacen:** N15 (Arnesia, fábrica de
+> arneses), N16 (Data Lakehouse), N17 (Colab Studio), N18 (sistemas operacionales de la org), N19
+> (Analista de Calidad). **Re-fichados:** N2 (Repositorio Maestro), N3 (+licencias), N6 (Repositorio
+> Oficial confidencial, ya no GitHub), N13 (Cockpit = Gestión de Cambios + Visualización + niveles de
+> acceso), N14 (Consultio, clon de DevStudio), N11 (los 4 niveles de la organización). Historia previa
+> (CK-14/15/16/17) en el LEDGER.
 
 ---
 
@@ -19,11 +28,15 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **Núcleo común** (todo nodo): `objetivo` · `resumen` · `plano·tipo·madurez` · `responsabilidades/no_objetivos` · `comunicacion` · `depende_de/consumido_por` · `riesgos_abiertos`
 - **servicio / exec-env:** + `stack` · `expone` · `estado+persistencia` · `escala+disponibilidad` · `integraciones_externas` · `seguridad` · `nfr/cumplimiento_progresivo`
 - **artefacto / dato:** + `formato` · `propietario+clasificacion` · `residencia+retencion` · `versionado` · `quién_escribe/quién_lee`
-- **agente efímero:** + `runtime` · `disparador+ciclo_de_vida` · `lee/escribe` · `metodo_inyectado` · `aislamiento+seguridad`
 - **runtime edge:** + `runtime+licencia` · `qué_construye/contra_qué` · `local_vs_remoto` · `seguridad`
 - **actor:** + `objetivo_del_actor` · `permisos/RACI` · `interfaces_que_usa` · `momentos`
 
-**Madurez:** `existe` · `parcial` · `no-construido`.
+**Madurez:** `existe` · `existe (parcial)` · `no-construido`.
+
+**Los tres planos (CK-18):**
+- **Fabricante** — nuestro (Prenter). Fábrica de software: construye, versiona, firma y distribuye. **No razona en runtime.** Aquí vive lo que mantenemos y actualizamos (método, arneses plantilla, código, canal de releases).
+- **Organización** — del cliente, en su red. Lo instalable en la empresa + sus sistemas operacionales. Sus datos viven aquí.
+- **Edge** — máquinas de humanos (consultor, trabajador, developer). Apps instalables sobre Claude Code local (BYO licencia). Una sola mecánica; cambian los arneses según el puesto.
 
 ---
 
@@ -31,404 +44,489 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 
 | # | Nodo | Plano | Tipo | Madurez | Marca |
 |---|---|---|---|---|---|
-| **N1** | Motor de Discovery / Levantamiento | Control | servicio | no-construido | ★IP |
-| **N2** | Playbook + Metodología | Control | artefacto/dato | existe (parcial) | ★IP |
-| **N3** | Servicio de distribución + telemetría | Control | servicio | no-construido | — |
-| **N4** | Plano Conversación | Control (hosted) | servicio | no-construido | — |
-| **N5** | DevStudio — app de escritorio de desarrollo (P2) | Edge (máquina del usuario) | runtime edge / exec-env | existe (parcial) | — |
-| **N6** | Repo del cliente (GitHub) | Data | artefacto/dato | existe | ★datos |
-| **N7** | Agentes de análisis / levantamiento | Data | agente efímero | no-construido | — |
-| **N12** | Depósito de fuentes (landing zone) | Data | artefacto/dato | no-construido | ★datos |
-| **N13** | Cockpit — Vista Negocio (binario `directorio`, propio) | Data | servicio/exec-env | existe | — |
-| **N8** | Runtime de agente local (Claude Code — motor de N5 y N14) | Edge (laptop) | runtime edge | existe | — |
-| **N14** | App del Auditor (app instalable del Consultor) | Edge (máquina del consultor) | runtime edge / exec-env | no-construido | ★IP |
-| **N9** | Consultor | Edge | actor | existe | — |
-| **N10** | Developer | Edge | actor | existe | — |
-| **N11** | CEO / sponsor | Edge (thin) | actor | existe | — |
+| **N15** | Arnesia — fábrica de arneses | Fabricante | servicio/exec-env | existe (parcial) | ★IP |
+| **N2** | Repositorio Maestro (método + arneses + código) | Fabricante | artefacto/dato | existe (parcial) | ★IP |
+| **N3** | Distribución + telemetría + licencias | Fabricante | servicio | no-construido | — |
+| **N6** | Repositorio Oficial (confidencial, infra del cliente) | Organización | artefacto/dato | no-construido | ★datos |
+| **N13** | Cockpit — Gestión de Cambios + Visualización | Organización | servicio/exec-env | existe (parcial) | — |
+| **N16** | Data Lakehouse | Organización | servicio/dato | no-construido | ★datos |
+| **N12** | Depósito de fuentes (landing zone) | Organización | artefacto/dato | no-construido | ★datos |
+| **N18** | Sistemas operacionales de la organización | Organización | sistemas fuente | existe | ★datos |
+| **N14** | Consultio — App del Consultor | Edge (máquina del consultor) | runtime edge / exec-env | no-construido | ★IP |
+| **N17** | Colab Studio — app del trabajador | Edge (máquina del trabajador) | runtime edge / exec-env | no-construido | — |
+| **N5** | DevStudio — app de desarrollo (P2) | Edge (máquina del developer) | runtime edge / exec-env | existe (parcial) | — |
+| **N8** | Runtime de agente local (Claude Code) | Edge (laptop) | runtime edge | existe | — |
+| **N9** | Consultor (transferible → Analista de Calidad) | Edge | actor | existe | — |
+| **N19** | Analista de Calidad (del cliente) | Edge | actor | no-construido | — |
+| **N10** | Developer (del cliente) | Edge | actor | existe | — |
+| **N11** | Usuarios de la organización (4 niveles) | Edge (thin) | actor | existe | — |
 
 ---
 
-## Responsabilidades del sistema — R1–R17 (el responsibility-walk)
+## Responsabilidades del sistema — R1–R15 (el responsibility-walk)
 
-> El flujo de la data **objetivo → producción**, una responsabilidad por eslabón, con su nodo dueño.
-> Es **cómo se asignó cada nodo** (recorrer el flujo, no ir nodo-por-nodo). Cada `[R#]` en las fichas
-> de abajo **resuelve a esta tabla** (lo valida `gen_arquitectura.py`, ref-check — no más punteros
-> colgantes). Etapas: E1 = Levantamiento (M1) · E2 = Ejecución (M3) · E3 = Mantenimiento (M2).
+> El flujo **objetivo → operación viva**, una responsabilidad por eslabón, con su nodo dueño. Es
+> **cómo se asignó cada nodo** (recorrer el flujo, no ir nodo-por-nodo). Cada `[R#]` en las fichas
+> **resuelve a esta tabla** (lo valida `gen_arquitectura.py`, ref-check). Etapas: E1 = Levantamiento ·
+> E2 = Construcción del sistema (mapa + arneses + publicación) · E3 = Operación y mejora continua.
+> Rediseñado en CK-18: el levantamiento y la construcción los conduce el **consultor** vía Consultio
+> (N14) sobre su Claude Code (N8) — desaparecen el motor server-side (N1) y los agentes efímeros (N7).
 
 | R | Responsabilidad | Nodo(s) dueño | Etapa |
 |---|---|---|---|
 | **R1** | Bajar objetivos/OKR del directorio + autoridad (RACI) — el encuadre | N11→N9 | E1 |
 | **R2** | Recolectar y curar las fuentes crudas → depositar | N9→N12 | E1 |
 | **R3** | Aterrizar / retener / **destruir** el crudo (landing zone) | N12 | E1 |
-| **R4** | Capturar el AS-IS de las personas (entrevistas) → transcripción | N4 | E1 |
-| **R5** | Dar acceso a los sistemas vivos (config + credenciales JIT) | N9→N7 | E1 |
-| **R6** | Compilar el método en instrucciones + orquestar el levantamiento | N1 | E1 |
-| **R7** | Procesar las fuentes (crudo + sistemas) con el método inyectado | N7 | E1 |
-| **R8** | Reconciliar documentado-vs-vivido + poblar el mapa AS-IS/gaps | N1+N7 | E1 |
-| **R9** | Calcular el gap (TO-BE − AS-IS) + severidad (δ×criticidad-KR) | N1 | E1 |
-| **R10** | Validar / **ratificar** el AS-IS y el SPEC (gate humano) | N9 | E1/E2 |
-| **R11** | Priorizar los gaps + armar la apuesta (WSJF/appetite) | N9+N11 | E2 |
-| **R12** | Proteger el método/IP (inyección efímera + teardown) | N1→N7 | E1/E2 |
-| **R13** | Discovery: guiar el diseño de la solución → spec | N1 | E2 |
-| **R14** | Producir el SPEC "comidito" + despacharlo al data plane | N1 | E2 |
-| **R15** | Construir historias → tests → producción | N8/N10 | E2 |
-| **R16** | Operar el método del engagement (m1 levantamiento · m2 mantenimiento · m3 espinazo) como flujo con carriles/provenance | N14 | E1/E3 |
-| **R17** | Publicar el resultado (procesos/roles/objetivos/personas) al repo del cliente — "deploy de procesos" | N14→N6 | E1/E3 |
+| **R4** | Capturar el AS-IS (procesos/roles/objetivos/personas) operando el método | N9 vía N14 | E1 |
+| **R5** | Construir el mapa completo — objeto normalizado + documentos oficiales + arneses por rol | N14 | E1/E2 |
+| **R6** | Calcular la brecha (TO-BE − AS-IS) + severidad + los proyectos | N14 | E2 |
+| **R7** | Publicar el resultado ratificado al Repositorio Oficial — "deploy de procesos" | N14→N6 | E2 |
+| **R8** | Fabricar/versionar los arneses por rol-en-proceso (la fábrica) | N15 | E2 |
+| **R9** | Distribuir releases firmadas + licencias + recibir telemetría agregada | N3 | E1/E2/E3 |
+| **R10** | Ingerir la operación de todos los sistemas → lakehouse | N18→N16 | E3 |
+| **R11** | Cruzar estructura × operación y servir por nivel de acceso | N13 | E3 |
+| **R12** | Operar el día a día del puesto con sus arneses | N17 | E3 |
+| **R13** | Gestionar el cambio del sistema (ISO): solicitar / aprobar / publicar versiones | N19 vía N13 | E3 |
+| **R14** | Construir software a medida contra los sistemas de la organización | N5/N10 | E3 |
+| **R15** | Ejecutar el trabajo de agente en la máquina del humano firmado | N8 | transversal |
 
 ---
 
-# CONTROL PLANE — nuestro (★IP aquí)
+# FABRICANTE — nuestro (★IP aquí)
 
-## N1 · Motor de Discovery / Levantamiento — la "fábrica" como servicio ★IP
+## N15 · Arnesia — fábrica de arneses ★IP
 
-- **objetivo** — **Cerebro server-side** que convierte el conocimiento de la empresa (docs + sistemas) en el **mapa vivo (AS-IS)** y el **SPEC**, protegiendo el **método (IP)** en el control plane y **sin traer el crudo del cliente a nuestras bases**. Existe porque el *método* de levantar/diseñar es el activo: se versiona central y mejora para todos los clientes sin redesplegar en sus redes; el *dato* se queda del lado del cliente. Piensa, diseña y orquesta — **no ejecuta, no habla, no toca el crudo**.
-- **resumen** — Orquestador de agentes LLM multi-tenant, server-side, que conduce la interfaz conversacional de Discovery (diseña el SPEC) y orquesta el levantamiento AS-IS→TO-BE→gaps, razonando sobre la API frontier de Anthropic.
-- **plano · tipo · madurez** — Control · servicio · **no-construido**. Hoy el método existe como documentos + skills locales (`disena-etapa`, `cargar-metodologia`, `orientacion`); NO existe el servidor multi-tenant que lo ejecute server-side vía API. El salto pendiente: de "skills en el Claude Code del operador" → "servicio que corre el razonamiento con la API y sirve a N clientes".
-- **responsabilidades** — Compila el método (N2) en **instrucciones de levantamiento** (qué escanear, cómo mapear, a qué esquema-destino) y de **Discovery** (cómo diseñar el SPEC) **[R6]** · orquesta el levantamiento en sus **2 modos** — documental (el crudo de N12) y sistemas vivos (lo que lee N7) — como grafo reanudable **[R6]** · conduce el **contenido** de la conversación de Discovery (la voz la pone N4) **[R13]** · reconcilia **hallazgos derivados** (no crudos) → puebla el mapa (org, trabajadores, MOF, sistemas, gaps) **[R8]** · calcula el gap (TO-BE − AS-IS) + severidad **[R9]** · produce el SPEC "comidito" **[R14]** · protege el método/IP vía inyección efímera a N7 **[R12]** · aísla por tenant · estado durable (checkpoints).
-- **no_objetivos** — NO almacena los archivos crudos (eso es **N12**, data plane) · NO ejecuta el escaneo que toca el crudo (eso es **N7**, data plane) · NO razona sobre dumps crudos, **solo sobre derivados/extractos** · NO persiste el "cómo" en el cliente (baja *instrucciones de un paso*, no el método completo) · NO habla por voz (N4) · NO construye Delivery (N8+N7) · NO multiplexa la suscripción de Claude Code (ToS).
-- **stack** — **Python + FastAPI + LangGraph sobre el Anthropic SDK (API Messages).** LangGraph = runtime de orquestación más probado jun 2026 (durable execution, checkpointing en Postgres, human-in-the-loop, reanudación tras caída) — Discovery es exactamente un grafo de estados de larga duración con pausas para el humano. SDK directo (no gateway) para control total de `prompt caching` (5-10× menos costo en el loop) y context editing. FastAPI por consistencia con el resto del ecosistema Python. *Descartado:* Claude Agent SDK / Managed Agents (metería nuestra IP en infra de Anthropic y reduce el control del aislamiento multi-tenant — justo lo que vendemos); framework propio sin librería (reinventar checkpointing durable = sobreingeniería). **El razonamiento que toca dato crudo del cliente se delega al data plane (N7);** N1 razona solo sobre lo derivado.
-- **expone** — HTTPS/REST + SSE: `POST /discovery/sessions`, `POST /discovery/sessions/{id}/turns` (SSE), `GET /discovery/sessions/{id}/spec`. Endpoint de despacho que el **data plane jala** (no hay inbound en el cliente). Internamente consume la API de Anthropic.
-- **estado + persistencia** — Stateful, pero el estado vive en el control plane. Postgres como checkpointer de LangGraph (estado del grafo por sesión, reanudable) + memoria de engagement por tenant; object storage para artefactos del SPEC. El playbook NO se persiste como estado del cliente: se resuelve en runtime desde N2 y se inyecta efímero.
-- **escala + disponibilidad** — A nuestra escala basta **1-2 réplicas detrás de un LB + Postgres gestionado**. Nada de K8s/autoscaling (sobreingeniería). El cuello real es la API de Anthropic, no la CPU. **Si cae:** por BYOC el cliente NO se rompe (control plane fuera del request path); se pausan *nuevos* engagements; al volver, los checkpoints de LangGraph reanudan donde quedó.
-- **integraciones_externas** — API de Anthropic (crítica) · Postgres + object storage del control plane · (opcional) IdP para tenant resolution.
-- **seguridad** — OIDC/JWT; `tenant_id` derivado del token **antes** de resolver contexto (orden auth→tenant→sesión→contexto; romperlo = fuga cross-tenant). Multi-tenant **pool con guardrails** (silo sería sobreingeniería a pocos clientes); aislamiento en toda capa + **presupuesto de tokens por tenant verificado ANTES de despachar a la API**. API key de Anthropic solo en el control plane, nunca baja al cliente. Targets de acción resueltos desde config, no desde salida cruda del LLM (anti prompt-injection).
-- **nfr / cumplimiento progresivo** — *Ahora (PyME):* TLS 1.3 · AES-256 at-rest (en data plane) · ZDR/efímero en control plane (no persiste crudo) · audit log de accesos · aislamiento por tenant · NDA + DPA con cláusula no-retención/destrucción. *Después (regulado):* SOC 2 Type II · ISO 27001 · BYOK/CMK (llave del cliente, revocable) · cómputo-al-dato · confidential computing + atestación · data residency · derecho de auditoría. → [Seguridad, cumplimiento y contratos](#seg-cumpl).
-- **comunicacion** — UI de Discovery ↔ nodo: HTTPS/SSE (inicia la UI). Nodo → Anthropic: HTTPS (inicia el nodo). Nodo ↔ data plane: **PULL** (el data plane jala el paso compilado por TLS saliente; el nodo nunca disca al cliente).
-- **depende_de / consumido_por** — depende_de: N2, API Anthropic, Postgres/storage. consumido_por: UI de Discovery (N9, N11) y **N7** (jala los pasos compilados). Alimenta el SPEC que usa Delivery.
-- **riesgos_abiertos** — (1) **Granularidad del despacho:** ¿cuánto método baja por paso? Fino = lento; grueso = filtra IP. Falta el contrato "instrucción de paso" mínimo. (2) **¿Dónde corre el razonamiento de pasos que tocan datos del cliente?** → ver [Chequeo de consistencia: el hallazgo rojo](#hallazgo-rojo). (3) Una API key del vendor para todos vs workspace por tenant. (4) LangGraph como dependencia de IP → mantener el método en datos/prompts (N2), no en código de grafo, para poder portar.
-- **fuentes** — [Pinecone BYOC](https://docs.pinecone.io/guides/production/bring-your-own-cloud) · [LangGraph](https://www.langchain.com/langgraph) · [Anthropic — Building Effective Agents](https://www.anthropic.com/research/building-effective-agents)
+> Nodo nuevo (CK-18). Es `~/Proyectos/harness-studio` (P4 del ecosistema), ascendido de "no es fuente
+> de datos de Cockpit" (VISION previa) a **la fábrica** que produce los arneses de todo el sistema. El
+> operador la nombró la fábrica; las apps del edge (Consultio, Colab Studio, DevStudio) cargan lo que
+> Arnesia produce.
 
----
-
-## N2 · Playbook + Metodología ★IP
-
-- **objetivo** — Centralizar el "cómo" (el método que vendemos) como **dato versionado** en el control plane: protegerlo (no vive en el cliente), mejorarlo para todos sin redesplegar, y dejar que N1 lo compile en instrucciones de paso. Es el activo más valioso de la empresa.
-- **resumen** — La base de conocimiento/IP: `process/` (proceso como dato), 31 M-cards (`methodologies.yaml`), schemas L0, skills/agentes = el CÓMO.
-- **plano · tipo · madurez** — Control · artefacto/dato · **existe (parcial)**. Existen `process/` (m1.b1, 6 fases con flujo), `methodologies.yaml` (31 fichas), schemas (process/methodology/ledger), skills. Falta: que se *sirva* server-side vía N1 (hoy corre como skills en el Claude Code del operador).
-- **responsabilidades** — Ser SSoT del método · versionado y auditable · legible por N1 (compilable a instrucciones de paso) y por humanos · evolucionable con anti-drift.
-- **no_objetivos** — NO se entrega al cliente (a lo sumo un `OPERATING-MANUAL` sanitizado) · NO ejecuta (es dato; N1 lo ejecuta) · NO contiene datos de cliente.
-- **formato** — Markdown (narrativa de metodología) + YAML (`methodologies.yaml`, `process/` como dato, schemas L0). git.
-- **propietario + clasificacion** — **Nuestro (Prenter).** ★IP/know-how — la pieza más sensible del sistema.
-- **residencia + retencion** — Repo factory (`prenter-harness`), control plane. Persiste con nosotros, **NUNCA con el cliente**. Se inyecta efímero a N1/N7 en runtime.
-- **versionado** — git + `KIT_VERSION`; schema = contrato (bajo acoplamiento); gate anti-drift (`gen_all.py --check` en pre-commit) garantiza que los generados no driften.
-- **quién_escribe / quién_lee** — Escribe: nosotros (consultor/factory, vía `disena-etapa`, `ledger`). Lee: N1 (lo compila), N7 (método inyectado), humanos (el "detrás de cada paso").
-- **comunicacion** — No es servicio: N1 lo lee; se inyecta efímero al data plane.
-- **depende_de / consumido_por** — depende_de: schemas L0. consumido_por: N1, N7.
-- **riesgos_abiertos** — Granularidad de qué baja por paso sin revelar el playbook completo (espejo del riesgo 1 de N1) · el método inyectado en memoria es "fuerte por arquitectura" pero no es DRM (ver N7).
+- **objetivo** — Ser la **fábrica de arneses**: producir y versionar los paquetes de skills/instrucciones/guardrails que definen **un rol dentro de un proceso**, ejecutables sobre Claude Code. Es donde se construye y evoluciona el activo que vendemos convertido en producto operable — el método deja de ser documento y se vuelve arnés que corre en el puesto.
+- **resumen** — Aplicación de la fábrica (nuestra, y entregable al cliente para que mantenga los suyos): edita el Repositorio Maestro (N2), compila el objeto normalizado + el método en `SKILL.md`/plugins por rol, y publica al canal de distribución (N3). Patrón "docs→skills sin drift": el arnés se **compila** desde la fuente, jamás se edita a mano.
+- **plano · tipo · madurez** — Fabricante · servicio/exec-env (app de la fábrica) · **existe (parcial)** — el repo P4 existe; falta el pipeline arnés-por-rol contra el objeto normalizado de Cockpit.
+- **responsabilidades** — Fabricar/versionar los arneses por rol-en-proceso **[R8]** · compilar doc humano + `SKILL.md` desde la MISMA fuente (objeto normalizado, anti-drift) · empaquetar por rol (skill = procedimiento, plugin = rol, marketplace = mapa de procesos) · entregar los arneses al canal de distribución (N3) para consultores y para el cliente.
+- **no_objetivos** — NO opera el engagement (eso es Consultio/N14) · NO razona sobre datos del cliente · NO es multi-tenant server-side · NO edita a mano el artefacto generado (se regenera).
+- **stack** — **Agent Skills (estándar abierto, Anthropic oct-2025 / agentskills.io dic-2025)**: `SKILL.md` + `references/` + progressive disclosure; plugin = bundle de skills + MCP + subagentes + comandos (patrón Cowork empresarial, feb-2026). Anti-drift estilo Inkeep (compilar en build-time desde la fuente, gate que rechaza edición del generado). Stack de la app por decidir (BL-15 lo cubre para Consultio; Arnesia comparte linaje P4).
+- **expone** — Los arneses compilados hacia N3 (canal de releases) y, en el engagement, hacia el Repositorio de Arneses del cliente (parte de N6).
+- **estado + persistencia** — El código y las plantillas de arnés viven en el Repositorio Maestro (N2). Sin estado de cliente.
+- **escala + disponibilidad** — Herramienta de fábrica, uso interno + entregable. Si no está disponible, no bloquea al cliente (los arneses ya distribuidos siguen).
+- **integraciones_externas** — Claude Code (para probar arneses) · N2 (fuente) · N3 (canal).
+- **seguridad** — Es donde vive el know-how del método antes de empaquetarse. Al entregarse al cliente, la protección pasa a **licencia + contrato** (deroga el límite "método nunca al cliente" — ver chequeo 1). Least-privilege contra los repos.
+- **nfr / cumplimiento_progresivo** — Versionado semántico de arneses; canal firmado (hereda N3/TUF); trazabilidad de qué versión de arnés corre cada puesto (telemetría N3).
+- **comunicacion** — Arnesia → N2 (edita la fuente) · Arnesia → N3 (publica arneses) · Arnesia → N6 (en el engagement, siembra el Repositorio de Arneses del cliente).
+- **depende_de / consumido_por** — depende_de: N2 (fuente del método/código), Claude Code (prueba). consumido_por: N14/N17/N5 (cargan los arneses que produce), N3 (los distribuye), el cliente (los mantiene tras la entrega).
+- **riesgos_abiertos** — (1) Frontera Arnesia (fábrica) vs Consultio (app del consultor) — qué se construye en cuál. (2) Modelo de entrega/licencia de Arnesia al cliente (¿la mantiene el Analista de Calidad?, ¿con qué límites?). (3) Anti-drift real: gate que rechace arneses editados a mano. (4) Cuánto método baja empaquetado vs se sirve por actualización.
+- **fuentes** — [Agent Skills — Anthropic](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills) · [Cowork plugins empresariales](https://claude.com/blog/cowork-plugins-across-enterprise) · [Docs→Skills sin drift — Inkeep](https://inkeep.com/blog/docs-to-agent-skills) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`.
 
 ---
 
-## N3 · Servicio de distribución + telemetría
+## N2 · Repositorio Maestro (método + arneses + código) ★IP
 
-- **objetivo** — El binario del data plane (N13 `directorio`) corre en la red del cliente y debe actualizarse sin que nadie abra puertos hacia el cliente y sin que el vendor empuje nada por sorpresa. A la vez, necesitamos saber si la flota está sana **sin** exfiltrar datos (eso rompería el BYOC). Este nodo publica releases firmadas que el data plane *jala*, y recibe telemetría agregada opt-in.
-- **resumen** — Servicio que publica releases firmadas del binario cockpit (pull/self-update) y recolecta telemetría agregada de salud/uso, nunca datos crudos.
-- **plano · tipo · madurez** — Control · servicio · **no-construido**. Las piezas son madurísimas (`go-tuf`, OpenTelemetry, patrón pull à la Tailscale/Teleport) — **el nodo de menor riesgo técnico del sistema**.
-- **responsabilidades** — Publica releases (artefacto + metadata firmada) en repo TUF · sirve por HTTPS para que el data plane jale y verifique hash+firma · recibe endpoint OTLP de telemetría agregada, la valida (scrubbing) y la guarda para dashboards de flota · soporta rollback y canales (stable/canary).
-- **no_objetivos** — NO empuja updates (no inbound; el cliente decide cuándo jala) · NO recibe ni almacena datos crudos (ni specs ni PII) · NO es APM ni data warehouse · NO es el canal de despacho del método (eso es N1; aquí solo binarios + números agregados).
-- **stack** — **Go + go-tuf (TUF) + OpenTelemetry Collector + store de métricas.** TUF = estándar de updates por pull (graduado CNCF; Docker/AWS/automoción): firma M-of-N, metadata versionada, anti-rollback, resiste *incluso repo comprometido*. OTel trae los processors de redacción en el Collector (scrubbing = config, no código). *Descartado:* Omaha (más pesado, seguridad más débil que TUF); paquetes del SO (asume permisos del cliente, sin canales/rollback propios); SaaS APM tipo Datadog (sobreingeniería + riesgo de privacidad).
-- **expone** — `GET` HTTPS del repo TUF (`root/timestamp/snapshot/targets.json` + artefactos) · endpoint OTLP/HTTP (`/v1/metrics`, `/v1/traces`, mTLS) · API interna para dashboards.
-- **estado + persistencia** — Stateful ligero. Repo TUF = archivos firmados en object storage + CDN; claves de firma en HSM/KMS (root/targets idealmente offline, firma con umbral). Telemetría = time-series (Prometheus o Postgres/Timescale a esta escala), retención corta. No guarda nada por-cliente salvo "tenant X corre versión Y, salud Z".
-- **escala + disponibilidad** — Trivial: object storage + CDN para releases, un Collector + store pequeño para telemetría. Nada de K8s. **Si cae: cero impacto en el cliente** — el cockpit sigue con su versión y reintenta luego; la telemetría se bufferea/descarta. El nodo más tolerante a fallos.
-- **integraciones_externas** — Object storage + CDN · KMS/HSM (firma TUF) · (opcional) Grafana. Ninguna API de terceros en el request path.
-- **seguridad** — Integridad por TUF (firma M-of-N, anti-rollback) · telemetría con mTLS por tenant (cert + UUID, patrón Teleport) · minimización en origen + scrubbing en el Collector (segunda barrera) + opt-in · cliente solo abre conexiones **salientes**.
-- **comunicacion** — Data plane → nodo (releases): **PULL HTTPS, lo inicia el cliente.** Data plane → nodo (telemetría): **push saliente del cliente, OTLP/mTLS** (originado en el cliente hacia afuera; el vendor nunca disca al cliente).
-- **depende_de / consumido_por** — depende_de: object storage/CDN + KMS + pipeline de build del binario. consumido_por: **N13** (el binario del data plane). La distribución de DevStudio (N5, instalables de escritorio) la gobierna P2 — si reusa este nodo se decide allá (CK-16).
-- **riesgos_abiertos** — (1) Lista blanca exacta de métricas permitidas + política de consentimiento por contrato. (2) Gestión de claves TUF (custodia, rotación, ceremonia) = sobrecarga real para equipo chico → dimensionar (¿umbral 2-of-3? ¿firma manual por release?). (3) Política de auto-update (¿auto o con aprobación? default sugerido: opt-in stable + notificación).
-- **fuentes** — [TUF](https://theupdateframework.io/) · [Foundries.io — self-update Go + go-tuf](https://www.foundries.io/insights/blog/fioctl-updater/) · [OTel — handling sensitive data](https://opentelemetry.io/docs/security/handling-sensitive-data/) · [Teleport — agent architecture (outbound-only)](https://goteleport.com/docs/reference/architecture/agents/)
+> Re-fichado CK-18: era "Playbook + Metodología". Ahora es el SSoT del Fabricante: además del método,
+> guarda los arneses plantilla y el código de las apps. El motor de discovery (ex-N1) vive aquí como
+> **arneses**, no como servicio.
 
----
-
-## N4 · Plano Conversación — entrevistas de levantamiento por voz
-
-- **objetivo** — Conducir las entrevistas de la Etapa 1 que capturan el AS-IS *de las personas*: cómo trabajan de verdad, qué sistemas tocan, dónde están los gaps "documentado-vs-real". Es la sonda de la señal más valiosa del Hilo de Oro (la brecha entre proceso escrito y vivido), que ningún análisis de docs/código obtiene solo. Resuelve la fricción del stakeholder no-técnico: conversación natural en vez de formulario.
-- **resumen** — Servicio hosted, bajo volumen, que ejecuta entrevistas guiadas por método (control plane) con voz natural y entrega la transcripción al data plane sin retenerla de nuestro lado.
-- **plano · tipo · madurez** — Control (hosted) · servicio · **no-construido**. El vision (I-14) ya recomienda arrancar **texto-primero** y meter voz como v2 — esta ficha respeta ese gradiente.
-- **responsabilidades** — Gestionar el turno de voz de alta calidad (STT/TTS, fin de turno, barge-in) · poner la **capa de voz/transporte**; el **contenido/método de la entrevista lo pone N1** (el cerebro LangGraph, vía Custom LLM) · entregar transcripción + datos estructurados al data plane **[R4]** · mantener el estado del diálogo durante la sesión.
-- **no_objetivos** — NO es telefonía masiva/call-center · NO persiste el AS-IS (eso es N6) · NO razona sobre gaps (eso es N1) · NO almacena la transcripción de nuestro lado.
-- **stack** — **ElevenLabs Agents (voz) + LangGraph como "Custom LLM" (método) + Claude API detrás (razonamiento) + web widget embebido.** El *seam* clave: ElevenLabs Agents acepta un **Custom LLM vía endpoint OpenAI-compatible (SSE)**, y LangGraph publica exactamente eso. Reparto: ElevenLabs posee la **voz** (commodity: STT/TTS/turn-taking/barge-in, WebRTC, latencia <300-600ms); LangGraph posee la **lógica de entrevista** (★IP nuestra: guion con estado, extracción Pydantic) — el "cómo preguntar" nunca sale al cliente; Claude API razona. *Descartado:* ElevenLabs LLM bundled (mete el método en su config, fuera de nuestro control); Vapi/Retell (capa gestionada redundante + premium por minuto a bajo volumen); LiveKit/Pipecat self-host (solo paga >50K min/mes — Plan B si crece o hay requisito de residencia de la conversación); **SIP/telefonía (no en v1**, el entrevistado es interno, basta link de navegador).
-- **expone** — Web widget de voz embebido (React SDK ElevenLabs, WebRTC) servido por el cockpit; agente **privado** con *signed URL* de corta vida (no widget público) · hacia LangGraph: endpoint OpenAI Chat-Completions-compatible (SSE) · hacia el data plane: **post-call webhook firmado (HMAC)** con la transcripción.
-- **estado + persistencia** — Estado del diálogo en LangGraph (checkpoints, control plane, **efímero**). **Transcripción (dato del cliente): zero-retention de nuestro lado** — configurar el agente con audio-saving off + retención 0; la transcripción sale por webhook → relay efímero (verifica HMAC, no persiste a disco) que el data plane **jala por TLS**, o endpoint del cockpit del cliente. La transcripción no toca almacenamiento persistente nuestro en ningún punto, destino = N6.
-- **escala + disponibilidad** — Bajo volumen, sin autoscaling/cola/telefonía. **Si ElevenLabs cae:** no hay entrevista ese rato, el resto del sistema sigue (BYOC). Fallback a costo cero: **texto-primero** (la misma LangGraph sin voz). Como las entrevistas se agendan, una caída transitoria se reprograma.
-- **integraciones_externas** — ElevenLabs (voz, webhook) · Anthropic/Claude API (razonamiento) · (futuro opcional) SIP solo si aparece caso telefónico real.
-- **seguridad** — Voz = PII. Mitigaciones: audio-saving off + retención 0 (ElevenLabs no guarda tras procesar) · transcripción persiste solo en N6 · agente privado con signed URL efímero · webhook firmado HMAC · si el cliente exige residencia/HIPAA → regiones + Zero Retention Mode (Enterprise, BAA). El método (LangGraph) nunca se entrega: corre en control plane, solo cruza el QUÉ (transcripción).
-- **comunicacion** — Usuario ⇄ ElevenLabs: WebRTC (navegador). ElevenLabs → LangGraph: HTTPS/SSE por turno. ElevenLabs → nosotros: webhook HTTPS firmado. Nosotros → data plane: pull TLS. LangGraph → Claude API: HTTPS.
-- **depende_de / consumido_por** — depende_de: ElevenLabs, Claude API, N6 (destino), método/guion (N2). consumido_por: **N1** (consume transcripción + extracción para reconciliar documentado-vs-real y poblar gaps), **N13** (Vista Negocio/CEO).
-- **riesgos_abiertos** — (1) Routing del webhook a una red cliente cerrada (relay efímero vs cockpit con firewall). (2) Procesamiento fuera de región aun con residencia salvo ZRM → cliente regulado podría bloquear (ahí Pipecat self-host). (3) Latencia p95 del Custom LLM (round-trip extra). (4) Calidad de turn-taking en español LatAm/acentos → validar antes de comprometer voz. (5) ¿Mismo nodo en modo Etapa-1 vs Discovery Etapa-2, o separados? (diferido).
-- **fuentes** — [ElevenLabs — Custom LLM](https://elevenlabs.io/docs/conversational-ai/customization/llm/custom-llm) · [ElevenLabs — post-call webhooks](https://elevenlabs.io/docs/eleven-agents/workflows/post-call-webhooks) · [Choosing a voice agent platform 2026](https://softcery.com/lab/choosing-the-right-voice-agent-platform-in-2026)
+- **objetivo** — Centralizar como **dato versionado** todo lo que la fábrica mantiene y actualiza: el método (m1·m2·m3), el razonamiento de discovery convertido en arneses, los arneses plantilla por rol, y el código fuente de las apps (Consultio, Colab Studio, DevStudio, Cockpit, Arnesia). Es el activo más valioso: se mejora central y se propaga por releases sin rehacer nada en el cliente.
+- **resumen** — Monorepo/repos privados de la fábrica: `process/` (proceso como dato), M-cards, schemas L0, arneses plantilla, y el código de los productos. Fuente de la que N15 compila y N3 distribuye.
+- **plano · tipo · madurez** — Fabricante · artefacto/dato · **existe (parcial)**. Existen `sistema/metodo/` (proceso m1/m2/m3, methodologies.yaml, schemas) y el código de Cockpit; falta consolidar los arneses plantilla y el pipeline de compilación (N15).
+- **responsabilidades** — Ser SSoT del método + arneses plantilla + código · versionado y auditable · legible por N15 (compilable a arneses) y por humanos · evolucionable con anti-drift (gate `gen_all.py --check`, mismo linaje que CK-17).
+- **no_objetivos** — NO contiene datos de cliente · NO ejecuta (es dato; N15 lo compila, el edge lo corre) · NO se entrega crudo al cliente (se entrega el arnés compilado + Arnesia licenciada, no el repo de la fábrica).
+- **formato** — Markdown (método/narrativa) + YAML/JSON (`methodologies.yaml`, `process/`, schemas, objeto.schema) + código (Go/TS/…). git.
+- **propietario + clasificacion** — **Nuestro (Prenter).** ★IP/know-how — la pieza más sensible. La entrega al cliente es del **arnés compilado**, no de esta fuente.
+- **residencia + retencion** — Repos privados de la fábrica (nube/GitHub privado). Persiste con nosotros. Se compila y distribuye; el crudo del método no baja al cliente.
+- **versionado** — git + `KIT_VERSION`/semver; schema = contrato; gate anti-drift garantiza que los generados (arneses, docs) no driften de la fuente.
+- **quién_escribe / quién_lee** — Escribe: nosotros (fábrica, vía `disena-etapa`, `ledger`, Arnesia). Lee: N15 (compila arneses), humanos (el porqué del método).
+- **comunicacion** — No es servicio: N15 lo lee y compila; N3 publica lo compilado. git + API del host privado.
+- **depende_de / consumido_por** — depende_de: schemas L0, git. consumido_por: N15 (Arnesia), N3 (distribución).
+- **riesgos_abiertos** — Granularidad de qué método baja empaquetado en el arnés vs se sirve por actualización (espejo del viejo riesgo N1/N2) · el método empaquetado en el cliente ya no es "fuerte por arquitectura": la protección es licencia + contrato (ver chequeo 1) · convergencia objeto.schema ↔ negocio.schema (BL-02 cerrado; BL-19 pendiente).
+- **fuentes** — `sistema/metodo/` · [Git for Data — DoltHub](https://www.dolthub.com/blog/2020-03-06-so-you-want-git-for-data/) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`.
 
 ---
 
-# DATA PLANE — del cliente (★datos aquí)
+## N3 · Distribución + telemetría + licencias
 
+> Re-fichado CK-18: era "distribución + telemetría". Crece con **licenciamiento** — sin él no hay
+> contrato de mantenimiento (el operador: "yo debo tener telemetría y distribución por si el cliente
+> quiere que yo dé mantenimiento").
 
-## N6 · Repo del cliente (SSoT git — GitHub) ★datos
-
-> Re-fichado CK-16: el repo vive en **GitHub (org/tenant del cliente)** — es además el **conector**
-> de la orquestación de DevStudio (N5): PM prioriza → developers reciben, todo canalizado por aquí.
-
-- **objetivo** — Ser la **única fuente de verdad** del cliente: AS-IS, gaps, specs (SDD), código, OKRs, journey, capacidades, releases, procesos/roles/objetivos publicados. Repositorio git versionado, legible por humanos Y agentes, del que todo lo demás (la DB del cockpit) es proyección desechable. Desde CK-16 también: **punto de encuentro** de los usuarios de DevStudio (GitHub como canalizador).
-- **resumen** — "Git como base de datos + vista materializada": datos como `markdown` (prosa) + `yaml`/`json` (estructura). Git aporta versionado, autoría, historia, branch/merge, diffs revisables; GitHub aporta el multi-usuario (org, permisos, API).
-- **plano · tipo · madurez** — Data · artefacto/dato · **existe** (el cockpit ya lo trata como única fuente; `workspace.go` resuelve root vía `git rev-parse`).
-- **responsabilidades** — Contener y versionar todo el conocimiento/artefactos del proyecto · legible/editable por personas (IDE), agentes Claude y cockpit · proveer historia, autoría y reversibilidad.
-- **no_objetivos** — NO es DB transaccional ni de queries agregadas en caliente (eso es la proyección de N5) · NO almacena blobs grandes ni datos high-churn (git diffea mal eso) · **NO es el landing del crudo de entrada (eso es N12); guarda solo la verdad derivada/curada** · NO sale nunca de la red del cliente.
-- **formato** — Markdown (humano-primero: specs, checkpoints, operator-input, learnings) · YAML/JSON (estructura: `capabilities/*.yaml`, `releases/*.yaml`, `project.config.yaml`, frontmatter) · código fuente. Convención (estado del arte): **prosa en markdown, datos estructurados en yaml/json** — no embeber tablas en markdown (diffea/parsea mal). El repo ya respeta esto.
-- **propietario + clasificacion** — Cliente (la PyME). El consultor/agente escribe, el cliente posee. ★ datos del cliente, confidencial. **Matiz BYOC (CK-16):** la promesa pasa de "nunca sale de su red" a **"sus datos viven en SU GitHub (org propia), no en infra nuestra"** — mismo espíritu (soberanía: el cliente posee, controla acceso y puede revocar), residencia explícita en la nube de GitHub. Cliente regulado que prohíba cloud → GitLab/git self-hosted como opción documentada (espejo del "LLM on-premise: opción futura").
-- **residencia + retencion** — **GitHub, organización del cliente** + clones locales (laptops, data plane). Retención indefinida vía historia git (es el valor: trazabilidad objetivo→producción). Sin TTL; el repo ES el archivo histórico.
-- **versionado** — Git (commits, branches, tags, blame, diff). **Límite del patrón:** git degrada con archivos enormes, alta frecuencia de escritura, o merges concurrentes con semántica de fila (ahí brillan Dolt/lakeFS, **innecesarios a esta escala** = sobreingeniería). Para decenas-cientos de historias en md/yaml con equipo 3-30, git plano es el ajuste correcto.
-- **quién_escribe / quién_lee** — Escriben: agentes de levantamiento/diseño (N7: AS-IS, gaps, specs), devs (N10: código + spec), DevStudio (N5: proceso/historias/priorización — el PM refina, los devs reciben), Cockpit (N13: transiciones de Vista Negocio), **App del Auditor (N14: publica procesos/roles/objetivos ratificados — "deploy de procesos" [R17])**. Leen: N5 y N13 (ambos proyectan), agentes Claude, humanos. **Concurrencia:** el flujo multi-usuario lo media GitHub (branches/PRs/permisos); escrituras locales con git + write-temp-then-rename.
-- **comunicacion** — No es servicio nuestro: protocolo git + API de GitHub. DevStudio (N5) lo usa como conector; N13 lee su clon/checkout local; los agentes como archivos.
-- **depende_de / consumido_por** — depende_de: git, filesystem. consumido_por: N5, agentes Claude (N7/N8), herramientas dev.
-- **riesgos_abiertos** — Escritura concurrente (disciplina de commits + escritura atómica) · drift de formato yaml/frontmatter sin validación (los gates SDD apuntan a esto) · tentación de meter high-churn/binarios (degrada el patrón) · rebuild de la proyección depende de repo parseable → parsing tolerante a errores, no fallo total · **residencia GitHub-cloud (CK-16):** la tensión con el discurso BYOC queda documentada — para el material más sensible el crudo sigue en N12 (data plane, nunca GitHub); revisar la frase de venta con el primer cliente regulado.
-- **fuentes** — [Git for Data — DoltHub](https://www.dolthub.com/blog/2020-03-06-so-you-want-git-for-data/) · [Git for Data — lakeFS](https://lakefs.io/blog/git-for-data/)
+- **objetivo** — Publicar releases firmadas que el edge y los instalables del cliente **jalan**, gestionar los **entitlements/licencias** (quién tiene derecho a qué, revocable), y recibir **telemetría agregada** opt-in (salud/uso de la flota, nunca datos crudos) — para poder ofrecer mantenimiento sin abrir puertos hacia el cliente.
+- **resumen** — El "Plano del Fabricante" operable: canal de releases (binario Cockpit, apps de escritorio, arneses), licencias offline-first, telemetría por pull/push saliente. Dos audiencias: nuestros consultores (siempre) y clientes con contrato de mantenimiento (opt-in; el cliente que se auto-mantiene con su Arnesia no jala nada nuestro).
+- **plano · tipo · madurez** — Fabricante · servicio · **no-construido**. Piezas madurísimas (go-tuf v2, Tauri updater, marketplaces de Claude Code, OTel, Ed25519) — el nodo de menor riesgo técnico.
+- **responsabilidades** — Publicar releases firmadas (binario + apps + arneses) que el cliente jala y verifica **[R9]** · emitir/validar licencias (entitlements por cliente, revocables) · recibir telemetría agregada (scrubbing) para dashboards de flota · canales (consultores siempre-verde / clientes estable) + rollback.
+- **no_objetivos** — NO empuja updates (no inbound; el cliente decide cuándo jala) · NO recibe datos crudos (ni PII ni contenido) · NO es APM ni data warehouse · NO es el mapa de procesos (eso es el marketplace de arneses, contenido, no infraestructura).
+- **stack** — **Binario:** go-tuf v2 (v0.7 deprecado) + TUF-on-CI sobre GitHub Actions (caso "baja frecuencia, un mantenedor"; Sigstore lo usa en prod). Fallback: cosign/minisign + Releases. **Apps de escritorio:** Tauri v2 updater (firma minisign obligatoria, pull JSON estático) o Electron autoUpdater si el stack ya es Electron. **Arneses:** marketplace privado de Claude Code por cliente (repo git privado + `marketplace.json`; acceso = credencial del git host, revocar = cortar mantenimiento; pinning por commit SHA). **Licencias:** license files Ed25519 (`crypto/ed25519` stdlib, patrón keygen-go) offline-first; Keygen CE self-host solo a +10 clientes. **Telemetría:** OTLP + mTLS por tenant (OTel Collector en el cliente; routing por tenant). GitHub org privada = plano único.
+- **expone** — Repo TUF (`root/timestamp/snapshot/targets.json` + artefactos) por HTTPS · endpoint de licencias (validación offline; opcional online para revocación) · endpoint OTLP/mTLS de telemetría · JSON de updater de apps por canal.
+- **estado + persistencia** — Stateful ligero: artefactos firmados en object storage + CDN; claves de firma en HSM/KMS (root/targets offline); telemetría time-series retención corta; registro de licencias/entitlements. No guarda nada por-cliente salvo "tenant X corre versión Y, licencia Z, salud W".
+- **escala + disponibilidad** — Trivial (object storage + CDN + un Collector). **Si cae: cero impacto en el cliente** — corre con su versión y reintenta; la telemetría se bufferea/descarta. El nodo más tolerante a fallos.
+- **integraciones_externas** — GitHub Actions (TUF-on-CI) · object storage/CDN · KMS/HSM · (opcional) Grafana.
+- **seguridad** — Integridad por TUF (firma M-of-N, anti-rollback, resiste repo comprometido) · licencias firmadas Ed25519 · telemetría mTLS por tenant + minimización en origen + scrubbing en el Collector + opt-in · el cliente solo abre conexiones **salientes**.
+- **nfr / cumplimiento_progresivo** — Firmas verificables; revocación de licencia por fin de contrato; consentimiento de telemetría por contrato; canal separado consultores/clientes.
+- **comunicacion** — Cliente → nodo (releases/licencias): **PULL HTTPS, lo inicia el cliente.** Cliente → nodo (telemetría): **push saliente OTLP/mTLS** (originado en el cliente). El Fabricante nunca disca al cliente.
+- **depende_de / consumido_por** — depende_de: object storage/CDN + KMS + pipeline de build (N2/N15). consumido_por: N13 (binario Cockpit), N14/N17/N5 (apps + arneses), el cliente (mantenimiento opt-in).
+- **riesgos_abiertos** — (1) Custodia/rotación de claves TUF (ceremonia = sobrecarga para equipo chico → ¿umbral 2-of-3? ¿firma manual por release?). (2) Bug conocido de marketplaces (autoUpdate no refresca `installed_plugins.json`, #52218) — verificar antes de depender de hooks en arneses. (3) Política de auto-update por canal. (4) Lista blanca exacta de métricas + consentimiento. (5) Licenciamiento propio (license files) vs Keygen CE — cuándo migrar.
+- **fuentes** — [go-tuf v2](https://github.com/theupdateframework/go-tuf) · [TUF-on-CI](https://github.com/theupdateframework/tuf-on-ci) · [Tauri v2 updater](https://v2.tauri.app/plugin/updater/) · [Claude Code marketplaces](https://code.claude.com/docs/en/plugin-marketplaces) · [keygen-go](https://github.com/keygen-sh/keygen-go) · [OTel Collector + mTLS](https://opentelemetry.io/blog/2025/expose-otel-collector-gateway-api/) · `proyecto/research/rediseno-total/04-distribucion-licencias-telemetria.md`.
 
 ---
 
-## N7 · Agentes de análisis / levantamiento
+# ORGANIZACIÓN — del cliente (★datos aquí)
 
-- **objetivo** — Construir el AS-IS leyendo los sistemas internos del cliente (APIs, DBs, file systems) **desde dentro de su red**, razonando vía API frontier, y escribiendo el resultado a N6 — **sin que el método (la IP del cómo) quede en el cliente**.
-- **resumen** — Trabajadores efímeros (un job = un sandbox limpio, destruido al terminar) que el control plane dispara dentro del data plane. Protección de IP **por arquitectura, no por confianza**: persiste el *output* (el AS-IS, del cliente), no el *playbook* (nuestro).
-- **plano · tipo · madurez** — Data · agente efímero (stateless, one-shot) · **no-construido**. Patrón "ephemeral sandbox + workload identity + outbound-only" = estado del arte consolidado jun 2026; herramientas single-executable (tipo `smolvm`, cold start <200ms) bajaron la barrera para equipos chicos.
-- **responsabilidades** — Procesar las fuentes en sus **2 modos** — **documental** (lee el crudo de N12) y **sistemas vivos** (lee APIs/DBs/FS read-only) — ejecutando la metodología inyectada: extraer entidades, mapear relaciones, **reconciliar documentado-vs-vivido** **[R7, R8]** · escribir el **mapa AS-IS + gaps** (derivado) a N6 · auto-destruirse dejando cero rastro del método. Operado/validado por N9 (atendido) u orquestado por N1 (desatendido).
-- **no_objetivos** — NO modifica sistemas del cliente (read-only estricto; el delivery lo hace N8) · NO persiste el método/playbook · NO exfiltra contenido al control plane (solo estado/telemetría) · NO mantiene estado entre corridas.
-- **runtime** — **Híbrido, se elige por fuente:** *atendido* = Claude Code con la **suscripción del consultor**, en una máquina del data plane (modo documental, barato, ToS-OK, lo opera N9); *desatendido* = **API frontier** en microVM (modo sistemas vivos, escalado, lo dispara N1). **Reside en el servidor/nube del cliente (data plane)**; la laptop del consultor como host = *fallback degradado* (el crudo aterriza en equipo nuestro). **Sandbox = microVM por invocación** (Firecracker o single-executable tipo smolvm), NO contenedor plano. Consenso jun 2026: Docker/runc (kernel compartido) es insuficiente para código que un LLM genera/ejecuta; gVisor es el medio aceptable para compute-heavy con poco I/O, pero N7 hace I/O intensivo contra sistemas sensibles **en red ajena** → el límite debe ser kernel-por-job. Para PyME NO es sobreingeniería (single-executable microVM, carga operativa modesta). Razonamiento vía API frontier (key comercial; ver N8 para por qué aquí SÍ y en delivery NO).
-- **disparador + ciclo_de_vida** — (1) control plane encola job → runner del data plane lo recoge por **poll outbound (443)**; (2) microVM limpio + método inyectado en memoria/tmpfs + credenciales JIT least-privilege vía OIDC; (3) lee sistemas, razona, construye AS-IS; (4) commit a N6; (5) teardown: microVM destruido, credenciales expiran (TTL 5-30min), método desaparece con el sandbox. Estilo JIT runner (`--once`).
-- **lee / escribe** — Lee (read-only): el **crudo de N12** (modo documental) + APIs/DBs/FS internos (modo sistemas vivos) — todo en el data plane. Escribe: **mapa AS-IS + gaps → N6** (derivado, único que persiste; del cliente). **Deja tras teardown: NADA del método** (sin secretos en disco, sin playbook, sin caché del prompt de metodología).
-- **metodo_inyectado** — El "cómo" vive en control plane; en cada job se entrega al sandbox **en memoria/tmpfs** (no en volumen persistente del cliente). **Por qué no persiste:** al teardown del microVM su memoria y filesystem se destruyen → el método nunca toca almacenamiento durable del cliente. IP protegida por el **ciclo de vida del compute**, no por acuerdo legal ni ofuscación.
-- **aislamiento + seguridad** — **Credenciales (no-negociable): secretless / workload identity federation.** **[R5]** El sandbox NO lleva secretos de larga vida; presenta token OIDC → broker (IAM/STS del cliente o mini-broker) emite credenciales **scoped + corta vida** (TTL 5-30min, DB read-only, endpoints específicos). Least-privilege concreto: rol DB read-only, allowlist de sistemas, sin escritura salvo a N6. Egress del sandbox por allowlist (solo: sistemas a leer + endpoint Anthropic + N6). MCP como capa de *policy* (declarar tools → derivar firewall/mounts), no como el límite de aislamiento.
-- **comunicacion** — Hacia control plane: outbound-only 443, pull (poll de jobs + report de estado). Hacia Anthropic: API key (server-side). Hacia sistemas del cliente: dentro del data plane, credenciales JIT. Salida: commit a N6.
-- **depende_de / consumido_por** — depende_de: control plane (cola, playbook N2, API key o suscripción Claude Code del consultor), broker de identidad del cliente, **N12 (crudo, modo documental)**, sistemas internos, N6. consumido_por: N6 (recibe el mapa); N1 (reconcilia); aguas abajo N8 (construye contra ese AS-IS).
-- **riesgos_abiertos** — (1) **Datos del cliente al endpoint de Anthropic** (el razonamiento server-side saca fragmentos sensibles a la API) → ver [hallazgo rojo](#hallazgo-rojo). (2) Broker de identidad en el data plane: si reusamos su IAM, bien; si no, desplegar mini-broker (punto de confianza a auditar). (3) Método en memoria ≠ inviolable: root en el hipervisor podría inspeccionar RAM — "fuerte por arquitectura" pero no DRM; para PyME es proporcionado, documentar el límite del modelo de amenaza. (4) Elegir single-executable (smolvm) sobre operar Firecracker a mano.
-- **fuentes** — [Sandboxing AI agents 2026 (Firecracker/gVisor)](https://manveerc.substack.com/p/ai-agent-sandboxing-guide) · [Ephemeral CI secrets: OIDC + workload identity](https://yoo.be/ephemeral-ci-secrets-oidc-short-lived-credentials-workload-identity/) · [BYOC control/data plane (Nuon)](https://nuon.co/blog/byoc-control-plane-data-plane-architectures)
+## N6 · Repositorio Oficial (confidencial, infra del cliente) ★datos
+
+> Re-fichado CK-18: era "Repo del cliente (GitHub)". Ya NO es GitHub — es un **repositorio confidencial
+> propio en servidor/máquina del cliente**, con backups. Es el destino del "deploy de procesos" y la
+> fuente de verdad de la estructura organizacional para Cockpit.
+
+- **objetivo** — Ser la **única fuente de verdad** de la organización, confidencial y en su red: procesos, manuales, estructura organizacional as-code, arneses por rol, y (futuro) el know-how. Versionado, auditable, legible por humanos y agentes. Es lo que el consultor construye y publica, y lo que Cockpit lee para renderizar por nivel de acceso.
+- **resumen** — "Git como base de archivos" servido self-hosted en la máquina del cliente. Cuatro cuerpos: **Repositorio de Arneses** (los arneses por rol de la org) · **Metadata Organizada** (objeto normalizado: procesos/roles/puestos/objetivos/brechas as-code) · **Documentos Oficiales versionados** (manuales, procesos — fuente + PDF derivado) · **Knowledge Database** (know-how, futura — `pendiente`).
+- **plano · tipo · madurez** — Organización · artefacto/dato · **no-construido** (el modelo git existe conceptualmente; falta el despliegue self-hosted confidencial y el poblado real).
+- **responsabilidades** — Contener y versionar todo el conocimiento oficial de la org · dar historia/autoría/reversibilidad (base del control de información documentada ISO §7.5) · servir la estructura a Cockpit (lectura) y recibir las publicaciones del consultor (escritura) · alojar los arneses que cargan las apps del edge.
+- **no_objetivos** — NO es DB transaccional ni de queries agregadas en caliente (eso lo hace Cockpit/lakehouse) · NO es el landing del crudo (eso es N12) · NO guarda datos de operación de alta frecuencia (eso es N16) · NO sale de la red del cliente.
+- **formato** — Markdown (documentos, manuales, know-how) · YAML/JSON (objeto normalizado, arneses como skills) · PDF derivado (generado en el publish). Git nativo; PDFs pesados → LFS/releases.
+- **propietario + clasificacion** — **Cliente (la PyME).** ★datos del cliente, confidencial. El consultor/analista escribe, el cliente posee y controla acceso.
+- **residencia + retencion** — **Servidor/máquina del cliente**, con backups (`forgejo dump` + restic a disco externo/S3 del cliente). Retención indefinida vía historia git (es el valor: trazabilidad). El repo ES el archivo histórico.
+- **versionado** — Git (commits, branches, tags, blame, diff). El "deploy de procesos" = commit + tag firmado con fecha efectiva; la Gestión de Cambios (N13) usa branches (borrador) / main (vigente) / tags (copias controladas).
+- **quién_escribe / quién_lee** — Escriben: Consultio (N14, publica el mapa **[R7]**), Arnesia (N15, siembra arneses), el Analista de Calidad (N19, publica cambios vía N13). Leen: Cockpit (N13, estructura + documentos), las apps del edge (cargan sus arneses), humanos.
+- **comunicacion** — No es servicio nuestro: protocolo git + servidor self-hosted (Forgejo). Cockpit lee vía deploy-token read-only (API o `go-git`); el publicador escribe con credencial least-privilege.
+- **depende_de / consumido_por** — depende_de: git, servidor del cliente, backups. consumido_por: N13 (lee estructura/documentos), N14/N17/N5 (cargan arneses), N19 (gestiona cambios).
+- **riesgos_abiertos** — (1) **BD vs archivos** (BL nuevo): git/archivos = SSoT, cualquier BD = índice derivado reconstruible (SQLite/bleve en Cockpit), nunca SSoT. (2) Motor de índice/búsqueda — hasta tener volumen. (3) Repos separados por nivel de confidencialidad — solo si un cliente lo exige. (4) Conexión concreta con un ERP como SSoT adicional (pendiente, se ve al tocar ese sistema).
+- **fuentes** — [Forgejo](https://forgejo.org/) · [QMS en git — OpenRegulatory](https://openregulatory.com/articles/quality-management-system-qms-in-github-gitlab) · `proyecto/research/rediseno-total/01-repositorio-oficial.md`.
+
+---
+
+## N13 · Cockpit — Gestión de Cambios + Visualización
+
+> Re-fichado CK-18: era "Vista Negocio (binario `directorio`)". Ahora son **dos módulos** (Gestión de
+> Cambios + Visualización), sirve por **niveles de acceso** y cruza la estructura (N6) con la operación
+> (N16). Ya no se llama "de directorio": es Cockpit, para toda la organización.
+
+- **objetivo** — Ser el **tablero único** de la organización: cruzar la estructura organizacional (procesos/roles/objetivos, de N6) con la operación día a día (de N16) y servirla a cada usuario **según su nivel de acceso**; y darle al Analista de Calidad el módulo de **Gestión de Cambios** para mantener lo oficial siguiendo ISO. Corre en la red del cliente, cero npm/python/Docker.
+- **resumen** — Binario Go propio (`directorio`, hoy) con UI embebida. **Módulo Visualización:** Hilo de Oro · Brechas · Empresa→Sistema · objeto normalizado (9 entidades) + indicadores del lakehouse. **Módulo Gestión de Cambios:** solicitudes/aprobación/publicación de versiones (ISO §7.5/§6.3). Auth embebida + autorización derivada de la estructura del repo.
+- **plano · tipo · madurez** — Organización · servicio/exec-env · **existe (parcial)** — la Visualización base está construida y verificada standalone (Go build/vet/test + UI); faltan Gestión de Cambios, niveles de acceso reales y el cruce con el lakehouse.
+- **responsabilidades** — Servir la SPA embebida (`go:embed`) · API JSON (`/api/portfolio`, `/api/negocio`, `/api/objeto`) · leer/validar el objeto normalizado (9 entidades, CK-13) de N6 · **cruzar estructura × operación (N16) y servir por nivel de acceso [R11]** · **Gestión de Cambios** (solicitud/aprobación/publicación de versiones, firma persistida) sobre N6 [alimenta R13] · autenticar y autorizar por rol organizacional.
+- **no_objetivos** — NO es el SSoT de la estructura (lo lee de N6) · NO es el almacén de operación (lo consulta en N16) · NO razona server-side multi-tenant (murió N1) · NO edita git a mano en la UI (la Gestión de Cambios oculta git al analista).
+- **stack** — `net/http` stdlib · `go:embed` + SPA (deuda Go/Next → Vite SPA, BL-20). **Auth:** embebida — argon2id (`x/crypto`) + `alexedwards/scs` (sesiones server-side, store SQLite); passkeys opcionales (`go-webauthn`); campo `provider` desde el día 1 para OIDC futuro. **Autorización:** middleware propio ~200 líneas, **policy-as-data** derivada de N6 (el rol organizacional ES la política; 4 niveles como enum ordenado Gobernanza>Estratégico>Táctico>Operativo). **Lakehouse:** DuckDB embebido (`github.com/duckdb/duckdb-go`), `ATTACH ... AS lake (TYPE ducklake)` en lectura. **Gestión de Cambios:** git de backend + UI que oculta git.
+- **expone** — HTTP/JSON: `/api/portfolio`, `/api/negocio`, `/api/objeto` · vistas por nivel · endpoints de Gestión de Cambios (solicitud/aprobación/publicación) · lectura de indicadores del lake.
+- **estado + persistencia** — Verdad de estructura/documentos: N6 (git). Operación: N16 (lakehouse). Estado propio de Cockpit: credenciales/sesiones + registro de firmas de aprobación (SQLite local) — las credenciales viven aquí, JAMÁS en el repo.
+- **escala + disponibilidad** — 1 organización/despliegue, multi-usuario por niveles. Proceso único, launcher propio (`directorio -workspace … -port 4100`); crash → restart.
+- **integraciones_externas** — `git`/N6 (estructura, deploy-token read-only) · N16 (DuckDB embebido) · N3 (updates del binario).
+- **seguridad** — Vive en la red del cliente. Auth embebida (sesiones OWASP vía scs; argon2id). Autorización por nivel derivada de N6, enlazada por ID estable (email/ID de puesto); credenciales en DB local, nunca en el repo. Gestión de Cambios: firma de aprobación autenticada + persistida en DB además de git (el audit trail no depende solo de la plataforma).
+- **nfr / cumplimiento_progresivo** — Control de información documentada ISO §7.5 (versión vigente/obsoleta, aprobación previa a publicación, acuse, revisión periódica) vía Gestión de Cambios. TLS en LAN, audit trail de accesos.
+- **comunicacion** — Lee N6 (git, read-only) · lee N16 (DuckDB) · sirve HTTPS a los navegadores de N11 · jala updates de N3. Binario independiente, cero import de código de otros productos.
+- **depende_de / consumido_por** — depende_de: N6 (estructura/documentos), N16 (operación), N3 (updates). consumido_por: **N11** (los 4 niveles, vía navegador), **N19** (Analista de Calidad, Gestión de Cambios), **N9/N14** (preview local del consultor).
+- **riesgos_abiertos** — (1) Módulo Gestión de Cambios sin construir (entidades Solicitud/Versión/Aprobación/Acuse/RevisiónPeriódica — BL nuevo). (2) Niveles de acceso reales (ex-BL-12, sube a alta). (3) Cruce estructura × lakehouse (esquema de indicadores por objetivo/proceso/rol). (4) Deuda Go/Next (BL-20). (5) Cómo Cockpit descubre el objeto normalizado en N6 self-hosted (era `git rev-parse` local; ahora deploy-token a Forgejo).
+- **fuentes** — `proyecto/research/rediseno-total/05-auth-rbac.md` · `06-gestion-cambios-iso.md` · `03-data-lakehouse.md` · Strangler Fig (vía CK-07).
+
+---
+
+## N16 · Data Lakehouse ★datos
+
+> Nodo nuevo (CK-18). Reúne la operación de todos los sistemas de la org para que Cockpit muestre no
+> solo la organización e indicadores, sino **cómo vamos día a día** en todos los niveles.
+
+- **objetivo** — Consolidar los datos de operación de todos los sistemas de la organización (N18) en un almacén analítico ligero que **nutre a Cockpit**: el cruce estructura × operación que convierte el mapa estático en un tablero vivo.
+- **resumen** — Lakehouse pequeño en la infra del cliente: pipelines de ingesta + almacén columnar + catálogo. Consumido por Cockpit (binario Go) que hace el join contra la estructura de N6.
+- **plano · tipo · madurez** — Organización · servicio/dato · **no-construido**.
+- **responsabilidades** — Ingerir la operación de N18 (APIs SaaS, ERP, DBs a medida, Excels) → almacén analítico **[R10]** · versionar/snapshot (time travel) · exponer al binario Go de Cockpit para el cruce con indicadores.
+- **no_objetivos** — NO es el SSoT de la estructura (eso es N6) · NO es transaccional (es analítico) · NO requiere data engineers/K8s · NO sale de la red del cliente (salvo modalidad hosteada por nosotros, opción de pago).
+- **stack** — **Ingesta:** dlt (Python puro, sin servidor; SaaS vía verified sources/REST, ERP y DBs vía `sql_database`+ConnectorX). **Almacén:** DuckLake (Parquet en disco local o S3/MinIO del cliente) + **catálogo Postgres** (escritor-pipeline y lector-Cockpit concurrentes; snapshots) — un solo host sin Postgres arranca con catálogo SQLite y migra con un `ATTACH`. **Excel** de primera clase (dlt `filesystem`+`read_excel` o `read_xlsx` de DuckDB, con hash/fecha para auditabilidad). **Exposición a Go:** DuckDB embebido (`duckdb-go`), lectura vía `ATTACH ... (TYPE ducklake)`. **Orquestación:** systemd timers + healthcheck. Iceberg/Delta/Spark/ClickHouse/Airbyte/Dagster = sobreingeniería a esta escala.
+- **expone** — El lake por DuckLake al binario Cockpit (embebido, cero servicio intermedio). Sin puerto nuevo por default.
+- **estado + persistencia** — Parquet + catálogo (SQLite→Postgres) en la infra del cliente. Retención según política; snapshots/time travel para "cómo íbamos".
+- **escala + disponibilidad** — 50 GB–2 TB analíticos típicos. Batch horario/diario cubre "cómo vamos día a día"; sin streaming. Si cae la ingesta, Cockpit muestra el último snapshot.
+- **integraciones_externas** — N18 (fuentes) · (modalidad hosteada) MotherDuck si el cliente paga hosting nuestro.
+- **seguridad** — Datos de operación del cliente ★. En su infra por default; cifrado at-rest; acceso read-only del binario Cockpit. Modalidad hosteada por nosotros = DPA + zero-retention como cualquier tránsito.
+- **nfr / cumplimiento_progresivo** — Auditabilidad de cargas (hash/fecha por archivo/pipeline); linaje básico; time travel.
+- **comunicacion** — dlt jala de N18 (según sistema: API/DB/FS) → escribe DuckLake · Cockpit lee embebido. Todo dentro del data plane del cliente.
+- **depende_de / consumido_por** — depende_de: N18 (fuentes), almacenamiento del cliente. consumido_por: **N13** (Cockpit hace el cruce y sirve indicadores).
+- **riesgos_abiertos** — (1) **Infra del cliente vs hosteado por nosotros** (D3, CK-18): default = infra del cliente; "hosteado por nosotros" = modalidad comercial documentada, no el default. (2) Catálogo SQLite vs Postgres según despliegue. (3) Esquema semántico de indicadores (cómo se mapea operación → objetivo/proceso/rol) — se ve con el primer consumidor. (4) Conectores concretos por sistema (se diseñan con el cliente real).
+- **fuentes** — [DuckLake 1.0](https://ducklake.select/2026/04/13/ducklake-10/) · [dlt](https://dlthub.com/) · [duckdb-go](https://github.com/duckdb/duckdb-go) · `proyecto/research/rediseno-total/03-data-lakehouse.md`.
 
 ---
 
 ## N12 · Depósito de fuentes (landing zone) ★datos
 
-- **objetivo** — Ser el área donde **aterriza el crudo de entrada** del levantamiento (manuales, MOF, organigramas, inventarios, exports, dumps de USB/correo) para que N7 lo procese. Existe separado de la verdad curada (N6) porque el crudo es **transitorio, voluminoso/binario y el de mayor riesgo de retención** — aislarlo permite **destruirlo** apenas el mapa está hecho. **[R3]**
-- **resumen** — Zona de aterrizaje del crudo en el data plane: N9 deposita, N7 consume, se retiene poco y se destruye.
-- **plano · tipo · madurez** — Data · artefacto/dato · **no-construido**.
-- **responsabilidades** — Recibir lo que deposita N9 (la carpeta-depósito) · servir el crudo a N7 para procesar · **aplicar retención/destrucción** (borrar el crudo tras generar el mapa) · registrar quién depositó qué (audit) **[R3]**.
-- **no_objetivos** — NO es el SSoT (eso es N6) · NO guarda la verdad curada (mapa/specs) · NO sale del data plane · NO es de larga vida (el crudo se destruye; lo derivado vive en N6).
-- **formato** — Object store o carpeta de archivos (PDF, Word, Excel, imágenes, exports) — **NO git** (binarios/voluminoso diffean mal).
-- **propietario + clasificacion** — Cliente (la PyME). ★ datos del cliente — **el material más sensible** (el crudo sin curar). Confidencial.
-- **residencia + retencion** — **Servidor/nube del cliente (data plane).** Retención **corta** + **destrucción post-procesamiento** por política (la cláusula de no-retención del DPA se materializa aquí). Para PyME sin servidor: laptop gestionada del consultor bajo contrato = *fallback degradado*.
-- **versionado** — Ninguno (no es histórico; es staging transitorio). El histórico vive en N6.
-- **quién_escribe / quién_lee** — Escribe: N9 (deposita). Lee: N7 (procesa). Nadie más.
-- **comunicacion** — No es servicio: filesystem/object store en el data plane. N9 escribe, N7 lee.
-- **depende_de / consumido_por** — depende_de: almacenamiento del data plane. consumido_por: **N7** (lo procesa).
-- **riesgos_abiertos** — (1) Política de retención exacta (¿el crudo se destruye tras el mapa o tras ratificar el AS-IS?) · (2) Cifrado at-rest (AES-256, barato, por default) · (3) ¿Object store del cliente vs carpeta simple? según su infra.
-- **fuentes** — [BYOC landing zone (Nuon)](https://nuon.co/blog/byoc-control-plane-data-plane-architectures) · [GDPR DPA Art. 28 — devolución/destrucción](https://gdpr.eu/data-processing-agreement/)
+- **objetivo** — Ser el área donde **aterriza el crudo de entrada** del levantamiento (manuales, MOF, organigramas, inventarios, exports, dumps de USB/correo) para que el consultor lo procese con Consultio. Separado de la verdad curada (N6) porque el crudo es **transitorio, voluminoso y el de mayor riesgo de retención** — aislarlo permite **destruirlo** apenas el mapa está hecho. **[R3]**
+- **resumen** — Zona de aterrizaje del crudo en la máquina del cliente (o del consultor como fallback): N9 deposita, Consultio lo procesa, se retiene poco y se destruye.
+- **plano · tipo · madurez** — Organización · artefacto/dato · **no-construido**.
+- **responsabilidades** — Recibir lo que deposita N9 **[R2]** · servir el crudo a Consultio (N14) para procesar · **aplicar retención/destrucción** (borrar tras generar el mapa) · registrar quién depositó qué (audit) **[R3]**.
+- **no_objetivos** — NO es el SSoT (eso es N6) · NO guarda la verdad curada · NO sale del entorno del cliente · NO es de larga vida (el crudo se destruye; lo derivado vive en N6).
+- **formato** — Carpeta/object store (PDF, Word, Excel, imágenes, exports) — **NO git** (binarios/voluminoso diffean mal).
+- **propietario + clasificacion** — Cliente. ★datos — **el material más sensible** (crudo sin curar). Confidencial.
+- **residencia + retencion** — Máquina/servidor del cliente. Retención **corta** + **destrucción post-procesamiento** (la cláusula de no-retención del DPA se materializa aquí). PyME sin servidor: laptop gestionada del consultor bajo contrato = fallback degradado.
+- **versionado** — Ninguno (staging transitorio; el histórico vive en N6).
+- **quién_escribe / quién_lee** — Escribe: N9 (deposita). Lee: Consultio (N14, procesa). Nadie más.
+- **comunicacion** — No es servicio: filesystem/object store. N9 escribe, N14 lee.
+- **depende_de / consumido_por** — depende_de: almacenamiento del entorno. consumido_por: **N14** (Consultio lo procesa).
+- **riesgos_abiertos** — (1) Política de retención exacta (¿destruir tras el mapa o tras ratificar el AS-IS?). (2) Cifrado at-rest (AES-256 por default). (3) ¿Object store vs carpeta simple? según infra.
+- **fuentes** — [GDPR DPA Art. 28 — destrucción](https://gdpr.eu/data-processing-agreement/).
 
 ---
 
-## N13 · Cockpit — Vista Negocio (binario `directorio`, propio)
+## N18 · Sistemas operacionales de la organización ★datos
 
-> Nodo nuevo (2026-07-02, I-74/CK-07) — antes vivía indiferenciado dentro de N5. Es el binario de **P1 Cockpit**: sirve la Vista Negocio/Directorio construida (Stage 1-4 ejecutados; repo propio `~/Proyectos/cockpit` desde la graduación CK-09/CK-10, 2026-07-06); a futuro absorbe el Motor de Discovery (N1) cuando ese se construya — N13 es la mitad *data-plane* de P1, N1 es su mitad *control-plane*, ambas son el mismo producto (P1), no productos distintos.
+> Nodo nuevo (CK-18). Las fuentes de operación que nutren el lakehouse — lo que la org ya tiene.
 
-- **objetivo** — Binario Go propio que sirve la Vista Negocio/Directorio (Hilo de Oro, Brechas, mapa Empresa→Sistema, roles Directorio·Área·Consultor) al CEO/directorio en la red del cliente, con mantenimiento de datos propio de organización/áreas/procesos — independiente de los productos de desarrollo (DevStudio, N5). Cero npm/python/Docker en el cliente. **Único binario del data plane desde CK-16** (el server DevHub murió sin desplegarse; DevStudio es app de escritorio).
-- **resumen** — Binario `directorio` (`go/cmd/directorio`, puerto 4100 por defecto): `package cockpit` (handlers, CK-05/CK-12/CK-13) + UI propia (`CockpitShell`/`NegocioView`, CK-06) embebida como export estático vía `go:embed`. El andamiaje transicional que lo ataba a N5 (`Deps` struct, route-group adapter, alias npm, symlink) quedó **desmontado en Stage 4 (CK-07, ejecutado)**; código migrado y verificado standalone en el repo propio (CK-10).
-- **plano · tipo · madurez** — Data · servicio/exec-env · **existe** — Vista Negocio construida y verificada standalone (Go build/vet/test + UI tsc/vitest/export estático); lo no-construido de P1 (Motor de Discovery) es N1, nodo aparte.
-- **responsabilidades** — Servir la SPA embebida (`go:embed` + fallback SPA) · API JSON de Vista Negocio (`/api/portfolio`, `/api/negocio`, `/api/objeto` — contratos vigentes, dueño = esta célula) · leer y validar el **objeto normalizado completo** (9 entidades de `objeto.schema`, CK-13) · **(futuro)** consumir datos de delivery de DevStudio/GitHub — mecanismo TBD, se diseña con el primer consumidor real (BL-18; el contrato CK-08 quedó derogado en CK-16) · **(futuro, campaña aparte)** absorber el Motor de Discovery (N1: ingesta multi-fuente, As-Is/To-Be, gaps) como su propio backend de razonamiento (BL-13).
-- **no_objetivos** — NO sirve el ciclo de desarrollo (repos/historias/priorización — eso es DevStudio, N5, producto aparte) · NO es el SSoT de los datos de delivery (los consumirá, no los posee) · NO multiplexa Claude Code (si/cuando construya N1, hereda las mismas restricciones de N1: API frontier, no suscripción).
-- **stack** — `net/http` stdlib · `go:embed all:ui` + fallback SPA · Next.js static-export hoy — **deuda Go/Next heredada** (playbook: migrar a Vite SPA + React Router, Go como único backend — BL-20). **(futuro)** proyección propia si la Vista Negocio necesita agregaciones (roll-up de OKRs por área) — introducir cuando duela, no antes.
-- **expone** — HTTP/JSON: `/api/portfolio` (árbol Empresa→Sistema, CK-05), `/api/negocio` (Hilo de Oro + Brechas, CK-05), `/api/objeto` (el objeto normalizado completo — 9 entidades validadas juntas, CK-12/CK-13) · estáticos SPA (`CockpitShell`) · **(futuro)** el lado consumidor de datos de delivery (mecanismo TBD, BL-18).
-- **estado + persistencia** — Verdad: repo git (N6; instancias del objeto en `empresa/<tipo>/` del shell — D-15) + datos de delivery que lleguen de DevStudio/GitHub (futuro, TBD). Sin DB propia hoy.
-- **escala + disponibilidad** — 1 empresa/despliegue. Proceso único, launcher propio (`directorio -workspace … -port 4100`); crash → restart sin estado que perder.
-- **integraciones_externas** — `git` (resuelve root) · DevStudio/GitHub (datos de delivery, futuro) · N1 (cuando exista, mismo producto P1).
-- **seguridad** — Vive en la red del cliente. La conexión a datos de delivery definirá su auth cuando se diseñe el mecanismo (BL-18); endurecimiento propio: bind local por default, token simple si se expone en LAN.
-- **comunicacion** — Binario independiente — cero import de código de/hacia otros productos (el in-process `Deps` de CK-05 fue transicional, desmontado). **Datos de delivery: SIN mecanismo firmado** — el contrato Pull API de CK-08 quedó derogado (CK-16, el server contra el que se diseñó ya no existirá); se diseña con el primer consumidor real (BL-18, disciplina anti-código-especulativo), probablemente vía GitHub.
-- **depende_de / consumido_por** — depende_de: N6 (repo) · DevStudio/GitHub (datos de delivery, futuro, TBD) · N1 (razonamiento, cuando exista). consumido_por: **N11** (CEO/sponsor, Vista Negocio) · **N9** (Consultor, vista consultor) · **N14** (App del Auditor: lo que publica al repo, N13 lo renderiza).
-- **riesgos_abiertos** — (1) Conexión a datos de delivery sin mecanismo (CK-08 derogado) — diseñar con el primer consumidor real (BL-18). (2) Deuda Go/Next propia (BL-20). (3) Cuándo/si absorbe N1 — campaña aparte, sin fecha (BL-13). (4) Sin auth/roles reales todavía (BL-12) — gate para despliegue multi-usuario.
-- **fuentes** — Mismas que N5 (SPA en binario Go, Vite vs Next) · Strangler Fig (Fowler, vía CK-07) · Bounded Context/Conway's Law (vía I-74).
+- **objetivo** — Representar los sistemas que la organización ya opera y que generan la data del día a día: son las **fuentes** del Data Lakehouse (N16) y, en el caso del sistema a medida, el **destino** del desarrollo (N5/N10).
+- **resumen** — Tres arquetipos + archivos: SaaS externo (Sistema C), ERP enlatado (Sistema A), sistema a medida (Sistema B), y Excels que suben los usuarios operativos. Un ERP futuro entra como SSoT operacional adicional.
+- **plano · tipo · madurez** — Organización · sistemas fuente · **existe** (son del cliente; su integración con el lake es lo no-construido).
+- **responsabilidades** — Ser las fuentes de verdad de la operación · exponer sus datos (API/DB/export/Excel) para que N16 los ingiera **[R10]** · (sistema a medida) recibir las capabilities que construyen los devs.
+- **no_objetivos** — NO los construimos nosotros (salvo el a medida, vía DevStudio) · NO son SSoT de la estructura organizacional (eso es N6) · NO se modifican para el lake (ingesta read-only).
+- **formato** — Heterogéneo: APIs REST (SaaS), DB relacional (ERP/a medida), archivos (Excel).
+- **propietario + clasificacion** — Cliente. ★datos de operación, confidenciales.
+- **residencia + retencion** — Infra del cliente (o SaaS de terceros que el cliente ya contrató). Retención según cada sistema.
+- **versionado** — El de cada sistema; el lake les da snapshot/time travel al ingerir.
+- **quién_escribe / quién_lee** — Escriben: los usuarios operativos (su día a día, algunos vía Colab Studio/N17). Lee (para el lake): N16 (ingesta read-only).
+- **comunicacion** — N16 jala de cada sistema según su interfaz (API/DB/FS). El sistema a medida además recibe deploys de N5/N10.
+- **depende_de / consumido_por** — depende_de: la operación del cliente. consumido_por: **N16** (lakehouse), **N5/N10** (el a medida, como destino de desarrollo).
+- **riesgos_abiertos** — (1) Conectores concretos por sistema (se diseñan con el cliente). (2) El ERP como SSoT adicional — cómo se concilia con N6 (pendiente, al tocar ese sistema). (3) Calidad/gobernanza de los Excels manuales.
+- **fuentes** — Diagrama del operador (`mapaCockpitTotal`) · `proyecto/research/rediseno-total/03-data-lakehouse.md`.
 
 ---
 
-# EDGE — laptop / dispositivo
+# EDGE — máquinas de humanos
 
-## N5 · DevStudio — app de escritorio de desarrollo (P2)
+## N14 · Consultio — App del Consultor ★IP
 
-> ⚠ **Re-fichado 2026-07-07 (CK-16):** este nodo era "DevHub — Delivery (server Go + UI embebida
-> en el data plane del cliente)". P2 lo superseded: **DevStudio** (repo `~/Proyectos/dev-studio`,
-> mismo ledger DH-NN, graduación DH-12) es una **app de escritorio por usuario** — el punto
-> compartido pasa del server-en-la-red-del-cliente al **repo GitHub (N6)**. El server DevHub
-> nunca pasó de parcial y no se despliega; su historia queda en las fichas del monorepo congelado.
-> Esta ficha fija solo la **frontera con Cockpit** — el detalle lo gobierna P2 (`VISION`/`LEDGER`
-> de su repo).
+> Re-fichado CK-18: era "App del Auditor". Nombre firmado = **Consultio** (el operador). Es un **clon de
+> DevStudio** con nombre propio (aún sin construir): el sistema operativo del consultor, sobre Claude
+> Code, con arneses de Arnesia. Transferible al Analista de Calidad del cliente.
 
-- **objetivo** — Darle a cada usuario del ciclo de desarrollo (CTO · developer · devops · product owner) su consola **instalable** para construir y mantener software basado en **proceso, arquitectura y documentación as-code**, trabajando orquestados sobre el repo GitHub como punto de encuentro.
-- **resumen** — App de escritorio multiplataforma (binario Go + UI embebida `go:embed`; instalador = el binario). Cada developer tiene a la mano **sus repositorios y sus historias**; la **versión Product Manager (en construcción)** concentra refinamiento y priorización — los developers ven "qué les tocó" en su propia app, con **GitHub como canalizador**.
-- **plano · tipo · madurez** — Edge (máquina de cada usuario) · runtime edge / exec-env (app instalable) · **existe (parcial)** — esqueleto F1 + dogfooding (DH-13..DH-17).
-- **responsabilidades** — Operar el ciclo de desarrollo como proceso-as-code (estados/gates/dueños/transiciones) **[R15 junto a N8/N10]** · **gestionar el runtime de delivery (N8): DevStudio se cuelga sobre Claude Code para programar** — driver CLI-nativo (spawnea el `claude` del propio usuario, stdin/stdout stream-json, **BYO licencia** — DH-10); el dev trabaja desde DevStudio, no el CLI a pelo · leer/escribir el repo GitHub del cliente (N6) · (PM, en construcción) refinamiento + priorización → historias asignadas visibles en la app de cada dev.
-- **no_objetivos** — NO es server compartido en el data plane (ese modelo murió con el re-fichado) · NO toca credenciales de Anthropic (BYO licencia — hereda la doctrina ToS de N8) · NO es fuente de datos de Cockpit por API en vivo (el contrato CK-08 quedó **derogado**, ver comunicación) · NO lo gobierna este repo (célula P2, ledger DH-NN).
-- **comunicacion** — App ⇄ **GitHub (N6)**: git + API de GitHub — el conector de la orquestación multi-usuario. App → **Claude Code (N8)**: stdin/stdout (stream-json), bajo la licencia del propio usuario. **Cockpit ⇄ DevStudio: SIN mecanismo firmado** — el contrato Pull API de CK-08 (diseñado contra el server que ya no existirá) quedó derogado en CK-16; la conexión se diseña cuando exista el primer consumidor real (BL-18), probablemente vía GitHub.
-- **depende_de / consumido_por** — depende_de: N6 (GitHub), N8 (Claude Code del usuario). consumido_por: N10 (developer) y los demás roles del ciclo (CTO/devops/PO) · a futuro **N13** como consumidor de datos de delivery (mecanismo TBD, BL-18).
-- **riesgos_abiertos** — (1) Conexión DevStudio/GitHub→Cockpit sin diseñar (BL-18 redefinido en CK-16). (2) Modelo de organización/sync multi-usuario vía GitHub — TBD de P2. (3) Distribución/updates de instalables de escritorio: N3 se diseñó para binarios del data plane; si aplica a DevStudio lo decide P2.
-- **fuentes** — `~/Proyectos/dev-studio` (`VISION.md` · `LEDGER.md` DH-12..DH-17) · DH-10 (driver CLI-nativo, BYO licencia).
+- **objetivo** — Darle al Consultor (N9) su herramienta de trabajo: app **instalable** que se cuelga de su Claude Code (N8) y desde la cual hace **todo el levantamiento y construye el mapa completo** de la organización (procesos/roles/objetivos/personas + manuales, bajo estándar) — como un dev construye software — y lo **publica al Repositorio Oficial** (N6): "deploy de procesos". Es la superficie única del consultor.
+- **resumen** — Clon de DevStudio (N5) con nombre propio (Consultio), cargando los arneses del método (m1·m2·m3) que produce Arnesia (N15). Opera el engagement con carriles/provenance, construye el objeto normalizado + documentos oficiales + arneses de la org, lleva **preview local de Cockpit** (ve cómo lo verá la organización antes de publicar, patrón dev-server), y publica a N6 vía git. Transferible: inicia con el consultor Prenter, luego lo hereda el Analista de Calidad del cliente (N19).
+- **plano · tipo · madurez** — Edge (máquina del consultor) · runtime edge / exec-env (app instalable) · **no-construido** (se clona de DevStudio cuando esté terminado; nombre y adaptación propios — BL-15).
+- **responsabilidades** — Capturar el AS-IS operando el método **[R4]** · construir el mapa completo — objeto normalizado + documentos oficiales + arneses por rol **[R5]** · calcular la brecha + los proyectos **[R6]** · **publicar el resultado ratificado a N6 — "deploy de procesos" [R7]** · llevar preview local de Cockpit (N13) para revisar antes de publicar · depositar/procesar crudo (N12).
+- **no_objetivos** — NO fabrica los arneses (eso es Arnesia/N15; Consultio los usa) · NO es multi-usuario/SaaS (una instalación por persona, como N8) · NO renderiza la Vista de la organización en producción (eso es N13; Consultio corre una **instancia local de preview** del mismo renderer) · NO retiene crudo (aterriza en N12).
+- **runtime + licencia** — App local instalable (linaje DevStudio/harness-studio). **Se cuelga de N8** — el Claude Code del propio consultor (driver CLI-nativo, stdin/stdout stream-json), **BYO licencia**: la app jamás toca credenciales de Anthropic. Trabajo desatendido, si existiera, iría por API key — no por la app. Stack por decidir (BL-15, hereda del clon DevStudio).
+- **qué_construye / contra_qué** — Construye/edita el objeto normalizado (`empresa/<tipo>/`, D-15) + documentos oficiales + arneses de la org; contra N6 (Repositorio Oficial), vía git.
+- **local_vs_remoto** — Local: la app, los arneses del método, el trabajo del engagement, el preview de Cockpit. Remoto: N6 (push del resultado) · N3 (updates de la app y de los arneses del método).
+- **seguridad** — El método viaja como arneses en la app (persona nuestra) y **se entrega al cliente** con la transferencia — la protección pasa a licencia + contrato (deroga el límite "método nunca al cliente", ver chequeo 1). Credenciales git least-privilege contra N6. Crudo fuera de la app (N12). Actualización firmada (N3, TUF/Tauri).
+- **comunicacion** — Consultio → **N8** (stdin/stdout, stream-json — el motor) · → **N6** (git, "deploy de procesos") · → **N12** (depósito de crudo) · ← **N3** (updates de app + arneses).
+- **depende_de / consumido_por** — depende_de: **N8** (motor), **N15** (arneses del método), N6 (destino), N3 (updates). consumido_por: **N9** (consultor Prenter) y luego **N19** (Analista de Calidad del cliente) · aguas abajo **N13** (renderiza lo publicado).
+- **riesgos_abiertos** — (1) Definición de producto = clon de DevStudio + adaptación propia (BL-15) — arranca cuando DevStudio esté terminado. (2) Modelo de publicación a N6: ¿push directo o revisión? (se une a la Gestión de Cambios de N13/N19). (3) Cuánto método baja empaquetado en los arneses de la app vs se sirve por N3. (4) Transferencia consultor→analista: qué arneses/permisos cambian al entregar.
+- **fuentes** — Nombre y modelo: operador (CK-18) · linaje DevStudio (`~/Proyectos/dev-studio`, DH-NN) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`.
+
+---
+
+## N17 · Colab Studio — app del trabajador
+
+> Nodo nuevo (CK-18). Como DevStudio/Consultio, pero para el **trabajador operativo** (contador,
+> analista): hace su día a día con los arneses de su puesto.
+
+- **objetivo** — Darle a cada trabajador operativo de la organización su app instalable que se cuelga de su Claude Code y carga **los arneses específicos de su puesto** (cada puesto ejecuta N roles), para que su agente ya sepa operar sus procesos — el mapa oficial vuelto trabajo diario ejecutable.
+- **resumen** — Variante de DevStudio para el trabajador no-dev (contadores, analistas, usuarios). Carga los arneses por rol del Repositorio de Arneses (parte de N6, producidos por Arnesia). Su trabajo queda enfocado por esos arneses; produce salidas (p.ej. Excels) que nutren el lakehouse (N16).
+- **plano · tipo · madurez** — Edge (máquina del trabajador) · runtime edge / exec-env (app instalable) · **no-construido**.
+- **responsabilidades** — Operar el día a día del puesto con sus arneses **[R12]** · cargar los arneses de rol correctos (del Repositorio de Arneses) · producir las salidas del puesto → algunas alimentan N16 (Excels/registros).
+- **no_objetivos** — NO fabrica arneses (los usa; Arnesia/N15) · NO es multi-usuario (una instalación por trabajador) · NO toca credenciales de Anthropic (BYO licencia como N8) · NO construye software a medida (eso es DevStudio/N5).
+- **runtime + licencia** — App local instalable; **se cuelga de N8** (Claude Code del trabajador, BYO licencia; driver CLI-nativo). Igual doctrina ToS que N5/N14: una instancia por humano.
+- **qué_construye / contra_qué** — Ejecuta los procesos del puesto; produce las salidas del trabajo (documentos, registros, Excels) contra los sistemas de la org (N18) y/o el lake (N16).
+- **local_vs_remoto** — Local: la app, los arneses del puesto, el trabajo. Remoto: N6 (de donde jala sus arneses) · N3 (updates) · N18/N16 (donde deja/toma datos de operación).
+- **seguridad** — Arneses del puesto = el método operacional entregado al cliente (licencia + contrato). BYO licencia. Least-privilege contra los sistemas que su puesto toca.
+- **comunicacion** — Colab Studio → **N8** (stream-json, motor) · ← **N6** (jala arneses del puesto) · ↔ **N18/N16** (datos de operación) · ← **N3** (updates).
+- **depende_de / consumido_por** — depende_de: **N8** (motor), **N6** (arneses del puesto), N3 (updates). consumido_por: **N11** (los usuarios operativos son su operador) · aguas abajo **N16** (recibe sus salidas).
+- **riesgos_abiertos** — (1) Definición de producto (¿clon de DevStudio como Consultio, o variante propia?). (2) Cómo se mapea puesto → N roles → N arneses (contra el objeto normalizado). (3) Gobernanza de las salidas que alimentan el lake (calidad del Excel). (4) Frontera con N13 (Colab opera; Cockpit muestra).
+- **fuentes** — Operador (CK-18) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`.
+
+---
+
+## N5 · DevStudio — app de desarrollo (P2)
+
+> Re-fichado CK-18 (ampliación): DevStudio ahora también se **entrega a los developers del cliente**
+> (si los tiene) para construir el sistema a medida; sus arneses de dev se modifican en Arnesia. La
+> frontera de célula (repo `~/Proyectos/dev-studio`, ledger DH-NN) sigue.
+
+- **objetivo** — Darle a cada developer su consola **instalable** para construir y mantener software (proceso/arquitectura/doc as-code) sobre Claude Code. En el modelo CK-18 se entrega también a los **devs del cliente** para implementar capabilities en su sistema a medida (N18/Sistema B).
+- **resumen** — App de escritorio (binario Go + UI embebida). Cada dev ve sus repos y sus historias; la versión Product Manager concentra refinamiento/priorización. Es el linaje del que se **clona Consultio** (N14). Sus arneses de dev se modifican en Arnesia (N15).
+- **plano · tipo · madurez** — Edge (máquina del developer) · runtime edge / exec-env · **existe (parcial)** — esqueleto + dogfooding (DH-13..DH-17).
+- **responsabilidades** — Operar el ciclo de desarrollo como proceso-as-code **[R14 junto a N8/N10]** · gestionar el runtime de delivery (N8): se cuelga sobre Claude Code (driver CLI-nativo, BYO licencia) · leer/escribir el sistema a medida del cliente (N18) · (PM) refinamiento + priorización.
+- **no_objetivos** — NO es server compartido · NO toca credenciales de Anthropic (BYO licencia) · NO lo gobierna este repo (célula P2, DH-NN) · NO opera el método del engagement (eso es Consultio/N14, aunque comparten linaje).
+- **runtime + licencia** — App instalable; se cuelga de N8 bajo la licencia del propio dev (DH-10). Misma doctrina ToS: una suscripción, un humano.
+- **qué_construye / contra_qué** — Historias → tests → producción, contra el sistema a medida del cliente (N18/Sistema B) y su repositorio de código.
+- **local_vs_remoto** — Local: la app, Claude Code, git. Remoto: el repositorio de código del cliente · N3 (updates) · N18 (destino del deploy).
+- **seguridad** — Credenciales del dev, least-privilege contra los sistemas del cliente. Delivery automatizado server-side (si se quisiera) = API key, no suscripción.
+- **comunicacion** — DevStudio → **N8** (stream-json) · ↔ repositorio de código + N18 (git/deploy) · ← N3 (updates, si P2 usa este canal).
+- **depende_de / consumido_por** — depende_de: N8, el repositorio de código del cliente. consumido_por: **N10** (developer del cliente) y los roles del ciclo · aguas abajo N18 (Sistema B recibe capabilities).
+- **riesgos_abiertos** — (1) Entrega a devs del cliente: licenciamiento y arneses de dev (Arnesia). (2) Cómo se clona Consultio de esta base. (3) Distribución/updates de escritorio (N3/Tauri — lo decide P2). (4) Modelo multi-usuario/sync de P2.
+- **fuentes** — `~/Proyectos/dev-studio` (DH-10/DH-12..DH-17) · operador (CK-18).
 
 ---
 
 ## N8 · Runtime de agente local (Claude Code)
 
-> ⚠ **Re-fichado 2026-07-07 (CK-16, addendum 3):** antes "Runtime de Delivery". Generalizado — el
-> mismo motor sirve a **dos apps del ecosistema que se cuelgan de él**: DevStudio (N5, delivery:
-> el dev construye historias) y App del Auditor (N14, método: el consultor ejecuta el engagement).
-> Patrón común firmado (chequeo 3): app instalable = superficie · Claude Code local = motor ·
-> licencia = del humano firmado. Una instancia por humano, jamás compartida.
+> El motor común del edge: mismas tres apps se cuelgan de él — Consultio (N14), Colab Studio (N17),
+> DevStudio (N5). Una instancia por humano firmado, jamás compartida (ToS).
 
-- **objetivo** — Ejecutar el trabajo de agente **en la máquina del humano firmado**, con SU suscripción: en delivery construye las N historias → testing → producción contra N6 **[R15]**; en el engagement es el motor con el que N14 opera el método. Es la mitad "local" del runtime híbrido; complementa a N7 (server-side, API).
-- **resumen** — Cada humano firmado (dev o consultor) corre Claude Code (Pro/Max) en su laptop. Local-por-humano **por restricción de licencia, no por preferencia técnica**. Nadie opera el CLI a pelo: la app de su rol **se cuelga sobre N8** vía driver CLI-nativo (spawnea el `claude` del propio usuario, stdin/stdout stream-json) — **N5/DevStudio** gestiona la instancia del dev, **N14/App del Auditor** la del consultor. N8 es el **motor** debajo de ambas superficies.
-- **plano · tipo · madurez** — Edge (laptop) · runtime edge (interactivo humano-en-el-loop, headless `claude -p` opcional) · **existe** (producto maduro first-party). La incertidumbre no era técnica sino de licenciamiento — aclarada feb-jun 2026.
-- **responsabilidades** — Delivery (instancia del dev, gestionada por N5): implementar historias, escribir/correr tests, llevar a prod contra N6, bajo gobierno humano **[R15]** · Método (instancia del consultor, gestionada por N14): ejecutar las sesiones que N14 parametrice — el dueño de R16/R17 es N14; N8 solo presta el motor.
-- **no_objetivos** — NO se ejecuta server-side como servicio compartido · NO se multiplexa una suscripción entre varios humanos/usuarios · NO sustituye a N7 · NO es dueño del método (N14) ni del proceso de desarrollo (N5) — es motor, no superficie.
-- **runtime + licencia (restricción ToS — sección crítica)** — **Confirmado jun 2026: NO se puede multiplexar la suscripción de Claude Code server-side como backend SaaS. Cada dev usa su propia suscripción. Sí se permite headless (`claude -p`) bajo la cuenta del propio dev.** Cadena: (1) *Consumer Terms §3.7* permite automatización solo vía API key o donde se permita explícitamente — el CLI oficial es esa excepción, en la máquina del propio usuario. (2) Actualización feb 2026: *usar OAuth tokens de Free/Pro/Max en cualquier otro producto — incluido el Agent SDK — no está permitido*. El Agent SDK exige API key. (3) Postura oficial (portavoz, abr 2026): *usar suscripciones con herramientas de terceros no está permitido*. (4) Reinstauración jun 2026 con candado: créditos "Agent SDK" por suscriptor — desde el **15 jun 2026** el headless `claude -p` bajo suscripción consume el crédito Agent SDK **de la cuenta firmada**, luego tarifa API; sigue atado a un humano firmado, dimensionado para "ordinary individual usage", **no habilita pooling server-side**. **Conclusión que firma la arquitectura:** delivery = **por-dev-en-su-laptop**; cualquier compute server-side (N7) usa **API key comercial**. Es exactamente el split del runtime híbrido — no una preferencia, una obligación de términos (enforcement real: caso OpenClaw, abr 2026).
-- **qué_construye / contra_qué** — Instancia dev: historias, tests, releases · contra N6 (que ya tiene el AS-IS de N7 + el "qué"). Instancia consultor: lo que N14 le parametrice del método — el resultado lo publica N14 [R17], no N8.
-- **local_vs_remoto** — Local: runtime (Claude Code, ejecución de tools, git) en la laptop. Remoto: inferencia vía suscripción. El método de delivery se inyecta desde el control plane (skills/reglas del harness), pero la ejecución es humano-gobernada. Frontera con N7: N7 = server-side/efímero/API en el data plane; N8 = edge/sesión/suscripción en la laptop.
-- **seguridad** — Credenciales de suscripción del dev, en su laptop, vía CLI oficial — NO se extraen ni centralizan (extraerlas = violación ToS). Acceso a N6/sistemas con credenciales propias least-privilege. **CI:** si se quiere delivery automatizado server-side, usar **API key**, no suscripción.
-- **comunicacion** — Laptop ↔ Anthropic (suscripción, inferencia) · laptop ↔ N6 (git) · app gestora → N8: stdin/stdout (stream-json, driver CLI-nativo). Humano gobierna las transiciones.
-- **depende_de / consumido_por** — depende_de: suscripción del humano, N6 (con AS-IS de N7), sistemas del cliente para test/deploy. consumido_por: **N5 (DevStudio — gestor de la instancia del dev)** · **N14 (App del Auditor — gestor de la instancia del consultor)** · el cliente (software en prod); el proceso/cockpit (evidencia de gates).
-- **riesgos_abiertos** — (1) Tentación de multiplexar (violación + baneo; política firme: server-side=API key, suscripción=un humano una laptop). (2) **Deriva de términos** (Anthropic cambió 3× en H1-2026) → tratar el licenciamiento como **configurable**, revisar por release. (3) Límite "ordinary individual usage" → modelar costo por dev, suscripción ≠ ilimitado. (4) Frontera de costo N7/N8 (qué va a API vs suscripción) = decisión económica + de cumplimiento.
-- **fuentes** — [The Register — ban on third-party access (feb 2026)](https://www.theregister.com/software/2026/02/20/anthropic-clarifies-ban-on-third-party-tool-access-to-claude/5014546) · [VentureBeat — reinstates with a catch (jun 2026)](https://venturebeat.com/technology/anthropic-reinstates-openclaw-and-third-party-agent-usage-on-claude-subscriptions-with-a-catch) · [Microsoft Security — Claude Code GitHub Action (jun 2026)](https://www.microsoft.com/en-us/security/blog/2026/06/05/securing-ci-cd-in-agentic-world-claude-code-github-action-case/)
+- **objetivo** — Ejecutar el trabajo de agente **en la máquina del humano firmado**, con SU suscripción **[R15]**: motor debajo de las tres apps del edge. Es la mitad "local" del runtime; cualquier compute desatendido/server-side iría por API key (no hay nodo server-side en el modelo CK-18 — murió N7).
+- **resumen** — Cada humano firmado (consultor, trabajador, dev) corre Claude Code (Pro/Max) en su laptop. Local-por-humano **por restricción de licencia**. Nadie opera el CLI a pelo: la app de su rol se cuelga sobre N8 (driver CLI-nativo, stream-json) — N14/N17/N5 gestionan su instancia. N8 = el motor debajo.
+- **plano · tipo · madurez** — Edge (laptop) · runtime edge (interactivo humano-en-el-loop, headless `claude -p` opcional) · **existe** (producto maduro first-party).
+- **responsabilidades** — Ejecutar las sesiones que cada app parametrice **[R15]**: Consultio (método del engagement), Colab Studio (procesos del puesto), DevStudio (delivery). El dueño del QUÉ es la app; N8 presta el motor.
+- **no_objetivos** — NO se ejecuta server-side como servicio compartido · NO se multiplexa una suscripción entre humanos · NO es dueño del método (N14/N15) ni del proceso de desarrollo (N5) — es motor, no superficie.
+- **runtime + licencia (restricción ToS — sección crítica)** — **NO se puede multiplexar la suscripción de Claude Code server-side. Cada humano usa su propia suscripción. Sí se permite headless (`claude -p`) bajo la cuenta del propio humano.** (Consumer Terms §3.7: automatización solo vía API key o donde se permita; el CLI en la máquina del usuario es esa excepción. Feb-2026: OAuth de Free/Pro/Max no permitido en otros productos/Agent SDK. Jun-2026: créditos "Agent SDK" por suscriptor, atados a un humano firmado, no habilitan pooling server-side.) **Conclusión:** todo el edge = por-humano-en-su-laptop; cualquier compute server-side usaría API key. Tratar el licenciamiento como configurable (Anthropic cambió 3× en H1-2026).
+- **qué_construye / contra_qué** — Lo que cada app le parametrice; el resultado lo publica la app (Consultio→N6, DevStudio→código, Colab Studio→salidas), no N8.
+- **local_vs_remoto** — Local: runtime (ejecución de tools, git) en la laptop. Remoto: inferencia vía suscripción. El método/proceso se inyecta como arneses; la ejecución es humano-gobernada.
+- **seguridad** — Credenciales de suscripción del humano, en su laptop, vía CLI oficial — NO se extraen ni centralizan. Acceso a N6/sistemas con credenciales propias least-privilege.
+- **comunicacion** — Laptop ↔ Anthropic (suscripción, inferencia) · laptop ↔ N6/sistemas (git/API) · app gestora → N8 (stdin/stdout, stream-json).
+- **depende_de / consumido_por** — depende_de: suscripción del humano, los sistemas que la app toca. consumido_por: **N14 (Consultio)** · **N17 (Colab Studio)** · **N5 (DevStudio)** — cada una gestiona una instancia.
+- **riesgos_abiertos** — (1) Tentación de multiplexar (violación + baneo; server-side=API key). (2) Deriva de términos → licenciamiento configurable, revisar por release. (3) "Ordinary individual usage" → modelar costo por humano. (4) "Transitan, no persisten": el dato del cliente que el agente procesa **transita** a Anthropic durante la inferencia (zero-retention), aun sin nodo server-side — ver chequeo del hallazgo.
+- **fuentes** — [The Register — ban on third-party access (feb 2026)](https://www.theregister.com/software/2026/02/20/anthropic-clarifies-ban-on-third-party-tool-access-to-claude/5014546) · [VentureBeat — reinstates with a catch (jun 2026)](https://venturebeat.com/technology/anthropic-reinstates-openclaw-and-third-party-agent-usage-on-claude-subscriptions-with-a-catch).
 
 ---
 
-## N14 · App del Auditor — aplicación instalable del Consultor ★IP
+## N9 · Consultor (transferible → Analista de Calidad) — actor
 
-> Nodo nuevo (2026-07-07, CK-11/CK-14) — el subsistema declarado en CK-11 ("App del Auditor"),
-> incorporado al mapa de despliegue al terminar la arquitectura (BL-03). Definición de producto
-> pendiente (BL-15) — esta ficha fija los **límites arquitectónicos** que esa definición debe respetar.
-
-- **objetivo** — Darle al Consultor (N9) su herramienta de trabajo propia: una aplicación **instalable en su máquina** (patrón harness-studio/dev-studio) que **opera el método del servicio** (`sistema/metodo/proceso/` — m1 levantamiento · m2 mantenimiento · m3 espinazo) durante el engagement y **publica el resultado al repositorio de la empresa cliente (N6)** — "deploy de procesos": como un programador que carga código a producción, pero el artefacto son procesos/roles/objetivos/personas que Cockpit (N13) entiende y renderiza.
-- **resumen** — El "IDE del auditor": el proceso-como-dato de `sistema/metodo/proceso/` ejecutable como flujo operable (carriles consultor/cliente/sistema, provenance por dato, AS-IS sellado) + publicación git al repo del cliente. Método **embebido en la app** (CK-11: "las cosas de servicio estarán embebidas en la aplicación del auditor"). **Misma mecánica de agente que DevStudio (CK-16): la app se cuelga del Claude Code instalado en la máquina del consultor** — driver CLI-nativo, BYO licencia.
-- **plano · tipo · madurez** — Edge (máquina del consultor) · runtime edge / exec-env (app instalable) · **no-construido** (declarada CK-11; producto por definir — BL-15).
-- **responsabilidades** — Embeber el método como flujo operable: guiar el engagement paso a paso, carriles por actor, provenance de cada dato, AS-IS sellado **[R16]** (BL-16) · producir/editar las instancias del **objeto normalizado** (`objeto.schema`, 9 entidades — el formato que N13 valida y renderiza) · **publicar** procesos/roles/objetivos ratificados al repo del cliente (N6) vía git — commits revisables, "deploy de procesos" **[R17]** (BL-17) · ser la superficie del consultor para las operaciones de levantamiento que hoy son manuales (depositar crudo en N12 **[R2]**, operar/validar N7 **[R7]/[R10]**) cuando el Motor (N1) exista.
-- **no_objetivos** — NO publica el MÉTODO al cliente — solo el resultado: cruza el QUÉ, jamás el CÓMO (mismo límite de IP que N2/N7) · NO es multi-usuario/SaaS (una instalación por consultor, como N8 es una suscripción por dev) · NO reemplaza a N1 (la app opera y edita; el razonamiento server-side multi-tenant es N1) · NO renderiza la Vista Negocio (eso es N13 — la app produce lo que N13 muestra) · NO retiene crudo del cliente en la máquina del consultor (el crudo aterriza en N12, mismo límite que N9).
-- **runtime + licencia** — App local instalable (patrón harness-studio/dev-studio, P4 del ecosistema). **Firmado (CK-16 addendum): se cuelga de N8 — el Claude Code instalado en la máquina del consultor, igual que DevStudio** — driver CLI-nativo (spawnea el `claude` del propio consultor, stdin/stdout stream-json), **BYO licencia**: la app jamás toca credenciales de Anthropic (suscripción del humano firmado, ToS-OK — ficha N8). Trabajo desatendido/server-side, si algún día existe, va por N1 con API key — no por la app. Stack restante por decidir en BL-15.
-- **qué_construye / contra_qué** — Construye/edita instancias del objeto normalizado (`empresa/<tipo>/` del shell, D-15) + artefactos del método (actas, AS-IS sellado, provenance); contra el repo del cliente (N6), vía git.
-- **local_vs_remoto** — Local: la app, el método embebido, el trabajo en curso del engagement. Remoto: el repo del cliente (push git) · (futuro) N1 para razonamiento server-side · (futuro) canal de actualización de la app (¿N3? — abierto).
-- **seguridad** — El método embebido viaja en la app del consultor (persona nuestra, perímetro nuestro) — NO queda en infra del cliente; al cliente solo llegan commits con el resultado. Credenciales git least-privilege contra N6. Crudo del cliente fuera de la app (va a N12). Actualización de la app firmada (si se distribuye vía N3, hereda TUF).
-- **comunicacion** — App → **N8** (instancia del consultor): stdin/stdout (stream-json, driver CLI-nativo — el motor que ejecuta el método). App → N6: git (push de procesos/roles/objetivos — el "deploy"). App → N12: depósito de crudo (operación de N9). App ↔ N1: HTTPS (futuro, cuando N1 exista). App → N3: pull de releases (futuro, si se distribuye por ahí).
-- **depende_de / consumido_por** — depende_de: `sistema/metodo/` (embebido en build — el repo Cockpit es su fuente), **N8** (el runtime de agente local — instancia + suscripción del consultor), N6 (destino del deploy), N1 (futuro, razonamiento server-side). consumido_por: **N9** (su único operador) · aguas abajo **N13** (renderiza lo publicado) y el cliente (procesos vivos en su repo).
-- **riesgos_abiertos** — (1) Definición de producto sin arrancar — alcance/stack/patrón exacto (BL-15). (2) Cadencia de actualización del método embebido: ¿la app se actualiza vía N3 como los binarios del data plane, o por reinstalación? (3) Frontera con N1: qué opera la app localmente vs qué razona el motor server-side — se resuelve al diseñar ambos. (4) Modelo de publicación al repo cliente: ¿push directo o PR con review del cliente? (BL-17). (5) Método embebido en app instalable = más expuesto que en control plane — dimensionar cuánto método baja al binario vs se sirve en runtime (espejo del riesgo de granularidad de N1/N2).
-- **fuentes** — CK-11 (declaración del subsistema) · BL-15..BL-17 (backlog) · patrón harness-studio/dev-studio (P4, `~/Proyectos/harness-studio`).
-
----
-
-## N9 · Consultor — actor
-
-- **objetivo_del_actor** — Conducir el levantamiento y el diseño del spec; operar el Discovery desde el control plane. Lleva el método al cliente.
-- **resumen** — El experto (Prenter) que opera Discovery + levantamiento.
+- **objetivo_del_actor** — Conducir el levantamiento y construir el sistema de la organización (mapa + documentos + arneses) desde Consultio, y publicarlo al Repositorio Oficial. Lleva el método al cliente. Rol **transferible**: inicia siendo persona de Prenter, luego lo hereda un Analista de Calidad del cliente (N19).
+- **resumen** — El experto (Prenter) que opera Consultio (N14) sobre su Claude Code (N8). Al cerrar el engagement, transfiere la operación al cliente.
 - **plano · tipo · madurez** — Edge (su máquina) · actor · existe.
-- **responsabilidades / no_objetivos** — **Recolecta y cura las fuentes crudas** (correo/USB/empresa) → las deposita en **N12 [R2]** · **opera** N7 (dispara el procesamiento y lo supervisa) **sin que el crudo toque su laptop** (lo corre en la máquina del data plane) **[R7]** · **valida y corrige** el mapa que produce N7 · **ratifica** el AS-IS y el SPEC **[R10]** · conduce/acompaña las entrevistas (la voz la pone N4) · aporta contexto político/estratégico. **NO procesa él mismo** (procesa N7; él opera y valida) · NO construye (N10) · NO posee los datos (del cliente).
-- **permisos / RACI** — Máxima autoridad del **método** (A/R en Discovery/levantamiento). Opera N1, N4 y N7; deposita en N12; **su herramienta propia es N14** (App del Auditor — opera el método y publica el resultado [R16]/[R17]).
-- **interfaces_que_usa** — **N14 (App del Auditor — su aplicación propia, futura)** con **N8** debajo (su Claude Code, el motor que N14 gestiona), N1 (Discovery), N4 (entrevistas), **N7 (lo opera)**, **N12 (deposita el crudo)**, **N13** (Cockpit, vista consultor).
-- **momentos** — Etapa 1 (levantamiento) + Etapa 2 (Discovery).
-- **comunicacion** — HTTPS al control plane.
-- **riesgos_abiertos** — Dependencia del consultor experto = límite de escala; el producto busca reducirla con el **método como dato** (N2) — cuánto se logra es una pregunta abierta del modelo de negocio.
+- **responsabilidades / no_objetivos** — Recolecta y cura las fuentes crudas → deposita en **N12 [R2]** · opera Consultio para capturar el AS-IS **[R4]**, construir el mapa **[R5]** y calcular la brecha **[R6]** · ratifica y **publica a N6 [R7]** · conduce entrevistas · aporta contexto político/estratégico. **NO fabrica arneses** (Arnesia) · **NO posee los datos** (del cliente).
+- **permisos / RACI** — Máxima autoridad del **método** (A/R en levantamiento/construcción). **Su herramienta propia es N14 (Consultio)** con **N8** debajo. Al transferir, cede la operación de mantenimiento al Analista de Calidad (N19).
+- **interfaces_que_usa** — **N14 (Consultio)** con **N8** debajo, **N12** (deposita crudo), **N6** (publica), **N13** (preview de Cockpit).
+- **momentos** — Etapa 1 (levantamiento) + Etapa 2 (construcción/publicación). En Etapa 3 el rol pasa a N19.
+- **comunicacion** — git a N6 · stream-json a N8 · HTTPS a N3 (updates).
+- **riesgos_abiertos** — Dependencia del consultor experto = límite de escala; se mitiga con el método como arnés (N15/N2) — cuánto se logra es pregunta abierta del modelo de negocio. La transferencia al analista es el mecanismo de salida.
 
 ---
 
-## N10 · Developer — actor
+## N19 · Analista de Calidad (del cliente) — actor
 
-- **objetivo_del_actor** — Construir las historias → testing → prod contra el repo del cliente, gobernando a Claude Code (N8).
-- **resumen** — El humano que implementa, con N8 como copiloto.
+> Nodo nuevo (CK-18). Hereda Consultio al cerrar el engagement y mantiene lo oficial siguiendo ISO.
+
+- **objetivo_del_actor** — Mantener el sistema oficial de la organización tras el engagement: recibir solicitudes de cambio, revisarlas/aprobarlas y publicar nuevas versiones, siguiendo buenas prácticas ISO (información documentada §7.5, gestión del cambio §6.3). Es el dueño del cambio del lado del cliente.
+- **resumen** — Rol del cliente que hereda la operación de Consultio (N14) y usa el módulo **Gestión de Cambios** de Cockpit (N13) para gobernar los cambios sobre el Repositorio Oficial (N6). El repo solo tiene lo oficial, versionado; el analista es quien lo evoluciona.
+- **plano · tipo · madurez** — Edge · actor · **no-construido** (rol futuro, aparece al cerrar el primer engagement).
+- **responsabilidades / no_objetivos** — Gestionar el cambio del sistema (ISO): solicitar/revisar/aprobar/publicar versiones **[R13]** · mantener los arneses de la org (con Arnesia entregada) · **NO** hace el levantamiento inicial (eso fue el consultor) · **NO** ve git a pelo (la Gestión de Cambios lo oculta).
+- **permisos / RACI** — A/R en la Gestión de Cambios del cliente. Autoridad para aprobar y publicar versiones oficiales. Credenciales de publicación contra N6.
+- **interfaces_que_usa** — **N13 (Cockpit — módulo Gestión de Cambios)**, **N14 (Consultio, heredada)** con **N8** debajo, **N6** (publica), **N15/Arnesia** (mantiene arneses).
+- **momentos** — Etapa 3 (operación y mejora continua), tras la transferencia desde N9.
+- **comunicacion** — Vía Cockpit (Gestión de Cambios) → N6 (publica versiones) · Consultio → N8 (motor) · git a N6.
+- **riesgos_abiertos** — (1) Perfil real del analista (técnico/no-técnico) → la UI debe ocultar git del todo. (2) Modelo de firma electrónica que satisfaga a un auditor ISO (clic autenticado = aprobación si el procedimiento lo define). (3) Qué permisos/arneses cambian en la transferencia desde N9.
+- **fuentes** — Operador (CK-18) · `proyecto/research/rediseno-total/06-gestion-cambios-iso.md`.
+
+---
+
+## N10 · Developer (del cliente) — actor
+
+- **objetivo_del_actor** — Construir el software a medida de la organización (Sistema B) contra sus sistemas, gobernando a Claude Code (N8) desde DevStudio (N5). Del cliente, si lo tiene.
+- **resumen** — El humano que implementa capabilities en el sistema a medida, con N8 como copiloto y N5 como consola.
 - **plano · tipo · madurez** — Edge (laptop) · actor · existe.
-- **responsabilidades / no_objetivos** — Implementa, testea, lleva a prod, revisa el trabajo del agente. NO diseña el spec (eso es Discovery/N9) · NO decide prioridades de negocio (eso es N11).
-- **permisos / RACI** — R en Delivery. Credenciales propias least-privilege contra N6 y entornos del cliente. Su propia suscripción Claude Code (N8, ToS).
-- **interfaces_que_usa** — N5 (DevStudio, su app de escritorio: sus repos + sus historias asignadas), N8 (Claude Code, orquestado desde N5), N6 (repo GitHub vía git).
-- **momentos** — Etapa 2 (Delivery).
-- **comunicacion** — git/SSH + HTTPS al data plane; suscripción a Anthropic.
-- **riesgos_abiertos** — **¿El dev es del cliente o nuestro?** (define quién paga la suscripción y dónde corre la laptop respecto al data plane) — decisión abierta del modelo de entrega.
+- **responsabilidades / no_objetivos** — Implementa, testea, lleva a prod contra el sistema a medida (N18) **[R14]**. NO diseña el mapa de procesos (eso es el consultor/N9) · NO decide prioridades de negocio (los niveles de la org, N11).
+- **permisos / RACI** — R en desarrollo. Credenciales least-privilege contra el código y los entornos del cliente. Su propia suscripción Claude Code (N8, ToS).
+- **interfaces_que_usa** — N5 (DevStudio), N8 (Claude Code), el repositorio de código + N18 (Sistema B).
+- **momentos** — Etapa 3 (desarrollo continuo de capabilities).
+- **comunicacion** — git/HTTPS a los sistemas del cliente; suscripción a Anthropic.
+- **riesgos_abiertos** — ¿El cliente tiene devs? Si no, el desarrollo a medida lo hace Prenter (modelo de entrega). Los arneses de dev se modifican en Arnesia (N15).
 
 ---
 
-## N11 · CEO / sponsor — actor
+## N11 · Usuarios de la organización (4 niveles) — actor
 
-- **objetivo_del_actor** — Ver su organización viva (mapa, OKRs, gaps), diseñar funcionalidad vía Discovery conversacional, y mover KPIs. Es el destinatario final de valor.
-- **resumen** — La máxima autoridad del negocio; usuario thin (solo navegador).
-- **plano · tipo · madurez** — Edge (thin browser) · actor · existe.
-- **responsabilidades / no_objetivos** — Da contexto/objetivos (directorio) **[R1]**, ratifica prioridades **[R11]**, consume la vista CEO. NO opera el método · NO construye · NO instala nada.
-- **permisos / RACI** — Sponsor = máxima autoridad del negocio (A en objetivos/prioridades), coherente con `service-design-doing` (el sponsor es el dueño/GM/CEO).
-- **interfaces_que_usa** — **N13** vista CEO/Negocio (thin browser), N4/Discovery conversacional.
-- **momentos** — Etapa 1 (objetivos), Etapa 3 (cockpit vivo, continuo).
-- **comunicacion** — HTTPS (navegador) al data plane.
-- **riesgos_abiertos** — Ninguno técnico; es el usuario de valor cuya experiencia define el éxito del producto.
+> Re-fichado CK-18: era "CEO / sponsor". Ahora son los cuatro niveles de la organización, cada uno con
+> su nivel de acceso a Cockpit.
+
+- **objetivo_del_actor** — Ver la organización viva (mapa, OKRs, brechas, indicadores del día a día) **según su nivel de acceso**, y mover sus KPIs. Cuatro niveles: **Gobernanza** (directorio), **Estratégico** (C-level/gerencias), **Táctico** (jefaturas), **Operativo** (analistas/usuarios).
+- **resumen** — Toda la organización es usuaria de Cockpit vía navegador; cada nivel ve lo que su rol permite, en coherencia con la estructura del Repositorio Oficial. Los operativos, además, operan su día a día con Colab Studio (N17).
+- **plano · tipo · madurez** — Edge (thin browser; operativos también con app) · actor · existe.
+- **responsabilidades / no_objetivos** — Gobernanza da contexto/objetivos **[R1]** y ratifica prioridades; todos consumen su vista por nivel. Operativo, además, ejecuta procesos con sus arneses (vía N17). NO operan el método de levantamiento (eso es el consultor) · NO ven lo que su nivel no permite.
+- **permisos / RACI** — Gobernanza = máxima autoridad del negocio (A en objetivos/prioridades). Los niveles descienden: Estratégico > Táctico > Operativo, con visibilidad fina por rol derivada de N6.
+- **interfaces_que_usa** — **N13** (Cockpit, vista por nivel, navegador) · **N17** (Colab Studio, solo operativos).
+- **momentos** — Etapa 1 (Gobernanza da objetivos) · Etapa 3 (todos, cockpit vivo, continuo).
+- **comunicacion** — HTTPS (navegador) a N13 · (operativos) app sobre N8.
+- **riesgos_abiertos** — (1) Modelo de niveles de acceso real (autorización en N13, ex-BL-12). (2) Onboarding de usuarios/credenciales por nivel. (3) Coherencia del mapa nivel-organizacional ↔ nivel-de-acceso (policy-as-data derivada de N6).
 
 ---
 
 # Chequeos de consistencia (el pago del esquema)
 
-Las fichas no son solo docs: permiten verificar las 3 decisiones de arquitectura ya tomadas.
+Las fichas permiten verificar las decisiones de arquitectura del modelo CK-18.
 
-### 1 · IP protegida ← `clasificacion_dato` + `residencia_retencion` + `plano`
-✅ Coherente. El ★IP (N1, N2) vive solo en el control plane y se **inyecta efímero** a N7 (memoria/tmpfs, destruido al teardown). Ningún nodo del data plane tiene `clasificacion=IP-nuestra` con `retencion=persiste`. **N14 (nuevo, CK-14) no rompe el chequeo:** el método embebido reside en la máquina del consultor (persona nuestra, plano edge — no infra del cliente); al repo del cliente (N6) solo cruza el **resultado** (procesos/roles/objetivos), nunca el método [R17]. Riesgo residual documentado en su ficha (cuánto método baja al binario instalable — espejo de la granularidad N1/N2).
+### 1 · Protección del método — ahora por licencia + contrato (deroga el límite arquitectónico)
+⚠️ **Cambio de fondo (CK-18).** El límite firmado "el método nunca queda con el cliente" queda
+**DEROGADO**: el método SÍ cruza, empaquetado en **arneses** que corren en el edge del cliente
+(Consultio/N14, Colab Studio/N17) y con **Arnesia (N15) entregada** para que el cliente lo mantenga.
+La protección pasa de **arquitectura** (el método no baja) a **licencia + contrato** (baja, con Arnesia
+licenciada y términos de mantenimiento; el canal de arneses N3 es revocable). Riesgo residual
+documentado en N2/N14/N15: cuánto método baja empaquetado, y que la protección ya no es "fuerte por
+arquitectura". Decisión del operador (D1, CK-18).
 
-### 2 · BYOC (el dato no sale) ← `plano` + `comunicacion`
-✅ Coherente en el camino del dato persistente. Toda comunicación cliente↔nosotros es **outbound del cliente / PULL** (N3 releases+telemetría, N1 despacho, N4 webhook→pull). El control plane nunca disca a la red del cliente; ningún arco control→data está en el camino del dato. **Matiz firmado (CK-16):** N6 vive en **GitHub (org del cliente)** — la promesa precisa es "sus datos viven en SU GitHub y sus sistemas, no en infra nuestra"; el crudo más sensible (N12) sigue sin tocar GitHub. Cliente que prohíba cloud → git self-hosted, opción documentada en N6.
+### 2 · Soberanía del dato ← `plano` + `comunicacion`
+✅ Coherente. Los datos del cliente viven en **su** infra: N6 (Repositorio Oficial, self-hosted), N16
+(lakehouse), N12 (depósito), N18 (sus sistemas). Toda comunicación cliente↔Fabricante es **saliente/
+PULL** (N3 releases+licencias+telemetría). El Fabricante nunca disca al cliente ni está en el camino
+del dato. Modalidad "lakehouse hosteado por nosotros" = opción comercial con DPA, no el default (D3).
 
-### 3 · No casado a Claude Code ← `stack` + `runtime`
-✅ Coherente y **forzado por ToS**. API frontier para todo lo server-side (N1, N7); suscripción Claude Code (**N8**, el runtime de agente local) solo para humanos firmados en el edge — una instancia por humano: la del dev la gestiona DevStudio (N5), la del consultor la App del Auditor (N14). Patrón común (CK-16): la app instalable es la superficie, N8 es el motor, la licencia es del humano — ninguna app toca credenciales de Anthropic. El split híbrido es obligación de términos, no preferencia.
+### 3 · No casado a Claude Code · ToS ← `runtime` + `licencia`
+✅ Coherente y **forzado por ToS**. Todo el edge corre sobre **N8** (Claude Code, suscripción del
+humano) — una instancia por humano firmado; las apps (N14/N17/N5) son superficies que se cuelgan del
+motor, ninguna toca credenciales de Anthropic. No hay compute server-side en el modelo (murió N7); si
+algún día lo hay, va por API key. El split es obligación de términos, no preferencia.
 
 <a name="hallazgo-rojo"></a>
-### 🟢 Decidido (2026-06-21) — "los datos no persisten, pero transitan"
-
-La promesa BYOC precisa: **los datos del cliente NO persisten fuera de su red, pero SÍ transitan.** N1, N4 y N7 razonan vía la API de Anthropic → fragmentos del dato **transitan** al endpoint de Anthropic durante la inferencia; con zero-retention se procesan y descartan, **no se almacenan** afuera. La frase exacta hacia el cliente: **"transitan, no persisten."**
-
-**Decisión:**
-- **Marco por defecto (todos los clientes hoy):** *"tus datos no **persisten** fuera de tu red; **transitan** con zero-data-retention contractual + minimización de payload."* Se usa **Claude frontier** (la calidad que vende el producto).
-- **LLM on-premise / en el perímetro del cliente: NO ahora.** Queda como **opción futura** para un cliente regulado que prohíba incluso el tránsito (mayor costo/complejidad, peor modelo — se evalúa cuando aparezca, no por defecto).
-
-Aplica a todo nodo que llama al modelo (N1, N4, N7). "Transitan, no persisten" es la frase estándar.
+### 🟢 "Los datos no persisten, pero transitan" (sigue vigente, reencuadrado)
+La promesa precisa: los datos del cliente **NO persisten fuera de su red, pero SÍ transitan** durante
+la inferencia. En el modelo CK-18 ya no hay nodos server-side (N1/N7 murieron), pero **los agentes
+locales (N8, debajo de Consultio/Colab Studio/DevStudio) llaman a la API de Anthropic** → fragmentos
+del dato **transitan** al endpoint durante la inferencia; con zero-retention se procesan y descartan,
+**no se almacenan** afuera. Frase estándar hacia el cliente: **"transitan, no persisten."** LLM
+on-premise = opción futura para un cliente regulado que prohíba incluso el tránsito.
 
 ---
 
 <a name="seg-cumpl"></a>
 # Seguridad, cumplimiento y contratos (roadmap progresivo)
 
-> Base para hacer las cosas bien a futuro: certificaciones, moldes de contrato y controles que cubriremos progresivamente. Investigado sobre prácticas de McKinsey/BCG/Big4 (jun 2026). Referenciado desde el campo `nfr` de los nodos servicio (N1…).
+> Base para hacer las cosas bien a futuro: certificaciones, moldes de contrato y controles que
+> cubriremos progresivamente. Investigado sobre prácticas de McKinsey/BCG/Big4 (jun 2026). Referenciado
+> desde el campo `nfr` de los nodos servicio.
 
-**Principio (de la investigación):** el **contrato es el piso** (recurso, no prevención); la **prevención** es organizacional + técnica. Incidentes que lo probaron: Gupta/McKinsey (info de directorio → cárcel), PwC Australia (tax leaks), KPMG (murallas chinas que fallaron). Un directorio sofisticado **no se conforma con el NDA** — exige evidencia técnica.
+**Principio:** el **contrato es el piso** (recurso, no prevención); la **prevención** es organizacional
++ técnica. En el modelo CK-18, con el método entregado al cliente, el **licenciamiento (N3) y el
+contrato de mantenimiento** cargan más peso: definen qué puede el cliente hacer con Arnesia y los
+arneses, y habilitan la revocación.
 
 ### Espectro "no quedarse copia" (de simple a fuerte)
 1. **NDA + cláusula de no-retención** (DPA). Solo contractual.
-2. **VDR / view-only** + DRM + watermark dinámico + audit log + expiración (revisión documental; remote-shred revoca lo descargado).
+2. **VDR / view-only** + DRM + watermark + audit log + expiración.
 3. **Zero Data Retention / efímero** — stateless, en memoria, logs sin crudo, persistir solo resultados.
-4. **BYOK / CMK** — el cliente tiene y revoca la llave; zero-knowledge (no podemos descifrar).
+4. **BYOK / CMK** — el cliente tiene y revoca la llave.
 5. **Cómputo-al-dato / data clean room** — el crudo no se mueve; solo salen agregados.
-6. **Confidential computing / TEE + atestación** (y **HYOK**) — ni el operador ve el crudo; verificable por hardware. Lo más fuerte.
+6. **Confidential computing / TEE + atestación** — ni el operador ve el crudo; verificable por hardware.
 
-Nuestra arquitectura (BYOC + data plane + N7 efímero + N12 con destrucción) ya nos para en niveles **3–5 por diseño**; 4 y 6 se agregan para clientes regulados.
+Nuestra arquitectura (dato en la infra del cliente + N12 con destrucción + inferencia zero-retention)
+nos para en niveles **3–5 por diseño**; 4 y 6 se agregan para regulados. La protección del **método**
+(nuestra IP) ahora es contractual (licencia de Arnesia + arneses), no arquitectónica — es el trade-off
+firmado en D1.
 
 ### Certificaciones (cubrir progresivamente)
-- **Ahora / corto plazo:** equivalente funcional de SOC 2 respondible en un **DDQ** (security questionnaire) — controles de acceso, cifrado TLS 1.3 + AES-256, audit trail, data residency declarada.
-- **Cuando el cliente lo exija:** **SOC 2 Type II** e **ISO 27001** formales; por sector, PCI DSS / HIPAA / PSD2.
+- **Ahora / corto plazo:** equivalente funcional de SOC 2 respondible en un DDQ — control de acceso,
+  cifrado TLS 1.3 + AES-256, audit trail, data residency declarada, licenciamiento.
+- **Cuando el cliente lo exija:** SOC 2 Type II e ISO 27001 formales; por sector, PCI DSS / HIPAA.
 
 ### Moldes de contrato a tener listos
-- **NDA** (pre-engagement).
-- **DPA** tipo procesador (GDPR Art. 28): instrucciones documentadas, medidas técnicas, sub-procesadores, **devolución/destrucción al cierre**, derecho de auditoría.
-- **Clean Team Agreement** (cuando haya info competitivamente sensible / múltiples partes).
-- Cláusula explícita de **no-retención + destrucción certificada** + prohibición de almacenar en dispositivos personales.
-
-### Qué exige el cliente sofisticado (anticipar)
-DDQ / security questionnaire · certificaciones · **data residency** · **derecho de auditoría** · **no-copia / destrucción** verificable · **vetting** del personal con acceso.
-
-### Cómo el consultor (N9) procesa info sensible — estándar de industria
-NO traer el dato a equipo/bases nuestras: **operar dentro del entorno del cliente** (identidad en su tenant) o vía **VDI/RBI** (el dato no baja al endpoint, solo píxeles), con **clean team** (segregación, need-to-know), audit trail y destrucción al cierre. Coherente con N9 operando N7 en el data plane sin que el crudo toque su laptop.
+- **NDA** (pre-engagement) · **DPA** tipo procesador (GDPR Art. 28: destrucción al cierre, auditoría)
+- **Licencia de Arnesia + arneses** (qué puede el cliente, límites, mantenimiento, revocación) — nuevo, central en CK-18
+- **Clean Team Agreement** (info sensible / múltiples partes) · cláusula de **no-retención + destrucción**
 
 ### Fuentes
-[McKinsey — clean teams](https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/deal-delays-are-the-new-normal-clean-teams-are-the-fix) · [GDPR DPA Art. 28](https://gdpr.eu/data-processing-agreement/) · [SOC 2 vs security questionnaires](https://secureframe.com/blog/soc-2-vs-security-questionnaires) · [Citrix VDI](https://www.citrix.com/glossary/what-is-a-virtual-desktop.html) · [Zscaler RBI / third-party access](https://www.zscaler.com/products-and-solutions/byod-with-ztna) · [AWS Clean Rooms](https://docs.aws.amazon.com/clean-rooms/latest/userguide/what-is.html) · [BYOK (IronCore)](https://ironcorelabs.com/byok/) · [AWS Nitro Enclaves](https://aws.amazon.com/ec2/nitro/nitro-enclaves/)
+[McKinsey — clean teams](https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/deal-delays-are-the-new-normal-clean-teams-are-the-fix) · [GDPR DPA Art. 28](https://gdpr.eu/data-processing-agreement/) · [SOC 2 vs security questionnaires](https://secureframe.com/blog/soc-2-vs-security-questionnaires) · `proyecto/research/rediseno-total/`
 
 ---
 
-# Pendientes consolidados (narrativa de arquitectura — el tracking vive en el backlog)
+# Pendientes consolidados (narrativa — el tracking vive en el backlog)
 
 > **Disciplina (CK-11/CK-14):** el pendiente de Cockpit se trackea en `proyecto/backlog.yaml` (BL-NN),
-> única fuente de la verdad. Esta lista queda como narrativa del ecosistema: qué está decidido, qué
-> sigue abierto y dónde se trackea. Lo que es de DevHub (P2) se gobierna en su repo/ledger (DH-NN).
+> única fuente de la verdad. Esta lista queda como narrativa del ecosistema.
 
-1. ✅ **Decidido (2026-06-21):** "datos no persisten, transitan" (zero-retention + minimización; Claude frontier). LLM on-premise = opción futura, no ahora.
-2. **Contrato del handoff Discovery→Delivery (el SPEC "comidito")** — qué cruza exactamente del control plane al data plane (gaps priorizados → spec ratificado → backlog); donde la protección de IP se vuelve tangible (granularidad del despacho de N1/N2). Se resuelve al diseñar N1 (BL-13).
-3. **Resolver la deuda Go/Next de N13** (matar el doble backend → Vite SPA + Go único) = **BL-20**. Decidir antes de construir vistas nuevas. (El lado DevHub de esta deuda murió con el server — DevStudio es otra base de código, gobernada en P2.)
-4. **¿El developer (N10) es del cliente o nuestro?** — define modelo de entrega + quién paga N8. Decisión de modelo de negocio, sin BL (no es trabajo de sistema todavía).
-5. **Diferidos:** SQLite en N13 (cuando el roadmap/OKR-rollup duela) · voz en N4 (v2, tras texto-primero) · modo Etapa-1 vs Etapa-2 del plano conversación.
-6. **Decidido en dos tiempos:** (2026-07-02→06, I-74/CK-07/CK-08) dos binarios independientes + contrato Pull API diseñado. **(2026-07-07, CK-16) superseded:** el server DevHub murió sin desplegarse — P2 es ahora **DevStudio** (app de escritorio por usuario, GitHub como conector) y el contrato CK-08 quedó **derogado** (se diseñó contra un host que no existirá). La conexión DevStudio/GitHub→Cockpit se diseña con el primer consumidor real (**BL-18**, redefinido).
-7. **Definir la App del Auditor (N14)** — alcance, stack, cómo embebe el método, modelo de publicación al repo cliente (**BL-15 · BL-16 · BL-17**). Los límites arquitectónicos ya están fijados en su ficha.
+1. **Rediseño CK-18 firmado** — Fabricante + Organización instalada; método entregado en arneses;
+   Repositorio Oficial confidencial; Data Lakehouse; Cockpit con Gestión de Cambios + niveles; muertes
+   de N1/N4/N7. Decisiones D1–D5 del operador firmadas.
+2. **Consultio (N14)** = clon de DevStudio + adaptación propia — arranca cuando DevStudio esté
+   terminado (BL-15). Colab Studio (N17) misma familia.
+3. **Repositorio Oficial (N6):** BD vs archivos → git/archivos = SSoT, BD = índice derivado. Forgejo
+   self-hosted (BL nuevo).
+4. **Data Lakehouse (N16):** dlt + DuckLake, default en infra del cliente, hosteado por nosotros como
+   opción de pago (D3). BL nuevo.
+5. **Knowledge Database:** declarada `pendiente`, files-first en el repo; vector DB nunca antes de
+   demanda (D5). BL nuevo.
+6. **Gestión de Cambios (N13):** entidades Solicitud/Versión/Aprobación/Acuse/RevisiónPeriódica; UI
+   que oculta git; niveles de acceso reales (ex-BL-12, sube a alta). BL nuevo.
+7. **Plano del Fabricante (N3):** go-tuf v2 + TUF-on-CI, Tauri updater, marketplace privado revocable,
+   license files Ed25519, OTLP/mTLS opt-in. BL nuevo.
+8. **Diferidos:** voz (ex-N4) como herramienta futura del arnés · levantamiento desatendido (ex-N7) si
+   algún día se necesita, por API key.

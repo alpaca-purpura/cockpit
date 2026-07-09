@@ -3,15 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Diagrama de despliegue — distribución del sistema (Control Plane / Data Plane)</title>
+<title>Diagrama de despliegue — ecosistema Cockpit (Fabricante / Organización / Edge)</title>
 <!--
-  Curado a mano (CK-14, cierra BL-03). SSoT de las fichas de nodo = NODOS.md — este diagrama es la
-  vista visual y se edita en el MISMO evento que la decisión que lo cambia (misma disciplina que
-  arquitectura.yaml). Portado del legacy prenter-harness/products/docs/architecture/despliegue.html
-  y actualizado: dos binarios en el data plane (I-74/CK-07), contrato de datos diseñado (CK-08),
-  N14 App del Auditor (CK-11/CK-14). Drawer interactivo restaurado en CK-15 (cierra BL-08):
-  lee nodos.data.js GENERADO desde NODOS.md por gen_arquitectura.py — editar el .md y regenerar,
-  jamás editar el .js. Vista de la célula (arquitectura.yaml) = arquitectura.html, también generada.
+  Curado a mano (CK-18, rediseño de fondo). SSoT de las fichas de nodo = NODOS.md — este diagrama es
+  la vista visual y se edita en el MISMO evento que la decisión que lo cambia. El drawer lee
+  nodos.data.js GENERADO desde NODOS.md por gen_arquitectura.py — editar el .md y regenerar, jamás
+  editar el .js. gen_arquitectura.py VALIDA este archivo (cobertura data-nodo ↔ índice de NODOS,
+  madurez de cada art). Modelo CK-18: Plano del Fabricante (nuestro, fábrica de software) + Plano de
+  la Organización (del cliente, instalado) + Edge (apps sobre Claude Code local). Mueren N1/N4/N7.
 -->
 <style>
   :root{
@@ -36,6 +35,7 @@
   .stereo{font-size:10px;letter-spacing:.06em;color:var(--dim);text-transform:none}
   .ntitle{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;margin:2px 0 3px}
   .nmeta{font-size:11px;color:var(--dim);margin-bottom:10px}
+  .subhdr{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#6e7681;margin:10px 0 6px}
   .arts{display:flex;gap:10px;flex-wrap:wrap}
   .art{flex:1;min-width:220px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
   .art .as{font-size:9.5px;color:#6e7681;letter-spacing:.05em}
@@ -48,13 +48,18 @@
   .bdg.ip{background:rgba(240,163,94,.15);color:var(--ip)}
   .bdg.data{background:rgba(88,166,255,.15);color:var(--data)}
   .bdg.open{background:rgba(248,81,73,.15);color:var(--open)}
+  .bdg.new{background:rgba(63,185,80,.15);color:var(--edge)}
   .runtime{margin-top:9px;font-size:11px;color:var(--dim);border-top:1px dashed var(--line);padding-top:7px}
   .conn{display:flex;flex-direction:column;align-items:center;margin:8px 0;color:var(--dim);font-size:11px}
   .conn .ar{color:var(--dim);font-size:18px;line-height:1}
   .conn .pill{border:1px solid var(--line);border-radius:20px;padding:3px 12px;background:var(--panel)}
   .conn.pull .pill{border-color:var(--ours);color:#c9aef9}
   .cols{display:flex;gap:12px;flex-wrap:wrap}
-  .col{flex:1;min-width:280px}
+  .col{flex:1;min-width:250px}
+  .person{background:var(--panel);border:1px dashed var(--line);border-radius:8px;padding:9px 11px;margin-top:8px}
+  .person .as{font-size:9.5px;color:#6e7681;letter-spacing:.05em}
+  .person .at{font-weight:600;font-size:12.5px;margin:1px 0}
+  .person .ad{color:var(--dim);font-size:11px}
   h2.sec{font-size:14px;margin:24px 26px 8px;border-top:1px solid var(--line);padding-top:16px}
   table.proto{width:calc(100% - 52px);margin:0 26px;border-collapse:collapse;font-size:12px}
   table.proto th,table.proto td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
@@ -74,196 +79,195 @@
 </head>
 <body>
 <header>
-  <h1>🗺️ Diagrama de despliegue — cómo se distribuye el sistema</h1>
-  <div class="sub">Antes que funcionalidades: <b>qué corre dónde</b>, qué datos viven dónde, y cómo se comunican los nodos. Patrón <b>Control Plane / Data Plane (BYOC)</b> — el estándar B2B para "el vendor opera, los datos del cliente no salen de su red". &nbsp;·&nbsp; <b style="color:var(--ours)">Clic en cualquier nodo</b> para su ficha (de <code>NODOS.md</code>, SSoT — drawer generado). Actualizado <b>2026-07-07 (CK-14/15/16)</b>: App del Auditor (N14) · N5 re-fichado = <b>DevStudio</b> (P2, app de escritorio, GitHub como conector) · contrato CK-08 derogado (mecanismo TBD, BL-18).</div>
+  <h1>🗺️ Diagrama de despliegue — ecosistema Cockpit</h1>
+  <div class="sub">Antes que funcionalidades: <b>qué corre dónde</b>, qué datos viven dónde, cómo se comunican los nodos. Modelo <b>Fabricante / Organización / Edge</b> (CK-18). El <b style="color:var(--ours)">Fabricante</b> construye y distribuye (no razona en runtime); la <b style="color:var(--client)">Organización</b> instala y opera con sus datos en su red; el <b style="color:var(--edge)">Edge</b> son apps sobre Claude Code local. &nbsp;·&nbsp; <b style="color:var(--ours)">Clic en cualquier nodo</b> para su ficha (de <code>NODOS.md</code>, SSoT). Actualizado <b>2026-07-08 (CK-18)</b>: método entregado en arneses (deroga límite IP) · N6 = Repositorio Oficial confidencial (ya no GitHub) · nacen Arnesia (N15), Data Lakehouse (N16), Colab Studio (N17), sistemas de la org (N18), Analista de Calidad (N19) · mueren N1/N4/N7.</div>
 </header>
 
 <div class="principle">
-  <b>Principio rector (state-of-the-art):</b> el sistema se parte en dos planos.
-  <b style="color:var(--ours)">Control Plane = nuestro</b> (lo operamos, vive el know-how, NO toca datos del cliente).
-  <b style="color:var(--client)">Data Plane = del cliente</b> (corre en SU red, sus datos NUNCA salen).
-  El control plane <b>NO está en el camino del dato</b>; el data plane <b>jala</b> (pull TLS) updates/config/specs — el cliente no abre puertos. Así se logran <b>IP protegida</b> y <b>soberanía de datos</b> a la vez. Precisión firmada (2026-06-21): los datos <b>"transitan, no persisten"</b> — la inferencia frontier los procesa con zero-retention, jamás los almacena fuera.
+  <b>Principio rector (CK-18):</b> el sistema es una <b style="color:var(--ours)">fábrica de software</b> que construye el sistema operativo de la organización y lo <b>instala en su red</b>.
+  <b style="color:var(--ours)">Plano del Fabricante = nuestro</b> (construye, versiona, firma y distribuye — no toca datos del cliente).
+  <b style="color:var(--client)">Plano de la Organización = del cliente</b> (Repositorio Oficial + Cockpit + Data Lakehouse, sus datos NUNCA salen).
+  <b style="color:var(--edge)">Edge = apps sobre Claude Code local</b> (una mecánica, arneses por puesto).
+  El método <b>se entrega</b> empaquetado en arneses (Arnesia licenciada); la protección pasa de arquitectura a <b>licencia + contrato</b>. Datos: <b>"transitan, no persisten"</b> — la inferencia local los procesa con zero-retention.
 </div>
 
 <div class="legend">
-  <span class="k"><span class="sw" style="background:var(--ours)"></span>Nuestro (control plane)</span>
-  <span class="k"><span class="sw" style="background:var(--client)"></span>Cliente (data plane)</span>
-  <span class="k"><span class="sw" style="background:var(--edge)"></span>Edge (laptop/dispositivo)</span>
+  <span class="k"><span class="sw" style="background:var(--ours)"></span>Fabricante (nuestro)</span>
+  <span class="k"><span class="sw" style="background:var(--client)"></span>Organización (cliente)</span>
+  <span class="k"><span class="sw" style="background:var(--edge)"></span>Edge (humanos)</span>
   <span class="k"><span class="sw" style="background:var(--ip)"></span>≪IP / know-how≫</span>
   <span class="k"><span class="sw" style="background:var(--data)"></span>≪datos del cliente≫</span>
-  <span class="k"><span class="sw" style="background:var(--open)"></span>≪diseñado / sin construir≫</span>
+  <span class="k"><span class="sw" style="background:var(--open)"></span>≪sin construir≫</span>
 </div>
 
 <div class="wrap">
 
-  <!-- CONTROL PLANE -->
+  <!-- FABRICANTE -->
   <div class="node ours">
-    <div class="stereo">≪execution environment≫ · nube del vendor (Prenter)</div>
-    <div class="ntitle">☁️ CONTROL PLANE — lo operamos nosotros <span class="bdg ip">IP aquí</span></div>
-    <div class="nmeta">Opera, versiona y orquesta. NO almacena datos crudos del cliente. Si se cae, el data plane del cliente sigue (no está en el request path).</div>
+    <div class="stereo">≪execution environment≫ · nube/repos del Fabricante (Prenter)</div>
+    <div class="ntitle">☁️ PLANO DEL FABRICANTE — lo operamos nosotros <span class="bdg ip">IP aquí</span></div>
+    <div class="nmeta">Fábrica de software: construye, versiona, firma y distribuye. NO razona en runtime. NO almacena datos del cliente. Si se cae, la Organización sigue (no está en el request path).</div>
     <div class="arts">
-      <div class="art ip" data-nodo="N1"><div class="as"><span class="nid">N1</span>≪artifact≫ · no-construido</div><div class="at">Motor de Discovery / Levantamiento</div><div class="ad">la "fábrica": diseña el spec + orquesta el levantamiento (como servicio) — mitad control-plane de Cockpit (P1)</div></div>
-      <div class="art ip" data-nodo="N2"><div class="as"><span class="nid">N2</span>≪artifact≫ · existe (parcial)</div><div class="at">Playbook + metodología</div><div class="ad">proceso-como-dato (m1·m2·m3) · M-cards · schemas = el CÓMO — hoy en <code>sistema/metodo/</code> del repo Cockpit</div></div>
-      <div class="art" data-nodo="N3"><div class="as"><span class="nid">N3</span>≪artifact≫ · no-construido</div><div class="at">Distribución + telemetría</div><div class="ad">releases firmadas (TUF) que el data plane jala — ahora DOS binarios que actualizar (N5 y N13) · telemetría agregada, NO datos crudos</div></div>
-      <div class="art" data-nodo="N4"><div class="as"><span class="nid">N4</span>≪exec env≫ hosted · no-construido</div><div class="at">Plano Conversación</div><div class="ad">entrevistas de levantamiento (LangGraph + voz) · transcripción → data plane, método → control plane</div></div>
+      <div class="art ip" data-nodo="N15"><div class="as"><span class="nid">N15</span>≪servicio≫ fábrica · existe (parcial)</div><div class="at">Arnesia — fábrica de arneses <span class="bdg new">nace</span></div><div class="ad">produce/versiona los arneses por rol-en-proceso (skill=proc · plugin=rol) · compila doc+arnés desde la misma fuente (anti-drift) · <code>~/Proyectos/harness-studio</code> [R8]</div></div>
+      <div class="art ip" data-nodo="N2"><div class="as"><span class="nid">N2</span>≪artefacto≫ · existe (parcial)</div><div class="at">Repositorio Maestro</div><div class="ad">SSoT nuestro: método (m1·m2·m3), motor de discovery como arneses, arneses plantilla, código de las apps — el activo, versionado</div></div>
+      <div class="art open" data-nodo="N3"><div class="as"><span class="nid">N3</span>≪servicio≫ · no-construido</div><div class="at">Distribución · telemetría · licencias</div><div class="ad">releases firmadas (go-tuf v2 / Tauri) que el cliente jala · marketplace de arneses revocable · licencias Ed25519 · telemetría OTLP/mTLS opt-in — habilita el mantenimiento [R9]</div></div>
     </div>
-    <div class="runtime">⚙️ Runtime de razonamiento server-side: <b>API frontier</b> — decidido (híbrido, forzado por ToS)</div>
+    <div class="runtime">⚙️ Ya no hay runtime de razonamiento server-side — el motor vive como arneses que corren en el edge (N8). Compute desatendido, si existiera, iría por API key.</div>
   </div>
 
   <div class="conn pull">
     <div class="ar">⇵</div>
-    <div class="pill">PULL por TLS — el data plane jala: SPEC "comidito" · updates de los binarios · config &nbsp;(el cliente NO abre puertos · el control plane NO ve el dato crudo)</div>
+    <div class="pill">PULL por TLS — el cliente jala: releases firmadas · arneses · licencias &nbsp;·&nbsp; push saliente: telemetría agregada (el cliente NO abre puertos · el Fabricante NO ve el dato)</div>
   </div>
 
-  <!-- DATA PLANE -->
+  <!-- ORGANIZACIÓN -->
   <div class="node client">
-    <div class="stereo">≪device≫ · on-prem (su servidor) O su nube — <b>configurable por cliente</b></div>
-    <div class="ntitle">🏢 DATA PLANE — en la red privada del cliente <span class="bdg data">datos aquí</span></div>
-    <div class="nmeta">Sus datos viven en SU GitHub y sus sistemas — no en infra nuestra (matiz CK-16). Un solo binario nuestro en el data plane: <code>directorio</code> (P1). El server DevHub (P2) murió sin desplegarse — hoy P2 = DevStudio, app de escritorio (edge).</div>
+    <div class="stereo">≪device≫ · servidor/red del cliente — <b>confidencial, con backups</b></div>
+    <div class="ntitle">🏢 PLANO DE LA ORGANIZACIÓN — instalado en la red del cliente <span class="bdg data">datos aquí</span></div>
+    <div class="nmeta">Lo instalable en la empresa + sus sistemas. Sus datos viven aquí — Repositorio Oficial (confidencial), Cockpit, Data Lakehouse; el crudo transitorio en el Depósito.</div>
+    <div class="subhdr">Instalables</div>
     <div class="arts">
-      <div class="art" data-nodo="N13"><div class="as"><span class="nid">N13</span>≪execution environment≫ · existe</div><div class="at">Cockpit — binario <code>directorio</code> (P1)</div><div class="ad">Vista Negocio: Hilo de Oro · Brechas · Empresa→Sistema · objeto normalizado completo (<code>/api/objeto</code>, 9 entidades) · puerto 4100 · ESTE repo</div></div>
-      <div class="art open"><div class="as">≪conexión≫ · sin mecanismo (CK-08 derogado, CK-16)</div><div class="at">Datos de delivery → Cockpit <span class="bdg open">BL-18</span></div><div class="ad">La Pull API de CK-08 se diseñó contra el server DevHub que ya no existirá. Se rediseña con el primer consumidor real — probablemente vía GitHub (N6)</div></div>
-      <div class="art data" data-nodo="N6"><div class="as"><span class="nid">N6</span>≪artifact≫ · existe</div><div class="at">Repo del cliente (GitHub, org del cliente)</div><div class="ad">AS-IS · gaps · specs · código · OKRs · procesos publicados — SSoT + conector de la orquestación DevStudio (PM prioriza → devs reciben)</div></div>
-      <div class="art" data-nodo="N7"><div class="as"><span class="nid">N7</span>≪execution environment≫ · no-construido</div><div class="at">Agentes de análisis / levantamiento</div><div class="ad">efímeros, server-side vía API frontier · leen sistemas, escriben el AS-IS al repo (método inyectado, teardown sin rastro)</div></div>
-      <div class="art data" data-nodo="N12"><div class="as"><span class="nid">N12</span>≪artifact≫ · no-construido</div><div class="at">Depósito de fuentes (landing zone)</div><div class="ad">crudo de entrada (docs/USB/correo) que deposita el consultor · transitorio · se destruye tras el mapa</div></div>
+      <div class="art open data" data-nodo="N6"><div class="as"><span class="nid">N6</span>≪artefacto≫ · no-construido</div><div class="at">Repositorio Oficial <span class="bdg data">confidencial</span></div><div class="ad">git self-hosted (Forgejo) en la máquina del cliente: <b>Arneses</b> · <b>Metadata Organizada</b> (objeto normalizado) · <b>Documentos Oficiales</b> versionados · <b>Knowledge DB</b> (futura). SSoT de la estructura [R7]</div></div>
+      <div class="art" data-nodo="N13"><div class="as"><span class="nid">N13</span>≪exec env≫ · existe (parcial)</div><div class="at">Cockpit — binario <code>directorio</code></div><div class="ad">2 módulos: <b>Visualización</b> (estructura N6 × operación N16, indicadores) + <b>Gestión de Cambios</b> (ISO). Sirve web por <b>niveles de acceso</b>. Auth embebida · puerto 4100 · ESTE repo [R11]</div></div>
+      <div class="art open data" data-nodo="N16"><div class="as"><span class="nid">N16</span>≪servicio/dato≫ · no-construido</div><div class="at">Data Lakehouse <span class="bdg new">nace</span></div><div class="ad">dlt (ingesta) + DuckLake/DuckDB (catálogo SQLite→Postgres) · reúne la operación de todos los sistemas · DuckDB embebido en el Go de Cockpit [R10]</div></div>
+      <div class="art open data" data-nodo="N12"><div class="as"><span class="nid">N12</span>≪artefacto≫ landing zone · no-construido</div><div class="at">Depósito de fuentes</div><div class="ad">crudo de entrada (docs/USB/correo) que deposita el consultor · transitorio · se destruye tras el mapa · el material más sensible [R3]</div></div>
     </div>
-    <div class="runtime">El control plane inyecta el MÉTODO para el levantamiento; los agentes corren aquí (efímeros) y escriben el AS-IS al repo del cliente. El CÓMO no persiste en el cliente.</div>
+    <div class="subhdr">Sistemas de la organización (fuentes del lakehouse)</div>
+    <div class="arts">
+      <div class="art data" data-nodo="N18"><div class="as"><span class="nid">N18</span>≪sistemas fuente≫ · existe</div><div class="at">Sistemas operacionales</div><div class="ad">SaaS externo · ERP enlatado · sistema a medida · Excels — las fuentes que nutren el lakehouse; el a medida además recibe capabilities de los devs [R10]</div></div>
+    </div>
+    <div class="runtime">Los arneses (de N6, producidos por Arnesia) se cargan en las apps del edge; Cockpit lee la estructura de N6 y la operación de N16, y sirve por nivel de acceso.</div>
   </div>
 
   <!-- EDGES -->
   <div class="cols">
     <div class="col">
-      <div class="conn"><div class="ar">▼</div><div class="pill">git (push de procesos) + HTTPS</div></div>
-      <div class="node edge" data-nodo="N9">
-        <div class="stereo">≪device≫ · máquina del consultor (Prenter)</div>
-        <div class="ntitle">🧑 Consultor <span class="nid">N9</span></div>
-        <div class="nmeta">Conduce levantamiento + Discovery. Deposita el crudo en N12, opera/valida N7, ratifica AS-IS y SPEC.</div>
+      <div class="conn"><div class="ar">▼</div><div class="pill">git (deploy de procesos) + stream-json</div></div>
+      <div class="node edge">
+        <div class="stereo">≪device≫ · máquina del consultor (Prenter → cliente)</div>
+        <div class="ntitle">🧑 Consultor / Analista</div>
+        <div class="nmeta">Construye el sistema de la organización y lo publica. Rol transferible: inicia Prenter, lo hereda el Analista de Calidad del cliente.</div>
         <div class="arts">
-          <div class="art open ip" data-nodo="N14"><div class="as"><span class="nid">N14</span>≪exec env≫ app instalable · no-construido</div><div class="at">App del Auditor <span class="bdg ip">método embebido</span> <span class="bdg open">BL-15..17</span></div><div class="ad">opera el método (m1·m2·m3) con carriles/provenance [R16] · publica procesos/roles/objetivos al repo del cliente — "deploy de procesos" [R17] · <b>se cuelga de N8 para operar</b> (driver CLI-nativo, BYO licencia — como DevStudio) · patrón harness-studio</div></div>
-          <div class="art" data-nodo="N8"><div class="as"><span class="nid">N8</span>≪runtime edge≫ · existe · gestionado por N14</div><div class="at">Claude Code (suscripción del consultor, local)</div><div class="ad">el mismo motor N8, instancia del consultor — ejecuta el método que N14 le parametriza; una suscripción, un humano</div></div>
-          <div class="art"><div class="at">Navegador → Discovery / Cockpit</div><div class="ad">opera N1 (futuro) · vista consultor de N13</div></div>
+          <div class="art open ip" data-nodo="N14"><div class="as"><span class="nid">N14</span>≪exec env≫ app instalable · no-construido</div><div class="at">Consultio — App del Consultor <span class="bdg ip">clon DevStudio</span></div><div class="ad">construye el mapa completo (objeto normalizado + documentos + arneses) con preview local de Cockpit · publica a N6 — "deploy de procesos" · sobre N8 (BYO licencia) [R4][R5][R6][R7]</div></div>
+          <div class="art" data-nodo="N8"><div class="as"><span class="nid">N8</span>≪runtime edge≫ · existe · gestionado por la app</div><div class="at">Claude Code (suscripción del humano)</div><div class="ad">el motor común debajo de Consultio/Colab Studio/DevStudio — una suscripción, un humano (ToS) [R15]</div></div>
         </div>
+        <div class="person" data-nodo="N9"><div class="as"><span class="nid">N9</span>≪actor≫ · existe</div><div class="at">Consultor (Prenter)</div><div class="ad">levanta, construye y publica el sistema; transfiere la operación al cliente</div></div>
+        <div class="person" data-nodo="N19"><div class="as"><span class="nid">N19</span>≪actor≫ · no-construido</div><div class="at">Analista de Calidad (cliente)</div><div class="ad">hereda Consultio; mantiene lo oficial con la Gestión de Cambios (ISO) [R13]</div></div>
       </div>
     </div>
     <div class="col">
-      <div class="conn"><div class="ar">▼</div><div class="pill">git/SSH + HTTPS</div></div>
-      <div class="node edge" data-nodo="N10">
-        <div class="stereo">≪device≫ · laptop del developer</div>
-        <div class="ntitle">💻 Developer <span class="nid">N10</span></div>
-        <div class="nmeta">Construye contra el repo GitHub del cliente.</div>
+      <div class="conn"><div class="ar">▼</div><div class="pill">arneses por puesto + datos de operación</div></div>
+      <div class="node edge">
+        <div class="stereo">≪device≫ · máquina del trabajador operativo</div>
+        <div class="ntitle">🧑‍💼 Trabajador operativo</div>
+        <div class="nmeta">Hace su día a día con los arneses de su puesto (contador, analista…). Produce salidas que nutren el lakehouse.</div>
         <div class="arts">
-          <div class="art" data-nodo="N5"><div class="as"><span class="nid">N5</span>≪exec env≫ app instalable · existe (parcial)</div><div class="at">DevStudio (P2)</div><div class="ad">sus repos + sus historias asignadas · proceso/arquitectura/doc as-code · orquesta Claude Code (driver CLI-nativo, BYO licencia) · versión PM en construcción (refina/prioriza → devs reciben vía GitHub) · <code>~/Proyectos/dev-studio</code></div></div>
-          <div class="art" data-nodo="N8"><div class="as"><span class="nid">N8</span>≪runtime edge≫ · existe · gestionado por N5</div><div class="at">Claude Code (suscripción del dev, local)</div><div class="ad">el motor N8, instancia del dev: historias → testing → prod (la mitad "local" del híbrido — ToS: una suscripción, un humano). <b>DevStudio se cuelga sobre él para programar</b> — el dev trabaja desde DevStudio, no el CLI a pelo</div></div>
+          <div class="art open" data-nodo="N17"><div class="as"><span class="nid">N17</span>≪exec env≫ app instalable · no-construido</div><div class="at">Colab Studio <span class="bdg new">nace</span></div><div class="ad">como DevStudio pero para el trabajador normal · carga los arneses de su puesto (N roles) · sube salidas/Excels al lakehouse · sobre N8 [R12]</div></div>
+          <div class="art"><div class="at">Claude Code (N8)</div><div class="ad">el mismo motor edge, instancia del trabajador — BYO licencia</div></div>
         </div>
+        <div class="person" data-nodo="N11"><div class="as"><span class="nid">N11</span>≪actor≫ · existe</div><div class="at">Usuarios de la organización (4 niveles)</div><div class="ad">Gobernanza · Estratégico · Táctico · Operativo — cada nivel ve lo que le toca en Cockpit; los operativos además usan Colab Studio [R1]</div></div>
       </div>
     </div>
     <div class="col">
-      <div class="conn"><div class="ar">▼</div><div class="pill">HTTPS (navegador)</div></div>
-      <div class="node edge" data-nodo="N11">
-        <div class="stereo">≪device≫ · dispositivo del usuario de negocio</div>
-        <div class="ntitle">🖥️ CEO / sponsor <span class="nid">N11</span></div>
-        <div class="nmeta">Thin — solo navegador. No instala nada.</div>
+      <div class="conn"><div class="ar">▼</div><div class="pill">git/deploy al sistema a medida</div></div>
+      <div class="node edge">
+        <div class="stereo">≪device≫ · laptop del developer (del cliente)</div>
+        <div class="ntitle">💻 Developer</div>
+        <div class="nmeta">Construye el software a medida (Sistema B) contra los sistemas de la org, con DevStudio sobre Claude Code.</div>
         <div class="arts">
-          <div class="art"><div class="at">Vista Negocio (N13)</div><div class="ad">Hilo de Oro · Brechas · drill-down — servida del data plane</div></div>
-          <div class="art"><div class="at">Discovery conversacional</div><div class="ad">la interfaz que guía a diseñar funcionalidad → spec (futuro, N1/N4)</div></div>
+          <div class="art" data-nodo="N5"><div class="as"><span class="nid">N5</span>≪exec env≫ app instalable · existe (parcial)</div><div class="at">DevStudio (P2)</div><div class="ad">sus repos + sus historias · proceso/arquitectura/doc as-code · se entrega también a devs del cliente · arneses de dev en Arnesia · <code>~/Proyectos/dev-studio</code> [R14]</div></div>
+          <div class="art"><div class="at">Claude Code (N8)</div><div class="ad">instancia del dev — historias → testing → prod (BYO licencia)</div></div>
         </div>
+        <div class="person" data-nodo="N10"><div class="as"><span class="nid">N10</span>≪actor≫ · existe</div><div class="at">Developer (cliente)</div><div class="ad">implementa capabilities en el sistema a medida (N18) [R14]</div></div>
       </div>
     </div>
   </div>
 </div>
 
-<h2 class="sec">🔀 Flujo de la data — Etapa 1 (Levantamiento)</h2>
+<h2 class="sec">🔀 Flujo — de objetivos a operación viva</h2>
 <div class="fwrap">
-  <div class="fhint">Cómo fluye la data, nodo a nodo (ficha de cada uno en <code>NODOS.md</code>). Aristas: <b style="color:#f85149">crudo</b> (sensible) · <b style="color:#58a6ff">derivado</b> · <b style="color:#a371f7">método/IP</b> (efímero) · <b style="color:#8b949e">control/operación</b>.</div>
+  <div class="fhint">Cómo fluye el trabajo, nodo a nodo (ficha de cada uno en <code>NODOS.md</code>). Aristas: <b style="color:#f85149">crudo</b> (sensible) · <b style="color:#58a6ff">derivado/operación</b> · <b style="color:#a371f7">método/arnés</b> · <b style="color:#8b949e">operación/control</b>.</div>
   <div class="frow">
-    <span class="fpill" data-nodo="N11">N11 · CEO</span>
+    <span class="flbl">construir ▸</span>
+    <span class="fpill" data-nodo="N11">N11 · Gobernanza</span>
     <span class="farr" style="color:#58a6ff">──objetivos──▶</span>
     <span class="fpill" data-nodo="N9">N9 · Consultor</span>
-    <span class="farr" style="color:#f85149">──recolecta──▶</span>
+    <span class="farr" style="color:#f85149">──deposita crudo──▶</span>
     <span class="fpill" data-nodo="N12">N12 · Depósito</span>
-    <span class="farr" style="color:#f85149">──crudo──▶</span>
-    <span class="fpill" data-nodo="N7">N7 · Agentes</span>
-    <span class="farr" style="color:#58a6ff">──mapa/gaps──▶</span>
-    <span class="fpill" data-nodo="N6">N6 · Repo</span>
-    <span class="farr" style="color:#58a6ff">──▶</span>
+    <span class="farr" style="color:#a371f7">──procesa con──▶</span>
+    <span class="fpill" data-nodo="N14">N14 · Consultio</span>
+    <span class="farr" style="color:#58a6ff">──deploy de procesos (git)──▶</span>
+    <span class="fpill" data-nodo="N6">N6 · Repositorio Oficial</span>
+  </div>
+  <div class="frow">
+    <span class="flbl">fabricar ▸</span>
+    <span class="fpill" data-nodo="N2">N2 · Repositorio Maestro</span>
+    <span class="farr" style="color:#a371f7">──compila──▶</span>
+    <span class="fpill" data-nodo="N15">N15 · Arnesia</span>
+    <span class="farr" style="color:#a371f7">──arneses por rol──▶</span>
+    <span class="fpill" data-nodo="N3">N3 · Distribución</span>
+    <span class="farr" style="color:#8b949e">──releases firmadas (pull)──▶</span>
+    <span class="fpill" data-nodo="N14">N14 · Consultio</span>
+    <span class="farr" style="color:#8b949e">·</span>
+    <span class="fpill" data-nodo="N17">N17 · Colab Studio</span>
+  </div>
+  <div class="frow">
+    <span class="flbl">operar ▸</span>
+    <span class="fpill" data-nodo="N18">N18 · Sistemas</span>
+    <span class="farr" style="color:#58a6ff">──ingesta──▶</span>
+    <span class="fpill" data-nodo="N16">N16 · Data Lakehouse</span>
+    <span class="farr" style="color:#58a6ff">──cruza op. × estructura──▶</span>
     <span class="fpill" data-nodo="N13">N13 · Cockpit</span>
-    <span class="farr" style="color:#58a6ff">──vista──▶</span>
-    <span class="fpill" data-nodo="N11">N11 · CEO</span>
+    <span class="farr" style="color:#58a6ff">──vista por nivel──▶</span>
+    <span class="fpill" data-nodo="N11">N11 · Usuarios (4 niveles)</span>
   </div>
   <div class="frow">
-    <span class="flbl">alimentan ▸</span>
-    <span class="fpill" data-nodo="N2">N2 · Playbook</span>
-    <span class="farr" style="color:#a371f7">──método──▶</span>
-    <span class="fpill" data-nodo="N1">N1 · Motor</span>
-    <span class="farr" style="color:#a371f7">──método efímero──▶</span>
-    <span class="fpill" data-nodo="N7">N7 · Agentes</span>
-    <span class="farr" style="color:#8b949e">· N1 orquesta y reconcilia ·</span>
-    <span class="fpill" data-nodo="N4">N4 · Entrevistas</span>
-    <span class="farr" style="color:#58a6ff">──transcripción──▶</span>
-    <span class="fpill" data-nodo="N6">N6 · Repo</span>
-  </div>
-  <div class="frow">
-    <span class="flbl">opera ▸</span>
-    <span class="fpill" data-nodo="N9">N9 · Consultor</span>
-    <span class="farr" style="color:#8b949e">──opera desde──▶</span>
-    <span class="fpill" data-nodo="N14">N14 · App del Auditor</span>
-    <span class="farr" style="color:#58a6ff">──publica procesos/roles/objetivos (git) [R17]──▶</span>
-    <span class="fpill" data-nodo="N6">N6 · Repo</span>
-    <span class="farr" style="color:#58a6ff">──lee/valida──▶</span>
+    <span class="flbl">mejorar ▸</span>
+    <span class="fpill" data-nodo="N19">N19 · Analista de Calidad</span>
+    <span class="farr" style="color:#58a6ff">──solicitud/aprobación (Gestión de Cambios)──▶</span>
     <span class="fpill" data-nodo="N13">N13 · Cockpit</span>
-    <span class="flbl">— el "deploy de procesos": el resultado cruza, el método jamás</span>
-  </div>
-  <div class="frow">
-    <span class="flbl">delivery ▸</span>
-    <span class="fpill" data-nodo="N5">N5 · DevStudio (PM refina/prioriza)</span>
-    <span class="farr" style="color:#58a6ff">──historias vía GitHub──▶</span>
-    <span class="fpill" data-nodo="N5">N5 · DevStudio (dev: qué le tocó)</span>
-    <span class="farr" style="color:#8b949e">──orquesta──▶</span>
-    <span class="fpill" data-nodo="N8">N8 · Claude Code</span>
-    <span class="farr" style="color:#58a6ff">──historias→prod──▶</span>
-    <span class="fpill" data-nodo="N6">N6 · Repo (GitHub)</span>
-    <span class="flbl">— N10 gobierna; crudo y mapa nunca en nuestras bases</span>
+    <span class="farr" style="color:#58a6ff">──publica versión──▶</span>
+    <span class="fpill" data-nodo="N6">N6 · Repositorio Oficial</span>
+    <span class="flbl">— el ciclo PDCA/ISO, ya del lado del cliente</span>
   </div>
 </div>
 
 <h2 class="sec">🔌 Conexiones (con protocolo) — el dato manda</h2>
 <table class="proto">
   <tr><th>De → A</th><th>Protocolo</th><th>Qué cruza</th><th>Quién inicia</th><th>Estado</th></tr>
-  <tr><td>Data plane → Control plane</td><td>TLS (outbound, pull)</td><td>jala SPEC + updates de los binarios + config</td><td><b>el cliente</b> (no abre puertos inbound)</td><td>diseñado (N3 no-construido)</td></tr>
-  <tr><td>DevStudio/GitHub → N13 <code>directorio</code></td><td>TBD (probablemente vía GitHub)</td><td>datos de delivery (historias/capabilities/releases)</td><td>TBD</td><td><b>sin mecanismo — CK-08 derogado (CK-16); se diseña con el primer consumidor real (BL-18)</b></td></tr>
-  <tr><td>DevStudio (PM) ⇄ DevStudio (devs)</td><td>GitHub (git + API)</td><td>refinamiento · priorización · historias asignadas</td><td>cada app de usuario</td><td>en construcción (P2)</td></tr>
-  <tr><td>N14 App del Auditor → N6</td><td>git (push/PR)</td><td>procesos/roles/objetivos/personas ratificados — el "deploy de procesos" [R17]</td><td>consultor desde su app</td><td><b>no-construido (BL-15..17)</b></td></tr>
-  <tr><td>Consultor → Control plane</td><td>HTTPS</td><td>opera Discovery/levantamiento</td><td>consultor</td><td>futuro (N1)</td></tr>
-  <tr><td>Agentes levantamiento → sistemas del cliente</td><td>según sistema (API/DB/FS)</td><td>leen AS-IS real; escriben al repo del cliente</td><td>data plane (método inyectado)</td><td>futuro (N7)</td></tr>
-  <tr><td>Developer ↔ Repo (GitHub)</td><td>git/SSH + HTTPS</td><td>código · proceso · historias</td><td>developer (desde DevStudio)</td><td>vivo</td></tr>
-  <tr><td>Usuario negocio → Data plane</td><td>HTTPS (navegador)</td><td>Vista Negocio (N13) / Discovery conversacional</td><td>usuario</td><td>Vista Negocio viva</td></tr>
-  <tr><td>Plano conversación → Data plane</td><td>HTTPS (webhook firmado → pull)</td><td>transcripción de entrevistas</td><td>hosted</td><td>futuro (N4)</td></tr>
+  <tr><td>Organización → Fabricante</td><td>TLS (outbound, pull)</td><td>jala releases firmadas + arneses + licencias</td><td><b>el cliente</b> (no abre puertos inbound)</td><td>diseñado (N3 no-construido)</td></tr>
+  <tr><td>Organización → Fabricante</td><td>OTLP/mTLS (outbound, push)</td><td>telemetría agregada opt-in (salud/uso, no datos)</td><td>el cliente (opt-in)</td><td>diseñado (N3)</td></tr>
+  <tr><td>N14 Consultio → N6 Repositorio Oficial</td><td>git (push/tag)</td><td>procesos/roles/objetivos/documentos ratificados — "deploy de procesos" [R7]</td><td>consultor desde su app</td><td><b>no-construido (BL-15)</b></td></tr>
+  <tr><td>N15 Arnesia → N6 (arneses)</td><td>git / canal N3</td><td>arneses por rol de la organización</td><td>fábrica / entrega al cliente</td><td>no-construido</td></tr>
+  <tr><td>N18 Sistemas → N16 Data Lakehouse</td><td>según sistema (API/DB/FS/Excel)</td><td>datos de operación (ingesta read-only, dlt)</td><td>el lakehouse (jala)</td><td><b>no-construido (BL nuevo)</b></td></tr>
+  <tr><td>N13 Cockpit → N6 / N16</td><td>git read-only / DuckDB embebido</td><td>estructura (N6) + operación (N16) para el cruce</td><td>Cockpit</td><td>parcial (Visualización viva)</td></tr>
+  <tr><td>App del edge → N8 Claude Code</td><td>stdin/stdout (stream-json)</td><td>parametrización de sesiones de agente</td><td>la app (Consultio/Colab/DevStudio)</td><td>N8 vivo; apps N14/N17 no-construidas</td></tr>
+  <tr><td>Usuario negocio → N13</td><td>HTTPS (navegador)</td><td>Cockpit por nivel de acceso</td><td>usuario</td><td>Visualización viva; niveles no-construidos</td></tr>
 </table>
 
-<h2 class="sec">✅ Decisiones de arquitectura tomadas</h2>
+<h2 class="sec">✅ Decisiones de arquitectura (CK-18)</h2>
 <div class="open-dec" style="border-color:var(--edge);background:rgba(63,185,80,.05)">
-  <h3 style="color:#8be39b">Decididas</h3>
+  <h3 style="color:#8be39b">Firmadas (operador, CK-18 — D1..D5)</h3>
   <ol>
-    <li><b>Patrón base = BYOC (Control Plane / Data Plane)</b> — 2026-06-20. El vendor opera el control plane (IP); el data plane corre en la red del cliente (sus datos no salen); comunicación por <b>pull TLS</b> (sin puertos inbound).</li>
-    <li><b>Runtime de agentes = HÍBRIDO</b> — 2026-06-20. <code>API frontier</code> para lo server-side (Discovery, levantamiento, análisis) — Claude Code suscripción NO se multiplexa server-side (ToS). <code>Claude Code suscripción</code> para el dev humano en su laptop.</li>
-    <li><b>Data Plane = configurable por cliente</b> (on-prem O su nube) — 2026-06-20. Mismo artefacto, dos destinos.</li>
-    <li><b>"Transitan, no persisten"</b> — 2026-06-21. Los datos del cliente transitan a la API frontier con zero-retention + minimización; jamás persisten fuera de su red. LLM on-premise = opción futura para regulados.</li>
-    <li><b>P1 y P2 = productos independientes, cero import de código</b> — 2026-07-02, I-74/CK-07 (Stage 4 <b>ejecutado</b>). <b>Evolucionado en CK-16:</b> el server DevHub (P2 en data plane) murió sin desplegarse — P2 es <b>DevStudio</b>, app de escritorio por usuario; queda UN binario nuestro en el data plane (<code>directorio</code>).</li>
-    <li><b>Contrato de datos CK-08 = DEROGADO (CK-16)</b> — la Pull API se diseñó contra el server que ya no existirá. La conexión DevStudio/GitHub→Cockpit se diseña con el primer consumidor real (BL-18) — disciplina anti-código-especulativo intacta.</li>
-    <li><b>App del Auditor = subsistema propio (N14)</b> — CK-11, incorporada al mapa en CK-14. App instalable del consultor; el método embebido viaja con nuestra persona, al cliente solo cruza el resultado.</li>
-    <li><b>P2 = DevStudio con GitHub como conector (CK-16)</b> — cada usuario del ciclo (CTO/dev/devops/PO) con su app instalable; el repo GitHub del cliente (N6) es el punto de encuentro. Matiz BYOC firmado: <em>"sus datos viven en SU GitHub y sus sistemas, no en infra nuestra"</em>; el crudo sensible (N12) nunca toca GitHub.</li>
+    <li><b>Deroga el límite de IP "el método nunca al cliente" (D1).</b> El método se entrega empaquetado en arneses; Arnesia se entrega al cliente para que los mantenga. Protección = <b>licencia + contrato</b> (canal N3 revocable), ya no arquitectura.</li>
+    <li><b>Mueren N1, N4, N7.</b> El Motor de Discovery server-side (N1) renace como arneses en N2/N14; la voz (N4) se difiere; los agentes efímeros (N7) mueren — <b>todo el levantamiento es vía consultor</b> (Consultio sobre Claude Code).</li>
+    <li><b>N6 = Repositorio Oficial confidencial</b> en la infra del cliente (ya no GitHub): git self-hosted (Forgejo); BD = índice derivado, nunca SSoT.</li>
+    <li><b>Nacen Arnesia (N15), Data Lakehouse (N16), Colab Studio (N17), sistemas de la org (N18), Analista de Calidad (N19)</b>; N18/N19 como nodos propios (D2).</li>
+    <li><b>Data Lakehouse (D3):</b> default en la infra del cliente; hosteado por nosotros = opción comercial. <b>Knowledge DB (D5):</b> declarada <code>pendiente</code>, files-first en el repo cuando haya demanda.</li>
+    <li><b>Consultio (D4)</b> = nombre de la App del Consultor (clon de DevStudio con adaptación propia).</li>
   </ol>
   <h3 style="color:var(--dim);margin-top:10px">Pendiente (tracking = <code>proyecto/backlog.yaml</code>)</h3>
   <ul>
-    <li><b>Definir la App del Auditor</b> — alcance/stack/publicación (BL-15 · BL-16 · BL-17).</li>
-    <li><b>Contrato del handoff</b> (SPEC "comidito") Discovery→Delivery — se resuelve al diseñar N1 (BL-13).</li>
-    <li><b>Deuda Go/Next de N13</b> — Vite SPA + Go único (BL-20). El lado DevHub murió con el server; DevStudio es otra base de código (P2).</li>
-    <li><b>Conexión DevStudio/GitHub→Cockpit</b> — mecanismo TBD, se diseña con el primer consumidor real (BL-18).</li>
-    <li><b>Auth/roles reales en N13</b> (BL-12) — gate para despliegue multi-usuario.</li>
+    <li><b>Consultio + Colab Studio</b> — clonar de DevStudio + arneses (BL-15/16/17 redefinidos + BL nuevo).</li>
+    <li><b>Repositorio Oficial</b> — Forgejo self-hosted, tecnología BD vs archivos (BL nuevo).</li>
+    <li><b>Data Lakehouse</b> — dlt + DuckLake, conectores, hosting (BL nuevo, ex-BL-18).</li>
+    <li><b>Cockpit</b> — Gestión de Cambios + niveles de acceso (BL nuevo + ex-BL-12 sube a alta).</li>
+    <li><b>Plano del Fabricante</b> — N3 distribución/telemetría/licencias (BL nuevo).</li>
+    <li><b>Knowledge Database</b> — investigación aplicada cuando haya demanda (BL nuevo, files-first).</li>
   </ul>
 </div>
 
-<!-- DRAWER de nodos · lee window.NODOS (nodos.data.js ← GENERADO desde NODOS.md por gen_arquitectura.py, CK-15) · NO 2da SSoT -->
+<!-- DRAWER de nodos · lee window.NODOS (nodos.data.js ← GENERADO desde NODOS.md por gen_arquitectura.py) · NO 2da SSoT -->
 <script src="nodos.data.js"></script>
 <style>
   [data-nodo]{cursor:pointer;transition:.12s}

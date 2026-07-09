@@ -1,4 +1,15 @@
-# research/ — investigación de producto heredada
+# research/ — investigación de producto
+
+Campañas de investigación. Lee el `README.md`/`INDICE.md` de cada una antes de retomar — es probable
+que ya exista una decisión o un aprendizaje capturado.
+
+## [`rediseno-total/`](./rediseno-total/) — SOTA del rediseño CK-18 (2026-07-08)
+Siete investigaciones state-of-the-art que informaron el rediseño de fondo (Fábrica + Organización
+instalada): repositorio oficial (git/Forgejo), data lakehouse (dlt+DuckLake), knowledge DB
+(files-first), distribución/licencias/telemetría (go-tuf v2 + Tauri + Ed25519 + OTLP), auth/RBAC
+(embebida policy-as-data), gestión de cambios ISO, y proceso-como-arnés. Empieza por su `README.md`.
+
+## Campañas heredadas del monorepo
 
 Tres campañas rescatadas. Lee el `README.md`/`NEXT-PROMPT.md`/`INDICE.md` de cada una antes de
 retomar una investigación — es probable que ya exista una decisión o un aprendizaje capturado.

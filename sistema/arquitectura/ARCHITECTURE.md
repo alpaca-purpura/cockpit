@@ -6,14 +6,21 @@
 > **Docs base:** `VISION-DESARROLLOS.md` (§17 planos, §12 contexto, §19 mapa) y `PRODUCT-VISION.md` (legacy, monorepo `prenter-harness/tooling/strategy/` — congelado) ·
 > [`SERVICE-DESIGN.md`](../../proyecto/research/service-design/SERVICE-DESIGN.md) · [`METODOLOGIA.md`](../metodo/METODOLOGIA.md) · **[`NODOS.md`](./NODOS.md) (14 nodos a nivel arquitecto, SSoT de fichas) · [`despliegue.html`](./despliegue.html) (diagrama visual, portado y actualizado en CK-14)**.
 > **Decisiones de arquitectura:** este repo → [`LEDGER.md`](../../LEDGER.md) (fichas **CK-NN**) · historia previa → ledgers **I-NN** (producto) y **H-NN** (fábrica) del monorepo legacy `prenter-harness` (congelado). *No hay ADRs en formato MADR; los ledgers son el equivalente (append-only).*
-> **Última actualización:** 2026-07-07 (**CK-16**) — P2 = **DevStudio** (app de escritorio, GitHub como conector; el server DevHub murió sin desplegarse); contrato CK-08 **derogado** (conexión TBD, BL-18); N6 = repo GitHub del cliente (matiz BYOC). Mismo día: CK-14 (N14 App del Auditor, cierra BL-03) · CK-15 (render as-code, cierra BL-08).
+> **Última actualización:** 2026-07-08 (**CK-18** — rediseño de fondo). El modelo pasa de "BYOC con motor server-side" a **Fábrica de software (Plano del Fabricante) + Organización instalada + Edge**. El método **se entrega al cliente** empaquetado en arneses (deroga el límite de IP "el método nunca al cliente"; protección = licencia + contrato). Mueren N1 (motor→arneses)/N4/N7; nacen Arnesia (N15)/Data Lakehouse (N16)/Colab Studio (N17)/Sistemas org (N18)/Analista de Calidad (N19). SOTA en [`../../proyecto/research/rediseno-total/`](../../proyecto/research/rediseno-total/). **Las secciones de abajo que describen el split Control/Data Plane e "IP por arquitectura" son historia pre-CK-18** — el SSoT del modelo nuevo es [`NODOS.md`](./NODOS.md) (16 nodos) + [`despliegue.html`](./despliegue.html).
 
 ---
 
-## Modelo mental (una frase)
-**UN sistema en TRES etapas (Levantamiento · Ejecución · Cockpit-CEO) · DOS planos de despliegue
-(Control Plane nuestro = Discovery/IP · Data Plane del cliente = Delivery+CEO/datos · patrón BYOC) · UN SSoT ·
-el know-how protegido por arquitectura · runtime de agentes HÍBRIDO (API server-side + Claude Code en laptop dev).**
+## Modelo mental (una frase — CK-18)
+**UN sistema como FÁBRICA DE SOFTWARE que construye el sistema operativo de la organización y lo
+INSTALA en su red · TRES planos (Fabricante nuestro = construye/versiona/distribuye · Organización del
+cliente = Repositorio Oficial + Cockpit + Data Lakehouse, sus datos no salen · Edge = apps sobre
+Claude Code local) · el método SE ENTREGA en arneses (protección por licencia + contrato) · runtime
+edge por-humano (una suscripción, un humano — ToS).**
+
+> Las tres etapas del método (M1 Levantamiento · M3 Ejecución · M2 Mantenimiento) siguen siendo el QUÉ.
+> Lo que cambió en CK-18 es el CÓMO se despliega: ya no hay motor server-side (N1) ni agentes efímeros
+> (N7) — el consultor conduce todo desde **Consultio** sobre su Claude Code, con arneses fabricados por
+> **Arnesia**, y publica al **Repositorio Oficial** confidencial del cliente.
 
 Las **3 etapas** (= los módulos M1·M3·M2, ver [PRODUCT-VISION §1.2](../../../tooling/strategy/PRODUCT-VISION.md)) son el QUÉ.
 El **split de despliegue** es el CÓMO se lleva a la realidad: el **Discovery** (levantamiento + diseño del

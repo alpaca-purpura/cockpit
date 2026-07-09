@@ -1,59 +1,80 @@
 # System Backlog — Cockpit (vista humana de [`backlog.yaml`](./backlog.yaml))
 
 > SSoT = `backlog.yaml`. Esta vista se edita en el MISMO evento — si divergen, manda el YAML.
-> Prioridades = propuesta de la auditoría CK-11; las firma el operador.
+> Prioridades las firma el operador. Columnas re-organizadas en **CK-18** (rediseño de fondo:
+> Fábrica + Organización instalada).
 
 ## Panorama
 
 | Columna | Pendiente | En curso | Lo más urgente |
 |---|---|---|---|
 | **Sistema (transversal)** | 6 | 1 | BL-04 design system · BL-05 poblar método |
-| **Vista Negocio (N13)** | 3 | — | BL-11 rol Área · BL-12 auth |
-| **Motor Discovery (N1 ★IP)** | 2 | — | BL-13 campaña (decidir arranque) |
-| **App del Auditor** | 3 | — | BL-15 definir producto |
-| **Conexión delivery DevStudio/GitHub→Cockpit** | 1 | — | BL-18 (gatillo: consumidor real) |
+| **Cockpit (N13)** | 5 | — | BL-12 niveles de acceso (alta) · BL-24 Gestión de Cambios |
+| **Consultio (N14)** | 3 | — | BL-15 clon de DevStudio (arranca cuando DevStudio esté listo) |
+| **Repositorio Oficial (N6)** | 2 | — | BL-21 Forgejo self-hosted |
+| **Data Lakehouse (N16)** | 2 | — | BL-22 dlt + DuckLake |
+| **Colab Studio (N17)** | 1 | — | BL-23 app del trabajador |
+| **Plano del Fabricante (N2/N3/N15)** | 2 (+1 derogado) | — | BL-25 distribución/licencias · BL-26 pipeline de arneses |
 
 ## Sistema (transversal)
 
 | ID | Ítem | Prioridad | Estado |
 |---|---|---|---|
 | BL-01 | Persona/puesto como entidad de primera clase | alta | **hecho** (CK-12 · CAP-07) |
-| BL-02 | Reconciliar objeto.schema (9 entidades) ↔ negocio.schema (4) | alta | **hecho** (CK-13 · CAP-08) |
-| BL-03 | Terminar arquitectura / diagrama de despliegue (incluir App Auditor) | alta | **hecho** (CK-14) |
+| BL-02 | Reconciliar objeto.schema (9) ↔ negocio.schema (4) | alta | **hecho** (CK-13 · CAP-08) |
+| BL-03 | Terminar arquitectura / diagrama de despliegue | alta | **hecho** (CK-14 · rediseñado CK-18) |
 | BL-04 | Design system + atomic design + Storybook as-code | media | pendiente |
 | BL-05 | Poblar método: M1 beats 2-3 · M3 etapas 1-5 | media | pendiente |
 | BL-06 | negocio.schema: decidir SSoT (plugin vs repo) | media | pendiente |
 | BL-07 | Destilar research (sistema vs campaña) | media | en-curso |
-| BL-08 | Render de arquitectura.yaml (generador no portado) | baja | **hecho** (CK-15) |
+| BL-08 | Render de arquitectura.yaml | baja | **hecho** (CK-15) |
 | BL-09 | Borrar carpetas campaign-* originales | baja | pendiente |
-| BL-10 | Comprador/pricing/éxito-12-meses | baja | pendiente |
-| BL-19 | Voltear negocio.yaml a proyección GENERADA del objeto (D-13/D-04; gatillo: objetivos+brechas poblados) | media | pendiente |
+| BL-10 | Comprador/pricing/éxito-12-meses (+ licencia Arnesia, CK-18) | baja | pendiente |
+| BL-19 | Voltear negocio.yaml a proyección GENERADA del objeto | media | pendiente |
 
-## Vista Negocio (N13) — construida, en evolución
+## Cockpit (N13) — Visualización + Gestión de Cambios + niveles
 
 | ID | Ítem | Prioridad | Estado |
 |---|---|---|---|
+| BL-12 | Auth + niveles de acceso reales (4 niveles, policy-as-data) | **alta** | pendiente |
+| BL-24 | Módulo Gestión de Cambios (ISO §7.5/§6.3) | media | pendiente |
+| BL-28 | Cruce estructura × operación (esquema de indicadores) | media | pendiente |
+| BL-20 | Deuda Go/Next: UI → Vite SPA | media | pendiente |
 | BL-11 | Rol Área real (hoy placeholder) | media | pendiente |
-| BL-12 | Auth / roles reales | media | pendiente |
-| BL-20 | Deuda Go/Next: UI → Vite SPA (consolidada de NODOS en CK-14; conecta BL-04) | media | pendiente |
-
-## Motor de Discovery (N1 ★IP) — sin construir
-
-| ID | Ítem | Prioridad | Estado |
-|---|---|---|---|
-| BL-13 | Campaña N1: diseño → construcción | tbd | pendiente |
 | BL-14 | Capability "preparación para auditoría" (gatillo: demanda real) | tbd | pendiente |
 
-## App del Auditor — declarada CK-11, sin construir
+## Consultio — App del Consultor (N14) — clon de DevStudio, sin construir
 
 | ID | Ítem | Prioridad | Estado |
 |---|---|---|---|
-| BL-15 | Definir el producto (alcance, stack, patrón instalable) | alta | pendiente |
-| BL-16 | Embeber el método como flujo operable (← BL-15) | alta | pendiente |
-| BL-17 | Publicación al repo del cliente — "deploy de procesos" (← BL-15) | alta | pendiente |
+| BL-15 | Construir Consultio = clon de DevStudio + adaptación propia | alta | pendiente |
+| BL-16 | Operar el método + construir el mapa completo (← BL-15) | alta | pendiente |
+| BL-17 | Publicación al Repositorio Oficial — "deploy de procesos" (← BL-15) | alta | pendiente |
 
-## Conexión de delivery DevStudio/GitHub→Cockpit — sin mecanismo (CK-08 derogado, CK-16)
+## Repositorio Oficial (N6) — git self-hosted confidencial, sin construir
 
 | ID | Ítem | Prioridad | Estado |
 |---|---|---|---|
-| BL-18 | Diseñar + implementar la conexión (gatillo: consumidor real; probablemente vía GitHub) | tbd | pendiente |
+| BL-21 | Forgejo self-hosted + BD vs archivos (git/archivos = SSoT) | media | pendiente |
+| BL-27 | Knowledge Database (know-how, files-first) | tbd | pendiente |
+
+## Data Lakehouse (N16) — dlt + DuckLake, sin construir
+
+| ID | Ítem | Prioridad | Estado |
+|---|---|---|---|
+| BL-22 | Construir el lakehouse (dlt + DuckLake, DuckDB embebido) | media | pendiente |
+| BL-18 | Conectores de ingesta por sistema (ex-conexión delivery, CK-08 derogado) | tbd | pendiente |
+
+## Colab Studio (N17) — app del trabajador, sin construir
+
+| ID | Ítem | Prioridad | Estado |
+|---|---|---|---|
+| BL-23 | Colab Studio — arneses por puesto para el trabajador operativo | media | pendiente |
+
+## Plano del Fabricante (N2/N3/N15) — lo que mantenemos y distribuimos
+
+| ID | Ítem | Prioridad | Estado |
+|---|---|---|---|
+| BL-25 | Distribución + telemetría + licencias (go-tuf v2 · Tauri · Ed25519 · OTLP) | media | pendiente |
+| BL-26 | Arnesia: pipeline arnés-por-rol desde el objeto normalizado (anti-drift) | media | pendiente |
+| BL-13 | ~~Motor de Discovery (N1) como servicio server-side~~ | — | **derogado** (CK-18 → arneses) |

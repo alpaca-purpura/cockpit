@@ -29,8 +29,8 @@ actual, proyectar su estado ideal, y accionar la brecha.
 **Flujo de valor (heredado de CK-01, intacto):** los datos ingeridos **modelan el estado actual
 (As-Is)** → se **proyecta el estado ideal (To-Be)**, informado por las buenas prácticas ISO y las
 metodologías de proceso/rol/objetivo (§Pilares) → de esa **brecha** se generan los **proyectos de
-desarrollo y necesidad** — que pueden resolverse con arneses por puesto (P3 · Kit) o con software a
-medida (histórico: P2 · DevHub, hoy graduado y externo).
+desarrollo y necesidad** — que pueden resolverse con arneses por puesto (P3 · Kit, fabricados en
+Arnesia/P4) o con software a medida (P2 · DevStudio, también en manos de los devs del cliente).
 
 ## Los cuatro pilares
 
@@ -72,52 +72,58 @@ de un cliente que la pida, nunca antes (disciplina
 anti-código-especulativo, heredada del monorepo). El sistema **nunca** emite certificados ni
 sustituye a un auditor — el veredicto I-05 sigue rigiendo el límite.
 
-## Roles (heredado de CK-01)
+## Roles (heredado de CK-01, ampliado CK-18)
 
-- **Directorio** — el mapa vivo de la organización: objetivos, cumplimiento, drill-down. Vivo hoy
-  (Vista Negocio).
-- **Área** — su rebanada de procesos/sistemas. Declarado, placeholder en el shell.
-- **Consultor** (nuestro) — en la fase de implantación; a futuro opera el Motor de Discovery
-  desde su aplicación propia (App del Auditor, CK-11 — §Arquitectura).
+Cockpit sirve a **toda la organización por niveles de acceso** (CK-18): **Gobernanza** (Directorio),
+**Estratégico** (C-level/gerencias), **Táctico** (jefaturas), **Operativo** (analistas/usuarios). Cada
+nivel ve lo que su rol permite, en coherencia con la estructura del Repositorio Oficial.
 
-## Arquitectura — las piezas de Cockpit
+- **Gobernanza / Directorio** — el mapa vivo de la organización: objetivos, cumplimiento, drill-down.
+  Vivo hoy (Visualización).
+- **Niveles Estratégico/Táctico/Operativo** — cada uno su rebanada. Declarados, placeholder en el
+  shell hasta que existan los niveles de acceso reales (BL-12, sube a alta).
+- **Consultor** (transferible) — construye el sistema de la organización con **Consultio** (N14, clon
+  de DevStudio sobre Claude Code) y lo publica al Repositorio Oficial. Rol transferible: inicia siendo
+  persona de Prenter, luego lo hereda un **Analista de Calidad del cliente** (N19), que mantiene lo
+  oficial con la Gestión de Cambios (§ISO).
 
-Heredado de CK-07/CK-08 (Stage 4, ejecutado) y ampliado por CK-11 — ver
-`sistema/arquitectura/NODOS.md`:
+## Arquitectura — el modelo CK-18 (Fábrica + Organización instalada)
 
-- **Vista Negocio (N13)** — la mitad **ya construida**: binario propio `directorio` (Go, puerto
-  4100) + Next.js standalone (puerto 4101, embebido como export estático vía `go:embed`). Sirve
-  `/api/portfolio` (árbol Empresa→Sistema) y `/api/negocio` (Hilo de Oro + Brechas). Vive en
-  [`go/`](./go) y [`ui/`](./ui) de este repo, migrado byte-a-byte del monorepo y verificado
-  standalone (build+vet+test Go, tsc+vitest UI, export estático real — sin dependencias del
-  monorepo de origen).
-- **Motor de Discovery (N1, ★IP)** — la mitad **aún no construida**: backend de razonamiento
-  server-side (ingesta multi-fuente, orquesta AS-IS→TO-BE→gaps sobre los 4 pilares). Diseño
-  detallado (stack candidato, endpoints, riesgos abiertos) heredado en
-  `sistema/arquitectura/NODOS.md#n1`. Campaña propia, sin fecha — sigue siendo Cockpit, no un
-  producto aparte.
-- **App del Auditor (N14, declarada CK-11, sin construir)** — la aplicación instalable **propia del
-  Consultor** (patrón harness-studio/dev-studio): opera el método del servicio
-  (`sistema/metodo/` — levantamiento m1, mantenimiento m2, espinazo m3) durante el engagement y
-  **publica su resultado al repositorio propio de la empresa cliente** para actualizar el
-  sistema — como un programador que carga código a producción, solo que el artefacto son
-  procesos/roles/objetivos que Cockpit entiende y renderiza (BL-15..BL-17 del backlog).
+Rediseñado de fondo en **CK-18**: el sistema deja de ser "BYOC con motor server-side" y pasa a ser
+una **fábrica de software** que construye el sistema operativo de la organización y lo **instala en
+su red**. El método **se entrega al cliente** empaquetado en arneses (deroga el límite de IP "el
+método nunca al cliente"; protección = licencia + contrato). Tres planos — ver
+`sistema/arquitectura/NODOS.md` (16 nodos, SSoT) + `despliegue.html` + `proyecto/research/rediseno-total/`:
 
-La conexión de datos de delivery hacia Cockpit está **sin mecanismo firmado**: el contrato Pull
-API de CK-08 se diseñó contra el server DevHub que ya no existirá y quedó **derogado** (CK-16);
-se diseña con el primer consumidor real (BL-18), probablemente vía el repo GitHub del cliente.
+- **Plano del Fabricante (nuestro):** **Arnesia (N15)** fabrica los arneses por rol-en-proceso;
+  **Repositorio Maestro (N2)** guarda método + arneses plantilla + código; **Distribución (N3)**
+  publica releases firmadas, gestiona licencias y recibe telemetría — habilita el mantenimiento. No
+  razona en runtime.
+- **Plano de la Organización (cliente):** **Cockpit (N13)** — Visualización (cruza la estructura del
+  Repositorio Oficial con la operación del Data Lakehouse) + **Gestión de Cambios** (ISO) + niveles
+  de acceso; binario propio `directorio` (Go, 4100), la Visualización base ya construida y verificada
+  standalone. **Repositorio Oficial (N6)** — git self-hosted confidencial (Forgejo), SSoT de la
+  estructura (ya no GitHub). **Data Lakehouse (N16)** — dlt + DuckLake, reúne la operación de todos
+  los sistemas (N18) y nutre a Cockpit ("cómo vamos día a día"). **Depósito (N12)** — crudo transitorio.
+- **Edge (apps sobre Claude Code local, BYO licencia):** **Consultio (N14)** — App del Consultor, clon
+  de DevStudio con nombre propio: construye el mapa completo (objeto normalizado + documentos + arneses)
+  con preview local de Cockpit y lo **publica a N6** ("deploy de procesos"); transferible al Analista
+  de Calidad. **Colab Studio (N17)** — app del trabajador operativo (arneses por puesto). **DevStudio
+  (N5)** — también a devs del cliente. **N8** motor común.
+- **Muertos (CK-18):** el Motor de Discovery server-side (N1) renace como arneses; la voz (N4) se
+  difiere; los agentes efímeros (N7) mueren — **todo el levantamiento es vía consultor**.
 
 ## Ecosistema (contrato, no implementación — el detalle de cada producto vive en SU repo)
 
-- **P2 · DevStudio** (`~/Proyectos/dev-studio`, reemplazó al server DevHub — CK-16) — app de
-  escritorio por usuario del ciclo de desarrollo (CTO/dev/devops/PO): cada developer ve sus
-  repos y sus historias; la versión Product Manager (en construcción) concentra refinamiento y
-  priorización, con **GitHub como canalizador**. Futura fuente de datos de delivery de Cockpit
-  (mecanismo TBD, BL-18). Sistemas separados, sin import de código cruzado.
-- **P3 · Kit** (`~/Proyectos/harness-repo`, graduado) — el entregable final del pilar Personas: los
-  arneses por puesto que resuelven una brecha detectada se conectan aquí como respuesta a un gap.
-- **P4 · Harness Studio** (`~/Proyectos/harness-studio`, graduado) — no es fuente de datos de
-  Cockpit; opera en el plano de talento-IA de la fábrica, no en el de la empresa cliente.
+- **P2 · DevStudio** (`~/Proyectos/dev-studio`) — app de escritorio del ciclo de desarrollo
+  (CTO/dev/devops/PO). CK-18: se **entrega también a los devs del cliente** para construir su sistema
+  a medida; es el linaje del que se **clona Consultio** (N14). Sistemas separados, sin import cruzado.
+- **P3 · Kit** (`~/Proyectos/harness-repo`, graduado) — el catálogo de arneses por puesto: el
+  entregable del pilar Personas, respuesta a una brecha detectada.
+- **P4 · Arnesia / Harness Studio** (`~/Proyectos/harness-studio`) — **la fábrica de arneses (N15,
+  ascendida en CK-18)**: produce y versiona los arneses por rol-en-proceso que cargan Consultio,
+  Colab Studio y DevStudio; se entrega al cliente para que mantenga los suyos. Es pieza central del
+  Plano del Fabricante, no ya un plano de talento aparte.
 
 ## Estado heredado al graduarse (2026-07-06)
 
@@ -147,8 +153,12 @@ Aquí queda solo el porqué estratégico de los tres huecos mayores:
   convergencia de lectura del objeto completo también cerró (BL-02 → CK-13, CAP-08); queda
   voltear negocio.yaml a proyección generada (BL-19).
 - **Comprador con nombre y cara, pricing, éxito a 12 meses** (→ BL-10) — heredado de CK-01, sin
-  gate bloqueante (I-71 lo derogó); contexto para priorizar.
-- **Motor de Discovery (N1)** (→ BL-13) — sin fecha, campaña propia.
+  gate bloqueante (I-71 lo derogó); con CK-18 incluye licencia de Arnesia + arneses + contrato de
+  mantenimiento (N3).
+- **El rediseño CK-18** (Fábrica + Organización instalada) abre el grueso del backlog nuevo: Consultio
+  (BL-15..17), Repositorio Oficial (BL-21), Data Lakehouse (BL-22), Gestión de Cambios + niveles de
+  acceso (BL-24/BL-12), Plano del Fabricante (BL-25/BL-26). El Motor de Discovery como servicio
+  server-side (ex-BL-13) quedó **derogado** — su razonamiento vive como arneses.
 
 ## Gestión
 
