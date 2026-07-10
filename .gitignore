@@ -18,3 +18,7 @@ go/cmd/directorio/ui/
 *.log
 .env
 .env.*
+
+# Python (gates as-code)
+__pycache__/
+*.pyc

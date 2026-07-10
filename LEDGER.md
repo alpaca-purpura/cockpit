@@ -507,7 +507,41 @@ nombraba, ahora **instalado y cableado**.
 
 *Siguiente:* narrativa — el pendiente vive en `docs/product/` (historias `idea/refined/ready`); ver `MAPEO.md`.
 
-<!-- Próximas: CK-20, … -->
+### CK-20 · Cableado del arnés — corpus del KIT materializado + hueco 0.5.3 documentado (roles a mano) — `decidida` · `vig:vigente`
+
+CK-19 adoptó el arnés; **CK-20 lo termina de cablear**. Se materializó, a los paths convencionales que las
+reglas referencian, el corpus que el KIT 0.5.3 **sí** publica pero que la adopción no había copiado:
+- `docs/process/` ← los 6 process-docs del KIT verbatim (tier:core, no editar): `harness-lifecycle`,
+  `ticket-states`, `continuous-improvement` (CIL), `spec-mapa-funcional`, `tech-debt`, `cockpit-permissions`.
+- `scripts/git/` ← los 6 scripts de coordinación (`session-lock`, `commit-paths`, `dod-evidence-gate`,
+  `multi-session-scope-guard`, `cleanup-wip-branches`, `ps1-harness`) que `parallel-safety`/`git-safety` citan.
+- `docs/process/harness-backlog.md` + `learnings.md` — los archivos de captura del HLP (carriles L1/L2 del CIL).
+
+**Decisión (3 forks ratificados):** (Q1) copiar a paths convencionales — **extiende la razón CK-19** (copiar,
+no symlink a la cache versionada/volátil del plugin → repo portable). (Q2) el KIT 0.5.3 **no publica** el
+pipeline ejecutable → **documentar el hueco + operar los roles a mano**, sin autoría propia (fork silencioso
+prohibido; se upstrea el "W8 lift-kit"). (Q3) commit de la base CK-19/20 primero, luego la reorg; sin push.
+
+**Revisión de colocación (lo pedido — "dónde va cada archivo"):** ya correcto y sin mover — `CLAUDE.md`,
+`VISION.md`, `README.md`, `LEDGER.md`, `project.config.yaml` viven en root (seam + norte + project-layer);
+`docs/product/**` es el SSoT del qué-construir; `.claude/rules|agents|settings.json` re-expuestos;
+`sistema/**` = los dos ejes as-code. Lo único que faltaba poblar era `docs/process/` y `scripts/git/`.
+
+**Hueco del KIT 0.5.3 (registrado en `harness-backlog.md` HB-C1..C5 — no es cableable, es subset extractable):**
+role-skills (`/pm · /dev-team · /auditor · /architect · /po · /harness-issue`) + sub-agents (`auditor-*`,
+`builder-*`) no publicados (W8 lift-kit) · **13 reglas** citan `docs/rules-detail/*` ausente · **3 reglas**
+citan templates `03-arch/04-validators/06-tickets` ausentes · varios `docs/process/*` (capability-protocol,
+lifecycle, parallel-sessions-protocol, promotion-protocol, audits, ADRs) no extraídos · registry con
+duplicados 0.5.2. Materializar/escribir project-layer **solo cuando el ciclo lo ejerza**, no masivo.
+
+**Verificación (2026-07-09):** gate arquitectura `--check` verde · gate metodología `--check` verde · doctor
+`exit 0` · base CK-19/20 commiteada (`00994ea`) con los dos gates as-code corriendo en el pre-commit.
+
+*Conecta:* CK-19 (adopción — CK-20 la cablea) · `harness-lifecycle.md` (HLP, ahora en repo) · `cockpit-stack.md`
+(supuestos SaaS neutralizados). *Siguiente:* al llegar la 1ª historia a refining/ready se materializan los
+templates `03-arch/04-validators/06-tickets` (HB-C3); el pipeline de roles espera el upstream del KIT (HB-C1).
+
+<!-- Próximas: CK-21, … -->
 
 ## Log
 
@@ -523,3 +557,4 @@ nombraba, ahora **instalado y cableado**.
 | 2026-07-07 | Gate anti-drift automático: hook `.githooks/pre-commit` (valida fuentes, regenera derivados y los stagea; bloquea si no valida) + `despliegue.html` curado ahora SE VALIDA (cobertura data-nodo ↔ índice, madurez por art vs NODOS.md; test negativo verificado). | CK-17 |
 | 2026-07-08 | Rediseño de fondo: Fábrica de software (Plano del Fabricante) + Organización instalada. El método se entrega al cliente en arneses (deroga el límite de IP). Mueren N1 (motor→arneses)/N4/N7; nacen Arnesia (N15)/Data Lakehouse (N16)/Colab Studio (N17)/Sistemas org (N18)/Analista de Calidad (N19); N6 = Repositorio Oficial confidencial (ya no GitHub); N13 Cockpit = Visualización + Gestión de Cambios + niveles de acceso; N14 = Consultio (clon DevStudio). 7 investigaciones SOTA. Decisiones D1..D5. | CK-18 |
 | 2026-07-09 | Adopción del arnés prenter (migración total, lossless): `docs/product/` pasa a SSoT (29 historias + 8 capabilities + 2 releases + 7 module docs, con `provenance` verbatim de BL/CAP); `proyecto/backlog.yaml`+`docs/increment.yaml` archivados; 21 reglas CORE always-on en `.claude/rules/` + seam `project.config.yaml` (doctor 0) + hooks de telemetría. Se amplían las dos extensiones as-code: arquitectura (`arquitectura-as-code.md` supersede el `paradigm-arquitectura` del CORE) y metodología (nueva: `methodology.schema.yaml`+`gen_metodo.py`+2º gate en pre-commit). Forks Q1(migración total)/Q2(esqueleto completo)/Q3(gen+gate ahora). Deuda: bug `find_unfilled` del KIT 0.5.3 a backflow. | CK-19 |
+| 2026-07-09 | Cableado del arnés (termina CK-19): 6 process-docs + 6 scripts/git del KIT materializados a paths convencionales (copia, no symlink a cache volátil — extiende CK-19); capture files del HLP creados; hueco del KIT 0.5.3 (role-skills/agents, rules-detail, specs-templates no publicados = W8 lift-kit) documentado en `harness-backlog.md` y operado a mano (sin fork). | CK-20 |
