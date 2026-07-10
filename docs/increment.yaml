@@ -1,3 +1,7 @@
+# ⚠️ ARCHIVADO (CK-19, 2026-07-09) — YA NO ES SSoT. Congelado como registro histórico.
+#    Las capabilities viven ahora en: docs/product/capabilities/cockpit/<cap>.yaml.
+#    Correspondencia CAP-NN → capability: docs/product/MAPEO.md. NO editar este archivo.
+#
 # increment.yaml — Product Increment de Cockpit como dato (CK-11)
 #
 # QUÉ ES: SSoT de las capabilities YA construidas y VERIFICADAS — lo que corre de verdad.

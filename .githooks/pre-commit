@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
-# Gate anti-drift de la arquitectura-as-code (CK-17).
+# Gates anti-drift del sistema as-code (CK-17 arquitectura · CK-19 metodología).
 # Activación (una vez por clone):  git config core.hooksPath .githooks
 #
 # Qué hace en cada commit:
-#   1. Corre gen_arquitectura.py — valida NODOS.md + arquitectura.yaml + despliegue.html
-#      (cobertura de nodos y madurez del diagrama curado) y REGENERA los derivados
-#      (nodos.data.js, arquitectura.html).
-#   2. Si la validación falla → bloquea el commit (arregla la fuente o el diagrama).
-#   3. Si los generados cambiaron → los agrega al commit automáticamente (mismo evento).
+#   1. arquitectura-as-code — gen_arquitectura.py valida NODOS.md + arquitectura.yaml +
+#      despliegue.html y REGENERA los derivados (nodos.data.js, arquitectura.html).
+#   2. metodología-as-code — gen_metodo.py valida methodologies.yaml (contra
+#      methodology.schema.yaml) + el árbol proceso/ y REGENERA METODOLOGIA.md §4.
+#   3. Si cualquiera falla la validación → bloquea el commit (arregla la fuente).
+#   4. Si un generado cambió → se agrega al commit automáticamente (mismo evento).
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
@@ -18,4 +19,13 @@ if ! python3 sistema/arquitectura/gen_arquitectura.py; then
   exit 1
 fi
 
-git add sistema/arquitectura/nodos.data.js sistema/arquitectura/arquitectura.html
+if ! python3 sistema/metodo/gen_metodo.py; then
+  echo ""
+  echo "✖ pre-commit: la metodología-as-code no valida — commit bloqueado."
+  echo "  Corrige methodologies.yaml / proceso/** y reintenta."
+  exit 1
+fi
+
+git add \
+  sistema/arquitectura/nodos.data.js sistema/arquitectura/arquitectura.html \
+  sistema/metodo/METODOLOGIA.md

@@ -1,15 +1,37 @@
 # methodologies.yaml — registro de metodologías  ·  L1 · INSTANCIA
 #
-# SSoT de las metodologías (conforma a schema/methodology.schema.yaml).
+# SSoT de las metodologías (conforma a methodology.schema.yaml).
 # Backbone = objeto del sistema (O1-O7 hilo · T1-T3 transversal). principios[] = tag secundario.
 # combina_con[] = el grafo (cómo se componen). La sección §4 de METODOLOGIA.md se GENERA de aquí.
 #
-# Editar AQUÍ, no en el .md. Validar:  python3 tooling/scripts/validate_schema.py
+# Editar AQUÍ, no en el .md. Validar + regenerar:  python3 sistema/metodo/gen_metodo.py
+# (gate anti-drift en .githooks/pre-commit · --check · CK-19).
 
 _meta:
   fuente_humana: "sistema/metodo/METODOLOGIA.md §4 (compendio narrativo)"
   total: 31
   backbone: "objeto (capa de contexto / Hilo de Oro)"
+  # Etiquetas de familias y del backbone — SSoT de los rótulos que el generador imprime en §4.
+  familias:
+    A: "Descubrimiento & Producto"
+    B: "Dominio & Proceso"
+    C: "Arquitectura & Sistemas"
+    D: "Gobierno, Calidad & Madurez"
+    E: "Especificación & Construcción"
+    F: "Valor, Costo & Alineación"
+    G: "IA: Grounding & Anti-alucinación"
+    H: "Diseño de Servicio & Experiencia"
+  backbone_labels:
+    O1: "Oportunidad / Apuesta"
+    O2: "Objetivo & Valor"
+    O3: "Proceso"
+    O4: "Personas & Autoridad"
+    O5: "Sistema & Capabilities"
+    O6: "Gap & Madurez"
+    O7: "Contrato & Código"
+    T1: "Dato / Grounding"
+    T2: "Experiencia / Servicio"
+    T3: "Gobierno / Loop"
 
 # ====================== A · Descubrimiento & Producto ======================
 

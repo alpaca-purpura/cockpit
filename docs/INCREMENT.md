@@ -1,3 +1,7 @@
+> ⚠️ **ARCHIVADO (CK-19, 2026-07-09) — ya no es SSoT.** Las capabilities viven en
+> `docs/product/capabilities/`; correspondencia en [`docs/product/MAPEO.md`](./product/MAPEO.md).
+> Se conserva como registro histórico congelado.
+
 # Product Increment — capabilities funcionales de Cockpit (vista humana de [`increment.yaml`](./increment.yaml))
 
 > SSoT = `increment.yaml` (CAP-NN, as-code — cada capability referencia los componentes

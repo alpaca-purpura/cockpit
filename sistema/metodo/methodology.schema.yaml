@@ -1,0 +1,76 @@
+# methodology.schema.yaml — contrato de la metodología-as-code (L0 · DOMINIO)
+#
+# CK-19: reconstruido EN Cockpit. El schema-gemelo original quedó en el monorepo de origen
+# (prenter-harness · tooling/); aquí lo re-forjamos para dar a `sistema/metodo/` la misma
+# disciplina as-code que `sistema/arquitectura/` (SSoT → vista generada + gate anti-drift).
+#
+# Lo consume `sistema/metodo/gen_metodo.py`:
+#   · valida methodologies.yaml (M-cards) contra este contrato,
+#   · valida el árbol proceso/ (Definición: módulos → etapas → pasos),
+#   · regenera METODOLOGIA.md §4 (bloques GEN:indice/GEN:cards/GEN:tabla) desde la SSoT.
+#
+# SSoT de datos: methodologies.yaml + proceso/**.  Este archivo = el contrato (la forma).
+
+meta:
+  nombre: "contrato de metodologías (M-cards) + proceso-as-data"
+  version: 1
+  ssot_cards: sistema/metodo/methodologies.yaml
+  ssot_proceso: sistema/metodo/proceso/
+  vista_generada: sistema/metodo/METODOLOGIA.md   # §4 (bloques GEN)
+
+enums:
+  familia:   [A, B, C, D, E, F, G, H]
+  modo:      [columna, paraguas, situacional]
+  objeto:    [O1, O2, O3, O4, O5, O6, O7, T1, T2, T3]   # backbone: O1-O7 hilo · T1-T3 transversal
+  principio: [P1, P2, P3, P4, P5, P6, P7]
+  modulo:    [m1, m2, m3]
+
+# ── M-card (cada clave MNN de methodologies.yaml) ────────────────────────────
+card:
+  id_pattern: "^M[0-9]{2}$"
+  required: [nombre, familia, fuente, que, aporte_unico, cuando_usar,
+             objeto_primario, principios, combina_con, donde, modo]
+  optional: [objetos_secundarios]
+  fields:
+    nombre:              str
+    familia:             enum:familia
+    fuente:              { required: [autor, obra, url] }
+    que:                 str
+    aporte_unico:        str
+    cuando_usar:         str
+    objeto_primario:     enum:objeto
+    objetos_secundarios: list<enum:objeto>
+    principios:          list<enum:principio>          # no vacío
+    combina_con:         "list<{m: ref->card, como: str}>"
+    donde:               { required: [modulos, etapas, capa_contexto],
+                           modulos: list<enum:modulo>, capa_contexto: bool }
+    modo:                enum:modo
+
+# ── proceso/ (la Definición: plantilla del engagement, nuestra IP) ───────────
+proceso:
+  layout: "proceso/<modulo>/_modulo.md · <modulo>/<etapa>/_etapa.md · <modulo>/<etapa>/<paso>.md"
+  modulo:
+    required: [id, nombre, fase, runtime_dominante, orden]
+    id_pattern: "^m[0-9]+$"
+  etapa:
+    required: [id, modulo, nombre, gate, orden]
+    id_pattern: "^m[0-9]+\\.[a-z0-9]+$"
+  paso:
+    required: [id, modulo, etapa, orden, titulo_interno, actor, plano, gate]
+    id_pattern: "^m[0-9]+\\.[a-z0-9]+\\.[a-z0-9]+$"
+    # `metodologia: [...]` — los tokens ^M\d+$ DEBEN resolver a una M-card; el resto
+    #   (ISO9001-cl4, RACI, …) son tags libres (no se validan contra el catálogo).
+    # `desbloqueo` / `consume` / `produce` — refs a pasos/artefactos; ref a paso
+    #   inexistente = WARNING (el árbol está parcialmente poblado, BL-05).
+  gate_tipos: [none, humano, G1, G2, G3, G4, G5, G6, G7, G8]
+
+# ── invariantes que el gate exige (errores duros) ────────────────────────────
+invariantes:
+  - "_meta.total == número de M-cards"
+  - "cada MNN cumple id_pattern + campos required + enums"
+  - "combina_con[].m resuelve a una M-card existente"
+  - "cada _modulo/_etapa/_paso cumple sus campos required"
+  - "id de módulo/etapa/paso == su ruta en proceso/"
+  - "paso.modulo y paso.etapa resuelven a un módulo/etapa existente"
+  - "metodologia[] tokens ^M\\d+$ resuelven a una M-card"
+  - "METODOLOGIA.md §4 (GEN blocks) == render(methodologies.yaml)  [anti-drift]"

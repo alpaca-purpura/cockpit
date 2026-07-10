@@ -447,7 +447,67 @@ rumbo del ecosistema — por eso lleva ficha.
 
 *Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
 
-<!-- Próximas: CK-19, … -->
+### CK-19 · Adopción del arnés prenter — migración total al proceso as-code + amplían las dos extensiones (arquitectura/metodología) — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-09):* "necesitamos una metodología de desarrollo de software madura, que
+podamos utilizar. Para ello instala el plugin del marketplace de prenter … lleva toda la información que
+hemos creado como capabilities, etc. y todo lo que vamos a construir como historias de usuario … sin haber
+perdido nada de información, [para] seguir programando bajo la doctrina del plugin de prenter. Lo único que
+no tiene prenter que nosotros tenemos que ampliar es la metodología as code, y la arquitectura as code —
+extender y cablear apropiadamente."
+
+*Desarrollo:* censo profundo de ambos lados (subagentes). El arnés `harness@prenter-marketplace` (KIT 0.5.3)
+= kit de **proceso** agnóstico que lee `project.config.yaml` (el seam); adopción = llenar el seam →
+`/harness:bootstrap` (re-exponer reglas always-on + hooks) → correr el ciclo idea→done. Hallazgo clave: el
+manifest always-on del plugin está **vacío** (scaffold) → `.claude/rules/` es el único canal always-on, así
+que el bootstrap es obligatorio. Cockpit ya tenía un sistema **maduro y paralelo** (VISION/LEDGER/backlog/
+increment + `sistema/` as-code con drift-gate) — la migración es mapear ese sistema al vocabulario del arnés.
+
+**Forks firmados (AskUserQuestion, 2026-07-09):**
+1. **Q1 — Migración total.** `docs/product/` pasa a ser el SSoT (historias + capabilities + releases);
+   `proyecto/backlog.yaml` + `docs/increment.yaml` se **archivan** (congelados, no borrados). `sistema/` queda
+   como las dos extensiones.
+2. **Q2 — Fundación + esqueleto completo** en esta sesión (bootstrap + seam + cablear extensiones + espejar
+   8 CAP + 23+ historias + reglas project-layer + MAPEO + esta ficha).
+3. **Q3 — Reconstruir gen+gate de la metodología ahora** (el schema/generador gemelo quedó en el monorepo de
+   origen): `methodology.schema.yaml` + `gen_metodo.py` + gate en pre-commit, a paridad con arquitectura-as-code.
+
+*Ejecutado:* **bootstrap** — 21 reglas CORE copiadas byte-idénticas a `.claude/rules/` (+ `_HARNESS-CORE.md`),
+`grep-bot` a `.claude/agents/`, doctrina a `docs/process/harness/`, templates a `docs/product/templates/`,
+seam `project.config.yaml` (doctor exit 0), loader `scripts/harness_config.py`; hooks de telemetría vía el
+plugin (Stop/SubagentStop/SessionEnd → emit.py, sink local). **Migración total (lossless)** — 29 historias
+(`docs/product/stories/<module>/<story-id>/` = story.yaml + 00-story.md; 23 idea · 5 done · 1 dropped) con
+`provenance{}` verbatim de cada BL, 8 capabilities (CAP-01..08 → `capabilities/cockpit/`), 2 releases (F0/F1),
+7 module docs, `README.md` + `MAPEO.md` (prueba nada-perdido). **Extensión #1 arquitectura** — regla
+`arquitectura-as-code.md` que **supersede** `paradigm-arquitectura.md` del CORE (planos Fabricante/Organización/
+Edge; §Dónde-vive ancla a `node: N-NN`). **Extensión #2 metodología** — `methodology.schema.yaml` +
+`gen_metodo.py` (valida 31 M-cards + árbol `proceso/` + regenera METODOLOGIA.md §4) + segundo gate en
+`.githooks/pre-commit`; regla `metodologia-as-code.md`. Regla `cockpit-stack.md` (adapta los supuestos SaaS del
+CORE). `CLAUDE.md` reescrito a la doctrina del arnés; banners de archivado en backlog/increment + sus vistas.
+
+**Deudas declaradas:**
+1. **Bug del KIT 0.5.3 (backflow pendiente):** `find_unfilled` en `harness_config.py` recursa infinito ante
+   cualquier leaf `null` del seam. Workaround in-contract (sin editar el CORE): sin `null` en el seam. Debe
+   upstreamearse al kit (no fork silencioso).
+2. Historias en `idea` **sin refinar** — `01-spec.md`/`checkpoint.md`/`06-tickets.yaml` se crean al promover
+   a refining/developing (no se inventaron scenarios a nivel idea).
+3. Árbol `proceso/` **parcial** (m1/b1 + m3/e0; resto skeleton) — completarlo = historia `poblar-metodo-m1-m3`.
+4. Reglas CORE traen supuestos SaaS/multitenant/agentes que Cockpit no cumple — documentado y neutralizado en
+   `cockpit-stack.md` (escenarios tenant-isolation = N/A hasta que exista auth).
+
+**Verificación (2026-07-09):** doctor `exit 0` · gate arquitectura `--check` verde · gate metodología `--check`
+verde (31 M-cards + proceso/ válido + §4 en sync) · `go build/vet/test` verde · UI `tsc` + `vitest` 32/32
+verdes · 29/29 BL y 8/8 CAP con round-trip parse == fuente (subagentes de migración). Telemetría: emite en el
+primer Stop de sesión (sink local `~/.prenter/telemetry/cockpit/`, sin egress = default).
+
+*Conecta:* CK-11 (tríada + disciplina backlog-SSoT, ahora evolucionada a `docs/product/`) · CK-17 (gate
+arquitectura, gemelo del nuevo gate de metodología) · CK-18 (los 16 nodos que las historias ancoran) · toda la
+numeración BL-01..29 y CAP-01..08 (preservada en `provenance`). El arnés = el "kit dev" que CLAUDE.md ya
+nombraba, ahora **instalado y cableado**.
+
+*Siguiente:* narrativa — el pendiente vive en `docs/product/` (historias `idea/refined/ready`); ver `MAPEO.md`.
+
+<!-- Próximas: CK-20, … -->
 
 ## Log
 
@@ -462,3 +522,4 @@ rumbo del ecosistema — por eso lleva ficha.
 | 2026-07-07 | P2 = DevStudio (app de escritorio, GitHub como conector — reemplaza al server DevHub): N5 re-fichado Data→Edge; contrato CK-08 DEROGADO (BL-18 redefinido: mecanismo TBD con primer consumidor); N6 = repo GitHub del cliente + matiz BYOC "sus datos viven en SU GitHub, no en infra nuestra"; versión PM como nota (anti-especulación). Addendums: DevStudio gestiona N8 · N14 misma mecánica · N8 generalizado a runtime de agente local (motor de N5 y N14). | CK-16 |
 | 2026-07-07 | Gate anti-drift automático: hook `.githooks/pre-commit` (valida fuentes, regenera derivados y los stagea; bloquea si no valida) + `despliegue.html` curado ahora SE VALIDA (cobertura data-nodo ↔ índice, madurez por art vs NODOS.md; test negativo verificado). | CK-17 |
 | 2026-07-08 | Rediseño de fondo: Fábrica de software (Plano del Fabricante) + Organización instalada. El método se entrega al cliente en arneses (deroga el límite de IP). Mueren N1 (motor→arneses)/N4/N7; nacen Arnesia (N15)/Data Lakehouse (N16)/Colab Studio (N17)/Sistemas org (N18)/Analista de Calidad (N19); N6 = Repositorio Oficial confidencial (ya no GitHub); N13 Cockpit = Visualización + Gestión de Cambios + niveles de acceso; N14 = Consultio (clon DevStudio). 7 investigaciones SOTA. Decisiones D1..D5. | CK-18 |
+| 2026-07-09 | Adopción del arnés prenter (migración total, lossless): `docs/product/` pasa a SSoT (29 historias + 8 capabilities + 2 releases + 7 module docs, con `provenance` verbatim de BL/CAP); `proyecto/backlog.yaml`+`docs/increment.yaml` archivados; 21 reglas CORE always-on en `.claude/rules/` + seam `project.config.yaml` (doctor 0) + hooks de telemetría. Se amplían las dos extensiones as-code: arquitectura (`arquitectura-as-code.md` supersede el `paradigm-arquitectura` del CORE) y metodología (nueva: `methodology.schema.yaml`+`gen_metodo.py`+2º gate en pre-commit). Forks Q1(migración total)/Q2(esqueleto completo)/Q3(gen+gate ahora). Deuda: bug `find_unfilled` del KIT 0.5.3 a backflow. | CK-19 |

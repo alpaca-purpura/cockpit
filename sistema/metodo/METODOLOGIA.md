@@ -114,6 +114,7 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 <!-- GEN:cards -->
 ### Familia A · Descubrimiento & Producto
 
+
 <a id="m01"></a>**M01 · Dual Track Agile**
 - **Qué:** separa discovery (qué vale construir) de delivery (construirlo bien)
 - **Fuente:** Sy/Miller; pop. Cagan & Patton — Dual Track Agile (2007/2012). [https://productschool.com/blog/product-fundamentals/dual-track-agile](https://productschool.com/blog/product-fundamentals/dual-track-agile)
@@ -169,6 +170,7 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 - **Principios:** P1, P2
 
 ### Familia B · Dominio & Proceso
+
 
 <a id="m07"></a>**M07 · Event Storming**
 - **Qué:** taller: eventos de dominio → comandos → actores → políticas → agregados
@@ -235,6 +237,7 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 
 ### Familia C · Arquitectura & Sistemas
 
+
 <a id="m13"></a>**M13 · ArchiMate / TOGAF**
 - **Qué:** lenguaje y framework de arquitectura empresarial; capas negocio/aplicación/tecnología
 - **Fuente:** The Open Group — ArchiMate / TOGAF. [https://www.opengroup.org/](https://www.opengroup.org/)
@@ -263,6 +266,7 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 - **Principios:** P4, P3
 
 ### Familia D · Gobierno, Calidad & Madurez
+
 
 <a id="m15"></a>**M15 · COBIT 2019**
 - **Qué:** gobierno de IT; goals cascade (empresa→IT); niveles de capability/madurez
@@ -302,6 +306,7 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 
 ### Familia E · Especificación & Construcción
 
+
 <a id="m18"></a>**M18 · Spec-Driven Development (SDD)**
 - **Qué:** el spec/intent es la fuente de verdad; el código es la última milla
 - **Fuente:** GitHub Spec Kit · Amazon Kiro · BMAD — Spec-Driven Development. [https://github.com/github/spec-kit](https://github.com/github/spec-kit)
@@ -330,6 +335,7 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 - **Principios:** P6
 
 ### Familia F · Valor, Costo & Alineación
+
 
 <a id="m21"></a>**M21 · OKR (Objectives & Key Results)**
 - **Qué:** objetivo cualitativo + key results medibles por trimestre
@@ -387,6 +393,7 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 
 ### Familia G · IA: Grounding & Anti-alucinación
 
+
 <a id="m23"></a>**M23 · Grounding / RAG + Provenance**
 - **Qué:** funda las salidas del LLM en fuentes reales (RAG, citas, juez en runtime)
 - **Fuente:** investigación 2026 (Braintrust) — Grounding / RAG + Provenance. [https://www.braintrust.dev/articles/best-hallucination-detection-tools-2026](https://www.braintrust.dev/articles/best-hallucination-detection-tools-2026)
@@ -397,6 +404,7 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 - **Principios:** P5
 
 ### Familia H · Diseño de Servicio & Experiencia
+
 
 <a id="m24"></a>**M24 · This Is Service Design Doing (TiSDD)**
 - **Qué:** manual práctico del service design; toolkit personas/journey/stakeholder/blueprint
@@ -415,37 +423,37 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 <!-- GEN:tabla -->
 | Metodología | M1 Levant. | M2 Mant. | M3 Mejora | Capa de contexto |
 |---|:-:|:-:|:-:|:-:|
-| Dual Track Agile (M01) | | | ● | |
-| Continuous Discovery (M02) | ● | | ● | |
-| Product Operating Model (M03) | | | ● | |
-| Shape Up (M04) | | | ● | |
-| Jobs-to-be-Done (M05) | ● | | ● | |
-| Impact Mapping (M06) | ● | | ● | ● |
-| Event Storming (M07) | ● | | ● | ● |
-| Domain-Driven Design (M08) | ● | | ● | ● |
-| Value Stream Mapping (M09) | ● | ● | | ● |
-| Service Blueprint (M10) | ● | | | ● |
-| BPMN (M11) | ● | ● | | ● |
-| APQC Process Classification Framework (M12) | ● | ● | | ● |
-| ArchiMate (M13) | ● | ● | | ● |
+| Dual Track Agile (M01) |  |  | ● |  |
+| Continuous Discovery (M02) | ● |  | ● |  |
+| Product Operating Model (M03) |  |  | ● |  |
+| Shape Up (M04) |  |  | ● |  |
+| Jobs-to-be-Done (M05) | ● |  | ● |  |
+| Impact Mapping (M06) | ● |  | ● | ● |
+| Event Storming (M07) | ● |  | ● | ● |
+| Domain-Driven Design (M08) | ● |  | ● | ● |
+| Value Stream Mapping (M09) | ● | ● |  | ● |
+| Service Blueprint (M10) | ● |  |  | ● |
+| BPMN (M11) | ● | ● |  | ● |
+| APQC Process Classification Framework (M12) | ● | ● |  | ● |
+| ArchiMate (M13) | ● | ● |  | ● |
 | SYSTEM-MAP + document-project (M14) | ● | ● | ● | ● |
-| COBIT 2019 (M15) | ● | | | ● |
+| COBIT 2019 (M15) | ● |  |  | ● |
 | ISO 9001 (M16) | ● | ● | ● | ● |
-| ITIL 4 (M17) | ○ | ○ | | |
-| Spec-Driven Development (M18) | | | ● | |
-| EARS (M19) | | | ● | |
-| Specification by Example (M20) | | | ● | |
+| ITIL 4 (M17) | ○ | ○ |  |  |
+| Spec-Driven Development (M18) |  |  | ● |  |
+| EARS (M19) |  |  | ● |  |
+| Specification by Example (M20) |  |  | ● |  |
 | OKR (M21) | ● | ● | ● | ● |
-| FinOps — Quantify Business Value (M22) | | ● | ● | ● |
+| FinOps — Quantify Business Value (M22) |  | ● | ● | ● |
 | Grounding (M23) | ● | ● | ● | ● |
-| This Is Service Design Doing (M24) | ● | | ● | |
+| This Is Service Design Doing (M24) | ● |  | ● |  |
 | RACI (M25) | ● | ● | ● | ● |
-| Hoshin Kanri (M26) | ● | | | ● |
-| Wardley Mapping (M27) | ● | ● | | ● |
-| WSJF (M28) | | | ● | |
+| Hoshin Kanri (M26) | ● |  |  | ● |
+| Wardley Mapping (M27) | ● | ● |  | ● |
+| WSJF (M28) |  |  | ● |  |
 | Process (M29) | ● | ● | ● | ● |
-| Balanced Scorecard (M30) | ● | ● | | ● |
-| Business Capability Modeling (M31) | ● | | | ● |
+| Balanced Scorecard (M30) | ● | ● |  | ● |
+| Business Capability Modeling (M31) | ● |  |  | ● |
 <!-- /GEN:tabla -->
 
 ---
