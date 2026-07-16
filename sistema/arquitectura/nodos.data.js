@@ -139,7 +139,7 @@ window.NODOS = {
     ]
   },
   "N3": {
-    "titulo": "Distribución + telemetría + licencias",
+    "titulo": "Portal — distribución + telemetría + licencias",
     "plano": "Fabricante",
     "tipo": "servicio",
     "madurez": "no-construido",
@@ -147,7 +147,7 @@ window.NODOS = {
     "campos": [
       [
         "objetivo",
-        "Publicar releases firmadas que el edge y los instalables del cliente **jalan**, gestionar los **entitlements/licencias** (quién tiene derecho a qué, revocable), y recibir **telemetría agregada** opt-in (salud/uso de la flota, nunca datos crudos) — para poder ofrecer mantenimiento sin abrir puertos hacia el cliente."
+        "Ser la **puerta comercial** (portal: login, cobro, asientos, descargas) y el canal técnico: publicar releases firmadas que el edge y los instalables del cliente **jalan**, gestionar los **entitlements/licencias por asiento** (quién tiene derecho a qué, en cuántas máquinas — fingerprint compuesto —, revocable), y recibir **telemetría agregada** opt-in (salud/uso de la flota, nunca datos crudos) — para poder ofrecer mantenimiento sin abrir puertos hacia el cliente."
       ],
       [
         "resumen",
@@ -341,7 +341,7 @@ window.NODOS = {
       ],
       [
         "riesgos_abiertos",
-        "(1) Módulo Gestión de Cambios sin construir (entidades Solicitud/Versión/Aprobación/Acuse/RevisiónPeriódica — BL nuevo). (2) Niveles de acceso reales (ex-BL-12, sube a alta). (3) Cruce estructura × lakehouse (esquema de indicadores por objetivo/proceso/rol). (4) Deuda Go/Next (BL-20). (5) Cómo Cockpit descubre el objeto normalizado en N6 self-hosted (era `git rev-parse` local; ahora deploy-token a Forgejo)."
+        "(1) Módulo Gestión de Cambios sin construir — **sube al MVP (CK-21/D8)**: es el gate dev→UAT→prod que hace viable la captura \"a prueba de tontos\" sin mapas basura. (2) Niveles de acceso reales (sube a alta); accesos derivados de la estructura/RRHH = la estructura PROPONE, un humano APRUEBA (human-in-the-loop, CK-21/D8). (3) Motor de indicadores sin construir (era \"cruce estructura × lakehouse\"; ascendido a componente por CK-21 — esquema semántico operación→KPI→OKR→objetivo). (4) Ciclo brecha→proyecto sin construir (CK-21/D2 — el diferenciador de loop cerrado). (5) Deuda Go/Next (BL-20). (6) Cómo Cockpit descubre el objeto normalizado en N6 (deploy-token a Forgejo — igual en modalidad hosteada o self-hosted)."
       ],
       [
         "fuentes",
@@ -414,7 +414,7 @@ window.NODOS = {
       ],
       [
         "riesgos_abiertos",
-        "(1) **Infra del cliente vs hosteado por nosotros** (D3, CK-18): default = infra del cliente; \"hosteado por nosotros\" = modalidad comercial documentada, no el default. (2) Catálogo SQLite vs Postgres según despliegue. (3) Esquema semántico de indicadores (cómo se mapea operación → objetivo/proceso/rol) — se ve con el primer consumidor. (4) Conectores concretos por sistema (se diseñan con el cliente real)."
+        "(1) **Default invertido por CK-21/D3**: hosteado por nosotros (single-tenant, dentro de la instancia del cliente en nuestra nube) = default comercial; infra del cliente = tier enterprise/regulados. La arquitectura es idéntica en ambas modalidades. (2) Catálogo SQLite vs Postgres según despliegue. (3) Esquema semántico de indicadores → **ascendido a componente \"motor de indicadores\" de N13 (CK-21)**; aquí queda el contrato de exposición del lake. (4) Conectores concretos por sistema (se diseñan con el cliente real; MVP = Excel + 1 conector)."
       ],
       [
         "fuentes",
@@ -605,7 +605,7 @@ window.NODOS = {
       ],
       [
         "riesgos_abiertos",
-        "(1) Definición de producto = clon de DevStudio + adaptación propia (BL-15) — arranca cuando DevStudio esté terminado. (2) Modelo de publicación a N6: ¿push directo o revisión? (se une a la Gestión de Cambios de N13/N19). (3) Cuánto método baja empaquetado en los arneses de la app vs se sirve por N3. (4) Transferencia consultor→analista: qué arneses/permisos cambian al entregar."
+        "(1) Definición del producto-app = clon de DevStudio + adaptación propia — **ya NO bloquea (CK-21/D7): el v0 son los arneses sin shell**; el clon llega después. (2) Modelo de publicación a N6: **resuelto en lo esencial (CK-21/D5)** — dev→UAT→prod con aprobación (Gestión de Cambios); detalle fino al construir. (3) Cuánto método baja empaquetado en los arneses de la app vs se sirve por N3. (4) Transferencia consultor→analista: qué arneses/permisos cambian al entregar."
       ],
       [
         "fuentes",

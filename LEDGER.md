@@ -541,7 +541,102 @@ duplicados 0.5.2. Materializar/escribir project-layer **solo cuando el ciclo lo 
 (supuestos SaaS neutralizados). *Siguiente:* al llegar la 1ª historia a refining/ready se materializan los
 templates `03-arch/04-validators/06-tickets` (HB-C3); el pipeline de roles espera el upstream del KIT (HB-C1).
 
-<!-- Próximas: CK-21, … -->
+### CK-21 · Organization as Code → Organization Twin — visión con nombre + pivote comercial hosteado + TO-BE de 37 capacidades — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-15/16, 3 rondas):* (R1) "Se me está haciendo difícil que los clientes me
+paguen toda la consultoría de construcción de infraestructura… se me ocurrió una solución en la nube
+multitenant… que cualquier persona que pague pueda loguearse, descargar dev-studio, colab-studio,
+arnesia y consultio… gestionar usuarios y contraseñas… restringido por MAC… consultio sería como un
+IDE que va commiteando… 3 repositorios: development, UAT y producción… ponte el sombrero de CEO y
+conversa con tu CTO… dime sinceramente dónde ves todas las posibles fallas." (R2) "Me gusta cómo
+Catio propone deconstruir la arquitectura… quisiera algo similar a nivel organizacional: puestos,
+roles, procesos, funciones, todo… la idea es tener una 'organization twin' que permita obtener el
+estado real de todo, y que podamos articular incluso." (R3) "Mapear, visualizar y monitorear desde
+los objetivos de directorio hasta el último nivel (bajados con OKRs) y cruzados con KPIs… que sea
+tan obvio detectar dónde mejorar que de allí nazcan los proyectos de mejora y que todo ese ciclo de
+vida lo tengamos en nuestra solución… que seamos la solución definitiva que se conecte a todo
+sistema… además de los arneses para cada puesto con el Colab Studio… que el trabajo diario de todos
+apunte a mejorar la organización." + "Todo ahora para no perder nada… actualiza visión, todo… no
+quiero sesgos por contradicción, no me sirve el histórico, solo a donde apuntamos."
+
+*Desarrollo:* conversación estratégica CEO/CTO en 3 rondas con investigación creciente: (1) análisis
+de la propuesta multitenant contra la arquitectura CK-18 + fallas; (2) SOTA organization-as-code
+(Catio, Backstage, Palantir, categoría DTO de Gartner, GitLab handbook-first, Orgvue, DEMO/BPSim,
+simulación organizacional con agentes LLM); (3) deep-dive de **11 vendors** vía 3 subagentes de
+investigación (iGrafx · Celonis · BusinessOptix · ARIS · Bizzdesign · Ardoq · edgeTI · Bee360 ·
+KYP.ai · Mavim · doctrina de ontología de Palantir Foundry) + la lista de features DTO de Gartner
+(ago 2025) → lista maestra TO-BE de **37 capacidades** etiquetadas [MVP]/[V2]/[H] + secuencia MVP.
+Corpus completo persistido en **`proyecto/research/organization-as-code/`** (9 docs, hermano de
+`rediseno-total/`). Hallazgos clave: la categoría "organization as code" está libre (anclar a DTO
+para analistas); los 11 vendors convergieron 2024-26 en "repositorio como capa de contexto para AI
+agents" (nuestra tesis de arneses = la versión más radical); nadie opera una cascada OKR viva ni
+cierra el loop brecha→proyecto→KPI en la misma herramienta; el patrón dual-repo/release-cycle de
+ARIS valida dev→UAT→prod sobre git; Mavim = la referencia a batir; la doctrina Palantir
+(semántica+kinética, actions como superficie de operación, provenance structs) mapea 1:1 al objeto
+normalizado.
+
+**Decisiones firmadas (D1..D9):**
+1. **D1 — La visión se llama Organization as Code → Organization Twin.** Twin = estado deseado (N6)
+   × estado real (N16) × brecha continua (N13). GitOps organizacional: el repo declara el deber-ser,
+   el lakehouse observa el ser, Cockpit muestra el drift, los proyectos son los controladores. La
+   brecha deja de ser entregable puntual → loop permanente.
+2. **D2 — El diferenciador es el hilo de oro medido:** objetivos directorio → OKRs por nivel → KPIs
+   por proceso/rol/persona; brechas con costo + ranking ROI ("los proyectos nacen solos"); ciclo de
+   vida del proyecto de mejora DENTRO de la solución; arneses por puesto = trabajo diario apuntando
+   al hilo. Posicionamiento: "twin de ejecución estratégica".
+3. **D3 — Pivote comercial: default = hosteado por nosotros, single-tenant por cliente** (instancia
+   aislada Forgejo+Cockpit+lake, suscripción; mismo código, cero reescritura). Invierte el default
+   D3 de CK-18 (reversión parcial del chequeo 2 asumida: en el default hosteado el dato reside en
+   nuestra nube bajo DPA; "transitan, no persisten" pertenece al tier self-hosted, que NO muere =
+   tier enterprise/regulados). Multitenant real = fase 2 (>10-20 clientes). La propuesta multitenant
+   inicial se descartó como primer paso: Cockpit hoy no tiene auth ni DB; multitenancy antes de
+   vender = meses sin ingreso.
+4. **D4 — N3 asciende a Portal:** login, cobro, gestión de usuarios/asientos, descargas, licencias
+   por asiento con **fingerprint compuesto — NO MAC** (spoofeable/inestable; SOTA = CPU+disco+placa
+   SHA-256, node-locked, activación/heartbeat — keygen-go ya fichado).
+5. **D5 — Un repo por organización, 3 entornos** (dev/UAT + main vigente + tags), no 3 repos. El
+   pipeline dev→UAT→prod ES la Gestión de Cambios ISO — y el gate que hace viable el "a prueba de
+   tontos" sin mapas basura (provenance M23 obligatorio).
+6. **D6 — Capa kinética en `objeto.schema.yaml`** (acciones por entidad: quién modifica qué, con qué
+   aprobación; Gestión de Cambios = motor) + **doctrina Palantir adoptada** como gramática del
+   schema + entidades **OKR/KPI/Proyecto de primera clase** ancladas al hilo.
+7. **D7 — Consultio = apuesta principal, desbloqueado:** primer entregable = **los arneses del
+   método M1-M3 sobre Claude Code pelado, sin app shell** (ya no espera a que DevStudio termine; el
+   clon llega después). Patrón validado por BusinessOptix Discovery Agent/iGrafx Pia/ARIS Companion.
+8. **D8 — Gestión de Cambios sube al MVP** (es el gate UAT→prod). Accesos derivados de la estructura
+   (idea RRHH del operador): la estructura PROPONE, un humano APRUEBA — human-in-the-loop siempre.
+9. **D9 — Horizontes gateados** (precedente CK-10): what-if (branch=escenario) → simulación
+   (BPSim/DEMO) → ensayo del TO-BE con agentes LLM corriendo los arneses (jugada única: los arneses
+   son tooling de producción Y actores de simulación). MCP server del twin = V2 (table stakes
+   agéntico 2025-26). Nada antes del twin base + demanda.
+
+*Ejecutado:* corpus `proyecto/research/organization-as-code/` (README + 8 docs: SOTA process
+intelligence, SOTA EA, KYP/Mavim, doctrina Palantir, SOTA organization-as-code, features Gartner
+DTO + mapeo, TO-BE 37 capacidades + MVP + derivación de arquitectura, pivote comercial) · VISION.md
+reescrita al norte nuevo (identidad + sección "Organization as Code → Organization Twin" + flujo
+como loop + arquitectura con default hosteado + TBD sin drift post-CK-19) · CLAUDE.md y fichas
+NODOS ajustadas al mismo evento · historias nuevas `state: idea` en `docs/product/` (subagente, con
+prior-art scan contra las existentes).
+
+**Deudas declaradas:**
+- Re-fichado FINO de NODOS.md (chequeo 2 reescrito en profundidad, R-walk si el portal agrega
+  responsabilidad, arquitectura.yaml con componentes nuevos cuando tengan `ruta:` real) — las fichas
+  se ajustaron en lo esencial; el pase completo con gate = próxima sesión de arquitectura.
+- Compliance del default hosteado (DPA como procesador, aislamiento por instancia, BYOK tier alto)
+  — presupuestar antes del primer cliente hosteado.
+- La fricción BYO-licencia Claude persiste en el edge (ToS N8, cambió 3× en H1-2026) — al modelo de
+  costo por asiento.
+
+*Conecta:* CK-18 (el modelo físico que se conserva; su D3 se invierte; chequeo 1 licencia+contrato
+ahora carga también el portal N3) · CK-19/CK-20 (las historias nuevas entran por `docs/product/`) ·
+CK-10 (precedente de capability declarada-no-construida, aplicado a simulación/MCP) · I-05 (ISO como
+ontología — ahora con OKR/KPI como dato de primera clase) · BL-10 heredado (pricing ahora =
+suscripción + asientos).
+
+*Siguiente:* narrativa — el pendiente vive en `docs/product/` (historias CK-21 en `state: idea`;
+prioridades las firma el operador).
+
+<!-- Próximas: CK-22, … -->
 
 ## Log
 
@@ -558,3 +653,4 @@ templates `03-arch/04-validators/06-tickets` (HB-C3); el pipeline de roles esper
 | 2026-07-08 | Rediseño de fondo: Fábrica de software (Plano del Fabricante) + Organización instalada. El método se entrega al cliente en arneses (deroga el límite de IP). Mueren N1 (motor→arneses)/N4/N7; nacen Arnesia (N15)/Data Lakehouse (N16)/Colab Studio (N17)/Sistemas org (N18)/Analista de Calidad (N19); N6 = Repositorio Oficial confidencial (ya no GitHub); N13 Cockpit = Visualización + Gestión de Cambios + niveles de acceso; N14 = Consultio (clon DevStudio). 7 investigaciones SOTA. Decisiones D1..D5. | CK-18 |
 | 2026-07-09 | Adopción del arnés prenter (migración total, lossless): `docs/product/` pasa a SSoT (29 historias + 8 capabilities + 2 releases + 7 module docs, con `provenance` verbatim de BL/CAP); `proyecto/backlog.yaml`+`docs/increment.yaml` archivados; 21 reglas CORE always-on en `.claude/rules/` + seam `project.config.yaml` (doctor 0) + hooks de telemetría. Se amplían las dos extensiones as-code: arquitectura (`arquitectura-as-code.md` supersede el `paradigm-arquitectura` del CORE) y metodología (nueva: `methodology.schema.yaml`+`gen_metodo.py`+2º gate en pre-commit). Forks Q1(migración total)/Q2(esqueleto completo)/Q3(gen+gate ahora). Deuda: bug `find_unfilled` del KIT 0.5.3 a backflow. | CK-19 |
 | 2026-07-09 | Cableado del arnés (termina CK-19): 6 process-docs + 6 scripts/git del KIT materializados a paths convencionales (copia, no symlink a cache volátil — extiende CK-19); capture files del HLP creados; hueco del KIT 0.5.3 (role-skills/agents, rules-detail, specs-templates no publicados = W8 lift-kit) documentado en `harness-backlog.md` y operado a mano (sin fork). | CK-20 |
+| 2026-07-16 | Organization as Code → Organization Twin: visión con nombre (twin = deseado N6 × real N16 × brecha continua N13, GitOps organizacional); diferenciador = hilo de oro medido (objetivos→OKR→KPI) + brechas con ROI + ciclo brecha→proyecto dentro de la solución + arneses por puesto. Pivote comercial: default hosteado single-tenant (invierte D3 de CK-18; self-hosted = tier regulados; multitenant = fase 2); N3 asciende a Portal (licencias fingerprint, no MAC); 1 repo · 3 entornos dev/UAT/prod; capa kinética + OKR/KPI/Proyecto al schema (doctrina Palantir); Consultio v0 = arneses sin app shell; Gestión de Cambios al MVP; horizontes gateados (what-if→BPSim→agentes-con-arneses, MCP V2). SOTA 11 vendors + Gartner DTO → TO-BE 37 capacidades en `proyecto/research/organization-as-code/`. | CK-21 |

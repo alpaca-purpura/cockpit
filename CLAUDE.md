@@ -4,10 +4,13 @@ Producto standalone (graduado del monorepo `prenter-harness`, 2026-07-06 — fic
 Norte = [`VISION.md`](./VISION.md) · registro de decisiones = [`LEDGER.md`](./LEDGER.md) — fichas `CK-NN`
 (continúa la numeración de la célula original; arranca en CK-10 aquí).
 
-**Qué es:** sistema para el levantamiento, diseño, creación, propagación/adopción, monitoreo y mejora
-continua de procesos/roles/objetivos/personas(puestos), basado en buenas prácticas ISO (ontología + PDCA,
-sin el aparato de certificación — ver VISION.md §ISO). Flujo: ingesta multi-fuente → As-Is → To-Be →
-proyectos desde la brecha.
+**Qué es:** **Organization as Code → Organization Twin** (CK-21): la organización entera
+(procesos/roles/objetivos/personas-puestos) como dato versionado en git, con buenas prácticas ISO como
+ontología + PDCA (sin aparato de certificación — VISION.md §ISO). Twin = estado deseado (N6) × estado
+real (N16) × brecha continua (N13). Flujo-loop: ingesta multi-fuente → As-Is → To-Be → brechas con
+costo/ROI → proyectos de mejora con ciclo de vida DENTRO de la solución → KPI movido. Diferenciador:
+el hilo de oro medido (objetivos directorio → OKRs → KPIs por proceso/rol/persona) + arneses por puesto.
+SOTA + TO-BE (37 capacidades): `proyecto/research/organization-as-code/`.
 
 ## Proceso de desarrollo — el arnés prenter (CK-19, adoptado 2026-07-09)
 
@@ -41,19 +44,22 @@ anti-drift en `.githooks/pre-commit`), gemelos entre sí:
   + `proceso/**` + `sistema/schema/objeto.schema.yaml` (9 entidades) → `gen_metodo.py`.
 - Adaptaciones del stack SaaS→Cockpit: `.claude/rules/cockpit-stack.md`.
 
-## Arquitectura vigente (rediseño CK-18 — Fábrica + Organización instalada)
+## Arquitectura vigente (CK-18 Fábrica + Organización · CK-21 default comercial hosteado)
 
 Tres planos — SSoT `sistema/arquitectura/NODOS.md` (16 nodos) + `despliegue.html` + SOTA en
-`proyecto/research/rediseno-total/`:
-- **Fabricante (nuestro):** Arnesia (N15), Repositorio Maestro (N2, método+arneses+código), Distribución +
-  telemetría + **licencias** (N3). No razona en runtime — fábrica de software. El método **se entrega al
-  cliente** en arneses (CK-18/D1 derogó "el método nunca al cliente"; protección = **licencia + contrato**).
-- **Organización (cliente):** Repositorio Oficial (N6, git self-hosted confidencial — ya NO GitHub), Cockpit
-  (N13 = Visualización + Gestión de Cambios ISO + niveles de acceso), Data Lakehouse (N16), Depósito (N12),
+`proyecto/research/{rediseno-total,organization-as-code}/`:
+- **Fabricante (nuestro):** Arnesia (N15), Repositorio Maestro (N2, método+arneses+código), **Portal** de
+  distribución + telemetría + **licencias por asiento, fingerprint compuesto — no MAC** (N3, asciende a
+  producto en CK-21). No razona en runtime — fábrica de software. El método **se entrega al cliente** en
+  arneses (CK-18/D1; protección = **licencia + contrato**).
+- **Organización (una instancia por cliente — hosteada por nosotros = default CK-21, en su red = tier
+  enterprise/regulados; multitenant = fase 2):** Repositorio Oficial (N6, git confidencial Forgejo,
+  entornos dev→UAT→prod), Cockpit (N13 = Visualización + **motor de indicadores** (hilo de oro) + **ciclo
+  brecha→proyecto** + Gestión de Cambios ISO + niveles de acceso), Data Lakehouse (N16), Depósito (N12),
   Sistemas operacionales (N18).
-- **Edge (apps sobre Claude Code local, BYO licencia):** Consultio (N14, App del Consultor = clon de
-  DevStudio; construye el mapa y lo publica a N6), Colab Studio (N17), DevStudio (N5), N8 motor común,
-  actores N9/N19/N10/N11 (4 niveles).
+- **Edge (apps sobre Claude Code local, BYO licencia):** Consultio (N14, App del Consultor; **v0 CK-21 =
+  arneses del método sobre Claude Code pelado, sin app shell**; el clon DevStudio después; construye el
+  mapa y lo publica a N6), Colab Studio (N17), DevStudio (N5), N8 motor común, actores N9/N19/N10/N11.
 - **Muertos (CK-18):** N1 (Discovery server-side → arneses), N4 (voz, diferida), N7 (agentes efímeros).
 - El objeto normalizado COMPLETO (9 entidades) se lee/valida entero en `/api/objeto` (CK-13, CAP-08;
   instancias en `empresa/<tipo>/` — D-15). `negocio.yaml` sigue curado a mano (D-13); voltear a generado =

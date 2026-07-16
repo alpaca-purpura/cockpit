@@ -18,19 +18,59 @@ y mejora continua** de los cuatro objetos que sostienen a cualquier empresa:
 - **Personas (puestos)** — quién ejecuta, con qué arnés/capacidad, y qué le falta.
 
 El eje es **gestión empresarial basada en buenas prácticas de normas ISO** — no como aparato de
-certificación, sino como **ontología y disciplina operativa** (ver §ISO más abajo). Es un sistema
-de **gran escala** con arquitectura empresarial: se despliega en la infraestructura del cliente
-(modelo CK-18 «Fábrica + Organización instalada» — ver §Arquitectura y `sistema/arquitectura/NODOS.md`).
+certificación, sino como **ontología y disciplina operativa** (ver §ISO más abajo). La tesis
+fundante es **Organization as Code** (CK-21): la organización entera vive como **dato versionado
+en git** y evoluciona hacia un **Organization Twin** operable (§siguiente). Se entrega **hosteada
+por nosotros** (single-tenant por cliente, suscripción) como default comercial, o **instalada en
+la infraestructura del cliente** como tier enterprise/regulados (modelo físico CK-18 «Fábrica +
+Organización instalada», default comercial CK-21 — ver §Arquitectura y `sistema/arquitectura/NODOS.md`).
 
 **Core del sistema:** acompañar a la empresa mediante la **ingesta de datos de múltiples
 fuentes** (sistemas manuales, documentos, interfaces conversacionales) para modelar su estado
 actual, proyectar su estado ideal, y accionar la brecha.
 
-**Flujo de valor (heredado de CK-01, intacto):** los datos ingeridos **modelan el estado actual
-(As-Is)** → se **proyecta el estado ideal (To-Be)**, informado por las buenas prácticas ISO y las
-metodologías de proceso/rol/objetivo (§Pilares) → de esa **brecha** se generan los **proyectos de
-desarrollo y necesidad** — que pueden resolverse con arneses por puesto (P3 · Kit, fabricados en
-Arnesia/P4) o con software a medida (P2 · DevStudio, también en manos de los devs del cliente).
+**Flujo de valor (heredado de CK-01, elevado a loop en CK-21):** los datos ingeridos **modelan el
+estado actual (As-Is)** → se **proyecta el estado ideal (To-Be)**, informado por las buenas
+prácticas ISO y las metodologías de proceso/rol/objetivo (§Pilares) → de esa **brecha** se generan
+los **proyectos de desarrollo y necesidad** — que pueden resolverse con arneses por puesto (P3 ·
+Kit, fabricados en Arnesia/P4) o con software a medida (P2 · DevStudio, también en manos de los
+devs del cliente). La brecha **no es un entregable puntual de consultoría: es un loop permanente**
+— el twin la recalcula continuamente contra la operación real (drift organizacional, §Twin).
+
+## Organization as Code → Organization Twin (decisión CK-21)
+
+La visión con nombre propio — el término está libre en el mercado; la categoría externa para
+analistas es **DTO** (Digital Twin of an Organization, Gartner). SOTA completo + lista TO-BE de 37
+capacidades en [`proyecto/research/organization-as-code/`](./proyecto/research/organization-as-code/).
+
+- **Organization as Code (la tesis):** procesos, roles, objetivos, personas/puestos y funciones
+  viven como **dato versionado en git** (el objeto normalizado, 9 entidades + provenance
+  `fuente`+`conf` por hecho); todo cambio viaja por **propuesta → revisión → merge** con tres
+  entornos (**dev → UAT → prod**: borrador / aprobado / vigente por gerencia) — la Gestión de
+  Cambios ISO es ese pipeline con UI que oculta git.
+- **Organization Twin (la fórmula):** `Twin = estado deseado (N6) × estado real (N16) × brecha
+  continua (N13)`. Es **GitOps organizacional**: el repo declara el deber-ser, el lakehouse observa
+  el ser, Cockpit reconcilia y muestra el **drift**, y los proyectos de mejora son los
+  controladores que cierran la brecha.
+- **El diferenciador (hilo de oro medido):** mapear, visualizar y monitorear **desde los objetivos
+  del directorio hasta el último nivel** — objetivos → OKRs por nivel → KPIs cruzados por
+  proceso/rol/persona, con semáforo y drill-down. Detectar dónde mejorar debe ser **obvio**: cada
+  brecha lleva costo estimado + ranking ROI, y el **proyecto de mejora nace y vive su ciclo
+  completo dentro de la solución** (brecha→proyecto→ejecución→KPI movido — nadie del mercado
+  cierra este loop en la misma herramienta). Los **arneses por puesto** (Colab Studio) conectan el
+  trabajo diario de todos con ese hilo: cada puesto opera apuntando al OKR de su nivel.
+  Posicionamiento: **el twin de ejecución estratégica** — "del objetivo del directorio al clic del
+  analista, y de vuelta".
+- **Ontología operable (doctrina Palantir adoptada):** las 9 entidades son la capa **semántica**;
+  CK-21 agrega la capa **kinética** — acciones válidas por entidad (quién modifica qué, con qué
+  aprobación) declaradas en `objeto.schema.yaml`. Twin que solo se lee = foto; con acciones =
+  volante. Naming navegable por agentes, anti-patterns vigilados, historia = git
+  (ver `proyecto/research/organization-as-code/04-doctrina-ontologia-palantir.md`).
+- **Horizontes gateados (anti-especulación, precedente CK-10):** (1) what-if estructural — branch
+  del repo = escenario comparable; (2) simulación de procesos con estándares (BPSim/DEMO, no
+  inventar); (3) **ensayo del TO-BE con agentes LLM corriendo los arneses de cada rol** — nuestros
+  arneses son a la vez tooling de producción y actores de simulación, la jugada que ningún vendor
+  DTO/EA puede replicar. Nada de esto se construye antes de que el twin base exista y haya demanda.
 
 ## Los cuatro pilares
 
@@ -87,29 +127,39 @@ nivel ve lo que su rol permite, en coherencia con la estructura del Repositorio 
   persona de Prenter, luego lo hereda un **Analista de Calidad del cliente** (N19), que mantiene lo
   oficial con la Gestión de Cambios (§ISO).
 
-## Arquitectura — el modelo CK-18 (Fábrica + Organización instalada)
+## Arquitectura — Fábrica + Organización (CK-18) · default comercial hosteado (CK-21)
 
-Rediseñado de fondo en **CK-18**: el sistema deja de ser "BYOC con motor server-side" y pasa a ser
-una **fábrica de software** que construye el sistema operativo de la organización y lo **instala en
-su red**. El método **se entrega al cliente** empaquetado en arneses (deroga el límite de IP "el
-método nunca al cliente"; protección = licencia + contrato). Tres planos — ver
-`sistema/arquitectura/NODOS.md` (16 nodos, SSoT) + `despliegue.html` + `proyecto/research/rediseno-total/`:
+Modelo físico **CK-18**: una **fábrica de software** que construye el sistema operativo de la
+organización. El método **se entrega al cliente** empaquetado en arneses (protección = licencia +
+contrato). **CK-21 fija el default comercial:** la "Organización" corre **hosteada por nosotros,
+single-tenant por cliente** (instancia aislada Forgejo + Cockpit + lake, suscripción — cero
+consultoría de infra antes del valor); instalada en la red del cliente = **tier
+enterprise/regulados**; multitenant real = fase 2 (>10-20 clientes). Consecuencia asumida: en el
+default hosteado los datos del cliente residen en nuestra nube bajo DPA (aislamiento por instancia,
+cifrado; BYOK para tier alto) — la promesa "transitan, no persisten" pertenece al tier
+self-hosted. Tres planos — ver `sistema/arquitectura/NODOS.md` (16 nodos, SSoT) +
+`despliegue.html` + `proyecto/research/{rediseno-total,organization-as-code}/`:
 
 - **Plano del Fabricante (nuestro):** **Arnesia (N15)** fabrica los arneses por rol-en-proceso;
-  **Repositorio Maestro (N2)** guarda método + arneses plantilla + código; **Distribución (N3)**
-  publica releases firmadas, gestiona licencias y recibe telemetría — habilita el mantenimiento. No
-  razona en runtime.
-- **Plano de la Organización (cliente):** **Cockpit (N13)** — Visualización (cruza la estructura del
-  Repositorio Oficial con la operación del Data Lakehouse) + **Gestión de Cambios** (ISO) + niveles
-  de acceso; binario propio `directorio` (Go, 4100), la Visualización base ya construida y verificada
-  standalone. **Repositorio Oficial (N6)** — git self-hosted confidencial (Forgejo), SSoT de la
-  estructura (ya no GitHub). **Data Lakehouse (N16)** — dlt + DuckLake, reúne la operación de todos
-  los sistemas (N18) y nutre a Cockpit ("cómo vamos día a día"). **Depósito (N12)** — crudo transitorio.
-- **Edge (apps sobre Claude Code local, BYO licencia):** **Consultio (N14)** — App del Consultor, clon
-  de DevStudio con nombre propio: construye el mapa completo (objeto normalizado + documentos + arneses)
-  con preview local de Cockpit y lo **publica a N6** ("deploy de procesos"); transferible al Analista
-  de Calidad. **Colab Studio (N17)** — app del trabajador operativo (arneses por puesto). **DevStudio
-  (N5)** — también a devs del cliente. **N8** motor común.
+  **Repositorio Maestro (N2)** guarda método + arneses plantilla + código; **Distribución + Portal
+  (N3)** — CK-21 lo asciende a producto: login, cobro, gestión de usuarios/asientos, descargas de
+  las apps, licencias por asiento con **fingerprint compuesto** (no MAC), releases firmadas,
+  telemetría. No razona en runtime.
+- **Plano de la Organización (una instancia por cliente — hosteada por nosotros o en su red):**
+  **Cockpit (N13)** — Visualización + **motor de indicadores** (operación→KPI→OKR→objetivo, el hilo
+  de oro medido) + **ciclo brecha→proyecto** + **Gestión de Cambios** (ISO) + niveles de acceso;
+  binario propio `directorio` (Go, 4100), la Visualización base ya construida y verificada
+  standalone. **Repositorio Oficial (N6)** — git confidencial (Forgejo), SSoT de la estructura, con
+  entornos dev→UAT→prod (branches+tags). **Data Lakehouse (N16)** — dlt + DuckLake, reúne la
+  operación de todos los sistemas (N18) y nutre el twin ("cómo vamos día a día"). **Depósito
+  (N12)** — crudo transitorio.
+- **Edge (apps sobre Claude Code local, BYO licencia):** **Consultio (N14)** — App del Consultor;
+  **primer entregable (CK-21): los arneses del método M1-M3 sobre Claude Code pelado, sin app
+  shell** (desbloqueado de la espera a DevStudio); construye el mapa completo (objeto normalizado +
+  documentos + arneses) con preview local de Cockpit y lo **publica a N6** ("deploy de procesos");
+  transferible al Analista de Calidad. **Colab Studio (N17)** — app del trabajador operativo
+  (arneses por puesto = el "knowledge augmentation" del twin, ejecutable). **DevStudio (N5)** —
+  también a devs del cliente. **N8** motor común.
 - **Muertos (CK-18):** el Motor de Discovery server-side (N1) renace como arneses; la voz (N4) se
   difiere; los agentes efímeros (N7) mueren — **todo el levantamiento es vía consultor**.
 
@@ -144,21 +194,24 @@ y `sistema/metodo/proceso/_sample/`.
 
 ## TBD — huecos abiertos
 
-Desde CK-11, el detalle, estado y prioridad de TODO lo pendiente viven en el System Backlog
-([`proyecto/backlog.yaml`](./proyecto/backlog.yaml)) — única fuente de la verdad del trabajo.
-Aquí queda solo el porqué estratégico de los tres huecos mayores:
+Desde CK-19, el detalle, estado y prioridad de TODO lo pendiente viven en
+[`docs/product/`](./docs/product/) (historias `idea/refined/ready` — SSoT del qué-construir).
+Aquí queda solo el porqué estratégico de los huecos mayores:
 
-- **Persona/puesto como entidad de primera clase** (→ BL-01, **cerrado en CK-12**) — persona +
-  rol se leen del objeto normalizado y son visibles en la Vista de Negocio (CAP-07). La
-  convergencia de lectura del objeto completo también cerró (BL-02 → CK-13, CAP-08); queda
-  voltear negocio.yaml a proyección generada (BL-19).
-- **Comprador con nombre y cara, pricing, éxito a 12 meses** (→ BL-10) — heredado de CK-01, sin
-  gate bloqueante (I-71 lo derogó); con CK-18 incluye licencia de Arnesia + arneses + contrato de
-  mantenimiento (N3).
-- **El rediseño CK-18** (Fábrica + Organización instalada) abre el grueso del backlog nuevo: Consultio
-  (BL-15..17), Repositorio Oficial (BL-21), Data Lakehouse (BL-22), Gestión de Cambios + niveles de
-  acceso (BL-24/BL-12), Plano del Fabricante (BL-25/BL-26). El Motor de Discovery como servicio
-  server-side (ex-BL-13) quedó **derogado** — su razonamiento vive como arneses.
+- **El MVP del twin (CK-21)** — la secuencia mínima vendible: método como arnés (Consultio v0,
+  sin app shell) → schema v2 (OKR/KPI/Proyecto + capa kinética + hilo de oro) → instancia hosteada
+  single-tenant (N6 dev→UAT→prod + Gestión de Cambios v0) → Cockpit con hilo de oro medido +
+  brechas costo/ROI + ciclo brecha→proyecto → ingesta Excel + 1 conector real. Detalle:
+  `proyecto/research/organization-as-code/07-capability-list-tobe.md`.
+- **Re-fichado de NODOS pendiente de CK-21** — chequeo 2 (soberanía → default hosteado), N3
+  (portal/licencias), N13 (motor de indicadores + ciclo brecha→proyecto), N14 (primer entregable
+  = arneses v0), N16 (default D3 invertido). Las decisiones ya están firmadas en CK-21; falta
+  bajarlas a las fichas de nodo restantes con el gate en verde.
+- **Comprador con nombre y cara, pricing, éxito a 12 meses** — heredado de CK-01, sin gate
+  bloqueante (I-71 lo derogó); con CK-21 el paquete comercial es: suscripción a la instancia
+  hosteada + licencias por asiento (portal N3) + arneses por puesto + contrato de mantenimiento.
+- **Proyección generada de negocio.yaml** (historia `sistema/negocio-yaml-proyeccion-generada`) —
+  último tramo de la convergencia D-13.
 
 ## Gestión
 
