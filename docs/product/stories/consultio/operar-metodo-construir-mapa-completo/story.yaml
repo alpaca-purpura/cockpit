@@ -10,7 +10,7 @@ release: F1
 prioridad: alta
 fichas: [CK-11, CK-18]
 dependencies:
-  stories: [construir-consultio-clon-devstudio]
+  stories: [metodo-como-arnes-v0]
 context:
   job: "Como consultor quiero operar m1·m2·m3 como un flujo con carriles/provenance y construir el objeto normalizado, los documentos oficiales y los arneses de la organización (con preview local de Cockpit) para entregar el mapa completo As-Is→To-Be→proyectos."
   why: "Es el corazón del método: convierte el levantamiento en el objeto normalizado, calcula la brecha (TO-BE − AS-IS) con severidad y hace nacer los proyectos de ella (R6). Sin esto Consultio es un cascarón sin método operable."

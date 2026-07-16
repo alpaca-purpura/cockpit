@@ -7,10 +7,10 @@ cap_target: "cockpit/hosteado-single-tenant"
 cap_change_type: new
 capability_status: planned
 release: F1
-prioridad: media
+prioridad: alta
 fichas: [CK-21]
 dependencies:
-  stories: []
+  stories: [forgejo-self-hosted-bd-vs-archivos]
 context:
   job: "Como fabricante quiero una modalidad de despliegue 'hosteado por nosotros' single-tenant por cliente (Forgejo + Cockpit + lake por instancia) como default comercial para vender sin exigirle al cliente infraestructura propia."
   why: "El default self-hosted (CK-18 D3) frena la venta a PyMEs sin infra; CK-21 D3 lo invierte — hosteado single-tenant como default comercial, self-hosted como tier enterprise/regulados, multitenant real recién en fase 2 (>10-20 clientes)."

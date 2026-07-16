@@ -8,9 +8,9 @@ cap_change_type: extend
 capability_status: live
 release: F1
 prioridad: alta
-fichas: [CK-21]
+fichas: [CK-21, CK-22]
 dependencies:
-  stories: []
+  stories: [arquitectura-refichado-ck21]
 context:
   job: "Como arquitecto del sistema quiero un objeto.schema v2 con OKR/KPI/Proyecto como entidades de primera clase ancladas al hilo de oro (objetivo→OKR→KPI→proceso/rol/persona) y una capa kinética (acciones válidas por entidad) para que el twin de la organización sea medible y accionable, no solo descriptivo."
   why: "Sin OKR/KPI/Proyecto como dato el hilo de oro no se puede medir ni recorrer; sin capa kinética el schema describe pero no gobierna quién modifica qué con qué aprobación (la Gestión de Cambios es el motor)."

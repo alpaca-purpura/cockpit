@@ -7,7 +7,7 @@ cap_target: "repositorio-oficial/forgejo-self-hosted-bd-vs-archivos"
 cap_change_type: new
 capability_status: planned
 release: F1
-prioridad: media
+prioridad: alta
 fichas: [CK-18]
 dependencies:
   stories: []

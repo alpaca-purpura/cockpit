@@ -6,11 +6,11 @@ node: N3
 cap_target: "fabricante/portal-cloud-licencias"
 cap_change_type: new
 capability_status: planned
-release: F1
+release: F2
 prioridad: media
 fichas: [CK-21]
 dependencies:
-  stories: []
+  stories: [distribucion-telemetria-licencias-n3]
 context:
   job: "Como fabricante quiero un portal cloud (login, cobro, gestión de usuarios/asientos, descargas de apps y arneses) con licencias por asiento node-locked de fingerprint compuesto para que N3 crezca de mecanismo de distribución a producto comercial."
   why: "Sin portal no hay autoservicio de compra/asientos/descargas ni control de licencias por asiento; el fingerprint por MAC es spoofeable/inestable — el SOTA es fingerprint compuesto CPU+disco+placa hasheado SHA-256, node-locked, con activación/desactivación y heartbeat."

@@ -6,7 +6,7 @@ node: N18
 cap_target: "lakehouse/conectores-ingesta-por-sistema"
 cap_change_type: new
 capability_status: planned
-release: F1
+release: F2
 prioridad: tbd
 fichas: [CK-16, CK-18]
 dependencies:

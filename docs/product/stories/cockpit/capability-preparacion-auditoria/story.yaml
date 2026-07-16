@@ -6,7 +6,7 @@ node: N13
 cap_target: "cockpit/capability-preparacion-auditoria"
 cap_change_type: new
 capability_status: planned
-release: F1
+release: F3
 prioridad: tbd
 fichas: [CK-10]
 dependencies:

@@ -6,7 +6,7 @@ node: N17
 cap_target: "colab-studio/colab-studio-app-trabajador"
 cap_change_type: new
 capability_status: planned
-release: F1
+release: F3
 prioridad: media
 fichas: [CK-18]
 dependencies:

@@ -6,7 +6,7 @@ node: N3
 cap_target: "fabricante/distribucion-telemetria-licencias-n3"
 cap_change_type: new
 capability_status: planned
-release: F1
+release: F2
 prioridad: media
 fichas: [CK-18]
 dependencies:

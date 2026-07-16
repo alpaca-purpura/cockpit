@@ -7,7 +7,7 @@ cap_target: "sistema/poblar-metodo-m1-m3"
 cap_change_type: extend
 capability_status: planned
 release: F1
-prioridad: media
+prioridad: alta
 fichas: []
 dependencies:
   stories: []

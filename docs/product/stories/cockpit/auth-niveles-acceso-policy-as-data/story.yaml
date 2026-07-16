@@ -10,7 +10,7 @@ release: F1
 prioridad: alta
 fichas: [CK-18]
 dependencies:
-  stories: []
+  stories: [forgejo-self-hosted-bd-vs-archivos]
 context:
   job: "Como operador que despliega Cockpit multi-usuario quiero auth real con los 4 niveles (Gobernanza>Estratégico>Táctico>Operativo) y visibilidad por rol derivada del Repositorio Oficial para que cada usuario vea solo lo que le corresponde (policy-as-data)."
   why: "Es el gate para el despliegue multi-usuario: sin auth ni niveles reales no se puede exponer Cockpit a varios usuarios con visibilidad controlada. El rol organizacional ES la política."

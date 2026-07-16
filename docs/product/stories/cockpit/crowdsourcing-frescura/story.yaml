@@ -6,7 +6,7 @@ node: N13
 cap_target: "cockpit/crowdsourcing-frescura"
 cap_change_type: new
 capability_status: planned
-release: null
+release: F3
 prioridad: baja
 fichas: [CK-21]
 dependencies:

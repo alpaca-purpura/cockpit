@@ -7,10 +7,10 @@ cap_target: "cockpit/cruce-estructura-operacion-indicadores"
 cap_change_type: new
 capability_status: planned
 release: F1
-prioridad: media
-fichas: [CK-18]
+prioridad: alta
+fichas: [CK-18, CK-21]
 dependencies:
-  stories: []
+  stories: [schema-v2-hilo-de-oro-kinetica, construir-lakehouse-dlt-ducklake]
 context:
   job: "Como usuario de Cockpit quiero ver 'cómo vamos día a día' cruzando la operación del lakehouse (N16) contra la estructura (objeto normalizado de N6) por objetivo/proceso/rol/nivel para monitorear el desempeño real."
   why: "Es el puente entre estructura y operación; sin este cruce Cockpit no puede mostrar indicadores reales de avance del negocio."

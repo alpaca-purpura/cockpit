@@ -10,7 +10,7 @@ release: F1
 prioridad: alta
 fichas: [CK-21]
 dependencies:
-  stories: []
+  stories: [poblar-metodo-m1-m3, schema-v2-hilo-de-oro-kinetica]
 context:
   job: "Como consultor quiero los arneses del método (M1-M3) corriendo sobre Claude Code pelado — levantamiento por entrevista con agente, doc→modelo con provenance y preview local de Cockpit — para operar el método en el cliente hoy, sin esperar la app shell de Consultio."
   why: "Consultio estaba bloqueado esperando el clon de DevStudio (CK-21 D7 lo desbloquea): el primer entregable es el método como arnés, sin app. Patrón validado por BusinessOptix Discovery Agent / iGrafx Pia / ARIS AI Companion."

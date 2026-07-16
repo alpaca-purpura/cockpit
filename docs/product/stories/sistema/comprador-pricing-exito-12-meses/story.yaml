@@ -7,7 +7,7 @@ cap_target: "sistema/comprador-pricing-exito-12-meses"
 cap_change_type: new
 capability_status: planned
 release: F1
-prioridad: baja
+prioridad: alta
 fichas: [CK-18]
 dependencies:
   stories: []

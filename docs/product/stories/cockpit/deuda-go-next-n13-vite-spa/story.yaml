@@ -6,7 +6,7 @@ node: N13
 cap_target: "cockpit/deuda-go-next-n13-vite-spa"
 cap_change_type: fix
 capability_status: planned
-release: F1
+release: F2
 prioridad: media
 fichas: [CK-14]
 dependencies:

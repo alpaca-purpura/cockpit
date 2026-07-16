@@ -636,7 +636,45 @@ suscripción + asientos).
 *Siguiente:* narrativa — el pendiente vive en `docs/product/` (historias CK-21 en `state: idea`;
 prioridades las firma el operador).
 
-<!-- Próximas: CK-22, … -->
+### CK-22 · Roadmap MVP — F1 re-alcance (Terreno + MVP Twin) · nacen F2/F3 · la arquitectura primero — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-16):* "Revisa mi backlog, las historias que están por venir, revisa cada
+una y ayúdame a reorganizar todo mi trabajo pendiente, estructurarlo de forma adecuada y crear un
+roadmap para mi MVP, siendo la primera la revisión y actualización de la arquitectura para preparar
+el terreno de todo lo funcional."
+
+*Desarrollo:* censo de las 36 historias (5 done/F0 · 1 dropped · 30 idea) — F1 era una bolsa de 23+
+historias sin secuencia (el rediseño CK-18 entero). Reorganizado contra el norte CK-21:
+
+- **F1 re-alcanzada = "Terreno + MVP Twin vendible"** (16 historias, 4 fases + carril paralelo):
+  F1.0 Terreno (**`arquitectura-refichado-ck21` — historia NUEVA, LA PRIMERA** por pedido del
+  operador; schema-v2; negocio-schema-ssot) → F1.1 Método operable (poblar-metodo ↑alta;
+  metodo-como-arnes-v0; operar-metodo con dep re-apuntada al v0 — ya NO espera al clon DevStudio;
+  deposito v0 liviano) → F1.2 Organización viva (forgejo ↑alta; hosteado-single-tenant ↑alta;
+  gestión-cambios ↑alta CK-21/D8; publicación deploy-procesos; auth-niveles) → F1.3 El twin mide
+  (lakehouse ↑alta; cruce-indicadores ↑alta, absorbe el motor de indicadores; brecha-proyecto
+  ↑alta — el diferenciador) + F1.x negocio (comprador-pricing baja→alta: sin pricing no hay venta).
+  Exit: demo del loop completo contra organización real. Archivo renombrado
+  `F1-terreno-mvp-twin.yaml` (era "organización instalada", framing CK-18).
+- **F2 nueva = "Comercial"** (7): canal N3 + portal (NO fusionadas: producto vs canal técnico, el
+  portal depende del canal) · deuda Go/Next→Vite + design system (**deuda aceptada en F1, se paga
+  arrancando F2 antes de crecer más UI** — precedente CK-12) · rol-area · negocio.yaml generado
+  (gatillo BL-19 ocurre en F1) · catálogo de conectores.
+- **F3 nueva = "Edge completo + escala"** (8): clon DevStudio (alta→media — el shell es
+  experiencia, no capacidad), Colab Studio, pipeline Arnesia, MCP server, crowdsourcing,
+  knowledge-DB (D5), prep-auditoría (CK-10), housekeeping.
+- **Deps re-cableadas** (28 story.yaml editados, verificación yaml 37/37 + estados intactos):
+  schema-v2←refichado · metodo-v0←{poblar,schema-v2} · operar/publicación←metodo-v0 ·
+  {hosteado,gestión-cambios,auth}←forgejo · cruce←{schema-v2,lakehouse} · brecha←{schema-v2,cruce}.
+- **`docs/product/ROADMAP.md`** nace como vista humana curada (SSoT = releases/*.yaml +
+  story.yaml, mismo evento) con el grafo del camino crítico + 5 decisiones de secuencia revisables.
+
+*Conecta:* CK-21 (el norte que ordena; la deuda "re-fichado fino" se vuelve la historia primera) ·
+CK-19 (modelo de releases del arnés) · CK-11 (disciplina SSoT + vista curada mismo evento).
+
+*Siguiente:* arrancar `sistema/arquitectura-refichado-ck21` (F1.0) — promover a `refining`.
+
+<!-- Próximas: CK-23, … -->
 
 ## Log
 
@@ -654,3 +692,4 @@ prioridades las firma el operador).
 | 2026-07-09 | Adopción del arnés prenter (migración total, lossless): `docs/product/` pasa a SSoT (29 historias + 8 capabilities + 2 releases + 7 module docs, con `provenance` verbatim de BL/CAP); `proyecto/backlog.yaml`+`docs/increment.yaml` archivados; 21 reglas CORE always-on en `.claude/rules/` + seam `project.config.yaml` (doctor 0) + hooks de telemetría. Se amplían las dos extensiones as-code: arquitectura (`arquitectura-as-code.md` supersede el `paradigm-arquitectura` del CORE) y metodología (nueva: `methodology.schema.yaml`+`gen_metodo.py`+2º gate en pre-commit). Forks Q1(migración total)/Q2(esqueleto completo)/Q3(gen+gate ahora). Deuda: bug `find_unfilled` del KIT 0.5.3 a backflow. | CK-19 |
 | 2026-07-09 | Cableado del arnés (termina CK-19): 6 process-docs + 6 scripts/git del KIT materializados a paths convencionales (copia, no symlink a cache volátil — extiende CK-19); capture files del HLP creados; hueco del KIT 0.5.3 (role-skills/agents, rules-detail, specs-templates no publicados = W8 lift-kit) documentado en `harness-backlog.md` y operado a mano (sin fork). | CK-20 |
 | 2026-07-16 | Organization as Code → Organization Twin: visión con nombre (twin = deseado N6 × real N16 × brecha continua N13, GitOps organizacional); diferenciador = hilo de oro medido (objetivos→OKR→KPI) + brechas con ROI + ciclo brecha→proyecto dentro de la solución + arneses por puesto. Pivote comercial: default hosteado single-tenant (invierte D3 de CK-18; self-hosted = tier regulados; multitenant = fase 2); N3 asciende a Portal (licencias fingerprint, no MAC); 1 repo · 3 entornos dev/UAT/prod; capa kinética + OKR/KPI/Proyecto al schema (doctrina Palantir); Consultio v0 = arneses sin app shell; Gestión de Cambios al MVP; horizontes gateados (what-if→BPSim→agentes-con-arneses, MCP V2). SOTA 11 vendors + Gartner DTO → TO-BE 37 capacidades en `proyecto/research/organization-as-code/`. | CK-21 |
+| 2026-07-16 | Roadmap MVP: F1 re-alcanzada a "Terreno + MVP Twin vendible" (16 historias, fases F1.0 Terreno → F1.1 Método → F1.2 Organización viva → F1.3 El twin mide + carril negocio; historia nueva `arquitectura-refichado-ck21` = LA PRIMERA, pedido del operador); nacen F2 "Comercial" (portal+canal, deuda UI se paga aquí, conectores) y F3 "Edge completo + escala" (clon DevStudio baja a media, Colab, Arnesia pipeline, MCP, frescura, gateadas D5/CK-10); 28 story.yaml re-cableados (prioridades + deps, operar-metodo/publicación ya no esperan al clon); `docs/product/ROADMAP.md` como vista humana. | CK-22 |

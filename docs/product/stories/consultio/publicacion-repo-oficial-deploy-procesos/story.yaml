@@ -10,7 +10,7 @@ release: F1
 prioridad: alta
 fichas: [CK-11, CK-18]
 dependencies:
-  stories: [construir-consultio-clon-devstudio]
+  stories: [metodo-como-arnes-v0, forgejo-self-hosted-bd-vs-archivos]
 context:
   job: "Como consultor quiero publicar el resultado ratificado al Repositorio Oficial (N6, git self-hosted) vía commit+tag y transferir la operación al Analista de Calidad (N9→N19) para hacer el 'deploy de procesos' del lado del cliente."
   why: "Cierra el ciclo del levantamiento: el mapa construido pasa a ser lo oficial versionado y gobernado (Gestión de Cambios, BL-24). Sin publicación el trabajo del consultor no aterriza en la organización."

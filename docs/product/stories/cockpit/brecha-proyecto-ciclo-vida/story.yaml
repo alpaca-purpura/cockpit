@@ -7,10 +7,10 @@ cap_target: "cockpit/brecha-proyecto-ciclo-vida"
 cap_change_type: new
 capability_status: planned
 release: F1
-prioridad: media
+prioridad: alta
 fichas: [CK-21]
 dependencies:
-  stories: []
+  stories: [schema-v2-hilo-de-oro-kinetica, cruce-estructura-operacion-indicadores]
 context:
   job: "Como directorio de la organización quiero brechas con costo estimado y ranking ROI (caso de negocio por brecha) y el ciclo de vida del proyecto de mejora dentro de Cockpit (brecha→proyecto→ejecución→KPI movido) para decidir qué mejorar primero y ver el loop PDCA cerrado en la misma herramienta."
   why: "Nadie del mercado cierra el loop brecha→proyecto→ejecución→KPI movido en la misma herramienta; sin caso de negocio por brecha los proyectos no se priorizan por ROI (lección KYP/Bee360) y el PDCA queda abierto."

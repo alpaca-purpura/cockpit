@@ -6,7 +6,7 @@ node: N13
 cap_target: "sistema/design-system-atomic-storybook"
 cap_change_type: new
 capability_status: planned
-release: F1
+release: F2
 prioridad: media
 fichas: [CK-11]
 dependencies:

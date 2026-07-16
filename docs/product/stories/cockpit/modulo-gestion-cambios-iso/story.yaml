@@ -7,10 +7,10 @@ cap_target: "cockpit/modulo-gestion-cambios-iso"
 cap_change_type: new
 capability_status: planned
 release: F1
-prioridad: media
-fichas: [CK-18]
+prioridad: alta
+fichas: [CK-18, CK-21]
 dependencies:
-  stories: []
+  stories: [forgejo-self-hosted-bd-vs-archivos]
 context:
   job: "Como Analista de Calidad (N19) quiero un módulo de Gestión de Cambios que gobierne solicitud→aprobación→publicación de versiones sobre el Repositorio Oficial para mantener lo oficial conforme a ISO §7.5/§6.3 sin exponer git."
   why: "Sin gobierno del cambio no hay control de versiones documentales ISO; el Analista de Calidad necesita un flujo formal con firma persistida y trazabilidad."

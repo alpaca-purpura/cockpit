@@ -1,0 +1,58 @@
+id: F1
+nombre: "Terreno + MVP Twin vendible"
+estado: en-curso
+descripcion: >-
+  El MVP del Organization Twin (CK-21/CK-22): el loop completo demostrable con un cliente real o
+  dogfood prenter — levantar (Consultio v0 = arneses del método sin app shell) → mapear (objeto
+  normalizado v2 con OKR/KPI/Proyecto + capa kinética) → publicar (instancia single-tenant con
+  entornos dev→UAT→prod y Gestión de Cambios) → medir (lakehouse v0: Excel + 1 conector; hilo de
+  oro con semáforo) → detectar (brechas con costo/ROI) → mejorar (ciclo brecha→proyecto dentro de
+  Cockpit). Cuatro fases + un carril de negocio paralelo; la Fase 0 (terreno: re-fichado de la
+  arquitectura + schema v2) precede a todo lo funcional por decisión del operador. Vista humana y
+  criterios de salida: docs/product/ROADMAP.md.
+fases:
+  F1.0-terreno:
+    - arquitectura-refichado-ck21
+    - schema-v2-hilo-de-oro-kinetica
+    - negocio-schema-ssot-plugin-vs-repo
+  F1.1-metodo-operable:
+    - poblar-metodo-m1-m3
+    - metodo-como-arnes-v0
+    - operar-metodo-construir-mapa-completo
+    - deposito-fuentes-retencion-dpa
+  F1.2-organizacion-viva:
+    - forgejo-self-hosted-bd-vs-archivos
+    - hosteado-single-tenant
+    - modulo-gestion-cambios-iso
+    - publicacion-repo-oficial-deploy-procesos
+    - auth-niveles-acceso-policy-as-data
+  F1.3-twin-mide:
+    - construir-lakehouse-dlt-ducklake
+    - cruce-estructura-operacion-indicadores
+    - brecha-proyecto-ciclo-vida
+  F1.x-negocio-paralelo:
+    - comprador-pricing-exito-12-meses
+stories:
+  - arquitectura-refichado-ck21
+  - schema-v2-hilo-de-oro-kinetica
+  - negocio-schema-ssot-plugin-vs-repo
+  - poblar-metodo-m1-m3
+  - metodo-como-arnes-v0
+  - operar-metodo-construir-mapa-completo
+  - deposito-fuentes-retencion-dpa
+  - forgejo-self-hosted-bd-vs-archivos
+  - hosteado-single-tenant
+  - modulo-gestion-cambios-iso
+  - publicacion-repo-oficial-deploy-procesos
+  - auth-niveles-acceso-policy-as-data
+  - construir-lakehouse-dlt-ducklake
+  - cruce-estructura-operacion-indicadores
+  - brecha-proyecto-ciclo-vida
+  - comprador-pricing-exito-12-meses
+dropped: [motor-discovery-n1-serverside]
+exit_criteria: >-
+  Demo del loop completo contra una organización real (dogfood prenter o cliente 1): mapa
+  publicado con aprobación dev→UAT→prod, hilo de oro con semáforo alimentado por datos reales
+  (Excel + 1 conector), al menos una brecha con costo/ROI convertida en proyecto y trackeada
+  hasta mover su KPI, todo bajo auth con niveles. Pricing definido (carril paralelo).
+fichas: [CK-16, CK-18, CK-19, CK-21, CK-22]

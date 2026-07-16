@@ -6,8 +6,8 @@ node: N14
 cap_target: "consultio/construir-consultio-clon-devstudio"
 cap_change_type: new
 capability_status: planned
-release: F1
-prioridad: alta
+release: F3
+prioridad: media
 fichas: [CK-11, CK-18]
 dependencies:
   stories: []

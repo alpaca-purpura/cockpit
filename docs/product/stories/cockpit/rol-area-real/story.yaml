@@ -6,7 +6,7 @@ node: N13
 cap_target: "cockpit/shell-por-rol"
 cap_change_type: extend
 capability_status: planned
-release: F1
+release: F2
 prioridad: media
 fichas: [CK-01, CK-06]
 dependencies:

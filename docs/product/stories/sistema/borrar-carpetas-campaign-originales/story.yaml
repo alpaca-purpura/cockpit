@@ -6,7 +6,7 @@ node: transversal
 cap_target: "sistema/borrar-carpetas-campaign-originales"
 cap_change_type: fix
 capability_status: planned
-release: F1
+release: F3
 prioridad: baja
 fichas: [CK-10]
 dependencies:
