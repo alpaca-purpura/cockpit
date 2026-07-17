@@ -5,9 +5,9 @@ story_id: arquitectura-refichado-ck21
 type: service-story
 module: sistema
 capability: sistema/arquitectura-refichado-ck21
-po_version: 1
+po_version: 2
 last_modified: 2026-07-17
-ratified_by_chris: false
+ratified_by_chris: true   # 2026-07-17 — "Apruebo todo" + acotación triage automatización/narrativa (v2 la incorpora)
 links:
   story_yaml: story.yaml
   story_md: 00-story.md
@@ -55,7 +55,36 @@ Un estándar/metodología puede jugar exactamente UNO de estos roles frente al t
 5. **Descartado (con porqué):** lo que conscientemente NO adoptamos. ArchiMate como METAMODELO
    completo (notation-first = lock-in; Ardoq y Palantir validan entidad-primero) · BPMN como editor
    de diagramas fuente (el proceso es dato con provenance; el diagrama es vista) · UML/C4/CMMN/DMN
-   (sin caso hoy).
+   (sin caso hoy) · **Bloom como eje de automatizabilidad** (taxonomía de objetivos de aprendizaje —
+   pedagógica; la reemplaza la taxonomía de verbos propia ALM×MGI, ver acotación abajo).
+
+### Acotación del operador (ratificación 2026-07-17) — triage automatización/eliminación + narrativa
+
+Al nivel más bajo (diagramación/narrativa de actividades), el paquete metodológico DEBE permitir
+detectar qué procesos/actividades son candidatos a **automatizar** y cuáles a **eliminar**, con la
+narrativa como vehículo. Decisión:
+
+- **Vocabulario controlado de verbos (estándar PROPIO):** cada actividad narra con un verbo del
+  enum; cada verbo del vocabulario se clasifica en 2 ejes — **clase de tarea ALM**
+  (rutinaria/no-rutinaria × manual/cognitiva-analítica/interpersonal; Autor-Levy-Murnane, el marco
+  estándar de automatizabilidad) × **capacidad requerida MGI** (recolectar datos · procesar datos ·
+  físico predecible · físico impredecible · interfaz-stakeholder · experticia/decisión · gestión de
+  personas). Supersede la candidatura Bloom anotada en `objeto.schema.yaml` (`actividad.verbo`).
+- **Score de automatizabilidad DERIVADO, nunca SSoT:** f(clase del verbo, datos estructurados s/n,
+  reglas estables s/n, volumen/frecuencia, % excepciones — criterios RPA-suitability por
+  actividad). Anti-drift: se calcula, no se etiqueta.
+- **Eliminar antes de automatizar:** triage ECRS (Eliminar→Combinar→Reordenar→Simplificar) +
+  desperdicio lean (empalma con VSM/M09) — no se automatiza el desperdicio.
+- **Desgaste/carga cognitiva medida:** NASA-TLX como instrumento situacional (entrevistas M1).
+- **SGC/QMS explícito:** nuestros "estándares de manuales/procesos/funciones" anclan a la pirámide
+  documental **ISO 10013:2021** (manual → procedimientos → instrucciones → registros) + ISO 9001
+  cl.7.5; el mecanismo de ACTUALIZACIÓN de procesos = PDCA + Gestión de Cambios (D5/D8: el
+  pipeline dev→UAT→prod ES la gestión de cambios ISO).
+- **Cascada hasta la acción diaria:** actividad (verbo) → KPI de la persona → KPI del área → OKR →
+  objetivo del directorio → plan anual / plan a 3 años. El hilo de oro ya modela
+  objetivo→OKR→KPI→proceso→rol→persona; el eslabón **actividad→KPI-persona** + el enum de verbos
+  se MATERIALIZAN en `schema-v2-hilo-de-oro-kinetica` (esta historia le deja la decisión cementada
+  como insumo — ver Fuera de alcance).
 
 **Cuándo estándar PROPIO:** cuando el diferenciador queda fuera de todo estándar — y Gartner lo
 confirma (hilo de oro medido + arneses por puesto + as-code están FUERA de su lista DTO):
@@ -76,6 +105,10 @@ formalizable como contrato de entidad publicable estilo Backstage (`apiVersion/k
 | Madurez y brecha | COBIT niveles 0-5 + ISO 19011 (evidencia) + WSJF + FinOps | ancla | — |
 | Calidad / loop de mejora | ISO 9001 (ontología cl.4 + PDCA) | paraguas | sin aparato de certificación (VISION §ISO) |
 | Provenance (todo dato AS-IS) | struct `fuente`+`conf` (M23, patrón Palantir) | transversal obligatorio | — |
+| Narrativa de actividades (nivel más bajo) | **vocabulario controlado de verbos PROPIO** (clase ALM × capacidad MGI) | ancla + insumo del triage | Bloom descartada como eje (pedagógica — mide aprendizaje, no automatizabilidad) |
+| Triage automatizar/eliminar | ECRS (Eliminar→Combinar→Reordenar→Simplificar) + desperdicio lean (M09) + criterios RPA-suitability | ancla + proyección (heatmap de candidatos) | el score se DERIVA (verbo+datos+reglas+volumen+excepciones), jamás se etiqueta a mano |
+| Carga cognitiva medida (desgaste) | NASA-TLX | situacional (medir con humanos en M1, no estimar) | — |
+| Documentación QMS (manuales/procedimientos/instrucciones/funciones) | ISO 10013:2021 (pirámide documental) + ISO 9001 cl.7.5 | ancla | actualización de procesos = PDCA + Gestión de Cambios (el pipeline dev→UAT→prod ES el mecanismo — D5/D8) |
 | Simulación | BPSim + DEMO | horizonte (D9) | nada antes del twin base + demanda |
 | Contrato de entidad publicable | patrón Backstage | propio-publicable (V2) | — |
 
@@ -121,8 +154,10 @@ formalizable como contrato de entidad publicable estilo Backstage (`apiVersion/k
   `cuando_si:` · `cuando_no:` (1-línea cada uno). NO se forkea la taxonomía (regla
   anti-duplicación: mismo catálogo, dimensión nueva).
 - **M-cards nuevas:** doctrina de ontología Palantir (la gramática del metamodelo — hoy adoptada
-  por CK-21 pero invisible en el catálogo) · DEMO (Dietz) y BPSim como cards `horizonte`.
-  Ajuste de cards existentes cuyo uso cambió con la visión madura (remapeo).
+  por CK-21 pero invisible en el catálogo) · DEMO (Dietz) y BPSim como cards `horizonte` ·
+  **taxonomía de verbos & automatizabilidad** (propia, ALM×MGI — supersede cand. Bloom) · **ECRS**
+  · **criterios RPA-suitability** · **ISO 10013** (pirámide documental QMS) · **NASA-TLX**
+  (situacional). Ajuste de cards existentes cuyo uso cambió con la visión madura (remapeo).
 - **Contrato:** `methodology.schema.yaml` valida el bloque `twin:` (enums de rol + dimensiones
   contra una lista canónica de dimensiones del twin).
 - **Generador + vista:** `gen_metodo.py` extendido (o `gen_notaciones.py` hermano) produce
@@ -145,8 +180,12 @@ formalizable como contrato de entidad publicable estilo Backstage (`apiVersion/k
   `brecha-proyecto` y `portal` con `fichas:` que resuelven en LEDGER, y `meta.proposito` narra el
   modelo CK-21 (hosteado default + twin).
 - **SC-5** Dado `methodologies.yaml`, cuando lo valido, entonces TODA M-card tiene bloque `twin:`
-  válido, existen las cards de doctrina Palantir + DEMO + BPSim, y `NOTACIONES.html` regenerado
-  está en sync (anti-drift).
+  válido, existen las cards de doctrina Palantir + DEMO + BPSim + taxonomía de verbos (ALM×MGI) +
+  ECRS + RPA-suitability + ISO 10013 + NASA-TLX, y `NOTACIONES.html` regenerado está en sync
+  (anti-drift).
+- **SC-8** Dado `NOTACIONES.html`, cuando el operador busca "¿esta actividad se automatiza o se
+  elimina?", entonces encuentra el triage completo (ECRS → verbos ALM×MGI → criterios
+  RPA-suitability → score derivado) y el porqué del descarte de Bloom. (G Chris-verify.)
 - **SC-6** Dado `NOTACIONES.html` abierto en navegador, cuando el operador lo lee, entonces puede
   responder para cualquier dimensión del twin: qué estándar usamos, en qué rol, cuándo sí, cuándo
   no y cuándo hacemos estándar propio — sin abrir el YAML. (Se verifica en G Chris-verify.)
@@ -163,7 +202,9 @@ Gates verdes (SC-1) + revisión del operador en G (Chris-verify): render de `des
 - Construir motor-de-indicadores / brecha-proyecto / portal (solo se DECLARAN; construcción =
   historias F1.1/F2).
 - Cambios a `objeto.schema.yaml` (eso es `schema-v2-hilo-de-oro-kinetica`, siguiente en F1.0 —
-  esta historia le deja la doctrina cementada como insumo).
+  esta historia le deja la doctrina cementada como insumo). Incluye: el ENUM de verbos en
+  `actividad.verbo`, los campos RPA-suitability por actividad, el score derivado y el eslabón
+  actividad→KPI-persona de la cascada.
 - Export BPMN XML / ArchiMate exchange (rol intercambio declarado, no implementado).
 - Poblar `proceso/**` (historia `poblar-metodo-m1-m3`).
 
