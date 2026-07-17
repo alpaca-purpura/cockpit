@@ -33,6 +33,7 @@ fases:
     - publicacion-repo-oficial-deploy-procesos
     - auth-niveles-acceso-policy-as-data
   F1.4-twin-mide-real:
+    - captura-manual-kpis
     - construir-lakehouse-dlt-ducklake
   F1.x-negocio-paralelo:
     - comprador-pricing-exito-12-meses
@@ -50,6 +51,7 @@ stories:
   - modulo-gestion-cambios-iso
   - publicacion-repo-oficial-deploy-procesos
   - auth-niveles-acceso-policy-as-data
+  - captura-manual-kpis
   - construir-lakehouse-dlt-ducklake
   - cruce-estructura-operacion-indicadores
   - brecha-proyecto-ciclo-vida

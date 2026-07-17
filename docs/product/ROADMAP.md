@@ -33,6 +33,7 @@ prosa de abajo (mapa, diagrama F1, "por qué aquí", secuencia) es juicio del op
 | F1 | F1.3-organizacion-viva | cockpit | `modulo-gestion-cambios-iso` | N13 | alta | idea |
 | F1 | F1.3-organizacion-viva | consultio | `publicacion-repo-oficial-deploy-procesos` | N14 | alta | idea |
 | F1 | F1.3-organizacion-viva | cockpit | `auth-niveles-acceso-policy-as-data` | N13 | alta | idea |
+| F1 | F1.4-twin-mide-real | cockpit | `captura-manual-kpis` | N13 | alta | idea |
 | F1 | F1.4-twin-mide-real | lakehouse | `construir-lakehouse-dlt-ducklake` | N16 | media | idea |
 | F1 | F1.x-negocio-paralelo | sistema | `comprador-pricing-exito-12-meses` | transversal | alta | idea |
 | F2 | — | fabricante | `distribucion-telemetria-licencias-n3` | N3 | media | idea |

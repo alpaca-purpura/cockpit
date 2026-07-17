@@ -54,10 +54,25 @@ Generalizar el patrón expand-contract (hoy solo en el seam, I-52) a **todo dato
 entidad lleva su `data_version` → migraciones **por-tipo-de-entidad**, no-destructivas. *Falta confirmar:*
 ¿bilingüe en runtime (leer ambas versiones) y/o `migrate` (subir old→new una vez)?
 
-## D-07 · Holding / corporativo — `en-discusión`
-chris-corp = **solo un selector** (desplegable de empresas) con **cero dato propio** (sin objetivos, sin
-rollup). Afirmado por el operador. *Falta confirmar:* de-dup de sistemas compartidos queda **muerta**;
-corporativo es **chris-corp-only** (clientes: techo = empresa).
+## D-07 · Holding / corporativo — `clavada` (ratificada operador 2026-07-17 · refinamiento arquitectura-refichado-ck21 · CK-24 mismo evento)
+**Techo = empresa.** El holding/"grupo" = **agrupador puro** (selector de empresas) con **cero dato
+propio** (sin objetivos, sin rollup, sin de-dup de sistemas compartidos). No se vende a grupos *como
+grupo* en el MVP.
+
+**Patrón "grupo inmobiliario" (caso cliente probable) — el proyecto NO es una empresa:** el operador
+propuso "cada empresa sería un proyecto"; se decide lo contrario tras análisis. Un proyecto/obra/
+sucursal es una **unidad de ejecución**: los procesos se definen UNA vez en la empresa OPERATIVA (la
+inmobiliaria) y se ejecutan/miden POR unidad — el KPI corta por `unidad_ref` (dimensión de la
+MEDICIÓN, insumo schema-v2), no por partición del twin. Razones: (1) empresa-por-proyecto duplica
+los procesos N veces → drift asegurado (viola un-hecho-un-lugar) y deja twins de 3 personas sin
+organización real; (2) el SPV legal por proyecto (práctica normal inmobiliaria) es un **atributo
+legal** (`entidad_legal_ref` en la instancia), no una organización — el twin modela la organización
+que OPERA, no el cascarón jurídico; (3) el mismo patrón resuelve franquicia/multi-sucursal
+(plantilla de proceso + medición por unidad), hueco detectado por la auditoría 2026-07-17.
+
+**Cuándo SÍ es otra empresa bajo el agrupador:** negocios genuinamente distintos con procesos
+propios (inmobiliaria + constructora + administradora de edificios) — cada uno su twin; el selector
+los agrupa.
 
 ## D-08 · Molde de proceso (la "tortuga") + el manual colapsa — `clavada`
 El `proceso` se modela como la **tortuga ISO 9001 cl.4.4**: header con entradas/salidas (+proveedor/cliente

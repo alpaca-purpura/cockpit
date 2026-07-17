@@ -7,7 +7,7 @@ module: sistema
 capability: sistema/arquitectura-refichado-ck21
 po_version: 3
 last_modified: 2026-07-17
-ratified_by_chris: true   # v2: "Apruebo todo" + acotación triage. v3: post-auditoría adversarial (5 auditores) — pendiente GO final del operador
+ratified_by_chris: true   # v2: "Apruebo todo" + acotación triage. v3: post-auditoría adversarial (5 auditores). GO final del operador 2026-07-17 (CK-24 firmada · D-07 clavada · historia captura-manual-kpis creada) — refined FIRME
 links:
   story_yaml: story.yaml
   story_md: 00-story.md
@@ -257,21 +257,26 @@ residuos). Lo que NO se arregla aquí queda cementado como insumo o diferido con
 10. Del demo SOMA para m2/ingesta: **umbral de acumulación de hallazgos** (3+ antes de
     reversionar) + **formulario de reporte de 4 campos** (personal sin método) + vista
     before/after para el aprobador (Gestión de Cambios N13).
+11. **Unidad de ejecución** (D-07 clavada): la medición del KPI lleva `unidad_ref` opcional
+    (proyecto/obra/sucursal) — proceso definido una vez, medido por unidad; instancia lleva
+    `entidad_legal_ref` opcional (SPV = atributo legal, no partición).
 
-### Diferidos conscientes (registrados, NO doctrina inventada hoy — decisiones del operador)
+### Diferidos — resolución del operador (GO 2026-07-17)
 
-- **Captura MANUAL de KPIs** (planilla/form con provenance `Declarado` + frescura) como fuente de
-  primera clase del motor de indicadores → **historia nueva F1 propuesta**. Sin ella, en la org
-  no-digital (la PyME LatAm objetivo) la pata "real" del twin queda vacía y el "hilo de oro
-  MEDIDO" degrada a mapa bonito.
-- **Frontera twin↔evaluación individual** → **ficha CK propuesta** (ver doctrina arriba).
-- **Holding/servicios compartidos:** D-07 está `en-discusión` — clavarla con límite explícito
-  ("techo = empresa; holding = selector sin dato" → no se vende a grupos como grupo) o diseñar el
-  techo. Decisión operador.
-- **M&A (fusión de twins) · franquicia (plantilla/instancia de proceso por sucursal) ·
-  multi-idioma:** sin respuesta hoy, registrados como límites conocidos del MVP.
-- **Escala 5000+ (índice derivado como V2 ya decidido · sync HRIS inexistente → churn de personas
-  pudre el twin):** registrado; primer cliente grande lo activa.
+- ✅ **Captura MANUAL de KPIs** → historia creada: `cockpit/captura-manual-kpis` (F1.4, alta,
+  deps schema-v2 + cruce-indicadores). Fuente de primera clase con provenance `Declarado` +
+  frescura; el lakehouse la reemplaza métrica a métrica sin cambiar la vista.
+- ✅ **Frontera twin↔evaluación individual** → **CK-24 firmada** (LEDGER).
+- ✅ **Holding** → **D-07 clavada**: techo = empresa; holding = agrupador puro sin dato. Patrón
+  grupo inmobiliario decidido CONTRA "empresa-por-proyecto": el proyecto/obra/sucursal es
+  **unidad de ejecución** — procesos definidos una vez en la empresa operativa, MEDIDOS por
+  unidad (`unidad_ref` en la medición del KPI, insumo schema-v2); el SPV legal = atributo
+  (`entidad_legal_ref`), no partición del twin. Negocios genuinamente distintos del grupo = cada
+  uno su empresa bajo el agrupador. El mismo patrón resuelve el hueco franquicia/multi-sucursal.
+- **M&A (fusión de twins) · multi-idioma:** sin respuesta hoy, registrados como límites conocidos
+  del MVP.
+- **Escala 5000+ (índice derivado V2 · sync HRIS → churn de personas):** registrado; primer
+  cliente grande lo activa.
 
 ## Criterios de aceptación (Gherkin-lite)
 

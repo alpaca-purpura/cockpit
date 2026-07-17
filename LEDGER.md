@@ -714,7 +714,33 @@ entidades — el fixture lo ejerce entero) · I-39/D-15 (instancias en shells he
 *Siguiente:* sin cambio — `sistema/arquitectura-refichado-ck21` sigue primera; el fixture entra
 tras `schema-v2`.
 
-<!-- Próximas: CK-24, … -->
+### CK-24 · Frontera twin ↔ evaluación individual — el twin mide roles/procesos/áreas, no personas — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-17):* "Firma" — respuesta al hallazgo #2 de la auditoría adversarial del
+refinamiento de `arquitectura-refichado-ck21` (5 auditores paralelos, pedido del operador: "genera
+subagentes que se pongan en todos los peores escenarios posibles").
+
+*Desarrollo:* la auditoría detectó contradicción frontal: la doctrina propia
+(`sistema/schema/metodologia/objetivos.md §8`: "Rol = KR ownership, NO OKR individual") prohibía lo
+que el producto vendía ("KPIs por persona", drill-down directorio→analista, NASA-TLX midiendo
+desgaste versionado en git = registro de salud ocupacional de facto). Exposición real: AI Act
+Anexo III (empleo), GDPR art. 22, comités/sindicatos — la objeción #1 que un DPO le hará al
+producto.
+
+**Decisión firmada:** el twin mide **roles, procesos y áreas** por defecto. (a) KPI ancla a
+rol/proceso/área — la persona entra como *ocupante del rol*, jamás como eslabón de medición; (b) la
+vista por persona-nombrada existe SOLO con opt-in de nivel Gobernanza + consentimiento declarado;
+(c) desgaste/carga cognitiva (NASA-TLX) se agrega por rol/proceso — nunca se versiona como registro
+individual; (d) nace M-card transversal "métricas de persona" (agregación mínima · acceso por nivel
+· consentimiento · retención), gemela de M23-provenance, obligatoria como ancla del triage de
+automatización (el score puntúa ACTIVIDADES de un rol, no personas).
+
+*Conecta:* CK-21 (acota el diferenciador "hilo de oro medido" sin matarlo) · historia
+`arquitectura-refichado-ck21` (spec v3 la cementa en la matriz WS5) ·
+`schema-v2-hilo-de-oro-kinetica` (la hereda como invariante de diseño) ·
+`auth-niveles-acceso-policy-as-data` (el opt-in Gobernanza aterriza ahí).
+
+<!-- Próximas: CK-25, … -->
 
 ## Log
 
@@ -734,3 +760,4 @@ tras `schema-v2`.
 | 2026-07-16 | Organization as Code → Organization Twin: visión con nombre (twin = deseado N6 × real N16 × brecha continua N13, GitOps organizacional); diferenciador = hilo de oro medido (objetivos→OKR→KPI) + brechas con ROI + ciclo brecha→proyecto dentro de la solución + arneses por puesto. Pivote comercial: default hosteado single-tenant (invierte D3 de CK-18; self-hosted = tier regulados; multitenant = fase 2); N3 asciende a Portal (licencias fingerprint, no MAC); 1 repo · 3 entornos dev/UAT/prod; capa kinética + OKR/KPI/Proyecto al schema (doctrina Palantir); Consultio v0 = arneses sin app shell; Gestión de Cambios al MVP; horizontes gateados (what-if→BPSim→agentes-con-arneses, MCP V2). SOTA 11 vendors + Gartner DTO → TO-BE 37 capacidades en `proyecto/research/organization-as-code/`. | CK-21 |
 | 2026-07-16 | Roadmap MVP: F1 re-alcanzada a "Terreno + MVP Twin vendible" (16 historias, fases F1.0 Terreno → F1.1 Método → F1.2 Organización viva → F1.3 El twin mide + carril negocio; historia nueva `arquitectura-refichado-ck21` = LA PRIMERA, pedido del operador); nacen F2 "Comercial" (portal+canal, deuda UI se paga aquí, conectores) y F3 "Edge completo + escala" (clon DevStudio baja a media, Colab, Arnesia pipeline, MCP, frescura, gateadas D5/CK-10); 28 story.yaml re-cableados (prioridades + deps, operar-metodo/publicación ya no esperan al clon); `docs/product/ROADMAP.md` como vista humana. | CK-22 |
 | 2026-07-17 | Twin-first (re-secuencia F1): el twin lleno y pintado ANTES que el proceso de llenado — historia nueva `organizacion-ficticia-golden-fixture` (shell ficticio 100% contra schema v2, provenance simulando M1; fixture + plantillas-por-ejemplo + demo + contrato de salida de Consultio); F1 pasa a 5 fases (F1.1 Twin pintado adelanta a método/organización-viva; lakehouse alta→media a F1.4, mockeado por los KPIs del fixture); hito intermedio: twin demo-able con org ficticia. | CK-23 |
+| 2026-07-17 | Frontera twin ↔ evaluación individual (de la auditoría adversarial del refinamiento): el twin mide roles/procesos/áreas — KPI ancla a rol, persona = ocupante; vista persona-nombrada solo opt-in Gobernanza + consentimiento; NASA-TLX agregado por rol/proceso, nunca registro individual; nace M-card "métricas de persona" gemela de M23. Mismo evento: D-07 clavada (techo=empresa; holding=agrupador; proyecto/sucursal = unidad de ejecución, no empresa) + historia nueva `cockpit/captura-manual-kpis`. | CK-24 |
