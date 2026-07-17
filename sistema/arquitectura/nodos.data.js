@@ -159,7 +159,7 @@ window.NODOS = {
       ],
       [
         "responsabilidades",
-        "Publicar releases firmadas (binario + apps + arneses) que el cliente jala y verifica **[R9]** · emitir/validar licencias (entitlements por cliente, revocables) · recibir telemetría agregada (scrubbing) para dashboards de flota · canales (consultores siempre-verde / clientes estable) + rollback."
+        "Publicar releases firmadas (binario + apps + arneses) que el cliente jala y verifica **[R9]** · recibir telemetría agregada (scrubbing) para dashboards de flota **[R9]** · **operar la puerta comercial: login, cobro, gestión de usuarios/asientos, emitir/validar/revocar licencias y entitlements [R16]** · canales (consultores siempre-verde / clientes estable) + rollback."
       ],
       [
         "no_objetivos",
@@ -212,7 +212,7 @@ window.NODOS = {
     ]
   },
   "N6": {
-    "titulo": "Repositorio Oficial (confidencial, infra del cliente)",
+    "titulo": "Repositorio Oficial (confidencial, residencia por tier)",
     "plano": "Organización",
     "tipo": "artefacto/dato",
     "madurez": "no-construido",
@@ -236,7 +236,7 @@ window.NODOS = {
       ],
       [
         "no_objetivos",
-        "NO es DB transaccional ni de queries agregadas en caliente (eso lo hace Cockpit/lakehouse) · NO es el landing del crudo (eso es N12) · NO guarda datos de operación de alta frecuencia (eso es N16) · NO sale de la red del cliente."
+        "NO es DB transaccional ni de queries agregadas en caliente (eso lo hace Cockpit/lakehouse) · NO es el landing del crudo (eso es N12) · NO guarda datos de operación de alta frecuencia (eso es N16) · NO sale de la instancia de la Organización (hosteada bajo DPA o red del cliente, según tier — chequeo 2)."
       ],
       [
         "formato",
@@ -248,7 +248,7 @@ window.NODOS = {
       ],
       [
         "residencia + retencion",
-        "**Servidor/máquina del cliente**, con backups (`forgejo dump` + restic a disco externo/S3 del cliente). Retención indefinida vía historia git (es el valor: trazabilidad). El repo ES el archivo histórico."
+        "**Por tier (chequeo 2):** default = instancia single-tenant hosteada por nosotros (aislada, cifrada, bajo DPA, **exportable** — \"tu organización as-code es un repo git que te llevas cuando quieras\") · tier enterprise/regulados = servidor/máquina del cliente. Backups en ambas (`forgejo dump` + restic). Retención indefinida vía historia git (es el valor: trazabilidad). El repo ES el archivo histórico."
       ],
       [
         "versionado",
@@ -285,7 +285,7 @@ window.NODOS = {
     "campos": [
       [
         "objetivo",
-        "Ser el **tablero único** de la organización: cruzar la estructura organizacional (procesos/roles/objetivos, de N6) con la operación día a día (de N16) y servirla a cada usuario **según su nivel de acceso**; y darle al Analista de Calidad el módulo de **Gestión de Cambios** para mantener lo oficial siguiendo ISO. Corre en la red del cliente, cero npm/python/Docker."
+        "Ser el **tablero único** de la organización: cruzar la estructura organizacional (procesos/roles/objetivos, de N6) con la operación día a día (de N16) y servirla a cada usuario **según su nivel de acceso**; y darle al Analista de Calidad el módulo de **Gestión de Cambios** para mantener lo oficial siguiendo ISO. Corre **dentro de la instancia de la Organización** — hosteada por nosotros (default D3) o en la red del cliente (tier enterprise/regulados, chequeo 2) —, cero npm/python/Docker."
       ],
       [
         "resumen",
@@ -297,7 +297,7 @@ window.NODOS = {
       ],
       [
         "responsabilidades",
-        "Servir la SPA embebida (`go:embed`) · API JSON (`/api/portfolio`, `/api/negocio`, `/api/objeto`) · leer/validar el objeto normalizado (9 entidades, CK-13) de N6 · **cruzar estructura × operación (N16) y servir por nivel de acceso [R11]** · **Gestión de Cambios** (solicitud/aprobación/publicación de versiones, firma persistida) sobre N6 [alimenta R13] · autenticar y autorizar por rol organizacional."
+        "Servir la SPA embebida (`go:embed`) · API JSON (`/api/portfolio`, `/api/negocio`, `/api/objeto`) · leer/validar el objeto normalizado (9 entidades, CK-13) de N6 · **cruzar estructura × operación (N16) y servir por nivel de acceso [R11]** · **medir el hilo de oro (motor de indicadores) y sostener la brecha continua con el ciclo brecha→proyecto→KPI movido [R17]** · **Gestión de Cambios** (solicitud/aprobación/publicación de versiones, firma persistida) sobre N6 [alimenta R13] · autenticar y autorizar por rol organizacional."
       ],
       [
         "no_objetivos",
@@ -362,7 +362,7 @@ window.NODOS = {
       ],
       [
         "resumen",
-        "Lakehouse pequeño en la infra del cliente: pipelines de ingesta + almacén columnar + catálogo. Consumido por Cockpit (binario Go) que hace el join contra la estructura de N6."
+        "Lakehouse pequeño dentro de la instancia de la Organización (residencia por tier — chequeo 2): pipelines de ingesta + almacén columnar + catálogo. Consumido por Cockpit (binario Go) que hace el join contra la estructura de N6."
       ],
       [
         "plano · tipo · madurez",
@@ -374,7 +374,7 @@ window.NODOS = {
       ],
       [
         "no_objetivos",
-        "NO es el SSoT de la estructura (eso es N6) · NO es transaccional (es analítico) · NO requiere data engineers/K8s · NO sale de la red del cliente (salvo modalidad hosteada por nosotros, opción de pago)."
+        "NO es el SSoT de la estructura (eso es N6) · NO es transaccional (es analítico) · NO requiere data engineers/K8s · NO sale de la instancia de la Organización — que reside por tier (default hosteada por nosotros bajo DPA; red del cliente = tier enterprise/regulados, chequeo 2). Es **el estado REAL del twin**."
       ],
       [
         "stack",
@@ -386,7 +386,7 @@ window.NODOS = {
       ],
       [
         "estado + persistencia",
-        "Parquet + catálogo (SQLite→Postgres) en la infra del cliente. Retención según política; snapshots/time travel para \"cómo íbamos\"."
+        "Parquet + catálogo (SQLite→Postgres) dentro de la instancia (residencia por tier — chequeo 2). Retención según política; snapshots/time travel para \"cómo íbamos\"."
       ],
       [
         "escala + disponibilidad",
@@ -459,7 +459,7 @@ window.NODOS = {
       ],
       [
         "residencia + retencion",
-        "Máquina/servidor del cliente. Retención **corta** + **destrucción post-procesamiento** (la cláusula de no-retención del DPA se materializa aquí). PyME sin servidor: laptop gestionada del consultor bajo contrato = fallback degradado."
+        "Dentro de la instancia de la Organización (por tier — chequeo 2; en el default hosteado el crudo aterriza en la instancia aislada bajo DPA). Retención **corta** + **destrucción post-procesamiento** (la cláusula de no-retención del DPA se materializa aquí). PyME sin servidor: laptop gestionada del consultor bajo contrato = fallback degradado."
       ],
       [
         "versionado",
@@ -569,7 +569,7 @@ window.NODOS = {
       ],
       [
         "plano · tipo · madurez",
-        "Edge (máquina del consultor) · runtime edge / exec-env (app instalable) · **no-construido** (se clona de DevStudio cuando esté terminado; nombre y adaptación propios — BL-15)."
+        "Edge (máquina del consultor) · runtime edge / exec-env (app instalable) · **no-construido** — pero **el v0 NO espera al clon (CK-21/D7)**: arneses del método sobre Claude Code pelado; el shell DevStudio llega después (F3)."
       ],
       [
         "responsabilidades",

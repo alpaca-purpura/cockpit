@@ -1,11 +1,11 @@
 # arquitectura.yaml — el modelo de LA CÉLULA Cockpit (P1) como dato (arquitectura-como-dato · I-73 replicado — CK-07)
 #
 # QUÉ ES: el mismo patrón de tooling/strategy/arquitectura.yaml (I-73), a nivel célula. Modela el
-# estado de Cockpit (P1) y su frontera con el ecosistema. Rediseñado en CK-18: el sistema pasa de
-# "BYOC con motor server-side" a "Fábrica de software + Organización instalada". El método se
-# entrega al cliente empaquetado en arneses; Cockpit lee la estructura del Repositorio Oficial
-# (confidencial, infra del cliente) y la operación del Data Lakehouse, y sirve por niveles de acceso;
-# gana un módulo de Gestión de Cambios (ISO). Mueren N1 (motor server-side → arneses), N4, N7.
+# estado de Cockpit (P1) y su frontera con el ecosistema. Rediseñado en CK-18 (Fábrica + Organización)
+# y re-fichado en CK-21 (Organization Twin, default hosteado single-tenant por tier — chequeo 2 de
+# NODOS.md). Cockpit lee la estructura del Repositorio Oficial (confidencial, residencia por tier) y
+# la operación del Data Lakehouse, mide el hilo de oro y el ciclo brecha→proyecto (R17), y sirve por
+# niveles de acceso; módulo de Gestión de Cambios (ISO). Mueren N1 (motor server-side → arneses), N4, N7.
 # Curado a eventos de decisión: cada elemento lleva `fichas:` (CK-NN de esta célula, o I/DH-NN cuando
 # cruza célula). NO se cosecha — su SSoT son las fichas del ledger.
 #
@@ -21,22 +21,25 @@ meta:
   nombre: "Arquitectura de la célula — Cockpit (P1)"
   version: 0.2.0
   proposito: >-
-    Cockpit (P1) es el binario que sirve el tablero de la organización en la red del cliente. Modelo
-    CK-18: es una Fábrica de software (Plano del Fabricante — nuestro) que construye el sistema
-    operativo de la organización y lo instala en su red (Plano de la Organización). El método se
-    entrega al cliente empaquetado en arneses (deroga el límite de IP "el método nunca al cliente");
-    el consultor construye el mapa completo con Consultio (clon de DevStudio sobre Claude Code) y lo
-    publica al Repositorio Oficial confidencial (N6, git self-hosted); Cockpit cruza esa estructura
-    con la operación del Data Lakehouse (N16) y sirve por niveles de acceso, más un módulo de Gestión
-    de Cambios (ISO). Mueren el motor de discovery server-side (N1 → arneses), la voz (N4) y los
-    agentes efímeros (N7 → todo el levantamiento es vía consultor). SOTA en
-    proyecto/research/rediseno-total/. Vista de despliegue = despliegue.html.
+    Cockpit (P1) es el binario que sirve el ORGANIZATION TWIN (CK-21): estado deseado (Repositorio
+    Oficial N6) × estado real (Data Lakehouse N16) × brecha continua (N13 — motor de indicadores +
+    ciclo brecha→proyecto). Modelo CK-18 + pivote CK-21: la Fábrica de software (Plano del
+    Fabricante — nuestro) construye el sistema operativo de la organización y lo sirve como
+    instancia single-tenant por cliente, HOSTEADA POR NOSOTROS por default (D3; en la red del
+    cliente = tier enterprise/regulados; la instancia no sabe dónde corre). El método se entrega al
+    cliente empaquetado en arneses (protección = licencia + contrato, canal N3 = Portal con
+    licencias por fingerprint); el consultor construye el mapa con Consultio (v0 = arneses del
+    método sobre Claude Code pelado, sin app shell — D7; el clon DevStudio llega en F3) y lo
+    publica a N6 vía Gestión de Cambios (dev→UAT→prod = la gestión de cambios ISO, D5); Cockpit
+    cruza estructura × operación, mide el hilo de oro (objetivos→OKR→KPI) y sirve por niveles de
+    acceso. Frontera CK-24: el twin mide roles/procesos/áreas, no personas. SOTA en
+    proyecto/research/{rediseno-total,organization-as-code}/. Vista de despliegue = despliegue.html.
 
 # ---- PLANOS = las bandas del render ----
 planos:
   - { id: actores,       nombre: "Roles",                       sub: "quién usa Cockpit — Gobernanza/Área/Consultor/Analista de Calidad (CK-01/CK-18)" }
   - { id: cockpit-app,   nombre: "Cockpit (P1) — propio",       sub: "código y runtime que esta célula posee: Visualización + Gestión de Cambios + niveles de acceso" }
-  - { id: fuentes,       nombre: "Fuentes que Cockpit lee",      sub: "de dónde toma la verdad: Repositorio Oficial (estructura) + Data Lakehouse (operación) — infra del cliente" }
+  - { id: fuentes,       nombre: "Fuentes que Cockpit lee",      sub: "el twin: Repositorio Oficial (estado DESEADO) × Data Lakehouse (estado REAL) — instancia de la Organización, residencia por tier (CK-21)" }
   - { id: ecosistema,    nombre: "Ecosistema (externo, célula distinta)", sub: "Fabricante (Arnesia, Distribución) y apps hermanas (Consultio, DevStudio) — ledgers propios" }
 
 # ---- TIPOS ----
@@ -168,6 +171,20 @@ componentes:
     estado: pendiente
     fichas: [CK-10]
     proposito: "Capability futura (VISION §ISO): compara el estado modelado contra cláusulas de la norma y reporta gaps. Se activa con demanda real; NUNCA emite certificados (I-05). BL-14."
+  - id: motor-de-indicadores
+    tipo: backend
+    plano: cockpit-app
+    nombre: "Motor de indicadores (hilo de oro medido)"
+    estado: pendiente
+    fichas: [CK-21, CK-24]
+    proposito: "La capa semántica operación→KPI→OKR→objetivo [R17]: semáforo + drill-down por nivel, declarado-vs-observado (anti-gaming), frescura visible. Fuentes: lakehouse (N16) o captura manual con provenance Declarado (historia captura-manual-kpis). Frontera CK-24: mide roles/procesos/áreas, jamás persona-nombrada sin opt-in Gobernanza. Historias: cruce-estructura-operacion-indicadores (F1.1) + schema-v2 (KPI entidad)."
+  - id: brecha-proyecto
+    tipo: backend
+    plano: cockpit-app
+    nombre: "Ciclo brecha→proyecto (el loop del twin)"
+    estado: pendiente
+    fichas: [CK-21]
+    proposito: "El diferenciador D2 [R17]: brechas con costo estimado + ranking ROI (WSJF/FinOps) → proyecto de mejora con ciclo de vida DENTRO de Cockpit → KPI movido (cierra PDCA). La brecha deja de ser entregable puntual (R6, engagement) y se vuelve loop permanente. Historia: brecha-proyecto-ciclo-vida (F1.1)."
 
   # — fuentes que Cockpit lee (infra del cliente) —
   - id: repositorio-oficial
@@ -176,14 +193,14 @@ componentes:
     nombre: "Repositorio Oficial (N6, confidencial)"
     estado: pendiente
     fichas: [CK-18]
-    proposito: "Git self-hosted (Forgejo) en la infra del cliente: Arneses · Metadata Organizada (objeto normalizado) · Documentos Oficiales versionados · Knowledge DB (futura). SSoT de la estructura que Cockpit lee. Ya no es GitHub (re-fichado CK-18). SOTA: research/rediseno-total/01."
+    proposito: "Git confidencial (Forgejo), residencia por tier (CK-21/D3): Arneses · Metadata Organizada (objeto normalizado) · Documentos Oficiales versionados · Knowledge DB (futura). SSoT de la estructura y estado DESEADO del twin. Ya no es GitHub (re-fichado CK-18). SOTA: research/rediseno-total/01."
   - id: data-lakehouse
     tipo: sistema-externo
     plano: fuentes
     nombre: "Data Lakehouse (N16)"
     estado: pendiente
     fichas: [CK-18]
-    proposito: "dlt (ingesta) + DuckLake/DuckDB (catálogo SQLite→Postgres) en la infra del cliente; reúne la operación de todos los sistemas. Cockpit lo lee con DuckDB embebido y cruza con la estructura. Default cliente; hosteado por nosotros = opción. SOTA: research/rediseno-total/03."
+    proposito: "dlt (ingesta) + DuckLake/DuckDB (catálogo SQLite→Postgres); reúne la operación de todos los sistemas — el estado REAL del twin. Cockpit lo lee con DuckDB embebido y cruza con la estructura. Residencia por tier (CK-21/D3: default = instancia hosteada por nosotros; red del cliente = tier enterprise/regulados). SOTA: research/rediseno-total/03."
   - id: sistemas-org
     tipo: sistema-externo
     plano: fuentes
@@ -199,7 +216,7 @@ componentes:
     nombre: "Consultio — App del Consultor (N14)"
     estado: pendiente
     fichas: [CK-11, CK-18]
-    proposito: "Clon de DevStudio con nombre propio (CK-18, D4): el consultor construye el mapa completo (objeto normalizado + documentos + arneses) sobre su Claude Code y lo publica al Repositorio Oficial — 'deploy de procesos', con preview local de Cockpit. Transferible al Analista de Calidad. BL-15..17."
+    proposito: "La app del consultor (CK-18; v0 CK-21/D7 = los arneses del método M1-M3 sobre Claude Code pelado, SIN app shell — no espera al clon DevStudio, que llega en F3): construye el mapa completo (objeto normalizado + documentos + arneses) y lo publica al Repositorio Oficial — 'deploy de procesos', con preview local de Cockpit. Transferible al Analista de Calidad."
   - id: arnesia
     tipo: sistema-externo
     plano: ecosistema
@@ -208,13 +225,13 @@ componentes:
     ruta: "~/Proyectos/harness-studio (repo propio, externo)"
     fichas: [CK-18]
     proposito: "La fábrica (P4): produce y versiona los arneses por rol-en-proceso (skill=proc, plugin=rol). Compila doc+arnés desde la misma fuente (anti-drift). Se entrega al cliente para que mantenga los suyos. SOTA: research/rediseno-total/07."
-  - id: distribucion-fabricante
+  - id: portal
     tipo: sistema-externo
     plano: ecosistema
-    nombre: "Distribución + telemetría + licencias (N3)"
+    nombre: "Portal del Fabricante (N3) — puerta comercial + canal"
     estado: pendiente
-    fichas: [CK-18]
-    proposito: "El Plano del Fabricante operable: releases firmadas (go-tuf v2/Tauri) que el cliente jala, marketplace de arneses revocable, licencias Ed25519, telemetría OTLP/mTLS opt-in. Habilita el contrato de mantenimiento. SOTA: research/rediseno-total/04."
+    fichas: [CK-18, CK-21]
+    proposito: "Asciende a Portal (CK-21/D4): puerta comercial [R16] — login, cobro, gestión de usuarios/asientos, licencias por asiento con fingerprint compuesto (NO MAC), entitlements revocables — más el canal técnico [R9]: releases firmadas (go-tuf v2/Tauri) que el cliente jala, marketplace de arneses revocable, telemetría OTLP/mTLS opt-in. Historias F2: canal-n3 + portal. SOTA: research/rediseno-total/04."
   - id: devstudio
     tipo: sistema-externo
     plano: ecosistema
@@ -248,6 +265,11 @@ relaciones:
   - { from: consultio,              to: repositorio-oficial,    tipo: alimenta }   # deploy de procesos
   - { from: arnesia,                to: repositorio-oficial,    tipo: alimenta }   # siembra arneses de la org
   - { from: arnesia,                to: consultio,              tipo: alimenta }   # produce los arneses del método que Consultio carga
-  - { from: distribucion-fabricante, to: consultio,             tipo: alimenta }   # releases firmadas (pull)
-  - { from: distribucion-fabricante, to: devstudio,             tipo: alimenta }
+  - { from: portal,                 to: consultio,              tipo: alimenta }   # releases firmadas + licencias (pull)
+  - { from: portal,                 to: devstudio,              tipo: alimenta }
+  - { from: cockpit-runtime-propio, to: motor-de-indicadores,   tipo: compone }    # futuro — el hilo de oro medido dentro del binario [R17]
+  - { from: cockpit-runtime-propio, to: brecha-proyecto,        tipo: compone }    # futuro — el loop brecha→proyecto dentro del binario [R17]
+  - { from: motor-de-indicadores,   to: data-lakehouse,         tipo: usa }        # estado real (o captura manual con provenance Declarado)
+  - { from: motor-de-indicadores,   to: repositorio-oficial,    tipo: usa }        # estado deseado (KPI/OKR/objetivo del objeto)
+  - { from: brecha-proyecto,        to: motor-de-indicadores,   tipo: usa }        # el KPI movido cierra el loop (PDCA)
   - { from: devstudio,              to: sistemas-org,           tipo: usa }        # construye el sistema a medida

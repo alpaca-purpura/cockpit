@@ -80,15 +80,16 @@
 <body>
 <header>
   <h1>🗺️ Diagrama de despliegue — ecosistema Cockpit</h1>
-  <div class="sub">Antes que funcionalidades: <b>qué corre dónde</b>, qué datos viven dónde, cómo se comunican los nodos. Modelo <b>Fabricante / Organización / Edge</b> (CK-18). El <b style="color:var(--ours)">Fabricante</b> construye y distribuye (no razona en runtime); la <b style="color:var(--client)">Organización</b> instala y opera con sus datos en su red; el <b style="color:var(--edge)">Edge</b> son apps sobre Claude Code local. &nbsp;·&nbsp; <b style="color:var(--ours)">Clic en cualquier nodo</b> para su ficha (de <code>NODOS.md</code>, SSoT). Actualizado <b>2026-07-08 (CK-18)</b>: método entregado en arneses (deroga límite IP) · N6 = Repositorio Oficial confidencial (ya no GitHub) · nacen Arnesia (N15), Data Lakehouse (N16), Colab Studio (N17), sistemas de la org (N18), Analista de Calidad (N19) · mueren N1/N4/N7.</div>
+  <div class="sub">Antes que funcionalidades: <b>qué corre dónde</b>, qué datos viven dónde, cómo se comunican los nodos. Modelo <b>Fabricante / Organización / Edge</b> (CK-18). El <b style="color:var(--ours)">Fabricante</b> construye y distribuye (no razona en runtime); la <b style="color:var(--client)">Organización</b> instala y opera con sus datos en su red; el <b style="color:var(--edge)">Edge</b> son apps sobre Claude Code local. &nbsp;·&nbsp; <b style="color:var(--ours)">Clic en cualquier nodo</b> para su ficha (de <code>NODOS.md</code>, SSoT). Actualizado <b>2026-07-17 (CK-21 · re-fichado fino)</b>: <b>Organization Twin</b> — estado deseado (N6) × estado real (N16) × brecha continua (N13) · la Organización corre como <b>instancia single-tenant por cliente en DOS modalidades</b> (hosteada por nosotros = default D3 · en la red del cliente = tier enterprise/regulados) · N3 asciende a <b>Portal</b> (puerta comercial [R16] + canal técnico [R9]) · R-walk R1–R17. Base <b>2026-07-08 (CK-18)</b>: método entregado en arneses (deroga límite IP) · N6 = Repositorio Oficial confidencial (ya no GitHub) · nacen N15/N16/N17/N18/N19 · mueren N1/N4/N7.</div>
 </header>
 
 <div class="principle">
-  <b>Principio rector (CK-18):</b> el sistema es una <b style="color:var(--ours)">fábrica de software</b> que construye el sistema operativo de la organización y lo <b>instala en su red</b>.
+  <b>Principio rector (CK-18 + CK-21):</b> el sistema es una <b style="color:var(--ours)">fábrica de software</b> que construye el <b>Organization Twin</b> de cada cliente y lo opera como <b>instancia aislada</b>.
   <b style="color:var(--ours)">Plano del Fabricante = nuestro</b> (construye, versiona, firma y distribuye — no toca datos del cliente).
-  <b style="color:var(--client)">Plano de la Organización = del cliente</b> (Repositorio Oficial + Cockpit + Data Lakehouse, sus datos NUNCA salen).
+  <b style="color:var(--client)">Plano de la Organización = del cliente, single-tenant, en DOS modalidades (D3)</b>: <b>hosteada por nosotros</b> (default — instancia aislada, cifrada, bajo DPA, exportable: "tu organización as-code es un repo git que te llevas cuando quieras") o <b>en su red</b> (tier enterprise/regulados). Misma arquitectura; la instancia no sabe dónde corre.
   <b style="color:var(--edge)">Edge = apps sobre Claude Code local</b> (una mecánica, arneses por puesto).
-  El método <b>se entrega</b> empaquetado en arneses (Arnesia licenciada); la protección pasa de arquitectura a <b>licencia + contrato</b>. Datos: <b>"transitan, no persisten"</b> — la inferencia local los procesa con zero-retention.
+  <b>El flujo ES el twin:</b> el Repositorio Oficial (N6) declara el <b>estado DESEADO</b> → el Lakehouse (N16) observa el <b>estado REAL</b> → Cockpit (N13) mide el hilo de oro (objetivos→OKR→KPI) y sostiene la <b>BRECHA CONTINUA</b>: brecha→proyecto→KPI movido [R17] — GitOps organizacional, el loop nunca cierra.
+  El método <b>se entrega</b> empaquetado en arneses (Arnesia licenciada); la protección pasa de arquitectura a <b>licencia + contrato</b>. <b>"Transitan, no persisten"</b> = promesa del tier en-red-del-cliente (chequeo 2); en el default hosteado la promesa es la instancia aislada + exportable.
 </div>
 
 <div class="legend">
@@ -110,7 +111,7 @@
     <div class="arts">
       <div class="art ip" data-nodo="N15"><div class="as"><span class="nid">N15</span>≪servicio≫ fábrica · existe (parcial)</div><div class="at">Arnesia — fábrica de arneses <span class="bdg new">nace</span></div><div class="ad">produce/versiona los arneses por rol-en-proceso (skill=proc · plugin=rol) · compila doc+arnés desde la misma fuente (anti-drift) · <code>~/Proyectos/harness-studio</code> [R8]</div></div>
       <div class="art ip" data-nodo="N2"><div class="as"><span class="nid">N2</span>≪artefacto≫ · existe (parcial)</div><div class="at">Repositorio Maestro</div><div class="ad">SSoT nuestro: método (m1·m2·m3), motor de discovery como arneses, arneses plantilla, código de las apps — el activo, versionado</div></div>
-      <div class="art open" data-nodo="N3"><div class="as"><span class="nid">N3</span>≪servicio≫ · no-construido</div><div class="at">Distribución · telemetría · licencias</div><div class="ad">releases firmadas (go-tuf v2 / Tauri) que el cliente jala · marketplace de arneses revocable · licencias Ed25519 · telemetría OTLP/mTLS opt-in — habilita el mantenimiento [R9]</div></div>
+      <div class="art open" data-nodo="N3"><div class="as"><span class="nid">N3</span>≪servicio≫ · no-construido</div><div class="at">Portal — puerta comercial + canal <span class="bdg new">asciende CK-21</span></div><div class="ad"><b>Puerta comercial [R16]:</b> login · cobro · gestión de usuarios/asientos · licencias por asiento con <b>fingerprint compuesto (NO MAC)</b> · descargas de las apps. <b>Canal técnico [R9]:</b> releases firmadas (go-tuf v2 / Tauri) que el cliente jala · marketplace de arneses revocable · telemetría OTLP/mTLS opt-in</div></div>
     </div>
     <div class="runtime">⚙️ Ya no hay runtime de razonamiento server-side — el motor vive como arneses que corren en el edge (N8). Compute desatendido, si existiera, iría por API key.</div>
   </div>
@@ -122,14 +123,14 @@
 
   <!-- ORGANIZACIÓN -->
   <div class="node client">
-    <div class="stereo">≪device≫ · servidor/red del cliente — <b>confidencial, con backups</b></div>
-    <div class="ntitle">🏢 PLANO DE LA ORGANIZACIÓN — instalado en la red del cliente <span class="bdg data">datos aquí</span></div>
-    <div class="nmeta">Lo instalable en la empresa + sus sistemas. Sus datos viven aquí — Repositorio Oficial (confidencial), Cockpit, Data Lakehouse; el crudo transitorio en el Depósito.</div>
+    <div class="stereo">≪device≫ · instancia single-tenant — <b>residencia por tier (D3): nube nuestra bajo DPA (default) / red del cliente (enterprise-regulados)</b> — confidencial, con backups</div>
+    <div class="ntitle">🏢 PLANO DE LA ORGANIZACIÓN — una instancia aislada por cliente <span class="bdg data">datos aquí</span></div>
+    <div class="nmeta">El twin del cliente: <b>estado DESEADO</b> (Repositorio Oficial) × <b>estado REAL</b> (Data Lakehouse) × <b>brecha continua</b> (Cockpit). Misma arquitectura en ambas modalidades; el crudo transitorio en el Depósito.</div>
     <div class="subhdr">Instalables</div>
     <div class="arts">
-      <div class="art open data" data-nodo="N6"><div class="as"><span class="nid">N6</span>≪artefacto≫ · no-construido</div><div class="at">Repositorio Oficial <span class="bdg data">confidencial</span></div><div class="ad">git self-hosted (Forgejo) en la máquina del cliente: <b>Arneses</b> · <b>Metadata Organizada</b> (objeto normalizado) · <b>Documentos Oficiales</b> versionados · <b>Knowledge DB</b> (futura). SSoT de la estructura [R7]</div></div>
-      <div class="art" data-nodo="N13"><div class="as"><span class="nid">N13</span>≪exec env≫ · existe (parcial)</div><div class="at">Cockpit — binario <code>directorio</code></div><div class="ad">2 módulos: <b>Visualización</b> (estructura N6 × operación N16, indicadores) + <b>Gestión de Cambios</b> (ISO). Sirve web por <b>niveles de acceso</b>. Auth embebida · puerto 4100 · ESTE repo [R11]</div></div>
-      <div class="art open data" data-nodo="N16"><div class="as"><span class="nid">N16</span>≪servicio/dato≫ · no-construido</div><div class="at">Data Lakehouse <span class="bdg new">nace</span></div><div class="ad">dlt (ingesta) + DuckLake/DuckDB (catálogo SQLite→Postgres) · reúne la operación de todos los sistemas · DuckDB embebido en el Go de Cockpit [R10]</div></div>
+      <div class="art open data" data-nodo="N6"><div class="as"><span class="nid">N6</span>≪artefacto≫ · no-construido</div><div class="at">Repositorio Oficial <span class="bdg data">confidencial</span> — estado DESEADO</div><div class="ad">git confidencial (Forgejo), residencia por tier: <b>Arneses</b> · <b>Metadata Organizada</b> (objeto normalizado) · <b>Documentos Oficiales</b> versionados · <b>Knowledge DB</b> (futura). SSoT de la estructura · el deber-ser del twin [R7]</div></div>
+      <div class="art" data-nodo="N13"><div class="as"><span class="nid">N13</span>≪exec env≫ · existe (parcial)</div><div class="at">Cockpit — binario <code>directorio</code> — la BRECHA CONTINUA</div><div class="ad">Visualización (estructura N6 × operación N16) [R11] + <b>motor de indicadores</b> (hilo de oro medido: semáforo objetivos→OKR→KPI) + <b>ciclo brecha→proyecto</b> (costo/ROI → proyecto → KPI movido) [R17] + <b>Gestión de Cambios</b> (ISO, gate dev→UAT→prod). Sirve web por <b>niveles de acceso</b>. Auth embebida · puerto 4100 · ESTE repo</div></div>
+      <div class="art open data" data-nodo="N16"><div class="as"><span class="nid">N16</span>≪servicio/dato≫ · no-construido</div><div class="at">Data Lakehouse <span class="bdg new">nace</span> — estado REAL</div><div class="ad">dlt (ingesta) + DuckLake/DuckDB (catálogo SQLite→Postgres) · observa la operación de todos los sistemas — el ser del twin · DuckDB embebido en el Go de Cockpit · KPIs sin sistema → captura manual con provenance [R10]</div></div>
       <div class="art open data" data-nodo="N12"><div class="as"><span class="nid">N12</span>≪artefacto≫ landing zone · no-construido</div><div class="at">Depósito de fuentes</div><div class="ad">crudo de entrada (docs/USB/correo) que deposita el consultor · transitorio · se destruye tras el mapa · el material más sensible [R3]</div></div>
     </div>
     <div class="subhdr">Sistemas de la organización (fuentes del lakehouse)</div>
@@ -253,17 +254,26 @@
     <li><b>Mueren N1, N4, N7.</b> El Motor de Discovery server-side (N1) renace como arneses en N2/N14; la voz (N4) se difiere; los agentes efímeros (N7) mueren — <b>todo el levantamiento es vía consultor</b> (Consultio sobre Claude Code).</li>
     <li><b>N6 = Repositorio Oficial confidencial</b> en la infra del cliente (ya no GitHub): git self-hosted (Forgejo); BD = índice derivado, nunca SSoT.</li>
     <li><b>Nacen Arnesia (N15), Data Lakehouse (N16), Colab Studio (N17), sistemas de la org (N18), Analista de Calidad (N19)</b>; N18/N19 como nodos propios (D2).</li>
-    <li><b>Data Lakehouse (D3):</b> default en la infra del cliente; hosteado por nosotros = opción comercial. <b>Knowledge DB (D5):</b> declarada <code>pendiente</code>, files-first en el repo cuando haya demanda.</li>
-    <li><b>Consultio (D4)</b> = nombre de la App del Consultor (clon de DevStudio con adaptación propia).</li>
+    <li><b>Data Lakehouse (D3, CK-18):</b> superseded por CK-21 (ver abajo). <b>Knowledge DB (D5):</b> declarada <code>pendiente</code>, files-first en el repo cuando haya demanda.</li>
+    <li><b>Consultio (D4)</b> = nombre de la App del Consultor (linaje DevStudio).</li>
   </ol>
-  <h3 style="color:var(--dim);margin-top:10px">Pendiente (tracking = <code>proyecto/backlog.yaml</code>)</h3>
+  <h3 style="color:#8be39b;margin-top:10px">Firmadas (operador, CK-21 — el pivote twin, 2026-07-16/17)</h3>
+  <ol>
+    <li><b>Organization as Code → Organization Twin (D1/D2):</b> twin = deseado (N6) × real (N16) × brecha continua (N13); diferenciador = hilo de oro medido + ciclo brecha→proyecto→KPI movido [R17].</li>
+    <li><b>Default comercial invertido (D3):</b> instancia single-tenant <b>hosteada por nosotros</b> (DPA, cifrada, exportable); en la red del cliente = tier enterprise/regulados; multitenant = fase 2. Misma arquitectura en ambas.</li>
+    <li><b>N3 asciende a Portal (D4):</b> puerta comercial [R16] — login/cobro/asientos, licencias por <b>fingerprint compuesto, NO MAC</b> — además del canal técnico [R9].</li>
+    <li><b>Consultio v0 (D7):</b> los arneses del método sobre Claude Code pelado, sin app shell — ya no espera al clon DevStudio (llega en F3).</li>
+    <li><b>Gestión de Cambios al MVP (D5/D8):</b> el pipeline dev→UAT→prod ES la gestión de cambios ISO.</li>
+    <li><b>Frontera métricas de persona (CK-24):</b> el twin mide roles/procesos/áreas; vista persona-nombrada = opt-in Gobernanza + consentimiento.</li>
+  </ol>
+  <h3 style="color:var(--dim);margin-top:10px">Pendiente (tracking = <code>docs/product/</code> — historias + releases; roadmap F1 CK-22/CK-23)</h3>
   <ul>
-    <li><b>Consultio + Colab Studio</b> — clonar de DevStudio + arneses (BL-15/16/17 redefinidos + BL nuevo).</li>
-    <li><b>Repositorio Oficial</b> — Forgejo self-hosted, tecnología BD vs archivos (BL nuevo).</li>
-    <li><b>Data Lakehouse</b> — dlt + DuckLake, conectores, hosting (BL nuevo, ex-BL-18).</li>
-    <li><b>Cockpit</b> — Gestión de Cambios + niveles de acceso (BL nuevo + ex-BL-12 sube a alta).</li>
-    <li><b>Plano del Fabricante</b> — N3 distribución/telemetría/licencias (BL nuevo).</li>
-    <li><b>Knowledge Database</b> — investigación aplicada cuando haya demanda (BL nuevo, files-first).</li>
+    <li><b>Consultio v0</b> — arneses del método M1-M3 (F1.2 <code>metodo-como-arnes-v0</code> + <code>operar-metodo</code>); el shell y Colab Studio en F3.</li>
+    <li><b>Repositorio Oficial</b> — Forgejo, BD = índice derivado (F1.3 <code>forgejo-self-hosted-bd-vs-archivos</code>).</li>
+    <li><b>Data Lakehouse</b> — dlt + DuckLake (F1.4) + <b>captura manual de KPIs</b> con provenance (F1.4, auditoría 2026-07-17).</li>
+    <li><b>Cockpit</b> — motor de indicadores + brecha→proyecto (F1.1, sobre el golden fixture CK-23) · Gestión de Cambios + niveles de acceso (F1.3).</li>
+    <li><b>Portal (N3)</b> — canal técnico + puerta comercial (F2).</li>
+    <li><b>Knowledge Database</b> — files-first cuando haya demanda (F3, D5).</li>
   </ul>
 </div>
 
