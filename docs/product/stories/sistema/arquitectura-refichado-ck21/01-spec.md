@@ -5,9 +5,9 @@ story_id: arquitectura-refichado-ck21
 type: service-story
 module: sistema
 capability: sistema/arquitectura-refichado-ck21
-po_version: 2
+po_version: 3
 last_modified: 2026-07-17
-ratified_by_chris: true   # 2026-07-17 — "Apruebo todo" + acotación triage automatización/narrativa (v2 la incorpora)
+ratified_by_chris: true   # v2: "Apruebo todo" + acotación triage. v3: post-auditoría adversarial (5 auditores) — pendiente GO final del operador
 links:
   story_yaml: story.yaml
   story_md: 00-story.md
@@ -40,7 +40,12 @@ y por qué.
 **Regla cardinal: estándares como vocabulario · schema propio como metamodelo · git como motor ·
 notación = proyección generada, nunca SSoT.**
 
-Un estándar/metodología puede jugar exactamente UNO de estos roles frente al twin (por dimensión):
+Un estándar juega un rol por **(estándar × dimensión × plano)**: `rol_ancla` único por dimensión +
+`proyecciones[]` opcionales — una celda "ancla + proyección" son dos PLANOS (dato / vista), no dos
+roles en conflicto. Las cards del método del ENGAGEMENT (familias A/E/H, ITIL) llevan rol
+**`fuera-del-twin`** (`dimensiones: []` + `cuando_no:` obligatorio) — son cómo trabajamos nosotros,
+no dimensiones del twin del cliente. Excepción declarada a la regla cardinal: `despliegue.html` es
+vista CURADA del Fabricante (gate de madurez CK-17), fuera del scope twin — no la viola. Roles:
 
 1. **Ancla semántica (vocabulario):** el estándar presta ontología/taxonomía/estructura y se embebe
    como dato (`archimate:`, `met:`, enums) en el schema. No hay diagrama fuente. Ej.: tipos
@@ -70,21 +75,55 @@ narrativa como vehículo. Decisión:
   estándar de automatizabilidad) × **capacidad requerida MGI** (recolectar datos · procesar datos ·
   físico predecible · físico impredecible · interfaz-stakeholder · experticia/decisión · gestión de
   personas). Supersede la candidatura Bloom anotada en `objeto.schema.yaml` (`actividad.verbo`).
-- **Score de automatizabilidad DERIVADO, nunca SSoT:** f(clase del verbo, datos estructurados s/n,
-  reglas estables s/n, volumen/frecuencia, % excepciones — criterios RPA-suitability por
-  actividad). Anti-drift: se calcula, no se etiqueta.
-- **Eliminar antes de automatizar:** triage ECRS (Eliminar→Combinar→Reordenar→Simplificar) +
-  desperdicio lean (empalma con VSM/M09) — no se automatiza el desperdicio.
-- **Desgaste/carga cognitiva medida:** NASA-TLX como instrumento situacional (entrevistas M1).
+- **DOS scores DERIVADOS, nunca SSoT** (corrección post-auditoría — el score RPA-only puntuaba
+  bajo justo donde nuestros arneses venden): **score-RPA** = f(datos estructurados, reglas
+  estables, volumen, % excepciones) + **score-agente** = f(dato no estructurado, criterio
+  expresable en prompt/policy, tolerancia a revisión humana, riesgo de error). Ambos cargan `conf`
+  propagada de la completitud de inputs (input ausente/estimado → conf baja VISIBLE en el heatmap;
+  nunca un score sin su incertidumbre al lado). Anti-drift: se calculan, no se etiquetan.
+- **Veredicto del triage = ENUM, no binario:** `eliminable | automatizable-RPA |
+  automatizable-agente | aumentable (humano+arnés) | humano-por-diseño`. "Humano-por-diseño" ancla
+  a **accountability** (RACI A, firma, responsabilidad legal) — el único criterio que la GenAI no
+  erosiona. "Aumentable" es ciudadano de primera clase: ES el producto (arneses por puesto).
+- **Eliminar antes de automatizar:** ECRS como ORDEN del triage (Eliminar→Combinar→Reordenar→
+  Simplificar) — no se automatiza el desperdicio. Delimitación de altitud: mining (M29) = evidencia
+  que alimenta los inputs del score · VSM (M09) = flujo/future-state · ECRS = orden por actividad.
+- **Regla de normalización "1 verbo = 1 actividad":** los compuestos ("revisa, aprueba y notifica")
+  se PARTEN en el ingest (el agente propone el split desde la narrativa; el consultor corrige) —
+  sin esta regla cada consultor decide distinto y los datos son incomparables.
+- **Verbo con provenance:** el verbo lo asigna el ingest desde la narrativa con `conf`; el
+  consultor solo corrige (auditado quién movió qué). Sin provenance el score es gameable eligiendo
+  verbos "suaves".
+- **La narrativa tiene hogar:** el relato del trabajador (fuente de verbos, splits y flujos) NO se
+  destruye al normalizar — mismo patrón ya decidido para nuestro método (frontmatter = dato +
+  cuerpo = prosa) aplicado al proceso del CLIENTE, o `evidencia_ref` al transcript. Sin esto la
+  cadena de evidencia del score no tiene ancla.
+- **Desgaste/carga cognitiva medida:** NASA-TLX variante RTLX (sin comparaciones pareadas), con
+  **gatillo explícito**: solo actividades pre-flageadas por el triage (densidad de espera/decisión,
+  % excepciones alto, queja espontánea en entrevista) — jamás censal (200 actividades × N
+  trabajadores = inviable).
 - **SGC/QMS explícito:** nuestros "estándares de manuales/procesos/funciones" anclan a la pirámide
   documental **ISO 10013:2021** (manual → procedimientos → instrucciones → registros) + ISO 9001
   cl.7.5; el mecanismo de ACTUALIZACIÓN de procesos = PDCA + Gestión de Cambios (D5/D8: el
   pipeline dev→UAT→prod ES la gestión de cambios ISO).
-- **Cascada hasta la acción diaria:** actividad (verbo) → KPI de la persona → KPI del área → OKR →
-  objetivo del directorio → plan anual / plan a 3 años. El hilo de oro ya modela
-  objetivo→OKR→KPI→proceso→rol→persona; el eslabón **actividad→KPI-persona** + el enum de verbos
-  se MATERIALIZAN en `schema-v2-hilo-de-oro-kinetica` (esta historia le deja la decisión cementada
-  como insumo — ver Fuera de alcance).
+- **Cascada canónica ÚNICA** (la auditoría encontró TRES definiciones incompatibles del hilo en el
+  repo — se cementa UNA; METODOLOGIA.md §2 y cap #10 del TO-BE se corrigen a ésta en WS5):
+
+  `plan 3 años → plan anual → objetivo (directorio) → KR (OKR trimestral) → KPI (de proceso, con
+  dueño = ROL o área) → actividad (verbo)`
+
+  La PERSONA entra como **ocupante del rol** (persona→cumple→rol→dueño-de→KPI), NO como eslabón de
+  medición individual. Atribución actividad→KPI = **N:M con peso opcional, vía rol** (resuelve la
+  asistente que alimenta el KPI del gerente: aporta vía su rol al KPI del proceso, no "KPI de la
+  asistente").
+- **Frontera twin ↔ evaluación individual (doctrina nueva — auditoría detectó contradicción
+  frontal con `objetivos.md §8` "no OKR individual" + exposición AI Act/GDPR art.22/sindicatos):**
+  el twin mide **roles, procesos y áreas** por defecto; la vista por persona-nombrada existe SOLO
+  con opt-in de nivel Gobernanza + consentimiento declarado; NASA-TLX/desgaste se agrega por
+  rol/proceso, jamás se versiona como registro individual de salud ocupacional. M-card nueva
+  "métricas de persona" (agregación mínima · acceso por nivel · consentimiento · retención) gemela
+  transversal de M23-provenance. **Requiere ficha CK propia** (decisión de fondo — propuesta al
+  operador).
 
 **Cuándo estándar PROPIO:** cuando el diferenciador queda fuera de todo estándar — y Gartner lo
 confirma (hilo de oro medido + arneses por puesto + as-code están FUERA de su lista DTO):
@@ -99,16 +138,17 @@ formalizable como contrato de entidad publicable estilo Backstage (`apiVersion/k
 | Metamodelo (9 entidades + relaciones + kinética) | **propio** (doctrina Palantir como gramática) | metamodelo as-code | ArchiMate-como-metamodelo descartado |
 | Vocabulario de arquitectura | ArchiMate 3.2 (tipos por entidad/relación) | ancla | sin diagramas fuente; sin capas completas |
 | Procesos — clasificación | APQC PCF + tortuga ISO 4.4 | ancla | — |
-| Procesos — flujo | BPMN 2.0 (subset "BPMN-lite": lane/tipo/disparador) | ancla + proyección swimlane | editor de diagramas NO; export XML = intercambio V2 |
+| Procesos — flujo | BPMN 2.0 (subset "BPMN-lite": lane/tipo/disparador) | ancla + proyección swimlane | editor de diagramas NO; export XML = intercambio V2 · **SIPOC = proyección de bordes** (tabla 1-página para validar con el dueño en M1) — el dato ya está absorbido (`proveedor_ref`/`cliente_ref`, D-08/D-11), NO M-card |
+| Riesgo y controles | ISO 9001 cl.6.1 (risk-based thinking) | ancla | COSO / ISO 31000 = horizonte; `riesgos[]` tipado por proceso = schema-v2 (hoy strings libres — hueco declarado por auditoría) |
 | Organización (personas/roles/áreas) | RACI + ISO 9001 cl.5.3 + TOGAF org decomposition | ancla + proyección organigrama | no es suite RRHH |
-| Estrategia (objetivos→OKR→KPI) | OKR + Hoshin (cascada) + BSC (perspectivas) | ancla + proyección strategy-map | X-matrix ceremonial NO |
+| Estrategia (objetivos→OKR→KPI) | capas 0-5 de `sistema/schema/metodologia/objetivos.md §6` (SSoT de precedencia): Hoshin = mapa 3-5a · OKR = motor 90d · BSC = **solo checklist** de perspectivas · COBIT = cascade de anclaje | ancla (alignment + catchball — NO cascada estricta, §8) | strategy-map como proyección SOLO cuando exista dato `perspectiva`/causal (schema-v2); X-matrix ceremonial NO |
 | Madurez y brecha | COBIT niveles 0-5 + ISO 19011 (evidencia) + WSJF + FinOps | ancla | — |
 | Calidad / loop de mejora | ISO 9001 (ontología cl.4 + PDCA) | paraguas | sin aparato de certificación (VISION §ISO) |
 | Provenance (todo dato AS-IS) | struct `fuente`+`conf` (M23, patrón Palantir) | transversal obligatorio | — |
-| Narrativa de actividades (nivel más bajo) | **vocabulario controlado de verbos PROPIO** (clase ALM × capacidad MGI) | ancla + insumo del triage | Bloom descartada como eje (pedagógica — mide aprendizaje, no automatizabilidad) |
-| Triage automatizar/eliminar | ECRS (Eliminar→Combinar→Reordenar→Simplificar) + desperdicio lean (M09) + criterios RPA-suitability | ancla + proyección (heatmap de candidatos) | el score se DERIVA (verbo+datos+reglas+volumen+excepciones), jamás se etiqueta a mano |
+| Narrativa de actividades (nivel más bajo) | **vocabulario controlado de verbos PROPIO** (clase ALM × capacidad MGI) | ancla + insumo del triage | Bloom descartada (pedagógica) · **ALM = eje descriptivo, NO sentencia**: GenAI automatiza lo no-rutinario-cognitivo — nuestros propios arneses lo prueban; mandan capacidad MGI + accountability |
+| Triage eliminar/automatizar/aumentar | ECRS como ORDEN del triage · VSM (M09) = flujo/future-state · mining (M29) = EVIDENCIA (alimenta volumen/excepciones del score) · criterios RPA + criterios agente-LLM | ancla + proyección (heatmap) | veredicto ENUM, no binario: `eliminable · automatizable-RPA · automatizable-agente · aumentable · humano-por-diseño`; DOS scores derivados (RPA y agente) con `conf` propagada — jamás etiquetados a mano |
 | Carga cognitiva medida (desgaste) | NASA-TLX | situacional (medir con humanos en M1, no estimar) | — |
-| Documentación QMS (manuales/procedimientos/instrucciones/funciones) | ISO 10013:2021 (pirámide documental) + ISO 9001 cl.7.5 | ancla | actualización de procesos = PDCA + Gestión de Cambios (el pipeline dev→UAT→prod ES el mecanismo — D5/D8) |
+| Documentación QMS (manuales/procedimientos/instrucciones/funciones) | ISO 10013:2021 (pirámide documental) + ISO 9001 cl.7.5 | ancla | actualización = PDCA + Gestión de Cambios (el pipeline dev→UAT→prod ES el mecanismo — D5/D8) · **reconcilia D-08**: el manual NO vuelve como entidad — la pirámide clasifica el corpus del CLIENTE; nuestro "manual" = proyección generada del proceso |
 | Simulación | BPSim + DEMO | horizonte (D9) | nada antes del twin base + demanda |
 | Contrato de entidad publicable | patrón Backstage | propio-publicable (V2) | — |
 
@@ -158,14 +198,80 @@ formalizable como contrato de entidad publicable estilo Backstage (`apiVersion/k
   **taxonomía de verbos & automatizabilidad** (propia, ALM×MGI — supersede cand. Bloom) · **ECRS**
   · **criterios RPA-suitability** · **ISO 10013** (pirámide documental QMS) · **NASA-TLX**
   (situacional). Ajuste de cards existentes cuyo uso cambió con la visión madura (remapeo).
-- **Contrato:** `methodology.schema.yaml` valida el bloque `twin:` (enums de rol + dimensiones
-  contra una lista canónica de dimensiones del twin).
+- **Contrato:** `methodology.schema.yaml` valida el bloque `twin:` — `rol_ancla` único +
+  `proyecciones[]` + `dimensiones[]` contra lista canónica + rol `fuera-del-twin` (dimensiones
+  vacías, `cuando_no:` obligatorio). Familia nueva **I · Twin & automatización del trabajo** entra
+  al enum para hospedar las cards nuevas; las cabeceras de sección "I-NN" (fichas legacy) se
+  renombran para no colisionar. La card de verbos NO toma el id M32 mientras el book lo asocie a
+  Bloom (id limpio tras el barrido).
+- **Barrido de residuos (book + prosa):** `sistema/schema/metodologia/` (Bloom residual en
+  README §6/procesos.md/ejemplo · nota-fuente de SOMA — hoy ancla citada ~15× sin definirse en
+  ninguna parte · fila SIPOC en tabla §6 · ref muerta `process.schema` · "paso" al glosario · L5
+  declarado diferido) + saneo de la prosa no-GEN de `METODOLOGIA.md §0-§3` (refs rotas a
+  tooling/strategy, "LangGraph+voz" — N4 muerta CK-18) + `gen_metodo.py` campo `nombre_corto`
+  (hoy trunca "Process / Task Mining" → "Process") + ISO 19011 declarado en el `twin:` de M23.
 - **Generador + vista:** `gen_metodo.py` extendido (o `gen_notaciones.py` hermano) produce
   **`sistema/metodo/NOTACIONES.html`**: mapa de decisión navegable — por dimensión del twin, qué
   estándar, en qué rol, cuándo sí/no, por qué, con la regla cardinal arriba. Correr `python3 ...`
   → abrir el HTML → entenderlo sin leer YAML. Gate anti-drift en pre-commit (mismo patrón CK-17).
 - **Prosa:** §5 nuevo en `METODOLOGIA.md` (bloque GEN) o sección en `PROCESS-AS-DATA.md` con la
   regla cardinal (para humanos y arneses).
+
+## Auditoría adversarial (2026-07-17, pedido del operador) — resultado
+
+5 auditores paralelos (orgs peor-caso · coherencia interna · nivel actividad · SOMA/SIPOC ·
+cascada KPI). Las correcciones de doctrina ya están incorporadas arriba (dos scores, veredicto
+enum, cascada única, frontera persona, fila Riesgo, precedencia estrategia, reconciliación ISO
+10013↔D-08, contrato `twin:` con `rol_ancla`+`proyecciones[]`, rol `fuera-del-twin`, barrido de
+residuos). Lo que NO se arregla aquí queda cementado como insumo o diferido consciente:
+
+### Insumos cementados para `schema-v2-hilo-de-oro-kinetica` (el registro que esa historia hereda)
+
+1. **KPI = ENTIDAD** con id (hoy item sin id — "cada KPI ancla a un OKR" es unimplementable en el
+   dato), `dueño_ref` (rol/área), `tipo: lead|lag`, tipología **KPI/DPI/KRI** (adoptado del demo
+   SOMA), frecuencia de refresco, y por medición: `valor_declarado` vs `valor_observado{query_ref}`
+   + estado `divergente` (el motor PINTA el gaming, no lo consagra) + `fuente`/`conf`.
+2. Arista `kpi.contribuye_a → key_result` (N:M, peso opcional) + atribución actividad→KPI vía ROL.
+3. `objetivo`: `horizonte` enum (proposito|3a|anual|trimestre) + `cadencia_revision` + `estado`
+   (vigente|deprecado + `superseded_by` + vigencia) + `perspectiva` BSC opcional (habilita el
+   strategy-map como proyección). `key_results` pasa a `requerido: false` + estado de gap
+   `sin-ancla-de-valor` ≠ `off-thread` (cliente sin OKR no vacía el diagnóstico).
+4. `actividad`: `fuente`+`conf` (o `evidencia_ref`) — hoy viola el principio cardinal del propio
+   schema · `flujos_alternos {cuando, actividades}` portado de PROCESS-AS-DATA (hoy `orden: int`
+   lineal no puede narrar "si X entonces Y") · `tiempo` → `{toque, espera}` (VSM real) ·
+   `mandato: regulatorio|preventivo|habilitante` (protege compliance del triage "huérfana de
+   KPI = eliminar") · campos RPA/agente del score · TLX opcional (medido, provenance Entrevista).
+   Context-switching = DERIVADO (alternancia de `carril_ref`), no campo.
+5. Enum de verbos: canónico + `sinonimos[]` es-419 (alias normalizados en ingest) + gobernanza:
+   verbo nuevo = PR que declara su clase ALM×MGI, el gate lo valida.
+6. `persona`: `reporta_a` → lista `{ref, tipo: jerarquico|funcional}` (matricial/dotted-line) ·
+   `vinculo: empleado|contratista|tercero{ref}` (BPO) · `sin_kpi: {razon}` (ausencia honesta).
+7. `proceso`: `provisto_por_ref` (terceros — ISO 9001 cl.8.4, hoy ausente de todo `met:`) ·
+   `riesgos[]` tipado (cl.6.1; hoy strings libres).
+8. Enum `fuente` + **"Observado"** (drift método↔schema HOY: M1-LEVANTAMIENTO lo promete, el enum
+   no lo tiene). Arista `en_tension_con` / counter-metric entre KPIs (hoy el grafo solo tiene
+   aristas de armonía). Función de **rollup declarada** (¿peor-hijo? ¿ponderado?) — sin ella el
+   semáforo queda a criterio del implementador. Tipos numéricos en from/to/current (hoy str).
+9. Extensión por cliente (open/closed Palantir): **hoy es promesa sin mecanismo** — schema-v2
+   decide: punto de extensión mínimo (`ext:` por entidad + política de validación) o declararlo V2.
+10. Del demo SOMA para m2/ingesta: **umbral de acumulación de hallazgos** (3+ antes de
+    reversionar) + **formulario de reporte de 4 campos** (personal sin método) + vista
+    before/after para el aprobador (Gestión de Cambios N13).
+
+### Diferidos conscientes (registrados, NO doctrina inventada hoy — decisiones del operador)
+
+- **Captura MANUAL de KPIs** (planilla/form con provenance `Declarado` + frescura) como fuente de
+  primera clase del motor de indicadores → **historia nueva F1 propuesta**. Sin ella, en la org
+  no-digital (la PyME LatAm objetivo) la pata "real" del twin queda vacía y el "hilo de oro
+  MEDIDO" degrada a mapa bonito.
+- **Frontera twin↔evaluación individual** → **ficha CK propuesta** (ver doctrina arriba).
+- **Holding/servicios compartidos:** D-07 está `en-discusión` — clavarla con límite explícito
+  ("techo = empresa; holding = selector sin dato" → no se vende a grupos como grupo) o diseñar el
+  techo. Decisión operador.
+- **M&A (fusión de twins) · franquicia (plantilla/instancia de proceso por sucursal) ·
+  multi-idioma:** sin respuesta hoy, registrados como límites conocidos del MVP.
+- **Escala 5000+ (índice derivado como V2 ya decidido · sync HRIS inexistente → churn de personas
+  pudre el twin):** registrado; primer cliente grande lo activa.
 
 ## Criterios de aceptación (Gherkin-lite)
 
@@ -183,9 +289,16 @@ formalizable como contrato de entidad publicable estilo Backstage (`apiVersion/k
   válido, existen las cards de doctrina Palantir + DEMO + BPSim + taxonomía de verbos (ALM×MGI) +
   ECRS + RPA-suitability + ISO 10013 + NASA-TLX, y `NOTACIONES.html` regenerado está en sync
   (anti-drift).
-- **SC-8** Dado `NOTACIONES.html`, cuando el operador busca "¿esta actividad se automatiza o se
-  elimina?", entonces encuentra el triage completo (ECRS → verbos ALM×MGI → criterios
-  RPA-suitability → score derivado) y el porqué del descarte de Bloom. (G Chris-verify.)
+- **SC-8** Dado `NOTACIONES.html`, cuando el operador pregunta por una actividad "¿se elimina, se
+  automatiza (RPA o agente), se aumenta o se defiende como humana?", entonces encuentra el triage
+  completo (ECRS → verbos ALM×MGI → criterios RPA + criterios agente → dos scores con `conf`) y
+  el porqué del descarte de Bloom. (G Chris-verify.)
+- **SC-9** Dado el repo tras el merge, cuando busco el hilo de oro, entonces existe UNA sola
+  cascada canónica (la de esta spec) y METODOLOGIA.md §2 + el mapeo del TO-BE la reflejan (las
+  tres definiciones incompatibles detectadas quedan reconciliadas).
+- **SC-10** Dado `sistema/schema/metodologia/` (book) tras el barrido, cuando grep-eo Bloom como
+  candidata vigente, SOMA sin nota-fuente, o la ref muerta `process.schema`, entonces cero
+  residuos; la matriz incluye la fila "Riesgo y controles".
 - **SC-6** Dado `NOTACIONES.html` abierto en navegador, cuando el operador lo lee, entonces puede
   responder para cualquier dimensión del twin: qué estándar usamos, en qué rol, cuándo sí, cuándo
   no y cuándo hacemos estándar propio — sin abrir el YAML. (Se verifica en G Chris-verify.)
