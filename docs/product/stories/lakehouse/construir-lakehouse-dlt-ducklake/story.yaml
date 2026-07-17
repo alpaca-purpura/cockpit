@@ -7,8 +7,8 @@ cap_target: "lakehouse/construir-lakehouse-dlt-ducklake"
 cap_change_type: new
 capability_status: planned
 release: F1
-prioridad: alta
-fichas: [CK-18]
+prioridad: media
+fichas: [CK-18, CK-23]
 dependencies:
   stories: []
 context:

@@ -31,6 +31,13 @@ Gates, roles y DoD: `docs/process/harness/` + `.claude/rules/` (CORE) — no edi
 `lakehouse` (N16/N18) · `colab-studio` (N17) · `fabricante` (N2/N3/N15). SSoT de nodos:
 `sistema/arquitectura/NODOS.md` — cada historia ancla a un `node` (ver `.claude/rules/arquitectura-as-code.md`).
 
+## Estado del roadmap (generado)
+
+`ROADMAP.md § Estado` (bloque `<!-- GEN:estado -->`) se GENERA de `story.yaml` + `releases/*.yaml`
+vía `gen_roadmap.py` — gate anti-drift en `.githooks/pre-commit` (mismo patrón que arquitectura/
+metodología). No editar el bloque a mano. Manual: `python3 docs/product/gen_roadmap.py` (regenera)
+· `--check` (solo valida). La prosa del resto del archivo (secuencia, "por qué aquí") es curada.
+
 ## Cadena de trazabilidad (preservada del sistema legacy)
 
 `historia (provenance BL-NN) → fichas CK-NN (LEDGER.md) → capability (docs/product/capabilities) →

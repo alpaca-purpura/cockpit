@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Gates anti-drift del sistema as-code (CK-17 arquitectura · CK-19 metodología).
+# Gates anti-drift del sistema as-code (CK-17 arquitectura · CK-19 metodología · CK-22 roadmap).
 # Activación (una vez por clone):  git config core.hooksPath .githooks
 #
 # Qué hace en cada commit:
@@ -7,8 +7,10 @@
 #      despliegue.html y REGENERA los derivados (nodos.data.js, arquitectura.html).
 #   2. metodología-as-code — gen_metodo.py valida methodologies.yaml (contra
 #      methodology.schema.yaml) + el árbol proceso/ y REGENERA METODOLOGIA.md §4.
-#   3. Si cualquiera falla la validación → bloquea el commit (arregla la fuente).
-#   4. Si un generado cambió → se agrega al commit automáticamente (mismo evento).
+#   3. roadmap (CK-22) — gen_roadmap.py valida story.yaml ↔ releases/*.yaml (biyección,
+#      deps resuelven) y REGENERA ROADMAP.md § Estado.
+#   4. Si cualquiera falla la validación → bloquea el commit (arregla la fuente).
+#   5. Si un generado cambió → se agrega al commit automáticamente (mismo evento).
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
@@ -26,6 +28,14 @@ if ! python3 sistema/metodo/gen_metodo.py; then
   exit 1
 fi
 
+if ! python3 docs/product/gen_roadmap.py; then
+  echo ""
+  echo "✖ pre-commit: el roadmap no valida — commit bloqueado."
+  echo "  Corrige story.yaml / releases/*.yaml y reintenta."
+  exit 1
+fi
+
 git add \
   sistema/arquitectura/nodos.data.js sistema/arquitectura/arquitectura.html \
-  sistema/metodo/METODOLOGIA.md
+  sistema/metodo/METODOLOGIA.md \
+  docs/product/ROADMAP.md

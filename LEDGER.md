@@ -674,7 +674,47 @@ CK-19 (modelo de releases del arnés) · CK-11 (disciplina SSoT + vista curada m
 
 *Siguiente:* arrancar `sistema/arquitectura-refichado-ck21` (F1.0) — promover a `refining`.
 
-<!-- Próximas: CK-23, … -->
+### CK-23 · Twin-first — el twin lleno antes que el proceso de llenado (re-secuencia F1) — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-17):* "Quiero consolidar cuáles son las dimensiones de mi organization
+as code, tener todas las plantillas — el to-be una vez tenga todo llenado, con todos los niveles
+bien organizados — para tener mi Organization Twin pintado en el cockpit. Hardcodeado inicialmente
+con una organización ficticia para ir probando el desarrollo. […] Vamos a partir de atrás hacia
+adelante: quiero tener un organization twin con todo lleno para luego ahondar en el proceso de
+llenado. […] Firmo la secuencia, ejecuta todo con ficha CK-23."
+
+*Desarrollo:* estrategia **twin-first**: construir primero el artefacto final (twin 100% lleno,
+pintado en Cockpit, organización ficticia) y después el proceso que lo llena (Consultio) y la
+infraestructura viva. Contra el estado real: las dimensiones ya estaban 80% consolidadas
+(`objeto.schema.yaml` v1, 9 entidades + hilo de oro; el delta OKR/KPI/Proyecto + capa kinética ya
+era la historia `schema-v2-hilo-de-oro-kinetica`); el hueco real era la instancia completa —
+ninguna ejerce el schema al 100% (prenter dogfood: 42 yamls, parcial). Decisiones:
+
+- **Historia NUEVA `sistema/organizacion-ficticia-golden-fixture`** (F1.1, alta, dep schema-v2):
+  shell hermano lleno al 100% contra el v2 — todas las entidades/campos/aristas del hilo de oro,
+  brechas con costo/ROI, proyectos con ciclo de vida, KPIs con valores hardcodeados, provenance
+  realista (`fuente`+`conf`) simulando la salida de M1. Triple uso: fixture de desarrollo ·
+  plantillas-por-ejemplo · demo comercial. Además = **contrato de salida de Consultio**
+  (`operar-metodo` gana la dep: la corrida del método debe producir un objeto de esa completitud).
+- **F1 re-secuenciada (5 fases):** F1.0 Terreno (igual) → **F1.1 Twin pintado** (fixture →
+  cruce-indicadores → brecha-proyecto; la ex F1.3 adelanta) → F1.2 Método operable (ex F1.1) →
+  F1.3 Organización viva (ex F1.2) → **F1.4 Twin mide real** (lakehouse). Hito intermedio nuevo:
+  **twin completo demo-able con organización ficticia** al cierre de F1.1.
+- **Lakehouse sale del camino crítico** (alta→media, fase propia): `cruce-indicadores` cambia su
+  dep lakehouse→fixture; los KPIs del fixture mockean el estado real; el lakehouse los reemplaza
+  al final sin cambiar la vista. Exit criteria de F1 intactos (demo contra organización real).
+- **Riesgo aceptado consciente:** schema v2 + fixture diseñados sin feedback del proceso de
+  captura pueden requerir ajuste cuando Consultio llene datos reales; mitigación: el fixture
+  simula la salida del método (provenance incluida), no un dump sintético.
+
+*Conecta:* CK-22 (la secuencia que se re-ordena; sus decisiones 1-5 siguen vigentes) · CK-21 (el
+norte twin; #10-13 del TO-BE = la fase F1.1) · CK-13/CAP-08 (`/api/objeto` ya sirve las 9
+entidades — el fixture lo ejerce entero) · I-39/D-15 (instancias en shells hermanos).
+
+*Siguiente:* sin cambio — `sistema/arquitectura-refichado-ck21` sigue primera; el fixture entra
+tras `schema-v2`.
+
+<!-- Próximas: CK-24, … -->
 
 ## Log
 
@@ -693,3 +733,4 @@ CK-19 (modelo de releases del arnés) · CK-11 (disciplina SSoT + vista curada m
 | 2026-07-09 | Cableado del arnés (termina CK-19): 6 process-docs + 6 scripts/git del KIT materializados a paths convencionales (copia, no symlink a cache volátil — extiende CK-19); capture files del HLP creados; hueco del KIT 0.5.3 (role-skills/agents, rules-detail, specs-templates no publicados = W8 lift-kit) documentado en `harness-backlog.md` y operado a mano (sin fork). | CK-20 |
 | 2026-07-16 | Organization as Code → Organization Twin: visión con nombre (twin = deseado N6 × real N16 × brecha continua N13, GitOps organizacional); diferenciador = hilo de oro medido (objetivos→OKR→KPI) + brechas con ROI + ciclo brecha→proyecto dentro de la solución + arneses por puesto. Pivote comercial: default hosteado single-tenant (invierte D3 de CK-18; self-hosted = tier regulados; multitenant = fase 2); N3 asciende a Portal (licencias fingerprint, no MAC); 1 repo · 3 entornos dev/UAT/prod; capa kinética + OKR/KPI/Proyecto al schema (doctrina Palantir); Consultio v0 = arneses sin app shell; Gestión de Cambios al MVP; horizontes gateados (what-if→BPSim→agentes-con-arneses, MCP V2). SOTA 11 vendors + Gartner DTO → TO-BE 37 capacidades en `proyecto/research/organization-as-code/`. | CK-21 |
 | 2026-07-16 | Roadmap MVP: F1 re-alcanzada a "Terreno + MVP Twin vendible" (16 historias, fases F1.0 Terreno → F1.1 Método → F1.2 Organización viva → F1.3 El twin mide + carril negocio; historia nueva `arquitectura-refichado-ck21` = LA PRIMERA, pedido del operador); nacen F2 "Comercial" (portal+canal, deuda UI se paga aquí, conectores) y F3 "Edge completo + escala" (clon DevStudio baja a media, Colab, Arnesia pipeline, MCP, frescura, gateadas D5/CK-10); 28 story.yaml re-cableados (prioridades + deps, operar-metodo/publicación ya no esperan al clon); `docs/product/ROADMAP.md` como vista humana. | CK-22 |
+| 2026-07-17 | Twin-first (re-secuencia F1): el twin lleno y pintado ANTES que el proceso de llenado — historia nueva `organizacion-ficticia-golden-fixture` (shell ficticio 100% contra schema v2, provenance simulando M1; fixture + plantillas-por-ejemplo + demo + contrato de salida de Consultio); F1 pasa a 5 fases (F1.1 Twin pintado adelanta a método/organización-viva; lakehouse alta→media a F1.4, mockeado por los KPIs del fixture); hito intermedio: twin demo-able con org ficticia. | CK-23 |

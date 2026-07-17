@@ -8,9 +8,11 @@ cap_change_type: new
 capability_status: planned
 release: F1
 prioridad: alta
-fichas: [CK-18, CK-21]
+fichas: [CK-18, CK-21, CK-23]
 dependencies:
-  stories: [schema-v2-hilo-de-oro-kinetica, construir-lakehouse-dlt-ducklake]
+  # CK-23 twin-first: dep lakehouse → golden fixture (valores "reales" hardcodeados del fixture;
+  # el lakehouse los reemplaza en F1.4-twin-mide-real sin cambiar la vista)
+  stories: [schema-v2-hilo-de-oro-kinetica, organizacion-ficticia-golden-fixture]
 context:
   job: "Como usuario de Cockpit quiero ver 'cómo vamos día a día' cruzando la operación del lakehouse (N16) contra la estructura (objeto normalizado de N6) por objetivo/proceso/rol/nivel para monitorear el desempeño real."
   why: "Es el puente entre estructura y operación; sin este cruce Cockpit no puede mostrar indicadores reales de avance del negocio."
