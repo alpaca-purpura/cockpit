@@ -33,9 +33,9 @@
 - **A · Descubrimiento & Producto:** [Dual Track Agile](#m01) · [Continuous Discovery](#m02) · [Product Operating Model](#m03) · [Shape Up](#m04) · [Jobs-to-be-Done](#m05) · [Impact Mapping](#m06)
 - **B · Dominio & Proceso:** [Event Storming](#m07) · [Domain-Driven Design](#m08) · [Value Stream Mapping](#m09) · [Service Blueprint](#m10) · [BPMN](#m11) · [APQC Process Classification Framework](#m12) · [Process / Task Mining](#m29)
 - **C · Arquitectura & Sistemas:** [ArchiMate](#m13) · [SYSTEM-MAP + document-project](#m14) · [Business Capability Modeling](#m31)
-- **D · Gobierno, Calidad & Madurez:** [COBIT 2019](#m15) · [ISO 9001](#m16) · [ITIL 4](#m17) · [RACI](#m25) · [ISO 10013](#m38)
+- **D · Gobierno, Calidad & Madurez:** [COBIT 2019](#m15) · [ISO 9001](#m16) · [ITIL 4](#m17) · [RACI](#m25) · [ISO 10013](#m38) · [DMAIC](#m42) · [MASP](#m43) · [Funil de ideas](#m44) · [ISO 56002](#m45)
 - **E · Especificación & Construcción:** [Spec-Driven Development](#m18) · [EARS](#m19) · [Specification by Example](#m20)
-- **F · Valor, Costo & Alineación:** [OKR](#m21) · [FinOps — Quantify Business Value](#m22) · [Hoshin Kanri](#m26) · [Wardley Mapping](#m27) · [WSJF](#m28) · [Balanced Scorecard](#m30)
+- **F · Valor, Costo & Alineación:** [OKR](#m21) · [FinOps — Quantify Business Value](#m22) · [Hoshin Kanri](#m26) · [Wardley Mapping](#m27) · [WSJF](#m28) · [Balanced Scorecard](#m30) · [GPD (Falconi)](#m41)
 - **G · IA: Grounding & Anti-alucinación:** [Grounding](#m23)
 - **H · Diseño de Servicio & Experiencia:** [This Is Service Design Doing](#m24)
 - **I · Twin & automatización del trabajo:** [Ontología Palantir](#m32) · [DEMO](#m33) · [BPSim](#m34) · [ECRS](#m35) · [Criterios RPA + agente](#m36) · [Taxonomía de verbos](#m37) · [NASA-TLX](#m39) · [Métricas de persona](#m40)
@@ -323,6 +323,42 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Combina:** M16 (instancia cl.7.5 (información documentada) del paraguas ISO 9001) · M12 (el documento clasificado ancla al proceso APQC que gobierna)
 - **Principios:** P4, P7
 
+<a id="m42"></a>**M42 · Lean Six Sigma / DMAIC**
+- **Qué:** el proyecto FORMAL de mejora: charter con caso de negocio, fases Define-Measure-Analyze-Improve-Control con tollgates ante sponsor, belts como roles, beneficios hard/soft validados por finanzas
+- **Fuente:** Motorola/GE · ASQ — Lean Six Sigma — ciclo DMAIC, charter, tollgates, belts. [https://asq.org/quality-resources/six-sigma](https://asq.org/quality-resources/six-sigma)
+- **Objeto:** O7 Contrato & Código · sec: O6, O2
+- **Aporte único:** el FORMATO corporativo del proyecto con caso de negocio auditado — doble firma sponsor+finanzas, beneficios contados ~12 meses (vigente: mercado de servicios LSS crece, no declinó)
+- **Cuándo:** proyecto_mejora con caso de negocio formal (metodologia: dmaic)
+- **Combina:** M35 (ECRS primero: no se automatiza (ni proyectiza) el desperdicio) · M22 (la cuantificación del beneficio (hard/soft/cost-avoidance) es FinOps) · M28 (WSJF prioriza qué brecha se vuelve proyecto)
+- **Principios:** P1, P3
+
+<a id="m43"></a>**M43 · MASP — Método de Análise e Solução de Problemas (QC Story)**
+- **Qué:** el estándar brasileño de solución de problemas: identificación → observación → análisis → plan → acción → verificación (con RETROCESO si no bloqueó) → estandarización → conclusión
+- **Fuente:** JUSE (QC Story) · Vicente Falconi (adaptación BR) — TQC no Estilo Japonês — MASP, 8 etapas sobre PDCA. [https://blogdaqualidade.com.br/masp-metodo-de-analise-e-solucao-de-problemas-parte-1/](https://blogdaqualidade.com.br/masp-metodo-de-analise-e-solucao-de-problemas-parte-1/)
+- **Objeto:** O7 Contrato & Código · sec: O6
+- **Aporte único:** el LOOP-BACK como doctrina: si la verificación no bloqueó el problema se retrocede — la transición en-verificacion→en-ejecucion del schema; usado hasta en el sector público BR (ENAP)
+- **Cuándo:** proyecto_mejora en cliente brasileño / cultura Falconi (metodologia: masp)
+- **Combina:** M42 (mismo ciclo de datos, dialecto distinto (MASP = QC Story; DMAIC = Six Sigma)) · M16 (vive bajo cl.10.2 (NC/acción correctiva) como motor formal) · M41 (los proyectos MASP sirven las metas desdobradas del GPD)
+- **Principios:** P1, P3
+
+<a id="m44"></a>**M44 · Gestión de ideas (kaizen teian / funil de ideias)**
+- **Qué:** el funil masivo y BARATO de propuestas del personal (individual o conjunta): enviada → evaluación por comité (viabilidad/impacto/alineación) → feedback + reconocimiento → un subconjunto se PROMUEVE a proyecto
+- **Fuente:** kaizen teian (JHRA) · plataformas LATAM (AEVO) — programa de sugerencias → funil digital de ideas (triaje por comité, feedback, reconocimiento, promoción a proyecto). [https://blog.aevo.com.br/funil-de-ideias/](https://blog.aevo.com.br/funil-de-ideias/)
+- **Objeto:** O7 Contrato & Código · sec: O4
+- **Aporte único:** la SEPARACIÓN idea↔proyecto como entidades enlazadas (la práctica real: cientos de ideas por campaña, evaluación ligera; el charter/beneficios viven en el proyecto) + reconocimiento al proponente (kaizen teian: casi todo proponente recibe respuesta)
+- **Cuándo:** entidad idea del objeto — programas de participación del personal (los CCQ migrados a plataforma: AEVO 400+ empresas, Ambev 450+ ideas en 2 semanas)
+- **Combina:** M42 (la idea promovida recibe charter DMAIC (promovida_a_ref)) · M40 (participación se agrega por área/rol — autoría ≠ medición (CK-24)) · M35 (muchas ideas son un 'eliminar' de ECRS resuelto just-do-it)
+- **Principios:** P1, P7
+
+<a id="m45"></a>**M45 · ISO 56002 / 56001 — gestión de la innovación**
+- **Qué:** el marco ISO del funil idea→innovación como sistema de gestión (liderazgo, cultura, portafolio de iniciativas, realización de valor)
+- **Fuente:** ISO TC 279 — ISO 56002:2019 (guía) · ISO 56001:2024 (certificable) — sistema de gestión de innovación. [https://www.iso.org/standard/68221.html](https://www.iso.org/standard/68221.html)
+- **Objeto:** O7 Contrato & Código
+- **Aporte único:** Brasil = hotspot mundial temprano de la ISO de innovación (Grupo Boticário, Atento; PALAS primera certificada 56001) — el marco al que el funil de ideas escala si un cliente exige certificación
+- **Cuándo:** cliente que exija certificación de innovación o quiera formalizar el funil como sistema de gestión (gateado por demanda)
+- **Combina:** M44 (el funil de ideas ES el corazón operativo que 56002 formaliza) · M16 (misma gramática de sistema de gestión ISO (HLS))
+- **Principios:** P7
+
 ### Familia E · Especificación & Construcción
 
 
@@ -408,6 +444,15 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Aporte único:** el STRATEGY MAP — liga aprendizaje→procesos→cliente→finanzas y cascada a unidades/personas (el 'por qué' detrás de cada KPI)
 - **Cuándo:** etapa 1 — traducir la estrategia del directorio a KPIs por perspectiva; complementa OKR/Hoshin
 - **Combina:** M26 (Hoshin despliega la estrategia; BSC la mide por perspectiva) · M21 (los KR se anclan a los objetivos del scorecard) · M06 (Impact conecta objetivo→entregable)
+- **Principios:** P1, P2
+
+<a id="m41"></a>**M41 · GPD — Gerenciamento pelas Diretrizes (Falconi)**
+- **Qué:** desdobramento de metas anuales del directorio por nivel jerárquico ('meta sem valor e prazo não é meta') con giro PDCA por nivel y acople a remuneración variable (PLR)
+- **Fuente:** Vicente Falconi Campos (FDG / Falconi) — Gerenciamento pelas Diretrizes — hoshin kanri adaptado a Brasil (TQC estilo japonés). [https://falconi.com/](https://falconi.com/)
+- **Objeto:** O2 Objetivo & Valor · sec: O4
+- **Aporte único:** el MODO BRASILEÑO de la cascada: mismo grafo que la cascada canónica con cadencia ANUAL + acople a compensación permitido — Falconi atiende 3 de cada 4 'Melhores e Maiores' (Ambev, Gerdau, Petrobras)
+- **Cuándo:** cliente brasileño / config_estrategia.modo = gpd-anual o mixto (research 00-research-latam-br de la historia schema-v2)
+- **Combina:** M26 (GPD ES hoshin adaptado — el mapa 3-5a→anual es el mismo) · M21 (convive con cadencia OKR en áreas digitales (modo mixto — el patrón corporativo BR real)) · M16 (el giro PDCA por nivel es el motor del desdobramento)
 - **Principios:** P1, P2
 
 ### Familia G · IA: Grounding & Anti-alucinación
@@ -569,6 +614,11 @@ YAML, regenerar con `gen_metodo.py` (gate anti-drift en pre-commit).
 | ISO 10013 (M38) | ● | ● |  | ● |
 | NASA-TLX (M39) | ○ |  |  | ○ |
 | Métricas de persona (M40) | ● | ● | ● | ● |
+| GPD (Falconi) (M41) | ○ | ○ |  | ○ |
+| DMAIC (M42) |  |  | ○ | ○ |
+| MASP (M43) |  |  | ○ | ○ |
+| Funil de ideas (M44) |  | ○ | ○ | ○ |
+| ISO 56002 (M45) |  |  | ○ |  |
 <!-- /GEN:tabla -->
 
 ---

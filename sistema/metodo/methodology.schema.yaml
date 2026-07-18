@@ -39,8 +39,8 @@ enums:
   # Dimensiones canónicas del twin (las filas de la matriz de la spec, kebab-case)
   dimension: [metamodelo, vocabulario-arquitectura, procesos-clasificacion, procesos-flujo,
               organizacion, estrategia, madurez-brecha, riesgo-controles, calidad-loop,
-              provenance, narrativa-actividades, triage-automatizacion, carga-cognitiva,
-              documentacion-qms, simulacion, contrato-entidad]
+              mejora-proyectos, provenance, narrativa-actividades, triage-automatizacion,
+              carga-cognitiva, documentacion-qms, simulacion, contrato-entidad]
 
 # ── M-card (cada clave MNN de methodologies.yaml) ────────────────────────────
 card:
@@ -88,6 +88,7 @@ twin:
     madurez-brecha:           "Madurez y brecha"
     riesgo-controles:         "Riesgo y controles"
     calidad-loop:             "Calidad / loop de mejora"
+    mejora-proyectos:         "Proyectos de mejora e ideas del personal"
     provenance:               "Provenance (todo dato AS-IS)"
     narrativa-actividades:    "Narrativa de actividades (nivel más bajo)"
     triage-automatizacion:    "Triage eliminar / automatizar / aumentar"

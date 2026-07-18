@@ -13,7 +13,7 @@
 
 _meta:
   fuente_humana: "sistema/metodo/METODOLOGIA.md §4 (compendio narrativo)"
-  total: 40
+  total: 45
   backbone: "objeto (capa de contexto / Hilo de Oro)"
   # Etiquetas de familias y del backbone — SSoT de los rótulos que el generador imprime en §4.
   familias:
@@ -447,8 +447,8 @@ M16:
   twin:
     rol_ancla: ancla
     proyecciones: []
-    dimensiones: [calidad-loop, riesgo-controles, procesos-clasificacion, organizacion, documentacion-qms]
-    cuando_si: "el PARAGUAS: ontología cl.4 + PDCA (loop de mejora) · cl.6.1 risk-based thinking (riesgos[] tipados por proceso) · tortuga 4.4 · cl.5.3 roles · cl.7.5 información documentada"
+    dimensiones: [calidad-loop, riesgo-controles, procesos-clasificacion, organizacion, documentacion-qms, mejora-proyectos]
+    cuando_si: "el PARAGUAS: ontología cl.4 + PDCA (loop de mejora) · cl.6.1 risk-based thinking (riesgos[] tipados por proceso) · tortuga 4.4 · cl.5.3 roles · cl.7.5 información documentada · cl.10 mejora (10.2 NC/acción correctiva · 10.3 mejora continua — el compliance-paraguas de proyecto_mejora)"
     cuando_no: "sin aparato de certificación (VISION §ISO); COSO / ISO 31000 = horizonte, no MVP"
 
 M17:
@@ -971,3 +971,124 @@ M40:
     dimensiones: [organizacion, carga-cognitiva]
     cuando_si: "TRANSVERSAL: el twin mide roles/procesos/áreas; persona-nombrada = opt-in de Gobernanza + consentimiento; agregación mínima, acceso por nivel, retención declarada"
     cuando_no: "jamás evaluación individual por defecto (objetivos.md §8: no OKR individual) ni registro de salud ocupacional versionado (exposición AI Act / GDPR art.22 / sindicatos)"
+
+# ── M41-M45 · historia schema-v2-hilo-de-oro-kinetica (research LATAM/BR 2026-07-17) ──
+
+M41:
+  nombre: "GPD — Gerenciamento pelas Diretrizes (Falconi)"
+  nombre_corto: "GPD (Falconi)"
+  familia: F
+  fuente: { autor: "Vicente Falconi Campos (FDG / Falconi)", obra: "Gerenciamento pelas Diretrizes — hoshin kanri adaptado a Brasil (TQC estilo japonés)", url: "https://falconi.com/" }
+  que: "desdobramento de metas anuales del directorio por nivel jerárquico ('meta sem valor e prazo não é meta') con giro PDCA por nivel y acople a remuneración variable (PLR)"
+  aporte_unico: "el MODO BRASILEÑO de la cascada: mismo grafo que la cascada canónica con cadencia ANUAL + acople a compensación permitido — Falconi atiende 3 de cada 4 'Melhores e Maiores' (Ambev, Gerdau, Petrobras)"
+  cuando_usar: "cliente brasileño / config_estrategia.modo = gpd-anual o mixto (research 00-research-latam-br de la historia schema-v2)"
+  objeto_primario: O2
+  objetos_secundarios: [O4]
+  principios: [P1, P2]
+  combina_con:
+    - { m: M26, como: "GPD ES hoshin adaptado — el mapa 3-5a→anual es el mismo" }
+    - { m: M21, como: "convive con cadencia OKR en áreas digitales (modo mixto — el patrón corporativo BR real)" }
+    - { m: M16, como: "el giro PDCA por nivel es el motor del desdobramento" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: situacional
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [estrategia]
+    cuando_si: "modo gpd-anual|mixto: desdobramento anual por nivel + acople_compensacion=true válido en los KR (PLR — RN-14)"
+    cuando_no: "NO reemplaza la cascada canónica — mismo grafo, configuración de cadencia/acople; en modo okr-trimestral el acople a compensación es ERROR (sandbagging); X-matrix ceremonial NO"
+
+M42:
+  nombre: "Lean Six Sigma / DMAIC"
+  nombre_corto: "DMAIC"
+  familia: D
+  fuente: { autor: "Motorola/GE · ASQ", obra: "Lean Six Sigma — ciclo DMAIC, charter, tollgates, belts", url: "https://asq.org/quality-resources/six-sigma" }
+  que: "el proyecto FORMAL de mejora: charter con caso de negocio, fases Define-Measure-Analyze-Improve-Control con tollgates ante sponsor, belts como roles, beneficios hard/soft validados por finanzas"
+  aporte_unico: "el FORMATO corporativo del proyecto con caso de negocio auditado — doble firma sponsor+finanzas, beneficios contados ~12 meses (vigente: mercado de servicios LSS crece, no declinó)"
+  cuando_usar: "proyecto_mejora con caso de negocio formal (metodologia: dmaic)"
+  objeto_primario: O7
+  objetos_secundarios: [O6, O2]
+  principios: [P1, P3]
+  combina_con:
+    - { m: M35, como: "ECRS primero: no se automatiza (ni proyectiza) el desperdicio" }
+    - { m: M22, como: "la cuantificación del beneficio (hard/soft/cost-avoidance) es FinOps" }
+    - { m: M28, como: "WSJF prioriza qué brecha se vuelve proyecto" }
+  donde: { modulos: [m3], etapas: [], capa_contexto: true }
+  modo: situacional
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [mejora-proyectos]
+    cuando_si: "proyecto con charter + doble firma (sponsor + finanzas pre/post) + tollgates + auditoría de beneficios (~12 meses) — los campos caso_negocio/firmas/hitos del schema"
+    cuando_no: "no para mejoras just-do-it del funil (eso es M44/kaizen); el ciclo de DATOS es UNO — dmaic es dialecto de render del enum metodologia_mejora"
+
+M43:
+  nombre: "MASP — Método de Análise e Solução de Problemas (QC Story)"
+  nombre_corto: "MASP"
+  familia: D
+  fuente: { autor: "JUSE (QC Story) · Vicente Falconi (adaptación BR)", obra: "TQC no Estilo Japonês — MASP, 8 etapas sobre PDCA", url: "https://blogdaqualidade.com.br/masp-metodo-de-analise-e-solucao-de-problemas-parte-1/" }
+  que: "el estándar brasileño de solución de problemas: identificación → observación → análisis → plan → acción → verificación (con RETROCESO si no bloqueó) → estandarización → conclusión"
+  aporte_unico: "el LOOP-BACK como doctrina: si la verificación no bloqueó el problema se retrocede — la transición en-verificacion→en-ejecucion del schema; usado hasta en el sector público BR (ENAP)"
+  cuando_usar: "proyecto_mejora en cliente brasileño / cultura Falconi (metodologia: masp)"
+  objeto_primario: O7
+  objetos_secundarios: [O6]
+  principios: [P1, P3]
+  combina_con:
+    - { m: M42, como: "mismo ciclo de datos, dialecto distinto (MASP = QC Story; DMAIC = Six Sigma)" }
+    - { m: M16, como: "vive bajo cl.10.2 (NC/acción correctiva) como motor formal" }
+    - { m: M41, como: "los proyectos MASP sirven las metas desdobradas del GPD" }
+  donde: { modulos: [m3], etapas: [], capa_contexto: true }
+  modo: situacional
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [mejora-proyectos]
+    cuando_si: "dialecto BR transversal (industria/servicios/gobierno) — la estandarización como estado propio y el retroceso en verificación vienen de aquí"
+    cuando_no: "mismo ciclo de datos que DMAIC/kaizen — jamás un ciclo de vida distinto por metodología (enum metodologia_mejora = render)"
+
+M44:
+  nombre: "Gestión de ideas (kaizen teian / funil de ideias)"
+  nombre_corto: "Funil de ideas"
+  familia: D
+  fuente: { autor: "kaizen teian (JHRA) · plataformas LATAM (AEVO)", obra: "programa de sugerencias → funil digital de ideas (triaje por comité, feedback, reconocimiento, promoción a proyecto)", url: "https://blog.aevo.com.br/funil-de-ideias/" }
+  que: "el funil masivo y BARATO de propuestas del personal (individual o conjunta): enviada → evaluación por comité (viabilidad/impacto/alineación) → feedback + reconocimiento → un subconjunto se PROMUEVE a proyecto"
+  aporte_unico: "la SEPARACIÓN idea↔proyecto como entidades enlazadas (la práctica real: cientos de ideas por campaña, evaluación ligera; el charter/beneficios viven en el proyecto) + reconocimiento al proponente (kaizen teian: casi todo proponente recibe respuesta)"
+  cuando_usar: "entidad idea del objeto — programas de participación del personal (los CCQ migrados a plataforma: AEVO 400+ empresas, Ambev 450+ ideas en 2 semanas)"
+  objeto_primario: O7
+  objetos_secundarios: [O4]
+  principios: [P1, P7]
+  combina_con:
+    - { m: M42, como: "la idea promovida recibe charter DMAIC (promovida_a_ref)" }
+    - { m: M40, como: "participación se agrega por área/rol — autoría ≠ medición (CK-24)" }
+    - { m: M35, como: "muchas ideas son un 'eliminar' de ECRS resuelto just-do-it" }
+  donde: { modulos: [m2, m3], etapas: [], capa_contexto: true }
+  modo: situacional
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [mejora-proyectos]
+    cuando_si: "el funil de la entidad idea: estados enviada→en-evaluacion→aprobada|rechazada→promovida, con reconocimiento al proponente"
+    cuando_no: "la idea NO es el proyecto (charter/beneficios = proyecto_mejora); la participación JAMÁS es KPI de persona (CK-24 — se agrega por área/rol)"
+
+M45:
+  nombre: "ISO 56002 / 56001 — gestión de la innovación"
+  nombre_corto: "ISO 56002"
+  familia: D
+  fuente: { autor: "ISO TC 279", obra: "ISO 56002:2019 (guía) · ISO 56001:2024 (certificable) — sistema de gestión de innovación", url: "https://www.iso.org/standard/68221.html" }
+  que: "el marco ISO del funil idea→innovación como sistema de gestión (liderazgo, cultura, portafolio de iniciativas, realización de valor)"
+  aporte_unico: "Brasil = hotspot mundial temprano de la ISO de innovación (Grupo Boticário, Atento; PALAS primera certificada 56001) — el marco al que el funil de ideas escala si un cliente exige certificación"
+  cuando_usar: "cliente que exija certificación de innovación o quiera formalizar el funil como sistema de gestión (gateado por demanda)"
+  objeto_primario: O7
+  objetos_secundarios: []
+  principios: [P7]
+  combina_con:
+    - { m: M44, como: "el funil de ideas ES el corazón operativo que 56002 formaliza" }
+    - { m: M16, como: "misma gramática de sistema de gestión ISO (HLS)" }
+  donde: { modulos: [m3], etapas: [], capa_contexto: false }
+  modo: situacional
+  twin:
+    rol_ancla: horizonte
+    proyecciones: []
+    dimensiones: [mejora-proyectos]
+    cuando_si: "cuando un cliente exija certificación de innovación (V2+ / demanda — precedente D9/CK-10)"
+    cuando_no: "NO es el marco dominante del proyecto de mejora operacional hoy — ese rol lo cumplen PDCA/MASP/DMAIC bajo ISO 9001 cl.10"
