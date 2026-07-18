@@ -49,8 +49,8 @@ key_results:
 - id: "obj-caja#kr1"
   descripcion: Reducir días de cobro
   metrica: días de cobro
-  from: "45"
-  to: "30"
+  from: 45
+  to: 30
   driver_refs: [pr-cobranza, cap-cobranza]
 `,
 		"empresa/brechas/gap-cobranza.yaml": "id: gap-cobranza\nnombre: Cobranza manual\ntipo: target_variance\nagainst_ref: pr-cobranza\nkr_ref: [\"obj-caja#kr1\"]\nprio: alta\n",
@@ -172,8 +172,8 @@ func TestValidateObjeto(t *testing.T) {
 	}
 	tt := map[string][]map[string]any{
 		"personas": {
-			parse("id: per-a\nnombre: Ana\nroles:\n- { rol: rol-fantasma }\nreporta_a: per-b\nconf: altta\n"),
-			parse("id: per-b\nnombre: Beto\nreporta_a: per-a\nfuente: Chisme\n"),
+			parse("id: per-a\nnombre: Ana\nroles:\n- { rol: rol-fantasma }\nreporta_a:\n- { ref: per-b, tipo: jerarquico }\nconf: altta\n"),
+			parse("id: per-b\nnombre: Beto\nreporta_a:\n- { ref: per-a, tipo: jerarquico }\nfuente: Chisme\n"),
 		},
 		"roles": {
 			parse("id: rol-g\nnombre: Gerente\n"),
@@ -210,7 +210,7 @@ actividades:
 		},
 		"objetivos": {
 			parse("id: obj-1\nnombre: O\ndueño_ref: rol-ghost\nparent_ref: obj-ghost\nkey_results: []\n"),
-			parse("id: obj-2\nnombre: O2\nkey_results:\n- id: \"obj-2#kr1\"\n  descripcion: D\n  metrica: \"\"\n  from: \"1\"\n  to: \"2\"\n  driver_refs: [pr-ghost]\n"),
+			parse("id: obj-2\nnombre: O2\nkey_results:\n- id: \"obj-2#kr1\"\n  descripcion: D\n  metrica: \"\"\n  from: 1\n  to: 2\n  driver_refs: [pr-ghost]\n"),
 		},
 		"capabilities": {
 			parse("id: cap-1\nnombre: C\nparent_ref: cap-ghost\n"),
@@ -222,7 +222,8 @@ actividades:
 	}
 	empresa := parse("id: otra\nrazon_social: \"\"\n")
 
-	joined := strings.Join(validateObjeto("vertice", empresa, tt), "\n")
+	wv, ev := validateObjeto("vertice", empresa, tt)
+	joined := strings.Join(append(append([]string{}, wv...), ev...), "\n")
 	for _, want := range []string{
 		// empresa
 		`empresa.yaml: id "otra" ≠ slug`,
@@ -254,8 +255,8 @@ actividades:
 		`sirve_a "marte" inválido`,
 		`capabilities_ref "cap-ghost" no existe`,
 		`integra_con_ref "sis-ghost" no existe`,
-		// objetivo
-		`objetivo "obj-1": key_results vacío`,
+		// objetivo (v2: sin KRs = warning sin-ancla-de-valor, RN-4′)
+		`objetivo "obj-1": sin-ancla-de-valor`,
 		`parent_ref "obj-ghost" no existe`,
 		"sin metrica",
 		`driver_refs "pr-ghost" no existe en proceso|capability`,
@@ -275,7 +276,7 @@ actividades:
 
 	// objeto totalmente válido → cero warnings (se valida con el fixture del handler
 	// en TestHandleObjeto; acá el caso mínimo: vacío = válido).
-	if ws := validateObjeto("x", nil, map[string][]map[string]any{}); len(ws) != 0 {
-		t.Errorf("objeto vacío no debe tener warnings: %v", ws)
+	if ws, es := validateObjeto("x", nil, map[string][]map[string]any{}); len(ws) != 0 || len(es) != 0 {
+		t.Errorf("objeto vacío no debe tener warnings/errors: %v %v", ws, es)
 	}
 }
