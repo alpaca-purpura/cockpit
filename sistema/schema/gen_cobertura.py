@@ -175,7 +175,8 @@ class Resultado:
                 len(self.violaciones_provenance))
 
 
-def cobertura(contrato: Contrato, shells: dict, exigir_solo_tipos_presentes=False) -> Resultado:
+def cobertura(contrato: Contrato, shells: dict, exigir_solo_tipos_presentes=False,
+              enums_excluidos=()) -> Resultado:
     """shells: {nombre: {entidad: [instancias]}} — agrega (modo flota si N>1)."""
     r = Resultado()
     vistos = set()
@@ -212,9 +213,12 @@ def cobertura(contrato: Contrato, shells: dict, exigir_solo_tipos_presentes=Fals
         else:
             r.huecos_campos.append(clave)
 
-    # enums por observación de valores (field-agnostic)
+    # enums por observación de valores (field-agnostic); los excluidos (declarados con razón
+    # en gen_cobertura.yaml) no se miden — el manifiesto los lista aparte
     valores_vistos = set(escalares)
     for enum, valores in contrato.enums.items():
+        if enum in enums_excluidos:
+            continue
         for v in valores or []:
             if str(v) not in valores_vistos:
                 r.huecos_enums.append(f"{enum}={v}")
@@ -378,6 +382,10 @@ def manifiesto_md(args, contrato, r_flota, por_shell, fallas_reparto, prov_por_s
     li.append(f"- Campos del contrato: {r_flota.cubiertos_campos}/{r_flota.total_campos} cubiertos")
     li.append(f"- Aristas medibles: {len(contrato.aristas)} · informales declaradas: "
               f"{len(contrato.aristas_informales)} ({', '.join(contrato.aristas_informales)})")
+    excl = (load_yaml(RAIZ / "gen_cobertura.yaml") or {}).get("enums_excluidos") or {}
+    if excl:
+        li.append("- Enums excluidos estructurales (con razón declarada): " +
+                  " · ".join(f"`{k}` ({v})" for k, v in excl.items()))
     for nombre, datos in por_shell.items():
         n = sum(len(v) for v in datos.values())
         li.append(f"- `{nombre}`: {n} instancias · provenance: "
@@ -428,7 +436,9 @@ def main(argv=None) -> int:
             datos, min_fuentes=prov.get("min_fuentes", 4),
             max_share=prov.get("max_share", 0.70)) if not args.area else []
 
-    r = cobertura(contrato, por_shell, exigir_solo_tipos_presentes=bool(args.area))
+    excluidos = config.get("enums_excluidos") or {}
+    r = cobertura(contrato, por_shell, exigir_solo_tipos_presentes=bool(args.area),
+                  enums_excluidos=set(excluidos))
 
     # verbos (solo flota — el catálogo se cubre entre los 3 shells)
     if args.flota:

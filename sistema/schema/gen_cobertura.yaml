@@ -27,3 +27,10 @@ reparto_enums:
 provenance:            # RN-19
   min_fuentes: 4
   max_share: 0.70
+
+# Enums NO observables en instancias — excluidos del medidor con razón declarada (hallazgo T-5):
+# el manifiesto los lista como "excluidos estructurales", jamás desaparecen en silencio.
+enums_excluidos:
+  raci_letra: "claves del mapa raci {R,A,C,I} — los VALORES son refs a rol, la letra nunca es escalar"
+  nivel_acceso: "capa kinética: vive en acciones: del catálogo del schema, no en instancias de shell"
+  tipo_aprobacion: "capa kinética: ídem — la gobierna auth-niveles/gestión de cambios, no el dato AS-IS"

@@ -103,6 +103,14 @@ class TestCobertura(unittest.TestCase):
         self.assertIn("cosa.parte.peso", r.huecos_campos)
         self.assertNotIn("cosa.partes", r.huecos_campos)
 
+    def test_enum_excluido_no_se_mide(self):
+        inst = copy.deepcopy(MINI_FULL)
+        for c in inst["cosa"]:
+            if c.get("tono") == "verde":
+                c["tono"] = "rojo"                            # verde queda sin ejercer…
+        r = gc.cobertura(self.contrato, {"mini": inst}, enums_excluidos={"color"})
+        self.assertNotIn("color=verde", r.huecos_enums)       # …pero color está excluido
+
     def test_mutacion_enum_nombra_valor(self):
         inst = copy.deepcopy(MINI_FULL)
         for c in inst["cosa"]:
