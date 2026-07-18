@@ -1,6 +1,6 @@
 id: organizacion-ficticia-golden-fixture
 type: service-story
-state: idea
+state: refining          # 2026-07-18: 01-spec v1 producido; pendiente FIRMA 1 (7 dudas) → refined
 module: sistema
 node: transversal
 cap_target: "sistema/organizacion-ficticia-golden-fixture"
@@ -31,4 +31,5 @@ provenance:
   estado_legacy: n/a
 links:
   story_md: 00-story.md
+  spec: 01-spec.md
   ledger: ../../../../../LEDGER.md
