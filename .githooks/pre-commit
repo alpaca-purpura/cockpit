@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Gates anti-drift del sistema as-code (CK-17 arquitectura · CK-19 metodología · CK-22 roadmap).
-# Activación (una vez por clone):  git config core.hooksPath .githooks
+# Gates anti-drift del sistema as-code (CK-17 arquitectura · CK-19 metodología · CK-22 roadmap ·
+# schema-v2 objeto/kinética). Activación (una vez por clone):  git config core.hooksPath .githooks
 #
 # Qué hace en cada commit:
 #   1. arquitectura-as-code — gen_arquitectura.py valida NODOS.md + arquitectura.yaml +
@@ -9,8 +9,10 @@
 #      methodology.schema.yaml) + el árbol proceso/ y REGENERA METODOLOGIA.md §4.
 #   3. roadmap (CK-22) — gen_roadmap.py valida story.yaml ↔ releases/*.yaml (biyección,
 #      deps resuelven) y REGENERA ROADMAP.md § Estado.
-#   4. Si cualquiera falla la validación → bloquea el commit (arregla la fuente).
-#   5. Si un generado cambió → se agrega al commit automáticamente (mismo evento).
+#   4. objeto-schema (historia schema-v2) — gen_schema.py valida objeto.schema.yaml v2
+#      (nodos/enums/relaciones/acciones/transiciones) + verbos.yaml (clase ALM×MGI completa).
+#   5. Si cualquiera falla la validación → bloquea el commit (arregla la fuente).
+#   6. Si un generado cambió → se agrega al commit automáticamente (mismo evento).
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
@@ -32,6 +34,13 @@ if ! python3 docs/product/gen_roadmap.py; then
   echo ""
   echo "✖ pre-commit: el roadmap no valida — commit bloqueado."
   echo "  Corrige story.yaml / releases/*.yaml y reintenta."
+  exit 1
+fi
+
+if ! python3 sistema/schema/gen_schema.py; then
+  echo ""
+  echo "✖ pre-commit: el objeto.schema/verbos no valida — commit bloqueado."
+  echo "  Corrige sistema/schema/objeto.schema.yaml / verbos.yaml y reintenta."
   exit 1
 fi
 
