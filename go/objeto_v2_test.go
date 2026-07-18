@@ -552,6 +552,7 @@ func TestParidadSchema(t *testing.T) {
 	igual("estado_idea", setDe(enums["estado_idea"]), objEstadoIdeaOK)
 	igual("estado_brecha", setDe(enums["estado_brecha"]), objEstadoBrechaOK)
 	igual("modo_estrategia", setDe(enums["modo_estrategia"]), objModoEstrategiaOK)
+	igual("tipo_unidad", setDe(enums["tipo_unidad"]), objTipoUnidadOK)
 
 	// transiciones_proyecto del schema == tabla Go
 	trans := oMap(oMap(schema["acciones"])["transiciones_proyecto"])

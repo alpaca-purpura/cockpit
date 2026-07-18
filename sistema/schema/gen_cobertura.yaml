@@ -1,0 +1,29 @@
+# gen_cobertura.yaml — política de cobertura + reparto DECLARADO de enums exclusivos (D-A2 · RN-17)
+# Consumido por gen_cobertura.py. El reparto es diseño firmado (01-spec § Dudas resueltas 6):
+# los valores estructuralmente exclusivos (una empresa tiene UN modo) se cubren a nivel FLOTA,
+# cada uno en el shell que lo carga por diseño.
+
+politica:
+  terranova: { campos: 100, aristas: 100 }        # golden: 100% campos+aristas él solo
+  flota:     { campos: 100, aristas: 100, enums: 100, verbos: 100 }
+
+reparto_enums:
+  modo_estrategia:
+    mixto: terranova
+    okr-trimestral: alameda
+    gpd-anual: vulcano
+  tipo_unidad:
+    proyecto: terranova
+    obra: terranova
+    sucursal: alameda
+    franquicia: alameda
+    planta: vulcano
+  metodologia_mejora:
+    dmaic: terranova
+    pdca: terranova
+    kaizen: alameda
+    masp: vulcano
+
+provenance:            # RN-19
+  min_fuentes: 4
+  max_share: 0.70

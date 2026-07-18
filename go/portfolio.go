@@ -6,7 +6,8 @@
 // empresa lista TODOS sus sistemas (navegables + no-instrumentados = gaps).
 //   - navegable: hay un workspace-sistema descubierto → clicable (key="empresa/sistema").
 //   - gap:       sistema declarado sin datos (Odoo compartido, externo, terciarizado,
-//                o un propio aún no instrumentado) → key="" (se ve, no se navega).
+//     o un propio aún no instrumentado) → key="" (se ve, no se navega).
+//
 // Regla anti-mismatch: si la empresa está instrumentada (tiene sistemas descubiertos),
 // esos sistemas SON sus sistemas propios; los propio declarados no se duplican.
 // Las empresas se muestran TODAS (activas o no): lo inactivo es un gap visible.

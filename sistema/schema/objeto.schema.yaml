@@ -89,7 +89,7 @@ enums:
   # --- organización ---
   tipo_reporte: [jerarquico, funcional]                                    # met: organigrama matricial / dotted-line (insumo 6)
   vinculo:     [empleado, contratista, tercero]                            # met: BPO (insumo 6)
-  tipo_unidad: [proyecto, obra, sucursal, franquicia]                      # met: D-07 unidad de ejecución — dimensión de la MEDICIÓN, no partición del twin
+  tipo_unidad: [proyecto, obra, sucursal, franquicia, planta]              # met: D-07 unidad de ejecución — dimensión de la MEDICIÓN, no partición del twin · planta = casuística manufactura (golden-fixture D-A6)
   tipo_proveedor: [bpo, outsourcing, proveedor]                            # met: ISO 9001 cl.8.4 (procesos provistos externamente)
   prob:        [alta, media, baja]                                         # met: ISO 9001 cl.6.1 (riesgos tipados)
   impacto:     [alto, medio, bajo]                                         # met: ISO 9001 cl.6.1

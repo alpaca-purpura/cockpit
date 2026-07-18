@@ -182,7 +182,7 @@ var (
 	objReglasAutoOK      = map[string]bool{"estables": true, "cambiantes": true}
 	objTipoReporteOK     = map[string]bool{"jerarquico": true, "funcional": true}
 	objVinculoOK         = map[string]bool{"empleado": true, "contratista": true, "tercero": true}
-	objTipoUnidadOK      = map[string]bool{"proyecto": true, "obra": true, "sucursal": true, "franquicia": true}
+	objTipoUnidadOK      = map[string]bool{"proyecto": true, "obra": true, "sucursal": true, "franquicia": true, "planta": true}
 	objTipoProveedorOK   = map[string]bool{"bpo": true, "outsourcing": true, "proveedor": true}
 	objImpactoOK         = map[string]bool{"alto": true, "medio": true, "bajo": true}
 )
@@ -404,7 +404,7 @@ func validateObjeto(slug string, empresaDoc map[string]any, t map[string][]map[s
 				w = append(w, uloc+" sin id (local `empresa#uN` — D-07)")
 			}
 			if tu := oStr(u["tipo"]); tu != "" && !objTipoUnidadOK[tu] {
-				w = append(w, fmt.Sprintf("%s: tipo %q inválido (esperado proyecto|obra|sucursal|franquicia)", uloc, tu))
+				w = append(w, fmt.Sprintf("%s: tipo %q inválido (esperado proyecto|obra|sucursal|franquicia|planta)", uloc, tu))
 			}
 			if el := oStr(u["entidad_legal_ref"]); el != "" && !legalIDs[el] {
 				w = append(w, fmt.Sprintf("%s: entidad_legal_ref %q no existe en empresa.entidades_legales", uloc, el))
