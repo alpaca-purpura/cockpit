@@ -25,20 +25,23 @@ plano puede ser tuyo, pero cada viga cumple una norma citable. Si algo se cae, s
 
 ## 1 · El backbone (la columna O)
 
-Las entidades no están sueltas: cuelgan de una **columna de diagnóstico** de 6 estratos (los `o_code` del
-schema). Es el hilo lógico de un análisis organizacional — del *contexto* a la *brecha*:
+Las entidades no están sueltas: cuelgan de una **columna de diagnóstico** de 7 estratos (los `o_code` del
+schema). Es el hilo lógico de un análisis organizacional — del *contexto* a la *mejora* (v2: el
+diagnóstico ya no es el final de la columna):
 
 | Estrato | `o_code` | Entidad(es) | Pregunta que responde |
 |---|---|---|---|
 | Contexto | `contexto` | **empresa** | ¿quién es y en qué entorno opera? |
-| Estrategia/Metas | `O2` | **objetivo** | ¿a dónde quiere llegar? |
+| Estrategia/Metas | `O2` | **objetivo · kpi** | ¿a dónde quiere llegar, y cómo se mide? |
 | Operación | `O3` | **proceso** | ¿cómo produce valor? |
 | Organización | `O4` | **área · rol · persona** | ¿quién lo hace y bajo qué estructura? |
 | Recursos & Capacidades | `O5` | **sistema · capability** | ¿con qué, y qué sabe hacer? |
 | Diagnóstico | `O6` | **brecha** | ¿qué le falta para llegar? |
+| Mejora | `O7` | **proyecto_mejora · idea** | ¿qué hacemos al respecto, y funcionó? |
 
 Leído de arriba abajo es una **entrevista de consultoría**: contexto → metas → cómo opera hoy → con quién y
-con qué → dónde están los huecos. El `negocio.yaml` que generaremos es esta columna, proyectada.
+con qué → dónde están los huecos → qué proyectos los cierran. El `negocio.yaml` que generaremos es esta
+columna, proyectada.
 
 ---
 
@@ -49,10 +52,11 @@ probado en vez de inventar tipos:
 
 | Capa ArchiMate | Entidades del objeto |
 |---|---|
-| **Motivation** (motivación) | objetivo (Goal + Outcome) · brecha (Assessment) |
+| **Motivation** (motivación) | objetivo (Goal + Outcome) · kpi (Outcome/Metric) · brecha (Assessment) · idea (Driver — propio) |
 | **Strategy** (estrategia) | capability (Capability) |
 | **Business** (negocio) | empresa · área (Business Actor org) · rol (Business Role) · persona (Business Actor indiv.) · proceso (Business Process) |
 | **Application** (aplicación) | sistema (Application Component + Product) |
+| **Implementation & Migration** | proyecto_mejora (Work Package) |
 
 ---
 

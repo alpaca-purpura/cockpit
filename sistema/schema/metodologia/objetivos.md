@@ -25,15 +25,21 @@ deseo; sin motor, no sabes qué palanca jalar.
 
 ## 3 · En el schema
 
-`objetivos/obj-*.yaml`:
+`objetivos/obj-*.yaml` (v2 — historia schema-v2):
 ```
-id · nombre (el Objective) · descripcion · horizonte · dueño_ref→rol
-consistente_con_politica (ISO 6.2.1b) · plan{que, recursos[], responsable_ref→rol, fecha, como_evaluado}
-parent_ref→objetivo (cascada Hoshin) · key_results[]  (≥ 1, embebido)
+id · nombre (el Objective) · descripcion · horizonte (enum: proposito|3a|anual|trimestre)
+cadencia_revision · estado{vigente|deprecado, superseded_by, vigencia} · perspectiva (BSC, opcional)
+dueño_ref→rol · consistente_con_politica (ISO 6.2.1b)
+plan{que, recursos[], responsable_ref→rol, fecha, como_evaluado}
+parent_ref→objetivo (cascada Hoshin/GPD) · key_results[]  (embebido; OPCIONAL en v2 —
+  ausencia = warning `sin-ancla-de-valor`, no error)
 ```
 Cada `key_result` (weak-entity, id `obj-x#krN`):
 ```
-descripcion · metrica · from (baseline) · to (target) · unit · current · quarter
+descripcion · metrica · from/to/current (NUMÉRICOS en v2) · unit · quarter (ciclo)
+kpi_ref → kpi          (frontera permeable: el KR = contrato de CAMBIO sobre la serie de un KPI)
+accountable_ref → rol  (KR ownership — §8)
+acople_compensacion    (bool — SOLO válido en modo gpd-anual|mixto, ver §6-bis)
 driver_refs[] → proceso | capability   (qué mueve la aguja — Impact Mapping)
 ```
 
@@ -88,6 +94,24 @@ ida-y-vuelta al fijar cada nivel). Todo OKR debe **trazar hacia arriba** a un pi
 > MEDIDO baja por esa cascada. La persona entra como **ocupante del rol** (persona→cumple→rol→dueño-de→KPI),
 > **no** como eslabón de medición individual — coherente con §8 (KR ownership, no OKR individual).
 
+## 6-bis · El modo regional: OKR, GPD o mixto (research LATAM/BR, 2026-07-17)
+
+La investigación de la historia schema-v2 (00-research-latam-br.md) verificó el estándar real por
+mercado: **Brasil = GPD** (Gerenciamento pelas Diretrizes, Falconi — desdobramento de metas anuales
+por nivel + giro PDCA + acople a remuneración variable/PLR; Falconi atiende 3 de cada 4 "Melhores e
+Maiores"); **LATAM hispano = BSC como mapa** (por eso `perspectiva` en el objetivo); **OKR = la
+cadencia de 90 días** (tech/áreas digitales). Veredicto estructural: **GPD y OKR son EL MISMO grafo
+de cascada** — difieren en cadencia (anual vs trimestral) y en acople a compensación (permitido vs
+prohibido). Por eso el modo es **configuración de la empresa** (`empresa.config_estrategia.modo:
+okr-trimestral | gpd-anual | mixto`), no entidades distintas:
+
+- Modo **okr-trimestral**: KRs con ciclo de 90 días; `acople_compensacion` PROHIBIDO (sandbagging —
+  Bock: "totally divorced from compensation").
+- Modo **gpd-anual**: el `parent_ref` ES el desdobramento; KRs = metas anuales con valor y plazo
+  ("meta sem valor e prazo não é meta"); `acople_compensacion: true` VÁLIDO (PLR).
+- Modo **mixto**: desdobramento anual arriba + cadencia OKR en áreas que la adoptaron (el patrón
+  real de los corporativos brasileños hoy).
+
 ## 7 · Temporalidad y cadencia (trabaja hacia atrás)
 
 **Visión (5-10 a) → objetivos estratégicos (3 a) → plan anual (1 a) → prioridades trimestrales (90 d)** +
@@ -113,9 +137,18 @@ El veredicto de la práctica moderna: **cascade ≠ alignment, y alignment gana.
 - **Rol = KR ownership, no OKR individual.** Un rol (o agente) es *accountable* de KRs dentro de un OKR de
   equipo/empresa. Twitter y Spotify abandonaron los OKR individuales: *"el indicador pertenece al equipo"*.
 
-**Cómo cae en nuestro schema (sin cambios):** `objetivo.parent_ref` **ES el golden thread / cascada** — la bajada
+**Cómo cae en nuestro schema:** `objetivo.parent_ref` **ES el golden thread / cascada** — la bajada
 al rol = objetivos anidados, cada uno con `dueño_ref → rol`; el objetivo-hoja lo posee el rol (el *socket*).
-`key_result.driver_refs` **ES el Impact Mapping**. No hacen falta OKR individuales ni entidad nueva.
+`key_result.driver_refs` **ES el Impact Mapping**; `key_result.accountable_ref` **ES el KR ownership**.
+No hacen falta OKR individuales ni entidad OKR nueva.
+
+> **Fuentes primarias del "no OKR individual"** (verificadas 2026-07-17, 00-research de la historia
+> schema-v2): Spotify HR blog 2016 ("we decided to ditch individual OKRs" — proceso sin valor);
+> Rick Klau (autor del video canónico de Google) 2017: "Skip individual OKRs altogether"; HBR
+> dic-2020 (Gothelf/Seiden): "Use OKRs to Set Goals for Teams, Not Individuals"; Bock: divorcio
+> total OKR↔compensación (≤⅓ del input de evaluación). Razones: sandbagging · degeneración en
+> task-list · costo administrativo · conducta egoísta. "Twitter los abandonó" NO tiene fuente
+> primaria localizable — no citarla.
 
 ## 9 · Agentes IA como "trabajadores" con KRs
 
