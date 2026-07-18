@@ -27,6 +27,8 @@ enums:
   # ---- qué rubro (se extiende al sumar verticales: 1 clave + 1 archivo = 1 vertical) ----
   nicho:
     inmobiliario: "Desarrollo / venta inmobiliaria"
+    retail: "Retail multi-sucursal"                # golden fixture 2026-07-18 (historia organizacion-ficticia-golden-fixture)
+    manufactura: "Manufactura"                     # golden fixture 2026-07-18 (historia organizacion-ficticia-golden-fixture)
     # comercializadora: "..."     # ← próximo vertical = nueva clave aquí + nuevo archivo nichos/comercializadora.yaml
 
   # ---- qué clase de unidad de conocimiento ----

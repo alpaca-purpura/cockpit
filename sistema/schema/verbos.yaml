@@ -70,3 +70,6 @@ verbos:
   # --- del dogfood prenter (migración schema-v2) ---
   - { verbo: construir,   clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [desarrollar, programar-codigo] }
   - { verbo: ejecutar,    clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [correr, lanzar] }
+  # --- del rubro (PR golden-fixture D-A7: liquidar=cierre de obra · calibrar=mantenimiento) ---
+  - { verbo: liquidar,    clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [finiquitar, cerrar-cuentas] }
+  - { verbo: calibrar,    clase_alm: { rutina: rutinaria,    tipo: manual },              capacidad_mgi: fisico-predecible,    sinonimos: [ajustar] }
