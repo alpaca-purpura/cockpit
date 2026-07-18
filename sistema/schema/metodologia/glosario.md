@@ -20,7 +20,7 @@ Si un término nuestro choca con la norma → **gana la norma**, renombramos. Si
 | **area** | ArchiMate **Business Actor** (organizational) · TOGAF **Org Unit** (D-12) | unidad organizativa / departamento; *empresa anidada*; la encabeza un `rol` (`lider_ref`). **N:M** con proceso (`proceso.areas_ref` — transversal) | `capability` (org-box vs qué-sabe-hacer); `rol` (unidad vs cargo) | Finanzas; Comercial |
 | **proceso** | ArchiMate **Business Process** · ISO cl.4.4 · APQC **L3** | secuencia de actividades que produce valor (la "tortuga") | `capability` (cómo vs qué) | cobranza |
 | **actividad** | APQC **L4** · BPMN Task | paso clave dentro de un proceso (inline, id estable) | `tarea` (L5, más fina) | "llamar al deudor" |
-| **tarea** | APQC **L5** | unidad de trabajo dentro de una actividad (profundidad opcional) | `actividad` | "marcar el teléfono" |
+| **tarea** | APQC **L5** | unidad de trabajo dentro de una actividad (profundidad opcional — **diferida**: hoy el schema materializa hasta L4) | `actividad`; `paso` (namespace del método) | "marcar el teléfono" |
 | **sistema** | ArchiMate **Application Component** (+ aspecto **Product** opt-in) · ISO "recursos" | app/herramienta; pata "con qué". Soporte = App Component (siempre); si es oferta → lleva bloque `producto` (Product) | `proceso` | Odoo (App Comp) · Vitalia (App Comp + Product) |
 | **objetivo** | ISO 9001 cl.6.2 · OKR (M21) | resultado deseado; KR `from→to` | `brecha` | días de cobro 45→30 |
 | **brecha (gap)** | Capability heatmap (M31) · COBIT madurez (M15) | distancia AS-IS ↔ objetivo | `objetivo` | "sin recordatorio automático" |
@@ -32,6 +32,15 @@ Si un término nuestro choca con la norma → **gana la norma**, renombramos. Si
 |---|---|---|
 | **función** | coloquial de "lo que hace un rol" = sus asignaciones a procesos/actividades (RACI, **derivado**). Guardarla = duplicar la asignación (anomalía 3NF). | derivado del wiring `actividad.carril = rol`; competencia-grupo → `capability` |
 | **manual** | el "cómo" es la pata *método* de la tortuga (ISO/ArchiMate procedure); APQC no tiene nivel "manual" | `desc` de cada `actividad` + `criterios_control` del proceso. El PDF del cliente = **fuente** (provenance) |
+
+## Namespace vecino — el método del consultor (desambiguación)
+
+| Término | Namespace | Qué es | NO confundir con |
+|---|---|---|---|
+| **paso** | Definición del engagement (`sistema/metodo/proceso/**`) | unidad del MÉTODO del consultor — cómo trabajamos NOSOTROS el engagement (`<paso>.md` bajo módulo/etapa) | `actividad` (APQC L4) y `tarea` (L5): unidades del proceso del CLIENTE en el `objeto` |
+
+Regla de cero homónimos aplicada: "paso" NUNCA nombra una unidad del proceso del cliente — ahí se dice
+`actividad`/`tarea`; y una unidad del método del consultor NUNCA se llama `actividad` — ahí se dice `paso`.
 
 ## Wiring proceso↔gente
 

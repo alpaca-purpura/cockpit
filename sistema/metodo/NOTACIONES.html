@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notaciones del twin — Cockpit (CK-21)</title>
+<!-- GENERADO por sistema/metodo/gen_metodo.py desde methodologies.yaml (bloques twin:) — NO editar a mano (CK-21 · WS5). -->
+<style>
+  :root{--bg:#0e1116;--panel:#161b22;--panel2:#1b212b;--line:#2b3340;--ink:#e6edf3;--dim:#8b949e;
+    --ancla:#3fb950;--propio:#a371f7;--horizonte:#d29922;--fuera:#6e7681;--proy:#58a6ff;
+    --desc:#f85149;--inter:#39c5cf}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:13.5px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;padding-bottom:60px}
+  header{padding:20px 26px;border-bottom:1px solid var(--line)}
+  h1{margin:0 0 6px;font-size:20px}
+  .sub{color:var(--dim);font-size:12.5px;max-width:1050px}
+  .cardinal{max-width:1050px;margin:14px 26px;padding:13px 16px;background:var(--panel);border:1px solid var(--propio);border-left:4px solid var(--propio);border-radius:8px;font-size:14px;font-weight:600}
+  .cardinal small{display:block;font-weight:400;color:var(--dim);margin-top:5px;font-size:12px}
+  .legend{display:flex;gap:8px 18px;flex-wrap:wrap;padding:10px 26px;font-size:11.5px;color:var(--dim);border-bottom:1px solid var(--line)}
+  .legend .k{display:inline-flex;align-items:baseline;gap:6px;max-width:480px}
+  h2.sec{font-size:15px;margin:28px 26px 4px;border-top:1px solid var(--line);padding-top:18px}
+  p.secsub{margin:0 26px 12px;color:var(--dim);font-size:12px;max-width:1050px}
+  .wrap{margin:0 26px}
+  table.mx{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px}
+  table.mx th,table.mx td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+  table.mx th{background:var(--panel);color:var(--dim);font-weight:600}
+  td.dim{background:var(--panel2);font-weight:700;font-size:12.5px;min-width:150px}
+  .std{font-weight:600}
+  .mid{color:var(--dim);font-weight:400;font-size:11px}
+  .bdg{display:inline-block;font-size:10px;padding:1px 7px;border-radius:10px;margin:1px 4px 1px 0;white-space:nowrap}
+  .bdg.metamodelo-propio{background:rgba(163,113,247,.16);color:var(--propio)}
+  .bdg.ancla{background:rgba(63,185,80,.15);color:var(--ancla)}
+  .bdg.proyeccion,.bdg.proy{background:rgba(88,166,255,.15);color:var(--proy)}
+  .bdg.intercambio{background:rgba(57,197,207,.15);color:var(--inter)}
+  .bdg.horizonte{background:rgba(210,153,34,.16);color:var(--horizonte)}
+  .bdg.descartada{background:rgba(248,81,73,.15);color:var(--desc)}
+  .bdg.fuera-del-twin{background:rgba(110,118,129,.2);color:var(--fuera)}
+  .si{color:var(--ancla)}
+  .no{color:var(--desc)}
+  ol.triage{max-width:1050px;margin:8px 26px;padding-left:24px}
+  ol.triage>li{margin-bottom:10px}
+  .paso{font-weight:700}
+  .why{max-width:1050px;margin:10px 26px;padding:11px 14px;background:var(--panel);border:1px solid var(--line);border-radius:8px;font-size:12.5px}
+  .why b{color:var(--desc)}
+  ul.desc{max-width:1050px;margin:8px 26px;padding-left:22px;font-size:12.5px}
+  ul.desc li{margin-bottom:7px}
+  code{background:#0c0f14;padding:1px 5px;border-radius:4px;font-size:11px;color:#c9d4e0}
+  .verd{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--line);margin:2px 4px 2px 0;background:var(--panel)}
+  footer{margin:34px 26px 0;color:var(--dim);font-size:11px;border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧭 Notaciones y estándares del Organization Twin</h1>
+  <div class="sub">Mapa de decisión: para cada dimensión del twin, qué estándar usamos, en qué rol, cuándo sí,
+  cuándo no y cuándo hacemos estándar propio. Generado desde <code>methodologies.yaml</code> (bloque <code>twin:</code>
+  de cada M-card) por <code>gen_metodo.py</code> · gate anti-drift en pre-commit. Catálogo completo de metodologías:
+  <code>METODOLOGIA.md §4</code>.</div>
+</header>
+
+<div class="cardinal">Regla cardinal — estándares como vocabulario · schema propio como metamodelo ·
+git como motor · notación = proyección generada, nunca SSoT.
+<small>Un estándar juega un rol por (estándar × dimensión × plano). Una celda «ancla + proyección» son dos PLANOS
+(dato / vista), no dos roles en conflicto. Excepción declarada: <code>despliegue.html</code> es vista CURADA del
+Fabricante (gate de madurez CK-17), fuera del scope twin.</small></div>
+
+<div class="legend"><span class="k"><span class="bdg metamodelo-propio">metamodelo propio</span><span>el diferenciador: objeto.schema.yaml as-code en git (9 entidades, doctrina Palantir), extensible por cliente sin fork</span></span><span class="k"><span class="bdg ancla">ancla</span><span>ancla semántica: el estándar presta ontología/taxonomía y se embebe como DATO (archimate:, met:, enums) — no hay diagrama fuente</span></span><span class="k"><span class="bdg proyeccion">proyección</span><span>proyección: la notación RENDERIZA el dato (swimlane, organigrama, strategy-map, heatmap) — se genera con .py, jamás se edita a mano</span></span><span class="k"><span class="bdg intercambio">intercambio</span><span>intercambio: formato estándar para importar/exportar contra herramientas del cliente (BPMN XML, ArchiMate exchange) — V2, declarado para no cerrar la puerta</span></span><span class="k"><span class="bdg horizonte">horizonte</span><span>horizonte: estándar reservado para una fase futura ya decidida (gateado D9)</span></span><span class="k"><span class="bdg descartada">descartada</span><span>descartada: lo que conscientemente NO adoptamos (con porqué — ver sección final)</span></span><span class="k"><span class="bdg fuera-del-twin">fuera del twin</span><span>fuera del twin: método del ENGAGEMENT — cómo trabajamos nosotros, no dimensión del twin del cliente</span></span></div>
+
+<h2 class="sec">Matriz — dimensión del twin → estándar</h2>
+<p class="secsub">Las filas son las dimensiones canónicas del twin (enum del contrato
+<code>methodology.schema.yaml</code>); cada dimensión lista los estándares que la sirven, con su rol y sus límites.</p>
+<div class="wrap"><table class="mx"><tr><th>Dimensión del twin</th><th>Estándar</th><th>Rol · proyecciones</th><th>Cuándo sí</th><th>Cuándo no / límite</th></tr>
+<tr><td class="dim" rowspan="1">Metamodelo (9 entidades + relaciones + kinética)</td><td><span class="std">Ontología Palantir</span> <span class="mid">(M32 · Doctrina de ontología Palantir (semántica + kinética))</span></td><td><span class="bdg metamodelo-propio">metamodelo propio</span></td><td class="si">✓ el diferenciador queda fuera de todo estándar: objeto.schema.yaml as-code en git ES el metamodelo; a futuro formalizable como contrato de entidad publicable estilo Backstage (apiVersion/kind/spec, V2)</td><td class="no">✗ no adoptamos Foundry como plataforma — robamos la doctrina, no el producto; ArchiMate-como-metamodelo descartado (lock-in notation-first)</td></tr>
+<tr><td class="dim" rowspan="4">Vocabulario de arquitectura</td><td><span class="std">Domain-Driven Design</span> <span class="mid">(M08 · Domain-Driven Design (DDD))</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ bounded contexts + lenguaje ubicuo como costuras al modelar los sistemas del cliente</td><td class="no">✗ no modelamos el dominio del cliente en código — sin agregados/entidades DDD dentro del twin</td></tr>
+<tr><td><span class="std">ArchiMate</span> <span class="mid">(M13 · ArchiMate / TOGAF)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ SOLO-TIPOS: presta tipos por entidad/relación embebidos como dato (archimate:) + TOGAF org decomposition para áreas</td><td class="no">✗ como METAMODELO completo está DESCARTADO (notation-first = lock-in; Ardoq/Palantir validan entidad-primero); sin diagramas fuente ni capas completas</td></tr>
+<tr><td><span class="std">SYSTEM-MAP + document-project</span> <span class="mid">(M14 · SYSTEM-MAP + document-project (propio))</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ poblar el estado REAL de sistemas/capabilities leyendo el código (drift código↔docs = señal de conf)</td><td class="no">✗ alimenta el twin, no es su gramática — el metamodelo es el objeto.schema (doctrina Palantir, M32)</td></tr>
+<tr><td><span class="std">Business Capability Modeling</span> <span class="mid">(M31 · Business Capability Modeling)</span></td><td><span class="bdg ancla">ancla</span><span class="bdg proy">▤ heatmap-capacidades</span></td><td class="si">✓ el mapa de capacidades (QUÉ hace la empresa, estable frente al cómo) con heatmap de madurez/dolor GENERADO del dato</td><td class="no">✗ el heatmap no se pinta a mano — se deriva de niveles COBIT + brechas con provenance</td></tr>
+<tr><td class="dim" rowspan="2">Procesos — clasificación</td><td><span class="std">APQC Process Classification Framework</span> <span class="mid">(M12 · APQC Process Classification Framework (PCF))</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ ancla de CLASIFICACIÓN: cada proceso hallado se clasifica en la taxonomía universal (esqueleto anti-pérdida + cobertura)</td><td class="no">✗ clasifica, no narra — el flujo es de BPMN-lite (M11) y el detalle de actividades de la taxonomía de verbos (M37)</td></tr>
+<tr><td><span class="std">ISO 9001</span> <span class="mid">(M16 · ISO 9001)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ el PARAGUAS: ontología cl.4 + PDCA (loop de mejora) · cl.6.1 risk-based thinking (riesgos[] tipados por proceso) · tortuga 4.4 · cl.5.3 roles · cl.7.5 información documentada</td><td class="no">✗ sin aparato de certificación (VISION §ISO); COSO / ISO 31000 = horizonte, no MVP</td></tr>
+<tr><td class="dim" rowspan="5">Procesos — flujo</td><td><span class="std">Event Storming</span> <span class="mid">(M07 · Event Storming)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ taller de elicitación del flujo As-Is (eventos→comandos→actores) que se normaliza al schema con provenance</td><td class="no">✗ los stickies no son SSoT ni notación persistida — el flujo queda como dato (fuente Entrevista/Taller), el taller no se archiva como diagrama fuente</td></tr>
+<tr><td><span class="std">Value Stream Mapping</span> <span class="mid">(M09 · Value Stream Mapping (VSM))</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ flujo y future-state con tiempos {toque, espera} — visualiza el desperdicio a nivel de FLUJO</td><td class="no">✗ no dicta el orden eliminar/combinar por actividad — ese ORDEN es de ECRS (M35); no puntúa automatizabilidad (M36)</td></tr>
+<tr><td><span class="std">Service Blueprint</span> <span class="mid">(M10 · Service Blueprint)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ cruzar la experiencia del cliente-final con el proceso interno para revelar dónde duele (insumo del As-Is)</td><td class="no">✗ no es notación fuente ni vista generada del MVP — el hallazgo se normaliza al schema con provenance</td></tr>
+<tr><td><span class="std">BPMN</span> <span class="mid">(M11 · BPMN)</span></td><td><span class="bdg ancla">ancla</span><span class="bdg proy">▤ swimlane</span></td><td class="si">✓ subset BPMN-lite (lane/tipo/disparador) como vocabulario del flujo; el swimlane se GENERA del dato, jamás se dibuja</td><td class="no">✗ editor de diagramas NO (el diagrama nunca es SSoT); export XML = intercambio V2; SIPOC = proyección de bordes (proveedor_ref/cliente_ref ya absorbidos, D-08/D-11), no M-card</td></tr>
+<tr><td><span class="std">Process / Task Mining</span> <span class="mid">(M29 · Process / Task Mining)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ EVIDENCIA observada: descubre el flujo real desde logs y alimenta volumen/%excepciones de los dos scores del triage</td><td class="no">✗ no emite el veredicto — es evidencia con provenance (fuente Observado), no etiqueta; el score se calcula en M36</td></tr>
+<tr><td class="dim" rowspan="4">Organización (personas / roles / áreas)</td><td><span class="std">ArchiMate</span> <span class="mid">(M13 · ArchiMate / TOGAF)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ SOLO-TIPOS: presta tipos por entidad/relación embebidos como dato (archimate:) + TOGAF org decomposition para áreas</td><td class="no">✗ como METAMODELO completo está DESCARTADO (notation-first = lock-in; Ardoq/Palantir validan entidad-primero); sin diagramas fuente ni capas completas</td></tr>
+<tr><td><span class="std">ISO 9001</span> <span class="mid">(M16 · ISO 9001)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ el PARAGUAS: ontología cl.4 + PDCA (loop de mejora) · cl.6.1 risk-based thinking (riesgos[] tipados por proceso) · tortuga 4.4 · cl.5.3 roles · cl.7.5 información documentada</td><td class="no">✗ sin aparato de certificación (VISION §ISO); COSO / ISO 31000 = horizonte, no MVP</td></tr>
+<tr><td><span class="std">RACI</span> <span class="mid">(M25 · RACI (Responsibility Assignment Matrix))</span></td><td><span class="bdg ancla">ancla</span><span class="bdg proy">▤ organigrama</span></td><td class="si">✓ letras RACI como dato por proceso/rol (cl.5.3); el organigrama se GENERA de persona/rol/área; la A ancla humano-por-diseño en el triage</td><td class="no">✗ no es suite RRHH; la matriz no se dibuja a mano — se proyecta del dato</td></tr>
+<tr><td><span class="std">Métricas de persona</span> <span class="mid">(M40 · Métricas de persona — frontera twin ↔ individuo (CK-24))</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ TRANSVERSAL: el twin mide roles/procesos/áreas; persona-nombrada = opt-in de Gobernanza + consentimiento; agregación mínima, acceso por nivel, retención declarada</td><td class="no">✗ jamás evaluación individual por defecto (objetivos.md §8: no OKR individual) ni registro de salud ocupacional versionado (exposición AI Act / GDPR art.22 / sindicatos)</td></tr>
+<tr><td class="dim" rowspan="5">Estrategia (objetivos → OKR → KPI)</td><td><span class="std">COBIT 2019</span> <span class="mid">(M15 · COBIT 2019)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ niveles 0-5 como semáforo de madurez + goals cascade como cascade DE ANCLAJE del hilo (objetivos.md §6)</td><td class="no">✗ modo lite, sin aparato COBIT completo ni certificación; la precedencia entre marcos estratégicos la fija objetivos.md §6</td></tr>
+<tr><td><span class="std">OKR</span> <span class="mid">(M21 · OKR (Objectives &amp; Key Results))</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ el MOTOR de 90 días — eslabón KR de la cascada canónica (plan 3a → plan anual → objetivo → KR → KPI → actividad)</td><td class="no">✗ alignment + catchball, NO cascada estricta (objetivos.md §8); sin OKR individual — la persona entra como ocupante del rol</td></tr>
+<tr><td><span class="std">Hoshin Kanri</span> <span class="mid">(M26 · Hoshin Kanri (Strategy Deployment))</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ el MAPA 3-5 años → anual, con catchball (alignment bidireccional) — cabecera de la cascada canónica</td><td class="no">✗ X-matrix ceremonial NO; la precedencia entre marcos la fija objetivos.md §6</td></tr>
+<tr><td><span class="std">Wardley Mapping</span> <span class="mid">(M27 · Wardley Mapping)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ posicionar la evolución (génesis→commodity) de capacidades para el TO-BE: construir / comprar / tercerizar</td><td class="no">✗ el lienzo no es SSoT — la etapa evolutiva se embebe como atributo del dato si se usa; sin mapa fuente versionado</td></tr>
+<tr><td><span class="std">Balanced Scorecard</span> <span class="mid">(M30 · Balanced Scorecard)</span></td><td><span class="bdg ancla">ancla</span><span class="bdg proy">▤ strategy-map</span></td><td class="si">✓ SOLO-CHECKLIST de perspectivas — que ninguna dimensión estratégica quede ciega</td><td class="no">✗ NO framework completo; strategy-map = proyección SOLO cuando exista dato perspectiva/causal (schema-v2)</td></tr>
+<tr><td class="dim" rowspan="5">Madurez y brecha</td><td><span class="std">COBIT 2019</span> <span class="mid">(M15 · COBIT 2019)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ niveles 0-5 como semáforo de madurez + goals cascade como cascade DE ANCLAJE del hilo (objetivos.md §6)</td><td class="no">✗ modo lite, sin aparato COBIT completo ni certificación; la precedencia entre marcos estratégicos la fija objetivos.md §6</td></tr>
+<tr><td><span class="std">FinOps — Quantify Business Value</span> <span class="mid">(M22 · FinOps — Quantify Business Value)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ cuantificar costo/ROI de cada brecha (unit economics del ciclo brecha→proyecto→KPI movido)</td><td class="no">✗ no es contabilidad cloud completa — solo el valor/ahorro que prioriza brechas</td></tr>
+<tr><td><span class="std">Grounding</span> <span class="mid">(M23 · Grounding / RAG + Provenance)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ TRANSVERSAL obligatorio: todo dato AS-IS lleva struct fuente+conf (patrón Palantir); la evidencia de brecha/madurez sigue ISO 19011 (auditoría basada en evidencia)</td><td class="no">✗ sin provenance el dato no entra al twin — no hay excepción; la frescura caduca la conf</td></tr>
+<tr><td><span class="std">WSJF</span> <span class="mid">(M28 · WSJF / Cost of Delay)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ priorizar brechas por CoD ÷ tamaño antes de volverlas proyectos de mejora</td><td class="no">✗ prioriza, no clasifica — el veredicto eliminar/automatizar/aumentar es del triage (M35/M36)</td></tr>
+<tr><td><span class="std">Business Capability Modeling</span> <span class="mid">(M31 · Business Capability Modeling)</span></td><td><span class="bdg ancla">ancla</span><span class="bdg proy">▤ heatmap-capacidades</span></td><td class="si">✓ el mapa de capacidades (QUÉ hace la empresa, estable frente al cómo) con heatmap de madurez/dolor GENERADO del dato</td><td class="no">✗ el heatmap no se pinta a mano — se deriva de niveles COBIT + brechas con provenance</td></tr>
+<tr><td class="dim" rowspan="1">Riesgo y controles</td><td><span class="std">ISO 9001</span> <span class="mid">(M16 · ISO 9001)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ el PARAGUAS: ontología cl.4 + PDCA (loop de mejora) · cl.6.1 risk-based thinking (riesgos[] tipados por proceso) · tortuga 4.4 · cl.5.3 roles · cl.7.5 información documentada</td><td class="no">✗ sin aparato de certificación (VISION §ISO); COSO / ISO 31000 = horizonte, no MVP</td></tr>
+<tr><td class="dim" rowspan="1">Calidad / loop de mejora</td><td><span class="std">ISO 9001</span> <span class="mid">(M16 · ISO 9001)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ el PARAGUAS: ontología cl.4 + PDCA (loop de mejora) · cl.6.1 risk-based thinking (riesgos[] tipados por proceso) · tortuga 4.4 · cl.5.3 roles · cl.7.5 información documentada</td><td class="no">✗ sin aparato de certificación (VISION §ISO); COSO / ISO 31000 = horizonte, no MVP</td></tr>
+<tr><td class="dim" rowspan="1">Provenance (todo dato AS-IS)</td><td><span class="std">Grounding</span> <span class="mid">(M23 · Grounding / RAG + Provenance)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ TRANSVERSAL obligatorio: todo dato AS-IS lleva struct fuente+conf (patrón Palantir); la evidencia de brecha/madurez sigue ISO 19011 (auditoría basada en evidencia)</td><td class="no">✗ sin provenance el dato no entra al twin — no hay excepción; la frescura caduca la conf</td></tr>
+<tr><td class="dim" rowspan="1">Narrativa de actividades (nivel más bajo)</td><td><span class="std">Taxonomía de verbos</span> <span class="mid">(M37 · Taxonomía de verbos &amp; automatizabilidad (propia, ALM×MGI))</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ vocabulario controlado propio (verbo canónico + sinónimos es-419, 1-verbo=1-actividad, verbo con provenance); la narrativa del trabajador conserva su hogar (frontmatter=dato + cuerpo=prosa, o evidencia_ref al transcript)</td><td class="no">✗ Bloom DESCARTADA (pedagógica: mide aprendizaje, no automatizabilidad) · ALM = eje DESCRIPTIVO, NO sentencia (GenAI automatiza lo no-rutinario-cognitivo — nuestros arneses lo prueban); mandan capacidad MGI + accountability</td></tr>
+<tr><td class="dim" rowspan="6">Triage eliminar / automatizar / aumentar</td><td><span class="std">Value Stream Mapping</span> <span class="mid">(M09 · Value Stream Mapping (VSM))</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ flujo y future-state con tiempos {toque, espera} — visualiza el desperdicio a nivel de FLUJO</td><td class="no">✗ no dicta el orden eliminar/combinar por actividad — ese ORDEN es de ECRS (M35); no puntúa automatizabilidad (M36)</td></tr>
+<tr><td><span class="std">RACI</span> <span class="mid">(M25 · RACI (Responsibility Assignment Matrix))</span></td><td><span class="bdg ancla">ancla</span><span class="bdg proy">▤ organigrama</span></td><td class="si">✓ letras RACI como dato por proceso/rol (cl.5.3); el organigrama se GENERA de persona/rol/área; la A ancla humano-por-diseño en el triage</td><td class="no">✗ no es suite RRHH; la matriz no se dibuja a mano — se proyecta del dato</td></tr>
+<tr><td><span class="std">Process / Task Mining</span> <span class="mid">(M29 · Process / Task Mining)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ EVIDENCIA observada: descubre el flujo real desde logs y alimenta volumen/%excepciones de los dos scores del triage</td><td class="no">✗ no emite el veredicto — es evidencia con provenance (fuente Observado), no etiqueta; el score se calcula en M36</td></tr>
+<tr><td><span class="std">ECRS</span> <span class="mid">(M35 · ECRS (Eliminar · Combinar · Reordenar · Simplificar))</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ SIEMPRE primero en el triage: el orden E→C→R→S es doctrina — no se automatiza el desperdicio</td><td class="no">✗ no puntúa ni clasifica — los scores son de M36 y el vocabulario de M37; ECRS solo ordena</td></tr>
+<tr><td><span class="std">Criterios RPA + agente</span> <span class="mid">(M36 · Criterios de automatizabilidad — RPA + agente-LLM (dos scores))</span></td><td><span class="bdg ancla">ancla</span><span class="bdg proy">▤ heatmap-triage</span></td><td class="si">✓ dos scores DERIVADOS con conf propagada de la completitud de inputs (input ausente/estimado → conf baja VISIBLE en el heatmap); veredicto = enum, no binario</td><td class="no">✗ jamás etiquetado a mano ni score sin su incertidumbre al lado; 'aumentable' es ciudadano de primera clase (ES el producto — arneses por puesto); humano-por-diseño solo por accountability</td></tr>
+<tr><td><span class="std">Taxonomía de verbos</span> <span class="mid">(M37 · Taxonomía de verbos &amp; automatizabilidad (propia, ALM×MGI))</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ vocabulario controlado propio (verbo canónico + sinónimos es-419, 1-verbo=1-actividad, verbo con provenance); la narrativa del trabajador conserva su hogar (frontmatter=dato + cuerpo=prosa, o evidencia_ref al transcript)</td><td class="no">✗ Bloom DESCARTADA (pedagógica: mide aprendizaje, no automatizabilidad) · ALM = eje DESCRIPTIVO, NO sentencia (GenAI automatiza lo no-rutinario-cognitivo — nuestros arneses lo prueban); mandan capacidad MGI + accountability</td></tr>
+<tr><td class="dim" rowspan="2">Carga cognitiva medida (desgaste)</td><td><span class="std">NASA-TLX</span> <span class="mid">(M39 · NASA-TLX / RTLX (carga cognitiva medida))</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ gatillo explícito: solo actividades pre-flageadas por el triage; medir con humanos en M1, no estimar (RTLX sin pares)</td><td class="no">✗ jamás censal (200 actividades × N trabajadores = inviable); se agrega por rol/proceso — nunca se versiona como registro individual de salud ocupacional</td></tr>
+<tr><td><span class="std">Métricas de persona</span> <span class="mid">(M40 · Métricas de persona — frontera twin ↔ individuo (CK-24))</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ TRANSVERSAL: el twin mide roles/procesos/áreas; persona-nombrada = opt-in de Gobernanza + consentimiento; agregación mínima, acceso por nivel, retención declarada</td><td class="no">✗ jamás evaluación individual por defecto (objetivos.md §8: no OKR individual) ni registro de salud ocupacional versionado (exposición AI Act / GDPR art.22 / sindicatos)</td></tr>
+<tr><td class="dim" rowspan="2">Documentación QMS (pirámide documental)</td><td><span class="std">ISO 9001</span> <span class="mid">(M16 · ISO 9001)</span></td><td><span class="bdg ancla">ancla</span></td><td class="si">✓ el PARAGUAS: ontología cl.4 + PDCA (loop de mejora) · cl.6.1 risk-based thinking (riesgos[] tipados por proceso) · tortuga 4.4 · cl.5.3 roles · cl.7.5 información documentada</td><td class="no">✗ sin aparato de certificación (VISION §ISO); COSO / ISO 31000 = horizonte, no MVP</td></tr>
+<tr><td><span class="std">ISO 10013</span> <span class="mid">(M38 · ISO 10013:2021 — pirámide documental (QMS))</span></td><td><span class="bdg ancla">ancla</span><span class="bdg proy">▤ manual-generado</span></td><td class="si">✓ clasificar el corpus del CLIENTE (reconcilia D-08: el manual NO vuelve como entidad); NUESTRO manual = proyección GENERADA del proceso</td><td class="no">✗ la actualización de documentos = PDCA + Gestión de Cambios (el pipeline dev→UAT→prod ES el mecanismo, D5/D8) — nunca edición suelta</td></tr>
+<tr><td class="dim" rowspan="2">Simulación</td><td><span class="std">DEMO</span> <span class="mid">(M33 · DEMO / Enterprise Ontology (Dietz))</span></td><td><span class="bdg horizonte">horizonte</span></td><td class="si">✓ gateado D9: base formal de transacciones para verificar/simular el twin — recién con twin base + demanda real</td><td class="no">✗ nada de DEMO en el MVP — 'no inventar': el estándar espera su fase decidida (D9/CK-21)</td></tr>
+<tr><td><span class="std">BPSim</span> <span class="mid">(M34 · BPSim (Business Process Simulation))</span></td><td><span class="bdg horizonte">horizonte</span></td><td class="si">✓ gateado D9: simulación de procesos con estándar OMG/WfMC — 'no inventar' formato de simulación propio</td><td class="no">✗ nada antes del twin base + demanda; jamás simular sobre datos sin provenance</td></tr>
+<tr><td class="dim" rowspan="1">Contrato de entidad publicable</td><td><span class="std">Ontología Palantir</span> <span class="mid">(M32 · Doctrina de ontología Palantir (semántica + kinética))</span></td><td><span class="bdg metamodelo-propio">metamodelo propio</span></td><td class="si">✓ el diferenciador queda fuera de todo estándar: objeto.schema.yaml as-code en git ES el metamodelo; a futuro formalizable como contrato de entidad publicable estilo Backstage (apiVersion/kind/spec, V2)</td><td class="no">✗ no adoptamos Foundry como plataforma — robamos la doctrina, no el producto; ArchiMate-como-metamodelo descartado (lock-in notation-first)</td></tr></table></div>
+
+<h2 class="sec">Triage — ¿esta actividad se elimina, se automatiza (RPA o agente), se aumenta o se defiende como humana?</h2>
+<p class="secsub">El flujo del triage al nivel más bajo (narrativa de actividades), con la narrativa del trabajador como
+vehículo y evidencia con provenance en cada paso.</p>
+<ol class="triage">
+  <li><span class="paso">ECRS primero (M35) — el ORDEN:</span> Eliminar → Combinar → Reordenar → Simplificar.
+      <b>No se automatiza el desperdicio.</b> VSM (M09) aporta el flujo/future-state con tiempos {toque, espera};
+      el veredicto por actividad es de ECRS, no de VSM.</li>
+  <li><span class="paso">Narrativa → verbos (M37):</span> cada actividad narra con UN verbo del vocabulario controlado
+      propio (1 verbo = 1 actividad; los compuestos «revisa, aprueba y notifica» se PARTEN en el ingest). Cada verbo
+      clasifica en 2 ejes: clase de tarea <b>ALM</b> (rutinaria/no-rutinaria × manual/cognitiva-analítica/interpersonal)
+      × capacidad requerida <b>MGI</b> (recolectar/procesar datos · físico predecible/impredecible · interfaz-stakeholder ·
+      experticia/decisión · gestión de personas). El verbo lleva provenance: el ingest propone con <code>conf</code>,
+      el consultor corrige (auditado) — sin esto el score es gameable eligiendo verbos «suaves».</li>
+  <li><span class="paso">Criterios → DOS scores derivados (M36):</span>
+      <b>score-RPA</b> = f(datos estructurados, reglas estables, volumen, % excepciones) ·
+      <b>score-agente</b> = f(dato no estructurado, criterio expresable en prompt/policy, tolerancia a revisión humana,
+      riesgo de error). Ambos con <code>conf</code> propagada de la completitud de inputs — input ausente/estimado →
+      conf baja VISIBLE en el heatmap; nunca un score sin su incertidumbre al lado. Se calculan, jamás se etiquetan.
+      La evidencia (volumen, % excepciones) la alimenta el mining (M29, fuente Observado).</li>
+  <li><span class="paso">Veredicto = ENUM, no binario:</span><br><span class="verd">eliminable</span><span class="verd">automatizable-RPA</span><span class="verd">automatizable-agente</span><span class="verd">aumentable (humano+arnés)</span><span class="verd">humano-por-diseño</span><br>
+      «Humano-por-diseño» ancla a <b>accountability</b> (RACI A, firma, responsabilidad legal — M25): el único criterio
+      que la GenAI no erosiona. «Aumentable» es ciudadano de primera clase: ES el producto (arneses por puesto).</li>
+  <li><span class="paso">Desgaste medido (M39, situacional):</span> NASA-TLX variante RTLX SOLO sobre actividades
+      pre-flageadas por el triage (densidad de espera/decisión, % excepciones alto, queja espontánea) — jamás censal;
+      agregado por rol/proceso bajo la frontera de métricas de persona (M40, CK-24).</li>
+</ol>
+<div class="why"><b>Por qué Bloom está descartada:</b> es una taxonomía de objetivos de APRENDIZAJE — pedagógica: mide
+qué tan profundo se aprende algo, no qué tan automatizable es hacerlo. La reemplaza la taxonomía de verbos propia
+ALM×MGI (M37).</div>
+<div class="why"><b>Por qué ALM no es sentencia:</b> la clase ALM (rutinaria/cognitiva/…) es un eje DESCRIPTIVO, no un
+veredicto: la GenAI automatiza justamente lo no-rutinario-cognitivo — nuestros propios arneses lo prueban. Mandan la
+capacidad MGI requerida + la accountability (RACI A), vía los dos scores con su <code>conf</code>.</div>
+
+<h2 class="sec">Fuera del twin — el método del engagement</h2>
+<p class="secsub">Estas metodologías son CÓMO TRABAJAMOS NOSOTROS (discovery, apuesta, spec, service design del
+engagement) — no modelan ninguna dimensión del twin del cliente. <code>dimensiones: []</code> por contrato.</p>
+<div class="wrap"><table class="mx"><tr><th>Metodología (nuestro engagement)</th><th>Por qué está fuera del twin</th></tr><tr><td><span class="std">Dual Track Agile</span> <span class="mid">(M01)</span></td><td class="no">método del ENGAGEMENT — cómo trabajamos nosotros; no modela ninguna dimensión del twin del cliente</td></tr><tr><td><span class="std">Continuous Discovery</span> <span class="mid">(M02)</span></td><td class="no">método del ENGAGEMENT — cómo exploramos nosotros; no es dimensión del twin del cliente</td></tr><tr><td><span class="std">Product Operating Model</span> <span class="mid">(M03)</span></td><td class="no">método del ENGAGEMENT — cómo operamos nosotros; no es dimensión del twin del cliente</td></tr><tr><td><span class="std">Shape Up</span> <span class="mid">(M04)</span></td><td class="no">método del ENGAGEMENT — cómo apostamos nosotros; no es dimensión del twin del cliente</td></tr><tr><td><span class="std">Jobs-to-be-Done</span> <span class="mid">(M05)</span></td><td class="no">método del ENGAGEMENT — técnica nuestra de encuadre; no es dimensión del twin del cliente</td></tr><tr><td><span class="std">Impact Mapping</span> <span class="mid">(M06)</span></td><td class="no">método del ENGAGEMENT — cómo atribuimos valor nosotros; la cascada del twin es la canónica (plan→objetivo→KR→KPI→actividad), no este mapa</td></tr><tr><td><span class="std">ITIL 4</span> <span class="mid">(M17)</span></td><td class="no">método del ENGAGEMENT (cómo operamos la rebanada de servicios), no dimensión del twin; jamás columna</td></tr><tr><td><span class="std">Spec-Driven Development</span> <span class="mid">(M18)</span></td><td class="no">método del ENGAGEMENT — cómo construimos nosotros (arnés/SDD); no es dimensión del twin del cliente</td></tr><tr><td><span class="std">EARS</span> <span class="mid">(M19)</span></td><td class="no">método del ENGAGEMENT — sintaxis nuestra de especificación; no es dimensión del twin del cliente</td></tr><tr><td><span class="std">Specification by Example</span> <span class="mid">(M20)</span></td><td class="no">método del ENGAGEMENT — cómo probamos nosotros; no es dimensión del twin del cliente</td></tr><tr><td><span class="std">This Is Service Design Doing</span> <span class="mid">(M24)</span></td><td class="no">toolkit de NUESTRO service design — cómo diseñamos nosotros; no es dimensión del twin del cliente</td></tr></table></div>
+
+<h2 class="sec">Descartados — con porqué</h2>
+<ul class="desc">
+  <li><b>ArchiMate como METAMODELO completo</b> — notation-first = lock-in; Ardoq y Palantir validan entidad-primero.
+      Sobrevive SOLO-TIPOS como ancla de vocabulario (M13).</li>
+  <li><b>BPMN como editor de diagramas fuente</b> — el proceso es DATO con provenance; el diagrama es vista generada
+      (swimlane). Export XML queda declarado como intercambio V2 (M11).</li>
+  <li><b>UML / C4 / CMMN / DMN</b> — sin caso hoy (ni en el corpus de research ni en demanda).</li>
+  <li><b>Bloom como eje de automatizabilidad</b> — pedagógica (objetivos de aprendizaje); la reemplaza la taxonomía de
+      verbos propia ALM×MGI (M37). Era candidata en el book legacy (ex-cand. M32); barrida en CK-21.</li>
+  <li><b>ALM como sentencia de automatizabilidad</b> — se conserva como eje DESCRIPTIVO del verbo; el veredicto sale de
+      los dos scores + accountability (ver triage).</li>
+  <li><b>X-matrix ceremonial (Hoshin)</b> — el catchball sí, la ceremonia no (M26).</li>
+</ul>
+<p class="secsub">Nota: <b>SIPOC no está descartado ni es M-card</b> — es proyección de bordes (tabla 1-página para
+validar con el dueño en M1); su dato ya está absorbido (<code>proveedor_ref</code>/<code>cliente_ref</code>, D-08/D-11).</p>
+
+<footer>SSoT: <code>sistema/metodo/methodologies.yaml</code> (bloques <code>twin:</code>) · contrato:
+<code>methodology.schema.yaml</code> · generador: <code>gen_metodo.py</code> — este archivo se REGENERA, no se edita.
+Historia: <code>arquitectura-refichado-ck21</code> (WS5) · CK-21.</footer>
+</body>
+</html>

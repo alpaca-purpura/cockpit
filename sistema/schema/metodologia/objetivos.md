@@ -82,6 +82,12 @@ que OKR degenere en lista de tareas.
 la Visión) + **una sola fuente de verdad** (misma definición de métrica en todas las capas) + *catchball* (diálogo
 ida-y-vuelta al fijar cada nivel). Todo OKR debe **trazar hacia arriba** a un pilar, o es ruido.
 
+> **Cascada canónica ÚNICA del hilo medido** (cementada — spec `arquitectura-refichado-ck21` · CK-24):
+> `plan 3 años → plan anual → objetivo (directorio) → KR (OKR trimestral) → KPI (de proceso, con dueño =
+> ROL o área) → actividad (verbo)`. Las capas 0-5 de arriba son la **precedencia de frameworks**; el hilo
+> MEDIDO baja por esa cascada. La persona entra como **ocupante del rol** (persona→cumple→rol→dueño-de→KPI),
+> **no** como eslabón de medición individual — coherente con §8 (KR ownership, no OKR individual).
+
 ## 7 · Temporalidad y cadencia (trabaja hacia atrás)
 
 **Visión (5-10 a) → objetivos estratégicos (3 a) → plan anual (1 a) → prioridades trimestrales (90 d)** +

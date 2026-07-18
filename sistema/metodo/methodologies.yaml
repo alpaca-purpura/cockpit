@@ -4,12 +4,16 @@
 # Backbone = objeto del sistema (O1-O7 hilo · T1-T3 transversal). principios[] = tag secundario.
 # combina_con[] = el grafo (cómo se componen). La sección §4 de METODOLOGIA.md se GENERA de aquí.
 #
-# Editar AQUÍ, no en el .md. Validar + regenerar:  python3 sistema/metodo/gen_metodo.py
+# twin: (CK-21 · WS5) — el rol de cada estándar en el Organization Twin. Regla cardinal:
+# estándares como vocabulario · schema propio como metamodelo · git como motor · notación =
+# proyección generada, nunca SSoT. Vista de decisión: NOTACIONES.html (GENERADA).
+#
+# Editar AQUÍ, no en el .md/.html. Validar + regenerar:  python3 sistema/metodo/gen_metodo.py
 # (gate anti-drift en .githooks/pre-commit · --check · CK-19).
 
 _meta:
   fuente_humana: "sistema/metodo/METODOLOGIA.md §4 (compendio narrativo)"
-  total: 31
+  total: 40
   backbone: "objeto (capa de contexto / Hilo de Oro)"
   # Etiquetas de familias y del backbone — SSoT de los rótulos que el generador imprime en §4.
   familias:
@@ -21,6 +25,7 @@ _meta:
     F: "Valor, Costo & Alineación"
     G: "IA: Grounding & Anti-alucinación"
     H: "Diseño de Servicio & Experiencia"
+    I: "Twin & automatización del trabajo"
   backbone_labels:
     O1: "Oportunidad / Apuesta"
     O2: "Objetivo & Valor"
@@ -50,6 +55,12 @@ M01:
     - { m: M18, como: "delivery = SDD tras el gate G1" }
   donde: { modulos: [m3], etapas: [], capa_contexto: false }
   modo: columna
+  twin:
+    rol_ancla: fuera-del-twin
+    proyecciones: []
+    dimensiones: []
+    cuando_si: "decidir el corte discovery/delivery (G1) dentro de NUESTRO engagement"
+    cuando_no: "método del ENGAGEMENT — cómo trabajamos nosotros; no modela ninguna dimensión del twin del cliente"
 
 M02:
   nombre: "Continuous Discovery / Opportunity Solution Tree (OST)"
@@ -66,6 +77,12 @@ M02:
     - { m: M06, como: "impact mapping da la cadena de valor" }
   donde: { modulos: [m1, m3], etapas: [e1], capa_contexto: false }
   modo: columna
+  twin:
+    rol_ancla: fuera-del-twin
+    proyecciones: []
+    dimensiones: []
+    cuando_si: "estructurar la exploración de valor del engagement (árbol outcome→solución)"
+    cuando_no: "método del ENGAGEMENT — cómo exploramos nosotros; no es dimensión del twin del cliente"
 
 M03:
   nombre: "Product Operating Model"
@@ -82,6 +99,12 @@ M03:
     - { m: M04, como: "su delivery apuesta con appetite" }
   donde: { modulos: [m3], etapas: [], capa_contexto: false }
   modo: paraguas
+  twin:
+    rol_ancla: fuera-del-twin
+    proyecciones: []
+    dimensiones: []
+    cuando_si: "encuadrar el modus operandi de la mejora continua (M3) de NUESTRO engagement"
+    cuando_no: "método del ENGAGEMENT — cómo operamos nosotros; no es dimensión del twin del cliente"
 
 M04:
   nombre: "Shape Up"
@@ -98,6 +121,12 @@ M04:
     - { m: M21, como: "el appetite se ata a mover un KR" }
   donde: { modulos: [m3], etapas: [e0, e3], capa_contexto: false }
   modo: columna
+  twin:
+    rol_ancla: fuera-del-twin
+    proyecciones: []
+    dimensiones: []
+    cuando_si: "apostar con appetite/no-gos en las etapas 0/3 de NUESTRO engagement"
+    cuando_no: "método del ENGAGEMENT — cómo apostamos nosotros; no es dimensión del twin del cliente"
 
 M05:
   nombre: "Jobs-to-be-Done (JTBD)"
@@ -114,6 +143,12 @@ M05:
     - { m: M24, como: "el job informa persona y journey" }
   donde: { modulos: [m1, m3], etapas: [e1], capa_contexto: false }
   modo: columna
+  twin:
+    rol_ancla: fuera-del-twin
+    proyecciones: []
+    dimensiones: []
+    cuando_si: "anclar la oportunidad en el trabajo real durante NUESTRO levantamiento"
+    cuando_no: "método del ENGAGEMENT — técnica nuestra de encuadre; no es dimensión del twin del cliente"
 
 M06:
   nombre: "Impact Mapping"
@@ -131,6 +166,12 @@ M06:
     - { m: M22, como: "atribuye el aporte por capability" }
   donde: { modulos: [m1, m3], etapas: [e1], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: fuera-del-twin
+    proyecciones: []
+    dimensiones: []
+    cuando_si: "atribuir aporte por capability dentro del loop de valor de NUESTRO engagement"
+    cuando_no: "método del ENGAGEMENT — cómo atribuimos valor nosotros; la cascada del twin es la canónica (plan→objetivo→KR→KPI→actividad), no este mapa"
 
 # ====================== B · Dominio & Proceso ======================
 
@@ -149,6 +190,12 @@ M07:
     - { m: M09, como: "el flujo de eventos es el value stream" }
   donde: { modulos: [m1, m3], etapas: [e3], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [procesos-flujo]
+    cuando_si: "taller de elicitación del flujo As-Is (eventos→comandos→actores) que se normaliza al schema con provenance"
+    cuando_no: "los stickies no son SSoT ni notación persistida — el flujo queda como dato (fuente Entrevista/Taller), el taller no se archiva como diagrama fuente"
 
 M08:
   nombre: "Domain-Driven Design (DDD)"
@@ -165,13 +212,19 @@ M08:
     - { m: M13, como: "los contexts mapean a aplicaciones" }
   donde: { modulos: [m1, m3], etapas: [e3], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [vocabulario-arquitectura]
+    cuando_si: "bounded contexts + lenguaje ubicuo como costuras al modelar los sistemas del cliente"
+    cuando_no: "no modelamos el dominio del cliente en código — sin agregados/entidades DDD dentro del twin"
 
 M09:
   nombre: "Value Stream Mapping (VSM)"
   familia: B
   fuente: { autor: "Rother & Shook", obra: "Learning to See (LEI)", url: "https://www.lean.org/" }
   que: "técnica lean: visualiza flujo de valor y desperdicio; future-state map"
-  aporte_unico: "el FUTURE-STATE + desperdicio — qué se elimina/automatiza/combina (vende el ahorro)"
+  aporte_unico: "el FUTURE-STATE del FLUJO + el desperdicio visible (toque vs espera) — vende el ahorro a nivel de flujo; el veredicto por actividad es del triage ECRS (M35)"
   cuando_usar: "AS-IS de procesos y modelado de future-state (etapa 3)"
   objeto_primario: O3
   objetos_secundarios: [O6]
@@ -179,8 +232,15 @@ M09:
   combina_con:
     - { m: M10, como: "el blueprint dice dónde duele; VSM optimiza el proceso detrás" }
     - { m: M07, como: "comparten el flujo de valor" }
+    - { m: M35, como: "VSM revela el flujo; ECRS ordena el veredicto por actividad" }
   donde: { modulos: [m1, m2], etapas: [e3], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [procesos-flujo, triage-automatizacion]
+    cuando_si: "flujo y future-state con tiempos {toque, espera} — visualiza el desperdicio a nivel de FLUJO"
+    cuando_no: "no dicta el orden eliminar/combinar por actividad — ese ORDEN es de ECRS (M35); no puntúa automatizabilidad (M36)"
 
 M10:
   nombre: "Service Blueprint"
@@ -197,6 +257,12 @@ M10:
     - { m: M24, como: "TiSDD lo extiende a frontstage/backstage + interfaces" }
   donde: { modulos: [m1], etapas: [], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [procesos-flujo]
+    cuando_si: "cruzar la experiencia del cliente-final con el proceso interno para revelar dónde duele (insumo del As-Is)"
+    cuando_no: "no es notación fuente ni vista generada del MVP — el hallazgo se normaliza al schema con provenance"
 
 M11:
   nombre: "BPMN"
@@ -213,6 +279,12 @@ M11:
     - { m: M09, como: "notación sobre el value stream" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: [swimlane]
+    dimensiones: [procesos-flujo]
+    cuando_si: "subset BPMN-lite (lane/tipo/disparador) como vocabulario del flujo; el swimlane se GENERA del dato, jamás se dibuja"
+    cuando_no: "editor de diagramas NO (el diagrama nunca es SSoT); export XML = intercambio V2; SIPOC = proyección de bordes (proveedor_ref/cliente_ref ya absorbidos, D-08/D-11), no M-card"
 
 M12:
   nombre: "APQC Process Classification Framework (PCF)"
@@ -229,6 +301,38 @@ M12:
     - { m: M10, como: "clasifica los procesos del blueprint" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [procesos-clasificacion]
+    cuando_si: "ancla de CLASIFICACIÓN: cada proceso hallado se clasifica en la taxonomía universal (esqueleto anti-pérdida + cobertura)"
+    cuando_no: "clasifica, no narra — el flujo es de BPMN-lite (M11) y el detalle de actividades de la taxonomía de verbos (M37)"
+
+M29:
+  nombre: "Process / Task Mining"
+  nombre_corto: "Process / Task Mining"
+  familia: B
+  fuente: { autor: "Wil van der Aalst (process mining) · Celonis (líder Gartner MQ 2025)", obra: "Process & Task Mining — descubrimiento desde datos", url: "https://www.celonis.com/process-mining/what-is-process-mining/" }
+  que: "descubre el proceso REAL desde logs de sistemas y clicks de escritorio; halla desviaciones, cuellos de botella y oportunidades de automatización"
+  aporte_unico: "el AS-IS REAL desde DATOS (no declarado) + dónde automatizar — los 'agentes' que recorren sistemas para mapear de verdad"
+  cuando_usar: "etapa 1 (mapeo automático del AS-IS) + etapa 3 (detectar puestos/tareas automatizables con IA)"
+  objeto_primario: T1
+  objetos_secundarios: [O3, O6]
+  principios: [P5, P3]
+  combina_con:
+    - { m: M12, como: "clasifica los procesos hallados en la taxonomía APQC" }
+    - { m: M09, como: "VSM optimiza el flujo que el mining reveló" }
+    - { m: M14, como: "alimenta el SYSTEM-MAP con uso real" }
+    - { m: M23, como: "el dato minado lleva fuente·confianza (grounding)" }
+    - { m: M36, como: "alimenta volumen/%excepciones de los dos scores del triage" }
+  donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [procesos-flujo, triage-automatizacion]
+    cuando_si: "EVIDENCIA observada: descubre el flujo real desde logs y alimenta volumen/%excepciones de los dos scores del triage"
+    cuando_no: "no emite el veredicto — es evidencia con provenance (fuente Observado), no etiqueta; el score se calcula en M36"
 
 # ====================== C · Arquitectura & Sistemas ======================
 
@@ -247,6 +351,12 @@ M13:
     - { m: M08, como: "capa-aplicación ↔ bounded contexts" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [vocabulario-arquitectura, organizacion]
+    cuando_si: "SOLO-TIPOS: presta tipos por entidad/relación embebidos como dato (archimate:) + TOGAF org decomposition para áreas"
+    cuando_no: "como METAMODELO completo está DESCARTADO (notation-first = lock-in; Ardoq/Palantir validan entidad-primero); sin diagramas fuente ni capas completas"
 
 M14:
   nombre: "SYSTEM-MAP + document-project (propio)"
@@ -263,6 +373,36 @@ M14:
     - { m: M23, como: "cada dato del mapa lleva fuente + confianza" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [vocabulario-arquitectura]
+    cuando_si: "poblar el estado REAL de sistemas/capabilities leyendo el código (drift código↔docs = señal de conf)"
+    cuando_no: "alimenta el twin, no es su gramática — el metamodelo es el objeto.schema (doctrina Palantir, M32)"
+
+M31:
+  nombre: "Business Capability Modeling"
+  familia: C
+  fuente: { autor: "The Open Group (TOGAF Business Architecture) · práctica LeanIX", obra: "Business Capability Map + heatmap de gaps", url: "https://pubs.opengroup.org/togaf-standard/business-architecture/business-capabilities.html" }
+  que: "modela QUÉ hace la empresa (capacidades, no cómo) en un mapa; aplica heatmap de madurez/desempeño/dolor para ubicar gaps"
+  aporte_unico: "el MAPA DE CAPACIDADES con HEATMAP — dónde están los gaps/dolores y dónde conviene invertir, estable frente al cómo"
+  cuando_usar: "etapa 1 — el mapa de la organización + heatmap de gaps alineado a los objetivos"
+  objeto_primario: O5
+  objetos_secundarios: [O3, O6]
+  principios: [P4, P3]
+  combina_con:
+    - { m: M13, como: "vive en la capa-negocio de ArchiMate/TOGAF" }
+    - { m: M12, como: "las capacidades se sostienen en procesos APQC" }
+    - { m: M27, como: "Wardley pone evolución a cada capacidad" }
+    - { m: M15, como: "el heatmap usa niveles de madurez COBIT" }
+  donde: { modulos: [m1], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: [heatmap-capacidades]
+    dimensiones: [vocabulario-arquitectura, madurez-brecha]
+    cuando_si: "el mapa de capacidades (QUÉ hace la empresa, estable frente al cómo) con heatmap de madurez/dolor GENERADO del dato"
+    cuando_no: "el heatmap no se pinta a mano — se deriva de niveles COBIT + brechas con provenance"
 
 # ====================== D · Gobierno, Calidad & Madurez ======================
 
@@ -281,6 +421,12 @@ M15:
     - { m: M06, como: "comparten la cadena objetivo→valor" }
   donde: { modulos: [m1], etapas: [], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [estrategia, madurez-brecha]
+    cuando_si: "niveles 0-5 como semáforo de madurez + goals cascade como cascade DE ANCLAJE del hilo (objetivos.md §6)"
+    cuando_no: "modo lite, sin aparato COBIT completo ni certificación; la precedencia entre marcos estratégicos la fija objetivos.md §6"
 
 M16:
   nombre: "ISO 9001"
@@ -295,8 +441,15 @@ M16:
   combina_con:
     - { m: M21, como: "objetivos cl.6.2 se expresan como OKR" }
     - { m: M25, como: "roles/autoridad cl.5.3 = RACI" }
+    - { m: M38, como: "cl.7.5 información documentada = pirámide ISO 10013" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [calidad-loop, riesgo-controles, procesos-clasificacion, organizacion, documentacion-qms]
+    cuando_si: "el PARAGUAS: ontología cl.4 + PDCA (loop de mejora) · cl.6.1 risk-based thinking (riesgos[] tipados por proceso) · tortuga 4.4 · cl.5.3 roles · cl.7.5 información documentada"
+    cuando_no: "sin aparato de certificación (VISION §ISO); COSO / ISO 31000 = horizonte, no MVP"
 
 M17:
   nombre: "ITIL 4"
@@ -312,6 +465,59 @@ M17:
     - { m: M16, como: "service value system sobre el ciclo PDCA" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: false }
   modo: situacional
+  twin:
+    rol_ancla: fuera-del-twin
+    proyecciones: []
+    dimensiones: []
+    cuando_si: "solo si el cliente opera servicios IT que ya corren (helpdesk/incidentes/cambios) — rebanada situacional de NUESTRO método"
+    cuando_no: "método del ENGAGEMENT (cómo operamos la rebanada de servicios), no dimensión del twin; jamás columna"
+
+M25:
+  nombre: "RACI (Responsibility Assignment Matrix)"
+  familia: D
+  fuente: { autor: "PMI", obra: "PMBOK Guide — Responsibility Assignment Matrix", url: "https://www.pmi.org/" }
+  que: "matriz de asignación de responsabilidad: Responsible · Accountable · Consulted · Informed"
+  aporte_unico: "la AUTORIDAD explícita — quién es Accountable habilita y ejecuta cada gate humano"
+  cuando_usar: "encuadre (autoridad) y en cada gate (quién ratifica/apuesta/acepta)"
+  objeto_primario: O4
+  objetos_secundarios: [T3]
+  principios: [P7, P2]
+  combina_con:
+    - { m: M16, como: "formaliza roles/autoridad ISO cl.5.3" }
+    - { m: M15, como: "el Accountable del KR ejecuta el gate" }
+    - { m: M24, como: "alimenta el stakeholder map" }
+    - { m: M36, como: "humano-por-diseño ancla a la A (accountability, firma, responsabilidad legal)" }
+  donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: [organigrama]
+    dimensiones: [organizacion, triage-automatizacion]
+    cuando_si: "letras RACI como dato por proceso/rol (cl.5.3); el organigrama se GENERA de persona/rol/área; la A ancla humano-por-diseño en el triage"
+    cuando_no: "no es suite RRHH; la matriz no se dibuja a mano — se proyecta del dato"
+
+M38:
+  nombre: "ISO 10013:2021 — pirámide documental (QMS)"
+  nombre_corto: "ISO 10013"
+  familia: D
+  fuente: { autor: "ISO", obra: "ISO 10013:2021 — Guidance for documented information", url: "https://www.iso.org/standard/70936.html" }
+  que: "pirámide documental del QMS: manual → procedimientos → instrucciones de trabajo → registros, alineada a ISO 9001 cl.7.5"
+  aporte_unico: "la PIRÁMIDE que clasifica el corpus documental del CLIENTE — cada documento sabe su nivel y a qué proceso sirve"
+  cuando_usar: "clasificar manuales/procedimientos/instrucciones/registros del cliente en el levantamiento y su mantenimiento"
+  objeto_primario: T3
+  objetos_secundarios: [O3]
+  principios: [P4, P7]
+  combina_con:
+    - { m: M16, como: "instancia cl.7.5 (información documentada) del paraguas ISO 9001" }
+    - { m: M12, como: "el documento clasificado ancla al proceso APQC que gobierna" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: [manual-generado]
+    dimensiones: [documentacion-qms]
+    cuando_si: "clasificar el corpus del CLIENTE (reconcilia D-08: el manual NO vuelve como entidad); NUESTRO manual = proyección GENERADA del proceso"
+    cuando_no: "la actualización de documentos = PDCA + Gestión de Cambios (el pipeline dev→UAT→prod ES el mecanismo, D5/D8) — nunca edición suelta"
 
 # ====================== E · Especificación & Construcción ======================
 
@@ -330,6 +536,12 @@ M18:
     - { m: M20, como: "los ejemplos BDD prueban el spec" }
   donde: { modulos: [m3], etapas: [e4, e5], capa_contexto: false }
   modo: columna
+  twin:
+    rol_ancla: fuera-del-twin
+    proyecciones: []
+    dimensiones: []
+    cuando_si: "etapas 4-5 de NUESTRO engagement: spec = contrato con gates en cada commit"
+    cuando_no: "método del ENGAGEMENT — cómo construimos nosotros (arnés/SDD); no es dimensión del twin del cliente"
 
 M19:
   nombre: "EARS (Easy Approach to Requirements Syntax)"
@@ -346,6 +558,12 @@ M19:
     - { m: M20, como: "EARS + ejemplo = criterio vivo" }
   donde: { modulos: [m3], etapas: [e4], capa_contexto: false }
   modo: columna
+  twin:
+    rol_ancla: fuera-del-twin
+    proyecciones: []
+    dimensiones: []
+    cuando_si: "escribir criterios de aceptación de NUESTROS specs (etapa 4)"
+    cuando_no: "método del ENGAGEMENT — sintaxis nuestra de especificación; no es dimensión del twin del cliente"
 
 M20:
   nombre: "Specification by Example / BDD"
@@ -362,6 +580,12 @@ M20:
     - { m: M18, como: "tests de aceptación del spec" }
   donde: { modulos: [m3], etapas: [e4, e5], capa_contexto: false }
   modo: columna
+  twin:
+    rol_ancla: fuera-del-twin
+    proyecciones: []
+    dimensiones: []
+    cuando_si: "volver ejecutables los ejemplos de NUESTROS specs (etapas 4-5)"
+    cuando_no: "método del ENGAGEMENT — cómo probamos nosotros; no es dimensión del twin del cliente"
 
 # ====================== F · Valor, Costo & Alineación ======================
 
@@ -381,6 +605,12 @@ M21:
     - { m: M06, como: "impact conecta KR ↔ deliverable" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [estrategia]
+    cuando_si: "el MOTOR de 90 días — eslabón KR de la cascada canónica (plan 3a → plan anual → objetivo → KR → KPI → actividad)"
+    cuando_no: "alignment + catchball, NO cascada estricta (objetivos.md §8); sin OKR individual — la persona entra como ocupante del rol"
 
 M22:
   nombre: "FinOps — Quantify Business Value"
@@ -397,6 +627,104 @@ M22:
     - { m: M06, como: "atribución por capability" }
   donde: { modulos: [m2, m3], etapas: [], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [madurez-brecha]
+    cuando_si: "cuantificar costo/ROI de cada brecha (unit economics del ciclo brecha→proyecto→KPI movido)"
+    cuando_no: "no es contabilidad cloud completa — solo el valor/ahorro que prioriza brechas"
+
+M26:
+  nombre: "Hoshin Kanri (Strategy Deployment)"
+  familia: F
+  fuente: { autor: "Yoji Akao (orígenes) · práctica Lean/Toyota", obra: "Hoshin Kanri — Policy Deployment (X-matrix · catchball)", url: "https://blog.i-nexus.com/hoshin-kanri-x-matrix-explained" }
+  que: "traduce la visión a 3-5 años → breakthrough anual → prioridades → métricas, en cascada por niveles con catchball (ida y vuelta)"
+  aporte_unico: "la CASCADA estrategia→toda-la-org — baja las metas del directorio hasta el último peldaño, con acuerdo bidireccional (catchball)"
+  cuando_usar: "etapa 1 — alinear el TO-BE a los objetivos del directorio; plan a 3 años → slice anual → OKR trimestral"
+  objeto_primario: O2
+  objetos_secundarios: [O4, T3]
+  principios: [P1, P2]
+  combina_con:
+    - { m: M21, como: "Hoshin da la dirección multi-año; OKR ejecuta el trimestre dentro de ella" }
+    - { m: M15, como: "comparte el goals cascade (empresa→IT)" }
+    - { m: M30, como: "BSC traduce cada nivel a KPIs por perspectiva" }
+  donde: { modulos: [m1], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [estrategia]
+    cuando_si: "el MAPA 3-5 años → anual, con catchball (alignment bidireccional) — cabecera de la cascada canónica"
+    cuando_no: "X-matrix ceremonial NO; la precedencia entre marcos la fija objetivos.md §6"
+
+M27:
+  nombre: "Wardley Mapping"
+  familia: F
+  fuente: { autor: "Simon Wardley", obra: "Wardley Maps (value chain × evolución · CC-BY-SA)", url: "https://www.wardleymaps.com/glossary/evolution-stages" }
+  que: "mapea la cadena de valor contra la evolución de cada componente (génesis→custom→producto→commodity); situational awareness"
+  aporte_unico: "la EVOLUCIÓN de cada componente en el tiempo → qué construir (génesis), qué comprar (producto), qué tercerizar (commodity)"
+  cuando_usar: "etapa 1 — el plan a 3 años; cómo la 'maquinaria' (procesos·sistemas) evoluciona según los objetivos"
+  objeto_primario: O5
+  objetos_secundarios: [O2, O6]
+  principios: [P3, P2]
+  combina_con:
+    - { m: M31, como: "el mapa de capacidades alimenta la cadena de valor" }
+    - { m: M13, como: "ArchiMate da las capas; Wardley les pone evolución" }
+    - { m: M15, como: "la madurez COBIT informa la posición evolutiva" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [estrategia]
+    cuando_si: "posicionar la evolución (génesis→commodity) de capacidades para el TO-BE: construir / comprar / tercerizar"
+    cuando_no: "el lienzo no es SSoT — la etapa evolutiva se embebe como atributo del dato si se usa; sin mapa fuente versionado"
+
+M28:
+  nombre: "WSJF / Cost of Delay"
+  familia: F
+  fuente: { autor: "Don Reinertsen (Cost of Delay) · SAFe (WSJF)", obra: "Weighted Shortest Job First = CoD ÷ tamaño", url: "https://framework.scaledagile.com/wsjf" }
+  que: "priorización económica: costo de retraso (valor + criticidad-tiempo + reducción-riesgo) ÷ tamaño del trabajo"
+  aporte_unico: "la PRIORIZACIÓN económica de los gaps — qué atacar primero por retorno/urgencia ÷ esfuerzo (vs orden por capricho)"
+  cuando_usar: "etapa 2 — priorizar los gaps detectados antes de pasarlos a discovery/delivery"
+  objeto_primario: O6
+  objetos_secundarios: [O1, O2]
+  principios: [P1]
+  combina_con:
+    - { m: M22, como: "FinOps cuantifica el valor/ahorro que entra al CoD" }
+    - { m: M04, como: "el appetite de Shape Up acota el tamaño del trabajo" }
+    - { m: M06, como: "Impact Mapping da el valor de negocio del numerador" }
+  donde: { modulos: [m3], etapas: [], capa_contexto: false }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [madurez-brecha]
+    cuando_si: "priorizar brechas por CoD ÷ tamaño antes de volverlas proyectos de mejora"
+    cuando_no: "prioriza, no clasifica — el veredicto eliminar/automatizar/aumentar es del triage (M35/M36)"
+
+M30:
+  nombre: "Balanced Scorecard"
+  familia: F
+  fuente: { autor: "Robert Kaplan & David Norton", obra: "The Balanced Scorecard (HBR 1992 · libro 1996)", url: "https://balancedscorecard.org/bsc-basics-overview/" }
+  que: "traduce la estrategia a objetivos+métricas ligados en 4 perspectivas (financiera · cliente · procesos · aprendizaje), vía un strategy map"
+  aporte_unico: "el STRATEGY MAP — liga aprendizaje→procesos→cliente→finanzas y cascada a unidades/personas (el 'por qué' detrás de cada KPI)"
+  cuando_usar: "etapa 1 — traducir la estrategia del directorio a KPIs por perspectiva; complementa OKR/Hoshin"
+  objeto_primario: O2
+  objetos_secundarios: [T3]
+  principios: [P1, P2]
+  combina_con:
+    - { m: M26, como: "Hoshin despliega la estrategia; BSC la mide por perspectiva" }
+    - { m: M21, como: "los KR se anclan a los objetivos del scorecard" }
+    - { m: M06, como: "Impact conecta objetivo→entregable" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: [strategy-map]
+    dimensiones: [estrategia]
+    cuando_si: "SOLO-CHECKLIST de perspectivas — que ninguna dimensión estratégica quede ciega"
+    cuando_no: "NO framework completo; strategy-map = proyección SOLO cuando exista dato perspectiva/causal (schema-v2)"
 
 # ====================== G · IA: Grounding & Anti-alucinación ======================
 
@@ -412,8 +740,15 @@ M23:
   principios: [P5]
   combina_con:
     - { m: M14, como: "el drift código↔docs es una señal de confianza" }
+    - { m: M40, como: "gemela transversal: provenance del dato ↔ gobernanza del dato de persona" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [provenance, madurez-brecha]
+    cuando_si: "TRANSVERSAL obligatorio: todo dato AS-IS lleva struct fuente+conf (patrón Palantir); la evidencia de brecha/madurez sigue ISO 19011 (auditoría basada en evidencia)"
+    cuando_no: "sin provenance el dato no entra al twin — no hay excepción; la frescura caduca la conf"
 
 # ====================== H · Diseño de Servicio & Experiencia ======================
 
@@ -433,128 +768,206 @@ M24:
     - { m: M25, como: "el stakeholder map se cruza con RACI" }
   donde: { modulos: [m1, m3], etapas: [], capa_contexto: false }
   modo: columna
+  twin:
+    rol_ancla: fuera-del-twin
+    proyecciones: []
+    dimensiones: []
+    cuando_si: "productizar las etapas de NUESTRO engagement (personas / journey / stakeholder / experiencia del sponsor)"
+    cuando_no: "toolkit de NUESTRO service design — cómo diseñamos nosotros; no es dimensión del twin del cliente"
 
-# ====================== I · Personas & Autoridad (hueco O4 cerrado, I-25) ======================
+# ====================== Personas & Autoridad (hueco O4 cerrado — ficha 25 del ledger legacy del monorepo) ======================
 
-M25:
-  nombre: "RACI (Responsibility Assignment Matrix)"
-  familia: D
-  fuente: { autor: "PMI", obra: "PMBOK Guide — Responsibility Assignment Matrix", url: "https://www.pmi.org/" }
-  que: "matriz de asignación de responsabilidad: Responsible · Accountable · Consulted · Informed"
-  aporte_unico: "la AUTORIDAD explícita — quién es Accountable habilita y ejecuta cada gate humano"
-  cuando_usar: "encuadre (autoridad) y en cada gate (quién ratifica/apuesta/acepta)"
+# (M25 vive arriba, en la familia D — esta cabecera queda solo como registro histórico del hueco O4.)
+
+# ====================== Capa estratégica (ficha 29 del ledger legacy del monorepo) — directorio→OKR→org · evolución · priorización ======================
+
+# (M26-M31 viven arriba, en sus familias B/C/F — cabecera conservada solo como registro histórico.)
+
+# ====================== I · Twin & automatización del trabajo (CK-21 · WS5) ======================
+
+M32:
+  nombre: "Doctrina de ontología Palantir (semántica + kinética)"
+  nombre_corto: "Ontología Palantir"
+  familia: I
+  fuente: { autor: "Palantir", obra: "Foundry Ontology — best practices (adoptada CK-21)", url: "https://www.palantir.com/docs/foundry/ontology/" }
+  que: "la GRAMÁTICA del objeto.schema: semántica (entidades + relaciones) + kinética (acciones/cambio) + provenance structs + principio open/closed (extensible sin fork)"
+  aporte_unico: "el METAMODELO PROPIO as-code en git — entidad-primero (no notation-first), con provenance y extensión por cliente como propiedades de la gramática"
+  cuando_usar: "siempre — es la gramática de las 9 entidades del twin; toda evolución del schema la respeta"
+  objeto_primario: O7
+  objetos_secundarios: [T1]
+  principios: [P4, P5]
+  combina_con:
+    - { m: M23, como: "los provenance structs (fuente+conf) son parte de la gramática" }
+    - { m: M13, como: "ArchiMate presta tipos como vocabulario DENTRO del metamodelo propio" }
+  donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
+  modo: paraguas
+  twin:
+    rol_ancla: metamodelo-propio
+    proyecciones: []
+    dimensiones: [metamodelo, contrato-entidad]
+    cuando_si: "el diferenciador queda fuera de todo estándar: objeto.schema.yaml as-code en git ES el metamodelo; a futuro formalizable como contrato de entidad publicable estilo Backstage (apiVersion/kind/spec, V2)"
+    cuando_no: "no adoptamos Foundry como plataforma — robamos la doctrina, no el producto; ArchiMate-como-metamodelo descartado (lock-in notation-first)"
+
+M33:
+  nombre: "DEMO / Enterprise Ontology (Dietz)"
+  familia: I
+  fuente: { autor: "Jan Dietz", obra: "Enterprise Ontology — the DEMO methodology", url: "https://ee-institute.org/" }
+  que: "base formal de la organización como red de transacciones comunicativas (actor → coordinación → producción)"
+  aporte_unico: "la BASE FORMAL de transacciones — si algún día formalizamos la ontología comunicativa del twin"
+  cuando_usar: "todavía no — horizonte D9; se activa solo con la decisión de formalizar transacciones"
+  objeto_primario: O3
+  objetos_secundarios: [O4]
+  principios: [P4]
+  combina_con:
+    - { m: M07, como: "los eventos del storming son la semilla informal de sus transacciones" }
+    - { m: M34, como: "una base formal haría simulable/verificable el modelo (BPSim)" }
+  donde: { modulos: [], etapas: [], capa_contexto: false }
+  modo: situacional
+  twin:
+    rol_ancla: horizonte
+    proyecciones: []
+    dimensiones: [simulacion]
+    cuando_si: "gateado D9: base formal de transacciones para verificar/simular el twin — recién con twin base + demanda real"
+    cuando_no: "nada de DEMO en el MVP — 'no inventar': el estándar espera su fase decidida (D9/CK-21)"
+
+M34:
+  nombre: "BPSim (Business Process Simulation)"
+  familia: I
+  fuente: { autor: "WfMC / OMG", obra: "BPSim — Business Process Simulation Interchange", url: "https://www.bpsim.org/" }
+  que: "parametriza modelos BPMN para simulación (tiempos, recursos, colas, escenarios what-if)"
+  aporte_unico: "el WHAT-IF estándar sobre el proceso — simular el TO-BE antes de construirlo, sin inventar formato propio"
+  cuando_usar: "todavía no — horizonte D9; requiere twin base + datos de operación + demanda real"
+  objeto_primario: O3
+  objetos_secundarios: [O6]
+  principios: [P3, P4]
+  combina_con:
+    - { m: M11, como: "parametriza el modelo BPMN-lite ya existente" }
+    - { m: M29, como: "los parámetros (tiempos/volúmenes) salen del mining, no de estimaciones" }
+  donde: { modulos: [], etapas: [], capa_contexto: false }
+  modo: situacional
+  twin:
+    rol_ancla: horizonte
+    proyecciones: []
+    dimensiones: [simulacion]
+    cuando_si: "gateado D9: simulación de procesos con estándar OMG/WfMC — 'no inventar' formato de simulación propio"
+    cuando_no: "nada antes del twin base + demanda; jamás simular sobre datos sin provenance"
+
+M35:
+  nombre: "ECRS (Eliminar · Combinar · Reordenar · Simplificar)"
+  nombre_corto: "ECRS"
+  familia: I
+  fuente: { autor: "ingeniería de métodos clásica (Barnes)", obra: "Motion and Time Study — cuestionario ECRS", url: "https://en.wikipedia.org/wiki/Methods_engineering" }
+  que: "el ORDEN del triage por actividad: Eliminar → Combinar → Reordenar → Simplificar, ANTES de cualquier automatización"
+  aporte_unico: "el ORDEN — no se automatiza el desperdicio: primero eliminar/combinar/reordenar/simplificar, recién después puntuar automatización"
+  cuando_usar: "triage de actividades (diagnóstico M1 y mejora M3), antes de correr los scores"
+  objeto_primario: O3
+  objetos_secundarios: [O6]
+  principios: [P1, P3]
+  combina_con:
+    - { m: M09, como: "VSM revela el flujo/desperdicio; ECRS ordena el veredicto por actividad" }
+    - { m: M36, como: "lo que sobrevive a ECRS recién se puntúa (RPA/agente)" }
+    - { m: M29, como: "la evidencia minada sostiene el 'eliminar' con datos" }
+  donde: { modulos: [m1, m3], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [triage-automatizacion]
+    cuando_si: "SIEMPRE primero en el triage: el orden E→C→R→S es doctrina — no se automatiza el desperdicio"
+    cuando_no: "no puntúa ni clasifica — los scores son de M36 y el vocabulario de M37; ECRS solo ordena"
+
+M36:
+  nombre: "Criterios de automatizabilidad — RPA + agente-LLM (dos scores)"
+  nombre_corto: "Criterios RPA + agente"
+  familia: I
+  fuente: { autor: "Lacity & Willcocks (criterios RPA) · práctica agéntica 2025-26 · propia (scores)", obra: "RPA suitability + criterios agente-LLM — dos scores derivados (spec CK-21)", url: "https://en.wikipedia.org/wiki/Robotic_process_automation" }
+  que: "DOS scores DERIVADOS por actividad: score-RPA = f(datos estructurados, reglas estables, volumen, %excepciones) · score-agente = f(dato no estructurado, criterio expresable en prompt/policy, tolerancia a revisión humana, riesgo de error)"
+  aporte_unico: "los DOS SCORES con conf propagada + el VEREDICTO enum (eliminable · automatizable-RPA · automatizable-agente · aumentable · humano-por-diseño) — se calculan, jamás se etiquetan a mano"
+  cuando_usar: "triage de actividades tras ECRS: puntuar candidatos y emitir veredicto con incertidumbre visible"
+  objeto_primario: O3
+  objetos_secundarios: [O6, O4]
+  principios: [P3, P5, P7]
+  combina_con:
+    - { m: M37, como: "la clase ALM×MGI del verbo es input de ambos scores" }
+    - { m: M29, como: "mining alimenta volumen/%excepciones con evidencia observada" }
+    - { m: M35, como: "solo se puntúa lo que sobrevivió al orden ECRS" }
+    - { m: M25, como: "humano-por-diseño ancla a accountability (RACI A, firma, responsabilidad legal)" }
+  donde: { modulos: [m1, m3], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: [heatmap-triage]
+    dimensiones: [triage-automatizacion]
+    cuando_si: "dos scores DERIVADOS con conf propagada de la completitud de inputs (input ausente/estimado → conf baja VISIBLE en el heatmap); veredicto = enum, no binario"
+    cuando_no: "jamás etiquetado a mano ni score sin su incertidumbre al lado; 'aumentable' es ciudadano de primera clase (ES el producto — arneses por puesto); humano-por-diseño solo por accountability"
+
+M37:
+  nombre: "Taxonomía de verbos & automatizabilidad (propia, ALM×MGI)"
+  nombre_corto: "Taxonomía de verbos"
+  familia: I
+  fuente: { autor: "propia (Cockpit) · marcos: Autor-Levy-Murnane (2003) + McKinsey Global Institute", obra: "Vocabulario controlado de verbos — clase ALM × capacidad MGI (supersede cand. Bloom)", url: "https://doi.org/10.1162/003355303322552801" }
+  que: "vocabulario controlado: cada actividad narra con UN verbo canónico (+ sinónimos es-419); cada verbo clasifica en 2 ejes — clase de tarea ALM (rutinaria/no-rutinaria × manual/cognitiva-analítica/interpersonal) × capacidad requerida MGI (recolectar/procesar datos · físico predecible/impredecible · interfaz-stakeholder · experticia/decisión · gestión de personas)"
+  aporte_unico: "el ESTÁNDAR PROPIO que vuelve comparable la narrativa: 1 verbo = 1 actividad (los compuestos se PARTEN en el ingest), verbo con provenance (el ingest propone con conf, el consultor corrige, auditado)"
+  cuando_usar: "narrativa de actividades (el nivel más bajo del twin) — levantamiento y mantenimiento"
+  objeto_primario: O3
+  objetos_secundarios: [O4, T1]
+  principios: [P4, P5]
+  combina_con:
+    - { m: M36, como: "la clase ALM×MGI alimenta los dos scores" }
+    - { m: M23, como: "el verbo lleva conf del ingest — sin provenance el score es gameable eligiendo verbos 'suaves'" }
+    - { m: M35, como: "la narrativa normalizada es lo que ECRS ordena" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [narrativa-actividades, triage-automatizacion]
+    cuando_si: "vocabulario controlado propio (verbo canónico + sinónimos es-419, 1-verbo=1-actividad, verbo con provenance); la narrativa del trabajador conserva su hogar (frontmatter=dato + cuerpo=prosa, o evidencia_ref al transcript)"
+    cuando_no: "Bloom DESCARTADA (pedagógica: mide aprendizaje, no automatizabilidad) · ALM = eje DESCRIPTIVO, NO sentencia (GenAI automatiza lo no-rutinario-cognitivo — nuestros arneses lo prueban); mandan capacidad MGI + accountability"
+
+M39:
+  nombre: "NASA-TLX / RTLX (carga cognitiva medida)"
+  nombre_corto: "NASA-TLX"
+  familia: I
+  fuente: { autor: "Sandra Hart & Lowell Staveland (NASA Ames)", obra: "NASA Task Load Index — variante RTLX (sin comparaciones pareadas)", url: "https://humansystems.arc.nasa.gov/groups/tlx/" }
+  que: "instrumento de carga de trabajo percibida en 6 escalas; RTLX = promedio simple sin comparaciones pareadas"
+  aporte_unico: "el DESGASTE MEDIDO con humanos (no estimado) — dónde la carga cognitiva justifica aumentar o rediseñar antes que exprimir"
+  cuando_usar: "SOLO actividades pre-flageadas por el triage (densidad de espera/decisión, %excepciones alto, queja espontánea en entrevista) — jamás censal"
   objeto_primario: O4
-  objetos_secundarios: [T3]
-  principios: [P7, P2]
+  objetos_secundarios: [O3]
+  principios: [P3, P5]
   combina_con:
-    - { m: M16, como: "formaliza roles/autoridad ISO cl.5.3" }
-    - { m: M15, como: "el Accountable del KR ejecuta el gate" }
-    - { m: M24, como: "alimenta el stakeholder map" }
+    - { m: M36, como: "el triage pre-flagea qué actividades medir (gatillo explícito)" }
+    - { m: M40, como: "el resultado se agrega por rol/proceso — jamás registro individual" }
+  donde: { modulos: [m1], etapas: [], capa_contexto: true }
+  modo: situacional
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [carga-cognitiva]
+    cuando_si: "gatillo explícito: solo actividades pre-flageadas por el triage; medir con humanos en M1, no estimar (RTLX sin pares)"
+    cuando_no: "jamás censal (200 actividades × N trabajadores = inviable); se agrega por rol/proceso — nunca se versiona como registro individual de salud ocupacional"
+
+M40:
+  nombre: "Métricas de persona — frontera twin ↔ individuo (CK-24)"
+  nombre_corto: "Métricas de persona"
+  familia: I
+  fuente: { autor: "propia (Cockpit, CK-24) · marco: GDPR art.22 / AI Act", obra: "Frontera twin ↔ evaluación individual — agregación mínima · acceso por nivel · consentimiento · retención", url: "https://gdpr-info.eu/art-22-gdpr/" }
+  que: "gobernanza de toda métrica que toque personas: el twin mide roles/procesos/áreas por defecto; la vista persona-nombrada existe SOLO con opt-in de nivel Gobernanza + consentimiento declarado"
+  aporte_unico: "la FRONTERA — gemela transversal de M23: como todo dato lleva fuente+conf, toda métrica de persona lleva agregación mínima + acceso por nivel + consentimiento + retención"
+  cuando_usar: "transversal — cada vez que un indicador, score o medición pueda atribuirse a una persona nombrada"
+  objeto_primario: O4
+  objetos_secundarios: [T1, T3]
+  principios: [P7, P5]
+  combina_con:
+    - { m: M23, como: "gemela transversal: provenance del dato ↔ gobernanza del dato de persona" }
+    - { m: M39, como: "TLX/desgaste se agrega por rol/proceso bajo esta frontera" }
+    - { m: M25, como: "el acceso sigue los niveles (Gobernanza > Estratégico > Táctico > Operativo)" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
-
-# ====================== Capa estratégica (I-29) — directorio→OKR→org · evolución · priorización ======================
-
-M26:
-  nombre: "Hoshin Kanri (Strategy Deployment)"
-  familia: F
-  fuente: { autor: "Yoji Akao (orígenes) · práctica Lean/Toyota", obra: "Hoshin Kanri — Policy Deployment (X-matrix · catchball)", url: "https://blog.i-nexus.com/hoshin-kanri-x-matrix-explained" }
-  que: "traduce la visión a 3-5 años → breakthrough anual → prioridades → métricas, en cascada por niveles con catchball (ida y vuelta)"
-  aporte_unico: "la CASCADA estrategia→toda-la-org — baja las metas del directorio hasta el último peldaño, con acuerdo bidireccional (catchball)"
-  cuando_usar: "etapa 1 — alinear el TO-BE a los objetivos del directorio; plan a 3 años → slice anual → OKR trimestral"
-  objeto_primario: O2
-  objetos_secundarios: [O4, T3]
-  principios: [P1, P2]
-  combina_con:
-    - { m: M21, como: "Hoshin da la dirección multi-año; OKR ejecuta el trimestre dentro de ella" }
-    - { m: M15, como: "comparte el goals cascade (empresa→IT)" }
-    - { m: M30, como: "BSC traduce cada nivel a KPIs por perspectiva" }
-  donde: { modulos: [m1], etapas: [], capa_contexto: true }
-  modo: columna
-
-M27:
-  nombre: "Wardley Mapping"
-  familia: F
-  fuente: { autor: "Simon Wardley", obra: "Wardley Maps (value chain × evolución · CC-BY-SA)", url: "https://www.wardleymaps.com/glossary/evolution-stages" }
-  que: "mapea la cadena de valor contra la evolución de cada componente (génesis→custom→producto→commodity); situational awareness"
-  aporte_unico: "la EVOLUCIÓN de cada componente en el tiempo → qué construir (génesis), qué comprar (producto), qué tercerizar (commodity)"
-  cuando_usar: "etapa 1 — el plan a 3 años; cómo la 'maquinaria' (procesos·sistemas) evoluciona según los objetivos"
-  objeto_primario: O5
-  objetos_secundarios: [O2, O6]
-  principios: [P3, P2]
-  combina_con:
-    - { m: M31, como: "el mapa de capacidades alimenta la cadena de valor" }
-    - { m: M13, como: "ArchiMate da las capas; Wardley les pone evolución" }
-    - { m: M15, como: "la madurez COBIT informa la posición evolutiva" }
-  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
-  modo: columna
-
-M28:
-  nombre: "WSJF / Cost of Delay"
-  familia: F
-  fuente: { autor: "Don Reinertsen (Cost of Delay) · SAFe (WSJF)", obra: "Weighted Shortest Job First = CoD ÷ tamaño", url: "https://framework.scaledagile.com/wsjf" }
-  que: "priorización económica: costo de retraso (valor + criticidad-tiempo + reducción-riesgo) ÷ tamaño del trabajo"
-  aporte_unico: "la PRIORIZACIÓN económica de los gaps — qué atacar primero por retorno/urgencia ÷ esfuerzo (vs orden por capricho)"
-  cuando_usar: "etapa 2 — priorizar los gaps detectados antes de pasarlos a discovery/delivery"
-  objeto_primario: O6
-  objetos_secundarios: [O1, O2]
-  principios: [P1]
-  combina_con:
-    - { m: M22, como: "FinOps cuantifica el valor/ahorro que entra al CoD" }
-    - { m: M04, como: "el appetite de Shape Up acota el tamaño del trabajo" }
-    - { m: M06, como: "Impact Mapping da el valor de negocio del numerador" }
-  donde: { modulos: [m3], etapas: [], capa_contexto: false }
-  modo: columna
-
-M29:
-  nombre: "Process / Task Mining"
-  familia: B
-  fuente: { autor: "Wil van der Aalst (process mining) · Celonis (líder Gartner MQ 2025)", obra: "Process & Task Mining — descubrimiento desde datos", url: "https://www.celonis.com/process-mining/what-is-process-mining/" }
-  que: "descubre el proceso REAL desde logs de sistemas y clicks de escritorio; halla desviaciones, cuellos de botella y oportunidades de automatización"
-  aporte_unico: "el AS-IS REAL desde DATOS (no declarado) + dónde automatizar — los 'agentes' que recorren sistemas para mapear de verdad"
-  cuando_usar: "etapa 1 (mapeo automático del AS-IS) + etapa 3 (detectar puestos/tareas automatizables con IA)"
-  objeto_primario: T1
-  objetos_secundarios: [O3, O6]
-  principios: [P5, P3]
-  combina_con:
-    - { m: M12, como: "clasifica los procesos hallados en la taxonomía APQC" }
-    - { m: M09, como: "VSM optimiza el flujo que el mining reveló" }
-    - { m: M14, como: "alimenta el SYSTEM-MAP con uso real" }
-    - { m: M23, como: "el dato minado lleva fuente·confianza (grounding)" }
-  donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
-  modo: columna
-
-M30:
-  nombre: "Balanced Scorecard"
-  familia: F
-  fuente: { autor: "Robert Kaplan & David Norton", obra: "The Balanced Scorecard (HBR 1992 · libro 1996)", url: "https://balancedscorecard.org/bsc-basics-overview/" }
-  que: "traduce la estrategia a objetivos+métricas ligados en 4 perspectivas (financiera · cliente · procesos · aprendizaje), vía un strategy map"
-  aporte_unico: "el STRATEGY MAP — liga aprendizaje→procesos→cliente→finanzas y cascada a unidades/personas (el 'por qué' detrás de cada KPI)"
-  cuando_usar: "etapa 1 — traducir la estrategia del directorio a KPIs por perspectiva; complementa OKR/Hoshin"
-  objeto_primario: O2
-  objetos_secundarios: [T3]
-  principios: [P1, P2]
-  combina_con:
-    - { m: M26, como: "Hoshin despliega la estrategia; BSC la mide por perspectiva" }
-    - { m: M21, como: "los KR se anclan a los objetivos del scorecard" }
-    - { m: M06, como: "Impact conecta objetivo→entregable" }
-  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
-  modo: columna
-
-M31:
-  nombre: "Business Capability Modeling"
-  familia: C
-  fuente: { autor: "The Open Group (TOGAF Business Architecture) · práctica LeanIX", obra: "Business Capability Map + heatmap de gaps", url: "https://pubs.opengroup.org/togaf-standard/business-architecture/business-capabilities.html" }
-  que: "modela QUÉ hace la empresa (capacidades, no cómo) en un mapa; aplica heatmap de madurez/desempeño/dolor para ubicar gaps"
-  aporte_unico: "el MAPA DE CAPACIDADES con HEATMAP — dónde están los gaps/dolores y dónde conviene invertir, estable frente al cómo"
-  cuando_usar: "etapa 1 — el mapa de la organización + heatmap de gaps alineado a los objetivos"
-  objeto_primario: O5
-  objetos_secundarios: [O3, O6]
-  principios: [P4, P3]
-  combina_con:
-    - { m: M13, como: "vive en la capa-negocio de ArchiMate/TOGAF" }
-    - { m: M12, como: "las capacidades se sostienen en procesos APQC" }
-    - { m: M27, como: "Wardley pone evolución a cada capacidad" }
-    - { m: M15, como: "el heatmap usa niveles de madurez COBIT" }
-  donde: { modulos: [m1], etapas: [], capa_contexto: true }
-  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [organizacion, carga-cognitiva]
+    cuando_si: "TRANSVERSAL: el twin mide roles/procesos/áreas; persona-nombrada = opt-in de Gobernanza + consentimiento; agregación mínima, acceso por nivel, retención declarada"
+    cuando_no: "jamás evaluación individual por defecto (objetivos.md §8: no OKR individual) ni registro de salud ocupacional versionado (exposición AI Act / GDPR art.22 / sindicatos)"

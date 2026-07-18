@@ -1,14 +1,15 @@
-# Metodología — prenter-harness · Compendio de referencia
+# Metodología — Cockpit · Compendio de referencia
 
 > **Propósito:** catálogo navegable de TODAS las metodologías que sostienen el producto, con
-> fuentes y links, para profundizar cualquier tema conforme avanzamos. Cumple el **principio
-> rector §1.1** de [PRODUCT-VISION.md](../../tooling/strategy/PRODUCT-VISION.md): *framework + fuente, con sustancia
-> (cómo lo usamos), no adorno.*
+> fuentes y links, para profundizar cualquier tema conforme avanzamos. Principio rector:
+> *framework + fuente, con sustancia (cómo lo usamos), no adorno.*
 >
-> **Documentos hermanos:** [`PRODUCT-VISION.md`](../../tooling/strategy/PRODUCT-VISION.md) = la visión + portfolio ·
-> [`LEDGER.md`](../../tooling/strategy/LEDGER.md) = el registro de decisiones I-NN (I-66). **Este** = el "cómo metodológico", referencia estable.
+> **Documentos hermanos:** [`VISION.md`](../../VISION.md) = el norte del producto ·
+> [`LEDGER.md`](../../LEDGER.md) = el registro de decisiones CK-NN. **Este** = el "cómo metodológico", referencia estable.
+> El rol de cada estándar en el **Organization Twin** (cuándo sí / cuándo no / cuándo propio) vive en
+> [`NOTACIONES.html`](./NOTACIONES.html) (§5).
 >
-> **Última actualización:** 2026-06-19
+> **Última actualización:** 2026-07-17 (CK-21 · twin + familia I)
 
 ---
 
@@ -22,20 +23,22 @@
 | Cómo se alinean gaps ↔ objetivos ↔ procesos ↔ OKRs | [§2 · El Hilo de Oro](#2-el-hilo-de-oro--cadena-de-alineación) |
 | Las 5 capas del sistema | [§3](#3-las-capas-del-sistema-referencia-rápida) |
 | Una metodología puntual (ficha con fuente + cómo) | [§4 · Catálogo](#4-catálogo-de-metodologías-fichas) |
-| Qué metodología aplica en qué punto del mapa | [§5 · Tabla cruzada](#5-mapa-metodología--dónde-se-usa) |
+| Qué estándar usa el twin, en qué rol, cuándo sí/no | [§5 · Notaciones del twin](#5-notaciones-del-twin) |
+| Qué metodología aplica en qué punto del mapa | [§6 · Tabla cruzada](#6-mapa-metodología--dónde-se-usa) |
 | Todos los links | [Fuentes](#fuentes) |
 
 **Catálogo por familia** (saltar a la ficha):
 
 <!-- GEN:indice -->
 - **A · Descubrimiento & Producto:** [Dual Track Agile](#m01) · [Continuous Discovery](#m02) · [Product Operating Model](#m03) · [Shape Up](#m04) · [Jobs-to-be-Done](#m05) · [Impact Mapping](#m06)
-- **B · Dominio & Proceso:** [Event Storming](#m07) · [Domain-Driven Design](#m08) · [Value Stream Mapping](#m09) · [Service Blueprint](#m10) · [BPMN](#m11) · [APQC Process Classification Framework](#m12) · [Process](#m29)
+- **B · Dominio & Proceso:** [Event Storming](#m07) · [Domain-Driven Design](#m08) · [Value Stream Mapping](#m09) · [Service Blueprint](#m10) · [BPMN](#m11) · [APQC Process Classification Framework](#m12) · [Process / Task Mining](#m29)
 - **C · Arquitectura & Sistemas:** [ArchiMate](#m13) · [SYSTEM-MAP + document-project](#m14) · [Business Capability Modeling](#m31)
-- **D · Gobierno, Calidad & Madurez:** [COBIT 2019](#m15) · [ISO 9001](#m16) · [ITIL 4](#m17) · [RACI](#m25)
+- **D · Gobierno, Calidad & Madurez:** [COBIT 2019](#m15) · [ISO 9001](#m16) · [ITIL 4](#m17) · [RACI](#m25) · [ISO 10013](#m38)
 - **E · Especificación & Construcción:** [Spec-Driven Development](#m18) · [EARS](#m19) · [Specification by Example](#m20)
 - **F · Valor, Costo & Alineación:** [OKR](#m21) · [FinOps — Quantify Business Value](#m22) · [Hoshin Kanri](#m26) · [Wardley Mapping](#m27) · [WSJF](#m28) · [Balanced Scorecard](#m30)
 - **G · IA: Grounding & Anti-alucinación:** [Grounding](#m23)
 - **H · Diseño de Servicio & Experiencia:** [This Is Service Design Doing](#m24)
+- **I · Twin & automatización del trabajo:** [Ontología Palantir](#m32) · [DEMO](#m33) · [BPSim](#m34) · [ECRS](#m35) · [Criterios RPA + agente](#m36) · [Taxonomía de verbos](#m37) · [NASA-TLX](#m39) · [Métricas de persona](#m40)
 <!-- /GEN:indice -->
 
 ---
@@ -43,7 +46,8 @@
 ## 1. La metodología base de punta a punta (hola → done)
 
 El engagement completo, con el framework que respalda cada paso. Módulos: **M1** Levantamiento ·
-**M2** Mantenimiento · **M3** Mejora continua (ver [VISION-DESARROLLOS §17/§19](../../tooling/strategy/VISION-DESARROLLOS.md)).
+**M2** Mantenimiento · **M3** Mejora continua (ver [`M1-LEVANTAMIENTO.md`](./M1-LEVANTAMIENTO.md) ·
+[`M3-ESPINAZO.md`](./M3-ESPINAZO.md) · [`PROCESS-AS-DATA.md`](./PROCESS-AS-DATA.md)).
 
 | # | Paso | Módulo | Framework(s) | Salida |
 |---|---|---|---|---|
@@ -73,15 +77,21 @@ El corte **Discovery/Delivery** ([Dual Track](#m01)) cae en el paso 9 (G1). El l
 > no solo el consultor.
 
 ```
-OBJETIVO DE NEGOCIO  (ISO 9001 cl.6.2 · COBIT enterprise goal)
-   └─▶ KR TRIMESTRAL  (OKR — el indicador que se propone mover este trimestre)
-         └─▶ PROCESO(S) afectado(s)   (APQC PCF · Value Stream)
-               └─▶ PERSONA(S) / ÁREA(S)   (RACI · stakeholders)
-                     └─▶ SISTEMA(S)   (SYSTEM-MAP · ArchiMate)
-                           └─▶ CAPABILITY   (capability ledger)
-                                 └─▶ GAP   (brecha detectada)
-                                       └─▶ HISTORIA → CÓDIGO   (SDD · EARS)
+PLAN A 3 AÑOS → PLAN ANUAL   (Hoshin — el mapa; capas 0-5 de objetivos.md §6)
+   └─▶ OBJETIVO DE NEGOCIO  (ISO 9001 cl.6.2 · COBIT enterprise goal — del directorio)
+         └─▶ KR TRIMESTRAL  (OKR — el indicador que se propone mover este trimestre)
+               └─▶ KPI  (del PROCESO, con dueño = ROL o ÁREA — APQC PCF · Value Stream)
+                     └─▶ ACTIVIDAD (verbo — M37; la persona entra como OCUPANTE del rol, CK-24)
+                           └─▶ SISTEMA(S)   (SYSTEM-MAP · ArchiMate)
+                                 └─▶ CAPABILITY   (capability ledger)
+                                       └─▶ GAP   (brecha detectada)
+                                             └─▶ HISTORIA → CÓDIGO   (SDD · EARS)
 ```
+> **Cascada canónica ÚNICA** (re-fichado 2026-07-17, spec `arquitectura-refichado-ck21`): ésta es LA
+> definición del hilo — reconcilia las tres variantes que convivían en el repo. La PERSONA no es
+> eslabón de medición: el KPI ancla a rol/proceso/área y la persona lo hereda como ocupante
+> (frontera **CK-24**; atribución actividad→KPI = N:M vía rol).
+
 **Hacia arriba (auditoría):** un gap/historia siempre responde "¿qué objetivo mueve y qué KR?".
 **Hacia abajo (priorización):** un objetivo siempre muestra "¿qué capabilities/gaps lo sirven y cuánto aportan?".
 
@@ -97,19 +107,19 @@ real de cada capability hasta el KR.
 
 ## 3. Las capas del sistema (referencia rápida)
 
-Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.md). 
-1. **Actores** — Cliente (sponsor·ops·trabajadores) · Consultor Prenter (usuario primario) · Máquina (3 agentes).
+Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../arquitectura/NODOS.md)).
+1. **Actores** — Cliente (sponsor·ops·trabajadores) · Consultor (usuario primario, rol transferible al Analista de Calidad) · Máquina (arneses).
 2. **3 módulos** — M1 Levantamiento → M2 Mantenimiento ⇄ M3 Mejora continua.
-3. **3 planos de runtime** — Conversación (LangGraph+voz) · Análisis (Claude Code) · Construcción (Claude Code); seam = filesystem.
+3. **3 planos de runtime** — Edge (arneses del método sobre Claude Code: Consultio N14 / DevStudio N5 — sin voz ni motor conversacional server-side, muertos CK-18) · Organización (Cockpit N13 + Repositorio Oficial N6 + Lakehouse N16) · Fabricante (Arnesia N15 + distribución N3); seam = git/filesystem.
 4. **Capa de contexto viva** — objetivos·personas·procesos·sistemas·brechas, con provenance+confianza; git = sync.
-5. **Espinazo de frameworks** — este documento (§4) + el Hilo de Oro (§2).
+5. **Espinazo de frameworks** — este documento (§4) + el Hilo de Oro (§2) + las notaciones del twin (§5).
 6. **Loop de valor** — costo + ahorro + aporte por capability.
 
 ---
 
 ## 4. Catálogo de metodologías (fichas)
 
-> Formato (generado desde `.claude/harness/registry/methodologies.yaml`): **Qué** · **Fuente** · **Objeto** · **Aporte único** · **Cuándo** · **Combina** · **Principios**.
+> Formato (generado desde [`methodologies.yaml`](./methodologies.yaml)): **Qué** · **Fuente** · **Objeto** · **Aporte único** · **Cuándo** · **Combina** · **Principios**.
 
 <!-- GEN:cards -->
 ### Familia A · Descubrimiento & Producto
@@ -194,9 +204,9 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 - **Qué:** técnica lean: visualiza flujo de valor y desperdicio; future-state map
 - **Fuente:** Rother & Shook — Learning to See (LEI). [https://www.lean.org/](https://www.lean.org/)
 - **Objeto:** O3 Proceso · sec: O6
-- **Aporte único:** el FUTURE-STATE + desperdicio — qué se elimina/automatiza/combina (vende el ahorro)
+- **Aporte único:** el FUTURE-STATE del FLUJO + el desperdicio visible (toque vs espera) — vende el ahorro a nivel de flujo; el veredicto por actividad es del triage ECRS (M35)
 - **Cuándo:** AS-IS de procesos y modelado de future-state (etapa 3)
-- **Combina:** M10 (el blueprint dice dónde duele; VSM optimiza el proceso detrás) · M07 (comparten el flujo de valor)
+- **Combina:** M10 (el blueprint dice dónde duele; VSM optimiza el proceso detrás) · M07 (comparten el flujo de valor) · M35 (VSM revela el flujo; ECRS ordena el veredicto por actividad)
 - **Principios:** P3, P1
 
 <a id="m10"></a>**M10 · Service Blueprint**
@@ -232,7 +242,7 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 - **Objeto:** T1 Dato / Grounding · sec: O3, O6
 - **Aporte único:** el AS-IS REAL desde DATOS (no declarado) + dónde automatizar — los 'agentes' que recorren sistemas para mapear de verdad
 - **Cuándo:** etapa 1 (mapeo automático del AS-IS) + etapa 3 (detectar puestos/tareas automatizables con IA)
-- **Combina:** M12 (clasifica los procesos hallados en la taxonomía APQC) · M09 (VSM optimiza el flujo que el mining reveló) · M14 (alimenta el SYSTEM-MAP con uso real) · M23 (el dato minado lleva fuente·confianza (grounding))
+- **Combina:** M12 (clasifica los procesos hallados en la taxonomía APQC) · M09 (VSM optimiza el flujo que el mining reveló) · M14 (alimenta el SYSTEM-MAP con uso real) · M23 (el dato minado lleva fuente·confianza (grounding)) · M36 (alimenta volumen/%excepciones de los dos scores del triage)
 - **Principios:** P5, P3
 
 ### Familia C · Arquitectura & Sistemas
@@ -283,7 +293,7 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 - **Objeto:** T3 Gobierno / Loop · sec: O4
 - **Aporte único:** la ONTOLOGÍA de contexto (cl.4) + el ciclo PDCA — robamos ontología, rechazamos aparato
 - **Cuándo:** capa de contexto (vocabulario) y M2/M3 (mejora continua)
-- **Combina:** M21 (objetivos cl.6.2 se expresan como OKR) · M25 (roles/autoridad cl.5.3 = RACI)
+- **Combina:** M21 (objetivos cl.6.2 se expresan como OKR) · M25 (roles/autoridad cl.5.3 = RACI) · M38 (cl.7.5 información documentada = pirámide ISO 10013)
 - **Principios:** P4, P7
 
 <a id="m17"></a>**M17 · ITIL 4**
@@ -301,8 +311,17 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 - **Objeto:** O4 Personas & Autoridad · sec: T3
 - **Aporte único:** la AUTORIDAD explícita — quién es Accountable habilita y ejecuta cada gate humano
 - **Cuándo:** encuadre (autoridad) y en cada gate (quién ratifica/apuesta/acepta)
-- **Combina:** M16 (formaliza roles/autoridad ISO cl.5.3) · M15 (el Accountable del KR ejecuta el gate) · M24 (alimenta el stakeholder map)
+- **Combina:** M16 (formaliza roles/autoridad ISO cl.5.3) · M15 (el Accountable del KR ejecuta el gate) · M24 (alimenta el stakeholder map) · M36 (humano-por-diseño ancla a la A (accountability, firma, responsabilidad legal))
 - **Principios:** P7, P2
+
+<a id="m38"></a>**M38 · ISO 10013:2021 — pirámide documental (QMS)**
+- **Qué:** pirámide documental del QMS: manual → procedimientos → instrucciones de trabajo → registros, alineada a ISO 9001 cl.7.5
+- **Fuente:** ISO — ISO 10013:2021 — Guidance for documented information. [https://www.iso.org/standard/70936.html](https://www.iso.org/standard/70936.html)
+- **Objeto:** T3 Gobierno / Loop · sec: O3
+- **Aporte único:** la PIRÁMIDE que clasifica el corpus documental del CLIENTE — cada documento sabe su nivel y a qué proceso sirve
+- **Cuándo:** clasificar manuales/procedimientos/instrucciones/registros del cliente en el levantamiento y su mantenimiento
+- **Combina:** M16 (instancia cl.7.5 (información documentada) del paraguas ISO 9001) · M12 (el documento clasificado ancla al proceso APQC que gobierna)
+- **Principios:** P4, P7
 
 ### Familia E · Especificación & Construcción
 
@@ -400,7 +419,7 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 - **Objeto:** T1 Dato / Grounding
 - **Aporte único:** FUENTE + CONFIANZA + FRESCURA por dato — el grounding anula lo que lo contradiga
 - **Cuándo:** todo el AS-IS (paso 2) y como regla transversal
-- **Combina:** M14 (el drift código↔docs es una señal de confianza)
+- **Combina:** M14 (el drift código↔docs es una señal de confianza) · M40 (gemela transversal: provenance del dato ↔ gobernanza del dato de persona)
 - **Principios:** P5
 
 ### Familia H · Diseño de Servicio & Experiencia
@@ -414,11 +433,98 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 - **Cuándo:** productizar cada etapa (interfaces frontend + actores + experiencia del sponsor)
 - **Combina:** M10 (extiende el service blueprint a frontstage/backstage) · M05 (el job ancla persona y journey) · M25 (el stakeholder map se cruza con RACI)
 - **Principios:** P3, P4, P1
+
+### Familia I · Twin & automatización del trabajo
+
+
+<a id="m32"></a>**M32 · Doctrina de ontología Palantir (semántica + kinética)**
+- **Qué:** la GRAMÁTICA del objeto.schema: semántica (entidades + relaciones) + kinética (acciones/cambio) + provenance structs + principio open/closed (extensible sin fork)
+- **Fuente:** Palantir — Foundry Ontology — best practices (adoptada CK-21). [https://www.palantir.com/docs/foundry/ontology/](https://www.palantir.com/docs/foundry/ontology/)
+- **Objeto:** O7 Contrato & Código · sec: T1
+- **Aporte único:** el METAMODELO PROPIO as-code en git — entidad-primero (no notation-first), con provenance y extensión por cliente como propiedades de la gramática
+- **Cuándo:** siempre — es la gramática de las 9 entidades del twin; toda evolución del schema la respeta
+- **Combina:** M23 (los provenance structs (fuente+conf) son parte de la gramática) · M13 (ArchiMate presta tipos como vocabulario DENTRO del metamodelo propio)
+- **Principios:** P4, P5
+
+<a id="m33"></a>**M33 · DEMO / Enterprise Ontology (Dietz)**
+- **Qué:** base formal de la organización como red de transacciones comunicativas (actor → coordinación → producción)
+- **Fuente:** Jan Dietz — Enterprise Ontology — the DEMO methodology. [https://ee-institute.org/](https://ee-institute.org/)
+- **Objeto:** O3 Proceso · sec: O4
+- **Aporte único:** la BASE FORMAL de transacciones — si algún día formalizamos la ontología comunicativa del twin
+- **Cuándo:** todavía no — horizonte D9; se activa solo con la decisión de formalizar transacciones
+- **Combina:** M07 (los eventos del storming son la semilla informal de sus transacciones) · M34 (una base formal haría simulable/verificable el modelo (BPSim))
+- **Principios:** P4
+
+<a id="m34"></a>**M34 · BPSim (Business Process Simulation)**
+- **Qué:** parametriza modelos BPMN para simulación (tiempos, recursos, colas, escenarios what-if)
+- **Fuente:** WfMC / OMG — BPSim — Business Process Simulation Interchange. [https://www.bpsim.org/](https://www.bpsim.org/)
+- **Objeto:** O3 Proceso · sec: O6
+- **Aporte único:** el WHAT-IF estándar sobre el proceso — simular el TO-BE antes de construirlo, sin inventar formato propio
+- **Cuándo:** todavía no — horizonte D9; requiere twin base + datos de operación + demanda real
+- **Combina:** M11 (parametriza el modelo BPMN-lite ya existente) · M29 (los parámetros (tiempos/volúmenes) salen del mining, no de estimaciones)
+- **Principios:** P3, P4
+
+<a id="m35"></a>**M35 · ECRS (Eliminar · Combinar · Reordenar · Simplificar)**
+- **Qué:** el ORDEN del triage por actividad: Eliminar → Combinar → Reordenar → Simplificar, ANTES de cualquier automatización
+- **Fuente:** ingeniería de métodos clásica (Barnes) — Motion and Time Study — cuestionario ECRS. [https://en.wikipedia.org/wiki/Methods_engineering](https://en.wikipedia.org/wiki/Methods_engineering)
+- **Objeto:** O3 Proceso · sec: O6
+- **Aporte único:** el ORDEN — no se automatiza el desperdicio: primero eliminar/combinar/reordenar/simplificar, recién después puntuar automatización
+- **Cuándo:** triage de actividades (diagnóstico M1 y mejora M3), antes de correr los scores
+- **Combina:** M09 (VSM revela el flujo/desperdicio; ECRS ordena el veredicto por actividad) · M36 (lo que sobrevive a ECRS recién se puntúa (RPA/agente)) · M29 (la evidencia minada sostiene el 'eliminar' con datos)
+- **Principios:** P1, P3
+
+<a id="m36"></a>**M36 · Criterios de automatizabilidad — RPA + agente-LLM (dos scores)**
+- **Qué:** DOS scores DERIVADOS por actividad: score-RPA = f(datos estructurados, reglas estables, volumen, %excepciones) · score-agente = f(dato no estructurado, criterio expresable en prompt/policy, tolerancia a revisión humana, riesgo de error)
+- **Fuente:** Lacity & Willcocks (criterios RPA) · práctica agéntica 2025-26 · propia (scores) — RPA suitability + criterios agente-LLM — dos scores derivados (spec CK-21). [https://en.wikipedia.org/wiki/Robotic_process_automation](https://en.wikipedia.org/wiki/Robotic_process_automation)
+- **Objeto:** O3 Proceso · sec: O6, O4
+- **Aporte único:** los DOS SCORES con conf propagada + el VEREDICTO enum (eliminable · automatizable-RPA · automatizable-agente · aumentable · humano-por-diseño) — se calculan, jamás se etiquetan a mano
+- **Cuándo:** triage de actividades tras ECRS: puntuar candidatos y emitir veredicto con incertidumbre visible
+- **Combina:** M37 (la clase ALM×MGI del verbo es input de ambos scores) · M29 (mining alimenta volumen/%excepciones con evidencia observada) · M35 (solo se puntúa lo que sobrevivió al orden ECRS) · M25 (humano-por-diseño ancla a accountability (RACI A, firma, responsabilidad legal))
+- **Principios:** P3, P5, P7
+
+<a id="m37"></a>**M37 · Taxonomía de verbos & automatizabilidad (propia, ALM×MGI)**
+- **Qué:** vocabulario controlado: cada actividad narra con UN verbo canónico (+ sinónimos es-419); cada verbo clasifica en 2 ejes — clase de tarea ALM (rutinaria/no-rutinaria × manual/cognitiva-analítica/interpersonal) × capacidad requerida MGI (recolectar/procesar datos · físico predecible/impredecible · interfaz-stakeholder · experticia/decisión · gestión de personas)
+- **Fuente:** propia (Cockpit) · marcos: Autor-Levy-Murnane (2003) + McKinsey Global Institute — Vocabulario controlado de verbos — clase ALM × capacidad MGI (supersede cand. Bloom). [https://doi.org/10.1162/003355303322552801](https://doi.org/10.1162/003355303322552801)
+- **Objeto:** O3 Proceso · sec: O4, T1
+- **Aporte único:** el ESTÁNDAR PROPIO que vuelve comparable la narrativa: 1 verbo = 1 actividad (los compuestos se PARTEN en el ingest), verbo con provenance (el ingest propone con conf, el consultor corrige, auditado)
+- **Cuándo:** narrativa de actividades (el nivel más bajo del twin) — levantamiento y mantenimiento
+- **Combina:** M36 (la clase ALM×MGI alimenta los dos scores) · M23 (el verbo lleva conf del ingest — sin provenance el score es gameable eligiendo verbos 'suaves') · M35 (la narrativa normalizada es lo que ECRS ordena)
+- **Principios:** P4, P5
+
+<a id="m39"></a>**M39 · NASA-TLX / RTLX (carga cognitiva medida)**
+- **Qué:** instrumento de carga de trabajo percibida en 6 escalas; RTLX = promedio simple sin comparaciones pareadas
+- **Fuente:** Sandra Hart & Lowell Staveland (NASA Ames) — NASA Task Load Index — variante RTLX (sin comparaciones pareadas). [https://humansystems.arc.nasa.gov/groups/tlx/](https://humansystems.arc.nasa.gov/groups/tlx/)
+- **Objeto:** O4 Personas & Autoridad · sec: O3
+- **Aporte único:** el DESGASTE MEDIDO con humanos (no estimado) — dónde la carga cognitiva justifica aumentar o rediseñar antes que exprimir
+- **Cuándo:** SOLO actividades pre-flageadas por el triage (densidad de espera/decisión, %excepciones alto, queja espontánea en entrevista) — jamás censal
+- **Combina:** M36 (el triage pre-flagea qué actividades medir (gatillo explícito)) · M40 (el resultado se agrega por rol/proceso — jamás registro individual)
+- **Principios:** P3, P5
+
+<a id="m40"></a>**M40 · Métricas de persona — frontera twin ↔ individuo (CK-24)**
+- **Qué:** gobernanza de toda métrica que toque personas: el twin mide roles/procesos/áreas por defecto; la vista persona-nombrada existe SOLO con opt-in de nivel Gobernanza + consentimiento declarado
+- **Fuente:** propia (Cockpit, CK-24) · marco: GDPR art.22 / AI Act — Frontera twin ↔ evaluación individual — agregación mínima · acceso por nivel · consentimiento · retención. [https://gdpr-info.eu/art-22-gdpr/](https://gdpr-info.eu/art-22-gdpr/)
+- **Objeto:** O4 Personas & Autoridad · sec: T1, T3
+- **Aporte único:** la FRONTERA — gemela transversal de M23: como todo dato lleva fuente+conf, toda métrica de persona lleva agregación mínima + acceso por nivel + consentimiento + retención
+- **Cuándo:** transversal — cada vez que un indicador, score o medición pueda atribuirse a una persona nombrada
+- **Combina:** M23 (gemela transversal: provenance del dato ↔ gobernanza del dato de persona) · M39 (TLX/desgaste se agrega por rol/proceso bajo esta frontera) · M25 (el acceso sigue los niveles (Gobernanza > Estratégico > Táctico > Operativo))
+- **Principios:** P7, P5
 <!-- /GEN:cards -->
 
 ---
 
-## 5. Mapa metodología → dónde se usa
+## 5. Notaciones del twin
+
+El rol de cada estándar en el **Organization Twin** — por dimensión: qué estándar, en qué rol
+(metamodelo-propio · ancla · proyección · intercambio · horizonte · descartada · fuera-del-twin),
+cuándo sí, cuándo no y cuándo hacemos estándar propio — vive como dato en el bloque `twin:` de cada
+M-card ([`methodologies.yaml`](./methodologies.yaml)) y se lee en la vista canónica generada
+**[`NOTACIONES.html`](./NOTACIONES.html)** (regla cardinal + matriz por dimensión + triage
+eliminar/automatizar/aumentar + descartados con porqué). No se duplica la matriz aquí: editar el
+YAML, regenerar con `gen_metodo.py` (gate anti-drift en pre-commit).
+
+---
+
+## 6. Mapa metodología → dónde se usa
 
 <!-- GEN:tabla -->
 | Metodología | M1 Levant. | M2 Mant. | M3 Mejora | Capa de contexto |
@@ -451,9 +557,18 @@ Resumen de [VISION-DESARROLLOS §19](../../tooling/strategy/VISION-DESARROLLOS.m
 | Hoshin Kanri (M26) | ● |  |  | ● |
 | Wardley Mapping (M27) | ● | ● |  | ● |
 | WSJF (M28) |  |  | ● |  |
-| Process (M29) | ● | ● | ● | ● |
+| Process / Task Mining (M29) | ● | ● | ● | ● |
 | Balanced Scorecard (M30) | ● | ● |  | ● |
 | Business Capability Modeling (M31) | ● |  |  | ● |
+| Ontología Palantir (M32) | ● | ● | ● | ● |
+| DEMO (M33) |  |  |  |  |
+| BPSim (M34) |  |  |  |  |
+| ECRS (M35) | ● |  | ● | ● |
+| Criterios RPA + agente (M36) | ● |  | ● | ● |
+| Taxonomía de verbos (M37) | ● | ● |  | ● |
+| ISO 10013 (M38) | ● | ● |  | ● |
+| NASA-TLX (M39) | ○ |  |  | ○ |
+| Métricas de persona (M40) | ● | ● | ● | ● |
 <!-- /GEN:tabla -->
 
 ---

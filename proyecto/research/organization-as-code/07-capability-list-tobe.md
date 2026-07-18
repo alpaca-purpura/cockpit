@@ -18,7 +18,7 @@ Las 37 capacidades que el producto debe tener, destiladas de: 11 vendors (docs 0
 
 ## B · Gestión del desempeño
 
-10. [MVP] EL HILO DE ORO MEDIDO: cada KPI ancla a un OKR, cada OKR a un objetivo, cada objetivo a un dueño — semáforo por nivel, drill-down directorio→analista (EL diferenciador)
+10. [MVP] EL HILO DE ORO MEDIDO: cada KPI ancla a un OKR, cada OKR a un objetivo, cada objetivo a un dueño — semáforo por nivel, drill-down por NIVEL/ROL (EL diferenciador). *(Reconciliado 2026-07-17: cascada canónica única en METODOLOGIA.md §2; el drill-down llega a rol/área — la vista persona-nombrada requiere opt-in Gobernanza, CK-24.)*
 11. [MVP] Dashboards por nivel de acceso (Gobernanza/Estratégico/Táctico/Operativo — N13)
 12. [MVP] Brecha → proyecto con caso de negocio: costo estimado + ranking ROI (lección KYP/Bee360) — de ahí "nacen solos" los proyectos
 13. [MVP] Ciclo de vida del proyecto de mejora DENTRO de la solución (brecha→proyecto→ejecución→KPI movido — cierra PDCA; nadie más cierra este loop)

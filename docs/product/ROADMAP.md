@@ -18,7 +18,7 @@ prosa de abajo (mapa, diagrama F1, "por qué aquí", secuencia) es juicio del op
 | F0 | — | sistema | `terminar-arquitectura-despliegue` | transversal | alta | done |
 | F0 | — | sistema | `destilar-research-sistema-vs-campana` | transversal | media | done |
 | F0 | — | sistema | `render-arquitectura-yaml` | transversal | baja | done |
-| F1 | F1.0-terreno | sistema | `arquitectura-refichado-ck21` | transversal | alta | developing |
+| F1 | F1.0-terreno | sistema | `arquitectura-refichado-ck21` | transversal | alta | developed |
 | F1 | F1.0-terreno | sistema | `schema-v2-hilo-de-oro-kinetica` | transversal | alta | idea |
 | F1 | F1.0-terreno | sistema | `negocio-schema-ssot-plugin-vs-repo` | transversal | media | idea |
 | F1 | F1.1-twin-pintado | sistema | `organizacion-ficticia-golden-fixture` | transversal | alta | idea |

@@ -100,7 +100,7 @@ Las entidades se cablean por referencia (FK); el grafo nunca se materializa, se 
 | **M08** | DDD — Ubiquitous Language | naming de todas las entidades (GLOSARIO) |
 | **M09** | VSM (Value Stream Mapping) | `actividad.tiempo` → costo |
 | **M11** | BPMN | procesos: disparador, actividades, carriles (lanes) |
-| **M12** | APQC PCF (L1–L5) | `capability.categoria` (L1) · `proceso.clasificacion` (L3) · actividad (L4) · tarea (L5) |
+| **M12** | APQC PCF (L1–L5) | `capability.categoria` (L1) · `proceso.clasificacion` (L3) · actividad (L4) · L5 (tarea) — **diferido**; hoy el schema materializa hasta L4 |
 | **M13** | ArchiMate / TOGAF | tipo canónico de cada entidad (mapa §2) |
 | **M15** | COBIT (madurez 0–5) | `capability.assessment` · `brecha.nivel_as_is/to_be` |
 | **M16** | ISO 9001:2015 | contexto (4.1–4.3) · liderazgo (5.3) · procesos (4.4) · recursos (7.1) · competencia (7.2) · objetivos (6.2) |
@@ -112,6 +112,16 @@ Las entidades se cablean por referencia (FK); el grafo nunca se materializa, se 
 | **M28** | WSJF | `brecha.prio` |
 | **M31** | Business Capability (TOGAF) | entidad `capability` |
 | **M06** | Impact Mapping | `key_result.driver_refs` (qué mueve la aguja) |
-| **M32** *(cand.)* | Taxonomía de Bloom | `actividad.verbo` |
+| **M37** | Taxonomía de verbos & automatizabilidad (**propia**, clase ALM × capacidad MGI) | `actividad.verbo` (enum = schema-v2). Bloom (ex-cand. M32) **descartada**: taxonomía pedagógica — mide aprendizaje, no automatizabilidad. Ver spec `arquitectura-refichado-ck21` |
+| — *(no M-card)* | SIPOC | **proyección generada de bordes** (tabla 1-página para validar con el dueño en la entrevista M1) — el dato ya está absorbido en `entradas[].proveedor_ref` / `salidas[].cliente_ref` (D-08/D-11) |
+
+### Nota-fuente · SOMA
+
+**SOMA** = marco SIPOC-extendido de **11 capas (C1–C11)** de la consultora **Apodictika** (demo "SOMA Act",
+analizado 2026-07-17). Es el ancla de provenance detrás de las citas `SOMA C#` de este book y del schema.
+**Qué adoptamos** (D-11): `verbo` + `tiempo` por actividad (C4) · proveedor/cliente por flujo (C3/C5) ·
+`documentos` (C9) · cargo (C8) · el loop aprobar/rechazar en la ingesta (m2). **Qué descartamos:**
+responsable = persona-nominal (corregido a `rol`, D-05/D-09) · PDFs sin modelo de datos · score IAA opaco
+(lo reemplazan los dos scores DERIVADOS — RPA y agente — de M36, con `conf` propagada).
 
 *Book vivo — cada framework nuevo que toquemos entra aquí y en su capítulo.*

@@ -69,7 +69,7 @@ Cada actividad (subesquema `actividad`):
 | Campo | Norma | Nota |
 |---|---|---|
 | `orden` · `titulo` | BPMN Task · APQC L4 | el paso |
-| `verbo` | **Taxonomía de Bloom** (SOMA C4 · cand. M32) | verbo de acción consistente ("validar", "generar") |
+| `verbo` | **Taxonomía de verbos propia ALM×MGI (M37)** — origen SOMA C4; Bloom (ex-cand. M32) **descartada**: pedagógica, mide aprendizaje y no automatizabilidad | verbo de acción consistente ("validar", "generar") |
 | `carril_ref→rol` | **BPMN lane** = rol · RACI (D-09) | quién la ejecuta |
 | `tipo` | BPMN-lite | humana/sistema/reunión/decisión/espera |
 | `tiempo` | **VSM** (M09) | estimado → alimenta costo |
@@ -78,7 +78,7 @@ Cada actividad (subesquema `actividad`):
 | `raci` | **RACI** (M25) | `{R:[],A:ref,C:[],I:[]}` — **A = exactamente 1** |
 
 Si se necesita más profundidad, la **tarea** (APQC **L5**) es la unidad fina dentro de una actividad —
-opcional, solo si aporta.
+**diferida**: hoy el schema materializa hasta L4 (la actividad); `tarea` entra cuando un caso real la pida.
 
 ---
 
@@ -96,11 +96,14 @@ paso de tu automatización.
 
 ---
 
-## 5 · SIPOC — el marco de bordes (SOMA)
+## 5 · SIPOC — la vista de bordes (proyección generada, no M-card)
 
-**S**upplier → **I**nput → **P**rocess → **O**utput → **C**ustomer. Fija los **bordes** del proceso: de quién
-recibes (proveedor, interno o externo) y a quién entregas (cliente, interno o externo). En el schema:
-`entradas[].proveedor_ref` y `salidas[].cliente_ref`. Evita procesos "huérfanos" sin conexión al resto.
+**S**upplier → **I**nput → **P**rocess → **O**utput → **C**ustomer (origen SOMA C3/C5). Fija los **bordes**
+del proceso: de quién recibes (proveedor, interno o externo) y a quién entregas (cliente, interno o externo).
+**Veredicto cementado** (spec `arquitectura-refichado-ck21`): SIPOC es una **proyección generada** — la tabla
+1-página para validar los bordes con el dueño en la entrevista (M1) — y NO una M-card: el dato ya está
+absorbido en `entradas[].proveedor_ref` y `salidas[].cliente_ref` (D-08/D-11). Evita procesos "huérfanos"
+sin conexión al resto.
 
 ---
 
@@ -131,6 +134,7 @@ exista para apuntarles.
 
 ---
 
-*Fuentes de este capítulo: ISO 9001:2015 cl.4.4 (M16) · diagrama de tortuga / SIPOC · BPMN (M11) · APQC PCF
-L3–L5 (M12) · RACI (M25) · SOMA (verbo Bloom C4, sistemas C7, docs C9, KPIs C10) · VSM (M09) · ArchiMate (M13)
+*Fuentes de este capítulo: ISO 9001:2015 cl.4.4 (M16) · diagrama de tortuga / SIPOC (proyección de bordes) ·
+BPMN (M11) · APQC PCF L3–L5 (M12) · RACI (M25) · SOMA (C3/C5 bordes, C4 verbo — hoy M37, Bloom descartada;
+C7 sistemas, C9 docs, C10 KPIs — ver nota-fuente en README §6) · VSM (M09) · ArchiMate (M13)
 · ISO 19011 provenance (M23).*

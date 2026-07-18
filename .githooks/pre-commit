@@ -37,5 +37,5 @@ fi
 
 git add \
   sistema/arquitectura/nodos.data.js sistema/arquitectura/arquitectura.html \
-  sistema/metodo/METODOLOGIA.md \
+  sistema/metodo/METODOLOGIA.md sistema/metodo/NOTACIONES.html \
   docs/product/ROADMAP.md

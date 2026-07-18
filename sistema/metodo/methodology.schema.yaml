@@ -4,35 +4,53 @@
 # (prenter-harness · tooling/); aquí lo re-forjamos para dar a `sistema/metodo/` la misma
 # disciplina as-code que `sistema/arquitectura/` (SSoT → vista generada + gate anti-drift).
 #
+# v2 (CK-21 · historia arquitectura-refichado-ck21 · WS5): bloque `twin:` por card (rol del
+# estándar en el Organization Twin), familia I, campo opcional `nombre_corto`, y la vista
+# NOTACIONES.html (mapa de decisión por dimensión del twin).
+#
 # Lo consume `sistema/metodo/gen_metodo.py`:
 #   · valida methodologies.yaml (M-cards) contra este contrato,
 #   · valida el árbol proceso/ (Definición: módulos → etapas → pasos),
-#   · regenera METODOLOGIA.md §4 (bloques GEN:indice/GEN:cards/GEN:tabla) desde la SSoT.
+#   · regenera METODOLOGIA.md §4 (bloques GEN:indice/GEN:cards/GEN:tabla) desde la SSoT,
+#   · regenera NOTACIONES.html (matriz dimensión→estándar del twin) desde la SSoT.
 #
 # SSoT de datos: methodologies.yaml + proceso/**.  Este archivo = el contrato (la forma).
 
 meta:
-  nombre: "contrato de metodologías (M-cards) + proceso-as-data"
-  version: 1
+  nombre: "contrato de metodologías (M-cards) + proceso-as-data + notaciones del twin"
+  version: 2
   ssot_cards: sistema/metodo/methodologies.yaml
   ssot_proceso: sistema/metodo/proceso/
-  vista_generada: sistema/metodo/METODOLOGIA.md   # §4 (bloques GEN)
+  vista_generada: sistema/metodo/METODOLOGIA.md      # §4 (bloques GEN)
+  vista_notaciones: sistema/metodo/NOTACIONES.html   # mapa de decisión del twin (GENERADA)
 
 enums:
-  familia:   [A, B, C, D, E, F, G, H]
+  familia:   [A, B, C, D, E, F, G, H, I]   # I = Twin & automatización del trabajo (CK-21)
   modo:      [columna, paraguas, situacional]
   objeto:    [O1, O2, O3, O4, O5, O6, O7, T1, T2, T3]   # backbone: O1-O7 hilo · T1-T3 transversal
   principio: [P1, P2, P3, P4, P5, P6, P7]
   modulo:    [m1, m2, m3]
+  # ── twin (CK-21 · WS5) — regla cardinal: estándares como vocabulario · schema propio
+  #    como metamodelo · git como motor · notación = proyección generada, nunca SSoT.
+  # Un estándar juega un rol por (estándar × dimensión × plano): rol_ancla ÚNICO +
+  # proyecciones[] opcionales — "ancla + proyección" son dos PLANOS (dato / vista), no
+  # dos roles en conflicto. Cards del método del ENGAGEMENT → fuera-del-twin.
+  rol_ancla: [metamodelo-propio, ancla, proyeccion, intercambio, horizonte, descartada, fuera-del-twin]
+  # Dimensiones canónicas del twin (las filas de la matriz de la spec, kebab-case)
+  dimension: [metamodelo, vocabulario-arquitectura, procesos-clasificacion, procesos-flujo,
+              organizacion, estrategia, madurez-brecha, riesgo-controles, calidad-loop,
+              provenance, narrativa-actividades, triage-automatizacion, carga-cognitiva,
+              documentacion-qms, simulacion, contrato-entidad]
 
 # ── M-card (cada clave MNN de methodologies.yaml) ────────────────────────────
 card:
   id_pattern: "^M[0-9]{2}$"
   required: [nombre, familia, fuente, que, aporte_unico, cuando_usar,
-             objeto_primario, principios, combina_con, donde, modo]
-  optional: [objetos_secundarios]
+             objeto_primario, principios, combina_con, donde, modo, twin]
+  optional: [objetos_secundarios, nombre_corto]
   fields:
     nombre:              str
+    nombre_corto:        str                             # rótulo para índice/tabla (arregla truncados tipo "Process / Task Mining"→"Process")
     familia:             enum:familia
     fuente:              { required: [autor, obra, url] }
     que:                 str
@@ -45,6 +63,38 @@ card:
     donde:               { required: [modulos, etapas, capa_contexto],
                            modulos: list<enum:modulo>, capa_contexto: bool }
     modo:                enum:modo
+    twin:                "bloque twin (ver abajo)"
+
+# ── twin: rol del estándar en el Organization Twin (CK-21 · WS5) ─────────────
+twin:
+  required: [rol_ancla, proyecciones, dimensiones, cuando_si, cuando_no]
+  fields:
+    rol_ancla:    enum:rol_ancla        # rol ÚNICO de la card
+    proyecciones: list<str>             # vistas GENERADAS que presta (swimlane, organigrama, strategy-map, heatmap-*, manual-generado) — puede ser vacía
+    dimensiones:  list<enum:dimension>  # vacía ⇔ rol_ancla == fuera-del-twin
+    cuando_si:    str                   # 1 línea — cuándo SÍ (derivada de la matriz de la spec)
+    cuando_no:    str                   # 1 línea — cuándo NO / límite; OBLIGATORIA siempre (cardinal en fuera-del-twin: explica que es método del engagement, no dimensión del twin)
+  reglas:
+    - "dimensiones == []  ⇔  rol_ancla == fuera-del-twin"
+    - "cuando_si y cuando_no no pueden estar vacíos"
+  # Etiquetas humanas de las dimensiones — las consume gen_metodo.py para NOTACIONES.html
+  dimension_labels:
+    metamodelo:               "Metamodelo (9 entidades + relaciones + kinética)"
+    vocabulario-arquitectura: "Vocabulario de arquitectura"
+    procesos-clasificacion:   "Procesos — clasificación"
+    procesos-flujo:           "Procesos — flujo"
+    organizacion:             "Organización (personas / roles / áreas)"
+    estrategia:               "Estrategia (objetivos → OKR → KPI)"
+    madurez-brecha:           "Madurez y brecha"
+    riesgo-controles:         "Riesgo y controles"
+    calidad-loop:             "Calidad / loop de mejora"
+    provenance:               "Provenance (todo dato AS-IS)"
+    narrativa-actividades:    "Narrativa de actividades (nivel más bajo)"
+    triage-automatizacion:    "Triage eliminar / automatizar / aumentar"
+    carga-cognitiva:          "Carga cognitiva medida (desgaste)"
+    documentacion-qms:        "Documentación QMS (pirámide documental)"
+    simulacion:               "Simulación"
+    contrato-entidad:         "Contrato de entidad publicable"
 
 # ── proceso/ (la Definición: plantilla del engagement, nuestra IP) ───────────
 proceso:
@@ -69,8 +119,11 @@ invariantes:
   - "_meta.total == número de M-cards"
   - "cada MNN cumple id_pattern + campos required + enums"
   - "combina_con[].m resuelve a una M-card existente"
+  - "cada card lleva bloque twin: válido (rol_ancla ∈ enum, dimensiones ⊆ enum, cuando_si/cuando_no no vacíos)"
+  - "twin.dimensiones == [] ⇔ twin.rol_ancla == fuera-del-twin"
   - "cada _modulo/_etapa/_paso cumple sus campos required"
   - "id de módulo/etapa/paso == su ruta en proceso/"
   - "paso.modulo y paso.etapa resuelven a un módulo/etapa existente"
   - "metodologia[] tokens ^M\\d+$ resuelven a una M-card"
   - "METODOLOGIA.md §4 (GEN blocks) == render(methodologies.yaml)  [anti-drift]"
+  - "NOTACIONES.html == render(methodologies.yaml × twin)  [anti-drift]"
