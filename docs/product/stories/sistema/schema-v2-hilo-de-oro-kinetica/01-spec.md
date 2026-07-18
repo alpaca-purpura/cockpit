@@ -373,23 +373,24 @@ DB (cockpit-stack) · sin superficie FE nueva"`. `large-dataset` cubierto como N
 
 | Ítem (Mapa funcional) | Tipo | estado | Cubierto por | Verificación REAL |
 |---|---|---|---|---|
-| Bif-1 · corte limpio + migración prenter | branch | ⬜ pendiente | SC-2 | GET real a prenter migrado + error real en copia v1 |
-| Bif-2 · dueño persona | branch | ⬜ pendiente | SC-3 | lectura real → rechazo CK-24 |
-| Bif-3 · refs colgantes | branch | ⬜ pendiente | SC-4 | lectura real → warnings nombrados |
-| Bif-4/5 · verbos | branch | ⬜ pendiente | SC-5 | lectura + hook ejecutado |
-| Bif-6 · kinética malformada | branch | ⬜ pendiente | SC-6 | hook ejecutado → FALLA |
-| Bif-7 · divergencia | branch | ⬜ pendiente | SC-7 | respuesta pinta + instancia intacta |
-| Bif-8 · sin KRs | branch | ⬜ pendiente | SC-8 | lectura real → warning tipificado |
-| Bif-9 · verbo sin provenance | branch | ⬜ pendiente | SC-9 | lectura real → warning |
-| Bif-10 · ciclo mejora | branch | ⬜ pendiente | SC-10 | máquina de estados ejercida real |
-| Bif-11 · acople compensación | branch | ⬜ pendiente | SC-11 | lectura ambos modos |
-| RN-8/9/10/11/13/4′ | rule | ⬜ pendiente | SC-3/5/6/7/8/9 | — |
-| RN-12 · RN-15 (doble firma/auditoría) | rule | ⬜ pendiente | SC-10 | — |
-| RN-14 (divorcio KR↔comp) | rule | ⬜ pendiente | SC-11 | — |
-| RN-16 (idea↔proyecto separadas) | rule | ⬜ pendiente | SC-1, SC-4 | — |
-| AC-1..AC-8 | accept | ⬜ pendiente | SC-1..SC-11 + revisión | gates verdes + live-verify + tablas AC-6/AC-8 |
+| Bif-1 · corte limpio + migración prenter | branch | ✅ construido | SC-2 | `TestFormasV1Muertas` + prenter migrado EN VIVO (GET :4100 → 0E/0W) |
+| Bif-2 · dueño persona | branch | ✅ construido | SC-3 | `TestKpiDuenoPersona` + rechazo CK-24 observado EN VIVO (:4101, write real) |
+| Bif-3 · refs colgantes | branch | ✅ construido | SC-4 | `TestRefsColgantesV2` (9 refs, tabla-driven) |
+| Bif-4/5 · verbos | branch | ✅ construido | SC-5 | `TestVerbosVocabulario` + gate real FALLA (test negativo scratchpad) |
+| Bif-6 · kinética malformada | branch | ✅ construido | SC-6 | gate real: 6 errores detectados en copia manipulada |
+| Bif-7 · divergencia | branch | ✅ construido | SC-7 | `TestDivergenciaDerivada`: payload pinta + diff instancia intacta |
+| Bif-8 · sin KRs | branch | ✅ construido | SC-8 | `TestSinAnclaDeValor` (warning, no error) |
+| Bif-9 · verbo sin provenance | branch | ✅ construido | SC-9 | `TestVerbosVocabulario` (anti-gaming) |
+| Bif-10 · ciclo mejora | branch | ✅ construido | SC-10 | `TestCicloMejoraGobernado`: tabla estados + RN-15 |
+| Bif-11 · acople compensación | branch | ✅ construido | SC-11 | `TestDivorcioKrCompensacion` ambos modos |
+| RN-8/9/10/11/13/4′ | rule | ✅ construido | SC-3/5/6/7/8/9 | tests arriba |
+| RN-12 · RN-15 (doble firma/auditoría) | rule | ✅ construido | SC-10 | `transicionProyectoValida` + error de cierre |
+| RN-14 (divorcio KR↔comp) | rule | ✅ construido | SC-11 | error/OK según modo |
+| RN-16 (idea↔proyecto separadas) | rule | ✅ construido | SC-1, SC-4 | fixture v2 EN VIVO (idea→promovida_a→pm) |
+| SC-12 paridad schema↔Go | rule | ✅ construido | SC-12 | `TestParidadSchema` (enums + transiciones vs YAML) |
+| AC-1..AC-8 | accept | ✅ construido | SC-1..SC-12 + G | gates 4/4 exit 0 · live-verify doble (prenter + fixture) · tablas AC-6/AC-8 en spec |
 
-**Huecos detectados:** ninguno · **SC huérfanos:** ninguno · **Diferido:** ninguno (se decide en G)
+**Huecos detectados:** ninguno · **SC huérfanos:** ninguno · **Diferido:** ninguno
 
 ## Non-functional requirements
 

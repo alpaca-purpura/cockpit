@@ -22,7 +22,7 @@ verbos:
   # --- recolectar datos ---
   - { verbo: registrar,   clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: recolectar-datos,    sinonimos: [anotar, asentar, capturar] }
   - { verbo: ingresar,    clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: recolectar-datos,    sinonimos: [digitar, cargar, tipear] }
-  - { verbo: recopilar,   clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: recolectar-datos,    sinonimos: [juntar, reunir, recabar] }
+  - { verbo: recopilar,   clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: recolectar-datos,    sinonimos: [juntar, reunir, recabar, recolectar] }
   - { verbo: medir,       clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: recolectar-datos,    sinonimos: [cuantificar, relevar] }
   # --- procesar datos ---
   - { verbo: verificar,   clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [chequear, comprobar, constatar, validar] }
@@ -31,10 +31,10 @@ verbos:
   - { verbo: clasificar,  clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [categorizar, tipificar, ordenar] }
   - { verbo: archivar,    clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [guardar, almacenar] }
   - { verbo: emitir,      clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [generar, expedir] }
-  - { verbo: facturar,    clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [] }
+  - { verbo: facturar,    clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [cobrar] }
   - { verbo: pagar,       clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [abonar, desembolsar] }
   - { verbo: cotizar,     clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [presupuestar] }
-  - { verbo: enviar,      clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [remitir, despachar] }
+  - { verbo: enviar,      clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [remitir, despachar, transferir] }
   - { verbo: publicar,    clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [difundir] }
   - { verbo: monitorear,  clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [seguir, controlar] }
   # --- experticia / decisión ---
@@ -43,12 +43,12 @@ verbos:
   - { verbo: evaluar,     clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [valorar, calificar] }
   - { verbo: diagnosticar, clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [] }
   - { verbo: decidir,     clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [resolver, definir] }
-  - { verbo: aprobar,     clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [autorizar, visar, firmar] }   # accountability (RACI A) — humano-por-diseño
+  - { verbo: aprobar,     clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [autorizar, visar, firmar, aceptar] }   # accountability (RACI A) — humano-por-diseño
   - { verbo: priorizar,   clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [jerarquizar] }
   - { verbo: diseñar,     clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [idear, concebir] }
   - { verbo: redactar,    clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [escribir, elaborar] }
-  - { verbo: planificar,  clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [programar, calendarizar] }
-  - { verbo: estimar,     clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [proyectar] }
+  - { verbo: planificar,  clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [programar, calendarizar, agendar] }
+  - { verbo: estimar,     clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [proyectar, dimensionar] }
   - { verbo: auditar,     clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [] }
   # --- interfaz con stakeholders ---
   - { verbo: atender,     clase_alm: { rutina: no-rutinaria, tipo: interpersonal },       capacidad_mgi: interfaz-stakeholder, sinonimos: [asistir, responder] }
@@ -58,7 +58,7 @@ verbos:
   - { verbo: vender,      clase_alm: { rutina: no-rutinaria, tipo: interpersonal },       capacidad_mgi: interfaz-stakeholder, sinonimos: [ofrecer, promover] }
   - { verbo: entrevistar, clase_alm: { rutina: no-rutinaria, tipo: interpersonal },       capacidad_mgi: interfaz-stakeholder, sinonimos: [] }
   # --- gestión de personas ---
-  - { verbo: coordinar,   clase_alm: { rutina: no-rutinaria, tipo: interpersonal },       capacidad_mgi: gestion-personas,     sinonimos: [articular] }
+  - { verbo: coordinar,   clase_alm: { rutina: no-rutinaria, tipo: interpersonal },       capacidad_mgi: gestion-personas,     sinonimos: [articular, gestionar] }
   - { verbo: supervisar,  clase_alm: { rutina: no-rutinaria, tipo: interpersonal },       capacidad_mgi: gestion-personas,     sinonimos: [] }
   - { verbo: capacitar,   clase_alm: { rutina: no-rutinaria, tipo: interpersonal },       capacidad_mgi: gestion-personas,     sinonimos: [entrenar, formar] }
   - { verbo: reclutar,    clase_alm: { rutina: no-rutinaria, tipo: interpersonal },       capacidad_mgi: gestion-personas,     sinonimos: [seleccionar] }
@@ -67,3 +67,6 @@ verbos:
   - { verbo: preparar,    clase_alm: { rutina: rutinaria,    tipo: manual },              capacidad_mgi: fisico-predecible,    sinonimos: [alistar, disponer] }
   - { verbo: inspeccionar, clase_alm: { rutina: no-rutinaria, tipo: manual },             capacidad_mgi: fisico-impredecible,  sinonimos: [] }
   - { verbo: reparar,     clase_alm: { rutina: no-rutinaria, tipo: manual },              capacidad_mgi: fisico-impredecible,  sinonimos: [arreglar] }
+  # --- del dogfood prenter (migración schema-v2) ---
+  - { verbo: construir,   clase_alm: { rutina: no-rutinaria, tipo: cognitiva-analitica }, capacidad_mgi: experticia-decision, sinonimos: [desarrollar, programar-codigo] }
+  - { verbo: ejecutar,    clase_alm: { rutina: rutinaria,    tipo: cognitiva-analitica }, capacidad_mgi: procesar-datos,      sinonimos: [correr, lanzar] }

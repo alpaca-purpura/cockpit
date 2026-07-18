@@ -550,10 +550,12 @@ func validateObjeto(slug string, empresaDoc map[string]any, t map[string][]map[s
 					refList(aloc, "raci."+letra, raci[letra], "rol")
 				}
 			}
-			// verbo contra el vocabulario (RN-11) + anti-gaming (RN-13)
+			// verbo contra el vocabulario (RN-11, case-insensitive: los humanos capitalizan)
+			// + anti-gaming (RN-13)
 			if verbo := oStr(a["verbo"]); verbo != "" {
-				if len(voc.canonicos) > 0 && !voc.canonicos[verbo] {
-					if canon, esSin := voc.sinonimoDe[verbo]; esSin {
+				vlow := strings.ToLower(verbo)
+				if len(voc.canonicos) > 0 && !voc.canonicos[vlow] {
+					if canon, esSin := voc.sinonimoDe[vlow]; esSin {
 						w = append(w, fmt.Sprintf("%s: verbo %q es sinónimo — normalizar a %q (vocabulario verbos.yaml)", aloc, verbo, canon))
 					} else {
 						w = append(w, fmt.Sprintf("%s: verbo %q fuera del vocabulario (sistema/schema/verbos.yaml — verbo nuevo entra por PR con clase ALM×MGI, RN-11)", aloc, verbo))
