@@ -6,380 +6,388 @@ type: service-story
 module: sistema
 capability: cockpit/api-objeto
 cap_change_type: extend
-po_version: 1
+po_version: 2
 last_modified: 2026-07-17
-ratified_by_chris: false          # RONDA 1 — Chris cierra § Dudas abiertas y firma antes de architect
+ratified_by_chris: false          # v2 integra: respuestas del operador a las 5 dudas (2026-07-17) + investigación LATAM/BR (00-research-latam-br.md). Falta FIRMA 1 sobre esta versión.
 links:
   story_yaml: story.yaml
   story_md: 00-story.md
+  research: 00-research-latam-br.md
   ledger: CK-21 (D6) · CK-23 · CK-24
   registro_heredado: ../arquitectura-refichado-ck21/01-spec.md § Insumos cementados (1-11)
 ---
 
 ## Resumen ejecutivo
 
-Evolucionar `sistema/schema/objeto.schema.yaml` de v1 (9 entidades, CK-12/CK-13) a **v2**: (a) el
-**hilo de oro se vuelve medible en el dato** — KPI y Proyecto de mejora entran como entidades de
-primera clase, `objetivo` se completa como entidad OKR plena (horizonte, estado, perspectiva), y la
-cascada canónica única (`plan 3a → anual → objetivo → KR → KPI → actividad`) queda recorrible por
-aristas; (b) nace la **capa kinética** — acciones válidas por entidad declaradas como dato (quién,
-con qué aprobación, con qué efecto), contrato que la Gestión de Cambios (BL-24) ejecutará y
-`auth-niveles` gobernará; (c) la **doctrina Palantir** (CK-21/D6) se aplica de forma auditable:
-naming navegable, anti-patterns vigilados, provenance extendida, y los 11 insumos cementados por la
-auditoría adversarial del refichado se implementan o descartan con razón escrita. El consumidor
-vivo `/api/objeto` (CAP-08) asciende a v2: sirve y valida las 11 entidades juntas, retrocompatible
-con shells v1 (expand-contract, D-06).
+Evolucionar `sistema/schema/objeto.schema.yaml` de v1 (9 entidades, CK-12/CK-13) a **v2 — 12
+entidades**: (a) el **hilo de oro se vuelve medible en el dato** — `kpi`, `proyecto_mejora` e
+`idea` entran como entidades de primera clase, `objetivo` se completa como entidad OKR plena, y la
+cascada canónica única queda recorrible por aristas, con **modo de cadencia configurable**
+(OKR-trimestral | GPD-anual | mixto) que cubre los tres mercados (startup/hispano/Brasil) con UN
+solo grafo; (b) nace la **capa kinética** — acciones válidas por entidad declaradas como dato,
+contrato que la Gestión de Cambios (BL-24) ejecutará; (c) **corte limpio, cero deprecados**
+(decisión del operador): las formas v1 muertas se eliminan y el shell `prenter` se migra en esta
+misma historia; (d) el catálogo del método gana las M-cards que la investigación LATAM/BR mandó
+(GPD · DMAIC · MASP · gestión de ideas) + dimensión `mejora-proyectos` → **NOTACIONES.html se
+regenera en sintonía**. El consumidor `/api/objeto` (CAP-08) asciende a v2 COMPLETO: sirve y
+valida las 12 entidades juntas (decisión del operador: "visualizar la información completa lo más
+pronto").
 
 ## § Dónde vive
 
-- **node:** `transversal` (SSoT `sistema/schema/` — eje metodología-as-code) con consumidor en
-  **N13** (`go/objeto.go` → `/api/objeto`, CAP-08).
-- Historia **schema + servicio**: toca el contrato YAML, el book (`sistema/schema/metodologia/`),
-  dos SSoT nuevos (`verbos.yaml`, capa kinética) y el validador Go. Sin superficie UI nueva.
-- Live-verify (seam): `GET /api/objeto?empresa=<id>` ejercido de verdad — contra el shell real
-  `prenter` (regresión cero) y contra un mini-fixture de test v2 (entidades nuevas ejercidas). El
-  fixture COMPLETO es la historia siguiente (`organizacion-ficticia-golden-fixture`, CK-23).
+- **node:** `transversal` (SSoT `sistema/schema/` + `sistema/metodo/`) con consumidor en **N13**
+  (`go/objeto.go` → `/api/objeto`, CAP-08).
+- Historia **schema + servicio**: contrato YAML v2 · book (`sistema/schema/metodologia/`) ·
+  SSoT nuevos (`verbos.yaml`, capa kinética) · M-cards + dimensión nueva en
+  `sistema/metodo/methodologies.yaml` (NOTACIONES regenera) · validador Go · **migración del
+  shell prenter a formas v2**. Sin superficie UI nueva.
+- Live-verify (seam): `GET /api/objeto?empresa=<id>` ejercido de verdad — `prenter` migrado
+  (valida limpio) + mini-fixture de test v2 (cada entidad/arista nueva ejercida). El fixture
+  COMPLETO = historia siguiente (`organizacion-ficticia-golden-fixture`, CK-23 — directiva del
+  operador registrada allí: corporación ficticia ~200 empleados, un área completa primero).
 
-## Doctrina heredada (no se re-decide aquí — se implementa)
+## Doctrina — heredada + verificada por investigación (00-research-latam-br.md)
 
 | Fuente | Qué manda |
 |---|---|
-| Cascada canónica ÚNICA (refichado WS5 · METODOLOGIA.md §2) | `plan 3 años → plan anual → objetivo (directorio) → KR (OKR trimestral) → KPI (de proceso, dueño = ROL o área) → actividad (verbo)` |
-| **CK-24** (frontera persona) | KPI ancla a rol/proceso/área; la persona = **ocupante del rol**, jamás eslabón de medición. TLX agregado por rol/proceso, nunca registro individual. |
-| **D-07** (unidad de ejecución) | Proceso definido UNA vez, medido POR unidad: `unidad_ref` en la MEDICIÓN del KPI; SPV legal = `entidad_legal_ref` (atributo, no partición). |
-| `objetivos.md §8` | Rol = KR ownership, **no OKR individual** → NO nace entidad `okr`: el OKR ES `objetivo` + `key_results` embebidos. "Primera clase" se cumple completando `objetivo`. |
-| Doctrina Palantir (research 04 · CK-21/D6) | Semántica + kinética; identidad ≠ observación (KPI ≠ medición); acciones = operaciones de negocio (anti Action Sprawl); naming navegable (anti Misnomer); provenance structs; open/closed. |
-| Triage automatización (refichado · ratificado) | Verbos = vocabulario controlado PROPIO (clase ALM × capacidad MGI); DOS scores (RPA + agente) **derivados con `conf` propagada**, jamás etiquetados; veredicto = enum de 5. |
+| Cascada canónica ÚNICA (refichado WS5 · METODOLOGIA.md §2) | `plan 3 años → plan anual → objetivo → KR → KPI (de proceso, dueño = ROL o área) → actividad (verbo)`. El modo GPD NO la cambia: mismo grafo, cadencia anual + desdobramento por nivel. |
+| **CK-24** (frontera persona) | KPI ancla a rol/proceso/área; persona = ocupante del rol. La **autoría** de una idea sí es de persona (reconocimiento al proponente — práctica kaizen teian); la **medición** jamás. |
+| **D-07** (unidad de ejecución) | `unidad_ref` en la MEDICIÓN del KPI; `entidad_legal_ref` = atributo. La entidad de mejora se llama **`proyecto_mejora`** para no colisionar con el `tipo: proyecto\|obra\|sucursal` de las unidades (Misnomer resuelto). |
+| OKR↔KPI (research A — Doerr/Castro/Wodtke/Perdoo, unánime) | KPI = salud permanente con banda (solo exige acción fuera de banda); KR = cambio con vencimiento. **Frontera permeable bidireccional**: KPI enfermo ↑ KR del ciclo; KR logrado ↓ KPI monitoreado; el KR puede referenciar la serie de un KPI (`kpi_ref`). |
+| "No OKR individual" (research A — Spotify primario, Klau, HBR 2020, Bock) | Confirmado con fuentes: OKR de equipo + KR ownership por rol. Razones: sandbagging, task-list, costo admin. **Divorcio KR ↔ compensación** salvo modo GPD (donde el acople a PLR es el estándar BR). |
+| Estándar regional (research A/B) | Brasil = **GPD/Falconi** (desdobramento anual + PDCA + PLR; Falconi = 3 de 4 "Melhores e Maiores") · LATAM hispano = **BSC** como mapa (`perspectiva`) · OKR = cadencia 90d. Modo = **configuración de empresa**, no entidades distintas. |
+| Proyectos de mejora (research C) | PDCA paraguas; dialectos DMAIC (formal+belts, vigente) · MASP (estándar BR) · Kaizen (piso). Ciclo con **charter + doble firma (sponsor + finanzas)**, estandarización como estado propio, **auditoría de beneficios ~12 meses**. **Idea = entidad separada** (funil barato) enlazada al proyecto. |
+| Doctrina Palantir (CK-21/D6) | Identidad ≠ observación; acciones = operaciones de negocio; naming navegable; provenance structs; open/closed. |
+
+## Resolución de las 5 dudas (respuestas del operador, 2026-07-17)
+
+1. **`ext:` AHORA** — ignore-and-preserve (§ G).
+2. **Cero deprecados** — corte limpio: `proceso.kpis` embebido, `tiempo` string y `reporta_a`
+   forma simple SE ELIMINAN del schema; `prenter` se migra en esta historia. Forma v1 muerta en
+   una instancia = ERROR de validación nombrando la forma nueva (no warning eterno).
+3. **Triage ratificable** — `triage {veredicto, fuente, conf}` opcional: el motor deriva, el
+   consultor ratifica/corrige, auditado.
+4. **Go COMPLETO** — `/api/objeto` v2 sirve y valida las 12 entidades en esta historia.
+5. **Seed de verbos** — diseñado contra la corporación ficticia (~200 empleados, un área
+   completa); prenter como referencia secundaria. Directiva registrada en la historia del fixture.
 
 ## § Mapa funcional (capa humana — ratifica Chris ANTES de architect)
 
 ### 1. Happy path (el camino dorado, narrado)
 
-1. El consultor (o el fixture) escribe en el shell de la empresa archivos `kpis/kpi-*.yaml` y
-   `proyectos/pry-*.yaml` junto a las 9 entidades v1, siguiendo `objeto.schema.yaml` v2.
-2. Cada KPI declara su ancla (`proceso_ref`), su dueño (`dueño_ref → rol|area`), a qué KR
-   contribuye (`contribuye_a`), y sus mediciones con provenance (declarado y/u observado,
-   `unidad_ref` opcional).
-3. Cada proyecto de mejora nace de brechas (`origen_brecha_refs`), lleva caso de negocio
-   (costo/beneficio/ROI) y compromete qué KPI/KR mueve (`mueve_refs`); su `estado` recorre el ciclo
-   de vida PDCA.
-4. `GET /api/objeto?empresa=<id>` lee las **11 entidades juntas**, valida refs/enums/invariantes v2
-   y responde el objeto completo; el hilo es recorrible en el dato: actividad → KPI → KR → objetivo
-   (y de vuelta), con la persona entrando solo como ocupante del rol.
-5. El pre-commit valida los SSoT nuevos (vocabulario de verbos, catálogo de acciones kinéticas)
-   igual que hoy valida arquitectura y método — drift bloqueado.
+1. El shell de la empresa declara su **modo estratégico** (`empresa.config_estrategia.modo`:
+   `okr-trimestral | gpd-anual | mixto`) y sus unidades de ejecución (D-07).
+2. Los objetivos bajan en cascada (`parent_ref`, horizonte 3a→anual→trimestre); cada KR mide el
+   cambio del ciclo y puede referenciar la serie de un KPI existente (`kpi_ref`).
+3. Cada **KPI** (`kpis/kpi-*.yaml`) ancla a su proceso, tiene dueño rol/área (CK-24), banda de
+   salud, y mediciones con provenance (declarado y/u observado, por unidad de ejecución).
+4. El personal propone **ideas** (`ideas/idea-*.yaml`, individual o conjunta); el comité evalúa;
+   las promovidas se vuelven **proyectos de mejora** (`proyectos-mejora/pm-*.yaml`) — que también
+   nacen directo de brechas del twin (el diferenciador).
+5. El proyecto recorre su ciclo (charter + doble firma sponsor/finanzas → ejecución → verificación
+   contra baseline → estandarización → auditoría de beneficios → cierre) y declara qué KPI/KR
+   mueve; al cerrar, registra el delta observado — el loop brecha→proyecto→KPI-movido queda EN el
+   dato.
+6. `GET /api/objeto?empresa=<id>` valida y sirve las **12 entidades juntas**; el hilo es
+   recorrible en ambos sentidos; el pre-commit gatea los SSoT nuevos (verbos, acciones, M-cards).
 
 ### 2. Bifurcaciones (árbol de decisión)
 
 ```
 Happy path
-├─ Bif-1 · ¿shell v1 sin entidades nuevas (prenter hoy)?
-│   ├─ sí → valida OK; warnings SOLO de deprecación (proceso.kpis embebido)   → SC-2
-│   └─ no → valida el conjunto v2 completo                                     → SC-1
-├─ Bif-2 · ¿kpi.dueño_ref apunta a persona?         → rechazo explícito citando CK-24 → SC-3
-├─ Bif-3 · ¿ref del hilo colgante (contribuye_a / alimenta_kpi_refs /
-│          origen_brecha_refs / mueve_refs / unidad_ref)?  → warning por ref  → SC-4
+├─ Bif-1 · ¿instancia usa una forma v1 muerta (proceso.kpis · tiempo str · reporta_a simple)?
+│   └─ sí → ERROR nombrando la forma v2 que la reemplaza (corte limpio, duda 2)   → SC-2
+├─ Bif-2 · ¿kpi.dueño_ref apunta a persona?     → rechazo explícito citando CK-24  → SC-3
+├─ Bif-3 · ¿ref del hilo colgante (contribuye_a / kpi_ref / alimenta_kpi_refs /
+│          origen_*_refs / mueve_refs / unidad_ref / promovida_a_ref)? → warning    → SC-4
 ├─ Bif-4 · ¿actividad.verbo fuera del vocabulario?
-│   ├─ sinónimo conocido → warning + sugerencia de normalización               → SC-5
-│   └─ desconocido       → warning "verbo sin clasificar"                      → SC-5
-├─ Bif-5 · ¿verbo nuevo en verbos.yaml sin clase ALM×MGI completa? → gate pre-commit FALLA → SC-5
+│   ├─ sinónimo conocido → warning + sugerencia de normalización                   → SC-5
+│   └─ desconocido       → warning "verbo sin clasificar"                          → SC-5
+├─ Bif-5 · ¿verbo nuevo en verbos.yaml sin clase ALM×MGI completa? → gate FALLA    → SC-5
 ├─ Bif-6 · ¿acción kinética malformada (entidad inexistente · nivel inválido ·
-│          id estilo "set-campo")?                    → gate pre-commit FALLA  → SC-6
-├─ Bif-7 · ¿medición con declarado ≠ observado?      → estado `divergente` DERIVADO al leer
-│                                                      (se pinta, no se guarda) → SC-7
-├─ Bif-8 · ¿objetivo sin key_results?                → warning `sin-ancla-de-valor`
-│                                                      (ya no error — RN-4 se relaja) → SC-8
-└─ Bif-9 · ¿actividad con verbo corregido sin provenance? → warning (score gameable) → SC-9
+│          id "set-campo")?                       → gate pre-commit FALLA          → SC-6
+├─ Bif-7 · ¿medición con declarado ≠ observado?  → `divergente` DERIVADO al leer   → SC-7
+├─ Bif-8 · ¿objetivo sin key_results?            → warning `sin-ancla-de-valor`    → SC-8
+├─ Bif-9 · ¿verbo corregido sin provenance?      → warning (score gameable)        → SC-9
+├─ Bif-10 · ¿proyecto_mejora transición inválida (p.ej. propuesto→cerrado) o cierre
+│           con hard-saving sin firma de finanzas? → ERROR · loop-back
+│           en-verificacion→en-ejecucion = VÁLIDO (MASP)                           → SC-10
+└─ Bif-11 · ¿kr.acople_compensacion: true con modo okr-trimestral? → ERROR
+            (divorcio KR↔compensación — sandbagging)                               → SC-11
 ```
 
 ### 3. Reglas de negocio (RN — se reflejan en la cap `cockpit/api-objeto`)
 
 - **RN-8** — `kpi.dueño_ref` resuelve a rol o área, **nunca** a persona (CK-24).
-- **RN-9** — toda medición lleva `fuente`+`conf`; el estado `divergente` (declarado vs observado)
-  se DERIVA al leer, jamás se persiste (el motor pinta el gaming, no lo consagra).
-- **RN-10** — las acciones kinéticas son operaciones de negocio (`aprobar-proyecto`,
-  `registrar-medicion`), nunca "set-campo"; catálogo validado por gate (anti Action Sprawl).
-- **RN-11** — `actividad.verbo` pertenece al vocabulario controlado (o normaliza por sinónimo);
-  verbo nuevo entra solo por PR que declara su clase ALM×MGI (gate).
-- **RN-12** — `proyecto.estado` transita solo vía acción kinética (declarativo en v2; la Gestión
-  de Cambios BL-24 será el motor que lo ejecute).
-- **RN-13** — los scores RPA/agente y el rollup del semáforo son DERIVADOS de campos declarados
-  (`rollup:` es función declarada, no resultado guardado) — un-hecho-un-lugar.
-- **RN-4′** (modifica RN-4 de la cap) — `objetivo.key_results` pasa a opcional; su ausencia genera
-  warning `sin-ancla-de-valor`, distinto de `off-thread` (cliente sin OKR no vacía el diagnóstico).
+- **RN-9** — toda medición lleva `fuente`+`conf`; `divergente` se DERIVA al leer, jamás se persiste.
+- **RN-10** — acciones kinéticas = operaciones de negocio, nunca "set-campo"; gate anti-Sprawl.
+- **RN-11** — `actividad.verbo` ∈ vocabulario (o sinónimo normalizable); verbo nuevo = PR con
+  clase ALM×MGI (gate).
+- **RN-12** — `proyecto_mejora.estado` transita solo por acción kinética; el charter exige
+  **doble firma**: sponsor (negocio) + finanzas (validación del caso).
+- **RN-13** — scores RPA/agente, rollup del semáforo y `divergente` = DERIVADOS; `triage` es
+  ratificable con provenance (el motor propone, el consultor corrige, auditado).
+- **RN-14** — divorcio KR↔compensación: `acople_compensacion: true` solo válido con
+  `config_estrategia.modo ∈ {gpd-anual, mixto}` (Bock/research A; en GPD el acople a PLR es el
+  estándar BR).
+- **RN-15** — un `proyecto_mejora` con beneficio `hard-saving` no llega a `cerrado` sin
+  `firmas.finanzas` post-verificación (auditoría de beneficios, research C).
+- **RN-16** — `idea` y `proyecto_mejora` son entidades separadas enlazadas; el proyecto puede
+  nacer sin idea (de una brecha del twin). La autoría de la idea es de persona(s)
+  (reconocimiento); las métricas de participación se agregan por área/rol (CK-24).
+- **RN-4′** — `objetivo.key_results` opcional; ausencia = warning `sin-ancla-de-valor`.
 
 ### 4. Criterios de aceptación (AC — checklist de cierre)
 
-- [ ] **AC-1** — `objeto.schema.yaml` `meta.version: 2`: 11 entidades (9 + `kpi` + `proyecto`),
-  aristas nuevas del hilo en `relaciones:`, invariantes v2, backbone extendido (estrato O7 Mejora).
-- [ ] **AC-2** — `/api/objeto` sirve y valida el objeto v2 ENTERO; shell `prenter` v1 responde sin
-  regresión (cero errores nuevos); mini-fixture v2 ejercita cada entidad/arista nueva en vivo.
-- [ ] **AC-3** — `sistema/schema/verbos.yaml` (SSoT nuevo): seed inicial clasificado ALM×MGI +
-  `sinonimos[]` es-419 + gate de completitud en pre-commit.
-- [ ] **AC-4** — capa kinética declarada como dato: contrato (meta-schema de acción) + catálogo
-  seed para las entidades del loop (kpi · proyecto · brecha · objetivo · proceso), gate verde.
-- [ ] **AC-5** — deuda saldada: ref muerta `process.schema` (línea 49) resuelta; enum `fuente`
-  incorpora `Observado`; `from/to/current` numéricos.
-- [ ] **AC-6** — **tabla de trazabilidad de los 11 insumos heredados** (abajo) con cada uno
-  `implementado` o `descartado + razón` — cero insumos silenciosamente ignorados.
-- [ ] **AC-7** — book coherente: `README §1` (backbone + O7), capítulos breves `kpis.md` y
-  `proyectos.md` (patrón `objetivos.md`), invariantes y glosario al día.
+- [ ] **AC-1** — `objeto.schema.yaml` `meta.version: 2`: **12 entidades** (9 + `kpi` +
+  `proyecto_mejora` + `idea`), aristas nuevas en `relaciones:`, invariantes v2, backbone O7
+  (estrato Mejora), `config_estrategia` en empresa. Cero campos deprecados.
+- [ ] **AC-2** — `/api/objeto` sirve y valida el objeto v2 ENTERO (12 entidades); **prenter
+  MIGRADO** a formas v2 valida limpio en vivo; mini-fixture v2 ejercita cada entidad/arista nueva.
+- [ ] **AC-3** — `sistema/schema/verbos.yaml`: seed clasificado ALM×MGI diseñado contra la
+  corporación ficticia (~200 empleados) + `sinonimos[]` es-419 + gate.
+- [ ] **AC-4** — capa kinética declarada: contrato + catálogo seed (incluye
+  `promover-kpi-a-kr` / `decantar-kr-a-kpi` y el ciclo del proyecto con doble firma), gate verde.
+- [ ] **AC-5** — deuda saldada: ref muerta `process.schema` resuelta · enum `fuente` + `Observado`
+  · `from/to/current` numéricos.
+- [ ] **AC-6** — tabla de trazabilidad de los 11 insumos heredados + los 7 veredictos del
+  research: cada uno `implementado` o `descartado + razón`.
+- [ ] **AC-7** — book coherente: backbone O7 · capítulos breves `kpis.md`, `mejoras.md` (patrón
+  `objetivos.md`) · `objetivos.md §6/§8` gana el modo GPD con sus fuentes · glosario al día.
+- [ ] **AC-8** — catálogo del método en sintonía: M-cards nuevas **GPD · Lean Six Sigma/DMAIC ·
+  MASP · Gestión de ideas (kaizen teian/funil) · ISO 56002 (horizonte)** + dimensión
+  `mejora-proyectos` en `methodology.schema.yaml` + bloques `twin:` → **NOTACIONES.html
+  regenerado** (gate anti-drift, mismo patrón WS5).
 
 ## § Diseño del schema v2 (el corazón — para ratificar forma antes de architect)
 
 ### A · Entidad nueva `kpi` — `kpis/kpi-*.yaml` (o_code O2 · ArchiMate Outcome/Metric, Motivation)
 
-Identidad (la definición) separada de observación (las mediciones) — Palantir P1:
-
-- `id` · `nombre` (calificado, anti-Misnomer: `rotacion-personal-pct`, no `valor`) · `descripcion`
-- `tipologia: enum [kpi, dpi, kri]` (adoptado del demo SOMA) · `tipo: enum [lead, lag]`
-- `proceso_ref → proceso` (ancla de la cascada; opcional con warning "hilo incompleto")
+- `id` · `nombre` (calificado, anti-Misnomer) · `descripcion`
+- `tipologia: enum [kpi, dpi, kri]` · `tipo: enum [lead, lag]`
+- `proceso_ref → proceso` (ancla; opcional con warning "hilo incompleto")
 - `dueño_ref → rol|area` **requerido** (RN-8/CK-24)
-- `unidad_medida` · `meta {target, umbral_amarillo?, umbral_rojo?}` (numéricos)
-- `frecuencia: enum [diaria, semanal, mensual, trimestral]` (refresco esperado — frescura)
-- `contribuye_a: list {kr_ref → key_result, peso?}` — la arista KPI→KR del hilo (N:M)
-- `en_tension_con: list ref → kpi` (counter-metric — lado min-id, un-hecho-un-lugar)
-- `rollup: enum [peor-hijo, promedio, ponderado]` (función DECLARADA del semáforo)
-- `mediciones: list` subesquema `medicion` (weak-entity `kpi-x#mN`): `fecha` ·
-  `valor_declarado?` · `valor_observado? {valor, query_ref}` · `unidad_ref? → empresa#uN` (D-07) ·
-  `fuente` · `conf` — estado `divergente` = derivado al leer (RN-9)
+- `unidad_medida` · `banda {target, umbral_amarillo?, umbral_rojo?}` (salud: solo exige acción
+  fuera de banda — research A) · `frecuencia: enum [diaria, semanal, mensual, trimestral]`
+- `contribuye_a: list {kr_ref → key_result, peso?}` (N:M) · `en_tension_con: list ref → kpi`
+  (counter-metric, lado min-id) · `rollup: enum [peor-hijo, promedio, ponderado]`
+- `mediciones: list` weak-entity `kpi-x#mN`: `fecha` · `valor_declarado?` ·
+  `valor_observado? {valor, query_ref}` · `unidad_ref? → empresa#uN` (D-07) · `fuente` · `conf`
+  — `divergente` = derivado al leer (RN-9)
 - `fuente` · `conf`
 
-### B · Entidad nueva `proyecto` — `proyectos/pry-*.yaml` (o_code O7 · ArchiMate Work Package)
+### B · Entidad nueva `proyecto_mejora` — `proyectos-mejora/pm-*.yaml` (o_code O7 · ArchiMate Work Package)
 
-El ciclo brecha→proyecto→ejecución→KPI movido DENTRO del dato (TO-BE #12-13):
+El ciclo brecha/idea→proyecto→KPI movido, con la gramática que la práctica LATAM/BR exige
+(charter DMAIC + MASP + funil — research C):
 
-- `id` · `nombre` · `descripcion` · `dueño_ref → rol`
-- `origen_brecha_refs: list ref → brecha` (vacío = warning "proyecto sin diagnóstico")
-- `caso_negocio {costo_estimado, beneficio_estimado, roi, supuestos}` (M22 FinOps — numéricos)
-- `prio: enum prio` (M28 WSJF)
-- `mueve_refs: list {ref → kpi|key_result, delta_esperado?}` — el compromiso de medición
-- `estado: enum [propuesto, aprobado, en-ejecucion, en-verificacion, cerrado, cancelado]` (PDCA;
-  transiciones = acciones kinéticas, RN-12)
-- `hitos: list` weak-entity `pry-x#hN {nombre, fecha, estado}`
+- `id` · `nombre` · `descripcion` · `dueño_ref → rol` · `sponsor_ref → rol`
+- `origen_brecha_refs: list ref → brecha` · `origen_idea_refs: list ref → idea` (ambas vacías =
+  warning "proyecto sin diagnóstico ni propuesta")
+- `metodologia: enum [pdca, dmaic, masp, kaizen]` — dialecto de render/reporte; UN solo ciclo
+- `caso_negocio {tipo_beneficio: enum [hard-saving, soft-saving, cost-avoidance,
+  aumento-ingresos], beneficio_anualizado, inversion, payback_meses?, roi?,
+  formula_beneficio, periodo_realizacion_meses (default 12), supuestos}` (numéricos)
+- `prio: enum prio` (WSJF) · `mueve_refs: list {ref → kpi|key_result, delta_esperado?}`
+- `estado: enum [propuesto, triaje, en-evaluacion, aprobado, en-ejecucion, en-verificacion,
+  estandarizado, beneficios-en-auditoria, cerrado] + [rechazado, suspendido, cancelado]`
+  — transiciones por acción kinética (RN-12); `en-verificacion → en-ejecucion` = loop-back
+  válido (MASP: si no bloqueó, se retrocede)
+- `firmas {sponsor {por_ref, fecha}, finanzas {por_ref, fecha_pre, fecha_post?}}` — doble firma;
+  `fecha_post` obligatoria para cerrar con hard-saving (RN-15)
+- `hitos: list` weak `pm-x#hN {nombre, fecha, estado}` (tollgates)
 - `resultado? {fecha_cierre, delta_observado, veredicto: enum [movio, parcial, no-movio],
   aprendizaje}` — cierra el loop
 - `fuente` · `conf`
 
-Backbone: estrato nuevo **O7 · Mejora** ("¿qué hacemos al respecto?") en `README §1` — el
-diagnóstico (O6) deja de ser el final de la columna.
+### C · Entidad nueva `idea` — `ideas/idea-*.yaml` (o_code O7 · propio, Motivation-adyacente)
 
-### C · Capa kinética — sección `acciones:` nueva en el schema (CK-21/D6)
+Funil masivo y barato (kaizen teian / plataformas tipo AEVO — research C):
 
-Contrato + catálogo como DATO (no prosa). Meta-schema de acción:
+- `id` · `titulo` · `descripcion` · `proponente_refs: list ref → persona` (≥1 — individual o
+  conjunta; AUTORÍA, no medición — RN-16/CK-24)
+- `sobre_refs: list ref → proceso|sistema|area` (dónde duele)
+- `estado: enum [enviada, en-evaluacion, aprobada, rechazada, promovida]`
+- `evaluacion? {comite_ref → rol|area, criterios {viabilidad, impacto, alineacion}, feedback,
+  fecha}` · `reconocimiento? {tipo, fecha}`
+- `promovida_a_ref? → proyecto_mejora`
+- `fuente` · `conf`
 
-```yaml
-acciones:
-  niveles: [gobernanza, estrategico, tactico, operativo]      # N13 — auth-niveles los gobierna
-  aprobacion: [directa, revision-dueño, gestion-cambios]      # BL-24 = motor que ejecuta
-  catalogo:
-    - id: registrar-medicion-kpi        # verbo-objeto, operación de negocio (RN-10)
-      entidad: kpi
-      nivel_min: operativo
-      aprobacion: directa
-      efecto: "agrega una medición con provenance al KPI"
-      validaciones: [fuente-y-conf-presentes]
-    - id: aprobar-proyecto
-      entidad: proyecto
-      nivel_min: estrategico
-      aprobacion: gestion-cambios
-      efecto: "estado propuesto → aprobado"
-      validaciones: [caso-negocio-completo, origen-brecha-resuelve]
-    # …seed: abrir-proyecto · cerrar-proyecto · cerrar-brecha · aprobar-version-objetivo ·
-    #        publicar-mapa-proceso · corregir-verbo-actividad (auditado)
-```
+### D · Capa kinética — sección `acciones:` (CK-21/D6)
 
-Gate valida: `entidad` existe en `nodos:` · `nivel_min ∈ niveles` · id no es "set-campo" · ≤ ~10
-acciones por entidad (detección Action Sprawl). v2 DECLARA el contrato; ejecutarlo es de
-`modulo-gestion-cambios-iso` y gobernarlo de `auth-niveles-acceso-policy-as-data` (sin duplicar).
+Contrato igual que v1 de esta spec (niveles N13 · aprobación `directa | revision-dueño |
+gestion-cambios` · gate anti-Sprawl ≤ ~10/entidad, sin "set-campo"). Catálogo seed ampliado por
+el research:
 
-### D · Vocabulario de verbos — SSoT nuevo `sistema/schema/verbos.yaml`
+`registrar-medicion-kpi` · `promover-kpi-a-kr` / `decantar-kr-a-kpi` (frontera permeable —
+research A) · `enviar-idea` / `evaluar-idea` / `promover-idea-a-proyecto` · `aprobar-charter`
+(doble firma sponsor+finanzas) · `avanzar-tollgate` · `verificar-beneficios` (finanzas post) ·
+`estandarizar` · `cerrar-proyecto` · `cerrar-brecha` · `aprobar-version-objetivo` ·
+`publicar-mapa-proceso` · `corregir-verbo-actividad` (auditado).
 
-- Por verbo: `verbo` (canónico es-419) · `clase_alm {rutina: rutinaria|no-rutinaria, tipo:
-  manual|cognitiva-analitica|interpersonal}` · `capacidad_mgi: enum [recolectar-datos,
-  procesar-datos, fisico-predecible, fisico-impredecible, interfaz-stakeholder,
-  experticia-decision, gestion-personas]` · `sinonimos[]`.
-- `actividad.verbo` valida contra él (Bif-4); gobernanza = RN-11; seed ~30 verbos destilados del
-  shell prenter + la M-card taxonomía de verbos (refichado WS5).
-- Los DOS scores (RPA · agente) y el veredicto del triage (`eliminable · automatizable-RPA ·
-  automatizable-agente · aumentable · humano-por-diseño`) se DERIVAN — el schema solo guarda los
-  INPUTS declarados (ver E) y, opcionalmente, el veredicto RATIFICADO con provenance (duda D-3).
+### E · Vocabulario de verbos — `sistema/schema/verbos.yaml`
 
-### E · Ajustes a entidades existentes (insumos 3-8 — expand-contract, D-06)
+Sin cambios vs v1 de esta spec (clase ALM × capacidad MGI + sinónimos + gobernanza PR + gate),
+con el seed diseñado contra la corporación ficticia (~200 empleados, un área completa; prenter
+referencia secundaria — duda 5). Scores RPA/agente derivados; `triage {veredicto, fuente, conf}`
+ratificable (duda 3).
+
+### F · Ajustes a entidades existentes (corte limpio — duda 2: lo muerto se ELIMINA)
 
 | Entidad | Cambio v2 |
 |---|---|
-| `objetivo` | `horizonte: enum [proposito, 3a, anual, trimestre]` · `cadencia_revision` · `estado {vigente|deprecado, superseded_by?, vigencia?}` · `perspectiva?` (BSC — habilita strategy-map como proyección) · `key_results` pasa a `requerido: false` (RN-4′) |
-| `key_result` | `from/to/current` → numéricos (`unit` aparte); coerción con warning para instancias v1 |
-| `actividad` | `fuente`+`conf` o `evidencia_ref` (hoy viola el principio cardinal del propio schema) · `flujos_alternos: list {cuando, secuencia[ref local]}` (portado de PROCESS-AS-DATA; `orden` lineal no narra "si X entonces Y") · `tiempos {toque, espera}` (VSM; `tiempo` v1 queda deprecado) · `mandato?: enum [regulatorio, preventivo, habilitante]` (protege compliance del triage) · `automatizacion? {volumen, excepciones_pct, datos: estructurados|no-estructurados|mixtos, reglas: estables|cambiantes, criterio_promptable, tolerancia_revision, riesgo_error}` (inputs de los scores) · `tlx? {puntaje_rtlx, fecha, fuente}` (solo pre-flageadas — jamás censal; agrega por rol/proceso, CK-24) · `alimenta_kpi_refs: list {kpi_ref, peso?}` (atribución actividad→KPI N:M vía rol) |
-| `persona` | `reporta_a` → `list {ref, tipo: jerarquico|funcional}` (matricial; forma v1 = ref simple se lee como `jerarquico` con warning) · `vinculo: enum [empleado, contratista, tercero]` + `tercero_ref?` (BPO) · `sin_kpi? {razon}` (ausencia honesta) |
-| `proceso` | `provisto_por? {nombre, tipo: bpo|outsourcing|proveedor, contrato_ref?}` (ISO 9001 cl.8.4 — hoy ausente de todo `met:`) · `riesgos[]` tipado `{desc, prob: enum, impacto: enum, mitigacion?}` (cl.6.1; hoy strings libres) · `kpis` embebido queda **DEPRECADO** (warning; migra a entidad `kpi` con `proceso_ref` — duda D-2) |
-| `empresa` | `unidades[]` weak-entity `empresa#uN {nombre, tipo: proyecto|obra|sucursal|franquicia, entidad_legal_ref?}` + `entidades_legales[]` weak `{razon_social, tax_id}` (D-07: unidad de ejecución + SPV como atributo) |
-| `brecha` | `estado` se formaliza a enum `[accionable, a-corroborar, off-thread, sin-ancla-de-valor]` (insumo 3) |
-| enums | `fuente` + **`Observado`** (drift método↔schema: M1 lo promete, el enum no lo tiene) |
-| housekeeping | ref muerta `process.schema` (línea 49) → re-anclada al frontmatter de `proceso/**` · candidatura Bloom en `actividad.verbo` → reemplazada por el vocabulario propio |
+| `empresa` | `config_estrategia {modo: okr-trimestral\|gpd-anual\|mixto}` (research A/B — GPD y OKR = mismo grafo, distinta cadencia/acople) · `unidades[]` weak `empresa#uN {nombre, tipo: proyecto\|obra\|sucursal\|franquicia, entidad_legal_ref?}` · `entidades_legales[]` weak `{razon_social, tax_id}` (D-07) |
+| `objetivo` | `horizonte: enum [proposito, 3a, anual, trimestre]` · `cadencia_revision` · `estado {vigente\|deprecado, superseded_by?, vigencia?}` · `perspectiva?` (BSC — mapa LATAM hispano) · `key_results` opcional (RN-4′) |
+| `key_result` | `from/to/current` numéricos (`unit` aparte) · **`kpi_ref? → kpi`** (KR = contrato de cambio sobre la serie de un KPI — research A) · **`acople_compensacion: bool`** default false (RN-14) · `accountable_ref? → rol` (KR ownership) |
+| `actividad` | `fuente`+`conf` o `evidencia_ref` · `flujos_alternos: list {cuando, secuencia[ref local]}` · **`tiempos {toque, espera}` REEMPLAZA `tiempo`** (eliminado) · `mandato?: enum [regulatorio, preventivo, habilitante]` · `automatizacion? {volumen, excepciones_pct, datos, reglas, criterio_promptable, tolerancia_revision, riesgo_error}` · `tlx? {puntaje_rtlx, fecha, fuente}` (agregación por rol/proceso — CK-24) · `alimenta_kpi_refs: list {kpi_ref, peso?}` · `triage? {veredicto, fuente, conf}` |
+| `persona` | **`reporta_a: list {ref, tipo: jerarquico\|funcional}` REEMPLAZA la ref simple** (eliminada) · `vinculo: enum [empleado, contratista, tercero]` + `tercero_ref?` · `sin_kpi? {razon}` |
+| `proceso` | `provisto_por? {nombre, tipo: bpo\|outsourcing\|proveedor, contrato_ref?}` (ISO 8.4) · `riesgos[]` tipado `{desc, prob, impacto, mitigacion?}` (cl.6.1) · **`kpis` embebido ELIMINADO** (migra a entidad `kpi` con `proceso_ref` — migración prenter incluida) |
+| `brecha` | `estado: enum [accionable, a-corroborar, off-thread, sin-ancla-de-valor]` |
+| enums | `fuente` + **`Observado`** |
+| housekeeping | ref muerta `process.schema` (línea 49) re-anclada · candidatura Bloom eliminada (vocabulario propio) |
 
-### F · Relaciones nuevas (sección `relaciones:` — el hilo completo)
+### G · Relaciones nuevas + extensión
 
-| de | a | tipo | dueño (owning side) |
+Como v1 de esta spec (8 aristas kpi/proyecto/medición) MÁS: `key_result → kpi` (referencia de
+serie, dueño `kr.kpi_ref`) · `idea → persona` (autoría, dueño `idea.proponente_refs`) ·
+`idea → proyecto_mejora` (promoción, dueño `idea.promovida_a_ref`) · `proyecto_mejora → idea`
+(origen, dueño `origen_idea_refs`). Invariantes v2: RN-8/14/15 + toda ref nueva resuelve +
+estados ∈ enums + acciones válidas contra meta-schema.
+
+**Extensión por cliente (duda 1 — AHORA):** bloque `ext:` permitido en toda entidad;
+el validador **ignora-y-preserva** (forma libre); política de validación semántica = V2.
+
+## § Catálogo del método — delta (AC-8 · sintonía NOTACIONES)
+
+| M-card nueva | rol_ancla | dimensiones | Nota |
 |---|---|---|---|
-| kpi | proceso | association | `kpi.proceso_ref` |
-| kpi | rol\|area | assignment | `kpi.dueño_ref` |
-| kpi | key_result | influence | `kpi.contribuye_a` |
-| kpi | kpi | association (tensión) | `kpi.en_tension_con` (lado min-id) |
-| actividad | kpi | influence | `actividad.alimenta_kpi_refs` |
-| proyecto | brecha | association (origen) | `proyecto.origen_brecha_refs` |
-| proyecto | kpi\|key_result | influence (compromiso) | `proyecto.mueve_refs` |
-| medicion | empresa#uN | association (corte) | `medicion.unidad_ref` |
+| GPD — Gerenciamento pelas Diretrizes (Falconi) | ancla | estrategia | modo de cadencia anual + desdobramento + acople PLR (mercado BR); mismo grafo de la cascada canónica |
+| Lean Six Sigma / DMAIC | ancla | mejora-proyectos | formato corporativo formal: charter + tollgates + belts; vigente (no declinó) |
+| MASP (QC Story / Falconi) | ancla | mejora-proyectos | estándar BR de solución de problemas; 8 etapas sobre PDCA; loop-back en verificación |
+| Gestión de ideas (kaizen teian / funil) | ancla | mejora-proyectos | funil masivo idea→promoción; reconocimiento al proponente |
+| ISO 56002/56001 (innovación) | horizonte | mejora-proyectos | emergente, Brasil hotspot; NO es el marco dominante del proyecto de mejora hoy |
 
-Invariantes v2 (además de las v1): RN-8 · toda ref nueva resuelve · `rollup` declarado si el KPI
-tiene hijos/ponderación · `proyecto.estado ∈ enum` · acciones válidas contra el meta-schema ·
-persona jamás en arista de medición.
+Dimensión nueva `mejora-proyectos` ("Proyectos de mejora e ideas del personal") entra al enum +
+labels de `methodology.schema.yaml`. M16 (ISO 9001) suma cl.10 a su `cuando_si` (paraguas del
+loop). M21/M26/M30/M15 quedan como están (la investigación las CONFIRMÓ — cero cambios a lo ya
+aprobado en NOTACIONES; solo se AGREGA).
 
-### G · Extensión por cliente (insumo 9 — open/closed)
+## Tabla de trazabilidad — registro heredado + research (AC-6)
 
-Propuesta (duda D-1): mecanismo MÍNIMO ahora — bloque `ext:` permitido en toda entidad, el
-validador lo **ignora-y-preserva** (forma libre, sin validación semántica); política de validación
-de extensiones = V2. Barato hoy, cumple la promesa open/closed sin construir maquinaria.
-
-## Tabla de trazabilidad — registro heredado (AC-6)
-
-| # | Insumo (refichado § Insumos cementados) | Resolución en esta spec |
+| # | Insumo | Resolución |
 |---|---|---|
-| 1 | KPI = entidad (id, dueño, lead/lag, KPI/DPI/KRI, frecuencia, declarado vs observado + divergente) | § A — completo |
-| 2 | `kpi.contribuye_a → key_result` N:M + atribución actividad→KPI vía rol | § A + § E actividad |
-| 3 | `objetivo`: horizonte/cadencia/estado/perspectiva · KRs opcionales · gap `sin-ancla-de-valor` | § E objetivo + brecha |
-| 4 | `actividad`: provenance · flujos_alternos · {toque,espera} · mandato · inputs score · TLX opcional | § E actividad |
-| 5 | Enum de verbos + sinónimos + gobernanza PR | § D |
-| 6 | `persona`: reporta_a matricial · vinculo/BPO · sin_kpi honesto | § E persona |
-| 7 | `proceso`: provisto_por (cl.8.4) · riesgos tipados (cl.6.1) | § E proceso |
-| 8 | `fuente`+Observado · `en_tension_con` · rollup declarado · from/to/current numéricos | § E enums + § A |
-| 9 | Extensión por cliente: mecanismo mínimo o V2 | § G (duda D-1) |
-| 10 | Umbral acumulación de hallazgos + formulario 4 campos + vista before/after | **DESCARTADO aquí** — es mecánica del MOTOR (m2/ingesta + Gestión de Cambios BL-24), no forma del schema; se re-hereda a esas historias |
-| 11 | `unidad_ref` en la medición + `entidad_legal_ref` (D-07) | § A mediciones + § E empresa |
+| 1-9, 11 | Insumos del refichado (KPI entidad · aristas · objetivo pleno · actividad · verbos · persona · proceso · enums/rollup/tensión · ext · unidad_ref) | § A-G — implementados (ext = ahora, duda 1) |
+| 10 | Umbral acumulación + formulario 4 campos + before/after | DESCARTADO aquí — mecánica del motor (m2/BL-24); re-heredado a esas historias |
+| R1 | KPI/KR dos entidades + frontera permeable (`kr.kpi_ref` + promover/decantar) | § A + § F key_result + § D acciones |
+| R2 | OKR equipo/rol, persona = accountable de KR | § F key_result (`accountable_ref`) + M21 intacta |
+| R3 | Divorcio KR↔compensación salvo GPD | RN-14 + `acople_compensacion` |
+| R4 | Modo de cascada = configuración | `empresa.config_estrategia` |
+| R5 | Ciclo de mejora canónico (charter/doble firma/estandarización/auditoría) | § B |
+| R6 | Idea = entidad separada enlazada | § C |
+| R7 | M-cards GPD/DMAIC/MASP/ideas/ISO-56002 + dimensión `mejora-proyectos` | § Catálogo del método |
 
 ## § Pantallas
 
-N/A — service-story sin superficie UI nueva (las lentes del cockpit consumen `/api/objeto` sin
-cambio de contrato para lo v1; pintar KPI/proyecto/semáforo = `cruce-indicadores` y
+N/A — service-story sin superficie UI nueva (pintar KPI/proyecto/semáforo = `cruce-indicadores` y
 `brecha-proyecto`, F1.1).
 
-## § Dudas abiertas (RONDA 1 · Chris cierra ANTES de architect)
+## § Dudas abiertas (RONDA 1)
 
-- [ ] **D-1 · `ext:` ahora o V2** — recomendación: mínimo ahora (ignore-and-preserve, § G).
-- [ ] **D-2 · `proceso.kpis` embebido** — recomendación: deprecar-con-warning (expand-contract) y
-  migrar el shell prenter en la historia del fixture; alternativa: migrar y borrar ya (breaking).
-- [ ] **D-3 · Veredicto del triage** — recomendación: derivado + ratificable (`triage {veredicto,
-  fuente, conf}` opcional — el agente propone, el consultor corrige, auditado); alternativa:
-  100% derivado sin persistencia.
-- [ ] **D-4 · Alcance Go** — recomendación: `/api/objeto` v2 EN esta historia (anti-orphan: el
-  schema sin consumidor es isla); alternativa: schema-only y el Go va con el fixture.
-- [ ] **D-5 · Seed de verbos** — ¿~30 verbos del corpus prenter bastan para v2, o pedimos lista
-  curada del operador?
+Ninguna — las 5 de v1 resueltas por el operador (2026-07-17, ver § Resolución). Pendiente solo
+**FIRMA 1 sobre esta versión v2**.
 
 ## Acceptance Criteria (Gherkin — service-story)
 
 ### SC-1 — `objeto-v2-completo` (`type: happy`)
-**Covers:** Bif-1(no), AC-1, AC-2
-**Given:** mini-fixture de shell con las 11 entidades y todas las aristas nuevas pobladas
+**Covers:** AC-1, AC-2
+**Given:** mini-fixture con las 12 entidades y todas las aristas nuevas pobladas
 **When:** `GET /api/objeto?empresa=<fixture>`
-**Then:** responde las 11 entidades juntas · cero warnings · el hilo es recorrible en ambos
-sentidos (actividad→KPI→KR→objetivo y de vuelta) en el dato devuelto
+**Then:** 12 entidades juntas · cero warnings · hilo recorrible en ambos sentidos (actividad→KPI→
+KR→objetivo y de vuelta; idea→proyecto→KPI-movido)
 **playwright_required:** false
 **Graders:** go test integración + live-verify runtime-logs
 
-### SC-2 — `retrocompat-v1` (`type: edge`)
-**Covers:** Bif-1(sí), AC-2, RN-4′
-**Given:** el shell real `prenter` (v1, sin entidades nuevas)
-**When:** `GET /api/objeto?empresa=prenter`
-**Then:** valida OK · cero errores nuevos · solo warnings de deprecación esperados
-(`proceso.kpis` embebido, `tiempo` v1, `reporta_a` forma simple)
+### SC-2 — `corte-limpio-migracion` (`type: edge`)
+**Covers:** Bif-1, AC-2
+**Given:** `prenter` MIGRADO a formas v2 · copia pre-migración con formas v1 muertas
+**When:** `GET /api/objeto?empresa=prenter` · lectura de la copia
+**Then:** prenter valida LIMPIO (cero warnings) · la copia produce ERROR nombrando la forma v2
+que reemplaza cada forma muerta (`proceso.kpis` → entidad kpi · `tiempo` → `tiempos` ·
+`reporta_a` simple → lista tipada)
 **playwright_required:** false
-**Graders:** go test regresión contra fixture snapshot prenter
+**Graders:** go test regresión + live-verify
 
 ### SC-3 — `kpi-dueño-persona` (`type: negative`)
-**Covers:** Bif-2, RN-8
-**Given:** un `kpi` cuyo `dueño_ref` apunta a una persona
-**When:** se lee el objeto
-**Then:** rechazo explícito citando CK-24 · el resto del objeto sigue validando · sin estado a medias
-**playwright_required:** false
-**Graders:** go test unitario del validador
+**Covers:** Bif-2, RN-8 — igual v1 (rechazo citando CK-24)
+**Graders:** go test unitario
 
 ### SC-4 — `refs-colgantes-hilo` (`type: negative`)
-**Covers:** Bif-3
-**Given:** `contribuye_a`, `alimenta_kpi_refs`, `origen_brecha_refs`, `mueve_refs` y `unidad_ref`
-con refs inexistentes (un caso cada una)
-**When:** se lee el objeto
-**Then:** un warning por ref colgante, nombrando campo y ref (integridad sin índice central)
-**playwright_required:** false
+**Covers:** Bif-3 — casos: `contribuye_a`, `kpi_ref`, `alimenta_kpi_refs`, `origen_brecha_refs`,
+`origen_idea_refs`, `mueve_refs`, `unidad_ref`, `promovida_a_ref` → un warning nombrado por ref
 **Graders:** go test tabla-driven
 
 ### SC-5 — `verbos-vocabulario` (`type: negative`)
-**Covers:** Bif-4, Bif-5, RN-11, AC-3
-**Given:** actividad con verbo sinónimo ("chequear"→"revisar") · actividad con verbo desconocido ·
-`verbos.yaml` con verbo sin `clase_alm` completa
-**When:** lectura del objeto · lectura · pre-commit
-**Then:** warning + sugerencia de normalización · warning "sin clasificar" · gate FALLA
-**playwright_required:** false
-**Graders:** go test + ejecución real del hook pre-commit (test negativo, patrón CK-17)
+**Covers:** Bif-4, Bif-5, RN-11, AC-3 — igual v1 (warning+sugerencia · sin-clasificar · gate FALLA)
+**Graders:** go test + hook pre-commit ejecutado (test negativo, patrón CK-17)
 
 ### SC-6 — `kinetica-malformada` (`type: negative`)
-**Covers:** Bif-6, RN-10, AC-4
-**Given:** acción con `entidad` inexistente · `nivel_min` fuera del enum · id `set-nombre-kpi`
-**When:** pre-commit
-**Then:** gate FALLA nombrando la acción y la regla violada
-**playwright_required:** false
-**Graders:** ejecución real del hook (test negativo)
+**Covers:** Bif-6, RN-10, AC-4 — igual v1 (gate FALLA nombrando acción y regla)
+**Graders:** hook ejecutado (test negativo)
 
 ### SC-7 — `divergencia-derivada` (`type: edge`)
-**Covers:** Bif-7, RN-9
-**Given:** medición con `valor_declarado: 12` y `valor_observado: {valor: 7, query_ref}`
-**When:** se lee el objeto
-**Then:** la medición sale marcada `divergente` en la RESPUESTA · el YAML de instancia NO se
-modifica (derivado, no persistido)
-**playwright_required:** false
-**Graders:** go test + diff del archivo de instancia intacto
+**Covers:** Bif-7, RN-9 — igual v1 (respuesta pinta `divergente`; instancia intacta)
+**Graders:** go test + diff instancia
 
 ### SC-8 — `sin-ancla-de-valor` (`type: edge`)
-**Covers:** Bif-8, RN-4′
-**Given:** objetivo sin `key_results`
-**When:** se lee el objeto
-**Then:** warning `sin-ancla-de-valor` (no error) · una brecha puede tipificarse con ese estado
-**playwright_required:** false
+**Covers:** Bif-8, RN-4′ — igual v1
 **Graders:** go test
 
 ### SC-9 — `provenance-anti-gaming` (`type: adversarial`)
-**Covers:** Bif-9, RN-13
-**Given:** actividad cuyo verbo fue corregido a uno "suave" sin `fuente`/`conf`/`evidencia_ref`
-**When:** se lee el objeto
-**Then:** warning "verbo sin provenance" (el score aguas abajo hereda `conf` baja — el gaming
-queda visible, nunca silencioso)
-**playwright_required:** false
+**Covers:** Bif-9, RN-13 — igual v1 (warning "verbo sin provenance"; conf baja visible)
 **Graders:** go test
+
+### SC-10 — `ciclo-mejora-gobernado` (`type: negative`)
+**Covers:** Bif-10, RN-12, RN-15
+**Given:** proyecto en `propuesto` · proyecto en `en-verificacion` · proyecto hard-saving en
+`beneficios-en-auditoria` sin `firmas.finanzas.fecha_post`
+**When:** transición directa a `cerrado` · vuelta a `en-ejecucion` · cierre
+**Then:** ERROR transición inválida · loop-back VÁLIDO (MASP) · ERROR "cierre sin auditoría de
+finanzas"
+**playwright_required:** false
+**Graders:** go test tabla-driven de la máquina de estados
+
+### SC-11 — `divorcio-kr-compensacion` (`type: adversarial`)
+**Covers:** Bif-11, RN-14
+**Given:** empresa `modo: okr-trimestral` con `kr.acople_compensacion: true`
+**When:** lectura
+**Then:** ERROR citando RN-14 (sandbagging); con `modo: gpd-anual` el mismo dato valida OK
+**playwright_required:** false
+**Graders:** go test ambos modos
 
 ### Sub-categorías v4.1 — N/A ratificables
 `race-condition` · `concurrent-users` · `network-failure` · `empty-state` · `large-dataset` ·
 `accessibility` · `i18n` → `not_applicable_reason: "single-tenant · binario read-only sin auth ni
-DB (cockpit-stack) · sin superficie FE nueva"`. `large-dataset` se cubre como NFR (abajo).
+DB (cockpit-stack) · sin superficie FE nueva"`. `large-dataset` cubierto como NFR.
 
 ## § Matriz de cobertura (sembrada — dev-team la mantiene viva)
 
 | Ítem (Mapa funcional) | Tipo | estado | Cubierto por | Verificación REAL |
 |---|---|---|---|---|
-| Bif-1 · shell v1 vs v2 | branch | ⬜ pendiente | SC-1, SC-2 | GET real a ambos shells + logs + respuesta completa |
-| Bif-2 · dueño persona | branch | ⬜ pendiente | SC-3 | lectura real → rechazo citando CK-24 |
+| Bif-1 · corte limpio + migración prenter | branch | ⬜ pendiente | SC-2 | GET real a prenter migrado + error real en copia v1 |
+| Bif-2 · dueño persona | branch | ⬜ pendiente | SC-3 | lectura real → rechazo CK-24 |
 | Bif-3 · refs colgantes | branch | ⬜ pendiente | SC-4 | lectura real → warnings nombrados |
-| Bif-4/5 · verbos | branch | ⬜ pendiente | SC-5 | lectura + hook pre-commit ejecutado de verdad |
-| Bif-6 · kinética malformada | branch | ⬜ pendiente | SC-6 | hook ejecutado de verdad → FALLA |
-| Bif-7 · divergencia | branch | ⬜ pendiente | SC-7 | respuesta pinta divergente + instancia intacta |
+| Bif-4/5 · verbos | branch | ⬜ pendiente | SC-5 | lectura + hook ejecutado |
+| Bif-6 · kinética malformada | branch | ⬜ pendiente | SC-6 | hook ejecutado → FALLA |
+| Bif-7 · divergencia | branch | ⬜ pendiente | SC-7 | respuesta pinta + instancia intacta |
 | Bif-8 · sin KRs | branch | ⬜ pendiente | SC-8 | lectura real → warning tipificado |
 | Bif-9 · verbo sin provenance | branch | ⬜ pendiente | SC-9 | lectura real → warning |
-| RN-8 · CK-24 | rule | ⬜ pendiente | SC-3 | — |
-| RN-9 · divergencia derivada | rule | ⬜ pendiente | SC-7 | — |
-| RN-10 · anti Action Sprawl | rule | ⬜ pendiente | SC-6 | — |
-| RN-11 · gobernanza verbos | rule | ⬜ pendiente | SC-5 | — |
-| RN-4′ · KRs opcionales | rule | ⬜ pendiente | SC-8 | — |
-| AC-1..AC-7 | accept | ⬜ pendiente | SC-1..SC-9 + revisión | gates verdes + live-verify + tabla AC-6 completa |
+| Bif-10 · ciclo mejora | branch | ⬜ pendiente | SC-10 | máquina de estados ejercida real |
+| Bif-11 · acople compensación | branch | ⬜ pendiente | SC-11 | lectura ambos modos |
+| RN-8/9/10/11/13/4′ | rule | ⬜ pendiente | SC-3/5/6/7/8/9 | — |
+| RN-12 · RN-15 (doble firma/auditoría) | rule | ⬜ pendiente | SC-10 | — |
+| RN-14 (divorcio KR↔comp) | rule | ⬜ pendiente | SC-11 | — |
+| RN-16 (idea↔proyecto separadas) | rule | ⬜ pendiente | SC-1, SC-4 | — |
+| AC-1..AC-8 | accept | ⬜ pendiente | SC-1..SC-11 + revisión | gates verdes + live-verify + tablas AC-6/AC-8 |
 
 **Huecos detectados:** ninguno · **SC huérfanos:** ninguno · **Diferido:** ninguno (se decide en G)
 
@@ -387,45 +395,45 @@ DB (cockpit-stack) · sin superficie FE nueva"`. `large-dataset` se cubre como N
 
 | Categoría | Requisito | Verificador |
 |---|---|---|
-| Latencia | `GET /api/objeto` con shell de ~500 archivos < 1s (p95, lectura fría) | go test benchmark con fixture sintético |
-| Retrocompat | shell v1 válido en v1 → válido en v2 (cero errores nuevos) | SC-2 |
-| Anti-drift | SSoT nuevos (verbos, acciones) gateados en pre-commit igual que arquitectura/método | SC-5, SC-6 |
-| i18n | vocabulario y enums en español neutro es-419, sin voseo | revisión + lint |
+| Latencia | `GET /api/objeto` con shell ~500 archivos < 1s (p95, lectura fría) | go test benchmark fixture sintético |
+| Corte limpio | cero campos/formas deprecadas en el schema publicado (duda 2) | grep + revisión |
+| Anti-drift | SSoT nuevos (verbos, acciones, M-cards) gateados en pre-commit | SC-5, SC-6, gate metodo |
+| i18n | vocabulario y enums es-419, sin voseo | revisión + lint |
 
 ## Constraints técnicos heredados
 
-- `.claude/rules/metodologia-as-code.md` — el método es datos; editar YAML, no vistas; gate.
-- `.claude/rules/cockpit-stack.md` — binario read-only, sin auth/DB; tenant-scenarios N/A.
-- `sistema/schema/DECISIONES.md` — D-04 (puerto), D-06 (aditivo/proyección), D-07, D-08, D-09,
-  D-12, D-15 siguen mandando; v2 no las revierte.
-- TDD obligatorio: validadores nuevos nacen con test RED primero (tabla-driven, patrón go/objeto).
+- `.claude/rules/metodologia-as-code.md` · `.claude/rules/cockpit-stack.md` (binario read-only,
+  N/A tenant) · `sistema/schema/DECISIONES.md` D-04/06/07/08/09/12/15 · TDD obligatorio
+  (validadores nacen RED, tabla-driven, patrón go/objeto).
 
 ## Cross-module impact
 
-- **Lee de:** — (es la SSoT).
-- **Es leído por:** `go/objeto.go` (N13) hoy; downstream directo: `organizacion-ficticia-golden-fixture`
-  (dep dura), `cruce-indicadores`, `brecha-proyecto`, `captura-manual-kpis`,
-  `modulo-gestion-cambios-iso` (ejecuta las acciones), `auth-niveles-acceso-policy-as-data`
-  (gobierna `niveles`), `metodo-como-arnes-v0` (el método produce instancias v2).
-- **Eventos:** N/A (sin bus).
+- **Es leído por:** `go/objeto.go` (N13). Downstream: `organizacion-ficticia-golden-fixture`
+  (dep dura; directiva ~200 empleados registrada allí), `cruce-indicadores`, `brecha-proyecto`,
+  `captura-manual-kpis`, `modulo-gestion-cambios-iso` (ejecuta acciones), `auth-niveles`
+  (gobierna niveles), `metodo-como-arnes-v0`.
+- **Toca además:** `sistema/metodo/methodologies.yaml` + `methodology.schema.yaml` (AC-8 —
+  NOTACIONES regenera) y el book `sistema/schema/metodologia/`.
 
 ## Prior art applied (anti-duplication-refining)
 
-- Scan del 00-story vigente y re-verificado: `reconciliar-objeto-schema-9-entidades` (done) —
-  v2 EXTIENDE, no recrea · `persona-puesto-primera-clase` (done) — patrón entidad-de-primera-clase
-  reusado para kpi/proyecto · `modulo-gestion-cambios-iso` — motor de las acciones: aquí SOLO se
-  declaran (frontera explícita § C) · `cockpit/captura-manual-kpis` — consumirá `mediciones` con
-  `fuente: Declarado`; el subesquema de § A es su contrato, no lo duplica · `auth-niveles` — los
-  `niveles` del § C son su enum de entrada, no su policy.
-- El grafo del hilo, RACI, provenance y el patrón weak-entity (`#suf`) se REUSAN del v1 — cero
-  estructura paralela nueva para lo que ya existe.
+Como v1 de esta spec (reconciliar-objeto-schema · persona-puesto · gestión-cambios = motor ·
+captura-manual-kpis = consumidor · auth-niveles = policy) MÁS: el funil de ideas NO duplica la
+Gestión de Cambios (la idea es germen de proyecto; el cambio gobernado es otro objeto) y las
+M-cards nuevas EXTIENDEN el catálogo aprobado en NOTACIONES sin tocar los bloques `twin:`
+existentes (M21/M26/M30/M15 confirmadas por la investigación).
 
 ## Próximo paso
 
-`type: service-story` → skip UX → Chris cierra § Dudas abiertas + FIRMA 1 → `/architect` produce
-03-arch + 04-validators + 06-tickets (`refined → ready`).
+`type: service-story` → skip UX → **FIRMA 1 del operador sobre esta v2** → `/architect`
+(03-arch + 04-validators + 06-tickets · `refined → ready`).
 
 ## Changelog
 
-- v1 2026-07-17 — draft inicial del refinamiento (RONDA 1): diseño v2 completo + trazabilidad de
-  los 11 insumos heredados + 5 dudas abiertas para Chris.
+- v1 2026-07-17 — draft inicial: diseño v2 + trazabilidad 11 insumos + 5 dudas abiertas.
+- v2 2026-07-17 — integra respuestas del operador (ext ahora · corte limpio sin deprecados ·
+  triage ratificable · Go completo · seed contra corporación ficticia) + investigación LATAM/BR
+  (00-research-latam-br.md): frontera KPI↔KR permeable, modo GPD/BSC/OKR como configuración,
+  RN-14 divorcio KR↔compensación, entidad `idea` separada, `proyecto` → `proyecto_mejora`
+  (Misnomer resuelto), ciclo de mejora con doble firma + auditoría de beneficios, M-cards
+  GPD/DMAIC/MASP/ideas/ISO-56002 + dimensión `mejora-proyectos` (sintonía NOTACIONES).

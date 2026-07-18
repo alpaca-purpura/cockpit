@@ -66,6 +66,14 @@ una organización), `sistema/reconciliar-objeto-schema-9-entidades` (done — va
 no creó instancia completa), `cockpit/cruce-estructura-operacion-indicadores` +
 `cockpit/brecha-proyecto-ciclo-vida` (consumidores de estos datos, no productores).
 
+## Directiva del operador (refinamiento schema-v2, 2026-07-17)
+
+La organización ficticia debe recrear una **corporación de al menos ~200 empleados** (prenter es
+demasiado chica como referencia — puede usarse como semilla, o partir de cero). Se construye
+**empezando por UN área completa** (todas las entidades/aristas del v2 al 100% en esa área) y
+crece de ahí. El seed del vocabulario de verbos (`sistema/schema/verbos.yaml`, historia
+schema-v2) se diseña contra esta corporación.
+
 ## Próximo paso
 
 `→ /po lee este archivo + carga skill correspondiente → produce 01-spec.md + actualiza product/stories/sistema/organizacion-ficticia-golden-fixture/story.yaml`
