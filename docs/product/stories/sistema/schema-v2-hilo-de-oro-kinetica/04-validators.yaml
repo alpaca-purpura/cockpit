@@ -26,7 +26,7 @@ validators:
   - {sc: SC-9,  must_pass: true, grader: "go test: verbo corregido sin fuente/conf/evidencia_ref → warning"}
   - {sc: SC-10, must_pass: true, grader: "go test tabla-driven máquina de estados: propuesto→cerrado ERROR · en-verificacion→en-ejecucion OK · cierre hard-saving sin firmas.finanzas.fecha_post ERROR"}
   - {sc: SC-11, must_pass: true, grader: "go test ambos modos: acople_compensacion true + okr-trimestral ERROR · + gpd-anual OK"}
-  - {sc: SC-12, must_pass: true, grader: "gen_schema.py --check: paridad schema↔Go (enums/transiciones) + verbos.yaml completo + acciones válidas (D-A2/D-A7)"}
+  - {sc: SC-12, must_pass: true, grader: "paridad schema↔Go: TestParidadSchema (Go lee objeto.schema.yaml + verbos.yaml — una fuente, dos consumidores; R: reemplaza el plan gen_schema-compara-Go, frágil) + gen_schema.py --check (coherencia interna)"}
 
 nfr:
   - {req: "GET /api/objeto shell ~500 archivos < 1s p95 frío", grader: "go benchmark fixture sintético"}

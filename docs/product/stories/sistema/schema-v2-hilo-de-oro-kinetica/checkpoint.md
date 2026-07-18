@@ -1,16 +1,19 @@
 # checkpoint.md — schema-v2-hilo-de-oro-kinetica
 
 ```yaml
-state: developed
-phase: AWAIT_CHRIS_VERIFY
+state: done
+phase: CLOSED           # B audit APPROVED (a mano, hueco KIT — auditor responsable) · F merge 2026-07-17
 started: 2026-07-17
 developed: 2026-07-17
 autonomous_mode: false
 chris_verify:
   required: true
-  signoff: null            # → Chris ejerce el kit en G (ver § Qué verificar abajo)
-  rounds: []
-reconciled: false
+  signoff: { by: Chris, date: 2026-07-17, result: SATISFIED, notes: "«hemos hecho solo el backend» — correcto: service-story; el pintado del hilo = cruce-indicadores/brecha-proyecto (F1.1, ya en roadmap)", open_items: [] }
+  rounds:
+    - "paridad SC-12 como TestParidadSchema (Go lee YAML) en vez de gen_schema-compara-Go — ratificado vía spec/checkpoint"
+    - "vocabulario case-insensitive + 2 canónicos + 7 sinónimos vía gobernanza RN-11 (hallazgo migración prenter)"
+    - "migración prenter amplió: riesgos tipados + fuente empresa.yaml a enum (cita SUNAT en comentario)"
+reconciled: true           # R 2026-07-17: spec matriz ✅ · 04-validators SC-12 grader corregido · cap api-objeto extend aplicado · sin deferred → cero historias spawneadas
 tickets:
   T-1: done   # 0975ef5 — objeto.schema.yaml v2 + book (backbone O7, kpis.md, mejoras.md, §6-bis GPD)
   T-2: done   # bd99c25 — verbos.yaml (44) + gen_schema.py = 4º gate pre-commit
@@ -66,7 +69,23 @@ Nota "deprecad" en schema: 2 hits legítimos (valor de enum `estado_objetivo: de
 4. Los capítulos nuevos del book: `sistema/schema/metodologia/{kpis,mejoras}.md` + `objetivos.md
    §6-bis` (modo regional GPD/BSC/OKR con fuentes).
 
+## Audit (B — a mano, auditor responsable v5)
+
+- Precondición `reconciled: true` ✓ · signoff SATISFIED leído · scope de rounds respetado.
+- Gates 4/4 exit 0 re-corridos · `go vet/test/build` verdes (12 tests v2 + suite) · benchmark NFR.
+- **Downstream**: único consumidor `/api/objeto` = `ui/lib/personas.ts` (lee personas/roles/
+  warnings — campos nuevos aditivos, `errors[]` ignorado sin romper) · `tsc --noEmit` limpio ·
+  vitest 32/32 · `validateNegocio` independiente (cero cross-consumo Go).
+- **Connectivity (CONN)**: Consumed ✓ (/api/objeto vivo) · On-map ✓ (cap api-objeto extend,
+  fichas +CK-21/CK-26) · Navigable ✓ (misma ruta GET) · Notarized ✓ (handler registrado + 4º gate
+  cableado en pre-commit).
+- Cat-12 mirror: cero duplicación (validador único extendido; gate patrón CK-17 reusado).
+- **Veredicto: APPROVED.**
+
 ## Log
 
 - 2026-07-17 · claim ready→developing · T-1..T-6 construidos y verificados en vivo (commits
   0975ef5 · bd99c25 · 9402444 · 38e7e17 · prenter@56266fe) · developed + AWAIT_CHRIS_VERIFY.
+- 2026-07-17 · G: Chris SATISFIED ("solo backend — continuar") · R: reconciliada (validators
+  SC-12 + cap + rounds) · B: APPROVED · F: merge → **done** · ficha **CK-26** (colisión CK-25
+  con studio-core de sesión paralela, renumerada).

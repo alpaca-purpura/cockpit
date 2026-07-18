@@ -1,6 +1,6 @@
 id: schema-v2-hilo-de-oro-kinetica
 type: service-story
-state: developed
+state: done
 module: sistema
 node: transversal
 cap_target: "cockpit/api-objeto"

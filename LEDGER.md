@@ -740,7 +740,110 @@ automatización (el score puntúa ACTIVIDADES de un rol, no personas).
 `schema-v2-hilo-de-oro-kinetica` (la hereda como invariante de diseño) ·
 `auth-niveles-acceso-policy-as-data` (el opt-in Gobernanza aterriza ahí).
 
-<!-- Próximas: CK-25, … -->
+### CK-25 · Consultio no se clona: se extrae `studio-core`, ambas apps lo consumen — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-17):* "revisá el plan, forzá fallos, arquitectura hexagonal, ejecutá vos
+mismo, avisame con consultio corriendo primitivo."
+
+*Desarrollo:* scout de `~/Proyectos/dev-studio` (célula N5): 60-70% del código ya es núcleo
+genérico aislado tras puertos DIP (motor arneses, driver Claude Code, sesión, store, transporte,
+updater, design system). N14 estaba fichado "clon de DevStudio" (CK-18) — clonar es fork = doble
+mantenimiento sin backflow; CK-21/D7 ya había desacoplado el MVP (Consultio v0 = arneses sin
+shell). Regla de tres (AHA): Consultio ES el 2º consumidor real → momento correcto de extraer.
+
+**Decisión:** topología de **tres piezas** — `studio-core` (kernel Go compartido, módulo propio,
+ledger SC-NN, puertos DIP estables) + `dev-studio` (N5, app fina, taxonomía dev) + `consultio`
+(N14, app fina, taxonomía engagement/método M1-M3). Repos separados por producto (doctrina de
+células, NO monorepo). Disciplina **upstream-first**: todo cambio genérico aterriza en el core
+primero, los productos consumen por import semver; **ban de mirror producto→producto** (mismo
+patrón que backflow del arnés) — lo específico de un producto (taxonomía, value-stream, branding)
+nunca se copia al otro, se implementa fino y propio en su seam. Gate de promoción = 2º consumidor
+necesita el patrón → lift al core en ese momento, ni antes (adivinar API) ni después (fork
+silencioso). Secuencia F0 (arneses v0, ya corriendo) → F1 (frontera fitness en dev-studio) → F2
+(extracción) → F3 (Consultio app fina) — la extracción no bloquea la entrega del método.
+
+Stress-test forzado contra el código real de dev-studio (11 escenarios de fallo, `05-arquitectura-
+hexagonal.md`) fijó 10 decisiones de arquitectura: paquetes del core públicos, no `internal/` (A1)
+· `replace` local comiteado como transición sin remote, deuda registrada (A2) · sesión genérica del
+core con `Contexto map[string]string` opaco a la taxonomía del producto (A3) · identidad de app
+(`app.Info{Name, LockDirName, DataDir,...}`) siempre inyectada, cero literal de producto en el
+kernel (A4) · router composicional, el core arma rutas genéricas y la app monta las suyas (A5) ·
+driver fake para tests/CI sin licencia (A6) · UI mínima propia descartable, design system npm
+diferido a F2.5 — prohibido copiar componentes de dev-studio (A7) · fitness gate EN el core desde
+el commit 1 (A8) · extracción por COPIA no move, dev-studio migra en su propia sesión/ledger DH-NN,
+duplicación transitoria core↔dev-studio fichada como deuda de esa célula (A9) · marketplace del
+método como seam de datos (A10).
+
+**Ejecutado y verificado en vivo (mismo día, autónomo):** `studio-core` nace (commit `5dc94c1`,
+SC-01, v0.1.0 tageado) con fitness gate propio (`TestCoreSinIdentidadDeProducto` + 4 tests más,
+verdes) · `consultio` nace (commit `742bc51`, CN-01) consumiéndolo vía `replace => ../studio-core`
+· suite completa contra adaptadores reales (HB-94, cero mocks) · live-verify del binario corriendo:
+registry método → `POST /api/engagements` (el dir ES repo git, valida hipótesis F0 CK-21 "engagement
+≈ repo git") → instalar arnés (lock `.consultio/arneses.yaml` + commit pathspec real) → sesión
+ligada al engagement → turno con driver fake → frames SSE + `state.json` con efecto observado ·
+`dev-studio` INTACTO (V6, tree limpio, HEAD sin tocar). F3 se adelantó respecto del trigger de F2
+("necesidad real de shell") por directiva del operador del mismo goal.
+
+**Consecuencias.** NODOS.md: N14 re-fichado "clon de DevStudio" → "app fina sobre `studio-core`
+(extraída de N5)", madurez no-construido → existe (parcial); riesgo abierto (2) de N5 ("cómo se
+clona Consultio") cerrado por esta ficha. `dev-studio`/DH-NN registra su F1 (frontera fitness) y F2
+(migración) en su propio ledger cuando corresponda — no bloquean esta ficha.
+
+**Alternativas descartadas:** fork/clon (doble mantenimiento, divergencia silenciosa, descartada) ·
+monorepo único edge (contradice doctrina de células/graduación; `go.work` local da la misma
+velocidad sin fusionar repos, descartada) · un solo binario con "ediciones" (mete `if producto` al
+core, acopla releases de compradores distintos — descartada, revisable si F0-F3 muestran variación
+menor a la prevista).
+
+*Conecta:* CK-21/D7 (Consultio v0 = arneses sin shell, el MVP que este plan no bloquea) · CK-18
+(origen del ficha "clon de DevStudio", corregido acá) · CK-22 (F3 "Edge completo + escala" donde
+vivía el clon DevStudio, ahora reemplazado por esta topología) · CK-19 (backflow/upstream-first del
+arnés prenter, misma doctrina trasladada a código Go/TS).
+
+*Siguiente:* dev-studio migra a `studio-core` en su propia sesión (F2.3, ledger DH-NN) · borrar
+`replace => ../studio-core` cuando exista remote publicado (R5 puro) · extraer design system React
+a paquete npm cuando haya registry (F2.5). Plan detallado:
+`proyecto/plans/consultio-studio-core/`.
+
+### CK-26 · Schema v2 — hilo de oro medible (modo regional OKR/GPD/BSC) + capa kinética + mejora como entidad — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-17):* refinamiento de `schema-v2-hilo-de-oro-kinetica`: "los OKRs y los
+kpis no compiten… revisa apegándote a lo que dicen realmente las metodologías… cuál es el estándar
+actual en LATAM y Brasil (investiga), y con eso definimos" + aclaración de `proyecto` = "aquellas
+cosas que propone el personal… para lograr un avance o mejora… considera six sigma como base pero
+ve cuál es la que más se utiliza" + "todo lo que no usamos elimínalo… no quiero contaminar con
+deprecados cuando aún ni nacemos". FIRMA 1 sobre spec v2 · G SATISFIED ("hemos hecho solo el
+backend" — correcto: el pintado es F1.1).
+
+*Desarrollo:* dos investigaciones web (fuentes primarias — 00-research-latam-br.md de la historia).
+Verificado: OKR↔KPI se complementan con frontera PERMEABLE bidireccional (Doerr/Castro/Wodtke/
+Perdoo); "no OKR individual" confirmado (Spotify 2016 primario, Klau 2017, HBR 2020, Bock:
+divorcio total OKR↔compensación — sandbagging); Brasil = GPD/Falconi como estándar corporativo
+(desdobramento anual + PDCA + PLR; 3 de 4 "Melhores e Maiores"), LATAM hispano = BSC como mapa;
+proyectos de mejora = PDCA paraguas con dialectos DMAIC (vigente) / MASP (estándar BR) / kaizen,
+con charter + doble firma sponsor-finanzas + auditoría de beneficios ~12 meses; ideas del personal
+= funil separado (kaizen teian → plataformas tipo AEVO).
+
+**Decisiones firmadas:** (1) **GPD y OKR = el mismo grafo** — el modo es configuración de empresa
+(`config_estrategia.modo: okr-trimestral|gpd-anual|mixto`), no entidades distintas; **RN-14**:
+acople KR↔compensación SOLO en modo GPD (PLR). (2) KPI = entidad (salud con banda) y KR = contrato
+de cambio; frontera permeable como acciones kinéticas (`promover-kpi-a-kr`/`decantar-kr-a-kpi`).
+(3) `proyecto_mejora` e `idea` = entidades SEPARADAS enlazadas (Misnomer resuelto vs unidad D-07);
+ciclo PDCA-genérico con `metodologia: pdca|dmaic|masp|kaizen` como dialecto de render; **RN-15**
+auditoría de beneficios. (4) **Corte limpio sin deprecados** — formas v1 = ERROR; prenter migrado
+en el mismo evento. (5) Vocabulario de verbos propio (ALM×MGI, 44) con gobernanza por PR (RN-11).
+(6) Capa kinética declarada en el schema (15 acciones + máquina de estados); BL-24 = motor.
+
+*Ejecutado:* `objeto.schema.yaml` v2 (12 entidades) · `verbos.yaml` + `gen_schema.py` (4º gate) ·
+M41-M45 + dimensión `mejora-proyectos` (NOTACIONES regenerado) · `/api/objeto` v2 con `errors[]` ·
+prenter migrado (29 kpis entidad) · live-verify doble (prenter 0E/0W + fixture 12 entidades) ·
+book (backbone O7 · kpis.md · mejoras.md · objetivos.md §6-bis).
+
+*Conecta:* CK-21/D6 (la kinética que manda) · CK-23 (el fixture que sigue: corporación ficticia
+~200 empleados, directiva registrada) · CK-24 (frontera persona, cableada como RN-8/RN-16) ·
+D-07 (unidad de ejecución en la medición).
+
+<!-- Próximas: CK-27, … -->
 
 ## Log
 
@@ -761,3 +864,5 @@ automatización (el score puntúa ACTIVIDADES de un rol, no personas).
 | 2026-07-16 | Roadmap MVP: F1 re-alcanzada a "Terreno + MVP Twin vendible" (16 historias, fases F1.0 Terreno → F1.1 Método → F1.2 Organización viva → F1.3 El twin mide + carril negocio; historia nueva `arquitectura-refichado-ck21` = LA PRIMERA, pedido del operador); nacen F2 "Comercial" (portal+canal, deuda UI se paga aquí, conectores) y F3 "Edge completo + escala" (clon DevStudio baja a media, Colab, Arnesia pipeline, MCP, frescura, gateadas D5/CK-10); 28 story.yaml re-cableados (prioridades + deps, operar-metodo/publicación ya no esperan al clon); `docs/product/ROADMAP.md` como vista humana. | CK-22 |
 | 2026-07-17 | Twin-first (re-secuencia F1): el twin lleno y pintado ANTES que el proceso de llenado — historia nueva `organizacion-ficticia-golden-fixture` (shell ficticio 100% contra schema v2, provenance simulando M1; fixture + plantillas-por-ejemplo + demo + contrato de salida de Consultio); F1 pasa a 5 fases (F1.1 Twin pintado adelanta a método/organización-viva; lakehouse alta→media a F1.4, mockeado por los KPIs del fixture); hito intermedio: twin demo-able con org ficticia. | CK-23 |
 | 2026-07-17 | Frontera twin ↔ evaluación individual (de la auditoría adversarial del refinamiento): el twin mide roles/procesos/áreas — KPI ancla a rol, persona = ocupante; vista persona-nombrada solo opt-in Gobernanza + consentimiento; NASA-TLX agregado por rol/proceso, nunca registro individual; nace M-card "métricas de persona" gemela de M23. Mismo evento: D-07 clavada (techo=empresa; holding=agrupador; proyecto/sucursal = unidad de ejecución, no empresa) + historia nueva `cockpit/captura-manual-kpis`. | CK-24 |
+| 2026-07-17 | Schema v2 shipped (historia `schema-v2-hilo-de-oro-kinetica`, idea→done en el día): hilo de oro MEDIBLE — 12 entidades (kpi salud-con-banda · proyecto_mejora · idea como funil separado), modo regional como configuración (OKR-trimestral / GPD-anual Falconi / mixto — investigación LATAM/BR con fuentes primarias; RN-14 divorcio KR↔compensación), capa kinética declarada (15 acciones + máquina de estados PDCA con loop-back MASP; BL-24 = motor), vocabulario de verbos ALM×MGI (44, gobernanza por PR) + 4º gate `gen_schema.py`, corte limpio sin deprecados con prenter migrado (29 kpis) y live-verify doble. M41-M45 + dimensión `mejora-proyectos` al catálogo. | CK-26 |
+| 2026-07-17 | Consultio no se clona: se extrae `studio-core` (kernel Go compartido) y `dev-studio`(N5)/`consultio`(N14) lo consumen por import semver — disciplina upstream-first + ban de mirror producto→producto (misma doctrina que backflow del arnés); 10 decisiones de arquitectura (A1-A10) tras stress-test de 11 escenarios de fallo contra dev-studio real. Ejecutado y verificado en vivo el mismo día: `studio-core` v0.1.0 (SC-01) con fitness gate propio + `consultio` primitivo (CN-01) corriendo — engagement→repo git, arnés instalado con lock+commit real, sesión ligada, turno con SSE — dev-studio intacto. N14 re-fichado "clon de DevStudio"→"app fina sobre studio-core"; riesgo (2) de N5 cerrado. | CK-25 |
