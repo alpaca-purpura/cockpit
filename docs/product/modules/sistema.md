@@ -16,6 +16,7 @@ método) pero el módulo en sí es infraestructura del sistema, no un nodo despl
 | terminar-arquitectura-despliegue | service-story | done | alta | transversal | BL-03 |
 | destilar-research-sistema-vs-campana | bugfix | done | media | transversal | BL-07 |
 | render-arquitectura-yaml | service-story | done | baja | transversal | BL-08 |
+| arquitectura-refichado-ck21 | service-story | done | alta | transversal | CK-22 |
 | design-system-atomic-storybook | ui-story | idea | media | N13 | BL-04 |
 | poblar-metodo-m1-m3 | service-story | idea | media | N2 | BL-05 |
 | negocio-schema-ssot-plugin-vs-repo | service-story | idea | media | transversal | BL-06 |

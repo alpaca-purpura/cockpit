@@ -1,6 +1,6 @@
 id: arquitectura-refichado-ck21
 type: service-story
-state: developed
+state: done
 module: sistema
 node: transversal
 cap_target: "sistema/arquitectura-refichado-ck21"

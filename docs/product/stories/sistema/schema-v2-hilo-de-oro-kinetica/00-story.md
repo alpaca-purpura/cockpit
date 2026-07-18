@@ -37,6 +37,11 @@ schema describe la organización pero no gobierna quién modifica qué, con qué
 
 Grep cross-tree en `docs/product/stories/` (okr · kpi · schema · kinetica · palantir · hilo de oro): sin historia que cubra este alcance. Revisadas: `sistema/reconciliar-objeto-schema-9-entidades` (done — consolidó el v1; esta lo **extiende**, no lo recrea), `sistema/persona-puesto-primera-clase` (done — patrón "entidad de primera clase" a seguir), `sistema/negocio-yaml-proyeccion-generada` (proyección, no schema), `cockpit/modulo-gestion-cambios-iso` (BL-24 — es el **motor** que ejecuta las acciones kinéticas; acá solo se declaran en el schema, sin duplicar el módulo).
 
+## Deuda heredada (R de `arquitectura-refichado-ck21`, 2026-07-17)
+
+- Ref muerta `process.schema` en `sistema/schema/objeto.schema.yaml:49` — detectada por el barrido de
+  esa historia (el archivo estaba fuera de su alcance); resolver aquí al extender el schema a v2.
+
 ## Próximo paso
 
 `→ /po lee este archivo + carga skill correspondiente → produce 01-spec.md + actualiza product/stories/sistema/schema-v2-hilo-de-oro-kinetica/story.yaml`
