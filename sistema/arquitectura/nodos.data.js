@@ -556,7 +556,7 @@ window.NODOS = {
     "titulo": "Consultio — App del Consultor",
     "plano": "Edge (máquina del consultor)",
     "tipo": "runtime edge / exec-env",
-    "madurez": "no-construido",
+    "madurez": "existe (parcial)",
     "marca": "★IP",
     "campos": [
       [
@@ -565,11 +565,11 @@ window.NODOS = {
       ],
       [
         "resumen",
-        "Clon de DevStudio (N5) con nombre propio (Consultio), cargando los arneses del método (m1·m2·m3) que produce Arnesia (N15). Opera el engagement con carriles/provenance, construye el objeto normalizado + documentos oficiales + arneses de la org, lleva **preview local de Cockpit** (ve cómo lo verá la organización antes de publicar, patrón dev-server), y publica a N6 vía git. Transferible: inicia con el consultor Prenter, luego lo hereda el Analista de Calidad del cliente (N19)."
+        "App fina sobre **`studio-core`** (kernel compartido con N5, repo/módulo Go propio, CK-25) con taxonomía y nombre propios (Consultio), cargando los arneses del método (m1·m2·m3) que produce Arnesia (N15). Opera el engagement con carriles/provenance, construye el objeto normalizado + documentos oficiales + arneses de la org, lleva **preview local de Cockpit** (ve cómo lo verá la organización antes de publicar, patrón dev-server), y publica a N6 vía git. Transferible: inicia con el consultor Prenter, luego lo hereda el Analista de Calidad del cliente (N19)."
       ],
       [
         "plano · tipo · madurez",
-        "Edge (máquina del consultor) · runtime edge / exec-env (app instalable) · **no-construido** — pero **el v0 NO espera al clon (CK-21/D7)**: arneses del método sobre Claude Code pelado; el shell DevStudio llega después (F3)."
+        "Edge (máquina del consultor) · runtime edge / exec-env (app instalable) · **existe (parcial)** — primitiva CN-01 sobre `studio-core` v0.1.0/SC-01, live-verify en vivo (engagement=repo git, arnés instalado con lock+commit, sesión ligada, turno con SSE); shell F3 completo (preview Cockpit, publicación N6) sigue en construcción."
       ],
       [
         "responsabilidades",
@@ -605,11 +605,11 @@ window.NODOS = {
       ],
       [
         "riesgos_abiertos",
-        "(1) Definición del producto-app = clon de DevStudio + adaptación propia — **ya NO bloquea (CK-21/D7): el v0 son los arneses sin shell**; el clon llega después. (2) Modelo de publicación a N6: **resuelto en lo esencial (CK-21/D5)** — dev→UAT→prod con aprobación (Gestión de Cambios); detalle fino al construir. (3) Cuánto método baja empaquetado en los arneses de la app vs se sirve por N3. (4) Transferencia consultor→analista: qué arneses/permisos cambian al entregar."
+        "(1) Definición del producto-app = clon de DevStudio + adaptación propia — **resuelto (CK-25): NO se clona, se extrae `studio-core`** y Consultio consume el kernel por import versionado (disciplina upstream-first, ban de mirror producto→producto). (2) Modelo de publicación a N6: **resuelto en lo esencial (CK-21/D5)** — dev→UAT→prod con aprobación (Gestión de Cambios); detalle fino al construir. (3) Cuánto método baja empaquetado en los arneses de la app vs se sirve por N3. (4) Transferencia consultor→analista: qué arneses/permisos cambian al entregar. (5) `replace => ../studio-core` es transición sin remote (CK-25/A2) — borrar al publicar el core; design system React diferido a F2.5 (CK-25/A7)."
       ],
       [
         "fuentes",
-        "Nombre y modelo: operador (CK-18) · linaje DevStudio (`~/Proyectos/dev-studio`, DH-NN) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`."
+        "Nombre: operador (CK-18) · topología/extracción: operador (CK-25, `proyecto/plans/consultio-studio-core/`) · kernel compartido `~/Proyectos/studio-core` (SC-01) · linaje DevStudio (`~/Proyectos/dev-studio`, DH-NN) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`."
       ]
     ]
   },
@@ -687,7 +687,7 @@ window.NODOS = {
       ],
       [
         "resumen",
-        "App de escritorio (binario Go + UI embebida). Cada dev ve sus repos y sus historias; la versión Product Manager concentra refinamiento/priorización. Es el linaje del que se **clona Consultio** (N14). Sus arneses de dev se modifican en Arnesia (N15)."
+        "App de escritorio (binario Go + UI embebida). Cada dev ve sus repos y sus historias; la versión Product Manager concentra refinamiento/priorización. **Comparte kernel `studio-core` con Consultio (N14) — CK-25**: el 60-70% genérico (motor arneses, driver Claude Code, sesión, store, transporte, updater, design system) vive en el core; N5 migra a consumirlo en su propia sesión (F2.3, DH-NN pendiente). Sus arneses de dev se modifican en Arnesia (N15)."
       ],
       [
         "plano · tipo · madurez",
@@ -727,7 +727,7 @@ window.NODOS = {
       ],
       [
         "riesgos_abiertos",
-        "(1) Entrega a devs del cliente: licenciamiento y arneses de dev (Arnesia). (2) Cómo se clona Consultio de esta base. (3) Distribución/updates de escritorio (N3/Tauri — lo decide P2). (4) Modelo multi-usuario/sync de P2."
+        "(1) Entrega a devs del cliente: licenciamiento y arneses de dev (Arnesia). (2) Cómo se clona Consultio de esta base — **cerrado (CK-25): no se clona, se extrae `studio-core`**; N5 migra a consumirlo (F2.3, deuda transitoria de duplicación core↔dev-studio fichada, sesión propia DH-NN). (3) Distribución/updates de escritorio (N3/Tauri — lo decide P2). (4) Modelo multi-usuario/sync de P2."
       ],
       [
         "fuentes",

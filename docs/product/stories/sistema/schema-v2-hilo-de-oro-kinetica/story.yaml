@@ -1,6 +1,6 @@
 id: schema-v2-hilo-de-oro-kinetica
 type: service-story
-state: refining
+state: ready
 module: sistema
 node: transversal
 cap_target: "cockpit/api-objeto"
@@ -29,4 +29,7 @@ provenance:
 links:
   story_md: 00-story.md
   spec: 01-spec.md
+  arch: 03-arch.md
+  validators: 04-validators.yaml
+  tickets: 06-tickets.yaml
   ledger: ../../../../../LEDGER.md

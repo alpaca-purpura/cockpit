@@ -8,7 +8,7 @@ capability: cockpit/api-objeto
 cap_change_type: extend
 po_version: 2
 last_modified: 2026-07-17
-ratified_by_chris: false          # v2 integra: respuestas del operador a las 5 dudas (2026-07-17) + investigación LATAM/BR (00-research-latam-br.md). Falta FIRMA 1 sobre esta versión.
+ratified_by_chris: true           # FIRMA 1 del operador 2026-07-17 ("firmo, pasa a architect") sobre v2 (dudas resueltas + investigación LATAM/BR integrada)
 links:
   story_yaml: story.yaml
   story_md: 00-story.md
