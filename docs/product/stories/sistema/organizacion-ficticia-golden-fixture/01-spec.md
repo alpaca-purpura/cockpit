@@ -6,9 +6,9 @@ type: service-story
 module: sistema
 capability: sistema/organizacion-ficticia-golden-fixture
 cap_change_type: new
-po_version: 1
+po_version: 2
 last_modified: 2026-07-18
-ratified_by_chris: false          # pendiente FIRMA 1 (7 dudas abiertas abajo)
+ratified_by_chris: true           # FIRMA 1 del operador 2026-07-18 ("Ratifico todo") — 7 dudas resueltas + autonomous run ratificado ("lanza el desarrollo y auditoria, todo")
 links:
   story_yaml: story.yaml
   story_md: 00-story.md
@@ -27,8 +27,8 @@ corporaciones, no una** — más casuística de diseño a cambio de más trabajo
 | # | Corporación | Rubro | Rol en la flota | Modo | Unidades | Tamaño |
 |---|---|---|---|---|---|---|
 | 1 | **Terranova** (`terranova`) — firmado | Desarrolladora inmobiliaria **con constructora** | **GOLDEN**: cobertura 100% de campos y aristas; ancla al nicho `inmobiliario.yaml`; área #1 completa = **Finanzas** (firmado) | `mixto` (firmado) | proyecto/obra (D-07) | ~200 |
-| 2 | *Tiendas Alameda* (`alameda`) — propuesta, duda 1 | Retail multi-sucursal | Casuística: plantilla de proceso medida por unidad `sucursal`+`franquicia` | `okr-trimestral` | sucursal/franquicia | ~150 |
-| 3 | *Industrias Vulcano* (`vulcano`) — propuesta, duda 1 | Manufacturera / industrial | Casuística BR-style: GPD/Falconi + acople PLR (RN-14 válido) + MASP con loop-back + verbos físicos | `gpd-anual` | planta (duda 3) | ~180 |
+| 2 | **Tiendas Alameda** (`alameda`) — firmado | Retail multi-sucursal | Casuística: plantilla de proceso medida por unidad `sucursal`+`franquicia` | `okr-trimestral` | sucursal/franquicia | ~150 |
+| 3 | **Industrias Vulcano** (`vulcano`) — firmado | Manufacturera / industrial | Casuística BR-style: GPD/Falconi + acople PLR (RN-14 válido) + MASP con loop-back + verbos físicos | `gpd-anual` | planta (enum ampliado, duda 3 firmada) | ~180 |
 
 La cobertura golden se **verifica por herramienta, no a ojo** (verificador nuevo, RN-17): campos +
 valores de enum + aristas del schema contra las instancias; su salida = **manifiesto de
@@ -207,23 +207,24 @@ Happy path
 N/A — service-story sin superficie UI nueva (pintar estos datos = `cruce-indicadores` y
 `brecha-proyecto`, F1.1).
 
-## § Dudas abiertas (RONDA 1 — para FIRMA)
+## § Dudas resueltas (RONDA 1 — FIRMA 1 del operador, 2026-07-18: "Ratifico todo")
 
-1. **Nombres shells 2 y 3** — propongo **Tiendas Alameda** (`alameda`) y **Industrias Vulcano**
-   (`vulcano`). ¿Firmás u otros?
-2. **Nichos retail + manufactura** — recomiendo sembrar mini-nichos (4-6 unidades c/u) en
-   `sistema/metodo/nichos/` dentro de esta historia (los KPIs del fixture quedan anclados igual
-   que Terranova↔inmobiliario; el cerebro vertical gana). Alternativa: KPIs de conocimiento
-   general sin tocar `nichos/` (menos scope, fixture menos defendible).
-3. **`tipo_unidad` sin `planta`** — recomiendo ampliar el enum (cambio aditivo chico al schema
-   v2) para la casuística manufactura. Alternativa: Vulcano single-site sin unidades.
-4. **Remote git de los shells** — ¿push a remoto privado (Forgejo/GitHub) o solo repos locales?
-   (Demo comercial + IP: recomiendo remoto privado.)
-5. **Tamaños** — Terranova ~200 (directiva) · retail ~150 · manufactura ~180. ¿OK?
-6. **Reparto de modos** — Terranova `mixto` (firmado) · retail `okr-trimestral` · manufactura
-   `gpd-anual`. ¿Ratificás el reparto?
-7. **Registro** — entrada `kind: client` (cliente ficticio, sin tocar el schema del registry de
-   chris-corp). Alternativa: `kind: demo` nuevo (toca registry.schema.yaml + generador).
+1. **Nombres firmados:** **Tiendas Alameda** (`alameda`) y **Industrias Vulcano** (`vulcano`).
+2. **Nichos:** SÍ — mini-nichos `retail.yaml` + `manufactura.yaml` (4-6 unidades c/u) se siembran
+   en esta historia; el fixture queda anclado igual que Terranova↔inmobiliario.
+3. **`tipo_unidad`:** SÍ — enum gana `planta` (cambio aditivo al schema v2 + paridad Go).
+4. **Remote git:** SÍ remoto privado. El HOST no existe aún (Forgejo = historia F1.3); se crean
+   repos locales con git propio y el push a remoto queda como follow-up explícito al provisionar
+   el host (no se publica el fixture a un host no decidido).
+5. **Tamaños:** Terranova ~200 · Alameda ~150 · Vulcano ~180. Firmado.
+6. **Modos:** Terranova `mixto` · Alameda `okr-trimestral` · Vulcano `gpd-anual`. Firmado.
+7. **Registro:** `kind: client` (cliente ficticio; el schema del registry de chris-corp no se toca).
+
+**Además el operador ratificó el modo autónomo**: architect → dev → audit sin pausa G
+(`autonomous_mode: true` — cruda: "levanta el architect… al terminar, lanza el desarrollo y
+auditoria, todo"), con directiva de **casuística máxima** ("introduce toda la casuística posible…
+escenarios posibles complejos para tener buena data de prueba") → aterriza en
+`03-arch.md § Matriz de casuística`.
 
 ## Acceptance Criteria (Gherkin — service-story)
 
@@ -353,13 +354,16 @@ en 3 colores · loop-back MASP presente en el shell manufactura
 
 ## Próximo paso
 
-`type: service-story` → skip UX → **FIRMA 1 del operador** (7 dudas) → `/architect` a mano
-(03-arch + 04-validators + 06-tickets · `refined → ready`). Secuencia de construcción sugerida
-para tickets: verificador → Terranova-Finanzas (hito área #1) → Terranova resto → shells 2 y 3 →
-registro + live-verify + manifiesto.
+FIRMA 1 ✅ (2026-07-18) → `/architect` a mano (03-arch + 04-validators + 06-tickets ·
+`refined → ready`) → **autonomous run** dev + audit (ratificado). Secuencia de tickets:
+schema aditivo → verificador → nichos → Terranova (estructura → Finanzas → resto) → Alameda →
+Vulcano → registro + live-verify + manifiesto.
 
 ## Changelog
 
 - v1 2026-07-18 — draft inicial post-decisiones del operador (3 corporaciones · área #1 Finanzas ·
   modo mixto · Terranova): flota de 3 shells, verificador de cobertura como contrato de salida,
   RN-17..RN-23, 8 SCs, 7 dudas abiertas.
+- v2 2026-07-18 — FIRMA 1 ("Ratifico todo"): 7 dudas resueltas (Alameda/Vulcano · nichos sí ·
+  planta sí · remoto diferido a host · tamaños · modos · kind client) + autonomous_mode ratificado
+  + directiva casuística máxima → 03-arch.
