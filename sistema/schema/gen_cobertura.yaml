@@ -3,6 +3,10 @@
 # los valores estructuralmente exclusivos (una empresa tiene UN modo) se cubren a nivel FLOTA,
 # cada uno en el shell que lo carga por diseño.
 
+# DOCUMENTAL (la ejecución es vía --dimensiones — fix Audit B): el gate golden per-shell es
+#   python3 gen_cobertura.py --shell ~/Proyectos/terranova --dimensiones campos,aristas,provenance
+# (single-shell mide también enums cuyo hueco vive por diseño en otros shells → sin filtrar,
+# exit 1 perpetuo). La flota corre sin filtro (todo al 100%).
 politica:
   terranova: { campos: 100, aristas: 100 }        # golden: 100% campos+aristas él solo
   flota:     { campos: 100, aristas: 100, enums: 100, verbos: 100 }

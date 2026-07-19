@@ -40,6 +40,7 @@ MINI_SCHEMA = {
                 "parte": {
                     "id": {"tipo": "str", "requerido": True},
                     "peso": {"tipo": "num", "requerido": False},
+                    "otra_ref": {"tipo": "ref", "a": "otra", "requerido": False},
                 },
             },
         },
@@ -54,6 +55,8 @@ MINI_SCHEMA = {
     "relaciones": [
         {"de": "cosa", "a": "cosa", "dueño": "cosa.amiga_ref"},
         {"de": "otra", "a": "cosa", "dueño": "otra.cosa_ref"},
+        # arista ANIDADA (2 segmentos por lista) + COMPUESTA `+` (2ª parte resuelve en la raíz)
+        {"de": "cosa", "a": "otra", "dueño": "cosa.partes.otra_ref+amiga_ref"},
     ],
 }
 
@@ -61,7 +64,8 @@ MINI_SCHEMA = {
 MINI_FULL = {
     "cosa": [
         {"id": "co-a", "tono": "rojo", "amiga_ref": "co-b",
-         "partes": [{"id": "co-a#p1", "peso": 3}], "fuente": "Entrevista", "conf": "alta"},
+         "partes": [{"id": "co-a#p1", "peso": 3, "otra_ref": "ot-x"}],
+         "fuente": "Entrevista", "conf": "alta"},
         {"id": "co-b", "tono": "verde", "fuente": "Observado", "conf": "media"},
         {"id": "co-c", "tono": "rojo", "fuente": "Sistema leído", "conf": "alta"},
         {"id": "co-d", "tono": "verde", "fuente": "Inferido", "conf": "baja"},
@@ -124,6 +128,19 @@ class TestCobertura(unittest.TestCase):
         r = gc.cobertura(self.contrato, {"mini": inst})
         self.assertIn("otra.cosa_ref", r.huecos_aristas)
         self.assertIn("otra.cosa_ref", r.huecos_campos)      # también es campo
+
+    def test_arista_anidada_y_compuesta(self):
+        # quitar otra_ref del sub-item → la arista compuesta cae (aunque amiga_ref siga viva)
+        inst = copy.deepcopy(MINI_FULL)
+        for c in inst["cosa"]:
+            for p in c.get("partes") or []:
+                p.pop("otra_ref", None)
+        r = gc.cobertura(self.contrato, {"mini": inst})
+        self.assertIn("cosa.partes.otra_ref+amiga_ref", r.huecos_aristas)
+        # y al revés: quitar amiga_ref también la tumba (compuesto exige AMBAS partes)
+        inst2 = quitar(MINI_FULL, "cosa", "amiga_ref")
+        r2 = gc.cobertura(self.contrato, {"mini": inst2})
+        self.assertIn("cosa.partes.otra_ref+amiga_ref", r2.huecos_aristas)
 
     def test_campo_vacio_no_cuenta(self):
         inst = copy.deepcopy(MINI_FULL)
@@ -194,6 +211,33 @@ class TestAristasReales(unittest.TestCase):
         self.assertEqual(medibles | informales, todas)
         self.assertIn("la carpeta (partición)", informales)
         self.assertGreaterEqual(len(medibles), 20)
+
+
+class TestFiltrarArea(unittest.TestCase):
+    """El scope de --area debe seguir el CONTRATO del schema (finding Audit B):
+    brecha.against_ref admite capability|proceso|sistema|objetivo."""
+
+    def test_brecha_contra_capability_entra_al_scope(self):
+        datos = {
+            "empresa": [{"id": "e"}],
+            "area": [{"id": "a1", "nombre": "Finanzas"}],
+            "proceso": [{"id": "p1", "areas_ref": ["a1"], "realiza_capabilities": ["c1"],
+                         "sistemas_ref": ["s1"],
+                         "actividades": [{"id": "p1#a1", "sistemas_ref": ["s2"],
+                                          "raci": {"A": "r2", "R": ["r2"]}}]}],
+            "capability": [{"id": "c1"}],
+            "sistema": [{"id": "s1"}, {"id": "s2"}],
+            "rol": [{"id": "r1"}, {"id": "r2"}],
+            "kpi": [], "persona": [], "objetivo": [], "proyecto_mejora": [], "idea": [],
+            "brecha": [{"id": "b1", "against_ref": "c1"},
+                       {"id": "b2", "against_ref": "s1"}],
+        }
+        datos["area"][0]["lider_ref"] = "r1"
+        out = gc.filtrar_area(datos, "a1")
+        ids_b = {b["id"] for b in out["brecha"]}
+        self.assertEqual(ids_b, {"b1", "b2"})                 # capability Y sistema como targets
+        self.assertEqual({s["id"] for s in out["sistema"]}, {"s1", "s2"})  # sistemas_ref de actividad también
+        self.assertEqual({r["id"] for r in out["rol"]}, {"r1", "r2"})      # lider_ref + RACI
 
 
 class TestCLISmoke(unittest.TestCase):

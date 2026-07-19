@@ -219,6 +219,11 @@ N/A — service-story sin superficie UI nueva (pintar estos datos = `cruce-indic
 5. **Tamaños:** Terranova ~200 · Alameda ~150 · Vulcano ~180. Firmado.
 6. **Modos:** Terranova `mixto` · Alameda `okr-trimestral` · Vulcano `gpd-anual`. Firmado.
 7. **Registro:** `kind: client` (cliente ficticio; el schema del registry de chris-corp no se toca).
+   **[R 2026-07-18 — cómo aterrizó]:** el generador del holding PROHÍBE `kind: client` en la sección
+   `empresas` (client = CRM de prenter, I-39; las ficticias tampoco son cuentas) → se registraron por
+   el carril `extra_projects` (precedente demo-environment) con passthrough opcional de `kind`
+   (+3 líneas al generador, chris-corp@c9fd917). El resultado firmado se cumple: el portfolio las
+   lista como `client` y el schema del registry no se tocó.
 
 **Además el operador ratificó el modo autónomo**: architect → dev → audit sin pausa G
 (`autonomous_mode: true` — cruda: "levanta el architect… al terminar, lanza el desarrollo y
@@ -307,13 +312,16 @@ en 3 colores · loop-back MASP presente en el shell manufactura
 
 | Ítem (Mapa funcional) | Tipo | estado | Cubierto por | Verificación REAL |
 |---|---|---|---|---|
-| Bif-1 · hueco de cobertura | branch | ⬜ pendiente | SC-2 | mutación → RED |
-| Bif-2 · warning en shell | branch | ⬜ pendiente | SC-1 | live-verify 0E/0W ×3 |
-| Bif-3 · reparto modos | branch | ⬜ pendiente | SC-4 | validador v2 + verificador |
-| Bif-4 · provenance uniforme | branch | ⬜ pendiente | SC-6 | regla distribución |
-| Bif-5 · verbo nuevo | branch | ⬜ pendiente | SC-7 | gate verbos verde |
-| RN-17..RN-23 | rule | ⬜ pendiente | SC-1..SC-7 | ver arriba |
-| AC-1..AC-8 | accept | ⬜ pendiente | SC-1..SC-8 | live-verify + verificador + manifiesto |
+| Bif-1 · hueco de cobertura | branch | ✅ construido | SC-2 | mutación copia real → huecos nombrados exactos (persona.sin_kpi · idea.promovida_a_ref campo+arista) + suite 15/15 |
+| Bif-2 · warning en shell | branch | ✅ construido | SC-1 | live-verify :4100 ×3 → 0E/0W (tras fix RN-13: 232 provenance por actividad + 3 ideas ancla de pm) |
+| Bif-3 · reparto modos | branch | ✅ construido | SC-4 | gen_cobertura reparto 3/3 + RN-14 activo en vivo (0 errors con acople true solo en mixto/gpd) |
+| Bif-4 · provenance uniforme | branch | ✅ construido | SC-6 | shares 46/53/53% <70 · 4-6 fuentes · 0 Inferido×alta |
+| Bif-5 · verbo nuevo | branch | ✅ construido | SC-7 | liquidar+calibrar por PR-flujo, gate 46 verbos verde; flota usa 46/46 |
+| RN-17..RN-23 | rule | ✅ construido | SC-1..SC-7 | manifiesto flota 208/208 · 0 huecos · checkpoint § Evidencia |
+| AC-1..AC-8 | accept | ✅ construido | SC-1..SC-8 | portfolio 3× client · 0E/0W ×3 · manifiesto commiteado + linkeado en operar-metodo · READMEs · 18ms |
+
+**Huecos detectados:** ninguno · **SC huérfanos:** ninguno · **Diferido:** push de los shells a
+remoto privado (espera host — Forgejo F1.3; duda 4).
 
 ## Non-functional requirements
 

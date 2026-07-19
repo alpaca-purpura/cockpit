@@ -66,6 +66,15 @@ Cada caso lleva **dónde aterriza** (shell · área). El builder marca ✔ al co
 cubre lo estructural (campos/enums/aristas/verbos/provenance); lo semántico lo audita la Fase B
 contra esta tabla. **T=Terranova · A=Alameda · V=Vulcano.**
 
+> **[R post-audit 2026-07-18] Aterrizajes reales donde el shell divergió del plan (la esencia de
+> cada fila SÍ está encarnada — Audit A 48 filas/38 limpias):** C1.1 jerárquico al residente de
+> obra (no al gerente de construcción) · C1.5 sin_kpi = asistente de gerencia (no recepcionista)
+> · C1.8 interino V = Calidad+Seguridad-SSO (no Mantenimiento) · C2.4 KR DSO 88→60 (no 90→60) ·
+> C2.8-A tensión disponibilidad-góndola↔merma (no venta/m²↔merma) · C8.1-T `ext` en empresa.yaml
+> root (no en la unidad). Post-fix-loop además: C3.7 gana la variante banda sin umbral_amarillo
+> (kpi-ausentismo V) · C7.8 gana la idea de contratista (idea-orden-almacen-obra T) · ROI
+> normalizado a convención neta (B−I)/I en toda la flota.
+
 ### C1 · Organización (personas/roles/áreas)
 
 | # | Caso complejo | Aterriza |

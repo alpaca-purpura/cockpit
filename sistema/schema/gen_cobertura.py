@@ -293,7 +293,10 @@ def provenance_violaciones(datos: dict, min_fuentes=4, max_share=0.70) -> list:
 
 # ---------------------------------------------------------------- scope --area
 def filtrar_area(datos: dict, area_id: str) -> dict:
-    """Sub-universo alcanzable desde el subtree del área (definición del manifiesto)."""
+    """Sub-universo alcanzable desde el subtree del área. Los TARGETS de cada filtro siguen el
+    CONTRATO del schema (fix Audit B): brecha.against_ref → capability|proceso|sistema|objetivo ·
+    idea.sobre_refs → proceso|sistema|area · roles incluyen lider_ref y RACI · sistemas incluyen
+    los de actividad y tercero_ref."""
     areas = {a.get("id"): a for a in datos.get("area", [])}
     subtree = set()
 
@@ -307,22 +310,37 @@ def filtrar_area(datos: dict, area_id: str) -> dict:
     procesos = [p for p in datos.get("proceso", [])
                 if set(p.get("areas_ref") or []) & subtree]
     pids = {p.get("id") for p in procesos}
+    acts = [a for p in procesos for a in p.get("actividades") or [] if isinstance(a, dict)]
     kpis = [k for k in datos.get("kpi", [])
             if k.get("proceso_ref") in pids or k.get("dueño_ref") in subtree]
     kids = {k.get("id") for k in kpis}
-    roles_ref = {p.get("dueño_ref") for p in procesos} | {
-        a.get("carril_ref") for p in procesos for a in p.get("actividades") or []
-        if isinstance(a, dict)}
+    roles_ref = {p.get("dueño_ref") for p in procesos} | {a.get("carril_ref") for a in acts}
+    for a in acts:
+        raci = a.get("raci") or {}
+        roles_ref.add(raci.get("A"))
+        for letra in ("R", "C", "I"):
+            roles_ref |= set(raci.get(letra) or [])
+    roles_ref |= {areas[aid].get("lider_ref") for aid in subtree if aid in areas}
+    roles_ref.discard(None)
     roles = [x for x in datos.get("rol", []) if x.get("id") in roles_ref]
     rids = {x.get("id") for x in roles}
     personas = [pe for pe in datos.get("persona", [])
                 if {(x or {}).get("rol") for x in pe.get("roles") or []
                     if isinstance(x, dict)} & rids]
+    sistemas_ref = {s for p in procesos for s in p.get("sistemas_ref") or []}
+    sistemas_ref |= {s for a in acts for s in a.get("sistemas_ref") or []}
+    sistemas_ref |= {pe.get("tercero_ref") for pe in personas}
+    sistemas = [s for s in datos.get("sistema", []) if s.get("id") in sistemas_ref]
+    sids = {s.get("id") for s in sistemas}
     objetivos = [o for o in datos.get("objetivo", [])
                  if any((kr or {}).get("kpi_ref") in kids
                         for kr in o.get("key_results") or [] if isinstance(kr, dict))]
+    oids = {o.get("id") for o in objetivos}
     krs = {kr.get("id") for o in objetivos for kr in o.get("key_results") or []
            if isinstance(kr, dict)}
+    caps_ref = {c for p in procesos for c in p.get("realiza_capabilities") or []}
+    caps = [c for c in datos.get("capability", []) if c.get("id") in caps_ref]
+    cids = {c.get("id") for c in caps}
 
     def refs_de(x, campo):
         v = x.get(campo) or []
@@ -335,14 +353,10 @@ def filtrar_area(datos: dict, area_id: str) -> dict:
                  if refs_de(pm, "mueve_refs") & (kids | krs)]
     pmids = {pm.get("id") for pm in proyectos}
     brechas = [b for b in datos.get("brecha", [])
-               if b.get("against_ref") in (pids | kids | subtree)]
+               if b.get("against_ref") in (pids | cids | sids | oids)]
     ideas = [i for i in datos.get("idea", [])
              if i.get("promovida_a_ref") in pmids
-             or set(i.get("sobre_refs") or []) & (pids | subtree)]
-    sistemas_ref = {s for p in procesos for s in p.get("sistemas_ref") or []}
-    sistemas = [s for s in datos.get("sistema", []) if s.get("id") in sistemas_ref]
-    caps_ref = {c for p in procesos for c in p.get("realiza_capabilities") or []}
-    caps = [c for c in datos.get("capability", []) if c.get("id") in caps_ref]
+             or set(i.get("sobre_refs") or []) & (pids | sids | subtree)]
     return {
         "empresa": datos.get("empresa", []),
         "area": [a for a in datos.get("area", []) if a.get("id") in subtree],
@@ -386,6 +400,15 @@ def manifiesto_md(args, contrato, r_flota, por_shell, fallas_reparto, prov_por_s
     if excl:
         li.append("- Enums excluidos estructurales (con razón declarada): " +
                   " · ".join(f"`{k}` ({v})" for k, v in excl.items()))
+    # enums con el MISMO conjunto de valores son indistinguibles para el matcher field-agnostic
+    # (Audit B): cubrir uno cubre el otro — se declara para que nadie lea cobertura de más
+    grupos: dict = {}
+    for enum, valores in contrato.enums.items():
+        grupos.setdefault(frozenset(map(str, valores or [])), []).append(enum)
+    gemelos = [g for g in grupos.values() if len(g) > 1]
+    if gemelos:
+        li.append("- ⚠ Enums con conjunto de valores idéntico (indistinguibles para el medidor "
+                  "field-agnostic): " + " · ".join("{" + ", ".join(sorted(g)) + "}" for g in gemelos))
     for nombre, datos in por_shell.items():
         n = sum(len(v) for v in datos.values())
         li.append(f"- `{nombre}`: {n} instancias · provenance: "
@@ -408,9 +431,16 @@ def main(argv=None) -> int:
     ap.add_argument("--flota", action="store_true", help="política flota (100% todo)")
     ap.add_argument("--area", help="scope al subtree de un área (hito Finanzas)")
     ap.add_argument("--manifiesto", help="escribe el reporte md acá")
+    ap.add_argument("--dimensiones", help="coma-separadas ∈ {campos,aristas,enums,verbos,provenance}"
+                    " — restringe qué huecos cuentan para el exit (política per-shell RN-17:"
+                    " el gate golden de terranova solo = `--dimensiones campos,aristas`)")
     args = ap.parse_args(argv)
     if not args.shell:
         ap.error("--shell requerido")
+    DIMS = {"campos", "aristas", "enums", "verbos", "provenance"}
+    dims = set(args.dimensiones.split(",")) if args.dimensiones else set(DIMS)
+    if not dims <= DIMS:
+        ap.error(f"--dimensiones inválidas: {sorted(dims - DIMS)}")
 
     schema = load_yaml(RAIZ / "objeto.schema.yaml")
     contrato = indexar_contrato(schema)
@@ -423,6 +453,12 @@ def main(argv=None) -> int:
     for s in args.shell:
         p = Path(s).expanduser()
         nombre = p.name
+        if not (p / "empresa").is_dir():
+            print(f"gen_cobertura: shell inexistente o sin empresa/: {p} (error operativo)")
+            return 2
+        if nombre in por_shell:
+            print(f"gen_cobertura: dos shells con el mismo basename `{nombre}` (colisión)")
+            return 2
         try:
             datos = leer_shell(p, contrato)
         except RuntimeError as e:
@@ -446,10 +482,23 @@ def main(argv=None) -> int:
         actividades = [a for datos in por_shell.values() for pr in datos.get("proceso", [])
                        for a in pr.get("actividades") or [] if isinstance(a, dict)]
         r.huecos_verbos = verbos_sin_usar(verbos, actividades)
-        for viols in prov_por_shell.values():
-            r.violaciones_provenance.extend(viols)
+    # provenance (RN-19) es regla PER-SHELL — cuenta también en corrida single-shell (fix Audit B)
+    for viols in prov_por_shell.values():
+        r.violaciones_provenance.extend(viols)
 
     fallas_reparto = check_reparto(config, por_shell) if args.flota else []
+
+    # política por dimensiones (RN-17): lo no seleccionado no cuenta para el exit
+    if "campos" not in dims:
+        r.huecos_campos = []
+    if "aristas" not in dims:
+        r.huecos_aristas = []
+    if "enums" not in dims:
+        r.huecos_enums, fallas_reparto = [], []
+    if "verbos" not in dims:
+        r.huecos_verbos = []
+    if "provenance" not in dims:
+        r.violaciones_provenance = []
 
     total_huecos = r.huecos + len(fallas_reparto)
     modo = "flota" if args.flota else ("área " + args.area if args.area else "shell")

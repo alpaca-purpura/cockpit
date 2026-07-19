@@ -1,14 +1,14 @@
 # checkpoint.md — organizacion-ficticia-golden-fixture
 
 ```yaml
-state: developed
-phase: AUTONOMOUS                 # autonomous_mode: true ratificado (FIRMA 1, 2026-07-18) — G se salta
+state: done                       # F 2026-07-18: audit APPROVED (fix-loop cerrado) + capability publicada
+phase: AUTONOMOUS                 # autonomous_mode: true ratificado (FIRMA 1, 2026-07-18) — G se saltó
 autonomous_mode: true
 chris_verify:
   required: false
   signoff: null
   rounds: []
-reconciled: false                 # R corre antes del auditor
+reconciled: true                  # R 2026-07-18: spec matriz viva ✅ + delta duda 7 registrado + 03-arch D-A5 vigente vía scope_deltas; ledger diferido: push shells a remoto (host F1.3)
 started: 2026-07-18
 developed: 2026-07-18
 tickets:
@@ -51,3 +51,24 @@ scope_deltas:     # allowlist para el auditor (autonomous — cambios respecto d
 
 ## Gates repo cockpit
 pre-commit 5/5 verdes en cada commit (arq · metodo · roadmap · schema · componentes) · go test verde · suite verificador verde.
+
+## Auditoría Fase B (2026-07-18 · 3 auditores adversariales paralelos) → APPROVED tras fix-loop
+
+- **A · casuística vs shells** (48 filas C1-C8 auditadas campo-por-campo + barridos mecánicos flota:
+  RACI A==1 100%, accountable 100%, refs bidireccionales 5/5, 12/12 estados): 38 limpias · 4 MEDIA
+  + 2 BAJA + 6 derivas de matriz. **Todo corregido**: banda sin umbral_amarillo (kpi-ausentismo V) ·
+  idea de contratista (idea-orden-almacen-obra T) · ROI normalizado neto (B−I)/I en 9 pm + 2
+  paybacks a convención · ramp-up u10 585→640 (claim=banda) · comentario DSO quick-wins · matriz
+  03-arch anotada con aterrizajes reales.
+- **B · código + downstream** (todo verde incl. **prenter 0E/0W sin regresión**; walker verificado
+  empíricamente correcto): 4 MEDIA + 3 BAJA. **Todo corregido**: filtrar_area contra el CONTRATO
+  del schema (test RED→GREEN brecha-vs-capability) · provenance RN-19 cuenta per-shell ·
+  --dimensiones (gate golden per-shell ejecutable: 208/208 exit 0) · tests arista anidada+compuesta
+  · exit 2 shell inexistente · guard basename duplicado · manifiesto declara enums gemelos ·
+  validación extras chris-corp. Upstream → L3: TD-1/TD-2/TD-3 (tech-debt.md).
+- **C · ficción/idioma/nichos** (507 personas, ~130 nombres, 11 unidades de nicho): 0 críticos/altos
+  · 4 BAJA + 4 INFO. **Corregido**: verificação→verificación · Banco del Pacífico Sur→Banco
+  Interandino · 6 apellidos andinos redistribuidos a jefaturas (dignidad) · sabor Falconi
+  documentado en README Vulcano. RN-20 ✓ (RUC/emails/teléfonos ficticios canónicos, 0 colisiones
+  confundibles, 0 filtración control-plane) · es-419 0 voseo · nichos 0 alucinación.
+- **Cierre post-fix**: suite 17/17 · flota 208/208 0 huecos · gate golden exit 0 · live 0E/0W ×3.

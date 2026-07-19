@@ -1,11 +1,11 @@
 id: organizacion-ficticia-golden-fixture
 type: service-story
-state: developing        # 2026-07-18: ready package completo (03/04/06 + dispatch en 06) → build autónomo T-1..T-9
+state: done              # 2026-07-18: R reconciliada · B APPROVED (3 auditores, fix-loop cerrado) · capability live · flota 0E/0W en vivo
 module: sistema
 node: transversal
 cap_target: "sistema/organizacion-ficticia-golden-fixture"
 cap_change_type: new
-capability_status: planned
+capability_status: live
 release: F1
 prioridad: alta
 fichas: [CK-23]
