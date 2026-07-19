@@ -11,7 +11,9 @@ prioridad: alta
 fichas: [CK-11, CK-18, CK-23]
 dependencies:
   # CK-23: el golden fixture es el contrato de aceptación — la corrida del método debe poder
-  # producir un objeto de esa completitud
+  # producir un objeto de esa completitud. Contrato CONCRETO (generado, 2026-07-18):
+  # sistema/schema/manifiesto-cobertura-flota.md (208/208 campos · 23 aristas · enums/verbos 100%
+  # flota terranova+alameda+vulcano) — reproducirlo con datos reales = criterio de salida.
   stories: [metodo-como-arnes-v0, organizacion-ficticia-golden-fixture]
 context:
   job: "Como consultor quiero operar m1·m2·m3 como un flujo con carriles/provenance y construir el objeto normalizado, los documentos oficiales y los arneses de la organización (con preview local de Cockpit) para entregar el mapa completo As-Is→To-Be→proyectos."
