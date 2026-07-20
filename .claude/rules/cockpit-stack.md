@@ -15,9 +15,12 @@
 - **No hay agentes-producto** tipo Valeria/Lisa dentro de este repo. Los "trabajadores" del producto son
   los **arneses** que la Fábrica entrega al cliente (N15 Arnesia); acá se construyen con el arnés, no se
   hospeda un engine agéntico. → `type: agentic-story` es raro; la mayoría del backlog es `service-story`.
-- **Sin design-system canónico todavía** (`design_system_ref.status: pending`, BL-04). El § Mockup FINAL /
-  Storybook del CORE (`spec-mapa-funcional.md`, `01-spec-template.md`) **no aplica** hasta que exista la
-  historia `sistema/design-system-atomic-storybook`. UI hoy = Tailwind + `ui/components/` ad-hoc.
+- **Design system = PRENTER** (adoptado CK-27 · `design_system_ref.status: adopted`). Toda UI se construye
+  contra el banco atómico: tokens en `ui/app/globals.css`, átomos en `ui/components/ds/`, catálogo vivo
+  embebido en `/design-system`. Doctrina enforce-able: **`[[ui-design-system]]`** (DRY, un solo acento teal,
+  atomic design, "Storybook" = ruta embebida no Storybook.js). El § Mockup del CORE se piensa con átomos
+  PRENTER existentes. Migración de los organismos legacy (`ui/components/{negocio,shell}/` aún en Tailwind
+  ad-hoc, ya re-tematizados a teal por los tokens) a `ds/` = follow-up de `sistema/design-system-atomic-storybook`.
 
 ## Toolchain (verbatim en el seam · `toolchain.*`)
 

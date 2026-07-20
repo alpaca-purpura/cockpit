@@ -8,6 +8,7 @@ import {
   quienesCumplen,
   rolesDePersona,
   procesosDelRol,
+  jefesDePersona,
 } from '../../lib/personas';
 import type { Persona, Rol, PersonasData } from '../../lib/personas';
 import type { Negocio } from '../../lib/negocio';
@@ -22,9 +23,9 @@ import type { Negocio } from '../../lib/negocio';
  */
 
 const CONF_DOT: Record<string, string> = {
-  alta: '#2ecf96',
-  media: '#f5a524',
-  baja: '#e5564b',
+  alta: 'var(--color-success-dark)',
+  media: 'var(--color-warning-dark)',
+  baja: 'var(--color-danger-dark)',
 };
 
 // negocio nullable: el pilar Personas vive UPSTREAM del negocio.yaml (objeto
@@ -62,12 +63,12 @@ export function PersonasTab({
   if (personas.length === 0 && roles.length === 0) {
     return (
       <EmptyState>
-        <span className="text-[#e4e4e7] font-medium">{empresa}</span> todavía no tiene su{' '}
-        <span className="text-[#93c5fd]">pilar Personas</span> poblado. Se llena
+        <span className="text-[var(--text-on-dark)] font-medium">{empresa}</span> todavía no tiene su{' '}
+        <span className="text-[var(--color-teal-400)]">pilar Personas</span> poblado. Se llena
         un-archivo-por-entidad en{' '}
-        <code className="text-[#71717a]">empresa/personas/</code> y{' '}
-        <code className="text-[#71717a]">empresa/roles/</code> del repo de la empresa
-        (contrato: <code className="text-[#71717a]">sistema/schema/objeto.schema.yaml</code>).
+        <code className="text-[var(--text-on-dark-faint)]">empresa/personas/</code> y{' '}
+        <code className="text-[var(--text-on-dark-faint)]">empresa/roles/</code> del repo de la empresa
+        (contrato: <code className="text-[var(--text-on-dark-faint)]">sistema/schema/objeto.schema.yaml</code>).
       </EmptyState>
     );
   }
@@ -77,27 +78,27 @@ export function PersonasTab({
       {/* Mismo patrón que el banner de negocio.yaml: warnings no-fatales al leer —
           el dato malo se delata en vez de mentir en silencio. */}
       {data._warnings && data._warnings.length > 0 && (
-        <div className="rounded-md border border-[#5e4a22] bg-[#f5a524]/[0.08] p-3">
-          <div className="text-xs font-semibold text-[#f5a524]">
+        <div className="rounded-md border border-[var(--color-dark-border)] bg-[var(--color-warning-dark)]/[0.08] p-3">
+          <div className="text-xs font-semibold text-[var(--color-warning-dark)]">
             ⚠ objeto mal formado · {data._warnings.length}{' '}
             {data._warnings.length === 1 ? 'aviso' : 'avisos'}
           </div>
-          <ul className="mt-1.5 space-y-0.5 font-mono text-[11px] text-[#d4d4d8]">
+          <ul className="mt-1.5 space-y-0.5 font-mono text-[11px] text-[var(--text-on-dark)]">
             {data._warnings.map((wmsg, i) => (
               <li key={i}>· {wmsg}</li>
             ))}
           </ul>
-          <p className="mt-1.5 text-[10px] text-[#71717a]">
+          <p className="mt-1.5 text-[10px] text-[var(--text-on-dark-faint)]">
             Contrato:{' '}
-            <code className="text-[#71717a]">sistema/schema/objeto.schema.yaml</code>. Se
+            <code className="text-[var(--text-on-dark-faint)]">sistema/schema/objeto.schema.yaml</code>. Se
             muestra lo que se pudo leer.
           </p>
         </div>
       )}
 
       <section className="space-y-2">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-[#a1a1aa]">
-          Roles <span className="font-normal text-[#71717a]">({roles.length})</span>
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-on-dark-muted)]">
+          Roles <span className="font-normal text-[var(--text-on-dark-faint)]">({roles.length})</span>
         </h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {roles.map((rol) => (
@@ -107,8 +108,8 @@ export function PersonasTab({
       </section>
 
       <section className="space-y-2">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-[#a1a1aa]">
-          Personas <span className="font-normal text-[#71717a]">({personas.length})</span>
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-on-dark-muted)]">
+          Personas <span className="font-normal text-[var(--text-on-dark-faint)]">({personas.length})</span>
         </h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {personas.map((p) => (
@@ -135,14 +136,14 @@ function RolCard({
   const procesos = negocio ? procesosDelRol(negocio, rol) : [];
 
   return (
-    <div className="rounded-md border border-[#27272a] bg-[var(--color-panel2)] p-3">
+    <div className="rounded-md border border-[var(--color-dark-border)] bg-[var(--color-panel2)] p-3">
       <div className="flex items-start justify-between gap-2">
-        <div className="text-sm font-semibold leading-tight text-[#e4e4e7]">
+        <div className="text-sm font-semibold leading-tight text-[var(--text-on-dark)]">
           {rol.nombre}
         </div>
         <div className="flex shrink-0 items-center gap-1.5">
           {rol.es_stakeholder && (
-            <span className="rounded-full border border-[#27272a] px-1.5 py-0.5 text-[10px] text-[#a1a1aa]">
+            <span className="rounded-full border border-[var(--color-dark-border)] px-1.5 py-0.5 text-[10px] text-[var(--text-on-dark-muted)]">
               stakeholder
             </span>
           )}
@@ -151,15 +152,15 @@ function RolCard({
       </div>
 
       {rol.descripcion && (
-        <p className="mt-1 text-xs leading-relaxed text-[#a1a1aa]">{rol.descripcion}</p>
+        <p className="mt-1 text-xs leading-relaxed text-[var(--text-on-dark-muted)]">{rol.descripcion}</p>
       )}
       {rol.autoridad && (
-        <p className="mt-1.5 text-[11px] text-[#71717a]">
-          Autoridad: <span className="text-[#d4d4d8]">{rol.autoridad}</span>
+        <p className="mt-1.5 text-[11px] text-[var(--text-on-dark-faint)]">
+          Autoridad: <span className="text-[var(--text-on-dark)]">{rol.autoridad}</span>
         </p>
       )}
       {rol.responsabilidades && rol.responsabilidades.length > 0 && (
-        <ul className="mt-1.5 space-y-0.5 text-[11px] text-[#a1a1aa]">
+        <ul className="mt-1.5 space-y-0.5 text-[11px] text-[var(--text-on-dark-muted)]">
           {rol.responsabilidades.map((resp, i) => (
             <li key={i}>· {resp}</li>
           ))}
@@ -173,27 +174,27 @@ function RolCard({
           cumplen.map((p) => (
             <span
               key={p.id}
-              className="rounded-full border border-[#2ecf96]/40 bg-[#2ecf96]/[0.08] px-2 py-0.5 text-[11px] text-[#2ecf96]"
+              className="rounded-full border border-[var(--color-success-dark)]/40 bg-[var(--color-success-dark)]/[0.08] px-2 py-0.5 text-[11px] text-[var(--color-success-dark)]"
             >
               {p.nombre}
             </span>
           ))
         ) : (
-          <span className="rounded-full border border-[#5e4a22] bg-[#f5a524]/[0.08] px-2 py-0.5 text-[11px] text-[#f5a524]">
+          <span className="rounded-full border border-[var(--color-dark-border)] bg-[var(--color-warning-dark)]/[0.08] px-2 py-0.5 text-[11px] text-[var(--color-warning-dark)]">
             sin persona asignada
           </span>
         )}
       </div>
 
       {procesos.length > 0 && (
-        <div className="mt-2 border-t border-[#27272a] pt-2">
-          <div className="text-[10px] uppercase tracking-wide text-[#71717a]">
+        <div className="mt-2 border-t border-[var(--color-dark-border)] pt-2">
+          <div className="text-[10px] uppercase tracking-wide text-[var(--text-on-dark-faint)]">
             Procesos que corre ({procesos.length})
           </div>
-          <ul className="mt-1 space-y-0.5 text-[11px] text-[#a1a1aa]">
+          <ul className="mt-1 space-y-0.5 text-[11px] text-[var(--text-on-dark-muted)]">
             {procesos.map((p) => (
               <li key={p.id}>
-                · {p.nombre} <span className="text-[#71717a]">({p.area})</span>
+                · {p.nombre} <span className="text-[var(--text-on-dark-faint)]">({p.area})</span>
               </li>
             ))}
           </ul>
@@ -215,19 +216,17 @@ function PersonaCard({
   personas: Persona[];
 }) {
   const nombres = rolesDePersona(persona, roles);
-  const jefe = persona.reporta_a
-    ? personas.find((p) => p.id === persona.reporta_a)?.nombre ?? persona.reporta_a
-    : null;
+  const jefes = jefesDePersona(persona, personas);
 
   return (
-    <div className="rounded-md border border-[#27272a] bg-[var(--color-panel2)] p-3">
+    <div className="rounded-md border border-[var(--color-dark-border)] bg-[var(--color-panel2)] p-3">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <div className="text-sm font-semibold leading-tight text-[#e4e4e7]">
+          <div className="text-sm font-semibold leading-tight text-[var(--text-on-dark)]">
             {persona.nombre}
           </div>
           {persona.contacto?.email && (
-            <div className="mt-0.5 font-mono text-[11px] text-[#71717a]">
+            <div className="mt-0.5 font-mono text-[11px] text-[var(--text-on-dark-faint)]">
               {persona.contacto.email}
             </div>
           )}
@@ -240,7 +239,7 @@ function PersonaCard({
           {nombres.map((n, i) => (
             <span
               key={i}
-              className="rounded-full border border-[#27272a] px-2 py-0.5 text-[11px] text-[#a1a1aa]"
+              className="rounded-full border border-[var(--color-dark-border)] px-2 py-0.5 text-[11px] text-[var(--text-on-dark-muted)]"
             >
               {n}
             </span>
@@ -248,13 +247,13 @@ function PersonaCard({
         </div>
       )}
 
-      {jefe && (
-        <p className="mt-2 text-[11px] text-[#71717a]">
-          Reporta a: <span className="text-[#d4d4d8]">{jefe}</span>
+      {jefes.length > 0 && (
+        <p className="mt-2 text-[11px] text-[var(--text-on-dark-faint)]">
+          Reporta a: <span className="text-[var(--text-on-dark)]">{jefes.join(', ')}</span>
         </p>
       )}
       {persona.fuente && (
-        <p className="mt-1 text-[10px] text-[#71717a]">Fuente: {persona.fuente}</p>
+        <p className="mt-1 text-[10px] text-[var(--text-on-dark-faint)]">Fuente: {persona.fuente}</p>
       )}
     </div>
   );
@@ -267,7 +266,7 @@ function ConfDot({ conf }: { conf?: string }) {
     <span
       title={`conf: ${conf}`}
       className={cn('mt-1 inline-block h-2 w-2 shrink-0 rounded-full')}
-      style={{ backgroundColor: CONF_DOT[conf] ?? '#71717a' }}
+      style={{ backgroundColor: CONF_DOT[conf] ?? 'var(--text-on-dark-faint)' }}
     />
   );
 }

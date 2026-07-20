@@ -57,23 +57,7 @@ func (d *Directorio) HandleObjeto(w http.ResponseWriter, r *http.Request) {
 	}
 	base := filepath.Join(root, "empresa")
 
-	warnings := []string{}
-
-	var empresaDoc map[string]any
-	if raw, err := os.ReadFile(filepath.Join(base, "empresa.yaml")); err == nil {
-		if m, perr := parseYAMLMap(raw); perr != nil {
-			warnings = append(warnings, "empresa.yaml: yaml inválido: "+perr.Error())
-		} else {
-			empresaDoc = m
-		}
-	} else if !os.IsNotExist(err) {
-		warnings = append(warnings, "empresa.yaml: "+err.Error())
-	}
-
-	t := map[string][]map[string]any{}
-	for _, tipo := range tiposObjeto {
-		t[tipo.carpeta] = readEntidades(base, tipo.carpeta, &warnings)
-	}
+	empresaDoc, t, warnings := cargarObjeto(base)
 	wv, ev := validateObjeto(empresa, empresaDoc, t)
 	warnings = append(warnings, wv...)
 	derivaDivergente(t["kpis"]) // anotación en el payload — el disco no se toca (RN-9)

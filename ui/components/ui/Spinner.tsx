@@ -25,7 +25,7 @@ export function EmptyState({ children }: { children: React.ReactNode }) {
 
 export function ErrorBanner({ message }: { message: string }) {
   return (
-    <div className="px-3 py-2 bg-red-900/30 border border-red-700 rounded text-xs text-red-200">
+    <div className="px-3 py-2 bg-[var(--color-danger-dark)]/[0.12] border border-[var(--color-danger-dark)]/40 rounded text-xs text-[var(--color-danger-dark)]">
       {message}
     </div>
   );

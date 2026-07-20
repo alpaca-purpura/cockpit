@@ -14,6 +14,7 @@ descripcion: >-
   docs/product/ROADMAP.md.
 fases:
   F1.0-terreno:
+    - design-system-atomic-storybook
     - arquitectura-refichado-ck21
     - schema-v2-hilo-de-oro-kinetica
     - negocio-schema-ssot-plugin-vs-repo
@@ -38,6 +39,7 @@ fases:
   F1.x-negocio-paralelo:
     - comprador-pricing-exito-12-meses
 stories:
+  - design-system-atomic-storybook
   - arquitectura-refichado-ck21
   - organizacion-ficticia-golden-fixture
   - schema-v2-hilo-de-oro-kinetica

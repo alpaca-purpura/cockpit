@@ -843,7 +843,44 @@ book (backbone O7 · kpis.md · mejoras.md · objetivos.md §6-bis).
 ~200 empleados, directiva registrada) · CK-24 (frontera persona, cableada como RN-8/RN-16) ·
 D-07 (unidad de ejecución en la medición).
 
-<!-- Próximas: CK-27, … -->
+### CK-27 · Design system PRENTER + atomic design + banco de componentes DRY — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-20):* "el design system que debemos usar es el PRENTER y puedes
+encontrarlo en claude design. Luego, como medio debemos poner la regla que todo lo UI debe tener
+como base atomic design y debemos tener todo en un storybook (o sea, los tokens, átomos, moléculas,
+etc. no las historias de usuario, debe ser nuestro banco de 'componentes' reutilizable para no andar
+duplicando código, recuerda DRY)". Disparado al notar que la story `cruce-estructura-operacion-
+indicadores` (ui-story) no tenía mockup porque `design_system_ref.status` seguía `pending` (BL-04).
+
+*Contexto encontrado:* PRENTER existe completo en Claude Design (`is_default`) — ya atómico: tokens
+(`tokens/*.css`: teal único acento dark-first, tipografía Coco Gothic→Jost / Sansation→Mulish /
+JetBrains Mono, grid 4px), átomos React (`Button`/`Badge`/`Card`/`Input`), patterns, brandbook. La UI
+del cockpit (`ui/`, Next 16 + Tailwind 4) arrastraba el **acento púrpura `#7c3aed` de devhub** (leftover
+del monorepo) y "átomos" ad-hoc sueltos en `ui/components/ui/`, sin taxonomía ni catálogo.
+
+**Forks del operador:** (1) **construir todo ahora** (no diferir a ciclo de story) · (2) **"Storybook" =
+ruta showcase embebida** `/design-system` (cero dependencia Storybook.js; se embebe en el binario como
+el resto de la UI — coherente con "todo embebido") · (3) **BL-04 primero** (sube F2→F1, el design system
+antes que las vistas que lo consumen — evita deuda visual).
+
+*Ejecutado:* tokens PRENTER ported a `ui/app/globals.css` (`@theme` + `:root`, **mata el púrpura** con
+compat-aliases legacy→PRENTER para no romper organismos existentes) · átomos ported a `.tsx` tipado en
+`ui/components/ds/atoms/` (token-driven, fiel a PRENTER = DRY) · catálogo vivo `ui/app/design-system/`
+(ruta `/design-system`, bypass del shell de negocio) · regla project-layer `.claude/rules/ui-design-
+system.md` (doctrina enforce-able: consumir-no-duplicar, token-first, un solo acento, cataloga-en-el-
+mismo-cambio) · seam `design_system_ref` pending→adopted · `cockpit-stack.md` cláusula volteada · story
+`design-system-atomic-storybook` F2→F1. Verificado: tsc + `next build` + render en vivo de `/design-system`.
+
+*Diferido (follow-up de la story):* migrar los organismos legacy (`ui/components/{negocio,shell}/`, ya
+re-tematizados a teal por los tokens) al banco `ds/` · harness de test DOM (jsdom/testing-library) para
+átomos con lógica · fuentes de marca oficiales `.woff2` (hoy sustitutos Jost/Mulish) · moléculas.
+
+*Conecta:* `[[cockpit-stack]]` (declaraba el hueco `design_system_ref: pending`) · CK-11 (origen BL-04,
+doctrina "UI se construye contra el design system") · CK-18 (urgencia: Consultio/Colab son UIs nuevas) ·
+`[[arquitectura-as-code]]`/`[[metodologia-as-code]]` (ejes as-code gemelos; este es doctrina UI, sin gen+gate propio) ·
+`[[anti-duplication]]` (el banco ES la anti-duplicación de UI).
+
+<!-- Próximas: CK-28, … -->
 
 ## Log
 
@@ -866,3 +903,4 @@ D-07 (unidad de ejecución en la medición).
 | 2026-07-17 | Frontera twin ↔ evaluación individual (de la auditoría adversarial del refinamiento): el twin mide roles/procesos/áreas — KPI ancla a rol, persona = ocupante; vista persona-nombrada solo opt-in Gobernanza + consentimiento; NASA-TLX agregado por rol/proceso, nunca registro individual; nace M-card "métricas de persona" gemela de M23. Mismo evento: D-07 clavada (techo=empresa; holding=agrupador; proyecto/sucursal = unidad de ejecución, no empresa) + historia nueva `cockpit/captura-manual-kpis`. | CK-24 |
 | 2026-07-17 | Schema v2 shipped (historia `schema-v2-hilo-de-oro-kinetica`, idea→done en el día): hilo de oro MEDIBLE — 12 entidades (kpi salud-con-banda · proyecto_mejora · idea como funil separado), modo regional como configuración (OKR-trimestral / GPD-anual Falconi / mixto — investigación LATAM/BR con fuentes primarias; RN-14 divorcio KR↔compensación), capa kinética declarada (15 acciones + máquina de estados PDCA con loop-back MASP; BL-24 = motor), vocabulario de verbos ALM×MGI (44, gobernanza por PR) + 4º gate `gen_schema.py`, corte limpio sin deprecados con prenter migrado (29 kpis) y live-verify doble. M41-M45 + dimensión `mejora-proyectos` al catálogo. | CK-26 |
 | 2026-07-17 | Consultio no se clona: se extrae `studio-core` (kernel Go compartido) y `dev-studio`(N5)/`consultio`(N14) lo consumen por import semver — disciplina upstream-first + ban de mirror producto→producto (misma doctrina que backflow del arnés); 10 decisiones de arquitectura (A1-A10) tras stress-test de 11 escenarios de fallo contra dev-studio real. Ejecutado y verificado en vivo el mismo día: `studio-core` v0.1.0 (SC-01) con fitness gate propio + `consultio` primitivo (CN-01) corriendo — engagement→repo git, arnés instalado con lock+commit real, sesión ligada, turno con SSE — dev-studio intacto. N14 re-fichado "clon de DevStudio"→"app fina sobre studio-core"; riesgo (2) de N5 cerrado. | CK-25 |
+| 2026-07-20 | Design system PRENTER adoptado (materializa BL-04): SSoT visual = proyecto Claude Design "PRENTER Design System" (dark-first, teal único acento, atomic design). Tokens ported a `ui/app/globals.css` (mata el púrpura leftover de devhub); átomos `.tsx` en `ui/components/ds/atoms/` (Button/Badge/Card/Input, token-driven=DRY); catálogo vivo embebido `/design-system` (fork del operador: ruta showcase, no Storybook.js); regla `.claude/rules/ui-design-system.md` (consumir-no-duplicar, un solo acento, cataloga-en-el-mismo-cambio); seam `design_system_ref` pending→adopted; story `design-system-atomic-storybook` F2→F1. Verificado: tsc + `next build` + render en vivo. | CK-27 |

@@ -30,7 +30,7 @@ const PROC_LABEL: Record<Procedencia, string> = {
 const PROC_COLOR: Record<Procedencia, string> = {
   propio: 'text-[var(--color-muted)]',
   compartido: 'text-sky-400',
-  externo: 'text-amber-400',
+  externo: 'text-[var(--color-warning-dark)]',
   terciarizado: 'text-zinc-400',
 };
 
@@ -64,7 +64,7 @@ export function SystemOverview({
     <div className="p-6">
       <div className="max-w-lg mx-auto mt-12 rounded border border-[var(--color-border)] bg-[var(--color-panel)] border-l-2 border-l-amber-500/70 p-5 text-sm">
         <h2 className="font-semibold flex items-center gap-2 mb-1">
-          <Info className="w-4 h-4 text-amber-400" />
+          <Info className="w-4 h-4 text-[var(--color-warning-dark)]" />
           {sistema.slug}
           {empresa ? <span className="text-[var(--color-muted)] font-normal">· {empresa}</span> : null}
         </h2>
@@ -88,7 +88,7 @@ export function SystemOverview({
         </div>
 
         <p className="mt-5 pt-3 border-t border-[var(--color-border)] text-[var(--color-muted)] leading-relaxed">
-          <span className="text-amber-400">○ sin telemetría aún</span> — este sistema
+          <span className="text-[var(--color-warning-dark)]">○ sin telemetría aún</span> — este sistema
           no es un proyecto SDD, así que no tiene Board, Roadmap, Mapa ni Drift. Es un
           <b> gap de digitalización</b> visible: existe y se mapea, todavía sin datos en
           el cockpit.

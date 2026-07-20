@@ -1,14 +1,14 @@
 id: design-system-atomic-storybook
 type: ui-story
-state: idea
+state: developing
 module: sistema
 node: N13
 cap_target: "sistema/design-system-atomic-storybook"
 cap_change_type: new
 capability_status: planned
-release: F2
-prioridad: media
-fichas: [CK-11]
+release: F1
+prioridad: alta
+fichas: [CK-11, CK-27]
 dependencies:
   stories: []
 context:

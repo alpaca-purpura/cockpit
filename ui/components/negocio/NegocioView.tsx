@@ -32,21 +32,21 @@ import type {
  */
 
 const SEMAFORO: Record<Digital, { dot: string; label: string }> = {
-  manual: { dot: '#e5564b', label: 'Manual / Excel' },
-  externo: { dot: '#f5a524', label: 'Tercero / sistema externo' },
-  integrado: { dot: '#2ecf96', label: 'Integrado' },
+  manual: { dot: 'var(--color-danger-dark)', label: 'Manual / Excel' },
+  externo: { dot: 'var(--color-warning-dark)', label: 'Tercero / sistema externo' },
+  integrado: { dot: 'var(--color-success-dark)', label: 'Integrado' },
 };
 
 const CONF_DOT: Record<string, string> = {
-  alta: '#2ecf96',
-  media: '#f5a524',
-  baja: '#e5564b',
+  alta: 'var(--color-success-dark)',
+  media: 'var(--color-warning-dark)',
+  baja: 'var(--color-danger-dark)',
 };
 
 const PRIO_CLS: Record<Prioridad, string> = {
-  alta: 'text-[#e5564b] border-[#5e2b28] bg-[#e5564b]/[0.08]',
-  media: 'text-[#f5a524] border-[#5e4a22] bg-[#f5a524]/[0.08]',
-  baja: 'text-[#a1a1aa] border-[#27272a]',
+  alta: 'text-[var(--color-danger-dark)] border-[var(--color-dark-border)] bg-[var(--color-danger-dark)]/[0.08]',
+  media: 'text-[var(--color-warning-dark)] border-[var(--color-dark-border)] bg-[var(--color-warning-dark)]/[0.08]',
+  baja: 'text-[var(--text-on-dark-muted)] border-[var(--color-dark-border)]',
 };
 
 /** Un proceso aplanado con el nombre de su área (para cascada/huérfanos). */
@@ -106,9 +106,9 @@ export function NegocioView({ empresa }: { empresa: string }) {
         <EmptyState>
           {empresa ? (
             <>
-              <span className="text-[#e4e4e7] font-medium">{empresa}</span> todavía no
-              tiene <span className="text-[#93c5fd]">diagnóstico de negocio</span>. Se
-              cura a mano en <code className="text-[#71717a]">empresa/negocio.yaml</code>{' '}
+              <span className="text-[var(--text-on-dark)] font-medium">{empresa}</span> todavía no
+              tiene <span className="text-[var(--color-teal-400)]">diagnóstico de negocio</span>. Se
+              cura a mano en <code className="text-[var(--text-on-dark-faint)]">empresa/negocio.yaml</code>{' '}
               de su repo — es la salida del Levantamiento M1, no se deriva del código.
             </>
           ) : (
@@ -119,7 +119,7 @@ export function NegocioView({ empresa }: { empresa: string }) {
             BL-01 · CK-12): puede estar poblado aunque el diagnóstico no exista aún. */}
         {empresa && (
           <section className="space-y-2">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-[#a1a1aa]">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-on-dark-muted)]">
               Personas
             </h2>
             <PersonasTab empresa={empresa} negocio={null} />
@@ -176,27 +176,27 @@ export function NegocioView({ empresa }: { empresa: string }) {
   return (
     <div className="mx-auto max-w-6xl space-y-5 p-6">
       <header className="space-y-1.5">
-        <h1 className="text-xl font-semibold text-[#e4e4e7]">{negocio.titulo}</h1>
-        {negocio.nota && <p className="text-xs text-[#71717a]">{negocio.nota}</p>}
+        <h1 className="text-xl font-semibold text-[var(--text-on-dark)]">{negocio.titulo}</h1>
+        {negocio.nota && <p className="text-xs text-[var(--text-on-dark-faint)]">{negocio.nota}</p>}
       </header>
 
       {/* Validación al leer (negocio.schema.yaml): el cockpit es el chokepoint de todo
           negocio.yaml. Warnings no-fatales (enums/refs mal formados) — se sigue mostrando
           lo que se pudo leer, pero el dato malo se delata en vez de mentir en silencio. */}
       {negocio._warnings && negocio._warnings.length > 0 && (
-        <div className="rounded-md border border-[#5e4a22] bg-[#f5a524]/[0.08] p-3">
-          <div className="text-xs font-semibold text-[#f5a524]">
+        <div className="rounded-md border border-[var(--color-dark-border)] bg-[var(--color-warning-dark)]/[0.08] p-3">
+          <div className="text-xs font-semibold text-[var(--color-warning-dark)]">
             ⚠ negocio.yaml mal formado · {negocio._warnings.length}{' '}
             {negocio._warnings.length === 1 ? 'aviso' : 'avisos'}
           </div>
-          <ul className="mt-1.5 space-y-0.5 font-mono text-[11px] text-[#d4d4d8]">
+          <ul className="mt-1.5 space-y-0.5 font-mono text-[11px] text-[var(--text-on-dark)]">
             {negocio._warnings.map((wmsg, i) => (
               <li key={i}>· {wmsg}</li>
             ))}
           </ul>
-          <p className="mt-1.5 text-[10px] text-[#71717a]">
+          <p className="mt-1.5 text-[10px] text-[var(--text-on-dark-faint)]">
             Contrato:{' '}
-            <code className="text-[#71717a]">.claude/harness/schema/negocio.schema.yaml</code>.
+            <code className="text-[var(--text-on-dark-faint)]">.claude/harness/schema/negocio.schema.yaml</code>.
             Se muestra lo que se pudo leer.
           </p>
         </div>
@@ -205,13 +205,13 @@ export function NegocioView({ empresa }: { empresa: string }) {
       {/* Objetivos del directorio — clicables: jalar uno tensa el Hilo de Oro. */}
       <section className="space-y-2">
         <div className="flex flex-wrap items-baseline gap-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-[#a1a1aa]">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-on-dark-muted)]">
             Objetivos del directorio
           </h2>
-          <span className="text-[11px] text-[#71717a]">
+          <span className="text-[11px] text-[var(--text-on-dark-faint)]">
             {activeObjName ? (
               <>
-                Hilo de oro: <span className="text-[#2ecf96]">{activeObjName}</span> ·
+                Hilo de oro: <span className="text-[var(--color-success-dark)]">{activeObjName}</span> ·
                 tocá de nuevo para soltar
               </>
             ) : (
@@ -265,22 +265,22 @@ function ObjetivoCard({
       className={cn(
         'rounded-md border bg-[var(--color-panel2)] p-3 text-left transition-all duration-100',
         active
-          ? 'border-[#2ecf96] ring-1 ring-[#2ecf96]/40'
-          : 'border-[#27272a] hover:border-[#3f3f46]',
+          ? 'border-[var(--color-success-dark)] ring-1 ring-[var(--color-success-dark)]/40'
+          : 'border-[var(--color-dark-border)] hover:border-[var(--color-dark-border)]',
         dim && 'opacity-50'
       )}
     >
-      <div className="min-h-[24px] font-mono text-[10px] uppercase tracking-wide text-[#71717a]">
+      <div className="min-h-[24px] font-mono text-[10px] uppercase tracking-wide text-[var(--text-on-dark-faint)]">
         {obj.kr}
       </div>
-      <div className="mt-1 text-sm font-semibold leading-tight text-[#e4e4e7]">
+      <div className="mt-1 text-sm font-semibold leading-tight text-[var(--text-on-dark)]">
         {obj.nombre}
       </div>
       <div className="mt-2 flex flex-wrap items-baseline gap-1.5 font-mono text-sm">
-        <span className="text-[#71717a] line-through">{obj.from}</span>
-        <span className="text-[#2ecf96]">→</span>
-        <span className="font-semibold text-[#e4e4e7]">{obj.to}</span>
-        {obj.unit && <span className="text-[10px] text-[#a1a1aa]">{obj.unit}</span>}
+        <span className="text-[var(--text-on-dark-faint)] line-through">{obj.from}</span>
+        <span className="text-[var(--color-success-dark)]">→</span>
+        <span className="font-semibold text-[var(--text-on-dark)]">{obj.to}</span>
+        {obj.unit && <span className="text-[10px] text-[var(--text-on-dark-muted)]">{obj.unit}</span>}
       </div>
     </button>
   );
@@ -300,7 +300,7 @@ function MapaTab({
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-3">
-        <p className="mr-auto text-xs text-[#71717a]">
+        <p className="mr-auto text-xs text-[var(--text-on-dark-faint)]">
           Cada función del negocio, su sistema y cuánto está digitalizada. Lo manual y
           lo tercerizado, a la vista.
         </p>
@@ -318,16 +318,16 @@ function MapaTab({
                 activeObj !== null && !hasServe && 'opacity-50'
               )}
             >
-              <div className="flex items-center justify-between border-b border-[#27272a] px-4 py-3">
+              <div className="flex items-center justify-between border-b border-[var(--color-dark-border)] px-4 py-3">
                 <div className="min-w-0">
-                  <div className="truncate text-sm font-semibold text-[#e4e4e7]">
+                  <div className="truncate text-sm font-semibold text-[var(--text-on-dark)]">
                     {a.nombre}
                   </div>
                   {a.lider && (
-                    <div className="truncate text-[10px] text-[#71717a]">{a.lider}</div>
+                    <div className="truncate text-[10px] text-[var(--text-on-dark-faint)]">{a.lider}</div>
                   )}
                 </div>
-                <span className="shrink-0 rounded border border-[#27272a] px-1.5 py-0.5 font-mono text-[10px] text-[#71717a]">
+                <span className="shrink-0 rounded border border-[var(--color-dark-border)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--text-on-dark-faint)]">
                   {a.procesos.length}
                 </span>
               </div>
@@ -369,8 +369,8 @@ function ProcesoRow({
         type="button"
         onClick={onClick}
         className={cn(
-          'flex w-full items-center gap-3 rounded-md border bg-[#18181b] px-3 py-2 text-left transition-all duration-100 hover:border-[#3f3f46]',
-          serves ? 'border-[#2ecf96]/50' : 'border-[#27272a]',
+          'flex w-full items-center gap-3 rounded-md border bg-[var(--color-dark-raised)] px-3 py-2 text-left transition-all duration-100 hover:border-[var(--color-dark-border)]',
+          serves ? 'border-[var(--color-success-dark)]/50' : 'border-[var(--color-dark-border)]',
           dim && 'opacity-40'
         )}
       >
@@ -380,14 +380,14 @@ function ProcesoRow({
           title={sem.label}
         />
         <div className="min-w-0 flex-1">
-          <div className="truncate text-sm text-[#d4d4d8]">{proceso.nombre}</div>
-          <div className="truncate font-mono text-[10px] text-[#71717a]">
+          <div className="truncate text-sm text-[var(--text-on-dark)]">{proceso.nombre}</div>
+          <div className="truncate font-mono text-[10px] text-[var(--text-on-dark-faint)]">
             {proceso.sistema}
           </div>
         </div>
         {orphan && (
           <span
-            className="shrink-0 rounded border border-dashed border-[#6a4f33] px-1.5 py-0.5 font-mono text-[9px] uppercase text-[#c98a5a]"
+            className="shrink-0 rounded border border-dashed border-[var(--color-dark-border)] px-1.5 py-0.5 font-mono text-[9px] uppercase text-[var(--color-warning-dark)]"
             title="No sube a ningún objetivo del directorio"
           >
             huérfano
@@ -401,9 +401,9 @@ function ProcesoRow({
 // ── Tab: Hilo de oro (cascada) ───────────────────────────────────────────────
 
 const HILO_TAG: Record<Digital, { label: string; cls: string }> = {
-  integrado: { label: 'sostiene', cls: 'text-[#2ecf96] border-[#2ecf96]/40' },
-  externo: { label: 'depende de tercero', cls: 'text-[#f5a524] border-[#f5a524]/40' },
-  manual: { label: 'se rompe · manual', cls: 'text-[#e5564b] border-[#e5564b]/40' },
+  integrado: { label: 'sostiene', cls: 'text-[var(--color-success-dark)] border-[var(--color-success-dark)]/40' },
+  externo: { label: 'depende de tercero', cls: 'text-[var(--color-warning-dark)] border-[var(--color-warning-dark)]/40' },
+  manual: { label: 'se rompe · manual', cls: 'text-[var(--color-danger-dark)] border-[var(--color-danger-dark)]/40' },
 };
 
 function HiloTab({
@@ -426,34 +426,34 @@ function HiloTab({
   return (
     <div className="space-y-4">
       {!activeObj && (
-        <p className="text-[11px] text-[#71717a]">
-          Mostrando <span className="text-[#d4d4d8]">{obj.nombre}</span> · tocá otro
+        <p className="text-[11px] text-[var(--text-on-dark-faint)]">
+          Mostrando <span className="text-[var(--text-on-dark)]">{obj.nombre}</span> · tocá otro
           objetivo arriba para seguir su hilo.
         </p>
       )}
 
       {/* El objetivo, en la cima del hilo */}
-      <Card className="border-[#2ecf96]/30">
-        <div className="font-mono text-[10px] uppercase tracking-wide text-[#71717a]">
+      <Card className="border-[var(--color-success-dark)]/30">
+        <div className="font-mono text-[10px] uppercase tracking-wide text-[var(--text-on-dark-faint)]">
           Objetivo del directorio
         </div>
-        <h3 className="mt-1 text-base font-semibold text-[#e4e4e7]">{obj.nombre}</h3>
-        <div className="mt-1 font-mono text-xs text-[#a1a1aa]">
-          {obj.kr}: <span className="text-[#71717a] line-through">{obj.from} {obj.unit}</span>{' '}
-          <span className="text-[#2ecf96]">→</span>{' '}
-          <span className="text-[#e4e4e7]">{obj.to} {obj.unit}</span>
+        <h3 className="mt-1 text-base font-semibold text-[var(--text-on-dark)]">{obj.nombre}</h3>
+        <div className="mt-1 font-mono text-xs text-[var(--text-on-dark-muted)]">
+          {obj.kr}: <span className="text-[var(--text-on-dark-faint)] line-through">{obj.from} {obj.unit}</span>{' '}
+          <span className="text-[var(--color-success-dark)]">→</span>{' '}
+          <span className="text-[var(--text-on-dark)]">{obj.to} {obj.unit}</span>
         </div>
       </Card>
 
       {/* Los procesos/puestos/sistemas que deberían sostenerlo */}
       <div className="space-y-2">
-        <div className="font-mono text-[10px] uppercase tracking-wide text-[#71717a]">
+        <div className="font-mono text-[10px] uppercase tracking-wide text-[var(--text-on-dark-faint)]">
           Procesos · puestos · sistemas que lo sostienen ({serving.length})
         </div>
         {serving.length === 0 ? (
-          <Card className="text-sm text-[#a1a1aa]">
+          <Card className="text-sm text-[var(--text-on-dark-muted)]">
             Ningún proceso conecta a este objetivo —{' '}
-            <span className="text-[#e5564b]">la cadena no arranca.</span>
+            <span className="text-[var(--color-danger-dark)]">la cadena no arranca.</span>
           </Card>
         ) : (
           serving.map((p) => {
@@ -461,15 +461,15 @@ function HiloTab({
             return (
               <div
                 key={`${p.areaId}-${p.id}`}
-                className="flex items-center gap-3 rounded-md border border-[#27272a] bg-[#18181b] px-3 py-2"
+                className="flex items-center gap-3 rounded-md border border-[var(--color-dark-border)] bg-[var(--color-dark-raised)] px-3 py-2"
               >
                 <span
                   className="h-2.5 w-2.5 shrink-0 rounded-full"
                   style={{ background: SEMAFORO[p.digital].dot }}
                 />
                 <div className="min-w-0 flex-1">
-                  <div className="truncate text-sm text-[#d4d4d8]">{p.nombre}</div>
-                  <div className="truncate font-mono text-[10px] text-[#71717a]">
+                  <div className="truncate text-sm text-[var(--text-on-dark)]">{p.nombre}</div>
+                  <div className="truncate font-mono text-[10px] text-[var(--text-on-dark-faint)]">
                     {p.area} · {p.puesto ?? '—'} · {p.sistema}
                   </div>
                 </div>
@@ -488,11 +488,11 @@ function HiloTab({
       </div>
 
       {/* Huérfanos: trabajo que no sube a ningún objetivo */}
-      <div className="rounded-lg border border-dashed border-[#3f3f46] bg-[var(--color-panel2)] p-4">
-        <h4 className="text-sm font-semibold text-[#e4e4e7]">
+      <div className="rounded-lg border border-dashed border-[var(--color-dark-border)] bg-[var(--color-panel2)] p-4">
+        <h4 className="text-sm font-semibold text-[var(--text-on-dark)]">
           Trabajo que no sube a ningún objetivo ({orphans.length})
         </h4>
-        <p className="mt-0.5 text-xs text-[#71717a]">
+        <p className="mt-0.5 text-xs text-[var(--text-on-dark-faint)]">
           Procesos que hoy no conectan con ninguna meta del directorio. ¿Suman, o son
           candidatos a estandarizar / soltar?
         </p>
@@ -501,9 +501,9 @@ function HiloTab({
             {orphans.map((p) => (
               <span
                 key={`${p.areaId}-${p.id}`}
-                className="rounded-md border border-[#27272a] bg-[#18181b] px-2.5 py-1.5 text-xs text-[#a1a1aa]"
+                className="rounded-md border border-[var(--color-dark-border)] bg-[var(--color-dark-raised)] px-2.5 py-1.5 text-xs text-[var(--text-on-dark-muted)]"
               >
-                <span className="font-medium text-[#d4d4d8]">{p.nombre}</span> · {p.area}
+                <span className="font-medium text-[var(--text-on-dark)]">{p.nombre}</span> · {p.area}
               </span>
             ))}
           </div>
@@ -528,26 +528,26 @@ function BrechasTab({
     return (
       <EmptyState>
         Esta empresa todavía no tiene brechas diagnosticadas en{' '}
-        <code className="text-[#71717a]">empresa/negocio.yaml</code>.
+        <code className="text-[var(--text-on-dark-faint)]">empresa/negocio.yaml</code>.
       </EmptyState>
     );
   }
   const filterName = objById(activeObj)?.nombre;
   return (
     <div className="space-y-3">
-      <p className="text-xs text-[#71717a]">
+      <p className="text-xs text-[var(--text-on-dark-faint)]">
         Cada brecha atada a un objetivo del directorio, con su caso de negocio.
         {filterName && (
           <>
             {' '}Resaltadas: las que bloquean{' '}
-            <span className="text-[#2ecf96]">{filterName}</span>.
+            <span className="text-[var(--color-success-dark)]">{filterName}</span>.
           </>
         )}
       </p>
-      <div className="overflow-hidden rounded-lg border border-[#27272a]">
+      <div className="overflow-hidden rounded-lg border border-[var(--color-dark-border)]">
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-[#27272a] bg-[#18181b] text-left font-mono text-[10px] uppercase tracking-wide text-[#71717a]">
+            <tr className="border-b border-[var(--color-dark-border)] bg-[var(--color-dark-raised)] text-left font-mono text-[10px] uppercase tracking-wide text-[var(--text-on-dark-faint)]">
               <th className="px-4 py-2.5 font-medium" style={{ width: '36%' }}>Brecha</th>
               <th className="px-3 py-2.5 font-medium">Tipo</th>
               <th className="px-3 py-2.5 font-medium">Objetivo que bloquea</th>
@@ -564,39 +564,39 @@ function BrechasTab({
                 <tr
                   key={i}
                   className={cn(
-                    'border-b border-[#27272a] align-top transition-all duration-100 last:border-0',
-                    match && 'bg-[#2ecf96]/[0.06]',
+                    'border-b border-[var(--color-dark-border)] align-top transition-all duration-100 last:border-0',
+                    match && 'bg-[var(--color-success-dark)]/[0.06]',
                     dim && 'opacity-45'
                   )}
                 >
                   <td className="px-4 py-3">
-                    <div className="font-medium text-[#e4e4e7]">{g.nombre}</div>
+                    <div className="font-medium text-[var(--text-on-dark)]">{g.nombre}</div>
                     {g.sub && (
-                      <div className="mt-0.5 text-xs leading-snug text-[#71717a]">
+                      <div className="mt-0.5 text-xs leading-snug text-[var(--text-on-dark-faint)]">
                         {g.sub}
                       </div>
                     )}
                   </td>
                   <td className="px-3 py-3">
-                    <span className="rounded border border-[#27272a] px-1.5 py-0.5 font-mono text-[10px] text-[#a1a1aa]">
+                    <span className="rounded border border-[var(--color-dark-border)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--text-on-dark-muted)]">
                       {g.tipo}
                     </span>
                   </td>
                   <td className="px-3 py-3">
                     {o ? (
-                      <span className="rounded border border-[#2ecf96]/40 px-1.5 py-0.5 text-xs text-[#2ecf96]">
+                      <span className="rounded border border-[var(--color-success-dark)]/40 px-1.5 py-0.5 text-xs text-[var(--color-success-dark)]">
                         {o.nombre}
                       </span>
                     ) : (
-                      <span className="rounded border border-dashed border-[#6a4f33] px-1.5 py-0.5 text-xs text-[#c98a5a]">
+                      <span className="rounded border border-dashed border-[var(--color-dark-border)] px-1.5 py-0.5 text-xs text-[var(--color-warning-dark)]">
                         sin objetivo
                       </span>
                     )}
                   </td>
                   <td className="px-3 py-3">
-                    <div className="font-mono text-xs text-[#d4d4d8]">{g.costo ?? '—'}</div>
+                    <div className="font-mono text-xs text-[var(--text-on-dark)]">{g.costo ?? '—'}</div>
                     {g.costoLbl && (
-                      <div className="mt-0.5 text-[10px] text-[#71717a]">{g.costoLbl}</div>
+                      <div className="mt-0.5 text-[10px] text-[var(--text-on-dark-faint)]">{g.costoLbl}</div>
                     )}
                   </td>
                   <td className="px-3 py-3">
@@ -640,10 +640,10 @@ function ProcesoDrawer({
       title={
         proceso && (
           <div className="min-w-0">
-            <div className="truncate font-mono text-[10px] uppercase tracking-wide text-[#71717a]">
+            <div className="truncate font-mono text-[10px] uppercase tracking-wide text-[var(--text-on-dark-faint)]">
               {proceso.area}
             </div>
-            <div className="truncate text-sm font-semibold text-[#e4e4e7]">
+            <div className="truncate text-sm font-semibold text-[var(--text-on-dark)]">
               {proceso.nombre}
             </div>
           </div>
@@ -653,8 +653,8 @@ function ProcesoDrawer({
       {proceso && sem && (
         <div className="space-y-4 text-sm">
           {proceso.puesto && (
-            <div className="text-xs text-[#a1a1aa]">
-              Responsable: <span className="text-[#d4d4d8]">{proceso.puesto}</span>
+            <div className="text-xs text-[var(--text-on-dark-muted)]">
+              Responsable: <span className="text-[var(--text-on-dark)]">{proceso.puesto}</span>
             </div>
           )}
           <dl className="space-y-2.5">
@@ -677,22 +677,22 @@ function ProcesoDrawer({
                     {objs.map((o) => (
                       <span
                         key={o!.id}
-                        className="rounded border border-[#2ecf96]/40 px-1.5 py-0.5 text-xs text-[#2ecf96]"
+                        className="rounded border border-[var(--color-success-dark)]/40 px-1.5 py-0.5 text-xs text-[var(--color-success-dark)]"
                       >
                         {o!.nombre}
                       </span>
                     ))}
                   </span>
                 ) : (
-                  <span className="text-[#c98a5a]">no conecta a ningún objetivo</span>
+                  <span className="text-[var(--color-warning-dark)]">no conecta a ningún objetivo</span>
                 )
               }
             />
           </dl>
 
           {/* Procedencia — honestidad sin falsa certeza (§14) */}
-          <div className="rounded-lg border border-[#27272a] bg-[var(--color-panel2)] p-3">
-            <div className="font-mono text-[10px] uppercase tracking-wide text-[#71717a]">
+          <div className="rounded-lg border border-[var(--color-dark-border)] bg-[var(--color-panel2)] p-3">
+            <div className="font-mono text-[10px] uppercase tracking-wide text-[var(--text-on-dark-faint)]">
               Procedencia · sin falsa certeza
             </div>
             <dl className="mt-2 space-y-2.5">
@@ -703,7 +703,7 @@ function ProcesoDrawer({
                   <span className="inline-flex items-center gap-2">
                     <i
                       className="h-2.5 w-2.5 rounded-full"
-                      style={{ background: CONF_DOT[proceso.conf ?? ''] ?? '#71717a' }}
+                      style={{ background: CONF_DOT[proceso.conf ?? ''] ?? 'var(--text-on-dark-faint)' }}
                     />
                     {proceso.conf ?? '—'}
                   </span>
@@ -720,8 +720,8 @@ function ProcesoDrawer({
 function DRow({ k, v }: { k: string; v: React.ReactNode }) {
   return (
     <div className="flex items-start justify-between gap-4">
-      <dt className="shrink-0 text-xs text-[#71717a]">{k}</dt>
-      <dd className="min-w-0 text-right text-[#d4d4d8]">{v}</dd>
+      <dt className="shrink-0 text-xs text-[var(--text-on-dark-faint)]">{k}</dt>
+      <dd className="min-w-0 text-right text-[var(--text-on-dark)]">{v}</dd>
     </div>
   );
 }
@@ -730,7 +730,7 @@ function DRow({ k, v }: { k: string; v: React.ReactNode }) {
 
 function Legend() {
   return (
-    <div className="flex flex-wrap items-center gap-3 text-[11px] text-[#a1a1aa]">
+    <div className="flex flex-wrap items-center gap-3 text-[11px] text-[var(--text-on-dark-muted)]">
       {(Object.keys(SEMAFORO) as Digital[]).map((k) => (
         <span key={k} className="inline-flex items-center gap-1.5">
           <i className="h-2 w-2 rounded-full" style={{ background: SEMAFORO[k].dot }} />

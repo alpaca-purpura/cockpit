@@ -10,15 +10,15 @@
 
 ## Panorama
 
-| Columna | Pendiente | En curso | Lo más urgente |
-|---|---|---|---|
-| **Sistema (transversal)** | 6 | — | BL-04 design system · BL-05 poblar método |
-| **Cockpit (N13)** | 6 | — | BL-12 niveles de acceso (alta) · BL-24 Gestión de Cambios |
-| **Consultio (N14)** | 3 | — | BL-15 clon de DevStudio (arranca cuando DevStudio esté listo) |
-| **Repositorio Oficial (N6)** | 3 | — | BL-21 Forgejo self-hosted · BL-29 Depósito/DPA |
-| **Data Lakehouse (N16)** | 2 | — | BL-22 dlt + DuckLake |
-| **Colab Studio (N17)** | 1 | — | BL-23 app del trabajador |
-| **Plano del Fabricante (N2/N3/N15)** | 2 (+1 derogado) | — | BL-25 distribución/licencias · BL-26 pipeline de arneses |
+| Columna                              | Pendiente       | En curso | Lo más urgente                                                |
+| ------------------------------------ | --------------- | -------- | ------------------------------------------------------------- |
+| **Sistema (transversal)**            | 6               | —        | BL-04 design system · BL-05 poblar método                     |
+| **Cockpit (N13)**                    | 6               | —        | BL-12 niveles de acceso (alta) · BL-24 Gestión de Cambios     |
+| **Consultio (N14)**                  | 3               | —        | BL-15 clon de DevStudio (arranca cuando DevStudio esté listo) |
+| **Repositorio Oficial (N6)**         | 3               | —        | BL-21 Forgejo self-hosted · BL-29 Depósito/DPA                |
+| **Data Lakehouse (N16)**             | 2               | —        | BL-22 dlt + DuckLake                                          |
+| **Colab Studio (N17)**               | 1               | —        | BL-23 app del trabajador                                      |
+| **Plano del Fabricante (N2/N3/N15)** | 2 (+1 derogado) | —        | BL-25 distribución/licencias · BL-26 pipeline de arneses      |
 
 ## Sistema (transversal)
 
@@ -27,7 +27,7 @@
 | BL-01 | Persona/puesto como entidad de primera clase | alta | **hecho** (CK-12 · CAP-07) |
 | BL-02 | Reconciliar objeto.schema (9) ↔ negocio.schema (4) | alta | **hecho** (CK-13 · CAP-08) |
 | BL-03 | Terminar arquitectura / diagrama de despliegue | alta | **hecho** (CK-14 · rediseñado CK-18) |
-| BL-04 | Design system + atomic design + Storybook as-code | media | pendiente |
+| BL-04 | Design system PRENTER + atomic design + banco DRY | alta | **fundación hecha** (CK-27 · F1 · tokens+átomos+`/design-system`; migración organismos/moléculas/tests DOM = diferido) |
 | BL-05 | Poblar método: M1 beats 2-3 · M3 etapas 1-5 | media | pendiente |
 | BL-06 | negocio.schema: decidir SSoT (plugin vs repo) | media | pendiente |
 | BL-07 | Destilar research (sistema vs campaña) | media | **hecho** (cierre de etapa) |

@@ -18,11 +18,12 @@ prosa de abajo (mapa, diagrama F1, "por qué aquí", secuencia) es juicio del op
 | F0 | — | sistema | `terminar-arquitectura-despliegue` | transversal | alta | done |
 | F0 | — | sistema | `destilar-research-sistema-vs-campana` | transversal | media | done |
 | F0 | — | sistema | `render-arquitectura-yaml` | transversal | baja | done |
+| F1 | F1.0-terreno | sistema | `design-system-atomic-storybook` | N13 | alta | developing |
 | F1 | F1.0-terreno | sistema | `arquitectura-refichado-ck21` | transversal | alta | done |
 | F1 | F1.0-terreno | sistema | `schema-v2-hilo-de-oro-kinetica` | transversal | alta | done |
 | F1 | F1.0-terreno | sistema | `negocio-schema-ssot-plugin-vs-repo` | transversal | media | idea |
 | F1 | F1.1-twin-pintado | sistema | `organizacion-ficticia-golden-fixture` | transversal | alta | done |
-| F1 | F1.1-twin-pintado | cockpit | `cruce-estructura-operacion-indicadores` | N13 | alta | idea |
+| F1 | F1.1-twin-pintado | cockpit | `cruce-estructura-operacion-indicadores` | N13 | alta | refining |
 | F1 | F1.1-twin-pintado | cockpit | `brecha-proyecto-ciclo-vida` | N13 | alta | idea |
 | F1 | F1.2-metodo-operable | sistema | `poblar-metodo-m1-m3` | N2 | alta | idea |
 | F1 | F1.2-metodo-operable | consultio | `metodo-como-arnes-v0` | N14 | alta | idea |
@@ -39,7 +40,6 @@ prosa de abajo (mapa, diagrama F1, "por qué aquí", secuencia) es juicio del op
 | F2 | — | fabricante | `distribucion-telemetria-licencias-n3` | N3 | media | idea |
 | F2 | — | fabricante | `portal-cloud-licencias` | N3 | media | idea |
 | F2 | — | cockpit | `deuda-go-next-n13-vite-spa` | N13 | media | idea |
-| F2 | — | sistema | `design-system-atomic-storybook` | N13 | media | idea |
 | F2 | — | cockpit | `rol-area-real` | N13 | media | idea |
 | F2 | — | sistema | `negocio-yaml-proyeccion-generada` | transversal | media | idea |
 | F2 | — | lakehouse | `conectores-ingesta-por-sistema` | N18 | tbd | idea |

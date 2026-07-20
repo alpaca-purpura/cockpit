@@ -65,13 +65,17 @@ live_verify_infra:
   observability_evidence: [runtime-logs]
   test_creds: none
 
-# Canon de composición UI. Sin design-system canónico todavía (BL-04/CK-11 pendiente).
+# Canon de composición UI — design system PRENTER, atomic design, banco DRY (CK-27).
+# Doctrina enforce-able: .claude/rules/ui-design-system.md.
 design_system_ref:
-  status: pending
-  package: none
-  storybook_port: "n/a"          # sin Storybook aún (evitar `null`: dispara bug de find_unfilled en KIT 0.5.3)
-  showcase_route: "n/a"
-  note: "sin design-system + Storybook aún (historia design-system-atomic-storybook). Hoy UI = Tailwind + ui/components/ ad-hoc."
+  status: adopted
+  package: "PRENTER Design System"           # Claude Design, is_default
+  package_ref: "claude-design:a98c2e0d-db82-43f2-8fd7-e7e05c40fd51"
+  tokens_ref: "ui/app/globals.css"           # @theme + :root, ported de tokens/*.css de PRENTER
+  atoms_ref: "ui/components/ds/atoms"         # banco de átomos reutilizable
+  storybook_port: "embedded-route"           # decisión CK-27: ruta embebida, no Storybook.js
+  showcase_route: "/design-system"           # catálogo vivo, embebido en el binario `directorio`
+  note: "PRENTER adoptado (CK-27, materializa design-system-atomic-storybook). Tokens en globals.css (mata el púrpura leftover de devhub); átomos en ui/components/ds; catálogo en /design-system. Migración de organismos existentes a ds/ = follow-up de la story."
 
 # Módulos de negocio (= columnas del backlog = nodos de la arquitectura). SSoT de nodos:
 # sistema/arquitectura/NODOS.md. Cada módulo mapea a su(s) nodo(s) N-NN.

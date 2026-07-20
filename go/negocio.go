@@ -42,6 +42,16 @@ func (d *Directorio) HandleNegocio(w http.ResponseWriter, r *http.Request) {
 	raw, err := os.ReadFile(yamlPath)
 	if err != nil {
 		if os.IsNotExist(err) {
+			// D-13: `negocio.yaml` = proyección del objeto, no fuente de verdad. Sin
+			// archivo curado → derivamos el diagnóstico del objeto normalizado al leer
+			// (RN-9, misma doctrina que derivaDivergente). Objeto vacío → negocio:null.
+			base := filepath.Join(root, "empresa")
+			empresaDoc, t, warns := cargarObjeto(base)
+			if neg := proyectarNegocio(empresaDoc, t); neg != nil {
+				neg["empresa"] = empresa
+				writeJSON(w, 200, map[string]any{"negocio": neg, "path": yamlPath, "warnings": warns, "generated": true})
+				return
+			}
 			writeJSON(w, 200, map[string]any{"negocio": nil, "path": yamlPath})
 			return
 		}

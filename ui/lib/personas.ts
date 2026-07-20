@@ -15,16 +15,36 @@ export interface PersonaRolRef {
   dedicacion?: string;
 }
 
-/** Business Actor individual (O4) — quién es, qué roles cumple, a quién reporta. */
+/** Ref normalizada del schema v2 (objeto.schema.yaml): { ref, tipo }. */
+export interface RefObj {
+  ref: string;
+  tipo?: string;
+}
+
+/** Business Actor individual (O4) — quién es, qué roles cumple, a quién reporta.
+ *  `reporta_a` (schema v2) = array de refs `{ref,tipo}`; se tolera la forma legacy
+ *  (string id) para no romper datos viejos. */
 export interface Persona {
   id: string;
   nombre: string;
   contacto?: { email?: string; tel?: string; handles?: string[] };
   roles?: PersonaRolRef[];
   competencias?: string[];
-  reporta_a?: string;
+  reporta_a?: string | RefObj | Array<string | RefObj>;
   fuente?: string;
   conf?: string;
+}
+
+/** Resuelve `reporta_a` (string legacy | ref v2 | array) a los NOMBRES de los
+ *  jefes; ref colgante → el id crudo (delata en vez de ocultar, §14). */
+export function jefesDePersona(persona: Persona, personas: Persona[]): string[] {
+  const raw = persona.reporta_a;
+  if (!raw) return [];
+  const items = Array.isArray(raw) ? raw : [raw];
+  return items
+    .map((it) => (typeof it === 'string' ? it : it?.ref))
+    .filter((id): id is string => Boolean(id))
+    .map((id) => personas.find((p) => p.id === id)?.nombre ?? id);
 }
 
 /** Business Role (O4) — el "cargo" (SOMA C8); lo no-procesal vive aquí (ISO cl.5.3). */
