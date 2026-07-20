@@ -1,6 +1,6 @@
 id: cruce-estructura-operacion-indicadores
 type: ui-story
-state: idea
+state: refining
 module: cockpit
 node: N13
 cap_target: "cockpit/cruce-estructura-operacion-indicadores"

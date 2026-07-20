@@ -5,7 +5,13 @@
 > antes de bajar a funcionalidades. Insumo para volver al diseño de servicio (backstage/endpoints) con
 > los límites ya claros.
 > **Docs base:** [`ARCHITECTURE.md`](./ARCHITECTURE.md) · [`METODOLOGIA.md`](../metodo/METODOLOGIA.md) · SOTA del rediseño en [`../../proyecto/research/rediseno-total/`](../../proyecto/research/rediseno-total/)
-> **Última actualización:** 2026-07-17 — **re-fichado fino** (historia `arquitectura-refichado-ck21`,
+> **Última actualización:** 2026-07-17 — **CK-25, Consultio no se clona.** N14 re-fichado: "clon de
+> DevStudio" → **app fina sobre `studio-core`** (kernel Go compartido, extraído de N5 por disciplina
+> upstream-first — ban de mirror producto→producto); madurez no-construido → **existe (parcial)**
+> (`studio-core` v0.1.0/SC-01 + `consultio` primitivo/CN-01, live-verify en vivo: engagement→repo git,
+> arnés instalado, sesión ligada, turno con SSE). Riesgo abierto (2) de N5 ("cómo se clona Consultio")
+> **cerrado**. N5 intacto (V6). Plan: `proyecto/plans/consultio-studio-core/`.
+> **Actualización previa:** 2026-07-17 — **re-fichado fino** (historia `arquitectura-refichado-ck21`,
 > F1.0): R-walk pasa a **R1–R17** (R9 se parte: R9 canal técnico + **R16 puerta comercial** del Portal;
 > **R17** = brecha continua + ciclo brecha→proyecto en N13 — el diferenciador D2 con dueño); residencia
 > **por tier** bajada a las fichas N6/N13/N16/N12 (chequeo 2); N6/N16 marcados como estado DESEADO/REAL
@@ -66,7 +72,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 | **N16** | Data Lakehouse | Organización | servicio/dato | no-construido | ★datos |
 | **N12** | Depósito de fuentes (landing zone) | Organización | artefacto/dato | no-construido | ★datos |
 | **N18** | Sistemas operacionales de la organización | Organización | sistemas fuente | existe | ★datos |
-| **N14** | Consultio — App del Consultor | Edge (máquina del consultor) | runtime edge / exec-env | no-construido | ★IP |
+| **N14** | Consultio — App del Consultor | Edge (máquina del consultor) | runtime edge / exec-env | existe (parcial) | ★IP |
 | **N17** | Colab Studio — app del trabajador | Edge (máquina del trabajador) | runtime edge / exec-env | no-construido | — |
 | **N5** | DevStudio — app de desarrollo (P2) | Edge (máquina del developer) | runtime edge / exec-env | existe (parcial) | — |
 | **N8** | Runtime de agente local (Claude Code) | Edge (laptop) | runtime edge | existe | — |
@@ -313,17 +319,20 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 
 ## N14 · Consultio — App del Consultor ★IP
 
-> Re-fichado CK-18: era "App del Auditor". Nombre firmado = **Consultio** (el operador). Es un **clon de
-> DevStudio** con nombre propio (aún sin construir): el sistema operativo del consultor, sobre Claude
-> Code, con arneses de Arnesia. Transferible al Analista de Calidad del cliente. **CK-21/D7 lo
+> Re-fichado CK-18: era "App del Auditor". Nombre firmado = **Consultio** (el operador). **CK-21/D7 lo
 > desbloquea y lo hace la apuesta principal: el v0 son los arneses del método M1-M3 corriendo sobre
 > Claude Code pelado — sin app shell** (levantamiento por entrevista con agente + doc→modelo con
 > provenance + preview local de Cockpit; patrón validado por BusinessOptix Discovery Agent / iGrafx
-> Pia / ARIS AI Companion). El clon DevStudio llega después, sin bloquear el MVP.
+> Pia / ARIS AI Companion). **Re-fichado CK-25: NO es un clon de DevStudio.** Es un **app fina sobre
+> `studio-core`** — kernel Go compartido extraído de N5 (60-70% del código de DevStudio era núcleo
+> genérico ya aislado tras puertos DIP), disciplina upstream-first + ban de mirror producto→producto
+> (los dos productos beben del mismo pozo, jamás se copian código entre sí). El shell F3 (taxonomía
+> engagement/método M1-M3, preview de Cockpit, publicación a N6) llega sobre ese core, sin bloquear
+> el MVP de arneses.
 
 - **objetivo** — Darle al Consultor (N9) su herramienta de trabajo: app **instalable** que se cuelga de su Claude Code (N8) y desde la cual hace **todo el levantamiento y construye el mapa completo** de la organización (procesos/roles/objetivos/personas + manuales, bajo estándar) — como un dev construye software — y lo **publica al Repositorio Oficial** (N6): "deploy de procesos". Es la superficie única del consultor.
-- **resumen** — Clon de DevStudio (N5) con nombre propio (Consultio), cargando los arneses del método (m1·m2·m3) que produce Arnesia (N15). Opera el engagement con carriles/provenance, construye el objeto normalizado + documentos oficiales + arneses de la org, lleva **preview local de Cockpit** (ve cómo lo verá la organización antes de publicar, patrón dev-server), y publica a N6 vía git. Transferible: inicia con el consultor Prenter, luego lo hereda el Analista de Calidad del cliente (N19).
-- **plano · tipo · madurez** — Edge (máquina del consultor) · runtime edge / exec-env (app instalable) · **no-construido** — pero **el v0 NO espera al clon (CK-21/D7)**: arneses del método sobre Claude Code pelado; el shell DevStudio llega después (F3).
+- **resumen** — App fina sobre **`studio-core`** (kernel compartido con N5, repo/módulo Go propio, CK-25) con taxonomía y nombre propios (Consultio), cargando los arneses del método (m1·m2·m3) que produce Arnesia (N15). Opera el engagement con carriles/provenance, construye el objeto normalizado + documentos oficiales + arneses de la org, lleva **preview local de Cockpit** (ve cómo lo verá la organización antes de publicar, patrón dev-server), y publica a N6 vía git. Transferible: inicia con el consultor Prenter, luego lo hereda el Analista de Calidad del cliente (N19).
+- **plano · tipo · madurez** — Edge (máquina del consultor) · runtime edge / exec-env (app instalable) · **existe (parcial)** — primitiva CN-01 sobre `studio-core` v0.1.0/SC-01, live-verify en vivo (engagement=repo git, arnés instalado con lock+commit, sesión ligada, turno con SSE); shell F3 completo (preview Cockpit, publicación N6) sigue en construcción.
 - **responsabilidades** — Capturar el AS-IS operando el método **[R4]** · construir el mapa completo — objeto normalizado + documentos oficiales + arneses por rol **[R5]** · calcular la brecha + los proyectos **[R6]** · **publicar el resultado ratificado a N6 — "deploy de procesos" [R7]** · llevar preview local de Cockpit (N13) para revisar antes de publicar · depositar/procesar crudo (N12).
 - **no_objetivos** — NO fabrica los arneses (eso es Arnesia/N15; Consultio los usa) · NO es multi-usuario/SaaS (una instalación por persona, como N8) · NO renderiza la Vista de la organización en producción (eso es N13; Consultio corre una **instancia local de preview** del mismo renderer) · NO retiene crudo (aterriza en N12).
 - **runtime + licencia** — App local instalable (linaje DevStudio/harness-studio). **Se cuelga de N8** — el Claude Code del propio consultor (driver CLI-nativo, stdin/stdout stream-json), **BYO licencia**: la app jamás toca credenciales de Anthropic. Trabajo desatendido, si existiera, iría por API key — no por la app. Stack por decidir (BL-15, hereda del clon DevStudio).
@@ -332,8 +341,8 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **seguridad** — El método viaja como arneses en la app (persona nuestra) y **se entrega al cliente** con la transferencia — la protección pasa a licencia + contrato (deroga el límite "método nunca al cliente", ver chequeo 1). Credenciales git least-privilege contra N6. Crudo fuera de la app (N12). Actualización firmada (N3, TUF/Tauri).
 - **comunicacion** — Consultio → **N8** (stdin/stdout, stream-json — el motor) · → **N6** (git, "deploy de procesos") · → **N12** (depósito de crudo) · ← **N3** (updates de app + arneses).
 - **depende_de / consumido_por** — depende_de: **N8** (motor), **N15** (arneses del método), N6 (destino), N3 (updates). consumido_por: **N9** (consultor Prenter) y luego **N19** (Analista de Calidad del cliente) · aguas abajo **N13** (renderiza lo publicado).
-- **riesgos_abiertos** — (1) Definición del producto-app = clon de DevStudio + adaptación propia — **ya NO bloquea (CK-21/D7): el v0 son los arneses sin shell**; el clon llega después. (2) Modelo de publicación a N6: **resuelto en lo esencial (CK-21/D5)** — dev→UAT→prod con aprobación (Gestión de Cambios); detalle fino al construir. (3) Cuánto método baja empaquetado en los arneses de la app vs se sirve por N3. (4) Transferencia consultor→analista: qué arneses/permisos cambian al entregar.
-- **fuentes** — Nombre y modelo: operador (CK-18) · linaje DevStudio (`~/Proyectos/dev-studio`, DH-NN) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`.
+- **riesgos_abiertos** — (1) Definición del producto-app = clon de DevStudio + adaptación propia — **resuelto (CK-25): NO se clona, se extrae `studio-core`** y Consultio consume el kernel por import versionado (disciplina upstream-first, ban de mirror producto→producto). (2) Modelo de publicación a N6: **resuelto en lo esencial (CK-21/D5)** — dev→UAT→prod con aprobación (Gestión de Cambios); detalle fino al construir. (3) Cuánto método baja empaquetado en los arneses de la app vs se sirve por N3. (4) Transferencia consultor→analista: qué arneses/permisos cambian al entregar. (5) `replace => ../studio-core` es transición sin remote (CK-25/A2) — borrar al publicar el core; design system React diferido a F2.5 (CK-25/A7).
+- **fuentes** — Nombre: operador (CK-18) · topología/extracción: operador (CK-25, `proyecto/plans/consultio-studio-core/`) · kernel compartido `~/Proyectos/studio-core` (SC-01) · linaje DevStudio (`~/Proyectos/dev-studio`, DH-NN) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`.
 
 ---
 
@@ -365,7 +374,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 > frontera de célula (repo `~/Proyectos/dev-studio`, ledger DH-NN) sigue.
 
 - **objetivo** — Darle a cada developer su consola **instalable** para construir y mantener software (proceso/arquitectura/doc as-code) sobre Claude Code. En el modelo CK-18 se entrega también a los **devs del cliente** para implementar capabilities en su sistema a medida (N18/Sistema B).
-- **resumen** — App de escritorio (binario Go + UI embebida). Cada dev ve sus repos y sus historias; la versión Product Manager concentra refinamiento/priorización. Es el linaje del que se **clona Consultio** (N14). Sus arneses de dev se modifican en Arnesia (N15).
+- **resumen** — App de escritorio (binario Go + UI embebida). Cada dev ve sus repos y sus historias; la versión Product Manager concentra refinamiento/priorización. **Comparte kernel `studio-core` con Consultio (N14) — CK-25**: el 60-70% genérico (motor arneses, driver Claude Code, sesión, store, transporte, updater, design system) vive en el core; N5 migra a consumirlo en su propia sesión (F2.3, DH-NN pendiente). Sus arneses de dev se modifican en Arnesia (N15).
 - **plano · tipo · madurez** — Edge (máquina del developer) · runtime edge / exec-env · **existe (parcial)** — esqueleto + dogfooding (DH-13..DH-17).
 - **responsabilidades** — Operar el ciclo de desarrollo como proceso-as-code **[R14 junto a N8/N10]** · gestionar el runtime de delivery (N8): se cuelga sobre Claude Code (driver CLI-nativo, BYO licencia) · leer/escribir el sistema a medida del cliente (N18) · (PM) refinamiento + priorización.
 - **no_objetivos** — NO es server compartido · NO toca credenciales de Anthropic (BYO licencia) · NO lo gobierna este repo (célula P2, DH-NN) · NO opera el método del engagement (eso es Consultio/N14, aunque comparten linaje).
@@ -375,7 +384,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **seguridad** — Credenciales del dev, least-privilege contra los sistemas del cliente. Delivery automatizado server-side (si se quisiera) = API key, no suscripción.
 - **comunicacion** — DevStudio → **N8** (stream-json) · ↔ repositorio de código + N18 (git/deploy) · ← N3 (updates, si P2 usa este canal).
 - **depende_de / consumido_por** — depende_de: N8, el repositorio de código del cliente. consumido_por: **N10** (developer del cliente) y los roles del ciclo · aguas abajo N18 (Sistema B recibe capabilities).
-- **riesgos_abiertos** — (1) Entrega a devs del cliente: licenciamiento y arneses de dev (Arnesia). (2) Cómo se clona Consultio de esta base. (3) Distribución/updates de escritorio (N3/Tauri — lo decide P2). (4) Modelo multi-usuario/sync de P2.
+- **riesgos_abiertos** — (1) Entrega a devs del cliente: licenciamiento y arneses de dev (Arnesia). (2) Cómo se clona Consultio de esta base — **cerrado (CK-25): no se clona, se extrae `studio-core`**; N5 migra a consumirlo (F2.3, deuda transitoria de duplicación core↔dev-studio fichada, sesión propia DH-NN). (3) Distribución/updates de escritorio (N3/Tauri — lo decide P2). (4) Modelo multi-usuario/sync de P2.
 - **fuentes** — `~/Proyectos/dev-studio` (DH-10/DH-12..DH-17) · operador (CK-18).
 
 ---
