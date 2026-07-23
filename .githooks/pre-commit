@@ -6,7 +6,8 @@
 #   1. arquitectura-as-code — gen_arquitectura.py valida NODOS.md + arquitectura.yaml +
 #      despliegue.html y REGENERA los derivados (nodos.data.js, arquitectura.html).
 #   2. metodología-as-code — gen_metodo.py valida methodologies.yaml (contra
-#      methodology.schema.yaml) + el árbol proceso/ y REGENERA METODOLOGIA.md §4.
+#      methodology.schema.yaml v3: ciclo de vida estado/superseded) + el árbol proceso/
+#      + nichos/*.yaml y REGENERA METODOLOGIA.md §4 + NOTACIONES.html + GRAFO.md.
 #   3. roadmap (CK-22) — gen_roadmap.py valida story.yaml ↔ releases/*.yaml (biyección,
 #      deps resuelven) y REGENERA ROADMAP.md § Estado.
 #   4. objeto-schema (historia schema-v2) — gen_schema.py valida objeto.schema.yaml v2
@@ -46,5 +47,5 @@ fi
 
 git add \
   sistema/arquitectura/nodos.data.js sistema/arquitectura/arquitectura.html \
-  sistema/metodo/METODOLOGIA.md sistema/metodo/NOTACIONES.html \
+  sistema/metodo/METODOLOGIA.md sistema/metodo/NOTACIONES.html sistema/metodo/GRAFO.md \
   docs/product/ROADMAP.md

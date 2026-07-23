@@ -23,6 +23,7 @@ prosa de abajo (mapa, diagrama F1, "por qué aquí", secuencia) es juicio del op
 | F1 | F1.0-terreno | sistema | `schema-v2-hilo-de-oro-kinetica` | transversal | alta | done |
 | F1 | F1.0-terreno | sistema | `negocio-schema-ssot-plugin-vs-repo` | transversal | media | idea |
 | F1 | F1.1-twin-pintado | sistema | `organizacion-ficticia-golden-fixture` | transversal | alta | done |
+| F1 | F1.1-twin-pintado | cockpit | `twin-territorio-mapa-zoomable` | N13 | alta | idea |
 | F1 | F1.1-twin-pintado | cockpit | `cruce-estructura-operacion-indicadores` | N13 | alta | refining |
 | F1 | F1.1-twin-pintado | cockpit | `brecha-proyecto-ciclo-vida` | N13 | alta | idea |
 | F1 | F1.2-metodo-operable | sistema | `poblar-metodo-m1-m3` | N2 | alta | idea |

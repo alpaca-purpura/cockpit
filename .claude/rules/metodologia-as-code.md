@@ -25,7 +25,18 @@ vista GENERADA → **gate anti-drift** en cada commit.
 | SSoT · verticales (nichos) | `sistema/metodo/nichos/*.yaml` (conforman `nicho.schema.yaml`) | a mano |
 | Contrato (la forma) | `sistema/metodo/methodology.schema.yaml` | a mano |
 | Vista · §4 catálogo | `sistema/metodo/METODOLOGIA.md` (bloques `GEN:indice`/`GEN:cards`/`GEN:tabla`) | **GENERADO** (NO editar) |
+| Vista · índice-grafo de acceso (mapa del cerebro) | `sistema/metodo/GRAFO.md` | **GENERADO** (NO editar) |
 | Generador + gate | `sistema/metodo/gen_metodo.py` | — |
+
+## Activación en conversación (2026-07-22 — cierra el hueco "conocimiento sin cargador")
+
+El método NO se carga entero ni se cita de memoria. Dos skills project-layer:
+- **`/metodo`** (consulta): `GRAFO.md` (mapa ~160 líneas) → ruteo → grep+Read dirigido de ≤6 nodos.
+  Disparar siempre que una tarea toque método/indicadores/procesos/roles/nichos/tokens `M\d+`.
+- **`/metodo-aprende`** (ingesta): teoría nueva / replantear dogma → prior-art scan → clasificar
+  (new/extend/supersede/descartar) → barrido de contradicciones → gate. El ciclo de vida vive en el
+  schema v3 (`estado: vigente|superseded|descartada` + `superseded_by` + `razon_estado`) — una card
+  reemplazada queda como memoria con puntero, nunca se borra ni se contradice en silencio.
 
 ## Disciplina
 
@@ -43,9 +54,11 @@ vista GENERADA → **gate anti-drift** en cada commit.
 ## El gate (CK-19 · pre-commit)
 
 `.githooks/pre-commit` corre `gen_metodo.py`: valida `methodologies.yaml` contra `methodology.schema.yaml`
-(campos/enums/refs `combina_con`) + el árbol `proceso/` (frontmatter required · id==ruta · refs módulo/etapa ·
-tokens `M\d+` resuelven) y regenera `METODOLOGIA.md §4`; falla → **bloquea el commit**. Manual:
-`python3 sistema/metodo/gen_metodo.py` (regenera) · `--check` (solo valida).
+(campos/enums/refs `combina_con` · ciclo de vida `estado`/`superseded_by` v3) + el árbol `proceso/`
+(frontmatter required · id==ruta · refs módulo/etapa · tokens `M\d+` resuelven) + `nichos/*.yaml`
+(contra `nicho.schema.yaml`: provenance/`derivado_ref`/refs) + coherencia del grafo (WARN arista
+vigente→superseded · INFO asimetrías), y regenera `METODOLOGIA.md §4` + `NOTACIONES.html` + `GRAFO.md`;
+falla → **bloquea el commit**. Manual: `python3 sistema/metodo/gen_metodo.py` (regenera) · `--check` (solo valida).
 
 ## Wiring con el lifecycle del arnés
 

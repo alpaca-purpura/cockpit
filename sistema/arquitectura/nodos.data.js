@@ -289,7 +289,7 @@ window.NODOS = {
       ],
       [
         "resumen",
-        "Binario Go propio (`directorio`, hoy) con UI embebida. **Módulo Visualización:** Hilo de Oro · Brechas · Empresa→Sistema · objeto normalizado (9 entidades) + indicadores del lakehouse. **Módulo Gestión de Cambios:** solicitudes/aprobación/publicación de versiones (ISO §7.5/§6.3). Auth embebida + autorización derivada de la estructura del repo."
+        "Binario Go propio (`directorio`, hoy) con UI embebida. **Módulo Visualización:** Hilo de Oro · Brechas · Empresa→Sistema · objeto normalizado (12 entidades — schema v2, CK-26) + indicadores del lakehouse. **Módulo Gestión de Cambios:** solicitudes/aprobación/publicación de versiones (ISO §7.5/§6.3). Auth embebida + autorización derivada de la estructura del repo."
       ],
       [
         "plano · tipo · madurez",
@@ -297,7 +297,7 @@ window.NODOS = {
       ],
       [
         "responsabilidades",
-        "Servir la SPA embebida (`go:embed`) · API JSON (`/api/portfolio`, `/api/negocio`, `/api/objeto`) · leer/validar el objeto normalizado (9 entidades, CK-13) de N6 · **cruzar estructura × operación (N16) y servir por nivel de acceso [R11]** · **medir el hilo de oro (motor de indicadores) y sostener la brecha continua con el ciclo brecha→proyecto→KPI movido [R17]** · **Gestión de Cambios** (solicitud/aprobación/publicación de versiones, firma persistida) sobre N6 [alimenta R13] · autenticar y autorizar por rol organizacional."
+        "Servir la SPA embebida (`go:embed`) · API JSON (`/api/portfolio`, `/api/negocio`, `/api/objeto`) · leer/validar el objeto normalizado (12 entidades — CK-13 sirvió 9, schema v2/CK-26 sube a 12) de N6 · **cruzar estructura × operación (N16) y servir por nivel de acceso [R11]** · **medir el hilo de oro (motor de indicadores) y sostener la brecha continua con el ciclo brecha→proyecto→KPI movido [R17]** · **Gestión de Cambios** (solicitud/aprobación/publicación de versiones, firma persistida) sobre N6 [alimenta R13] · autenticar y autorizar por rol organizacional."
       ],
       [
         "no_objetivos",

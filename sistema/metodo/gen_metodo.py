@@ -4,22 +4,30 @@
 Gemelo de `sistema/arquitectura/gen_arquitectura.py`, para el eje METODOLOGÍA:
 
   SSoT de datos:  methodologies.yaml (M-cards + bloque twin:) + proceso/** (Definición)
-  Contrato:       methodology.schema.yaml
+                  + nichos/*.yaml (eje vertical; contrato propio nicho.schema.yaml)
+  Contrato:       methodology.schema.yaml (v3: ciclo de vida estado/superseded_by)
   Vistas generadas:
     · METODOLOGIA.md §4  — bloques  <!-- GEN:indice --> / GEN:cards / GEN:tabla
     · NOTACIONES.html    — mapa de decisión del twin (dimensión → estándar → rol →
       cuándo sí / cuándo no / proyecciones) + triage + descartados. Self-contained
       (CSS inline, sin CDNs), patrón de arquitectura.html. CK-21 · WS5.
+    · GRAFO.md           — índice-grafo de acceso (el mapa del cerebro): 1 línea por
+      card/paso/unidad-nicho + grafo inverso (dónde se operacionaliza cada card) +
+      backbone + recetas grep. Entrada canónica del skill `metodo` (2026-07-22).
 
 Qué hace en cada corrida:
   1. Valida methodologies.yaml contra el schema (campos, enums, refs combina_con,
-     bloque twin: — rol_ancla, dimensiones ⊆ enum, dimensiones==[] ⇔ fuera-del-twin).
+     bloque twin: — rol_ancla, dimensiones ⊆ enum, dimensiones==[] ⇔ fuera-del-twin,
+     ciclo de vida: estado/superseded_by/razon_estado coherentes).
   2. Valida el árbol proceso/ (frontmatter required, id==ruta, refs de módulo/etapa,
-     tokens M\\d+ de `metodologia:` resuelven al catálogo).
-  3. Renderiza los 3 bloques GEN de METODOLOGIA.md + NOTACIONES.html desde la SSoT.
-  4. Si algo no valida → imprime `ERR …`, sale 1 (no escribe nada).
-  5. `--check`: compara los renders vs disco; si difiere imprime `DRIFT …`, sale 1. No escribe.
-  6. Normal: escribe METODOLOGIA.md (bloques GEN) + NOTACIONES.html + imprime `OK`.
+     tokens M\\d+ de `metodologia:` resuelven al catálogo; WARN si citan superseded).
+  3. Valida nichos/*.yaml contra nicho.schema.yaml (required + enums + derivado_ref
+     si observado-en-cliente + combina_con[].m resuelve + agrega[] + _meta.total).
+  4. Coherencia del grafo: WARN arista vigente→superseded/descartada · INFO asimetrías.
+  5. Renderiza los 3 bloques GEN de METODOLOGIA.md + NOTACIONES.html + GRAFO.md.
+  6. Si algo no valida → imprime `ERR …`, sale 1 (no escribe nada).
+  7. `--check`: compara los renders vs disco; si difiere imprime `DRIFT …`, sale 1. No escribe.
+  8. Normal: escribe METODOLOGIA.md (bloques GEN) + NOTACIONES.html + GRAFO.md + imprime `OK`.
 
 Única dependencia no-stdlib: pyyaml.  Wired al gate: `.githooks/pre-commit` (CK-19).
 """
@@ -36,12 +44,16 @@ BASE = Path(__file__).resolve().parent          # sistema/metodo/
 MET_YAML = BASE / "methodologies.yaml"
 MET_MD = BASE / "METODOLOGIA.md"
 NOTACIONES_HTML = BASE / "NOTACIONES.html"
+GRAFO_MD = BASE / "GRAFO.md"
 SCHEMA_YAML = BASE / "methodology.schema.yaml"
 PROCESO = BASE / "proceso"
+NICHOS = BASE / "nichos"
+NICHO_SCHEMA = NICHOS / "nicho.schema.yaml"
 
 MID_RE = re.compile(r"^M[0-9]{2}$")
 MREF_RE = re.compile(r"^M[0-9]+$")               # tokens M\d+ dentro de metodologia:[]
 STEPREF_RE = re.compile(r"\bm[0-9]+\.[a-z0-9]+\.[a-z0-9]+\b")
+NID_RE = re.compile(r"^N-[A-Z]{2,4}-[0-9]{2}$")  # unidad de nicho
 
 
 # ─────────────────────────── carga ───────────────────────────
@@ -110,6 +122,22 @@ def validar_metodologias(met: dict, schema: dict, errors: list[str]) -> None:
         nc = c.get("nombre_corto")
         if nc is not None and not isinstance(nc, str):
             errors.append(f"{w}: nombre_corto no es str")
+        # ciclo de vida del conocimiento (schema v3): vigente (default) / superseded / descartada
+        est = c.get("estado", "vigente")
+        if est not in en.get("estado_card", ["vigente", "superseded", "descartada"]):
+            errors.append(f"{w}: estado `{est}` ∉ enums.estado_card")
+        sb = c.get("superseded_by")
+        if est == "superseded":
+            if not sb:
+                errors.append(f"{w}: estado superseded exige superseded_by")
+            elif sb == mid:
+                errors.append(f"{w}: superseded_by no puede apuntar a sí misma")
+            elif sb not in C:
+                errors.append(f"{w}: superseded_by `{sb}` no resuelve a una M-card")
+        elif sb is not None:
+            errors.append(f"{w}: superseded_by presente pero estado != superseded")
+        if est in ("superseded", "descartada") and not c.get("razon_estado"):
+            errors.append(f"{w}: estado {est} exige razon_estado (el porqué, defendible)")
         validar_twin(mid, c, schema, errors)
 
 
@@ -145,6 +173,103 @@ def validar_twin(mid: str, c: dict, schema: dict, errors: list[str]) -> None:
             errors.append(f"{mid}: twin.{f} ausente o vacío (obligatorio)")
 
 
+# ─────────────────── coherencia del grafo (cerebro) ───────────────────
+def validar_coherencia(met: dict, pasos: dict, nichos: dict, warnings: list[str]) -> list[str]:
+    """El cerebro no se contradice: nada vigente apunta a conocimiento reemplazado.
+    Devuelve las asimetrías combina_con (INFO, no warning — aristas dirigidas son legales)."""
+    C = cards(met)
+    estado = {mid: c.get("estado", "vigente") for mid, c in C.items()}
+
+    def _succ(mid: str) -> str:
+        sb = C[mid].get("superseded_by")
+        return f" (sucesor: {sb})" if sb else ""
+
+    for mid, c in C.items():
+        if estado[mid] != "vigente":
+            continue
+        for comb in c.get("combina_con") or []:
+            m = comb.get("m")
+            if m in C and estado[m] != "vigente":
+                warnings.append(f"{mid}: combina_con → {m} está {estado[m]}{_succ(m)} — re-cablear la arista")
+
+    for pid, fm in pasos.items():
+        for tok in fm.get("metodologia") or []:
+            t = str(tok)
+            if t in C and estado[t] != "vigente":
+                warnings.append(f"{pid}: metodologia cita {t} ({estado[t]}){_succ(t)} — actualizar el paso")
+
+    for vert, units in nichos.items():
+        for nid, u in units.items():
+            for comb in u.get("combina_con") or []:
+                m = comb.get("m")
+                if m in C and estado.get(m, "vigente") != "vigente":
+                    warnings.append(f"{vert}:{nid}: combina_con → {m} está {estado[m]}{_succ(m)}")
+
+    asym = []
+    for mid, c in C.items():
+        for comb in c.get("combina_con") or []:
+            m = comb.get("m")
+            if m in C and mid not in {x.get("m") for x in (C[m].get("combina_con") or [])}:
+                asym.append(f"{mid}→{m}")
+    return asym
+
+
+# ─────────────────────── validación nichos/ ───────────────────────
+def validar_nichos(met: dict, errors: list[str], warnings: list[str]) -> dict:
+    """nichos/*.yaml contra nicho.schema.yaml (eje vertical del cerebro).
+    Devuelve {vertical: {N-XXX-NN: unidad}} para GRAFO.md."""
+    out: dict[str, dict] = {}
+    if not NICHOS.is_dir() or not NICHO_SCHEMA.exists():
+        warnings.append("nichos/ o nicho.schema.yaml ausente — se omite la validación vertical")
+        return out
+    ns = load_yaml(NICHO_SCHEMA)
+    en = ns["enums"]
+    req = [k for k, v in (ns.get("campos") or {}).items() if isinstance(v, dict) and v.get("requerido")]
+    mid_keys = set(cards(met))
+
+    for nfile in sorted(NICHOS.glob("*.yaml")):
+        if nfile.name == "nicho.schema.yaml":
+            continue
+        data = load_yaml(nfile) or {}
+        meta = data.get("_meta") or {}
+        units = {k: v for k, v in data.items() if k != "_meta"}
+        if meta.get("total") != len(units):
+            errors.append(f"{nfile.name}: _meta.total={meta.get('total')} != {len(units)} unidades")
+        for nid, u in units.items():
+            w = f"{nfile.name}:{nid}"
+            if not NID_RE.match(nid):
+                errors.append(f"{w}: id no cumple ^N-<VERT>-<NN>$")
+            if not isinstance(u, dict):
+                errors.append(f"{w}: no es un mapa")
+                continue
+            for f in req:
+                if f not in u:
+                    errors.append(f"{w}: falta campo requerido `{f}`")
+            if u.get("nicho") not in en["nicho"]:
+                errors.append(f"{w}: nicho `{u.get('nicho')}` ∉ enums.nicho")
+            if u.get("tipo") not in en["tipo"]:
+                errors.append(f"{w}: tipo `{u.get('tipo')}` ∉ enums.tipo")
+            if u.get("derivado_de") not in en["derivado_de"]:
+                errors.append(f"{w}: derivado_de `{u.get('derivado_de')}` ∉ enums.derivado_de")
+            if u.get("confianza") not in en["confianza"]:
+                errors.append(f"{w}: confianza `{u.get('confianza')}` ∉ enums.confianza")
+            ob = u.get("objeto")
+            if ob is not None and ob not in en["objeto"]:
+                errors.append(f"{w}: objeto `{ob}` ∉ enums.objeto")
+            if u.get("derivado_de") == "observado-en-cliente" and not u.get("derivado_ref"):
+                errors.append(f"{w}: derivado_de=observado-en-cliente exige derivado_ref (anti-contaminación)")
+            for comb in u.get("combina_con") or []:
+                if comb.get("m") not in mid_keys:
+                    errors.append(f"{w}: combina_con.m `{comb.get('m')}` no resuelve a una M-card")
+                if not comb.get("como"):
+                    errors.append(f"{w}: combina_con[{comb.get('m')}] sin `como`")
+            for ag in u.get("agrega") or []:
+                if ag not in units:
+                    errors.append(f"{w}: agrega `{ag}` no resuelve dentro del vertical")
+        out[nfile.stem] = units
+    return out
+
+
 # ─────────────────────── validación proceso/ ───────────────────────
 FM_RE = re.compile(r"^---\n(.*?)\n---\n", re.DOTALL)
 
@@ -156,10 +281,10 @@ def frontmatter(path: Path):
     return yaml.safe_load(m.group(1))
 
 
-def validar_proceso(met: dict, schema: dict, errors: list[str], warnings: list[str]) -> None:
+def validar_proceso(met: dict, schema: dict, errors: list[str], warnings: list[str]) -> tuple[dict, dict, dict]:
     if not PROCESO.is_dir():
         warnings.append("proceso/ ausente — se omite la validación del árbol")
-        return
+        return {}, {}, {}
     sp = schema["proceso"]
     mid_keys = set(cards(met))
     modulos: dict[str, dict] = {}
@@ -225,6 +350,8 @@ def validar_proceso(met: dict, schema: dict, errors: list[str], warnings: list[s
         for ref in STEPREF_RE.findall(str(fm.get("desbloqueo") or "")):
             if ref not in pasos:
                 warnings.append(f"{pid}: desbloqueo referencia paso inexistente `{ref}`")
+
+    return modulos, etapas, pasos
 
 
 # ─────────────────────── render (SSoT → §4) ───────────────────────
@@ -305,6 +432,155 @@ def replace_block(text: str, tag: str, body: str) -> str:
     return pat.sub(lambda _m: _m.group(1) + body + _m.group(2), text)
 
 
+# ─────────────── render GRAFO.md (índice-grafo del cerebro · 2026-07-22) ───────────────
+def trunc(s, n: int = 110) -> str:
+    s = " ".join(str(s).split())
+    return s if len(s) <= n else s[: n - 1].rstrip() + "…"
+
+
+def render_grafo(met: dict, modulos: dict, etapas: dict, pasos: dict, nichos: dict) -> str:
+    C = cards(met)
+    fam = met["_meta"]["familias"]
+    obj = met["_meta"]["backbone_labels"]
+    estado = {mid: c.get("estado", "vigente") for mid, c in C.items()}
+    orden = sorted(C, key=lambda k: int(k[1:]))
+
+    # §1 — una línea por card, por familia
+    s1: list[str] = []
+    for L, mids in by_family(met).items():
+        s1.append(f"### {L} · {fam[L]}")
+        for m in mids:
+            c = C[m]
+            objs = c["objeto_primario"]
+            sec = c.get("objetos_secundarios") or []
+            if sec:
+                objs += "+" + ",".join(sec)
+            d = c.get("donde") or {}
+            mods = ",".join(d.get("modulos") or []) or "—"
+            if d.get("capa_contexto"):
+                mods += "·ctx"
+            tw = c["twin"]
+            dims = tw.get("dimensiones") or []
+            twl = tw["rol_ancla"] + (f"[{','.join(dims)}]" if dims else "")
+            comb = ",".join(x["m"] for x in c["combina_con"]) or "—"
+            mark = ""
+            if estado[m] == "superseded":
+                mark = f" ⛔SUPERSEDED→{c.get('superseded_by')}"
+            elif estado[m] == "descartada":
+                mark = " 🗑DESCARTADA"
+            s1.append(f"- **{m}** {c['nombre']}{mark} · {objs} · {c['modo']}·{mods} · {twl} · ⇄{comb} · usar: {trunc(c['cuando_usar'])}")
+        s1.append("")
+
+    # §2 — grafo inverso: dónde se operacionaliza cada card
+    uso: dict[str, dict[str, list[str]]] = {m: {"pasos": [], "nichos": []} for m in C}
+    for pid in sorted(pasos):
+        for tok in pasos[pid].get("metodologia") or []:
+            t = str(tok)
+            if t in C:
+                uso[t]["pasos"].append(pid)
+    for vert in sorted(nichos):
+        for nid in sorted(nichos[vert]):
+            for comb in nichos[vert][nid].get("combina_con") or []:
+                m = comb.get("m")
+                if m in C:
+                    uso[m]["nichos"].append(nid)
+    s2: list[str] = []
+    sin_uso: list[str] = []
+    for m in orden:
+        p, n = uso[m]["pasos"], uso[m]["nichos"]
+        if p or n:
+            parts = []
+            if p:
+                parts.append("pasos: " + ", ".join(p))
+            if n:
+                parts.append("nichos: " + ", ".join(n))
+            s2.append(f"- {m} ({short_name(C[m])}) ← " + " · ".join(parts))
+        elif estado[m] == "vigente":
+            sin_uso.append(m)
+    if sin_uso:
+        s2.append("")
+        s2.append(f"Sin operacionalizar aún ({len(sin_uso)} — ningún paso/nicho las cita; brecha esperable con proceso/ a medio poblar, BL-05): "
+                  + ", ".join(sin_uso))
+
+    # §3 — pasos poblados + etapas stub
+    s3: list[str] = []
+    for pid in sorted(pasos):
+        fm = pasos[pid]
+        act = fm.get("actor")
+        actor = (act.get("rol") or act.get("quien") or "—") if isinstance(act, dict) else str(act or "—")
+        g = fm.get("gate")
+        gate = (g.get("tipo") if isinstance(g, dict) else g) or "—"
+        mets = ", ".join(str(t) for t in fm.get("metodologia") or []) or "—"
+        s3.append(f"- `{pid}` · {fm.get('titulo_interno')} · actor:{actor} · gate:{gate} · met: {mets}")
+    con_pasos = {fm.get("etapa") for fm in pasos.values()}
+    stubs = sorted(e for e in etapas if e not in con_pasos)
+    if stubs:
+        s3.append("")
+        s3.append(f"Etapas SIN pasos ({len(stubs)} stubs — historia `sistema/poblar-metodo-m1-m3`): " + ", ".join(stubs))
+
+    # §4 — nichos (eje vertical)
+    s4: list[str] = []
+    total_unidades = 0
+    for vert in sorted(nichos):
+        units = nichos[vert]
+        total_unidades += len(units)
+        s4.append(f"### {vert} ({len(units)})")
+        for nid in sorted(units):
+            u = units[nid]
+            comb = ",".join(str(x.get("m")) for x in u.get("combina_con") or [])
+            extra = f" · ⇄{comb}" if comb else ""
+            s4.append(f"- {nid} · {u.get('nombre')} · {u.get('tipo')} · {u.get('objeto', '—')} · conf:{u.get('confianza')}/{u.get('derivado_de')}{extra}")
+        s4.append("")
+
+    # §5 — backbone: objeto → cards primarias
+    s5 = [f"- **{code}** {label}: " + (", ".join(m for m in orden if C[m]['objeto_primario'] == code) or "—")
+          for code, label in obj.items()]
+
+    return f"""<!-- GENERADO por sistema/metodo/gen_metodo.py desde methodologies.yaml + proceso/** + nichos/*.yaml — NO editar a mano. Gate anti-drift en pre-commit. -->
+# GRAFO — índice-grafo del cerebro metodológico (GENERADO)
+
+Mapa de acceso de bajo costo al método del producto. Protocolo (skill `metodo`):
+**(1)** leé este archivo (es el mapa completo, ~{3 + len(orden) + len(pasos) + total_unidades} líneas de datos) →
+**(2)** elegí los nodos por `usar:`/objeto/twin → **(3)** cargá SOLO esos nodos con grep+Read dirigido.
+Jamás cargues `methodologies.yaml` o `METODOLOGIA.md` enteros.
+
+Recetas (desde la raíz del repo):
+- Card completa (~24 líneas): `grep -n "^M30:" sistema/metodo/methodologies.yaml` → `Read offset=<línea> limit=26`
+- Paso completo: ruta = id con puntos→carpetas: `m1.b1.p1` → `sistema/metodo/proceso/m1/b1/p1.md`
+- Unidad de nicho (~12 líneas): `grep -n "^N-RET-05:" sistema/metodo/nichos/retail.yaml` → `Read offset limit=14`
+- Dónde se usa una card: §2 de este archivo (ya resuelto — no grepear a mano)
+- Narrativas largas (solo si hace falta prosa): `M1-LEVANTAMIENTO.md` · `M3-ESPINAZO.md` · `PROCESS-AS-DATA.md`
+- Agregar/reemplazar conocimiento: skill `metodo-aprende` (protocolo anti-contradicción)
+
+Totales: **{len(orden)} M-cards** (_meta.total) · **{len(pasos)} pasos** poblados / **{len(stubs)} etapas stub** · **{total_unidades} unidades** de nicho en **{len(nichos)} verticales**.
+Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensiones] · ⇄combina_con · usar:`
+
+## §1 M-cards por familia
+
+{chr(10).join(s1).rstrip()}
+
+## §2 Grafo inverso — dónde se operacionaliza cada card
+
+{chr(10).join(s2)}
+
+## §3 Proceso (Definición) — pasos poblados
+
+{chr(10).join(s3)}
+
+## §4 Nichos (eje vertical)
+
+{chr(10).join(s4).rstrip()}
+
+## §5 Backbone — objeto → cards primarias
+
+{chr(10).join(s5)}
+
+---
+SSoT: `methodologies.yaml` · `proceso/**` · `nichos/*.yaml` · contratos: `methodology.schema.yaml` (v3, ciclo de vida) + `nichos/nicho.schema.yaml`.
+Gate: `python3 sistema/metodo/gen_metodo.py --check` (pre-commit). Este archivo se REGENERA, no se edita.
+"""
+
+
 # ─────────────── render NOTACIONES.html (twin · CK-21 WS5) ───────────────
 ROL_LABEL = {
     "metamodelo-propio": "metamodelo propio",
@@ -317,7 +593,7 @@ ROL_LABEL = {
 }
 
 ROL_DEF = [
-    ("metamodelo-propio", "el diferenciador: objeto.schema.yaml as-code en git (9 entidades, doctrina Palantir), extensible por cliente sin fork"),
+    ("metamodelo-propio", "el diferenciador: objeto.schema.yaml as-code en git (12 entidades — schema v2 CK-26, doctrina Palantir), extensible por cliente sin fork"),
     ("ancla", "ancla semántica: el estándar presta ontología/taxonomía y se embebe como DATO (archimate:, met:, enums) — no hay diagrama fuente"),
     ("proyeccion", "proyección: la notación RENDERIZA el dato (swimlane, organigrama, strategy-map, heatmap) — se genera con .py, jamás se edita a mano"),
     ("intercambio", "intercambio: formato estándar para importar/exportar contra herramientas del cliente (BPMN XML, ArchiMate exchange) — V2, declarado para no cerrar la puerta"),
@@ -537,7 +813,9 @@ def main(argv: list[str]) -> int:
     errors: list[str] = []
     warnings: list[str] = []
     validar_metodologias(met, schema, errors)
-    validar_proceso(met, schema, errors, warnings)
+    modulos, etapas, pasos = validar_proceso(met, schema, errors, warnings)
+    nichos = validar_nichos(met, errors, warnings)
+    asym = validar_coherencia(met, pasos, nichos, warnings)
 
     if errors:
         for e in errors:
@@ -549,11 +827,16 @@ def main(argv: list[str]) -> int:
     new = replace_block(new, "cards", render_cards(met))
     new = replace_block(new, "tabla", render_tabla(met))
     notaciones = render_notaciones(met, schema)
+    grafo = render_grafo(met, modulos, etapas, pasos, nichos)
 
     for wmsg in warnings:
         print(f"WARN {wmsg}")
+    if asym:
+        head = " ".join(asym[:8]) + ("…" if len(asym) > 8 else "")
+        print(f"INFO aristas combina_con sin recíproca: {len(asym)} (dirigidas — legal) · {head}")
 
     n = len(cards(met))
+    resumen = f"{n} M-cards · proceso/ válido ({len(pasos)} pasos) · nichos/ válido ({sum(len(u) for u in nichos.values())} unidades)"
     if check:
         drift = False
         if new != md:
@@ -563,14 +846,19 @@ def main(argv: list[str]) -> int:
         if disco != notaciones:
             print("DRIFT NOTACIONES.html desincronizado de methodologies.yaml (twin:) — corré gen_metodo.py")
             drift = True
+        disco_g = GRAFO_MD.read_text(encoding="utf-8") if GRAFO_MD.exists() else None
+        if disco_g != grafo:
+            print("DRIFT GRAFO.md desincronizado de la SSoT (cards/proceso/nichos) — corré gen_metodo.py")
+            drift = True
         if drift:
             return 1
-        print(f"OK --check · {n} M-cards · proceso/ válido · METODOLOGIA.md §4 + NOTACIONES.html en sync")
+        print(f"OK --check · {resumen} · METODOLOGIA.md §4 + NOTACIONES.html + GRAFO.md en sync")
         return 0
 
     MET_MD.write_text(new, encoding="utf-8")
     NOTACIONES_HTML.write_text(notaciones, encoding="utf-8")
-    print(f"OK · {n} M-cards validadas · proceso/ válido · METODOLOGIA.md §4 + NOTACIONES.html regenerados")
+    GRAFO_MD.write_text(grafo, encoding="utf-8")
+    print(f"OK · {resumen} · METODOLOGIA.md §4 + NOTACIONES.html + GRAFO.md regenerados")
     return 0
 
 

@@ -7,12 +7,13 @@ desde el legacy `prenter-harness/service/` en CK-11 (antes solo había catálogo
 
 ## Doctrina y catálogo
 
-`methodologies.yaml` es el catálogo COMPLETO (31 fichas, M01-M31) tal como vivía en el registry del
-monorepo de origen — incluye metodologías de construcción de software (Dual Track, Shape Up, JTBD,
-EARS, BDD, WSJF, Wardley) que son dominio de DevStudio/Kit, no de Cockpit. `METODOLOGIA.md` es la
-narrativa completa generada de ese catálogo. Se dejaron íntegros (no se recortó el YAML) para no
-perder contexto ni relaciones (`combina_con`) — pero las que aplican directo a los 4 pilares de
-`VISION.md` son:
+`methodologies.yaml` es el catálogo COMPLETO — nació con las 31 fichas del registry del monorepo
+de origen y creció a **45 (M01-M45)**: familia I «Twin & automatización del trabajo» (CK-21) +
+cards del schema v2 (CK-26). El conteo SSoT es `_meta.total` (el gate lo valida — no citar números
+en prosa sin mirarlo). Incluye metodologías de construcción de software (Dual Track, Shape Up, JTBD,
+EARS, BDD, WSJF, Wardley) que son dominio de DevStudio/Kit, no de Cockpit; se dejaron íntegras para
+no perder contexto ni relaciones (`combina_con`). `METODOLOGIA.md` es la narrativa completa generada
+de ese catálogo. Las que aplican directo a los 4 pilares de `VISION.md`:
 
 | Pilar | M-cards |
 |---|---|
@@ -24,6 +25,15 @@ perder contexto ni relaciones (`combina_con`) — pero las que aplican directo a
 
 `ISO-9001-veredicto-I-05.md` — el precedente que decide CUÁNTO de ISO 9001 se usa (ontología sí,
 aparato de certificación no) y que `VISION.md §ISO` hereda y amplía (CK-10).
+
+## Acceso (el cerebro)
+
+**`GRAFO.md`** — índice-grafo GENERADO (1 línea por card/paso/unidad-nicho + grafo inverso "dónde se
+operacionaliza cada card" + backbone + recetas grep). Entrada canónica de consulta: skill **`/metodo`**
+(mapa → grep+Read dirigido, ≤6 nodos por tarea). Ingesta/reemplazo de conocimiento: skill
+**`/metodo-aprende`** (prior-art scan → clasificar new/extend/supersede → barrido de contradicciones →
+gate). Ciclo de vida en el contrato v3: `estado: vigente|superseded|descartada` (+`superseded_by`,
+`razon_estado`) — el conocimiento reemplazado queda como memoria con puntero, no se borra.
 
 ## El método operable
 

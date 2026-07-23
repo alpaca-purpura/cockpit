@@ -18,15 +18,23 @@
 
 meta:
   nombre: "contrato de metodologías (M-cards) + proceso-as-data + notaciones del twin"
-  version: 2
+  version: 3            # v3 (2026-07-22): ciclo de vida del conocimiento (estado/superseded_by) + GRAFO.md + validación nichos/
   ssot_cards: sistema/metodo/methodologies.yaml
   ssot_proceso: sistema/metodo/proceso/
+  ssot_nichos: sistema/metodo/nichos/                # contrato propio: nichos/nicho.schema.yaml (el gate lo aplica)
   vista_generada: sistema/metodo/METODOLOGIA.md      # §4 (bloques GEN)
   vista_notaciones: sistema/metodo/NOTACIONES.html   # mapa de decisión del twin (GENERADA)
+  vista_grafo: sistema/metodo/GRAFO.md               # índice-grafo de acceso (GENERADA · el mapa del cerebro)
 
 enums:
   familia:   [A, B, C, D, E, F, G, H, I]   # I = Twin & automatización del trabajo (CK-21)
   modo:      [columna, paraguas, situacional]
+  # ── ciclo de vida del conocimiento (2026-07-22) — cómo el cerebro aprende sin contradicción:
+  #    vigente (default, campo ausente) · superseded (reemplazada — exige superseded_by + razon_estado;
+  #    la card NO se borra: queda como memoria con puntero al sucesor) · descartada (evaluada y
+  #    rechazada conscientemente — exige razon_estado; distinta del rol twin `descartada`, que es
+  #    su papel EN el twin: acá es el estatus de la card EN el catálogo).
+  estado_card: [vigente, superseded, descartada]
   objeto:    [O1, O2, O3, O4, O5, O6, O7, T1, T2, T3]   # backbone: O1-O7 hilo · T1-T3 transversal
   principio: [P1, P2, P3, P4, P5, P6, P7]
   modulo:    [m1, m2, m3]
@@ -47,10 +55,13 @@ card:
   id_pattern: "^M[0-9]{2}$"
   required: [nombre, familia, fuente, que, aporte_unico, cuando_usar,
              objeto_primario, principios, combina_con, donde, modo, twin]
-  optional: [objetos_secundarios, nombre_corto]
+  optional: [objetos_secundarios, nombre_corto, estado, superseded_by, razon_estado]
   fields:
     nombre:              str
     nombre_corto:        str                             # rótulo para índice/tabla (arregla truncados tipo "Process / Task Mining"→"Process")
+    estado:              enum:estado_card                # ausente = vigente
+    superseded_by:       ref->card                       # OBLIGATORIO si estado=superseded; prohibido si no
+    razon_estado:        str                             # OBLIGATORIO si estado ∈ {superseded, descartada} — el porqué, defendible
     familia:             enum:familia
     fuente:              { required: [autor, obra, url] }
     que:                 str
@@ -126,5 +137,10 @@ invariantes:
   - "id de módulo/etapa/paso == su ruta en proceso/"
   - "paso.modulo y paso.etapa resuelven a un módulo/etapa existente"
   - "metodologia[] tokens ^M\\d+$ resuelven a una M-card"
+  - "estado ∈ enums.estado_card · superseded ⇔ superseded_by resuelve (≠ sí misma) · superseded/descartada exigen razon_estado"
+  - "cada unidad de nichos/*.yaml conforma nicho.schema.yaml (required + enums + derivado_ref si observado-en-cliente + combina_con[].m resuelve + agrega[] resuelve en su vertical + _meta.total)"
   - "METODOLOGIA.md §4 (GEN blocks) == render(methodologies.yaml)  [anti-drift]"
   - "NOTACIONES.html == render(methodologies.yaml × twin)  [anti-drift]"
+  - "GRAFO.md == render(methodologies.yaml × proceso/ × nichos/)  [anti-drift]"
+  # advertencias (no bloquean): arista combina_con desde card vigente hacia superseded/descartada ·
+  # paso cuya metodologia[] cita una card superseded/descartada · asimetrías combina_con (INFO)

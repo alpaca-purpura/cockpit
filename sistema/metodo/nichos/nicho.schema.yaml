@@ -4,7 +4,8 @@
 # SSoT del CONOCIMIENTO DE NICHO (eje VERTICAL del cerebro): qué mide/sabe un rubro
 # concreto a altura de directorio (KPIs, drivers, prácticas, normas sectoriales) y CÓMO
 # aterrizan en él los marcos transversales. Gemelo de methodology.schema.yaml (eje
-# transversal = las 31 M-cards), + la metadata que el conocimiento condicional EXIGE:
+# transversal = las M-cards de methodologies.yaml; conteo SSoT en su _meta.total), + la
+# metadata que el conocimiento condicional EXIGE:
 #   confianza · condiciones · derivado_de  (anti-alucinación + anti-contaminación entre clientes).
 # Cero-dep: chequeable por tooling/scripts/validate_schema.py.
 #
