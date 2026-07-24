@@ -298,6 +298,7 @@
   .ihd .x { width:28px; height:28px; border-radius:7px; border:1px solid var(--border); background:var(--raised); color:var(--tx-mut); flex:0 0 auto; }
   .ihd .x:hover { color:var(--tx); }
   .ibody { overflow-y:auto; flex:1; min-height:0; padding:15px 16px; display:flex; flex-direction:column; gap:13px; }
+  .ibody .btn { white-space:normal; text-align:left; }
   .drow { display:flex; justify-content:space-between; gap:14px; align-items:baseline; }
   .drow dt { font-size:12px; color:var(--tx-faint); flex:0 0 auto; }
   .drow dd { margin:0; font-size:13px; text-align:right; }
@@ -378,6 +379,18 @@
   .mcards { display:flex; flex-wrap:wrap; gap:6px; }
   .mcards .chip { font-size:11px; }
 
+  /* ---------- CK-29: capa Trabajo (arneses por puesto) + viaje completo ---------- */
+  .harn { display:inline-flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:8.5px; letter-spacing:.04em;
+    border:1px solid var(--teal-800); color:var(--brand-hi); border-radius:4px; padding:1px 5px; cursor:pointer; background:rgba(0,183,170,.06); white-space:nowrap; }
+  .harn.stale { border-color:rgba(224,173,78,.45); color:var(--warn); background:rgba(224,173,78,.07); }
+  .harn.none { border-color:var(--border); color:var(--tx-faint); background:none; cursor:default; }
+  .plnk { cursor:pointer; }
+  .plnk:hover { color:var(--brand-hi); text-decoration:underline dotted; }
+  .chip.lk { cursor:pointer; }
+  .chip.lk:hover { border-color:#33443f; color:var(--tx); }
+  .area-node .lider.plnk:hover { color:var(--brand-hi); }
+  .dia-card { border:1px dashed var(--teal-800); border-radius:11px; padding:12px; background:rgba(0,183,170,.04); font-size:12.5px; line-height:1.55; }
+
   .hint { position:absolute; top:58px; left:50%; transform:translateX(-50%); z-index:14; font-size:12px; color:var(--tx-mut);
     background:rgba(12,17,16,.82); border:1px solid var(--border); border-radius:20px; padding:6px 15px; backdrop-filter:blur(6px); transition:opacity .4s; max-width:min(700px,56vw); text-align:center; }
   .hint.gone { opacity:0; }
@@ -421,6 +434,8 @@
           <div class="capa-leg">▲ color = severidad · etiqueta = costo de no hacer</div>
           <button class="capa" data-capa="cinetica"><span class="sw"></span><span class="lab"><b>Cinética</b><span>brecha → proyecto → KPI</span></span><span class="oc">O7</span></button>
           <div class="capa-leg">● proyecto en vuelo · etiqueta = fase PDCA</div>
+          <button class="capa" data-capa="trabajo"><span class="sw"></span><span class="lab"><b>Trabajo</b><span>arneses por puesto</span></span><span class="oc">N15·17</span></button>
+          <div class="capa-leg">el twin COMPILA el trabajo (CK-29): ⛨ arnés vigente · ⚠ desactualizado (el twin cambió) · gris = puesto sin arnés (el gap)</div>
         </div>
       </div>
     </div>
@@ -470,7 +485,7 @@
     </div>
     <div class="minimap" id="minimap"><div id="mmdots"></div><div class="vw" id="mmview"></div></div>
 
-    <div class="hint" id="hint">Módulos a la izquierda · tocá un área para bajar · doble-click <b>Cobranza de cuotas</b> abre su lienzo · el pill As-Is abre las corridas what-if</div>
+    <div class="hint" id="hint">Todo es navegable: área · líder · rol · KPI · sistema · arnés — tocá y baja · doble-click <b>Cobranza de cuotas</b> abre su lienzo · prendé la capa <b>Trabajo</b> para ver los arneses</div>
   </main>
 
   <aside class="inspector" id="inspector">
@@ -586,9 +601,54 @@ const DATA = {
   // cinética — proyectos_mejora (ilustrativos del loop O7) · pm-cie = loop CERRADO con veredicto (KPI movido)
   proyectos:[
     {id:'pm-mar', nm:'Recuperación de avance Marina', estado:'en-ejecución', pdca:'DO',   brecha:'g-avc', mueve:'k-avc', area:'a-ope', roi:'2.4×', delta:'−8pp → −2pp'},
-    {id:'pm-cob', nm:'Cobranza digital · fase 1',     estado:'en-evaluación',pdca:'PLAN', brecha:'g-dso', mueve:'k-cob', area:'a-tes', roi:'1.8×', delta:'15% → 40%'},
-    {id:'pm-cie', nm:'Cierre contable exprés',        estado:'cerrado',      pdca:'ACT',  brecha:null,    mueve:'k-cie', area:'a-con', roi:'3.1×', delta:'9 → 4.5 días',
-      resultado:{delta_observado:'9 → 4.5 días', veredicto:'movió', nota:'ACT documentado: checklist pre-cierre estandarizado (M16 PDCA)'} },
+    {id:'pm-cob', nm:'Cobranza digital · fase 1',     estado:'en-evaluación',pdca:'PLAN', brecha:'g-dso', mueve:'k-cob', area:'a-tes', roi:'1.8×', delta:'15% → 40%', idea:'i-wsp'},
+    {id:'pm-cie', nm:'Cierre contable exprés',        estado:'cerrado',      pdca:'ACT',  brecha:null,    mueve:'k-cie', area:'a-con', roi:'3.1×', delta:'9 → 4.5 días', recompila:'h-cont',
+      resultado:{delta_observado:'9 → 4.5 días', veredicto:'movió', nota:'ACT documentado: checklist pre-cierre estandarizado (M16 PDCA) → recompilado al arnés del puesto'} },
+  ],
+
+  /* ---- CK-29: el cerebro completo — personas · sistemas · capabilities · arneses · conocimiento · ideas ---- */
+  personasExtra:[  // ocupantes no-líderes (la persona = ocupante del rol, CK-24)
+    {nm:'Julio Paredes', rol:'Analista de Cobranza',  area:'a-tes', vinculo:'empleado'},
+    {nm:'Carmen Rojas',  rol:'Analista de Tesorería', area:'a-tes', vinculo:'empleado'},
+  ],
+  sistemas:[  // pulso: cada sistema declara su conector al lakehouse (N16)
+    {id:'s-nub', nm:'Nubecont ERP',    digital:'integrado', conector:'dlt → lakehouse · sync diaria 06:00 · 14 tablas', caps:['c-cobrar','c-cerrar']},
+    {id:'s-crm', nm:'CRM Vendo',       digital:'integrado', conector:'dlt → lakehouse · sync horaria (leads · visitas)', caps:['c-vender']},
+    {id:'s-exc', nm:'Excel caja obra', digital:'manual',    conector:'SIN conector — captura manual, rezago s/d', caps:['c-caja']},
+    {id:'s-val', nm:'ValorizApp',      digital:'integrado', conector:'dlt → lakehouse · sync semanal (valorizaciones)', caps:[]},
+    {id:'s-ban', nm:'Banca Empresas',  digital:'externo',   conector:'extracto CSV manual · candidato a conector', caps:[]},
+    {id:'s-bim', nm:'BIM',             digital:'integrado', conector:'sin conector (documentos de diseño)', caps:[]},
+  ],
+  capabilities:[  // qué SABE hacer la empresa (M31) — madurez COBIT
+    {id:'c-cobrar', nm:'Cobrar cuotas',            madurez:3, via:['p-cob','s-nub']},
+    {id:'c-vender', nm:'Vender inmuebles',         madurez:4, via:['p-vta','s-crm']},
+    {id:'c-cerrar', nm:'Cerrar el mes financiero', madurez:4, via:['p-cierre','s-nub']},
+    {id:'c-caja',   nm:'Ver la caja al día',       madurez:1, via:['p-caja','s-exc'], gap:'g-cvis'},
+  ],
+  // arneses por puesto — la vista GENERADA del twin para un puesto (Arnesia N15 compila → Colab Studio N17 corre)
+  arneses:[
+    {id:'h-ancob', rol:'Analista de Cobranza', area:'a-tes', v:'v3', estado:'vigente',
+     compilado:'2026-07-18 · desde: mapa Cobranza v1 + verbos + conocimiento/cobranza + hilo (k-dso · k-cob)',
+     skills:['monitorear-cartera','clasificar-morosidad','preparar-recordatorios','registrar-compromisos'],
+     uso:'34 corridas/sem · agregado por rol (CK-24)', acts:[1,2,3,6,7], mueve:['k-dso','k-cob']},
+    {id:'h-jefcob', rol:'Jefe de Cobranza', area:'a-tes', v:'v1', estado:'desactualizado',
+     compilado:'2026-06-02 · desde: mapa Cobranza v1',
+     drift:'el twin cambió: verbo act.05 corregido (SC-11) + mapa v2 en dev (SC-12) → recompilar',
+     skills:['priorizar-mora-dura','preparar-refinanciamientos'], uso:'8 corridas/sem · agregado por rol', acts:[4], mueve:['k-dso']},
+    {id:'h-cont', rol:'Contador General', area:'a-con', v:'v2', estado:'vigente',
+     compilado:'2026-07-10 · RECOMPILADO al cerrar pm-cie (checklist pre-cierre estandarizado → skill)',
+     skills:['checklist-pre-cierre','conciliar-intercompañías','preparar-eeff'], uso:'12 corridas/sem · agregado por rol', acts:[], mueve:['k-cie']},
+  ],
+  puestosTotal:14,
+  conocimiento:{  // know-how anclado a proceso/rol — teaser F3 (conocimiento/<proceso>/<rol>/ en N6)
+    'p-cob':   {n:'3 guías · 12 casos', d:'política de refinanciamiento · playbook de llamadas · casos de mora dura 2024-25'},
+    'p-cierre':{n:'2 guías · 8 casos',  d:'checklist pre-cierre (estandarizado por el proyecto) · calendario de obligaciones'},
+    'p-caja':  {n:'0 guías',            d:'el know-how vive en la cabeza del analista — brecha de conocimiento'},
+  },
+  ideas:[  // funil kaizen (M44) — separación idea ↔ proyecto · autoría reconocida (RN-16)
+    {id:'i-wsp',    nm:'Plantillas de WhatsApp para recordatorios de pago', prop:'Julio Paredes · Analista de Cobranza', estado:'promovida', a:'pm-cob', nota:'reconocida — origen del alcance de Cobranza digital fase 1'},
+    {id:'i-agente', nm:'Agente que prepara el contacto de morosos (act. 03)', prop:'triage M36 → Jefe de Cobranza', estado:'en-evaluacion', origen:'triage', nota:'RTLX 71 + veredicto automatizable-agente → candidato a skill del arnés del puesto (Arnesia)'},
+    {id:'i-caja',   nm:'Foto diaria de caja desde Banca Empresas', prop:'Carmen Rojas · Analista de Tesorería', estado:'enviada', nota:'ataca la ceguera de caja (g-cvis) sin esperar proyecto formal'},
   ],
 
   bscBands:[ {k:'financiera',nm:'Financiera',y:150},{k:'cliente',nm:'Cliente',y:335},{k:'procesos',nm:'Procesos internos',y:520},{k:'aprendizaje',nm:'Aprendizaje y crecimiento',y:705} ],
@@ -638,10 +698,39 @@ function semaforo(k){ const c=kcur(k); if(c==null) return 'gris';           // s
 const kpisByProc=id=>DATA.kpis.filter(k=>k.proc===id);
 const krowHTML=k=>{ const s=semaforo(k), c=kcur(k);
   return `<button class="krow" data-k="${k.id}"><span class="kd" style="background:${SEMC[s]}"></span><span class="kn">${k.nm}${k.stale?' ⌛':''}</span><span class="kv">${c==null?'s/d':c+(k.unidad||'')} → ${k.banda.target}${k.unidad||''}</span></button>`; };
-/* lente personas: ocupante del rol por scan de líderes (vacante = delatada, no inventada) */
+/* lente personas: ocupante del rol por scan de líderes + extras (vacante = delatada, no inventada) */
 function rolOcupante(rol){ const vac=/vacante/i.test(rol); const core=rol.replace(/\s*\(vacante\)/i,'');
   const a=DATA.areas.find(x=>x.lider.split(' · ')[1]===core);
-  return { rol:core, vac, quien:a?a.lider.split(' · ')[0]:null }; }
+  const ex=DATA.personasExtra.find(p=>p.rol===core);
+  return { rol:core, vac, quien:a?a.lider.split(' · ')[0]:(ex?ex.nm:null) }; }
+
+/* CK-29: arneses por puesto — helpers */
+const sisByName=n=>DATA.sistemas.find(s=>s.nm===n);
+const arnesDeRol=r=>DATA.arneses.find(h=>h.rol===String(r).replace(/\s*\(vacante\)/i,''));
+const arnesesArea=aid=>{ const set=new Set(descendants(aid)); return DATA.arneses.filter(h=>set.has(h.area)); };
+const harnBadge=h=>h?`<span class="harn ${h.estado==='desactualizado'?'stale':''}" data-h="${h.id}" title="arnés compilado del twin — ${h.estado}">⛨ arnés ${h.v}${h.estado==='desactualizado'?' ⚠':''}</span>`
+  :`<span class="harn none" title="puesto sin arnés — candidato Arnesia">sin arnés</span>`;
+function conocimientoHTML(pid){ const c=pid&&DATA.conocimiento[pid];
+  return `<div class="dgroup"><div class="gt">Conocimiento — dónde busca el arnés</div>
+    ${c?`<div style="font-size:12px;line-height:1.5"><b class="mono" style="color:var(--brand-hi);font-size:10px">${c.n}</b> · ${c.d}</div>`
+      :'<div style="font-size:12px;color:var(--tx-faint)">Know-how aún no capturado — brecha de conocimiento.</div>'}
+    <div style="font-size:10px;color:var(--tx-faint)">conocimiento/&lt;proceso&gt;/&lt;rol&gt;/ en el repo oficial (N6) · el 3er cuerpo del cerebro — próximamente (F3)</div></div>`; }
+/* toda acción kinética con aprobación ≠ directa aterriza en la cola de Cambios */
+function accion(){ state.mod='cambios'; state.insp='home'; render(); }
+/* wiring universal del viaje: cualquier data-* dentro de un contenedor abre su ficha */
+function wireLinks(c){
+  const W={k:b=>openKpi(byId(DATA.kpis,b.dataset.k)), h:b=>openArnes(byId(DATA.arneses,b.dataset.h)),
+    rol:b=>openRol(b.dataset.rol), per:b=>openPersona(b.dataset.per),
+    sis:b=>openSistema(sisByName(b.dataset.sis)||byId(DATA.sistemas,b.dataset.sis)),
+    obj:b=>openObjetivo(byId(DATA.objetivos,b.dataset.obj)), idea:b=>openIdea(byId(DATA.ideas,b.dataset.idea)),
+    cap:b=>openCapability(byId(DATA.capabilities,b.dataset.cap)), proc:b=>openProceso(byId(DATA.procesos,b.dataset.proc)),
+    pm2:b=>openProyecto(byId(DATA.proyectos,b.dataset.pm2)), g2:b=>openBrecha(byId(DATA.brechas,b.dataset.g2)),
+    acc:()=>accion() };
+  Object.keys(W).forEach(key=>c.querySelectorAll(`[data-${key}]`).forEach(b=>{
+    if(b.classList.contains('none'))return;
+    b.onclick=e=>{ e.stopPropagation(); W[key](b); };
+  }));
+}
 
 /* profundidad + visibilidad por LOD (level-of-detail declarativo: mostrar N niveles) */
 function depth(a){ let d=0,x=a; while(x.parent){ x=byId(DATA.areas,x.parent); d++; } return d; }
@@ -726,8 +815,8 @@ function render(){
   document.querySelector('#itCorrida .chk').textContent=state.corrida?'✓':'';
 
   // disable honesto: capa sin efecto en el módulo/escala actual → atenuada con razón, no oculta
-  const CAPAS_APLICAN={ 'z0-territorio':['estructura','hilo','salud','brechas','cinetica'], 'z0-bsc':['hilo'],
-    'z1':['hilo','salud','brechas','cinetica'], 'z2':['hilo','salud','brechas'] };
+  const CAPAS_APLICAN={ 'z0-territorio':['estructura','hilo','salud','brechas','cinetica','trabajo'], 'z0-bsc':['hilo'],
+    'z1':['hilo','salud','brechas','cinetica','trabajo'], 'z2':['hilo','salud','brechas','trabajo'] };
   const apl=terr?CAPAS_APLICAN[state.escala==='z0'?('z0-'+state.piel):state.escala]:[];
   document.querySelectorAll('.capa').forEach(b=>{ const na=!apl.includes(b.dataset.capa);
     b.classList.toggle('na',na); b.title=na?(terr?'Sin efecto en esta escala — no hay dato de esta capa aquí':'Las capas pintan sobre el Territorio'):''; });
@@ -791,12 +880,15 @@ function renderTerritorio(){
       const mi=procs.filter(p=>p.digital==='manual').length, me=procs.filter(p=>p.digital==='externo').length, ma=procs.filter(p=>p.digital==='integrado').length;
       heat=`<div class="heatwrap"><i style="flex:${ma+.01};background:var(--ok)"></i><i style="flex:${me+.01};background:var(--warn)"></i><i style="flex:${mi+.01};background:var(--crit)"></i></div>`;
     }
+    const hs=state.capas.has('trabajo')?arnesesArea(a.id):null;
+    const hChip=hs?`<span class="cnt" style="color:${hs.some(h=>h.estado==='desactualizado')?'var(--warn)':(hs.length?'var(--brand-hi)':'var(--tx-faint)')}" title="puestos con arnés compilado del twin">⛨ ${hs.length}${hs.some(h=>h.estado==='desactualizado')?' ⚠':''}</span>`:'';
     n.innerHTML=`<div class="area-node">
-      <div class="hd"><div><div class="nm">${a.nm}</div><div class="lider">${a.lider.split(' · ')[0]}</div>${a.vacante?'<span class="vac">rol vacante</span>':''}</div>
+      <div class="hd"><div><div class="nm">${a.nm}</div><div class="lider plnk" title="ficha de la persona">${a.lider.split(' · ')[0]}</div>${a.vacante?'<span class="vac">rol vacante</span>':''}</div>
         <span class="health-dot" style="background:${dotColor}"></span></div>
-      <div class="stat">${heat}<span class="cnt">${procs.length}</span>${folded?`<span class="cnt fold">+${hidden} áreas</span>`:(subVis?`<span class="cnt">+${subVis}</span>`:'')}</div>
+      <div class="stat">${heat}<span class="cnt">${procs.length}</span>${hChip}${folded?`<span class="cnt fold">+${hidden} áreas</span>`:(subVis?`<span class="cnt">+${subVis}</span>`:'')}</div>
     </div>`;
     n.querySelector('.area-node').onclick=()=>drillArea(a.id);
+    n.querySelector('.lider').onclick=e=>{ e.stopPropagation(); openPersona(a.lider.split(' · ')[0]); };
     $nodes.appendChild(n);
   });
 
@@ -810,6 +902,7 @@ function renderTerritorio(){
       const pin=el('div','pin '+(g.sev==='alta'?'':g.sev==='media'?'med':'low'));
       pin.style.left=(area.x+52)+'px'; pin.style.top=(area.y-40)+'px';
       pin.innerHTML=`<div class="body" style="white-space:nowrap">▲ ${g.sev}${gs.length>1?` +${gs.length-1}`:''} · ${g.costo}</div><div class="stem"></div><div class="head"></div>`;
+      pin.title=gs.map(x=>x.nm).join('  ·  ');
       pin.onclick=()=>openBrecha(g); $pins.appendChild(pin);
     });
   }
@@ -852,7 +945,7 @@ function renderBSC(){
       <div class="nm">${o.nm}</div>
       <div class="kr"><span class="m">${o.kr.m}</span><span class="from">${o.kr.from}</span><span class="ar">→</span><span class="cur">${o.kr.cur}</span><span class="ar">→</span><span class="to">${o.kr.to}</span><span class="u">${o.kr.u}</span></div>
     </div>`;
-    n.querySelector('.obj-node').onclick=()=>{ state.activeObj=state.activeObj===o.id?null:o.id; render(); };
+    n.querySelector('.obj-node').onclick=()=>{ state.activeObj=state.activeObj===o.id?null:o.id; render(); if(state.activeObj===o.id) openObjetivo(o); };
     $nodes.appendChild(n);
   });
   counter(`${DATA.objetivos.length} objetivos · 4 perspectivas BSC`);
@@ -884,7 +977,7 @@ function renderArea(){
     const ks=state.capas.has('hilo')?kpisByProc(p.id):[];
     n.innerHTML=`<div class="proc-node ${serves?'serves':''} ${orphan&&state.capas.has('hilo')?'orphan-lit':''}">
       <div class="top"><span class="health-dot" style="background:${state.capas.has('salud')?dc:'#2a3733'}"></span><div class="nm">${p.nm}</div></div>
-      <div class="meta">${byId(DATA.areas,p.areas[0]).nm} · ${p.dueno}<br>${p.sist.join(' · ')}</div>
+      <div class="meta">${byId(DATA.areas,p.areas[0]).nm} · <span class="plnk" data-rol="${p.dueno}">${p.dueno}</span><br>${p.sist.map(s=>sisByName(s)?`<span class="plnk" data-sis="${s}">${s}</span>`:s).join(' · ')}</div>
       <div class="flag">
         ${p.flagship?'<span class="tag teal">lienzo ›</span>':''}
         ${state.corrida&&p.id==='p-cob'?'<span class="dtag">Δ +1 actividad · portal de pagos</span>':''}
@@ -892,12 +985,14 @@ function renderArea(){
         ${orphan?'<span class="tag warn">huérfano</span>':''}
         ${p.star?'<span class="tag warn">★ sin ancla</span>':''}
         ${p.sirve.length&&state.capas.has('hilo')?`<span class="tag ok">sostiene ${p.sirve.length}</span>`:''}
+        ${state.capas.has('trabajo')?harnBadge(arnesDeRol(p.dueno)):''}
       </div>
       ${ks.length?`<div class="kpis-mini">${ks.map(krowHTML).join('')}</div>`:''}</div>`;
     const card=n.querySelector('.proc-node');
     card.onclick=()=>openProceso(p);
     card.ondblclick=()=>{ if(p.flagship) drillLienzo(); };
     n.querySelectorAll('.krow').forEach(b=>b.onclick=e=>{ e.stopPropagation(); openKpi(byId(DATA.kpis,b.dataset.k)); });
+    wireLinks(n);
     $nodes.appendChild(n);
   });
   // cinética (capa O7): proyecto en vuelo sobre el proceso que mejora
@@ -913,6 +1008,7 @@ function renderArea(){
     const pin=el('div','pin '+(g.sev==='alta'?'':g.sev==='media'?'med':'low'));
     pin.style.left=pos.cx+'px'; pin.style.top=(pos.cy-42)+'px';
     pin.innerHTML=`<div class="body">${g.nm.length>46?g.nm.slice(0,44)+'…':g.nm}<span class="cost">▲ ${g.costo} · ${g.estado}</span></div><div class="stem"></div><div class="head"></div>`;
+    pin.title=g.nm;
     pin.onclick=()=>openBrecha(g); $pins.appendChild(pin);
   });
   counter(`${procs.length} procesos · ${DATA.brechas.filter(g=>{const pr=byId(DATA.procesos,g.against);return pr&&pr.areas.some(x=>setA.has(x));}).length} brechas`);
@@ -946,7 +1042,8 @@ function renderLienzo(){
   f.lanes.forEach((ln,li)=>{
     const band=el('div','laneband');
     band.style.top=(headH+li*laneH)+'px'; band.style.height=laneH+'px';
-    band.innerHTML=`<div class="lhd"><span class="role-k">carril ${li+1}${ln.k!=='carril'?' · '+ln.k:''}</span><span class="role">${ln.role}</span></div>`;
+    band.innerHTML=`<div class="lhd"><span class="role-k">carril ${li+1}${ln.k!=='carril'?' · '+ln.k:''}</span><span class="role plnk" data-rol="${ln.role}" title="ficha del rol / puesto">${ln.role}</span>${state.capas.has('trabajo')?harnBadge(arnesDeRol(ln.role)):''}</div>`;
+    wireLinks(band);
     $nodes.appendChild(band);
   });
 
@@ -963,8 +1060,10 @@ function renderLienzo(){
       <div class="ttl">${a.ttl}</div>
       <div class="tv"><span class="t">◔ ${a.toque}</span>${a.espera!=='—'?`<span class="e">⏳ ${a.espera}</span>`:''}<span>${a.sist.join(' · ')}</span></div>
       ${a.triage?`<span class="tri ${triCls(a.triage)}">${a.triage}</span>`:''}${a.rtlx?`<span class="tri rtlx">RTLX ${a.rtlx}</span>`:''}${a.mandato?`<span class="tri" style="color:var(--brand-hi);border-color:var(--teal-700)">mandato · ${a.mandato}</span>`:''}
+      ${state.capas.has('trabajo')?(h=>h?` ${harnBadge(h)}`:'')(DATA.arneses.find(h=>h.acts.includes(a.ord))):''}
     </div>`;
     n.querySelector('.act').onclick=()=>openActividad(a);
+    wireLinks(n);
     $nodes.appendChild(n);
   });
 
@@ -983,6 +1082,7 @@ function renderLienzo(){
     if(g){ const pin=el('div','pin '+(g.sev==='alta'?'':g.sev==='media'?'med':'low'));
       pin.style.left=(W-330)+'px'; pin.style.top='96px';
       pin.innerHTML=`<div class="body" style="white-space:nowrap">▲ ${g.sev} · ${g.costo} · ${g.nm.slice(0,34)}…</div><div class="stem"></div><div class="head"></div>`;
+      pin.title=g.nm;
       pin.onclick=()=>openBrecha(g); $pins.appendChild(pin); }
   }
 
@@ -997,10 +1097,16 @@ function renderMejora(){
   const sevC={alta:'var(--crit)',media:'var(--warn)',baja:'var(--tx-faint)'};
   const vuelo=DATA.proyectos.filter(p=>p.estado!=='cerrado'), done=DATA.proyectos.filter(p=>p.estado==='cerrado');
   const pv=pageView(`
-    <div class="pv-hd"><span class="eyebrow">Mejora · O6 → O7 · el loop vive DENTRO del twin — ningún vendor lo cierra in-tool</span>
-      <h2>Brecha → proyecto → KPI movido</h2>
-      <div class="sub">Cada brecha lleva costo de no hacer y caso de negocio; de ahí nacen los proyectos (PDCA con loop-back permitido); el cierre se declara con el <b>delta observado en el KPI</b>, no con "terminamos las tareas".</div></div>
-    <div class="fcols">
+    <div class="pv-hd"><span class="eyebrow">Mejora · funil de ideas + O6 → O7 · el loop vive DENTRO del twin — ningún vendor lo cierra in-tool</span>
+      <h2>Idea → brecha → proyecto → KPI movido</h2>
+      <div class="sub">El personal propone (funil kaizen, M44) y el triage detecta candidatos; cada brecha lleva costo de no hacer; de ahí nacen los proyectos (PDCA con loop-back permitido); el cierre se declara con el <b>delta observado en el KPI</b> — y la mejora se <b>compila al arnés del puesto</b> (CK-29).</div></div>
+    <div class="fcols" style="grid-template-columns:repeat(4,1fr)">
+      <div class="fcol"><span class="eyebrow">0 · Ideas — funil del personal (kaizen)</span>
+        ${DATA.ideas.map(i=>`<button class="fitem" data-idea="${i.id}">
+          <span class="t">${i.nm.length>58?i.nm.slice(0,56)+'…':i.nm}</span>
+          <span class="m"><span class="gate-pill ${i.estado==='promovida'?'':'pend'}">${i.estado}</span><span>${i.prop.split(' · ')[0]}</span>${i.origen==='triage'?'<span style="color:var(--brand-hi)">← triage</span>':''}</span>
+        </button>`).join('')}
+        <div style="font-size:10.5px;color:var(--tx-faint)">idea ↔ proyecto separados (M44) · autoría reconocida, jamás medición (CK-24)</div></div>
       <div class="fcol"><span class="eyebrow">1 · Brechas — rankeadas por costo/ROI</span>
         ${gs.map(g=>`<button class="fitem ${g.estado==='off-thread'?'dim2':''}" data-g="${g.id}">
           <span class="t">${g.nm.length>64?g.nm.slice(0,62)+'…':g.nm}</span>
@@ -1021,7 +1127,8 @@ function renderMejora(){
     </div>`);
   pv.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>openBrecha(byId(DATA.brechas,b.dataset.g)));
   pv.querySelectorAll('[data-pm]').forEach(b=>b.onclick=()=>openProyecto(byId(DATA.proyectos,b.dataset.pm)));
-  counter(`${gs.length} brechas · ${vuelo.length} en vuelo · ${done.length} cerrado`);
+  pv.querySelectorAll('[data-idea]').forEach(b=>b.onclick=()=>openIdea(byId(DATA.ideas,b.dataset.idea)));
+  counter(`${DATA.ideas.length} ideas · ${gs.length} brechas · ${vuelo.length} en vuelo · ${done.length} cerrado`);
 }
 
 /* ---------- módulo Método: engagement M1·M2·M3 + metodología as-code ---------- */
@@ -1029,11 +1136,11 @@ function renderMetodo(){
   const pv=pageView(`
     <div class="pv-hd"><span class="eyebrow">Método · el engagement del consultor — plantilla versionada, instancia por cliente (N6)</span>
       <h2>M1 Levantamiento · M3 Espinazo · M2 Mantenimiento</h2>
-      <div class="sub">El método es <b>dato, no prosa</b>: 31 M-cards versionadas en git (methodologies.yaml) — cada capa del twin cae de una M-card. Los gates conectan el engagement con el ciclo de mejora.</div></div>
+      <div class="sub">El método es <b>dato, no prosa</b>: 45 M-cards versionadas en git (methodologies.yaml) — cada capa del twin cae de una M-card. Los gates conectan el engagement con el ciclo de mejora.</div></div>
     <div class="fcols">
       <div class="fcol"><span class="eyebrow">M1 · Levantamiento — construir el As-Is</span>
         <div class="fitem"><span class="t">Ingesta multi-fuente</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>ERP · CRM · 14 entrevistas</span></span></div>
-        <div class="fitem"><span class="t">Mapa As-Is (objeto normalizado, 9 entidades)</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>13 áreas · 17 procesos</span></span>
+        <div class="fitem"><span class="t">Mapa As-Is (objeto normalizado, 12 entidades)</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>13 áreas · 17 procesos</span></span>
           <div class="stage-row"><span class="mono" style="font-size:9px;color:var(--tx-faint)">provenance</span><span class="prog"><i style="flex:52;background:var(--ok)"></i><i style="flex:30;background:var(--warn)"></i><i style="flex:18;background:var(--crit)"></i></span><span class="mono" style="font-size:9px;color:var(--tx-faint)">52·30·18</span></div></div>
         <div class="fitem"><span class="t">Hilo de oro medido</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>7 objetivos · 9 KPIs con banda</span></span></div>
         <div class="fitem"><span class="t">Validación con dueños (acuses)</span><span class="m"><span class="gate-pill pend">◐ 12/17</span><span>gate G1 → habilita el Espinazo</span></span></div></div>
@@ -1044,15 +1151,17 @@ function renderMetodo(){
       <div class="fcol"><span class="eyebrow">M2 · Mantenimiento — el twin no se pudre</span>
         <div class="fitem"><span class="t">Frescura de indicadores</span><span class="m"><span style="color:var(--warn)">⌛ 1 KPI vencido</span><span>visitas a caseta (Declarado, 40d)</span></span></div>
         <div class="fitem"><span class="t">Revisiones periódicas</span><span class="m"><span class="gate-pill pend">PRÓX</span><span>Cobranza de cuotas v2 · 15 ago</span></span></div>
-        <div class="fitem"><span class="t">Crowdsourcing a dueños del dato</span><span class="m"><span class="gate-pill pend">V2</span><span>encuestas + chat grounded con decision-trace</span></span></div></div>
+        <div class="fitem"><span class="t">Crowdsourcing a dueños del dato</span><span class="m"><span class="gate-pill pend">V2</span><span>encuestas + chat grounded con decision-trace</span></span></div>
+        <div class="fitem"><span class="t">Arneses por puesto (Arnesia → Colab)</span><span class="m"><span class="gate-pill pend">◐ 3/14</span><span style="color:var(--warn)">1 requiere recompilación</span><span>el método ENTREGADO al puesto</span></span></div></div>
     </div>
     <div class="fcol" style="margin-top:2px"><span class="eyebrow">Trazabilidad — qué M-card sostiene cada cosa que ves (method-as-code)</span>
       <div class="mcards">
         <span class="chip">M30 BSC → piel Strategy map</span><span class="chip">M26 Hoshin → cascada objetivo→área</span>
         <span class="chip">M09 VSM → tiempos toque/espera z2</span><span class="chip">M15 COBIT → capa madurez</span>
         <span class="chip">M23 provenance → confianza 🟢🟡🔴</span><span class="chip">M16 PDCA → cinética + loop-back</span>
-        <span class="chip">SOMA C7 → semáforo digitalización</span><span class="chip">ECRS+RTLX → triage automatización</span></div></div>`);
-  counter('M1 ✓ · M3 en curso · M2 activo · 31 M-cards');
+        <span class="chip">SOMA C7 → semáforo digitalización</span><span class="chip">ECRS+RTLX → triage automatización</span>
+        <span class="chip">M36·M37 → triage → skill de arnés (Arnesia)</span><span class="chip">M44 → funil de ideas</span></div></div>`);
+  counter('M1 ✓ · M3 en curso · M2 activo · 45 M-cards');
 }
 
 /* ---------- módulo Cambios: gestión de cambios ISO — git invisible ---------- */
@@ -1061,14 +1170,16 @@ function renderCambios(){
     <div class="pv-hd"><span class="eyebrow">Gestión de cambios · ISO — solicitudes, versiones, aprobaciones y acuses · el motor versiona en git (N6), el usuario JAMÁS lo ve</span>
       <h2>Cambios sobre el twin</h2>
       <div class="sub">Cada acción cinética declara su tipo de aprobación: <b>directa</b> (se aplica y queda trazada) · <b>revisión-dueño</b> · <b>gestión-de-cambios</b> (comité). Toda versión: borrador → vigente → obsoleto, con entornos dev → UAT → prod.</div></div>
+    <button class="cambio-row"><span class="sc">SC-14</span><div><div class="tt">Recompilar arnés "Jefe de Cobranza" v1 → v2</div><div class="ap">acción: recompilar-arnes · origen: drift twin→arnés (SC-11 verbo + SC-12 mapa v2) · Arnesia N15 → Colab Studio N17</div></div><span class="ap">👁 revisión-dueño</span><span class="gate-pill pend">EN COLA</span></button>
     <button class="cambio-row"><span class="sc">SC-13</span><div><div class="tt">Ajustar banda de "cobranza digital" 60% → 50%</div><div class="ap">acción: ajustar-banda-kpi · solicita: Jefe de Cobranza</div></div><span class="ap">⛔ gestión-de-cambios</span><span class="gate-pill pend">PENDIENTE COMITÉ</span></button>
     <button class="cambio-row"><span class="sc">SC-12</span><div><div class="tt">Publicar mapa de proceso "Cobranza de cuotas" v2</div><div class="ap">acción: publicar-mapa-proceso · borrador en dev</div></div><span class="ap">👁 revisión-dueño</span><span class="gate-pill pend">EN REVISIÓN</span></button>
     <button class="cambio-row"><span class="sc">SC-11</span><div><div class="tt">Corregir verbo actividad 05: "transportar" → "visitar"</div><div class="ap">acción: corregir-verbo-actividad · evidencia: auditoría en campo</div></div><span class="ap">✓ directa</span><span class="gate-pill">APLICADA + ACUSE</span></button>
     <button class="cambio-row"><span class="sc">SC-10</span><div><div class="tt">Registrar medición k-dso · julio (91 días)</div><div class="ap">acción: registrar-medicion-kpi · fuente: Nubecont ERP</div></div><span class="ap">✓ directa</span><span class="gate-pill">APLICADA</span></button>
     <div class="fcol"><span class="eyebrow">Versiones vigentes (por entorno)</span>
       <div class="fitem"><span class="t">Cobranza de cuotas — mapa de proceso</span><span class="m"><span class="gate-pill">v1 VIGENTE · prod</span><span class="gate-pill pend">v2 borrador · dev</span><span>revisión periódica: 15 ago</span></span></div>
+      <div class="fitem"><span class="t">Arnés · Analista de Cobranza (Colab Studio)</span><span class="m"><span class="gate-pill">v3 VIGENTE</span><span>compilado del twin · 2026-07-18</span><span>uso 34/sem (rol)</span></span></div>
       <div class="fitem"><span class="t">Corrida · Cobranza digital fase 2 (what-if)</span><span class="m"><span class="gate-pill pend">RAMA ABIERTA</span><span>merge = pasa por ESTA cola de aprobación</span></span></div></div>`);
-  counter('2 pendientes · 2 aplicadas · 1 rama what-if');
+  counter('3 pendientes · 2 aplicadas · 1 rama what-if');
 }
 
 /* ---------- topbar: chips de filtro + contador de subset ---------- */
@@ -1106,7 +1217,7 @@ const inEye=document.getElementById('inEye'), inTitle=document.getElementById('i
       inBody=document.getElementById('inBody'), inClose=document.getElementById('inClose');
 function openDrawer(eye,title,body){ state.insp='sel'; inEye.textContent=eye; inTitle.textContent=title;
   inBody.innerHTML=body; inClose.style.display=''; inBody.scrollTop=0;
-  inBody.querySelectorAll('[data-k]').forEach(b=>b.onclick=e=>{ e.stopPropagation(); openKpi(byId(DATA.kpis,b.dataset.k)); }); }
+  wireLinks(inBody); }
 inClose.onclick=()=>{ state.insp='home'; inspectorHome(); };
 
 function inspectorHome(){
@@ -1120,7 +1231,7 @@ function inspectorHome(){
   if(state.mod==='metodo'){
     inEye.textContent='Método · engagement'; inTitle.textContent='M1 ✓ · M3 en curso · M2 activo';
     inBody.innerHTML=`<div class="dgroup"><div class="gt">Plantilla vs instancia</div>
-      <div style="font-size:12.5px;line-height:1.5">La <b>Definición</b> (M1·M2·M3, 31 M-cards) es IP versionada del fabricante; la <b>Instancia</b> (este engagement, sus gates y acuses) vive en el repo del cliente (N6). Los gates conectan el método con el ciclo de mejora.</div></div>
+      <div style="font-size:12.5px;line-height:1.5">La <b>Definición</b> (M1·M2·M3, 45 M-cards) es IP versionada del fabricante; la <b>Instancia</b> (este engagement, sus gates y acuses) vive en el repo del cliente (N6). Los gates conectan el método con el ciclo de mejora.</div></div>
       <div style="font-size:12px;color:var(--tx-faint)">Todo lo que el twin pinta es trazable a una M-card — el método es dato, no opinión.</div>`;
     return; }
   if(state.mod==='cambios'){
@@ -1168,11 +1279,15 @@ function inspectorHome(){
       </div>
       <div class="dgroup"><div class="gt">Estado del loop — brecha → proyecto → KPI</div>
         ${DATA.proyectos.map(pm=>`<button class="loop-it" data-pm="${pm.id}"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}</span><span class="mono" style="font-size:10px;color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}
-        <div style="font-size:11px;color:var(--tx-faint)">2 proyectos en vuelo · prendé la capa Cinética para verlos sobre el mapa</div></div>`;
+        <div style="font-size:11px;color:var(--tx-faint)">2 proyectos en vuelo · prendé la capa Cinética para verlos sobre el mapa</div></div>
+      <div class="dgroup"><div class="gt">El twin compila trabajo — arneses por puesto</div>
+        <div style="font-size:12.5px;line-height:1.5"><b class="mono" style="color:var(--brand-hi)">${DATA.arneses.length}/${DATA.puestosTotal}</b> puestos operan con arnés compilado del twin · <span style="color:var(--warn)">${DATA.arneses.filter(h=>h.estado==='desactualizado').length} desactualizado</span> (el twin cambió → recompilar). El resto opera a mano: el gap de la era agéntica, visible.</div>
+        <button class="btn" id="verTrabajo" style="justify-content:center">Prender la capa Trabajo ›</button></div>`;
     inBody.querySelector('#apuestaGo').onclick=()=>{ state.piel='territorio';
       document.querySelectorAll('.piel-toggle button').forEach(x=>x.classList.toggle('on',x.dataset.piel==='territorio'));
       if(!state.capas.has('hilo')){state.capas.add('hilo');document.querySelector('[data-capa=hilo]').classList.add('on');}
       state.activeObj='o-lid'; render(); };
+    inBody.querySelector('#verTrabajo').onclick=()=>{ if(!state.capas.has('trabajo')){state.capas.add('trabajo');document.querySelector('[data-capa=trabajo]').classList.add('on');} render(); };
     inBody.querySelectorAll('.loop-it').forEach(b=>b.onclick=()=>openProyecto(byId(DATA.proyectos,b.dataset.pm)));
   }
   else if(state.escala==='z1'){
@@ -1193,9 +1308,9 @@ function inspectorHome(){
           <span style="color:var(--crit)">● ${cnt.rojo}</span><span style="color:var(--warn)">● ${cnt.ambar}</span>
           <span style="color:var(--ok)">● ${cnt.verde}</span><span style="color:${SEMC.gris}">● ${cnt.gris} sin dato</span></div>
         ${ks.map(krowHTML).join('')}</div>
-      <div class="dgroup"><div class="gt">Roles del área — quién los cumple</div>
-        ${roles.map(r=>`<div class="rolrow"><span>${r.rol}</span><span class="who ${r.vac?'vac':''}">${r.vac?'sin persona asignada':(r.quien||'equipo')}</span></div>`).join('')}
-        <div style="font-size:10px;color:var(--tx-faint)">métricas por ROL, jamás por persona nombrada (frontera CK-24)</div></div>
+      <div class="dgroup"><div class="gt">Roles del área — quién los cumple · con qué arnés</div>
+        ${roles.map(r=>`<div class="rolrow"><span class="plnk" data-rol="${r.rol}">${r.rol}</span> ${harnBadge(arnesDeRol(r.rol))}<span class="who ${r.vac?'vac':''}" ${(!r.vac&&r.quien)?`data-per="${r.quien}" style="cursor:pointer"`:''}>${r.vac?'sin persona asignada':(r.quien||'equipo')}</span></div>`).join('')}
+        <div style="font-size:10px;color:var(--tx-faint)">métricas por ROL, jamás por persona nombrada (frontera CK-24) · ⛨ = arnés compilado del twin (CK-29)</div></div>
       <div style="font-size:12px;color:var(--tx-faint)">Tocá un proceso para su ficha · doble-click <b style="color:var(--tx-mut)">Cobranza de cuotas</b> abre el lienzo.</div>`;
   }
   else{
@@ -1214,10 +1329,9 @@ function inspectorHome(){
       ${g?`<div class="dgroup"><div class="gt">Brecha activa sobre este proceso</div>
         <button class="loop-it" id="z2gap"><span style="color:var(--crit)">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.nm}</span><span class="mono" style="font-size:10px;color:var(--crit)">${g.costo}</span></button></div>`:''}
       <div style="font-size:12px;color:var(--tx-faint)">Tocá una actividad para su detalle (VSM, triage, RACI, procedencia).</div>`;
-    inBody.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>openKpi(byId(DATA.kpis,b.dataset.k)));
     const gb=inBody.querySelector('#z2gap'); if(gb) gb.onclick=()=>openBrecha(g);
   }
-  inBody.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>openKpi(byId(DATA.kpis,b.dataset.k)));
+  wireLinks(inBody);
 }
 
 function prov(fuente,conf){ return `<div class="dgroup"><div class="gt">Procedencia · sin falsa certeza</div>
@@ -1225,18 +1339,23 @@ function prov(fuente,conf){ return `<div class="dgroup"><div class="gt">Proceden
   <div class="drow"><dt>Confianza</dt><dd><span class="chip"><span class="health-dot" style="width:8px;height:8px;background:${confCol(conf)}"></span>${conf}</span></dd></div></div>`; }
 
 function openProceso(p){ const objs=p.sirve.map(id=>byId(DATA.objetivos,id));
+  const caps=DATA.capabilities.filter(c=>c.via.includes(p.id));
   openDrawer('Proceso · '+byId(DATA.areas,p.areas[0]).nm, p.nm,
     `<div class="dgroup">
-      <div class="drow"><dt>Dueño (rol)</dt><dd>${p.dueno}</dd></div>
+      <div class="drow"><dt>Dueño (rol)</dt><dd><span class="plnk" data-rol="${p.dueno}">${p.dueno}</span> ${harnBadge(arnesDeRol(p.dueno))}</dd></div>
       <div class="drow"><dt>Áreas que cruza</dt><dd>${p.areas.map(a=>byId(DATA.areas,a).nm).join(', ')}</dd></div>
       <div class="drow"><dt>Digitalización</dt><dd><span class="chip"><span class="health-dot" style="width:8px;height:8px;background:${health[digHealth(p.digital)]}"></span>${p.digital}</span></dd></div>
-      <div class="drow"><dt>Sistemas</dt><dd>${p.sist.join(' · ')}</dd></div></div>
+      <div class="drow"><dt>Sistemas</dt><dd>${p.sist.map(s=>sisByName(s)?`<span class="plnk" data-sis="${s}">${s}</span>`:s).join(' · ')}</dd></div>
+      ${caps.length?`<div class="drow"><dt>Realiza</dt><dd><div class="chips" style="justify-content:flex-end">${caps.map(c=>`<span class="chip lk" data-cap="${c.id}">${c.nm}</span>`).join('')}</div></dd></div>`:''}</div>
      <div class="dgroup"><div class="gt">KPIs del proceso — semáforo por banda</div>
       ${kpisByProc(p.id).length?kpisByProc(p.id).map(krowHTML).join(''):'<span style="font-size:12px;color:var(--tx-faint)">Sin KPI declarado — candidato del levantamiento.</span>'}</div>
      <div class="dgroup"><div class="gt">Objetivos que sostiene (hilo de oro)</div>
-      ${objs.length?`<div class="chips">${objs.map(o=>`<span class="chip teal">${o.nm}</span>`).join('')}</div>`
+      ${objs.length?`<div class="chips">${objs.map(o=>`<span class="chip teal lk" data-obj="${o.id}">${o.nm}</span>`).join('')}</div>`
       :`<span style="color:var(--warn);font-size:13px">Huérfano — no sube a ningún objetivo del directorio.${p.star?' <b>'+p.star+'</b>':''}</span>`}</div>
+     ${conocimientoHTML(p.id)}
      ${prov(p.conf==='alta'?'Sistema leído':'Entrevista',p.conf)}
+     <div class="dgroup"><div class="gt">Acciones (kinética)</div>
+      <button class="btn" data-acc="publicar-mapa-proceso">Publicar versión del mapa › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · gestión-de-cambios · dev→UAT→prod</span></button></div>
      ${p.flagship?'<button class="btn" style="justify-content:center" onclick="drillLienzo()">Abrir lienzo del proceso ›</button>':''}`);
 }
 function openBrecha(g){ const o=g.obj?byId(DATA.objetivos,g.obj):null; const proc=byId(DATA.procesos,g.against);
@@ -1246,42 +1365,58 @@ function openBrecha(g){ const o=g.obj?byId(DATA.objetivos,g.obj):null; const pro
     `<div style="font-size:13px;color:var(--tx-mut);line-height:1.45">${g.sub}</div>
      <div class="dgroup">
       <div class="drow"><dt>Tipo</dt><dd>${g.tipo}</dd></div>
-      <div class="drow"><dt>Ataca a</dt><dd>${proc?proc.nm:'—'}</dd></div>
-      <div class="drow"><dt>Objetivo que bloquea</dt><dd>${o?`<span class="chip teal">${o.nm}</span>`:'<span class="chip" style="border-color:var(--warn);color:var(--warn)">sin objetivo</span>'}</dd></div>
+      <div class="drow"><dt>Ataca a</dt><dd>${proc?`<span class="plnk" data-proc="${proc.id}">${proc.nm}</span>`:'—'}</dd></div>
+      <div class="drow"><dt>Objetivo que bloquea</dt><dd>${o?`<span class="chip teal lk" data-obj="${o.id}">${o.nm}</span>`:'<span class="chip" style="border-color:var(--warn);color:var(--warn)">sin objetivo</span>'}</dd></div>
       <div class="drow"><dt>Costo de no hacer</dt><dd style="color:${sc};font-family:var(--font-mono)">${g.costo}</dd></div>
       <div class="drow"><dt>Severidad · prio</dt><dd><span class="chip" style="border-color:${sc};color:${sc}">${g.sev} · ${g.prio}</span></dd></div>
       <div class="drow"><dt>Estado</dt><dd><span class="chip">${est}</span></dd></div></div>
      <div class="dgroup"><div class="gt">Cierra el loop (O7 cinética)</div>
-      ${DATA.proyectos.filter(pm=>pm.brecha===g.id).map(pm=>`<div class="drow"><dt>Proyecto</dt><dd>${pm.nm}<br><span class="mono" style="color:var(--brand-hi);font-size:11px">${pm.pdca} · mueve ${pm.delta} · ROI ${pm.roi}</span></dd></div>`).join('')
-        || '<span style="font-size:12px;color:var(--tx-faint)">Sin proyecto de mejora aún — candidata a la Apuesta.</span>'}</div>`);
+      ${DATA.proyectos.filter(pm=>pm.brecha===g.id).map(pm=>`<button class="loop-it" data-pm2="${pm.id}"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}</span><span class="mono" style="font-size:10px;color:var(--brand-hi)">${pm.roi}</span></button>`).join('')
+        || '<span style="font-size:12px;color:var(--tx-faint)">Sin proyecto de mejora aún — candidata a la Apuesta.</span>'}</div>
+     <div class="dgroup"><div class="gt">Acciones (kinética)</div>
+      ${DATA.proyectos.some(pm=>pm.brecha===g.id)?'<button class="btn" data-acc="cerrar-brecha">Cerrar brecha (con evidencia) › <span class="mono" style="font-size:9px;color:var(--tx-faint)">estratégico · revisión-dueño</span></button>'
+        :'<button class="btn" data-acc="aprobar-charter">Proponer proyecto (charter) › <span class="mono" style="font-size:9px;color:var(--tx-faint)">estratégico · gestión-de-cambios · doble firma</span></button>'}</div>`);
 }
 function openProyecto(pm){ const g=byId(DATA.brechas,pm.brecha), k=byId(DATA.kpis,pm.mueve);
   openDrawer('Proyecto de mejora · O7 (ilustrativo)', pm.nm,
     `<div class="dgroup">
       <div class="drow"><dt>Estado (PDCA)</dt><dd><span class="chip teal">${pm.estado} · ${pm.pdca}</span></dd></div>
-      <div class="drow"><dt>Nace de la brecha</dt><dd>${g?g.nm.slice(0,46)+'…':'—'}</dd></div>
+      <div class="drow"><dt>Nace de la brecha</dt><dd>${g?`<span class="plnk" data-g2="${g.id}">${g.nm.slice(0,46)}…</span>`:'—'}</dd></div>
+      ${pm.idea?`<div class="drow"><dt>… y de la idea</dt><dd><span class="plnk" data-idea="${pm.idea}" style="font-size:12px">${byId(DATA.ideas,pm.idea).nm.slice(0,42)}…</span></dd></div>`:''}
       <div class="drow"><dt>KPI que mueve</dt><dd>${k?krowHTML(k):'—'}</dd></div>
       <div class="drow"><dt>Compromiso</dt><dd class="mono" style="color:var(--brand-hi)">${pm.delta}</dd></div>
       <div class="drow"><dt>ROI del caso</dt><dd class="mono">${pm.roi}</dd></div></div>
      ${pm.resultado?`<div class="dgroup"><div class="gt">Resultado — KPI movido (cierre del loop)</div>
       <div class="drow"><dt>Delta observado</dt><dd class="mono" style="color:var(--ok)">${pm.resultado.delta_observado}</dd></div>
       <div class="drow"><dt>Veredicto</dt><dd><span class="chip" style="border-color:var(--ok);color:var(--ok)">✓ ${pm.resultado.veredicto}</span></dd></div>
-      <div style="font-size:11.5px;color:var(--tx-faint)">${pm.resultado.nota}</div></div>`:''}
+      ${pm.recompila?`<div class="drow"><dt>Arnés recompilado</dt><dd>${harnBadge(byId(DATA.arneses,pm.recompila))}</dd></div>
+      <div style="font-size:10px;color:var(--brand-hi)">↑ el cambio llegó hasta el puesto: la mejora se estandarizó COMPILÁNDOLA al arnés (CK-29)</div>`:''}
+      <div style="font-size:11.5px;color:var(--tx-faint)">${pm.resultado.nota}</div></div>`:`
+     <div class="dgroup"><div class="gt">Acciones (kinética — tollgates)</div>
+      <button class="btn" data-acc="avanzar-tollgate">Avanzar tollgate › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · revisión-dueño · loop-back MASP permitido</span></button></div>`}
      <div style="font-size:12px;color:var(--tx-faint)">El loop <b style="color:var(--tx-mut)">brecha → proyecto → KPI movido</b> vive dentro del twin, con dato real de cierre. Ningún vendor lo cierra in-tool.</div>`);
 }
-function openActividad(a){ openDrawer('Actividad · '+a.verbo, a.ttl,
+function openActividad(a){ const hAct=DATA.arneses.find(h=>h.acts.includes(a.ord));
+  const candidato=a.triage&&(a.triage.startsWith('automatizable')||a.triage==='aumentable');
+  openDrawer('Actividad · '+a.verbo, a.ttl,
   `<div class="dgroup">
     <div class="drow"><dt>Orden</dt><dd class="mono">${String(a.ord).padStart(2,'0')}</dd></div>
     <div class="drow"><dt>Tipo</dt><dd>${a.tipo}</dd></div>
     <div class="drow"><dt>Toque</dt><dd class="mono" style="color:var(--ok)">${a.toque}</dd></div>
     <div class="drow"><dt>Espera</dt><dd class="mono" style="color:var(--warn)">${a.espera}</dd></div>
-    <div class="drow"><dt>Sistemas</dt><dd>${a.sist.join(' · ')}</dd></div>
-    ${a.raci?`<div class="drow"><dt>RACI</dt><dd style="font-size:12px">R · ${a.raci.R}<br>A · ${a.raci.A}</dd></div>`:''}
+    <div class="drow"><dt>Sistemas</dt><dd>${a.sist.map(s=>sisByName(s)?`<span class="plnk" data-sis="${s}">${s}</span>`:s).join(' · ')}</dd></div>
+    ${a.raci?`<div class="drow"><dt>RACI</dt><dd style="font-size:12px">R · <span class="plnk" data-rol="${a.raci.R}">${a.raci.R}</span><br>A · <span class="plnk" data-rol="${a.raci.A}">${a.raci.A}</span></dd></div>`:''}
     ${a.mandato?`<div class="drow"><dt>Mandato</dt><dd><span class="chip teal">${a.mandato}</span> <span style="font-size:10px;color:var(--tx-faint)">protegido del triage</span></dd></div>`:''}
     ${a.triage?`<div class="drow"><dt>Triage automatización</dt><dd><span class="chip teal">${a.triage}</span></dd></div>`:''}
-    ${a.rtlx?`<div class="drow"><dt>Carga (NASA-RTLX)</dt><dd class="mono" style="color:var(--warn)">${a.rtlx} <span style="font-size:9px;color:var(--tx-faint)">agregado por rol</span></dd></div>`:''}</div>
+    ${a.rtlx?`<div class="drow"><dt>Carga (NASA-RTLX)</dt><dd class="mono" style="color:var(--warn)">${a.rtlx} <span style="font-size:9px;color:var(--tx-faint)">agregado por rol</span></dd></div>`:''}
+    ${hAct?`<div class="drow"><dt>Operada con</dt><dd>${harnBadge(hAct)}</dd></div>`:''}</div>
+   ${candidato?`<div class="dgroup"><div class="gt">El triage NO es una etiqueta — alimenta la fábrica</div>
+    <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">Veredicto <b>${a.triage}</b> → candidato a <b>skill del arnés del puesto</b>: la cadena es triage (M36) → funil de ideas (M44) → Arnesia (N15) compila → Colab Studio (N17) lo corre.</div>
+    ${a.ord===3?'<button class="btn" style="justify-content:center" id="actIdea">Ver su idea en el funil › <span class="mono" style="font-size:9px;color:var(--tx-faint)">M36 → M44 → Arnesia</span></button>':'<button class="btn" data-acc="enviar-idea" style="justify-content:center">Proponer al funil › <span class="mono" style="font-size:9px;color:var(--tx-faint)">operativo · directa · autoría reconocida</span></button>'}</div>`:''}
+   ${conocimientoHTML('p-cob')}
    ${prov(a.fte||'Entrevista',a.conf||'media')}
-   <div style="font-size:12px;color:var(--tx-faint)">${a.note}</div>`); }
+   <div style="font-size:12px;color:var(--tx-faint)">${a.note}</div>`);
+  const ai=inBody.querySelector('#actIdea'); if(ai) ai.onclick=()=>openIdea(byId(DATA.ideas,'i-agente')); }
 
 /* ---------- drawer KPI: semáforo grande + sparkline + cadena kpi→KR→objetivo ---------- */
 function sparkSVG(k){ const ms=k.mediciones; if(ms.length<2) return '';
@@ -1306,16 +1441,140 @@ function openKpi(k){ const s=semaforo(k), c=kcur(k), o=k.obj?byId(DATA.objetivos
         <span class="u">${k.unidad||''} · banda <b style="color:${SEMC[s]}">${s.toUpperCase()}</b>${k.stale?' · ⌛ frescura vencida':''}</span></div>
       ${sparkSVG(k)}
       <div class="drow"><dt>Banda</dt><dd class="mono">verde ${menor?'≤':'≥'} ${k.banda.target}${k.unidad||''} · rojo ${menor?'≥':'≤'} ${k.banda.rojo}${k.unidad||''}</dd></div>
-      <div class="drow"><dt>Dueño (rol)</dt><dd>${k.dueno}</dd></div>
+      <div class="drow"><dt>Dueño (rol)</dt><dd><span class="plnk" data-rol="${k.dueno}">${k.dueno}</span> ${harnBadge(arnesDeRol(k.dueno))}</dd></div>
       <div class="drow"><dt>Frecuencia</dt><dd>${k.freq}${k.stale?'<br><span style="color:var(--warn);font-size:11px">última medición vieja — el semáforo se degrada, jamás verde mentiroso</span>':''}</dd></div></div>
     <div class="dgroup"><div class="gt">Cadena del hilo — KPI → KR → objetivo</div>
-      ${o?`<div style="font-size:12.5px;line-height:1.55">mueve el KR <b>${o.kr.m}</b> (peso ${k.peso}) →<br><span class="chip teal" style="margin-top:4px">${o.nm}</span><br>
+      ${o?`<div style="font-size:12.5px;line-height:1.55">mueve el KR <b>${o.kr.m}</b> (peso ${k.peso}) →<br><span class="chip teal lk" data-obj="${o.id}" style="margin-top:4px">${o.nm}</span><br>
         <span class="mono" style="font-size:10.5px;color:var(--tx-faint)">KR: ${o.kr.from} → <span style="color:var(--brand-hi)">${o.kr.cur}</span> → ${o.kr.to} ${o.kr.u}</span></div>`
       :`<span style="color:var(--warn);font-size:12.5px">⚠ Sin ancla de valor — ningún KR del ciclo mide este KPI. La brecha es real pero invisible para el directorio.</span>`}</div>
     <div class="dgroup"><div class="gt">Mediciones${k.mediciones.length?'':' — sin dato'}</div>
       ${k.mediciones.length?`<div class="medlist">${k.mediciones.slice(-6).map(m=>`<div class="r"><span>${m.f}</span><span>${m.v}${k.unidad||''}</span></div>`).join('')}</div>`
       :'<span style="font-size:12px;color:var(--tx-faint)">Gris = sin dato (regla del motor: la ausencia NUNCA pinta rojo). Este dato hoy se arma a mano entre cierres.</span>'}</div>
-    ${prov(k.fuente,k.conf)}`); }
+    ${prov(k.fuente,k.conf)}
+    <div class="dgroup"><div class="gt">Acciones (kinética — quién puede, con qué aprobación)</div>
+      <button class="btn" data-acc="registrar-medicion-kpi">Registrar medición › <span class="mono" style="font-size:9px;color:var(--tx-faint)">operativo · directa</span></button>
+      <button class="btn" data-acc="ajustar-banda-kpi">Ajustar banda › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · revisión-dueño</span></button>
+      ${s==='rojo'?'<button class="btn" data-acc="promover-kpi-a-kr">Promover a KR del ciclo › <span class="mono" style="font-size:9px;color:var(--tx-faint)">estratégico · gestión-de-cambios</span></button>':''}</div>`); }
+
+/* ============================================================
+   FICHAS DEL VIAJE COMPLETO (CK-29) — toda entidad navegable
+   ============================================================ */
+function openObjetivo(o){
+  const drivers=DATA.procesos.filter(p=>p.sirve.includes(o.id));
+  const gaps=DATA.brechas.filter(g=>g.obj===o.id);
+  const ks=DATA.kpis.filter(k=>k.obj===o.id);
+  openDrawer('Objetivo · '+o.persp+' (BSC)', o.nm, `
+    <div class="dgroup">
+      <div class="drow"><dt>Salud</dt><dd><span class="chip" style="border-color:${health[o.salud]};color:${health[o.salud]}">${o.salud}</span></dd></div>
+      <div class="drow"><dt>KR del trimestre</dt><dd class="mono" style="font-size:11px">${o.kr.m}: ${o.kr.from} → <b style="color:var(--brand-hi)">${o.kr.cur}</b> → ${o.kr.to} ${o.kr.u}</dd></div>
+      <div class="drow"><dt>Cadencia</dt><dd style="font-size:12px">OKR trimestral (modo_estrategia)</dd></div></div>
+    <div class="dgroup"><div class="gt">Hacia abajo — qué lo mueve</div>
+      ${ks.map(krowHTML).join('')}
+      <div class="chips">${drivers.map(p=>`<span class="chip lk" data-proc="${p.id}">${p.nm}</span>`).join('')||'<span style="font-size:12px;color:var(--tx-faint)">sin drivers declarados</span>'}</div></div>
+    ${gaps.length?`<div class="dgroup"><div class="gt">Qué lo bloquea</div>${gaps.map(g=>`<button class="loop-it" data-g2="${g.id}"><span style="color:var(--crit)">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.nm}</span></button>`).join('')}</div>`:''}
+    <div class="dgroup"><div class="gt">Acciones (kinética)</div>
+      <button class="btn" data-acc="aprobar-version-objetivo">Aprobar nueva versión › <span class="mono" style="font-size:9px;color:var(--tx-faint)">gobernanza · gestión-de-cambios</span></button></div>
+    <button class="btn" style="justify-content:center" id="objHilo">Encender su hilo en el mapa ›</button>`);
+  const b=inBody.querySelector('#objHilo'); if(b) b.onclick=()=>{ state.mod='territorio'; state.escala='z0'; state.activeObj=o.id;
+    if(!state.capas.has('hilo')){state.capas.add('hilo');document.querySelector('[data-capa=hilo]').classList.add('on');} render(); };
+}
+function openRol(nm){ const core=String(nm).replace(/\s*\(vacante\)/i,'');
+  const occ=rolOcupante(core), h=arnesDeRol(core);
+  const own=DATA.procesos.filter(p=>p.dueno.replace(/\s*\(vacante\)/i,'')===core);
+  const enCarril=DATA.flagship.lanes.some(l=>l.role===core)&&!own.some(p=>p.id===DATA.flagship.proc);
+  const ks=DATA.kpis.filter(k=>k.dueno===core);
+  openDrawer('Rol · puesto', core, `
+   <div class="dgroup">
+     <div class="drow"><dt>Ocupante</dt><dd>${occ.quien?`<span class="plnk" data-per="${occ.quien}">${occ.quien}</span>`:'<span class="chip" style="border-color:var(--warn);color:var(--warn)">SIN PERSONA ASIGNADA</span>'}</dd></div>
+     <div class="drow"><dt>Actúa en</dt><dd><div class="chips" style="justify-content:flex-end">${[...own.map(p=>`<span class="chip lk" data-proc="${p.id}">${p.nm}</span>`),...(enCarril?[`<span class="chip lk" data-proc="${DATA.flagship.proc}">${DATA.flagship.nm} · carril</span>`]:[])].join('')||'—'}</div></dd></div></div>
+   ${ks.length?`<div class="dgroup"><div class="gt">KPIs de los que es dueño — por rol, jamás por persona (CK-24)</div>${ks.map(krowHTML).join('')}</div>`:''}
+   <div class="dgroup"><div class="gt">Puesto & arnés — el twin compila el trabajo (CK-29)</div>
+     <div class="drow"><dt>Arnés</dt><dd>${harnBadge(h)}</dd></div>
+     ${h?`<div class="drow"><dt>Compilado</dt><dd style="font-size:11px">${h.compilado}</dd></div>
+     ${h.drift?`<div style="font-size:11.5px;color:var(--warn);line-height:1.4">⚠ ${h.drift}</div>
+     <button class="btn" data-acc="recompilar-arnes" style="justify-content:center">Recompilar del twin › <span class="mono" style="font-size:9px;color:var(--tx-faint)">Arnesia N15 · revisión-dueño</span></button>`:''}
+     <div class="drow"><dt>Uso</dt><dd class="mono" style="font-size:10px">${h.uso}</dd></div>`
+     :`<div style="font-size:12px;color:var(--tx-faint);line-height:1.5">Este puesto aún opera a mano — candidato a arnés cuando su proceso esté publicado (Arnesia N15 compila → Colab Studio N17 corre).</div>`}</div>
+   ${h&&h.estado==='vigente'?`<div class="dia-card"><b>El día del ocupante — orquestar, no ejecutar.</b><br>Su agente (Claude Code + arnés ${h.v}) ${core==='Analista de Cobranza'?'monitorea la cartera, clasifica la mora y deja los recordatorios preparados':'corre los flujos del puesto'}; ${occ.quien?occ.quien.split(' ')[0]:'el ocupante'} dirige, aprueba excepciones, mide (${(h.mueve||[]).map(k=>byId(DATA.kpis,k).nm).join(' · ')}), afina su arnés y propone ideas al funil.</div>`:''}
+   ${conocimientoHTML(own[0]?own[0].id:(enCarril?DATA.flagship.proc:null))}`);
+}
+function openPersona(nm){
+  const lid=DATA.areas.find(a=>a.lider.startsWith(nm)); const extra=DATA.personasExtra.find(p=>p.nm===nm);
+  const rol=lid?lid.lider.split(' · ')[1]:(extra?extra.rol:null);
+  const area=lid||(extra?byId(DATA.areas,extra.area):null);
+  const ideas=DATA.ideas.filter(i=>i.prop.startsWith(nm));
+  const h=rol?arnesDeRol(rol):null;
+  openDrawer('Persona · ocupante', nm, `
+    <div class="dgroup">
+      <div class="drow"><dt>Cumple el rol</dt><dd>${rol?`<span class="plnk" data-rol="${rol}">${rol}</span>`:'—'}</dd></div>
+      <div class="drow"><dt>Área</dt><dd>${area?area.nm:'—'}</dd></div>
+      <div class="drow"><dt>Vínculo</dt><dd>empleado</dd></div>
+      <div class="drow"><dt>Su puesto</dt><dd>${harnBadge(h)}</dd></div></div>
+    <div class="dgroup"><div class="gt">Ideas propuestas — autoría reconocida (funil M44)</div>
+      ${ideas.length?ideas.map(i=>`<button class="loop-it" data-idea="${i.id}"><span class="pdca">${i.estado}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.nm}</span></button>`).join(''):'<span style="font-size:12px;color:var(--tx-faint)">— todavía ninguna</span>'}</div>
+    <div class="dgroup"><div class="gt">Frontera CK-24</div>
+      <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">El twin mide <b>roles / procesos / áreas</b> — la persona es <b>ocupante</b> del rol y <b>autora</b> de ideas, jamás eslabón de medición. Vista de desempeño individual: solo opt-in Gobernanza + consentimiento.</div></div>`);
+}
+function openArnes(h){ if(!h)return; const a=byId(DATA.areas,h.area);
+  openDrawer('Arnés · vista compilada del twin', `${h.rol} · ${h.v}`, `
+   <div class="dgroup">
+     <div class="drow"><dt>Puesto</dt><dd><span class="plnk" data-rol="${h.rol}">${h.rol}</span> · ${a.nm}</dd></div>
+     <div class="drow"><dt>Estado</dt><dd>${h.estado==='vigente'?'<span class="chip" style="border-color:var(--ok);color:var(--ok)">vigente</span>':'<span class="chip" style="border-color:var(--warn);color:var(--warn)">⚠ desactualizado</span>'}</dd></div>
+     <div class="drow"><dt>Compilado</dt><dd style="font-size:11px">${h.compilado}</dd></div>
+     <div class="drow"><dt>Runtime</dt><dd style="font-size:11.5px">Colab Studio (N17) · Claude Code local · BYO licencia</dd></div>
+     <div class="drow"><dt>Uso (telemetría N3)</dt><dd class="mono" style="font-size:10px">${h.uso}</dd></div></div>
+   <div class="dgroup"><div class="gt">Skills — objetivos + guardrails del puesto</div>
+     <div class="chips">${h.skills.map(s=>`<span class="chip">${s}</span>`).join('')}</div>
+     ${h.mueve?`<div style="margin-top:4px">${h.mueve.map(k=>krowHTML(byId(DATA.kpis,k))).join('')}</div><div style="font-size:10px;color:var(--tx-faint)">↑ el hilo de oro llega hasta el arnés: el puesto apunta a estos KPIs</div>`:''}</div>
+   ${h.drift?`<div class="dgroup"><div class="gt">Drift twin → arnés (anti-drift al edge)</div>
+     <div style="font-size:12px;color:var(--warn);line-height:1.45">⚠ ${h.drift}</div>
+     <button class="btn" data-acc="recompilar-arnes" style="justify-content:center">Recompilar del twin › <span class="mono" style="font-size:9px;color:var(--tx-faint)">Arnesia N15 · revisión-dueño</span></button></div>`:''}
+   <div style="font-size:11.5px;color:var(--tx-faint);line-height:1.5">El arnés es la <b style="color:var(--tx-mut)">vista GENERADA del twin para un puesto</b> — se compila (Arnesia), jamás se edita a mano; cuando el twin cambia, se recompila (CK-29). Misma tríada SSoT → vista → gate de todo el sistema.</div>`);
+}
+function openSistema(s){ if(!s)return;
+  const procs=DATA.procesos.filter(p=>p.sist.includes(s.nm));
+  openDrawer('Sistema · '+s.digital, s.nm, `
+   <div class="dgroup">
+     <div class="drow"><dt>Digitalización</dt><dd><span class="chip"><span class="health-dot" style="width:8px;height:8px;background:${health[digHealth(s.digital)]}"></span>${s.digital}</span></dd></div>
+     <div class="drow"><dt>Pulso (lakehouse N16)</dt><dd style="font-size:11.5px;line-height:1.4">${s.conector}</dd></div></div>
+   <div class="dgroup"><div class="gt">Procesos que sirve</div>
+     <div class="chips">${procs.map(p=>`<span class="chip lk" data-proc="${p.id}">${p.nm}</span>`).join('')||'—'}</div></div>
+   ${s.caps&&s.caps.length?`<div class="dgroup"><div class="gt">Capabilities que realiza</div>
+     <div class="chips">${s.caps.map(c=>{const cc=byId(DATA.capabilities,c);return `<span class="chip lk" data-cap="${c}">${cc.nm}</span>`;}).join('')}</div></div>`:''}
+   <div style="font-size:11px;color:var(--tx-faint)">${s.digital==='manual'?'Manual/Excel: el pulso de este dato NO llega solo al lakehouse — candidato a conector o a captura con acuse.':'El lakehouse (N16) observa el SER; el repo (N6) declara el DEBER-SER — el twin compara ambos.'}</div>`);
+}
+function openIdea(i){ if(!i)return; const pm=i.a?byId(DATA.proyectos,i.a):null;
+  openDrawer('Idea · funil (kaizen teian)', i.nm, `
+   <div class="dgroup">
+     <div class="drow"><dt>Proponente</dt><dd style="font-size:12px">${i.prop} <div style="font-size:9px;color:var(--tx-faint)">autoría reconocida — jamás medición (RN-16 · CK-24)</div></dd></div>
+     <div class="drow"><dt>Estado</dt><dd><span class="chip teal">${i.estado}</span></dd></div>
+     ${i.origen==='triage'?'<div class="drow"><dt>Origen</dt><dd><span class="chip">triage M36 · automatizable-agente</span></dd></div>':''}
+     ${pm?`<div class="drow"><dt>Promovida a</dt><dd><button class="loop-it" data-pm2="${pm.id}" style="padding:2px 0"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}</span></button></dd></div>`:''}</div>
+   <div style="font-size:12px;color:var(--tx-mut);line-height:1.45">${i.nota}</div>
+   <div class="dgroup"><div class="gt">Acciones (kinética)</div>
+     ${i.estado==='enviada'?'<button class="btn" data-acc="evaluar-idea">Evaluar › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · revisión-dueño</span></button>':''}
+     ${i.estado==='en-evaluacion'?'<button class="btn" data-acc="promover-idea-a-proyecto">Promover a proyecto › <span class="mono" style="font-size:9px;color:var(--tx-faint)">estratégico · gestión-de-cambios</span></button>':''}
+     ${i.estado==='promovida'?'<span style="font-size:11px;color:var(--tx-faint)">promovida — el charter y los beneficios viven en el proyecto (separación idea ↔ proyecto, M44)</span>':''}</div>`);
+}
+function openCapability(c){ if(!c)return; const gap=c.gap?byId(DATA.brechas,c.gap):null;
+  const mc=c.madurez>=4?'var(--ok)':c.madurez>=2?'var(--warn)':'var(--crit)';
+  openDrawer('Capability · qué sabe hacer la empresa', c.nm, `
+   <div class="dgroup"><div class="drow"><dt>Madurez (COBIT)</dt><dd><span class="chip" style="border-color:${mc};color:${mc}">${c.madurez} / 5</span></dd></div></div>
+   <div class="dgroup"><div class="gt">Realizada por (procesos · sistemas)</div>
+     <div class="chips">${c.via.map(v=>v.startsWith('p-')?`<span class="chip lk" data-proc="${v}">${byId(DATA.procesos,v).nm}</span>`:`<span class="chip lk" data-sis="${v}">${byId(DATA.sistemas,v).nm}</span>`).join('')}</div></div>
+   ${gap?`<div class="dgroup"><div class="gt">Brecha sobre esta capability</div><button class="loop-it" data-g2="${gap.id}"><span style="color:var(--warn)">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${gap.nm}</span></button></div>`:''}`);
+}
+function openEmpresa(){ const e=DATA.empresa;
+  openDrawer('Empresa · el twin completo', e.razon, `
+   <div class="dgroup"><div class="gt">Misión</div><div style="font-size:12.5px;line-height:1.5">${e.mision}</div></div>
+   <div class="dgroup"><div class="gt">El cerebro — tres cuerpos (CK-29)</div>
+     <div class="drow"><dt>Estructura</dt><dd class="mono" style="font-size:10.5px">13 áreas · 17 procesos · 7 objetivos · 9 KPIs</dd></div>
+     <div class="drow"><dt>Conocimiento</dt><dd class="mono" style="font-size:10.5px">5 guías · 20 casos · 2 procesos sin capturar</dd></div>
+     <div class="drow"><dt>Pulso</dt><dd class="mono" style="font-size:10.5px">lakehouse N16 · 3 conectores · sync 06:00</dd></div>
+     <div class="drow"><dt>Compila</dt><dd class="mono" style="font-size:10.5px;color:var(--brand-hi)">${DATA.arneses.length}/${DATA.puestosTotal} puestos con arnés</dd></div></div>
+   <div class="dgroup"><div class="gt">Modo de estrategia</div><div style="font-size:12px">OKR trimestral · configurable por región: GPD-anual (Falconi) · mixto</div></div>
+   <div style="font-size:11.5px;color:var(--tx-faint);line-height:1.5">De este cerebro Arnesia (N15) compila los arneses por puesto; Colab Studio (N17) los corre; el colaborador <b style="color:var(--tx-mut)">orquesta</b> — no ejecuta. Cockpit es la cabina.</div>`);
+}
 
 /* ============================================================
    CONTROLS
@@ -1353,7 +1612,11 @@ document.addEventListener('keydown',e=>{
   }
 });
 
-setTimeout(()=>document.getElementById('hint').classList.add('gone'),7000);
+/* empresa: la raíz del viaje — click en el subtítulo del brand */
+const brandSub=document.querySelector('.brand .sub'); brandSub.style.cursor='pointer'; brandSub.title='ficha de la empresa (el twin completo)';
+brandSub.onclick=()=>openEmpresa();
+
+setTimeout(()=>document.getElementById('hint').classList.add('gone'),9000);
 window.addEventListener('resize',()=>fit(false));
 render();
 </script>

@@ -222,6 +222,33 @@ El operador señaló "visualmente hay cositas que no se ven bien". Self-review e
     (previous→new, neto, payback) + gate "Enviar a aprobación" que aterriza en la cola de Cambios.
     Capas con disable honesto fuera de Territorio.
 
+## El viaje completo (v5 · CK-29) — toda entidad navegable + el twin que compila trabajo
+
+**Pedido del operador (2026-07-24):** "integra un viaje completo hasta el doble click del proceso,
+persona, etc — todas las entidades; repiensa todo desde nuestra visión y no te sesgues por las
+decisiones". Auditoría previa contra CK-29 encontró: el mockup era CK-21 completo pero CK-29 ausente
+(cero arneses, cero conocimiento, cero colaborador-orquestador; triage como etiqueta muerta).
+
+11. **Gramática de ficha universal** — TODA entidad del schema (las 12: empresa · persona · rol ·
+    area · proceso · sistema · objetivo · kpi · proyecto_mejora · idea · capability · brecha) abre
+    ficha en el inspector con las mismas secciones: **qué-es** (semántica + salud) · **hilo**
+    (arriba/abajo, links navegables — el viaje nunca se corta) · **pulso** (mediciones/frescura/
+    conector) · **conocimiento** (know-how anclado, teaser F3) · **acciones** (capa kinética del
+    schema, con nivel + aprobación; toda acción no-directa aterriza en la cola de Cambios).
+    Puntos de entrada: líder del área (z0) → persona · dueño/rol (cards, KPIs, RACI) → rol ·
+    sistemas → sistema · chips de objetivo → objetivo · brand → empresa · carriles z2 → rol.
+12. **Capa Trabajo (N15·17)** — el twin COMPILA trabajo: badge ⛨ por puesto (vigente /
+    ⚠ desactualizado si el twin cambió / gris = sin arnés, el gap visible). Ficha rol = la joya:
+    Puesto & arnés (compilado-de, skills, uso agregado por rol CK-24) + **"el día del ocupante —
+    orquestar, no ejecutar"** (fin-estado CK-29). Ficha arnés declara la doctrina: vista GENERADA
+    del twin para un puesto, se recompila jamás se edita.
+13. **La cadena triage→Arnesia cierra** — el veredicto M36 deja de ser etiqueta: actividad
+    `automatizable-agente`/`aumentable` → "candidato a skill del arnés" → funil de ideas (M44,
+    columna 0 nueva en Mejora, autoría reconocida RN-16) → proyecto → al cerrar, la mejora se
+    **recompila al arnés** (pm-cie muestra el loop llegando al edge). Anti-drift twin→arnés en
+    Cambios (SC-14: recompilar arnés por drift).
+14. **Fixes de dato:** 9→12 entidades (CK-26) · 31→45 M-cards · pins con title completo.
+
 ## ⚠ PENDIENTE — ajustes del operador (continuar en conversación nueva)
 
 **El operador sigue iterando el mockup.** Estado tras la sesión 2 (shell v2):
@@ -318,3 +345,11 @@ tabs actual. Ratificación del operador + (si es decisión de fondo) ficha CK-NN
   (M1/M3/M2 + gates + traza M-cards) · Cambios (ISO, git invisible); **corrida what-if demo**
   (banner + tinte + Δ diffs + impactos previous→new + gate → cola de Cambios). Decisión 10.
   Re-publicado + verificado módulo por módulo (0 errores JS).
+- v5 2026-07-24 — **el viaje completo (CK-29)**: auditoría contra la visión unificada (el twin es un
+  cerebro que compila trabajo) → decisiones 11-14: gramática de ficha universal (las 12 entidades
+  navegables, hilo que nunca se corta, acciones kinéticas del schema con nivel+aprobación), capa
+  **Trabajo** (arneses por puesto: vigente/desactualizado/sin — ficha rol con "el día del ocupante",
+  ficha arnés con doctrina vista-generada + drift + recompilar), cadena **triage→funil→Arnesia**
+  (columna Ideas M44 en Mejora; SC-14 recompilación en Cambios; pm-cie recompila al arnés al cerrar),
+  fichas nuevas persona/rol/arnés/sistema/objetivo/idea/capability/empresa, bloque "el twin compila
+  trabajo" en sala de mando, fixes 12 entidades/45 M-cards. Verificado headless (8 estados, capturas).
