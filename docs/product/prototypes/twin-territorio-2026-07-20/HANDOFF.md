@@ -68,8 +68,8 @@ Anchors v8: `function renderInstruccion` (z3) · `drillActividad` · `DATA.z3` �
 - Voseo pre-existente en microcopy ("Tocá…") viola es-419 sin voseo del stack — barrido pendiente.
 - `tareas[]` como campo tipado del schema = evolución pendiente (hoy `desc` D-08; z3 lo rinde canned).
 
-- Banda Gente 2ª fila roza el label "SISTEMAS" (solape leve de labels con wrap).
-- Pin de brecha en z1 puede rozar la card de arriba (se movió a -96; revisar con datos densos).
+- ~~Banda Gente roza label SISTEMAS~~ → resuelto v8 (ySis dinámico tras wrap de gente).
+- ~~Pin z1 roza la card de arriba~~ → resuelto v8 (`.pin.down`: cuelga DEBAJO de la card).
 - Artifact temporal de debug `a6b775ae-…` en la galería del operador — borrable.
 - z1 (drill de área) solo accesible vía piel Organigrama — decidir si el Mapa de Valor necesita su
   propio drill intermedio o basta chevron→ficha→lienzo.
