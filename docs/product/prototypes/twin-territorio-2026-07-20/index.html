@@ -150,7 +150,8 @@
   .world.anim { transition:transform .5s cubic-bezier(.22,.61,.36,1); }
   svg.edges { position:absolute; inset:0; overflow:visible; pointer-events:none; z-index:1; }
   svg.edges path { fill:none; }
-  .layer { position:absolute; inset:0; }
+  .layer { position:absolute; inset:0; pointer-events:none; }  /* las capas full-cover NO comen el mouse… */
+  .layer > * { pointer-events:auto; }                           /* …sus hijos sí (nodos, pins, tokens) */
   .layer.nodes { z-index:3; }
   .layer.pins { z-index:4; }
   .node { position:absolute; transform:translate(-50%,-50%); }
@@ -162,7 +163,7 @@
   .area-node:hover { border-color:#3a4d48; background:rgba(0,183,170,.05); transform:translate(-50%,-50%) translateY(-2px); }
   .area-node .hd { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
   .area-node .nm { font-family:var(--font-display); font-weight:700; font-size:14px; letter-spacing:-.01em; line-height:1.15; }
-  .area-node .lider { font-size:10.5px; color:var(--tx-faint); margin-top:2px; }
+  .area-node .lider { font-size:10.5px; color:var(--tx-faint); margin-top:2px; display:inline-block; max-width:100%; }  /* inline: el hit-target es el TEXTO, no una franja de toda la card */
   .area-node .stat { display:flex; align-items:center; gap:6px; margin-top:10px; }
   .area-node .heatwrap { flex:1; display:flex; gap:2px; height:5px; }
   .area-node .heatwrap i { border-radius:3px; display:block; }
@@ -1006,7 +1007,7 @@ function renderArea(){
   if(state.capas.has('brechas')) DATA.brechas.filter(g=>{const pr=byId(DATA.procesos,g.against);return pr&&pr.areas.some(x=>setA.has(x));}).forEach(g=>{
     const pos=procPos[g.against]; if(!pos)return; // pin SOBRE el proceso que ataca
     const pin=el('div','pin '+(g.sev==='alta'?'':g.sev==='media'?'med':'low'));
-    pin.style.left=pos.cx+'px'; pin.style.top=(pos.cy-42)+'px';
+    pin.style.left=pos.cx+'px'; pin.style.top=(pos.cy-96)+'px';  // flota SOBRE la card — no tapa el título (el click del usuario manda)
     pin.innerHTML=`<div class="body">${g.nm.length>46?g.nm.slice(0,44)+'…':g.nm}<span class="cost">▲ ${g.costo} · ${g.estado}</span></div><div class="stem"></div><div class="head"></div>`;
     pin.title=g.nm;
     pin.onclick=()=>openBrecha(g); $pins.appendChild(pin);
