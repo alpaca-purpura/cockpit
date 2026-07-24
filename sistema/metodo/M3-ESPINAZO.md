@@ -6,7 +6,7 @@
 > **= Fase B / Operación.**
 > **Usuario primario:** varía por etapa (Sponsor apuesta · Ops explora valor · Consultor orquesta ·
 > Dev/QA en construcción). El **Consultor Prenter** facilita de punta a punta.
-> **Docs base:** estrategia [`VISION-DESARROLLOS.md`](../../tooling/strategy/VISION-DESARROLLOS.md) (§10 Espinazo · §11 UX) ·
+> **Docs base:** estrategia `VISION-DESARROLLOS.md` (monorepo legacy `prenter-harness`, congelado) (§10 Espinazo · §11 UX) ·
 > metodología [`METODOLOGIA.md`](./METODOLOGIA.md) · handoff de entrada [`M1-LEVANTAMIENTO.md`](./M1-LEVANTAMIENTO.md).
 > **Última actualización:** 2026-06-19
 

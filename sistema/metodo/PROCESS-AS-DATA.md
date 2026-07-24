@@ -3,7 +3,7 @@
 > **Qué es:** el esquema que vuelve TODO el proceso de engagement (módulos → etapas → pasos) en
 > **datos estructurados**, del que se renderizan **ambas vistas** (consultor / cliente) y la
 > **proyección SQLite**. Es el primitivo arquitectónico que mata "múltiples sistemas" (un modelo, dos
-> experiencias) — ver [`ARCHITECTURE.md`](../arquitectura/ARCHITECTURE.md).
+> experiencias) — ver [`ARCHITECTURE.md`](../../docs/architecture/producto/ARCHITECTURE.md).
 > **SSoT de los datos:** archivos en `process/` (front-matter MD por paso). **Narrativa de diseño:**
 > [`M3-ESPINAZO.md`](./M3-ESPINAZO.md) · [`M1-LEVANTAMIENTO.md`](./M1-LEVANTAMIENTO.md) (el *por qué*).
 > **Última actualización:** 2026-06-19

@@ -93,7 +93,7 @@ PROCESS-AS-DATA,proceso/}`, refs `service/methodology/*` reescritas); **reorgani
   "deploy de procesos": como código a producción, pero el artefacto son procesos/roles/objetivos
   que Cockpit entiende y renderiza. Nueva columna del backlog + componente en arquitectura.yaml +
   VISION §Arquitectura (que pasa de "dos mitades" a "las piezas").
-- **Backlog = as-code.** `proyecto/backlog.yaml` SSoT + `BACKLOG.md` vista curada (mismo evento,
+- **Backlog = as-code.** `docs/product/_archive/backlog.yaml` SSoT + `BACKLOG.md` vista curada (mismo evento,
   jamás divergen); disciplina cableada en `CLAUDE.md` y `proyecto/README.md`.
 - **Migración de servicio = copiar ya, destilar en el camino** (BL-07 queda `en-curso`).
 
@@ -158,7 +158,7 @@ en empresas sin pilar poblado, 400 en empresa desconocida.
 *Conecta:* CK-11 (backlog/increment as-code, promoción de objeto.schema) · D-09/D-11/D-13/D-15
 (campaña modelo-objeto) · BL-01 (cierra) · BL-02 (avanza, no cierra) · BL-04 (deuda de estilo).
 
-*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml` (BL-02 reconciliación
+*Siguiente:* narrativa — el pendiente vive en `docs/product/_archive/backlog.yaml` (BL-02 reconciliación
 completa del objeto · BL-04 design system antes de la próxima vista nueva).
 
 ### CK-13 · El objeto completo — /api/objeto con las 9 entidades (cierra BL-02) — `decidida` · `vig:vigente`
@@ -195,7 +195,7 @@ PROYECCIÓN generada del objeto (mecanismo D-04: archivo generado vs join-en-viv
 *Conecta:* CK-12 (primera rebanada) · D-04/D-13/D-15 (mecanismo, proyección, layout) · BL-02
 (cierra) · BL-19 (nace).
 
-*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
+*Siguiente:* narrativa — el pendiente vive en `docs/product/_archive/backlog.yaml`.
 
 ### CK-14 · Arquitectura terminada — N14 App del Auditor al mapa + estados post-Stage-4 (cierra BL-03) — `decidida` · `vig:vigente`
 
@@ -245,7 +245,7 @@ relativos válidos.
 CK-07/CK-08 (los estados que se corrigieron) · CK-12/CK-13 (`/api/objeto` a la ficha N13) ·
 BL-03 (cierra) · BL-20 (nace) · BL-15..BL-17 (límites arquitectónicos listos para la definición).
 
-*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
+*Siguiente:* narrativa — el pendiente vive en `docs/product/_archive/backlog.yaml`.
 
 ### CK-15 · Render de la arquitectura-as-code — gen_arquitectura.py (cierra BL-08) — `decidida` · `vig:vigente`
 
@@ -284,7 +284,7 @@ headers de ambos artefactos.
 parte del drawer: ya hay generador) · CK-11 (disciplina mismo-evento) · BL-08 (cierra) ·
 I-73/I-60 (arquitectura-como-dato y DIP del legacy, espíritu heredado).
 
-*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
+*Siguiente:* narrativa — el pendiente vive en `docs/product/_archive/backlog.yaml`.
 
 ### CK-16 · P2 = DevStudio — re-fichado N5 (server→app de escritorio) · contrato CK-08 derogado · N6 = GitHub — `decidida` · `vig:vigente`
 
@@ -351,7 +351,7 @@ el motor, jamás es dueño del método (N14) ni del proceso (N5). Índice, ficha
 registra aquí) · CK-14 (mapa que se re-ficha) · DH-10/DH-12 (decisiones de P2 citadas) ·
 BL-18 (redefine) · BL-20 (sin cambio — la deuda Go/Next quedó solo del lado N13).
 
-*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
+*Siguiente:* narrativa — el pendiente vive en `docs/product/_archive/backlog.yaml`.
 
 ### CK-17 · Gate anti-drift automático — pre-commit hook + validación de despliegue.html — `decidida` · `vig:vigente`
 
@@ -377,7 +377,7 @@ curado con drawer generado; nada corre solo sin invocar el script) → "Me parec
 *Conecta:* CK-15 (el generador que se extiende) · CK-14 (despliegue.html curado que ahora se
 valida) · CK-11 (disciplina mismo-evento, ahora con diente automático).
 
-*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
+*Siguiente:* narrativa — el pendiente vive en `docs/product/_archive/backlog.yaml`.
 
 ### CK-18 · Rediseño de fondo — Fábrica + Organización instalada · el método se entrega en arneses · mueren N1/N4/N7 — `decidida` · `vig:vigente`
 
@@ -392,7 +392,7 @@ solo la organización sino cómo vamos día a día. El Cockpit sería solo Cockp
 por rol." + diagrama `mapaCockpitTotal`.
 
 *Desarrollo:* el cambio deroga el eje BYOC-con-motor-server-side. Se lanzaron **7 investigaciones
-SOTA** (2026-07-08, en [`proyecto/research/rediseno-total/`](../cockpit/proyecto/research/rediseno-total/)):
+SOTA** (2026-07-08, en [`docs/research/rediseno-total/`](../cockpit/docs/research/rediseno-total/)):
 repositorio oficial (git/Forgejo), data lakehouse (dlt+DuckLake), knowledge DB (files-first),
 distribución/licencias/telemetría (go-tuf v2 + Tauri + Ed25519 + OTLP), auth/RBAC (embebida
 policy-as-data), gestión de cambios ISO (git + UI que oculta git), proceso-como-arnés (skill=proc,
@@ -434,7 +434,7 @@ tres planos, edges por humano, flujo objetivos→operación, tabla de conexiones
 data-nodo de los 16 nodos, madurez sincronizada) · `arquitectura.yaml` v0.2.0 (célula: plano
 `fuentes` nuevo, componentes Consultio/Arnesia/Distribución/Repositorio Oficial/Data Lakehouse/Gestión
 de Cambios/niveles-acceso, `motor-discovery` y `app-auditor`/`contrato-datos` retirados) + regenerados
-`nodos.data.js` + `arquitectura.html` (gate verde) · 7 informes SOTA en `proyecto/research/rediseno-total/`
+`nodos.data.js` + `arquitectura.html` (gate verde) · 7 informes SOTA en `docs/research/rediseno-total/`
 · backlog (columnas + BLs redefinidos/nuevos) + BACKLOG.md · VISION.md · CLAUDE.md · ARCHITECTURE.md
 · README de arquitectura.
 
@@ -445,7 +445,7 @@ BL-13 (**derogado**: N1 no se construye como servicio) · BL-15/16/17 (redefinid
 construcción no se corta ficha por cada cambio (memoria `ledger-ligero`); esta es de fondo — cambio de
 rumbo del ecosistema — por eso lleva ficha.
 
-*Siguiente:* narrativa — el pendiente vive en `proyecto/backlog.yaml`.
+*Siguiente:* narrativa — el pendiente vive en `docs/product/_archive/backlog.yaml`.
 
 ### CK-19 · Adopción del arnés prenter — migración total al proceso as-code + amplían las dos extensiones (arquitectura/metodología) — `decidida` · `vig:vigente`
 
@@ -465,7 +465,7 @@ increment + `sistema/` as-code con drift-gate) — la migración es mapear ese s
 
 **Forks firmados (AskUserQuestion, 2026-07-09):**
 1. **Q1 — Migración total.** `docs/product/` pasa a ser el SSoT (historias + capabilities + releases);
-   `proyecto/backlog.yaml` + `docs/increment.yaml` se **archivan** (congelados, no borrados). `sistema/` queda
+   `docs/product/_archive/backlog.yaml` + `docs/increment.yaml` se **archivan** (congelados, no borrados). `sistema/` queda
    como las dos extensiones.
 2. **Q2 — Fundación + esqueleto completo** en esta sesión (bootstrap + seam + cablear extensiones + espejar
    8 CAP + 23+ historias + reglas project-layer + MAPEO + esta ficha).
@@ -566,7 +566,7 @@ simulación organizacional con agentes LLM); (3) deep-dive de **11 vendors** ví
 investigación (iGrafx · Celonis · BusinessOptix · ARIS · Bizzdesign · Ardoq · edgeTI · Bee360 ·
 KYP.ai · Mavim · doctrina de ontología de Palantir Foundry) + la lista de features DTO de Gartner
 (ago 2025) → lista maestra TO-BE de **37 capacidades** etiquetadas [MVP]/[V2]/[H] + secuencia MVP.
-Corpus completo persistido en **`proyecto/research/organization-as-code/`** (9 docs, hermano de
+Corpus completo persistido en **`docs/research/organization-as-code/`** (9 docs, hermano de
 `rediseno-total/`). Hallazgos clave: la categoría "organization as code" está libre (anclar a DTO
 para analistas); los 11 vendors convergieron 2024-26 en "repositorio como capa de contexto para AI
 agents" (nuestra tesis de arneses = la versión más radical); nadie opera una cascada OKR viva ni
@@ -610,7 +610,7 @@ normalizado.
    son tooling de producción Y actores de simulación). MCP server del twin = V2 (table stakes
    agéntico 2025-26). Nada antes del twin base + demanda.
 
-*Ejecutado:* corpus `proyecto/research/organization-as-code/` (README + 8 docs: SOTA process
+*Ejecutado:* corpus `docs/research/organization-as-code/` (README + 8 docs: SOTA process
 intelligence, SOTA EA, KYP/Mavim, doctrina Palantir, SOTA organization-as-code, features Gartner
 DTO + mapeo, TO-BE 37 capacidades + MVP + derivación de arquitectura, pivote comercial) · VISION.md
 reescrita al norte nuevo (identidad + sección "Organization as Code → Organization Twin" + flujo
@@ -803,7 +803,7 @@ arnés prenter, misma doctrina trasladada a código Go/TS).
 *Siguiente:* dev-studio migra a `studio-core` en su propia sesión (F2.3, ledger DH-NN) · borrar
 `replace => ../studio-core` cuando exista remote publicado (R5 puro) · extraer design system React
 a paquete npm cuando haya registry (F2.5). Plan detallado:
-`proyecto/plans/consultio-studio-core/`.
+`docs/product/plans/consultio-studio-core/`.
 
 ### CK-26 · Schema v2 — hilo de oro medible (modo regional OKR/GPD/BSC) + capa kinética + mejora como entidad — `decidida` · `vig:vigente`
 
@@ -880,7 +880,51 @@ doctrina "UI se construye contra el design system") · CK-18 (urgencia: Consulti
 `[[arquitectura-as-code]]`/`[[metodologia-as-code]]` (ejes as-code gemelos; este es doctrina UI, sin gen+gate propio) ·
 `[[anti-duplication]]` (el banco ES la anti-duplicación de UI).
 
-<!-- Próximas: CK-28, … -->
+### CK-28 · Refactoring del grafo de conocimiento — árbol `docs/` unificado + principio hexagonal fuente↔lectura — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-23):* "reorganizar la carpeta del proyecto… `proyecto/` debería estar
+dentro de `docs/product`… en `docs/process` información duplicada… `sistema/` desconectada del
+producto… organiza todo dentro de `docs/` en una estructura bien pensada… no deberíamos combinar
+código fuente del sistema con archivos .md que son de lectura de claude, partamos del principio de
+arquitectura hexagonal y no acoplemos información… estamos haciendo un refactoring de todo nuestro
+grafo de conocimiento y artefactos de desarrollo".
+
+*Contexto encontrado:* la tríada CK-11 (`sistema/`·`docs/`·`proyecto/`) había quedado obsoleta tras
+el arnés (CK-19): `proyecto/backlog` y `docs/increment` archivados pero en sus paths viejos,
+`docs/process` con 6 archivos duplicados raíz↔`harness/` (5 byte-idénticos; `tech-debt.md` raíz =
+registro vivo TD-1..3 vs template), `docs/architecture` casi vacía, y `sistema/` mezclando SSoT
+as-code con narrativa de lectura. Auditoría archivo-por-archivo de `sistema/` (74 archivos,
+subagente): clasificó ssot-data / generador / generado / doc-humana / sample / muerto con refs
+entrantes concretas (gates, gen_*.py, go/, skills, rules).
+
+**Decisiones:** (1) **principio hexagonal**: `sistema/` = SOLO lo que un gate valida, un generador
+lee/escribe o el runtime carga; `docs/` = todo lo que se lee (mapa + 5 reglas de ubicación en
+`docs/README.md`). (2) `proyecto/` **se disuelve**: research → `docs/research/` · prototypes →
+`docs/product/prototypes/` · plans → `docs/product/plans/` · backlog congelado + increment
+congelado → `docs/product/_archive/` (banner, correspondencia en MAPEO). (3) **Dedup process/**:
+doctrina estática solo en `docs/process/harness/`; registros vivos solo en raíz
+(`learnings`/`tech-debt`/`continuous-improvement`/`harness-backlog` — paths citados por reglas
+CORE, inamovibles). (4) De `sistema/` **salen** (doc-humana desacoplada): visión CTO
+`ARCHITECTURE.md` + `ck-02-stage1-diagram.html` → `docs/architecture/producto/` · veredicto
+ISO-9001 + book del objeto (`schema/metodologia/`, 8 docs) → `docs/metodo/{,objeto/}`.
+(5) **Quedan** en `sistema/` pese a ser .md: M1/M3/PROCESS-AS-DATA/SERVICE-DESIGN (ruteados por
+`GRAFO.md` + `ref:` de ~20 pasos — moverlos rompe el cerebro `/metodo`), `despliegue.html` (input
+del gate CK-17), `DECISIONES.md` (ledger mismo-evento del schema, como LEDGER.md en raíz),
+fixtures/samples co-localizados, READMEs de nivel.
+
+*Ejecutado:* `git mv` (historia preservada) + recableo repo-wide (CLAUDE.md, VISION.md §Gestión
+—stale desde CK-19—, README raíz, MAPEO, stories, rules project-layer, memoria del agente) +
+regenerados los 4 ejes (`gen_arquitectura`/`gen_metodo`/`gen_roadmap`/`gen_schema` verdes) +
+READMEs nuevos (`docs/README.md` mapa, `docs/architecture/`, `docs/metodo/`, `sistema/README.md`,
+`sistema/schema/README.md` actualizado a v2/12 nodos) + `.obsidian/` a `.gitignore`. LEDGER
+conserva paths históricos verbatim (las fichas viejas no se reescriben; esta ficha es el puntero).
+
+*Conecta:* CK-11 (tríada — disuelta aquí) · CK-19 (arnés: archivo backlog/increment que esta ficha
+re-ubica) · CK-17 (gates que fijan qué NO puede moverse) · `[[arquitectura-as-code]]` /
+`[[metodologia-as-code]]` (los ejes cuya frontera fuente↔lectura esta ficha endurece) ·
+`docs/README.md` (las 5 reglas de ubicación = doctrina operativa de esta decisión).
+
+<!-- Próximas: CK-29, … -->
 
 ## Log
 
@@ -895,12 +939,13 @@ doctrina "UI se construye contra el design system") · CK-18 (urgencia: Consulti
 | 2026-07-07 | P2 = DevStudio (app de escritorio, GitHub como conector — reemplaza al server DevHub): N5 re-fichado Data→Edge; contrato CK-08 DEROGADO (BL-18 redefinido: mecanismo TBD con primer consumidor); N6 = repo GitHub del cliente + matiz BYOC "sus datos viven en SU GitHub, no en infra nuestra"; versión PM como nota (anti-especulación). Addendums: DevStudio gestiona N8 · N14 misma mecánica · N8 generalizado a runtime de agente local (motor de N5 y N14). | CK-16 |
 | 2026-07-07 | Gate anti-drift automático: hook `.githooks/pre-commit` (valida fuentes, regenera derivados y los stagea; bloquea si no valida) + `despliegue.html` curado ahora SE VALIDA (cobertura data-nodo ↔ índice, madurez por art vs NODOS.md; test negativo verificado). | CK-17 |
 | 2026-07-08 | Rediseño de fondo: Fábrica de software (Plano del Fabricante) + Organización instalada. El método se entrega al cliente en arneses (deroga el límite de IP). Mueren N1 (motor→arneses)/N4/N7; nacen Arnesia (N15)/Data Lakehouse (N16)/Colab Studio (N17)/Sistemas org (N18)/Analista de Calidad (N19); N6 = Repositorio Oficial confidencial (ya no GitHub); N13 Cockpit = Visualización + Gestión de Cambios + niveles de acceso; N14 = Consultio (clon DevStudio). 7 investigaciones SOTA. Decisiones D1..D5. | CK-18 |
-| 2026-07-09 | Adopción del arnés prenter (migración total, lossless): `docs/product/` pasa a SSoT (29 historias + 8 capabilities + 2 releases + 7 module docs, con `provenance` verbatim de BL/CAP); `proyecto/backlog.yaml`+`docs/increment.yaml` archivados; 21 reglas CORE always-on en `.claude/rules/` + seam `project.config.yaml` (doctor 0) + hooks de telemetría. Se amplían las dos extensiones as-code: arquitectura (`arquitectura-as-code.md` supersede el `paradigm-arquitectura` del CORE) y metodología (nueva: `methodology.schema.yaml`+`gen_metodo.py`+2º gate en pre-commit). Forks Q1(migración total)/Q2(esqueleto completo)/Q3(gen+gate ahora). Deuda: bug `find_unfilled` del KIT 0.5.3 a backflow. | CK-19 |
+| 2026-07-09 | Adopción del arnés prenter (migración total, lossless): `docs/product/` pasa a SSoT (29 historias + 8 capabilities + 2 releases + 7 module docs, con `provenance` verbatim de BL/CAP); `docs/product/_archive/backlog.yaml`+`docs/increment.yaml` archivados; 21 reglas CORE always-on en `.claude/rules/` + seam `project.config.yaml` (doctor 0) + hooks de telemetría. Se amplían las dos extensiones as-code: arquitectura (`arquitectura-as-code.md` supersede el `paradigm-arquitectura` del CORE) y metodología (nueva: `methodology.schema.yaml`+`gen_metodo.py`+2º gate en pre-commit). Forks Q1(migración total)/Q2(esqueleto completo)/Q3(gen+gate ahora). Deuda: bug `find_unfilled` del KIT 0.5.3 a backflow. | CK-19 |
 | 2026-07-09 | Cableado del arnés (termina CK-19): 6 process-docs + 6 scripts/git del KIT materializados a paths convencionales (copia, no symlink a cache volátil — extiende CK-19); capture files del HLP creados; hueco del KIT 0.5.3 (role-skills/agents, rules-detail, specs-templates no publicados = W8 lift-kit) documentado en `harness-backlog.md` y operado a mano (sin fork). | CK-20 |
-| 2026-07-16 | Organization as Code → Organization Twin: visión con nombre (twin = deseado N6 × real N16 × brecha continua N13, GitOps organizacional); diferenciador = hilo de oro medido (objetivos→OKR→KPI) + brechas con ROI + ciclo brecha→proyecto dentro de la solución + arneses por puesto. Pivote comercial: default hosteado single-tenant (invierte D3 de CK-18; self-hosted = tier regulados; multitenant = fase 2); N3 asciende a Portal (licencias fingerprint, no MAC); 1 repo · 3 entornos dev/UAT/prod; capa kinética + OKR/KPI/Proyecto al schema (doctrina Palantir); Consultio v0 = arneses sin app shell; Gestión de Cambios al MVP; horizontes gateados (what-if→BPSim→agentes-con-arneses, MCP V2). SOTA 11 vendors + Gartner DTO → TO-BE 37 capacidades en `proyecto/research/organization-as-code/`. | CK-21 |
+| 2026-07-16 | Organization as Code → Organization Twin: visión con nombre (twin = deseado N6 × real N16 × brecha continua N13, GitOps organizacional); diferenciador = hilo de oro medido (objetivos→OKR→KPI) + brechas con ROI + ciclo brecha→proyecto dentro de la solución + arneses por puesto. Pivote comercial: default hosteado single-tenant (invierte D3 de CK-18; self-hosted = tier regulados; multitenant = fase 2); N3 asciende a Portal (licencias fingerprint, no MAC); 1 repo · 3 entornos dev/UAT/prod; capa kinética + OKR/KPI/Proyecto al schema (doctrina Palantir); Consultio v0 = arneses sin app shell; Gestión de Cambios al MVP; horizontes gateados (what-if→BPSim→agentes-con-arneses, MCP V2). SOTA 11 vendors + Gartner DTO → TO-BE 37 capacidades en `docs/research/organization-as-code/`. | CK-21 |
 | 2026-07-16 | Roadmap MVP: F1 re-alcanzada a "Terreno + MVP Twin vendible" (16 historias, fases F1.0 Terreno → F1.1 Método → F1.2 Organización viva → F1.3 El twin mide + carril negocio; historia nueva `arquitectura-refichado-ck21` = LA PRIMERA, pedido del operador); nacen F2 "Comercial" (portal+canal, deuda UI se paga aquí, conectores) y F3 "Edge completo + escala" (clon DevStudio baja a media, Colab, Arnesia pipeline, MCP, frescura, gateadas D5/CK-10); 28 story.yaml re-cableados (prioridades + deps, operar-metodo/publicación ya no esperan al clon); `docs/product/ROADMAP.md` como vista humana. | CK-22 |
 | 2026-07-17 | Twin-first (re-secuencia F1): el twin lleno y pintado ANTES que el proceso de llenado — historia nueva `organizacion-ficticia-golden-fixture` (shell ficticio 100% contra schema v2, provenance simulando M1; fixture + plantillas-por-ejemplo + demo + contrato de salida de Consultio); F1 pasa a 5 fases (F1.1 Twin pintado adelanta a método/organización-viva; lakehouse alta→media a F1.4, mockeado por los KPIs del fixture); hito intermedio: twin demo-able con org ficticia. | CK-23 |
 | 2026-07-17 | Frontera twin ↔ evaluación individual (de la auditoría adversarial del refinamiento): el twin mide roles/procesos/áreas — KPI ancla a rol, persona = ocupante; vista persona-nombrada solo opt-in Gobernanza + consentimiento; NASA-TLX agregado por rol/proceso, nunca registro individual; nace M-card "métricas de persona" gemela de M23. Mismo evento: D-07 clavada (techo=empresa; holding=agrupador; proyecto/sucursal = unidad de ejecución, no empresa) + historia nueva `cockpit/captura-manual-kpis`. | CK-24 |
 | 2026-07-17 | Schema v2 shipped (historia `schema-v2-hilo-de-oro-kinetica`, idea→done en el día): hilo de oro MEDIBLE — 12 entidades (kpi salud-con-banda · proyecto_mejora · idea como funil separado), modo regional como configuración (OKR-trimestral / GPD-anual Falconi / mixto — investigación LATAM/BR con fuentes primarias; RN-14 divorcio KR↔compensación), capa kinética declarada (15 acciones + máquina de estados PDCA con loop-back MASP; BL-24 = motor), vocabulario de verbos ALM×MGI (44, gobernanza por PR) + 4º gate `gen_schema.py`, corte limpio sin deprecados con prenter migrado (29 kpis) y live-verify doble. M41-M45 + dimensión `mejora-proyectos` al catálogo. | CK-26 |
 | 2026-07-17 | Consultio no se clona: se extrae `studio-core` (kernel Go compartido) y `dev-studio`(N5)/`consultio`(N14) lo consumen por import semver — disciplina upstream-first + ban de mirror producto→producto (misma doctrina que backflow del arnés); 10 decisiones de arquitectura (A1-A10) tras stress-test de 11 escenarios de fallo contra dev-studio real. Ejecutado y verificado en vivo el mismo día: `studio-core` v0.1.0 (SC-01) con fitness gate propio + `consultio` primitivo (CN-01) corriendo — engagement→repo git, arnés instalado con lock+commit real, sesión ligada, turno con SSE — dev-studio intacto. N14 re-fichado "clon de DevStudio"→"app fina sobre studio-core"; riesgo (2) de N5 cerrado. | CK-25 |
 | 2026-07-20 | Design system PRENTER adoptado (materializa BL-04): SSoT visual = proyecto Claude Design "PRENTER Design System" (dark-first, teal único acento, atomic design). Tokens ported a `ui/app/globals.css` (mata el púrpura leftover de devhub); átomos `.tsx` en `ui/components/ds/atoms/` (Button/Badge/Card/Input, token-driven=DRY); catálogo vivo embebido `/design-system` (fork del operador: ruta showcase, no Storybook.js); regla `.claude/rules/ui-design-system.md` (consumir-no-duplicar, un solo acento, cataloga-en-el-mismo-cambio); seam `design_system_ref` pending→adopted; story `design-system-atomic-storybook` F2→F1. Verificado: tsc + `next build` + render en vivo. | CK-27 |
+| 2026-07-23 | Refactoring del grafo de conocimiento: `proyecto/` disuelto en `docs/` (research·prototypes·plans·_archive), dedup `docs/process` raíz↔harness, y frontera hexagonal fuente↔lectura en `sistema/` (visión CTO + book del objeto + veredicto ISO → `docs/{architecture,metodo}/`); mapa + 5 reglas de ubicación en `docs/README.md`; auditoría 74 archivos con refs entrantes; gates verdes. | CK-28 |

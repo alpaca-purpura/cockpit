@@ -10,7 +10,7 @@
 # `componentes:` los ids de componente (estado: activo) que la materializan.
 #
 # DISCIPLINA: una capability entra aquí SOLO al quedar `hecho` + verificada (ítem del backlog →
-# entrada acá, mismo evento). Nada aspiracional — lo pendiente vive en proyecto/backlog.yaml.
+# entrada acá, mismo evento). Nada aspiracional — lo pendiente vive en docs/product/_archive/backlog.yaml.
 
 meta:
   id: cockpit-increment

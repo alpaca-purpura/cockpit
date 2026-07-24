@@ -1,6 +1,6 @@
 # SOTA · Captura ground-truth + DTO — KYP.ai · Mavim
 
-> Investigación CK-21 (2026-07-15/16) — SOTA "organization as code / Digital Twin of an Organization". Fuente: subagentes WebFetch/WebSearch. Parte del corpus `proyecto/research/organization-as-code/` (ver README).
+> Investigación CK-21 (2026-07-15/16) — SOTA "organization as code / Digital Twin of an Organization". Fuente: subagentes WebFetch/WebSearch. Parte del corpus `docs/research/organization-as-code/` (ver README).
 
 ## KYP.ai — Agentic Process Intelligence
 

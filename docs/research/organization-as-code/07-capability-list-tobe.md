@@ -1,6 +1,6 @@
 # TO-BE — lista maestra de capacidades (CK-21) + MVP + derivación de arquitectura
 
-> Investigación CK-21 (2026-07-15/16) — visión "organization as code → organization twin". Parte del corpus `proyecto/research/organization-as-code/` (ver README).
+> Investigación CK-21 (2026-07-15/16) — visión "organization as code → organization twin". Parte del corpus `docs/research/organization-as-code/` (ver README).
 
 Las 37 capacidades que el producto debe tener, destiladas de: 11 vendors (docs 01-03), doctrina Palantir (04), SOTA organization-as-code (05), features Gartner DTO (06), y la visión del operador (hilo de oro objetivos→OKR→KPI + ciclo de mejora completo + arneses por puesto). Etiquetas: **[MVP]** primera venta · **[V2]** post-primeros-clientes · **[H]** horizonte (gateado por demanda). Las historias del arnés se derivan de esta lista (ver ficha CK-21).
 

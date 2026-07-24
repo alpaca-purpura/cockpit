@@ -30,7 +30,7 @@ El fingerprint por MAC es spoofeable e inestable; el SOTA es el fingerprint comp
 ## Antecedentes / Contexto
 
 - Ficha: **CK-21** (2026-07-16), decisión D4 — visión organization-as-code + organization twin.
-- Research: `proyecto/research/organization-as-code/` doc 08 (licenciamiento + hosting).
+- Research: `docs/research/organization-as-code/` doc 08 (licenciamiento + hosting).
 - El método se entrega al cliente en arneses; la protección es **licencia + contrato** (CK-18/D1).
 
 ## Prior art scan
@@ -41,4 +41,4 @@ Grep cross-tree en `docs/product/stories/` (licencia · portal · asiento · fin
 
 `→ /po lee este archivo + carga skill correspondiente → produce 01-spec.md + actualiza product/stories/fabricante/portal-cloud-licencias/story.yaml`
 
-> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `proyecto/research/organization-as-code/`.
+> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `docs/research/organization-as-code/`.

@@ -1,6 +1,6 @@
 # Doctrina de ontología — Palantir Foundry (adoptada para el objeto normalizado, CK-21)
 
-> Investigación CK-21 (2026-07-15/16) — SOTA "organization as code / Digital Twin of an Organization". Fuente: subagentes WebFetch/WebSearch. Parte del corpus `proyecto/research/organization-as-code/` (ver README).
+> Investigación CK-21 (2026-07-15/16) — SOTA "organization as code / Digital Twin of an Organization". Fuente: subagentes WebFetch/WebSearch. Parte del corpus `docs/research/organization-as-code/` (ver README).
 
 Palantir define su Ontology como "digital twin of the organization": elementos **semánticos** (objects/properties/links) + **kinéticos** (actions/functions). CK-21 adopta esta doctrina como gramática de diseño del `sistema/schema/objeto.schema.yaml`. Fuente: docs oficiales ontology-best-practices + ontology-anti-patterns + ontology-structural-guidance (leídos 2026-07-15).
 

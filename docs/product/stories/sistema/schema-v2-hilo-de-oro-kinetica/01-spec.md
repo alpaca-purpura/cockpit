@@ -37,7 +37,7 @@ pronto").
 
 - **node:** `transversal` (SSoT `sistema/schema/` + `sistema/metodo/`) con consumidor en **N13**
   (`go/objeto.go` → `/api/objeto`, CAP-08).
-- Historia **schema + servicio**: contrato YAML v2 · book (`sistema/schema/metodologia/`) ·
+- Historia **schema + servicio**: contrato YAML v2 · book (`docs/metodo/objeto/`) ·
   SSoT nuevos (`verbos.yaml`, capa kinética) · M-cards + dimensión nueva en
   `sistema/metodo/methodologies.yaml` (NOTACIONES regenera) · validador Go · **migración del
   shell prenter a formas v2**. Sin superficie UI nueva.
@@ -414,7 +414,7 @@ DB (cockpit-stack) · sin superficie FE nueva"`. `large-dataset` cubierto como N
   `captura-manual-kpis`, `modulo-gestion-cambios-iso` (ejecuta acciones), `auth-niveles`
   (gobierna niveles), `metodo-como-arnes-v0`.
 - **Toca además:** `sistema/metodo/methodologies.yaml` + `methodology.schema.yaml` (AC-8 —
-  NOTACIONES regenera) y el book `sistema/schema/metodologia/`.
+  NOTACIONES regenera) y el book `docs/metodo/objeto/`.
 
 ## Prior art applied (anti-duplication-refining)
 

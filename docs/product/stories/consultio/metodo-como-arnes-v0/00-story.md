@@ -31,7 +31,7 @@ Agent / iGrafx Pia / ARIS AI Companion.
 ## Antecedentes / Contexto
 
 - Ficha: **CK-21** (2026-07-16), decisión D7 — visión organization-as-code + organization twin.
-- Research: `proyecto/research/organization-as-code/07-capability-list-tobe.md` (#33-35).
+- Research: `docs/research/organization-as-code/07-capability-list-tobe.md` (#33-35).
 - El contenido del método vive en `sistema/metodo/` (poblarlo = `sistema/poblar-metodo-m1-m3`).
 
 ## Prior art scan
@@ -42,4 +42,4 @@ Grep cross-tree en `docs/product/stories/` (consultio · arnes · levantamiento 
 
 `→ /po lee este archivo + carga skill correspondiente → produce 01-spec.md + actualiza product/stories/consultio/metodo-como-arnes-v0/story.yaml`
 
-> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `proyecto/research/organization-as-code/`.
+> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `docs/research/organization-as-code/`.

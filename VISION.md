@@ -41,7 +41,7 @@ devs del cliente). La brecha **no es un entregable puntual de consultoría: es u
 
 La visión con nombre propio — el término está libre en el mercado; la categoría externa para
 analistas es **DTO** (Digital Twin of an Organization, Gartner). SOTA completo + lista TO-BE de 37
-capacidades en [`proyecto/research/organization-as-code/`](./proyecto/research/organization-as-code/).
+capacidades en [`docs/research/organization-as-code/`](./docs/research/organization-as-code/).
 
 - **Organization as Code (la tesis):** procesos, roles, objetivos, personas/puestos y funciones
   viven como **dato versionado en git** (el objeto normalizado, 9 entidades + provenance
@@ -65,7 +65,7 @@ capacidades en [`proyecto/research/organization-as-code/`](./proyecto/research/o
   CK-21 agrega la capa **kinética** — acciones válidas por entidad (quién modifica qué, con qué
   aprobación) declaradas en `objeto.schema.yaml`. Twin que solo se lee = foto; con acciones =
   volante. Naming navegable por agentes, anti-patterns vigilados, historia = git
-  (ver `proyecto/research/organization-as-code/04-doctrina-ontologia-palantir.md`).
+  (ver `docs/research/organization-as-code/04-doctrina-ontologia-palantir.md`).
 - **Horizontes gateados (anti-especulación, precedente CK-10):** (1) what-if estructural — branch
   del repo = escenario comparable; (2) simulación de procesos con estándares (BPSim/DEMO, no
   inventar); (3) **ensayo del TO-BE con agentes LLM corriendo los arneses de cada rol** — nuestros
@@ -138,7 +138,7 @@ enterprise/regulados**; multitenant real = fase 2 (>10-20 clientes). Consecuenci
 default hosteado los datos del cliente residen en nuestra nube bajo DPA (aislamiento por instancia,
 cifrado; BYOK para tier alto) — la promesa "transitan, no persisten" pertenece al tier
 self-hosted. Tres planos — ver `sistema/arquitectura/NODOS.md` (16 nodos, SSoT) +
-`despliegue.html` + `proyecto/research/{rediseno-total,organization-as-code}/`:
+`despliegue.html` + `docs/research/{rediseno-total,organization-as-code}/`:
 
 - **Plano del Fabricante (nuestro):** **Arnesia (N15)** fabrica los arneses por rol-en-proceso;
   **Repositorio Maestro (N2)** guarda método + arneses plantilla + código; **Distribución + Portal
@@ -183,7 +183,7 @@ standalone en este repo**: modelo de portfolio (`ui/lib/portfolio.ts`, 25 tests)
 propio (binario `directorio`, sin dependencia de ningún otro binario). La investigación heredada se
 **destiló a `sistema/`** y se borró (cierre BL-07: schema+fixture+`metodologia/`+`DECISIONES.md` →
 `sistema/schema/`, `SERVICE-DESIGN.md` → `sistema/metodo/`); la investigación viva es
-[`proyecto/research/rediseno-total/`](./proyecto/research/rediseno-total/) (SOTA del rediseño CK-18).
+[`docs/research/rediseno-total/`](./docs/research/rediseno-total/) (SOTA del rediseño CK-18).
 
 **No migrado deliberadamente (doctrina "cero data de cliente" — I-39 del monorepo):** el mockup
 visual real del deal Prospera y su pricing/deck comercial siguen en
@@ -202,7 +202,7 @@ Aquí queda solo el porqué estratégico de los huecos mayores:
   sin app shell) → schema v2 (OKR/KPI/Proyecto + capa kinética + hilo de oro) → instancia hosteada
   single-tenant (N6 dev→UAT→prod + Gestión de Cambios v0) → Cockpit con hilo de oro medido +
   brechas costo/ROI + ciclo brecha→proyecto → ingesta Excel + 1 conector real. Detalle:
-  `proyecto/research/organization-as-code/07-capability-list-tobe.md`.
+  `docs/research/organization-as-code/07-capability-list-tobe.md`.
 - **Re-fichado de NODOS pendiente de CK-21** — chequeo 2 (soberanía → default hosteado), N3
   (portal/licencias), N13 (motor de indicadores + ciclo brecha→proyecto), N14 (primer entregable
   = arneses v0), N16 (default D3 invertido). Las decisiones ya están firmadas en CK-21; falta
@@ -215,11 +215,14 @@ Aquí queda solo el porqué estratégico de los huecos mayores:
 
 ## Gestión
 
-Desde CK-11 ("nacemos ordenados"):
+Desde CK-19 (arnés `harness@prenter-marketplace`) + CK-28 (árbol `docs/` unificado):
 
-- **Trabajo pendiente** — System Backlog en [`proyecto/backlog.yaml`](./proyecto/backlog.yaml)
-  (SSoT, columnas por subsistema; vista humana [`proyecto/BACKLOG.md`](./proyecto/BACKLOG.md)).
+- **Trabajo pendiente** — historias del arnés en [`docs/product/stories/`](./docs/product/stories/)
+  (SSoT del qué; releases en `docs/product/releases/`, mapa en `docs/product/README.md`).
 - **Decisiones** — fichas `CK-NN` en el [`LEDGER.md`](./LEDGER.md) de este repo (continúa la
   numeración de la célula original — CK-10 en adelante).
-- **Capabilities funcionales** — Product Increment en [`docs/increment.yaml`](./docs/increment.yaml)
-  (SSoT, `CAP-NN`; vista humana [`docs/INCREMENT.md`](./docs/INCREMENT.md)) — solo lo verificado.
+- **Capabilities funcionales** — [`docs/product/capabilities/`](./docs/product/capabilities/)
+  (YAML por capability) — solo lo verificado en vivo.
+- **Histórico pre-arnés** (backlog BL-NN + increment CAP-NN, congelados) —
+  [`docs/product/_archive/`](./docs/product/_archive/); correspondencia lossless en
+  [`docs/product/MAPEO.md`](./docs/product/MAPEO.md).

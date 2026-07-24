@@ -24,7 +24,7 @@ agéntico. Sin él, el twin queda encerrado en la UI y fuera del ecosistema de a
 ## Antecedentes / Contexto
 
 - Ficha: **CK-21** (2026-07-16) — visión organization-as-code + organization twin. **Prioridad baja / V2** (post-primeros-clientes).
-- Research: `proyecto/research/organization-as-code/07-capability-list-tobe.md` (#30).
+- Research: `docs/research/organization-as-code/07-capability-list-tobe.md` (#30).
 - Base existente: el twin ya se sirve por HTTP en `/api/objeto` (CAP-08, capability `cockpit/api-objeto`).
 
 ## Prior art scan
@@ -35,4 +35,4 @@ Grep cross-tree en `docs/product/stories/` (mcp · twin · agentes): sin matches
 
 `→ /po lee este archivo + carga skill correspondiente → produce 01-spec.md + actualiza product/stories/cockpit/mcp-server-twin/story.yaml`
 
-> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `proyecto/research/organization-as-code/`.
+> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `docs/research/organization-as-code/`.

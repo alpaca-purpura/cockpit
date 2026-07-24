@@ -32,7 +32,7 @@ El rediseño CK-18 fija un stack deliberadamente pragmático: dlt para la ingest
 ## Antecedentes / Contexto
 
 - Nace del rediseño CK-18 (Fábrica + Organización instalada): el Data Lakehouse (N16) nutre a Cockpit con la operación día a día.
-- SOTA de la pieza en `proyecto/research/rediseno-total/03`.
+- SOTA de la pieza en `docs/research/rediseno-total/03`.
 - Decisión D3: default en infra del cliente, hosteo por nosotros = opción comercial.
 - Origen (verbatim): "operador CK-18".
 

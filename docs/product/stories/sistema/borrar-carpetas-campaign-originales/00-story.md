@@ -16,17 +16,17 @@ links:
 
 ## Por qué importa
 
-El contenido de esas carpetas ya está rescatado en `proyecto/research/`. Borrarlas elimina duplicación y ambigüedad sobre dónde vive la verdad, pero el borrado queda a decisión del operador.
+El contenido de esas carpetas ya está rescatado en `docs/research/`. Borrarlas elimina duplicación y ambigüedad sobre dónde vive la verdad, pero el borrado queda a decisión del operador.
 
 ## Outcome esperado
 
 - Carpetas `~/Proyectos/campaign-*` originales eliminadas.
-- Sin duplicación entre el residuo original y lo ya rescatado en `proyecto/research/`.
+- Sin duplicación entre el residuo original y lo ya rescatado en `docs/research/`.
 
 ## Antecedentes / Contexto
 
 - Origen: **deuda CK-10**.
-- Contenido ya rescatado en `proyecto/research/`.
+- Contenido ya rescatado en `docs/research/`.
 - Relacionado: cierre de BL-07 (destilar research) dejó esta deuda aparte.
 - Fichas: CK-10.
 
@@ -36,7 +36,7 @@ El contenido de esas carpetas ya está rescatado en `proyecto/research/`. Borrar
 
 ## Riesgos / Asunciones
 
-- **Riesgo:** borrar algo aún no rescatado — **Mitigación:** confirmar que todo está en `proyecto/research/` antes de eliminar.
+- **Riesgo:** borrar algo aún no rescatado — **Mitigación:** confirmar que todo está en `docs/research/` antes de eliminar.
 - **Asunción:** es decisión del operador ejecutar el borrado.
 
 ## Próximo paso

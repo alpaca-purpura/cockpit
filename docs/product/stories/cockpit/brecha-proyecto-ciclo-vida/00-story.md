@@ -29,7 +29,7 @@ Sin caso de negocio por brecha, los proyectos no se priorizan por ROI (lección 
 ## Antecedentes / Contexto
 
 - Ficha: **CK-21** (2026-07-16) — visión organization-as-code + organization twin.
-- Research: `proyecto/research/organization-as-code/07-capability-list-tobe.md` (#12-13).
+- Research: `docs/research/organization-as-code/07-capability-list-tobe.md` (#12-13).
 - La entidad Proyecto de primera clase viene del schema v2 (`sistema/schema-v2-hilo-de-oro-kinetica`); la medición del "KPI movido" viene del cruce estructura×operación (BL-28).
 
 ## Prior art scan
@@ -40,4 +40,4 @@ Grep cross-tree en `docs/product/stories/` (brecha · proyecto · roi · pdca): 
 
 `→ /po lee este archivo + carga skill correspondiente → produce 01-spec.md + actualiza product/stories/cockpit/brecha-proyecto-ciclo-vida/story.yaml`
 
-> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `proyecto/research/organization-as-code/`.
+> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `docs/research/organization-as-code/`.

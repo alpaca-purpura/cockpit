@@ -29,7 +29,7 @@ decision-trace (Mavim ConversAI) vuelve el twin consultable por cualquiera sin s
 ## Antecedentes / Contexto
 
 - Ficha: **CK-21** (2026-07-16) — visión organization-as-code + organization twin. **Prioridad baja / V2** (post-primeros-clientes).
-- Research: `proyecto/research/organization-as-code/07-capability-list-tobe.md` (#31-32).
+- Research: `docs/research/organization-as-code/07-capability-list-tobe.md` (#31-32).
 - Superficie candidata hacia el trabajador operativo: Colab Studio (`colab-studio/colab-studio-app-trabajador`) — se decide al refinar.
 
 ## Prior art scan
@@ -40,4 +40,4 @@ Grep cross-tree en `docs/product/stories/` (crowdsourcing · frescura · encuest
 
 `→ /po lee este archivo + carga skill correspondiente → produce 01-spec.md + actualiza product/stories/cockpit/crowdsourcing-frescura/story.yaml`
 
-> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `proyecto/research/organization-as-code/`.
+> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `docs/research/organization-as-code/`.

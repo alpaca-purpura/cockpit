@@ -3,7 +3,9 @@
 > **La portada.** Todo lo que modelamos en el `objeto` (empresa, áreas, roles, personas, sistemas,
 > capabilities, procesos, objetivos, brechas) está **anclado a una norma o framework establecido**, y
 > **cada dato lleva su fuente**. No inventamos taxonomías: adoptamos las que la industria ya validó y las
-> citamos. Este book es el marco de respaldo — el *por qué* detrás de cada casilla del `objeto.schema.yaml`.
+> citamos. Este book es el marco de respaldo — el *por qué* detrás de cada casilla del
+> [`objeto.schema.yaml`](../../../sistema/schema/objeto.schema.yaml) (SSoT en `sistema/schema/`; las
+> citas `met:`/`§` del schema apuntan a estos capítulos. Book movido aquí en CK-28).
 
 ---
 

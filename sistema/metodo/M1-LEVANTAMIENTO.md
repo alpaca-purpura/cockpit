@@ -3,7 +3,7 @@
 > **Qué es:** el primer módulo y **primer producto vendible** ("Diagnóstico Digital"). Establece
 > el baseline de la empresa: AS-IS de sistemas y procesos + capa de contexto + gap analysis.
 > **Usuario primario:** el **Consultor Prenter** (consultant-first). El cliente provee insumos.
-> **Docs base:** estrategia [`PRODUCT-VISION.md`](../../tooling/strategy/PRODUCT-VISION.md) · metodología [`METODOLOGIA.md`](./METODOLOGIA.md).
+> **Docs base:** estrategia `PRODUCT-VISION.md` (monorepo legacy `prenter-harness`, congelado) · metodología [`METODOLOGIA.md`](./METODOLOGIA.md).
 > **Última actualización:** 2026-06-19
 
 ---

@@ -66,7 +66,7 @@ Nota "deprecad" en schema: 2 hits legítimos (valor de enum `estado_objetivo: de
    del personal" (M41-M45) + todo lo aprobado intacto.
 3. `sistema/schema/objeto.schema.yaml` — leer `acciones:` (la capa kinética) + las 3 entidades
    nuevas; `sistema/schema/verbos.yaml` — el vocabulario.
-4. Los capítulos nuevos del book: `sistema/schema/metodologia/{kpis,mejoras}.md` + `objetivos.md
+4. Los capítulos nuevos del book: `docs/metodo/objeto/{kpis,mejoras}.md` + `objetivos.md
    §6-bis` (modo regional GPD/BSC/OKR con fuentes).
 
 ## Audit (B — a mano, auditor responsable v5)

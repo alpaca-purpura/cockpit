@@ -4,9 +4,9 @@
 > monitor — es una **solución que se inserta en la organización y ejecuta el proceso de desarrollo
 > completo** (de empresa desconocida → empresa monitoreada con todos sus gaps → cockpit que mueve KPIs).
 > **Docs base:** `VISION-DESARROLLOS.md` (§17 planos, §12 contexto, §19 mapa) y `PRODUCT-VISION.md` (legacy, monorepo `prenter-harness/tooling/strategy/` — congelado) ·
-> [`SERVICE-DESIGN.md`](../metodo/SERVICE-DESIGN.md) · [`METODOLOGIA.md`](../metodo/METODOLOGIA.md) · **[`NODOS.md`](./NODOS.md) (16 nodos a nivel arquitecto, SSoT de fichas) · [`despliegue.html`](./despliegue.html) (diagrama visual, portado y actualizado en CK-14)**.
-> **Decisiones de arquitectura:** este repo → [`LEDGER.md`](../../LEDGER.md) (fichas **CK-NN**) · historia previa → ledgers **I-NN** (producto) y **H-NN** (fábrica) del monorepo legacy `prenter-harness` (congelado). *No hay ADRs en formato MADR; los ledgers son el equivalente (append-only).*
-> **Última actualización:** 2026-07-08 (**CK-18** — rediseño de fondo). El modelo pasa de "BYOC con motor server-side" a **Fábrica de software (Plano del Fabricante) + Organización instalada + Edge**. El método **se entrega al cliente** empaquetado en arneses (deroga el límite de IP "el método nunca al cliente"; protección = licencia + contrato). Mueren N1 (motor→arneses)/N4/N7; nacen Arnesia (N15)/Data Lakehouse (N16)/Colab Studio (N17)/Sistemas org (N18)/Analista de Calidad (N19). SOTA en [`../../proyecto/research/rediseno-total/`](../../proyecto/research/rediseno-total/). **TODO el cuerpo de abajo (split Control/Data Plane, "IP por arquitectura", conteos de nodos, R1–R17, "N1 piensa / N7 ejecuta", "App del Auditor", "N6 = GitHub") es historia pre-CK-18 y se conserva como contexto de visión CTO — NO como cableado vigente.** El SSoT del modelo actual es [`NODOS.md`](./NODOS.md) (16 nodos, R1–R15) + [`despliegue.html`](./despliegue.html).
+> [`SERVICE-DESIGN.md`](../../../sistema/metodo/SERVICE-DESIGN.md) · [`METODOLOGIA.md`](../../../sistema/metodo/METODOLOGIA.md) · **[`NODOS.md`](../../../sistema/arquitectura/NODOS.md) (16 nodos a nivel arquitecto, SSoT de fichas) · [`despliegue.html`](../../../sistema/arquitectura/despliegue.html) (diagrama visual, portado y actualizado en CK-14)**.
+> **Decisiones de arquitectura:** este repo → [`LEDGER.md`](../../../LEDGER.md) (fichas **CK-NN**) · historia previa → ledgers **I-NN** (producto) y **H-NN** (fábrica) del monorepo legacy `prenter-harness` (congelado). *No hay ADRs en formato MADR; los ledgers son el equivalente (append-only).*
+> **Última actualización:** 2026-07-08 (**CK-18** — rediseño de fondo). El modelo pasa de "BYOC con motor server-side" a **Fábrica de software (Plano del Fabricante) + Organización instalada + Edge**. El método **se entrega al cliente** empaquetado en arneses (deroga el límite de IP "el método nunca al cliente"; protección = licencia + contrato). Mueren N1 (motor→arneses)/N4/N7; nacen Arnesia (N15)/Data Lakehouse (N16)/Colab Studio (N17)/Sistemas org (N18)/Analista de Calidad (N19). SOTA en [`../../docs/research/rediseno-total/`](../../research/rediseno-total/). **TODO el cuerpo de abajo (split Control/Data Plane, "IP por arquitectura", conteos de nodos, R1–R17, "N1 piensa / N7 ejecuta", "App del Auditor", "N6 = GitHub") es historia pre-CK-18 y se conserva como contexto de visión CTO — NO como cableado vigente.** El SSoT del modelo actual es [`NODOS.md`](../../../sistema/arquitectura/NODOS.md) (16 nodos, R1–R15) + [`despliegue.html`](../../../sistema/arquitectura/despliegue.html).
 
 ---
 
@@ -22,7 +22,7 @@ edge por-humano (una suscripción, un humano — ToS).**
 > (N7) — el consultor conduce todo desde **Consultio** sobre su Claude Code, con arneses fabricados por
 > **Arnesia**, y publica al **Repositorio Oficial** confidencial del cliente.
 
-Las **3 etapas** (= los módulos M1·M3·M2, ver [PRODUCT-VISION §1.2](../../../tooling/strategy/PRODUCT-VISION.md)) son el QUÉ.
+Las **3 etapas** (= los módulos M1·M3·M2, ver PRODUCT-VISION §1.2 (monorepo legacy `prenter-harness`, congelado)) son el QUÉ.
 El **split de despliegue** es el CÓMO se lleva a la realidad: el **Discovery** (levantamiento + diseño del
 spec) corre **con el consultor** y guarda el know-how; el **Delivery** (construcción) corre **en la red del
 cliente**. El **handoff** entre ambos es el **SPEC "comidito"** — el QUÉ, nunca el CÓMO.
@@ -92,7 +92,7 @@ capa de datos solo-consultor que **no se entrega** (a lo sumo un `OPERATING-MANU
 
 **Patrón = BYOC · Control Plane / Data Plane** (el estándar B2B para "el vendor opera, los datos del cliente
 no salen de su red"; cómo lo hacen Snowflake/Databricks/Pinecone). Resuelve **IP protegida + soberanía de
-datos** con la misma decisión. Diagrama visual: [`despliegue.html`](./despliegue.html). Decidido 2026-06-20
+datos** con la misma decisión. Diagrama visual: [`despliegue.html`](../../../sistema/arquitectura/despliegue.html). Decidido 2026-06-20
 (AskUserQuestion): BYOC · runtime híbrido · data plane configurable.
 
 ```
@@ -141,12 +141,12 @@ datos** con la misma decisión. Diagrama visual: [`despliegue.html`](./despliegu
 (efímero) pero el CÓMO **no persiste** con el cliente. El cliente recibe el **QUÉ** (spec + su mapa + backlog).
 Coherente con el negocio **híbrido** (producto Delivery/CEO + acompañamiento Discovery).
 
-**Pendiente (tracking = `proyecto/backlog.yaml`):** contrato del handoff (SPEC "comidito" — con N1, BL-13) · deuda Go/Next de N13 (lo que no corre en el binario no cuenta — BL-20) · definir N14 (BL-15..17) · conexión DevStudio/GitHub→Cockpit (BL-18, TBD).
+**Pendiente (tracking = `docs/product/_archive/backlog.yaml`):** contrato del handoff (SPEC "comidito" — con N1, BL-13) · deuda Go/Next de N13 (lo que no corre en el binario no cuenta — BL-20) · definir N14 (BL-15..17) · conexión DevStudio/GitHub→Cockpit (BL-18, TBD).
 
 ---
 
 ## Stack tecnológico (decisiones que caen de la arquitectura)
-> Resumen. **Detalle por nodo (stack + por qué + descartados) = [`NODOS.md`](./NODOS.md)** campo `stack` (SSoT).
+> Resumen. **Detalle por nodo (stack + por qué + descartados) = [`NODOS.md`](../../../sistema/arquitectura/NODOS.md)** campo `stack` (SSoT).
 
 | Capa | Tech | Por qué |
 |---|---|---|
@@ -170,7 +170,7 @@ implementación como IP** y el **producto en manos del cliente**. No es "Jira bo
 
 ## Pendientes / próximos (la arquitectura, cimentada — CK-14 cerró BL-03)
 
-**Cerrado** (detalle a nivel arquitecto en [`NODOS.md`](./NODOS.md) — 14 nodos):
+**Cerrado** (detalle a nivel arquitecto en [`NODOS.md`](../../../sistema/arquitectura/NODOS.md) — 14 nodos):
 - Patrón de despliegue = **BYOC** (I-31) · runtime **híbrido** · data plane **configurable**.
 - **14 nodos** con responsabilidades R1–R17 — modelo **cerebro/manos**: N1 piensa, N7 ejecuta, N9 opera/valida
   desde su app (N14), N12 deposita el crudo, N13 sirve la Vista Negocio (único binario del data plane),
@@ -187,8 +187,8 @@ implementación como IP** y el **producto en manos del cliente**. No es "Jira bo
 
 **Abierto — no bloquea el diseño de servicio:** deuda Go/Next de N13 (BL-20) · conexión DevStudio/GitHub→Cockpit
 (BL-18) · retención de N12 · ¿developer del cliente o nuestro? (N10) · diferidos (SQLite/voz/modo conversación). **El tracking del
-pendiente de Cockpit = `proyecto/backlog.yaml` (BL-NN)**; la narrativa de ecosistema vive en
-[`NODOS.md` → «Pendientes consolidados»](./NODOS.md) — no se re-numera aquí (evita el drift).
+pendiente de Cockpit = `docs/product/_archive/backlog.yaml` (BL-NN)**; la narrativa de ecosistema vive en
+[`NODOS.md` → «Pendientes consolidados»](../../../sistema/arquitectura/NODOS.md) — no se re-numera aquí (evita el drift).
 
 > Cerrado el **handoff/SPEC**, la arquitectura queda cimentada → siguiente nivel: **diseño de servicio**
 > (volver al blueprint con los límites ya claros), luego los **specs del sistema**.

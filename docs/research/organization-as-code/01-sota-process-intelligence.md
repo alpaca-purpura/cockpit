@@ -2,7 +2,7 @@
 
 > Investigación CK-21 (2026-07-15/16) — SOTA "organization as code / Digital Twin of an Organization".
 > Fuente: subagentes WebFetch/WebSearch sobre sitios de vendors + prensa + docs. Parte del corpus
-> `proyecto/research/organization-as-code/` (ver README).
+> `docs/research/organization-as-code/` (ver README).
 
 ## iGrafx — Process360 Live
 

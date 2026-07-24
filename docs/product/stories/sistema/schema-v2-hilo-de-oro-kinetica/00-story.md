@@ -30,7 +30,7 @@ schema describe la organización pero no gobierna quién modifica qué, con qué
 ## Antecedentes / Contexto
 
 - Ficha: **CK-21** (2026-07-16) — visión organization-as-code + organization twin.
-- Research: `proyecto/research/organization-as-code/04-doctrina-ontologia-palantir.md` + `07-capability-list-tobe.md` (#1-3, #10).
+- Research: `docs/research/organization-as-code/04-doctrina-ontologia-palantir.md` + `07-capability-list-tobe.md` (#1-3, #10).
 - Extiende el contrato vigente `objeto.schema.yaml` (9 entidades, CK-12) servido por `/api/objeto` (CAP-08).
 
 ## Prior art scan
@@ -46,4 +46,4 @@ Grep cross-tree en `docs/product/stories/` (okr · kpi · schema · kinetica · 
 
 `→ /po lee este archivo + carga skill correspondiente → produce 01-spec.md + actualiza product/stories/sistema/schema-v2-hilo-de-oro-kinetica/story.yaml`
 
-> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `proyecto/research/organization-as-code/`.
+> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `docs/research/organization-as-code/`.

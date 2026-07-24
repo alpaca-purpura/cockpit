@@ -31,7 +31,7 @@ La decisión de fondo es de arquitectura de datos: git/archivos = SSoT, y cualqu
 ## Antecedentes / Contexto
 
 - Nace del rediseño CK-18 (Fábrica + Organización instalada): el Repositorio Oficial deja de ser GitHub y pasa a git self-hosted confidencial en la infra del cliente.
-- SOTA de la pieza en `proyecto/research/rediseno-total/01`.
+- SOTA de la pieza en `docs/research/rediseno-total/01`.
 - Se diseña con el primer despliegue real.
 - Origen (verbatim): "operador CK-18 (D3 base)".
 

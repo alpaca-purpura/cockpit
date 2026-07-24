@@ -1,6 +1,6 @@
 # Pivote comercial — cloud gestionado como default (CK-21 D3/D4)
 
-> Investigación CK-21 (2026-07-15/16) — visión "organization as code → organization twin". Parte del corpus `proyecto/research/organization-as-code/` (ver README).
+> Investigación CK-21 (2026-07-15/16) — visión "organization as code → organization twin". Parte del corpus `docs/research/organization-as-code/` (ver README).
 
 ## El problema (operador, 2026-07-15)
 

@@ -46,4 +46,4 @@ Consultio v0 = arneses sin shell.
   al core y acopla releases de dos productos con compradores distintos. Descartada
   (revisable si F0-F3 muestran variación menor a la prevista).
 
-**Plan detallado:** `proyecto/plans/consultio-studio-core/`.
+**Plan detallado:** `docs/product/plans/consultio-studio-core/`.

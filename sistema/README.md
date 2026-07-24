@@ -1,27 +1,36 @@
-# sistema/ — el sistema as-code
+# sistema/ — el producto as-code (fuente, no documentación)
 
-Zona SISTEMA de la tríada (CK-11): los artefactos que **definen el sistema mismo** — no son
-documentación de features ni organización de trabajo. Se llama "sistema" (no "app") porque tiene
-múltiples puntos de despliegue (ver `arquitectura/NODOS.md`) en tres planos (CK-18): **Fabricante**
-(Arnesia, Repositorio Maestro, distribución/licencias) · **Organización** (Cockpit, Repositorio
-Oficial, Data Lakehouse) · **Edge** (Consultio, Colab Studio, DevStudio sobre Claude Code).
+Los artefactos que **definen el sistema mismo**, como dato versionado: SSoT hand-authored +
+generadores + vistas generadas, validado todo por gates en `.githooks/pre-commit` (CK-17/CK-19).
+Se llama "sistema" (no "app") porque tiene múltiples puntos de despliegue (ver
+`arquitectura/NODOS.md`) en tres planos (CK-18): **Fabricante** (Arnesia, Repositorio Maestro,
+distribución/licencias) · **Organización** (Cockpit, Repositorio Oficial, Data Lakehouse) ·
+**Edge** (Consultio, Colab Studio, DevStudio sobre Claude Code).
 
-- [`arquitectura/`](./arquitectura/) — `arquitectura.yaml` (arquitectura-como-dato de la célula),
-  `ARCHITECTURE.md` (visión CTO — su cuerpo Control/Data Plane es historia pre-CK-18, ver su banner),
-  `NODOS.md` (**16 fichas de nodo, SSoT** — Fabricante/Organización/Edge, CK-18) + `despliegue.html`.
-- [`metodo/`](./metodo/) — el método del servicio/auditor: catálogo de 31 metodologías
-  (`methodologies.yaml` + `METODOLOGIA.md`), doctrina ISO (`ISO-9001-veredicto-I-05.md`),
-  levantamiento (`M1-LEVANTAMIENTO.md`), espinazo/PDCA (`M3-ESPINAZO.md`), patrón
-  plantilla/instancia (`PROCESS-AS-DATA.md`), conocimiento por nicho (`nichos/`), y
-  [`proceso/`](./metodo/proceso/) — el proceso-como-dato (m1 levantamiento · m2 mantenimiento ·
-  m3 espinazo). Esto se empaqueta en arneses (Arnesia/N15) que cargan las apps del edge — Consultio
-  (N14, ex App del Auditor) y Colab Studio (N17) (BL-15/16/26).
-- [`schema/`](./schema/) — esquemas de datos del dominio: `objeto.schema.yaml` (el modelo de
-  negocio normalizado, 9 entidades — SSoT declarado; su reconciliación con el código es BL-02),
-  `ejemplo-vertice.yaml` (fixture de validación END-TO-END del contrato), `metodologia/` (el *porqué*
-  de cada campo — norma/marco, 5 docs) y `DECISIONES.md` (ADR del modelo, D-01..D-16). Destilados de la
-  campaña `modelo-objeto` al cerrar BL-07 (la campaña se borró; esto es el hogar del modelo).
+Principio (CK-28, hexagonal): aquí vive SOLO lo que un gate valida, un generador lee/escribe o el
+runtime carga. La lectura humana desacoplada vive en [`../docs/`](../docs/) (mapa:
+[`docs/README.md`](../docs/README.md)).
 
-Regla: cambiar algo aquí = decisión de sistema → ficha `CK-NN` en el mismo evento. Las otras dos
-zonas: código + [`../docs/`](../docs/) (capabilities construidas) · [`../proyecto/`](../proyecto/)
-(organización del trabajo).
+- [`arquitectura/`](./arquitectura/) — eje as-code #1 (`.claude/rules/arquitectura-as-code.md`):
+  `NODOS.md` (**16 fichas de nodo, SSoT** del ecosistema) + `arquitectura.yaml` (componentes de la
+  célula) → `gen_arquitectura.py` → `nodos.data.js` + `arquitectura.html` (GENERADOS);
+  `despliegue.html` curado a mano y VALIDADO por el gate. Visión CTO (histórica):
+  [`docs/architecture/producto/ARCHITECTURE.md`](../docs/architecture/producto/ARCHITECTURE.md).
+- [`metodo/`](./metodo/) — eje as-code #2 (`.claude/rules/metodologia-as-code.md`): el método del
+  PRODUCTO (lo que Cockpit vende). Catálogo de M-cards (`methodologies.yaml`), proceso-como-dato
+  ([`proceso/`](./metodo/proceso/) — m1 levantamiento · m2 mantenimiento · m3 espinazo), nichos
+  ([`nichos/`](./metodo/nichos/)) → `gen_metodo.py` → `METODOLOGIA.md §4` + `GRAFO.md` +
+  `NOTACIONES.html` (GENERADOS). Narrativas cableadas al cerebro `/metodo` (las rutea `GRAFO.md`):
+  `M1-LEVANTAMIENTO.md` · `M3-ESPINAZO.md` · `PROCESS-AS-DATA.md` · `SERVICE-DESIGN.md`. Se
+  empaqueta en arneses (Arnesia/N15) para las apps del edge — Consultio (N14) y Colab Studio (N17).
+- [`schema/`](./schema/) — el contrato del objeto de negocio: `objeto.schema.yaml` (v2, 12 nodos,
+  CK-26) + `verbos.yaml` (cargados por `go/objeto.go` → `/api/objeto`), gates `gen_schema.py` +
+  cobertura `gen_cobertura.py`, fixture `ejemplo-vertice.yaml`, ADR `DECISIONES.md`.
+
+Lecturas humanas relacionadas (fuera de aquí, CK-28): doctrina ISO y el book del objeto en
+[`docs/metodo/`](../docs/metodo/) · visión CTO histórica en
+[`docs/architecture/producto/`](../docs/architecture/producto/) · SOTA en
+[`docs/research/`](../docs/research/).
+
+Regla: cambiar algo aquí = decisión de sistema → ficha `CK-NN` en el mismo evento; el pre-commit
+regenera las vistas y bloquea si la SSoT no valida.

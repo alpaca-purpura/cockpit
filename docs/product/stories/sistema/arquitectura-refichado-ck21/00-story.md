@@ -31,4 +31,4 @@ la contradicción.
 
 Continuación directa de la deuda declarada en CK-21 (LEDGER) — no duplica historia existente:
 `terminar-arquitectura-despliegue` (BL-03) cerró el mapa CK-14/CK-18 y está `done`; ésta baja el
-delta CK-21. Research: `proyecto/research/organization-as-code/07` §Derivación de arquitectura + `08`.
+delta CK-21. Research: `docs/research/organization-as-code/07` §Derivación de arquitectura + `08`.

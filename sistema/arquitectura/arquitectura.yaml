@@ -33,7 +33,7 @@ meta:
     publica a N6 vía Gestión de Cambios (dev→UAT→prod = la gestión de cambios ISO, D5); Cockpit
     cruza estructura × operación, mide el hilo de oro (objetivos→OKR→KPI) y sirve por niveles de
     acceso. Frontera CK-24: el twin mide roles/procesos/áreas, no personas. SOTA en
-    proyecto/research/{rediseno-total,organization-as-code}/. Vista de despliegue = despliegue.html.
+    docs/research/{rediseno-total,organization-as-code}/. Vista de despliegue = despliegue.html.
 
 # ---- PLANOS = las bandas del render ----
 planos:

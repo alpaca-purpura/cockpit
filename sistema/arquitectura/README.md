@@ -1,7 +1,8 @@
 # arquitectura/ — el sistema como Fábrica + Organización instalada (CK-18)
 
-`ARCHITECTURE.md` (visión CTO — con banner: sus secciones Control/Data Plane son historia pre-CK-18)
-y `NODOS.md` (**16 fichas de nodo, SSoT del detalle**) describen el ecosistema. Rediseñado de fondo en
+[`ARCHITECTURE.md`](../../docs/architecture/producto/ARCHITECTURE.md) (visión CTO — histórica, movida
+a `docs/architecture/producto/` en CK-28) y `NODOS.md` (**16 fichas de nodo, SSoT del detalle**)
+describen el ecosistema. Rediseñado de fondo en
 **CK-18**: de "BYOC con motor server-side" a **Fábrica de software + Organización instalada + Edge**.
 El método **se entrega al cliente** en arneses (deroga el límite de IP). [`despliegue.html`](./despliegue.html)
 es el diagrama visual (curado a mano, mismo evento que la decisión). Los nodos por plano:
@@ -26,9 +27,10 @@ es el diagrama visual (curado a mano, mismo evento que la decisión). Los nodos 
 - **N8** — Claude Code, motor común. **N9/N19/N10/N11** — actores (Consultor→Analista de Calidad, Developer, Usuarios 4 niveles).
 
 **Muertos (CK-18):** N1 (Motor de Discovery server-side → arneses), N4 (voz, diferida), N7 (agentes efímeros).
-El SOTA de cada pieza está en [`../../proyecto/research/rediseno-total/`](../../proyecto/research/rediseno-total/).
+El SOTA de cada pieza está en [`../../docs/research/rediseno-total/`](../../docs/research/rediseno-total/).
 
-`ck-02-stage1-diagram.html` — diagrama de la extracción física Stage 1 (histórico, pre-Stage-4).
+Diagrama histórico de la extracción física Stage 1 (pre-Stage-4):
+[`ck-02-stage1-diagram.html`](../../docs/architecture/producto/ck-02-stage1-diagram.html) (CK-28).
 
 [`arquitectura.yaml`](./arquitectura.yaml) — el modelo de la arquitectura DE LA CÉLULA como dato
 (NODOS.md = ecosistema; este YAML = qué posee/consume Cockpit).

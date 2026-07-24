@@ -21,7 +21,7 @@
 # REDISEÑO CK-18 (2026-07-08): columnas re-organizadas al modelo Fábrica + Organización instalada.
 # El método se entrega en arneses; Consultio (ex App del Auditor) construye el mapa; Repositorio
 # Oficial (ya no GitHub) + Data Lakehouse alimentan Cockpit; nace el Plano del Fabricante. SOTA de
-# cada pieza en proyecto/research/rediseno-total/.
+# cada pieza en docs/research/rediseno-total/.
 
 meta:
   id: cockpit-backlog
@@ -149,7 +149,7 @@ items:
   - id: BL-09
     subsistema: sistema
     titulo: "Borrar carpetas ~/Proyectos/campaign-* originales"
-    detalle: "Contenido ya rescatado en proyecto/research/. Borrado pendiente — decisión del operador."
+    detalle: "Contenido ya rescatado en docs/research/. Borrado pendiente — decisión del operador."
     origen: "deuda CK-10"
     prioridad: baja
     estado: pendiente

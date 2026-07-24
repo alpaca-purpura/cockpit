@@ -41,7 +41,7 @@ generado. El mapeo es directo: skill = procedimiento, plugin = rol, marketplace 
 
 - NUEVO en CK-18 (rediseño Fábrica + Organización instalada). Nodo N15 (Arnesia, fábrica de arneses).
 - Origen: operador CK-18 (#3, #7).
-- SOTA de la pieza: `proyecto/research/rediseno-total/07`.
+- SOTA de la pieza: `docs/research/rediseno-total/07`.
 - Patrón anti-drift declarado transversal en el sistema (ver gate CK-17).
 
 ## Out of scope (explícito)

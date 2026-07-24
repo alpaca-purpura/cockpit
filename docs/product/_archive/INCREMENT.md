@@ -1,5 +1,5 @@
 > ⚠️ **ARCHIVADO (CK-19, 2026-07-09) — ya no es SSoT.** Las capabilities viven en
-> `docs/product/capabilities/`; correspondencia en [`docs/product/MAPEO.md`](./product/MAPEO.md).
+> `docs/product/capabilities/`; correspondencia en [`docs/product/MAPEO.md`](../MAPEO.md).
 > Se conserva como registro histórico congelado.
 
 # Product Increment — capabilities funcionales de Cockpit (vista humana de [`increment.yaml`](./increment.yaml))
@@ -28,5 +28,5 @@ Consultio (N14, ex App del Auditor) + Colab Studio (N17) · Repositorio Oficial 
 (N16) · Gestión de Cambios ISO + niveles de acceso (N13) · Arnesia + distribución/licencias (N15/N3) ·
 ingesta multi-fuente As-Is/To-Be · roles Área/Consultor reales · auth · preparación-auditoría ·
 negocio.yaml como proyección GENERADA del objeto (BL-19, gatillo: objeto poblado con
-objetivos/brechas). Todo eso vive en [`proyecto/backlog.yaml`](../proyecto/backlog.yaml). (N1 Motor de
+objetivos/brechas). Todo eso vive en [`docs/product/_archive/backlog.yaml`](./backlog.yaml). (N1 Motor de
 Discovery quedó **derogado** en CK-18 — su razonamiento vive como arneses, no es pendiente.)

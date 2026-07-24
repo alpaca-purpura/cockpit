@@ -2,7 +2,7 @@
 
 > **Vista humana curada (CK-22, 2026-07-16).** SSoT = `releases/*.yaml` + `story.yaml` de cada
 > historia. Estados y prioridades los firma el operador. Norte: VISION.md §Organization as Code →
-> Organization Twin (CK-21) · TO-BE completo: `proyecto/research/organization-as-code/07-capability-list-tobe.md`.
+> Organization Twin (CK-21) · TO-BE completo: `docs/research/organization-as-code/07-capability-list-tobe.md`.
 
 ## Estado (generado — no editar a mano)
 

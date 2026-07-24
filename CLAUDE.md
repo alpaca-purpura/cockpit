@@ -10,7 +10,7 @@ ontología + PDCA (sin aparato de certificación — VISION.md §ISO). Twin = es
 real (N16) × brecha continua (N13). Flujo-loop: ingesta multi-fuente → As-Is → To-Be → brechas con
 costo/ROI → proyectos de mejora con ciclo de vida DENTRO de la solución → KPI movido. Diferenciador:
 el hilo de oro medido (objetivos directorio → OKRs → KPIs por proceso/rol/persona) + arneses por puesto.
-SOTA + TO-BE (37 capacidades): `proyecto/research/organization-as-code/`.
+SOTA + TO-BE (37 capacidades): `docs/research/organization-as-code/`.
 
 ## Proceso de desarrollo — el arnés prenter (CK-19, adoptado 2026-07-09)
 
@@ -19,8 +19,12 @@ Migración total ratificada por el operador (CK-19). Cómo trabajar:
 
 - **SSoT del qué se construye = `docs/product/`** (ver `docs/product/README.md`): historias
   (`stories/<module>/<story-id>/`), capabilities (`capabilities/<module>/`), releases, módulos.
-  `proyecto/backlog.yaml` y `docs/increment.yaml` quedaron **archivados** (registro histórico congelado);
-  correspondencia lossless en `docs/product/MAPEO.md`.
+  El backlog y el increment pre-arnés quedaron **archivados** en `docs/product/_archive/` (registro
+  histórico congelado); correspondencia lossless en `docs/product/MAPEO.md`.
+- **Mapa del árbol `docs/` = `docs/README.md`** (CK-28, principio hexagonal): `sistema/` = fuente
+  as-code (gates/generadores/runtime) — `docs/` = lo que se lee (`product/` · `research/` ·
+  `metodo/` · `architecture/` · `process/`). Regla: lo que valida un gate NUNCA va a `docs/`; la
+  lectura humana desacoplada NUNCA va a `sistema/`.
 - **Ciclo de vida (10 estados macro):** `idea → refining → refined → ready → developing → developed →
   [G Chris-verify] → [R reconcile] → reviewing → done` (+ `parked`/`dropped`). Gates, roles, DoD, TDD,
   anti-duplicación, learning-capture: reglas **always-on** en `.claude/rules/` (CORE del arnés, byte-idéntico,
@@ -47,7 +51,7 @@ anti-drift en `.githooks/pre-commit`), gemelos entre sí:
 ## Arquitectura vigente (CK-18 Fábrica + Organización · CK-21 default comercial hosteado)
 
 Tres planos — SSoT `sistema/arquitectura/NODOS.md` (16 nodos) + `despliegue.html` + SOTA en
-`proyecto/research/{rediseno-total,organization-as-code}/`:
+`docs/research/{rediseno-total,organization-as-code}/`:
 - **Fabricante (nuestro):** Arnesia (N15), Repositorio Maestro (N2, método+arneses+código), **Portal** de
   distribución + telemetría + **licencias por asiento, fingerprint compuesto — no MAC** (N3, asciende a
   producto en CK-21). No razona en runtime — fábrica de software. El método **se entrega al cliente** en

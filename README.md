@@ -13,18 +13,17 @@ PDCA, sin el aparato de certificación).
 - Decisiones — [`LEDGER.md`](./LEDGER.md) (fichas `CK-NN` — historia CK-01..CK-09 en la incubadora
   `prenter-harness`)
 
-## Las tres zonas (CK-11)
+## Cómo está organizado el repo (CK-28)
 
-- [`sistema/`](./sistema/) — el sistema as-code: arquitectura y despliegue
-  (`sistema/arquitectura/`), método del servicio/auditor (`sistema/metodo/`), schemas de dominio
-  (`sistema/schema/`).
-- **Capabilities construidas** — código (`go/`, `ui/`) + [`docs/`](./docs/) (documentation-as-code;
-  Product Increment en [`docs/increment.yaml`](./docs/increment.yaml), vista
-  [`docs/INCREMENT.md`](./docs/INCREMENT.md)).
-- [`proyecto/`](./proyecto/) — organización del trabajo: **System Backlog**
-  ([`proyecto/backlog.yaml`](./proyecto/backlog.yaml), vista en
-  [`proyecto/BACKLOG.md`](./proyecto/BACKLOG.md)) + research heredada
-  ([`proyecto/research/`](./proyecto/research/)).
+- [`sistema/`](./sistema/) — el producto as-code (fuente, no documentación): arquitectura y
+  despliegue (`sistema/arquitectura/`), método del consultor (`sistema/metodo/`), schemas de
+  dominio (`sistema/schema/`). SSoT hand-authored + generadores + vistas generadas, validado por
+  gates pre-commit.
+- **Código** — `go/` + `ui/` (detalle abajo).
+- [`docs/`](./docs/) — todo el conocimiento del proyecto (mapa completo en
+  [`docs/README.md`](./docs/README.md)): `product/` (SSoT del qué se construye — historias,
+  capabilities, releases), `research/` (SOTA vivo), `process/` (proceso de desarrollo + registros
+  vivos), `architecture/` (lecturas de arquitectura para humanos).
 
 ## Código
 

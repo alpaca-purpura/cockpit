@@ -135,7 +135,7 @@ al twin.
   descartar) → barrido de contradicciones → gate. Ciclo de vida en contrato v3:
   `estado: vigente|superseded|descartada` + `superseded_by` + `razon_estado`; el gate valida (ERR)
   y WARNea aristas/pasos que citen conocimiento reemplazado. Dogma tocado → ficha CK.
-- **Diseño v2 aprobado en research** (`proyecto/research/cerebro-conocimiento/02`): bi-temporal
+- **Diseño v2 aprobado en research** (`docs/research/cerebro-conocimiento/02`): bi-temporal
   light · puerta temática · gleanings · bandeja de episodios no-lossy · `/metodo-consolida`
   (sleep-time) · `/api/metodo` (ver §13).
 
@@ -161,7 +161,7 @@ Gestión de Cambios, niveles de acceso, cruce lakehouse.
 | Skills project-layer (`/metodo`, `/metodo-aprende`) | cerebro del método | por description/trigger — carga dirigida |
 | Memoria persistente (`~/.claude/projects/.../memory/`) | hechos cross-sesión (3 memorias: ledger ligero, hueco KIT, cerebro) | recall automático |
 | `docs/product/` + `LEDGER.md` | pool de historias + decisiones | disciplina de arranque de sesión |
-| Research (`proyecto/research/**`) | SOTA + veredictos | on-demand por referencia |
+| Research (`docs/research/**`) | SOTA + veredictos | on-demand por referencia |
 
 ## 7 · Vista de datos
 
@@ -276,4 +276,4 @@ mapeo como prior-art.
 *Referencias raíz: `VISION.md` · `LEDGER.md` · `CLAUDE.md` · `project.config.yaml` ·
 `sistema/arquitectura/NODOS.md` · `sistema/metodo/{README.md, GRAFO.md}` ·
 `sistema/schema/objeto.schema.yaml` · `docs/product/README.md` ·
-`proyecto/research/{organization-as-code, rediseno-total, cerebro-conocimiento}/`.*
+`docs/research/{organization-as-code, rediseno-total, cerebro-conocimiento}/`.*

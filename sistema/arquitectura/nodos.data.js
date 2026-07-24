@@ -69,7 +69,7 @@ window.NODOS = {
       ],
       [
         "fuentes",
-        "[Agent Skills — Anthropic](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills) · [Cowork plugins empresariales](https://claude.com/blog/cowork-plugins-across-enterprise) · [Docs→Skills sin drift — Inkeep](https://inkeep.com/blog/docs-to-agent-skills) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`."
+        "[Agent Skills — Anthropic](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills) · [Cowork plugins empresariales](https://claude.com/blog/cowork-plugins-across-enterprise) · [Docs→Skills sin drift — Inkeep](https://inkeep.com/blog/docs-to-agent-skills) · `docs/research/rediseno-total/07-proceso-como-arnes.md`."
       ]
     ]
   },
@@ -134,7 +134,7 @@ window.NODOS = {
       ],
       [
         "fuentes",
-        "`sistema/metodo/` · [Git for Data — DoltHub](https://www.dolthub.com/blog/2020-03-06-so-you-want-git-for-data/) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`."
+        "`sistema/metodo/` · [Git for Data — DoltHub](https://www.dolthub.com/blog/2020-03-06-so-you-want-git-for-data/) · `docs/research/rediseno-total/07-proceso-como-arnes.md`."
       ]
     ]
   },
@@ -207,7 +207,7 @@ window.NODOS = {
       ],
       [
         "fuentes",
-        "[go-tuf v2](https://github.com/theupdateframework/go-tuf) · [TUF-on-CI](https://github.com/theupdateframework/tuf-on-ci) · [Tauri v2 updater](https://v2.tauri.app/plugin/updater/) · [Claude Code marketplaces](https://code.claude.com/docs/en/plugin-marketplaces) · [keygen-go](https://github.com/keygen-sh/keygen-go) · [OTel Collector + mTLS](https://opentelemetry.io/blog/2025/expose-otel-collector-gateway-api/) · `proyecto/research/rediseno-total/04-distribucion-licencias-telemetria.md`."
+        "[go-tuf v2](https://github.com/theupdateframework/go-tuf) · [TUF-on-CI](https://github.com/theupdateframework/tuf-on-ci) · [Tauri v2 updater](https://v2.tauri.app/plugin/updater/) · [Claude Code marketplaces](https://code.claude.com/docs/en/plugin-marketplaces) · [keygen-go](https://github.com/keygen-sh/keygen-go) · [OTel Collector + mTLS](https://opentelemetry.io/blog/2025/expose-otel-collector-gateway-api/) · `docs/research/rediseno-total/04-distribucion-licencias-telemetria.md`."
       ]
     ]
   },
@@ -272,7 +272,7 @@ window.NODOS = {
       ],
       [
         "fuentes",
-        "[Forgejo](https://forgejo.org/) · [QMS en git — OpenRegulatory](https://openregulatory.com/articles/quality-management-system-qms-in-github-gitlab) · `proyecto/research/rediseno-total/01-repositorio-oficial.md`."
+        "[Forgejo](https://forgejo.org/) · [QMS en git — OpenRegulatory](https://openregulatory.com/articles/quality-management-system-qms-in-github-gitlab) · `docs/research/rediseno-total/01-repositorio-oficial.md`."
       ]
     ]
   },
@@ -345,7 +345,7 @@ window.NODOS = {
       ],
       [
         "fuentes",
-        "`proyecto/research/rediseno-total/05-auth-rbac.md` · `06-gestion-cambios-iso.md` · `03-data-lakehouse.md` · Strangler Fig (vía CK-07)."
+        "`docs/research/rediseno-total/05-auth-rbac.md` · `06-gestion-cambios-iso.md` · `03-data-lakehouse.md` · Strangler Fig (vía CK-07)."
       ]
     ]
   },
@@ -418,7 +418,7 @@ window.NODOS = {
       ],
       [
         "fuentes",
-        "[DuckLake 1.0](https://ducklake.select/2026/04/13/ducklake-10/) · [dlt](https://dlthub.com/) · [duckdb-go](https://github.com/duckdb/duckdb-go) · `proyecto/research/rediseno-total/03-data-lakehouse.md`."
+        "[DuckLake 1.0](https://ducklake.select/2026/04/13/ducklake-10/) · [dlt](https://dlthub.com/) · [duckdb-go](https://github.com/duckdb/duckdb-go) · `docs/research/rediseno-total/03-data-lakehouse.md`."
       ]
     ]
   },
@@ -548,7 +548,7 @@ window.NODOS = {
       ],
       [
         "fuentes",
-        "Diagrama del operador (`mapaCockpitTotal`) · `proyecto/research/rediseno-total/03-data-lakehouse.md`."
+        "Diagrama del operador (`mapaCockpitTotal`) · `docs/research/rediseno-total/03-data-lakehouse.md`."
       ]
     ]
   },
@@ -609,7 +609,7 @@ window.NODOS = {
       ],
       [
         "fuentes",
-        "Nombre: operador (CK-18) · topología/extracción: operador (CK-25, `proyecto/plans/consultio-studio-core/`) · kernel compartido `~/Proyectos/studio-core` (SC-01) · linaje DevStudio (`~/Proyectos/dev-studio`, DH-NN) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`."
+        "Nombre: operador (CK-18) · topología/extracción: operador (CK-25, `docs/product/plans/consultio-studio-core/`) · kernel compartido `~/Proyectos/studio-core` (SC-01) · linaje DevStudio (`~/Proyectos/dev-studio`, DH-NN) · `docs/research/rediseno-total/07-proceso-como-arnes.md`."
       ]
     ]
   },
@@ -670,7 +670,7 @@ window.NODOS = {
       ],
       [
         "fuentes",
-        "Operador (CK-18) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`."
+        "Operador (CK-18) · `docs/research/rediseno-total/07-proceso-como-arnes.md`."
       ]
     ]
   },
@@ -886,7 +886,7 @@ window.NODOS = {
       ],
       [
         "fuentes",
-        "Operador (CK-18) · `proyecto/research/rediseno-total/06-gestion-cambios-iso.md`."
+        "Operador (CK-18) · `docs/research/rediseno-total/06-gestion-cambios-iso.md`."
       ]
     ]
   },

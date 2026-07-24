@@ -1,5 +1,5 @@
 > ⚠️ **ARCHIVADO (CK-19, 2026-07-09) — ya no es SSoT.** El pendiente vive en historias del arnés
-> (`docs/product/stories/`); correspondencia en [`docs/product/MAPEO.md`](../docs/product/MAPEO.md).
+> (`docs/product/stories/`); correspondencia en [`docs/product/MAPEO.md`](../MAPEO.md).
 > Se conserva como registro histórico congelado.
 
 # System Backlog — Cockpit (vista humana de [`backlog.yaml`](./backlog.yaml))

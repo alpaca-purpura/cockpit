@@ -17,4 +17,4 @@
 | `07-capability-list-tobe.md` | 37 capacidades etiquetadas + MVP + derivación de arquitectura |
 | `08-pivote-comercial.md` | default hosteado single-tenant, portal, licencias, entornos |
 
-**Nota:** hermano de `proyecto/research/rediseno-total/` (CK-18). Aquel definió la arquitectura física; éste define la visión de producto y el TO-BE funcional.
+**Nota:** hermano de `docs/research/rediseno-total/` (CK-18). Aquel definió la arquitectura física; éste define la visión de producto y el TO-BE funcional.

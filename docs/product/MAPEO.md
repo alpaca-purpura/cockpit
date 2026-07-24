@@ -9,14 +9,14 @@
 
 | Antes (SSoT legacy) | Ahora (SSoT arnés) | Estado del legacy |
 |---|---|---|
-| `proyecto/backlog.yaml` (BL-NN) | `docs/product/stories/<module>/<story-id>/` | **archivado** (banner, congelado, no borrado) |
-| `docs/increment.yaml` (CAP-NN) | `docs/product/capabilities/cockpit/<cap>.yaml` | **archivado** |
-| `proyecto/BACKLOG.md` · `docs/INCREMENT.md` (vistas) | (las historias/caps se leen directo) | **archivado** |
+| `docs/product/_archive/backlog.yaml` (BL-NN) | `docs/product/stories/<module>/<story-id>/` | **archivado** (banner, congelado, no borrado) |
+| `docs/product/_archive/increment.yaml` (CAP-NN) | `docs/product/capabilities/cockpit/<cap>.yaml` | **archivado** |
+| `docs/product/_archive/BACKLOG.md` · `docs/product/_archive/INCREMENT.md` (vistas) | (las historias/caps se leen directo) | **archivado** |
 | `VISION.md` (norte) | **sin cambio** — norte + `value_stream` del seam | vivo |
 | `LEDGER.md` (CK-NN) | **sin cambio** — decisiones/ADR + CIL del arnés | vivo (+ CK-19) |
 | `sistema/arquitectura/` | **sin cambio** — extensión as-code #1, cableada | vivo (`.claude/rules/arquitectura-as-code.md`) |
 | `sistema/metodo/` + `sistema/schema/` | **sin cambio** + gen+gate nuevo — extensión as-code #2 | vivo (`.claude/rules/metodologia-as-code.md`) |
-| `proyecto/research/rediseno-total/` | **sin cambio** — investigación viva (informa F1) | vivo |
+| `docs/research/rediseno-total/` | **sin cambio** — investigación viva (informa F1) | vivo |
 
 ## BL-NN → historia (29/29 · 0 perdidos)
 
@@ -87,7 +87,7 @@ del monorepo de origen (referencia externa).
 
 ## Garantía de losslessness
 
-1. **Nada se borró.** `backlog.yaml`/`increment.yaml`/vistas quedan en el repo con banner de archivado.
+1. **Nada se borró.** `backlog.yaml`/`increment.yaml`/vistas quedan en [`_archive/`](./_archive/) con banner de archivado.
 2. **Verbatim.** Cada historia/capability carga los campos legacy sin parafrasear (bloque `provenance`).
 3. **Verificado.** 29/29 BL y 8/8 CAP con round-trip parse == fuente (subagentes de migración + gate).
 4. **Cadena preservada.** `BL→CK→CAP→componente→N` sigue reconstruible por los campos `provenance`/`fichas`/`componentes`/`node`.

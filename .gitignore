@@ -22,3 +22,6 @@ go/cmd/directorio/ui/
 # Python (gates as-code)
 __pycache__/
 *.pyc
+
+# Obsidian (config local de editor)
+.obsidian/

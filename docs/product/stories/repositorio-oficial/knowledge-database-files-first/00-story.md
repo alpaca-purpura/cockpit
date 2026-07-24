@@ -32,7 +32,7 @@ La apuesta es files-first: knowledge-as-code (markdown + frontmatter) dentro del
 
 - Nace en CK-18 (D5): declarada pendiente, "será importante pronto".
 - Vive dentro del Repositorio Oficial (N6, BL-21) como uno de sus contenidos (Knowledge DB).
-- SOTA de la pieza en `proyecto/research/rediseno-total/02`.
+- SOTA de la pieza en `docs/research/rediseno-total/02`.
 - Investigación aplicada al activarse (prioridad TBD).
 - Origen (verbatim): "operador CK-18 (D5, #8)".
 

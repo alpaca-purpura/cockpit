@@ -45,7 +45,7 @@ tickets:
       - sistema/metodo/gen_metodo.py
       - sistema/metodo/NOTACIONES.html (nuevo, GENERADO)
       - sistema/metodo/METODOLOGIA.md (prosa §0-§3 saneo + bloque GEN)
-      - sistema/schema/metodologia/ (barrido Bloom/SOMA/SIPOC/refs muertas)
+      - docs/metodo/objeto/ (barrido Bloom/SOMA/SIPOC/refs muertas)
     dod: "SC-5/SC-6/SC-8/SC-9/SC-10; gen_metodo --check verde; anti-drift NOTACIONES en pre-commit"
     assignment: {primary_agent: "sub-agentes con spec verbatim de la matriz (2: catálogo+gen / barrido book)", rationale: "volumen mecánico alto; doctrina ya cementada en 01-spec — el agente transcribe, no decide"}
 

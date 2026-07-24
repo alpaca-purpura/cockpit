@@ -12,10 +12,10 @@ tickets:
     titulo: "objeto.schema.yaml v2: 12 entidades (kpi · proyecto_mejora · idea) + ajustes F (corte limpio: eliminar proceso.kpis/tiempo/reporta_a-simple) + config_estrategia + unidades D-07 + relaciones + invariantes + acciones: (contrato + catálogo seed + transiciones proyecto) + backbone O7 + capítulos kpis.md/mejoras.md + housekeeping (process.schema ref, Bloom)"
     files:
       - sistema/schema/objeto.schema.yaml
-      - sistema/schema/metodologia/README.md          # backbone O7 (estrato Mejora)
-      - sistema/schema/metodologia/kpis.md            # nuevo (patrón objetivos.md, breve)
-      - sistema/schema/metodologia/mejoras.md         # nuevo (proyecto_mejora + idea)
-      - sistema/schema/metodologia/objetivos.md       # §6/§8 ganan modo GPD con fuentes (research)
+      - docs/metodo/objeto/README.md          # backbone O7 (estrato Mejora)
+      - docs/metodo/objeto/kpis.md            # nuevo (patrón objetivos.md, breve)
+      - docs/metodo/objeto/mejoras.md         # nuevo (proyecto_mejora + idea)
+      - docs/metodo/objeto/objetivos.md       # §6/§8 ganan modo GPD con fuentes (research)
     dod: "AC-1 · AC-5 · AC-7; spec §A-§G transcrita 1:1; grep deprecad == 0"
     dependencias: []
     assignment: {primary_agent: "orquestador (a mano)", rationale: "diseño de contrato — no delegable"}

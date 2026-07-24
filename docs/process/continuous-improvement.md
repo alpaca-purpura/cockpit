@@ -52,4 +52,4 @@ El ritual lee los 4 carriles, los muestra (reúsa el board `/harness` del cockpi
 - `scripts/cap_doctor.py` + `scripts/mutation_gate.py` — fuentes L4 (auto-detect)
 - `.claude/skills/harnesses-improvement/SKILL.md` — el ritual (stop semanal + deep-sweep)
 - `docs/process/process-coherence-v5-2026-06.md` §5.7 — diseño
-- `docs/process/harness-lifecycle.md` — HLP (el CIL es su evolución)
+- `docs/process/harness/harness-lifecycle.md` — HLP (el CIL es su evolución)

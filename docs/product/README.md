@@ -1,7 +1,7 @@
 # docs/product/ — SSoT del producto bajo el arnés prenter (CK-19)
 
 Fuente de la verdad del **qué se construye** de Cockpit, en el modelo de artefactos del arnés
-`harness@prenter-marketplace`. Reemplaza como SSoT a `proyecto/backlog.yaml` + `docs/increment.yaml`
+`harness@prenter-marketplace`. Reemplaza como SSoT a `docs/product/_archive/` (backlog + increment pre-arnés)
 (archivados · ver `MAPEO.md`). **Migración total ratificada por el operador (CK-19, 2026-07-09).**
 
 ## Layout

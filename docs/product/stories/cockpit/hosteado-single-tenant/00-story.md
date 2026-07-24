@@ -31,7 +31,7 @@ real recién en fase 2 (>10-20 clientes).
 ## Antecedentes / Contexto
 
 - Ficha: **CK-21** (2026-07-16), decisión D3 — invierte D3 de CK-18.
-- Research: `proyecto/research/organization-as-code/` doc 08 (licenciamiento + hosting).
+- Research: `docs/research/organization-as-code/` doc 08 (licenciamiento + hosting).
 - SSoT de nodos a tocar al refinar: `sistema/arquitectura/NODOS.md` (chequeo 2).
 
 ## Prior art scan
@@ -42,4 +42,4 @@ Grep cross-tree en `docs/product/stories/` (hosteado · single-tenant · multite
 
 `→ /po lee este archivo + carga skill correspondiente → produce 01-spec.md + actualiza product/stories/cockpit/hosteado-single-tenant/story.yaml`
 
-> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `proyecto/research/organization-as-code/`.
+> Procedencia: ficha **CK-21** (2026-07-16) — visión organization-as-code + organization twin · research `docs/research/organization-as-code/`.

@@ -4,13 +4,13 @@
 > ([`despliegue.html`](./despliegue.html)). Cada ficha permite un *drilldown* para entender el sistema
 > antes de bajar a funcionalidades. Insumo para volver al diseño de servicio (backstage/endpoints) con
 > los límites ya claros.
-> **Docs base:** [`ARCHITECTURE.md`](./ARCHITECTURE.md) · [`METODOLOGIA.md`](../metodo/METODOLOGIA.md) · SOTA del rediseño en [`../../proyecto/research/rediseno-total/`](../../proyecto/research/rediseno-total/)
+> **Docs base:** [`ARCHITECTURE.md`](../../docs/architecture/producto/ARCHITECTURE.md) (visión CTO, histórico) · [`METODOLOGIA.md`](../metodo/METODOLOGIA.md) · SOTA del rediseño en [`../../docs/research/rediseno-total/`](../../docs/research/rediseno-total/)
 > **Última actualización:** 2026-07-17 — **CK-25, Consultio no se clona.** N14 re-fichado: "clon de
 > DevStudio" → **app fina sobre `studio-core`** (kernel Go compartido, extraído de N5 por disciplina
 > upstream-first — ban de mirror producto→producto); madurez no-construido → **existe (parcial)**
 > (`studio-core` v0.1.0/SC-01 + `consultio` primitivo/CN-01, live-verify en vivo: engagement→repo git,
 > arnés instalado, sesión ligada, turno con SSE). Riesgo abierto (2) de N5 ("cómo se clona Consultio")
-> **cerrado**. N5 intacto (V6). Plan: `proyecto/plans/consultio-studio-core/`.
+> **cerrado**. N5 intacto (V6). Plan: `docs/product/plans/consultio-studio-core/`.
 > **Actualización previa:** 2026-07-17 — **re-fichado fino** (historia `arquitectura-refichado-ck21`,
 > F1.0): R-walk pasa a **R1–R17** (R9 se parte: R9 canal técnico + **R16 puerta comercial** del Portal;
 > **R17** = brecha continua + ciclo brecha→proyecto en N13 — el diferenciador D2 con dueño); residencia
@@ -24,7 +24,7 @@
 > enterprise/regulados; multitenant = fase 2. N3 asciende a **Portal** (login/asientos/licencias por
 > fingerprint compuesto — no MAC). N13 suma **motor de indicadores** + **ciclo brecha→proyecto**
 > (declarados). N14 v0 = **arneses del método sin app shell**. Chequeo 2 reescrito. SOTA + TO-BE (37
-> capacidades): `proyecto/research/organization-as-code/`. (La deuda "re-fichado fino" se pagó el 2026-07-17, ver arriba.)
+> capacidades): `docs/research/organization-as-code/`. (La deuda "re-fichado fino" se pagó el 2026-07-17, ver arriba.)
 > **Rediseño previo:** 2026-07-08 (**CK-18**). El modelo pasa de "BYOC con
 > motor server-side" a **Fábrica de software (Plano del Fabricante) + Organización instalada**. El método
 > **se entrega al cliente** empaquetado en arneses (deroga el límite de IP "el método nunca al cliente").
@@ -138,7 +138,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **comunicacion** — Arnesia → N2 (edita la fuente) · Arnesia → N3 (publica arneses) · Arnesia → N6 (en el engagement, siembra el Repositorio de Arneses del cliente).
 - **depende_de / consumido_por** — depende_de: N2 (fuente del método/código), Claude Code (prueba). consumido_por: N14/N17/N5 (cargan los arneses que produce), N3 (los distribuye), el cliente (los mantiene tras la entrega).
 - **riesgos_abiertos** — (1) Frontera Arnesia (fábrica) vs Consultio (app del consultor) — qué se construye en cuál. (2) Modelo de entrega/licencia de Arnesia al cliente (¿la mantiene el Analista de Calidad?, ¿con qué límites?). (3) Anti-drift real: gate que rechace arneses editados a mano. (4) Cuánto método baja empaquetado vs se sirve por actualización.
-- **fuentes** — [Agent Skills — Anthropic](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills) · [Cowork plugins empresariales](https://claude.com/blog/cowork-plugins-across-enterprise) · [Docs→Skills sin drift — Inkeep](https://inkeep.com/blog/docs-to-agent-skills) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`.
+- **fuentes** — [Agent Skills — Anthropic](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills) · [Cowork plugins empresariales](https://claude.com/blog/cowork-plugins-across-enterprise) · [Docs→Skills sin drift — Inkeep](https://inkeep.com/blog/docs-to-agent-skills) · `docs/research/rediseno-total/07-proceso-como-arnes.md`.
 
 ---
 
@@ -161,7 +161,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **comunicacion** — No es servicio: N15 lo lee y compila; N3 publica lo compilado. git + API del host privado.
 - **depende_de / consumido_por** — depende_de: schemas L0, git. consumido_por: N15 (Arnesia), N3 (distribución).
 - **riesgos_abiertos** — Granularidad de qué método baja empaquetado en el arnés vs se sirve por actualización (espejo del viejo riesgo N1/N2) · el método empaquetado en el cliente ya no es "fuerte por arquitectura": la protección es licencia + contrato (ver chequeo 1) · convergencia objeto.schema ↔ negocio.schema (BL-02 cerrado; BL-19 pendiente).
-- **fuentes** — `sistema/metodo/` · [Git for Data — DoltHub](https://www.dolthub.com/blog/2020-03-06-so-you-want-git-for-data/) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`.
+- **fuentes** — `sistema/metodo/` · [Git for Data — DoltHub](https://www.dolthub.com/blog/2020-03-06-so-you-want-git-for-data/) · `docs/research/rediseno-total/07-proceso-como-arnes.md`.
 
 ---
 
@@ -190,7 +190,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **comunicacion** — Cliente → nodo (releases/licencias): **PULL HTTPS, lo inicia el cliente.** Cliente → nodo (telemetría): **push saliente OTLP/mTLS** (originado en el cliente). El Fabricante nunca disca al cliente.
 - **depende_de / consumido_por** — depende_de: object storage/CDN + KMS + pipeline de build (N2/N15). consumido_por: N13 (binario Cockpit), N14/N17/N5 (apps + arneses), el cliente (mantenimiento opt-in).
 - **riesgos_abiertos** — (1) Custodia/rotación de claves TUF (ceremonia = sobrecarga para equipo chico → ¿umbral 2-of-3? ¿firma manual por release?). (2) Bug conocido de marketplaces (autoUpdate no refresca `installed_plugins.json`, #52218) — verificar antes de depender de hooks en arneses. (3) Política de auto-update por canal. (4) Lista blanca exacta de métricas + consentimiento. (5) Licenciamiento propio (license files) vs Keygen CE — cuándo migrar.
-- **fuentes** — [go-tuf v2](https://github.com/theupdateframework/go-tuf) · [TUF-on-CI](https://github.com/theupdateframework/tuf-on-ci) · [Tauri v2 updater](https://v2.tauri.app/plugin/updater/) · [Claude Code marketplaces](https://code.claude.com/docs/en/plugin-marketplaces) · [keygen-go](https://github.com/keygen-sh/keygen-go) · [OTel Collector + mTLS](https://opentelemetry.io/blog/2025/expose-otel-collector-gateway-api/) · `proyecto/research/rediseno-total/04-distribucion-licencias-telemetria.md`.
+- **fuentes** — [go-tuf v2](https://github.com/theupdateframework/go-tuf) · [TUF-on-CI](https://github.com/theupdateframework/tuf-on-ci) · [Tauri v2 updater](https://v2.tauri.app/plugin/updater/) · [Claude Code marketplaces](https://code.claude.com/docs/en/plugin-marketplaces) · [keygen-go](https://github.com/keygen-sh/keygen-go) · [OTel Collector + mTLS](https://opentelemetry.io/blog/2025/expose-otel-collector-gateway-api/) · `docs/research/rediseno-total/04-distribucion-licencias-telemetria.md`.
 
 ---
 
@@ -218,7 +218,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **comunicacion** — No es servicio nuestro: protocolo git + servidor self-hosted (Forgejo). Cockpit lee vía deploy-token read-only (API o `go-git`); el publicador escribe con credencial least-privilege.
 - **depende_de / consumido_por** — depende_de: git, servidor del cliente, backups. consumido_por: N13 (lee estructura/documentos), N14/N17/N5 (cargan arneses), N19 (gestiona cambios).
 - **riesgos_abiertos** — (1) **BD vs archivos** (BL nuevo): git/archivos = SSoT, cualquier BD = índice derivado reconstruible (SQLite/bleve en Cockpit), nunca SSoT. (2) Motor de índice/búsqueda — hasta tener volumen. (3) Repos separados por nivel de confidencialidad — solo si un cliente lo exige. (4) Conexión concreta con un ERP como SSoT adicional (pendiente, se ve al tocar ese sistema).
-- **fuentes** — [Forgejo](https://forgejo.org/) · [QMS en git — OpenRegulatory](https://openregulatory.com/articles/quality-management-system-qms-in-github-gitlab) · `proyecto/research/rediseno-total/01-repositorio-oficial.md`.
+- **fuentes** — [Forgejo](https://forgejo.org/) · [QMS en git — OpenRegulatory](https://openregulatory.com/articles/quality-management-system-qms-in-github-gitlab) · `docs/research/rediseno-total/01-repositorio-oficial.md`.
 
 ---
 
@@ -247,7 +247,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **comunicacion** — Lee N6 (git, read-only) · lee N16 (DuckDB) · sirve HTTPS a los navegadores de N11 · jala updates de N3. Binario independiente, cero import de código de otros productos.
 - **depende_de / consumido_por** — depende_de: N6 (estructura/documentos), N16 (operación), N3 (updates). consumido_por: **N11** (los 4 niveles, vía navegador), **N19** (Analista de Calidad, Gestión de Cambios), **N9/N14** (preview local del consultor).
 - **riesgos_abiertos** — (1) Módulo Gestión de Cambios sin construir — **sube al MVP (CK-21/D8)**: es el gate dev→UAT→prod que hace viable la captura "a prueba de tontos" sin mapas basura. (2) Niveles de acceso reales (sube a alta); accesos derivados de la estructura/RRHH = la estructura PROPONE, un humano APRUEBA (human-in-the-loop, CK-21/D8). (3) Motor de indicadores sin construir (era "cruce estructura × lakehouse"; ascendido a componente por CK-21 — esquema semántico operación→KPI→OKR→objetivo). (4) Ciclo brecha→proyecto sin construir (CK-21/D2 — el diferenciador de loop cerrado). (5) Deuda Go/Next (BL-20). (6) Cómo Cockpit descubre el objeto normalizado en N6 (deploy-token a Forgejo — igual en modalidad hosteada o self-hosted).
-- **fuentes** — `proyecto/research/rediseno-total/05-auth-rbac.md` · `06-gestion-cambios-iso.md` · `03-data-lakehouse.md` · Strangler Fig (vía CK-07).
+- **fuentes** — `docs/research/rediseno-total/05-auth-rbac.md` · `06-gestion-cambios-iso.md` · `03-data-lakehouse.md` · Strangler Fig (vía CK-07).
 
 ---
 
@@ -271,7 +271,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **comunicacion** — dlt jala de N18 (según sistema: API/DB/FS) → escribe DuckLake · Cockpit lee embebido. Todo dentro del data plane del cliente.
 - **depende_de / consumido_por** — depende_de: N18 (fuentes), almacenamiento del cliente. consumido_por: **N13** (Cockpit hace el cruce y sirve indicadores).
 - **riesgos_abiertos** — (1) **Default invertido por CK-21/D3**: hosteado por nosotros (single-tenant, dentro de la instancia del cliente en nuestra nube) = default comercial; infra del cliente = tier enterprise/regulados. La arquitectura es idéntica en ambas modalidades. (2) Catálogo SQLite vs Postgres según despliegue. (3) Esquema semántico de indicadores → **ascendido a componente "motor de indicadores" de N13 (CK-21)**; aquí queda el contrato de exposición del lake. (4) Conectores concretos por sistema (se diseñan con el cliente real; MVP = Excel + 1 conector).
-- **fuentes** — [DuckLake 1.0](https://ducklake.select/2026/04/13/ducklake-10/) · [dlt](https://dlthub.com/) · [duckdb-go](https://github.com/duckdb/duckdb-go) · `proyecto/research/rediseno-total/03-data-lakehouse.md`.
+- **fuentes** — [DuckLake 1.0](https://ducklake.select/2026/04/13/ducklake-10/) · [dlt](https://dlthub.com/) · [duckdb-go](https://github.com/duckdb/duckdb-go) · `docs/research/rediseno-total/03-data-lakehouse.md`.
 
 ---
 
@@ -311,7 +311,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **comunicacion** — N16 jala de cada sistema según su interfaz (API/DB/FS). El sistema a medida además recibe deploys de N5/N10.
 - **depende_de / consumido_por** — depende_de: la operación del cliente. consumido_por: **N16** (lakehouse), **N5/N10** (el a medida, como destino de desarrollo).
 - **riesgos_abiertos** — (1) Conectores concretos por sistema (se diseñan con el cliente). (2) El ERP como SSoT adicional — cómo se concilia con N6 (pendiente, al tocar ese sistema). (3) Calidad/gobernanza de los Excels manuales.
-- **fuentes** — Diagrama del operador (`mapaCockpitTotal`) · `proyecto/research/rediseno-total/03-data-lakehouse.md`.
+- **fuentes** — Diagrama del operador (`mapaCockpitTotal`) · `docs/research/rediseno-total/03-data-lakehouse.md`.
 
 ---
 
@@ -342,7 +342,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **comunicacion** — Consultio → **N8** (stdin/stdout, stream-json — el motor) · → **N6** (git, "deploy de procesos") · → **N12** (depósito de crudo) · ← **N3** (updates de app + arneses).
 - **depende_de / consumido_por** — depende_de: **N8** (motor), **N15** (arneses del método), N6 (destino), N3 (updates). consumido_por: **N9** (consultor Prenter) y luego **N19** (Analista de Calidad del cliente) · aguas abajo **N13** (renderiza lo publicado).
 - **riesgos_abiertos** — (1) Definición del producto-app = clon de DevStudio + adaptación propia — **resuelto (CK-25): NO se clona, se extrae `studio-core`** y Consultio consume el kernel por import versionado (disciplina upstream-first, ban de mirror producto→producto). (2) Modelo de publicación a N6: **resuelto en lo esencial (CK-21/D5)** — dev→UAT→prod con aprobación (Gestión de Cambios); detalle fino al construir. (3) Cuánto método baja empaquetado en los arneses de la app vs se sirve por N3. (4) Transferencia consultor→analista: qué arneses/permisos cambian al entregar. (5) `replace => ../studio-core` es transición sin remote (CK-25/A2) — borrar al publicar el core; design system React diferido a F2.5 (CK-25/A7).
-- **fuentes** — Nombre: operador (CK-18) · topología/extracción: operador (CK-25, `proyecto/plans/consultio-studio-core/`) · kernel compartido `~/Proyectos/studio-core` (SC-01) · linaje DevStudio (`~/Proyectos/dev-studio`, DH-NN) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`.
+- **fuentes** — Nombre: operador (CK-18) · topología/extracción: operador (CK-25, `docs/product/plans/consultio-studio-core/`) · kernel compartido `~/Proyectos/studio-core` (SC-01) · linaje DevStudio (`~/Proyectos/dev-studio`, DH-NN) · `docs/research/rediseno-total/07-proceso-como-arnes.md`.
 
 ---
 
@@ -363,7 +363,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **comunicacion** — Colab Studio → **N8** (stream-json, motor) · ← **N6** (jala arneses del puesto) · ↔ **N18/N16** (datos de operación) · ← **N3** (updates).
 - **depende_de / consumido_por** — depende_de: **N8** (motor), **N6** (arneses del puesto), N3 (updates). consumido_por: **N11** (los usuarios operativos son su operador) · aguas abajo **N16** (recibe sus salidas).
 - **riesgos_abiertos** — (1) Definición de producto (¿clon de DevStudio como Consultio, o variante propia?). (2) Cómo se mapea puesto → N roles → N arneses (contra el objeto normalizado). (3) Gobernanza de las salidas que alimentan el lake (calidad del Excel). (4) Frontera con N13 (Colab opera; Cockpit muestra).
-- **fuentes** — Operador (CK-18) · `proyecto/research/rediseno-total/07-proceso-como-arnes.md`.
+- **fuentes** — Operador (CK-18) · `docs/research/rediseno-total/07-proceso-como-arnes.md`.
 
 ---
 
@@ -437,7 +437,7 @@ acá usamos "nodo" como término de trabajo y `tipo` desambigua).
 - **momentos** — Etapa 3 (operación y mejora continua), tras la transferencia desde N9.
 - **comunicacion** — Vía Cockpit (Gestión de Cambios) → N6 (publica versiones) · Consultio → N8 (motor) · git a N6.
 - **riesgos_abiertos** — (1) Perfil real del analista (técnico/no-técnico) → la UI debe ocultar git del todo. (2) Modelo de firma electrónica que satisfaga a un auditor ISO (clic autenticado = aprobación si el procedimiento lo define). (3) Qué permisos/arneses cambian en la transferencia desde N9.
-- **fuentes** — Operador (CK-18) · `proyecto/research/rediseno-total/06-gestion-cambios-iso.md`.
+- **fuentes** — Operador (CK-18) · `docs/research/rediseno-total/06-gestion-cambios-iso.md`.
 
 ---
 
@@ -553,14 +553,14 @@ firmado en D1.
 - **Clean Team Agreement** (info sensible / múltiples partes) · cláusula de **no-retención + destrucción**
 
 ### Fuentes
-[McKinsey — clean teams](https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/deal-delays-are-the-new-normal-clean-teams-are-the-fix) · [GDPR DPA Art. 28](https://gdpr.eu/data-processing-agreement/) · [SOC 2 vs security questionnaires](https://secureframe.com/blog/soc-2-vs-security-questionnaires) · `proyecto/research/rediseno-total/`
+[McKinsey — clean teams](https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/deal-delays-are-the-new-normal-clean-teams-are-the-fix) · [GDPR DPA Art. 28](https://gdpr.eu/data-processing-agreement/) · [SOC 2 vs security questionnaires](https://secureframe.com/blog/soc-2-vs-security-questionnaires) · `docs/research/rediseno-total/`
 
 ---
 
 # Pendientes consolidados (narrativa — el tracking vive en `docs/product/`)
 
 > **Disciplina (CK-19, supersede CK-11/CK-14):** el pendiente se trackea en **`docs/product/`**
-> (historias + releases; `proyecto/backlog.yaml` quedó ARCHIVADO — mapeo lossless en
+> (historias + releases; `docs/product/_archive/backlog.yaml` quedó ARCHIVADO — mapeo lossless en
 > `docs/product/MAPEO.md`). Roadmap vigente: F1 "Terreno + MVP Twin" (CK-22, re-secuenciada
 > twin-first CK-23) → F2 "Comercial" → F3 "Edge completo + escala". Esta lista queda como narrativa
 > del ecosistema.
@@ -589,7 +589,7 @@ firmado en D1.
    reescrito); N3 = Portal con licencias por fingerprint; Consultio v0 = arneses sin shell; capa
    kinética + OKR/KPI/Proyecto al `objeto.schema` (doctrina Palantir); horizontes gateados (what-if
    por branch → BPSim/DEMO → agentes LLM con arneses; MCP server del twin = V2). TO-BE de 37
-   capacidades + MVP: `proyecto/research/organization-as-code/07-capability-list-tobe.md`.
+   capacidades + MVP: `docs/research/organization-as-code/07-capability-list-tobe.md`.
 10. **Re-fichado fino ejecutado (2026-07-17, historia `arquitectura-refichado-ck21`):** R16/R17 al
     R-walk · residencia por tier en fichas · doctrina de notaciones del twin as-code
     (`sistema/metodo/NOTACIONES.html` — estándares como vocabulario, schema propio como metamodelo)

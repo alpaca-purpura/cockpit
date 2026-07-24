@@ -53,6 +53,6 @@ enums/refs/rutas de `arquitectura.yaml` · madurez de `despliegue.html`) y regen
 
 ## Referencias
 
-- `sistema/arquitectura/README.md` · `ARCHITECTURE.md` (vision CTO) · `NODOS.md` (SSoT).
+- `sistema/arquitectura/README.md` · `docs/architecture/producto/ARCHITECTURE.md` (visión CTO, histórico) · `NODOS.md` (SSoT).
 - `.claude/rules/paradigm-arquitectura.md` — CORE, **supersedido acá** (se conserva para integridad de refs del CORE).
 - `[[metodologia-as-code]]` (el eje gemelo) · `[[cockpit-stack]]`.

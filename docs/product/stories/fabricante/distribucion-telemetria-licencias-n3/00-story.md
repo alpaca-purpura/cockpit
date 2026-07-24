@@ -44,7 +44,7 @@ opt-in por tenant.
 
 - NUEVO en CK-18 (rediseño Fábrica + Organización instalada). Nodo N3 (Distribución + telemetría + licencias).
 - Origen: operador CK-18 (D4, #4).
-- SOTA de la pieza: `proyecto/research/rediseno-total/04`.
+- SOTA de la pieza: `docs/research/rediseno-total/04`.
 - Habilita el modelo de negocio con licencia + contrato de mantenimiento (ver BL-10).
 
 ## Out of scope (explícito)

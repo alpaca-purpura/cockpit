@@ -1,6 +1,6 @@
 # Gartner — Features of DTO Platforms (ago 2025) + mapeo Cockpit
 
-> Investigación CK-21 (2026-07-15/16) — visión "organization as code → organization twin". Parte del corpus `proyecto/research/organization-as-code/` (ver README).
+> Investigación CK-21 (2026-07-15/16) — visión "organization as code → organization twin". Parte del corpus `docs/research/organization-as-code/` (ver README).
 
 Lista de features de plataformas DTO según Gartner (agosto 2025), reproducida verbatim (en inglés), con el mapeo a Cockpit línea por línea.
 

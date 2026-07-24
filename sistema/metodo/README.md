@@ -23,8 +23,9 @@ de ese catálogo. Las que aplican directo a los 4 pilares de `VISION.md`:
 | Personas/puestos | M29 Process/Task Mining |
 | Transversal | M13 ArchiMate/TOGAF · M16 ISO 9001 · M24 This Is Service Design Doing · M31 Business Capability Modeling |
 
-`ISO-9001-veredicto-I-05.md` — el precedente que decide CUÁNTO de ISO 9001 se usa (ontología sí,
-aparato de certificación no) y que `VISION.md §ISO` hereda y amplía (CK-10).
+[`ISO-9001-veredicto-I-05.md`](../../docs/metodo/ISO-9001-veredicto-I-05.md) (en `docs/metodo/`,
+CK-28) — el precedente que decide CUÁNTO de ISO 9001 se usa (ontología sí, aparato de
+certificación no) y que `VISION.md §ISO` hereda y amplía (CK-10).
 
 ## Acceso (el cerebro)
 

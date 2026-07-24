@@ -33,7 +33,7 @@ y por qué.
 
 ## Doctrina que esta historia cementa (la decisión de fondo — FIRMA del operador)
 
-> Base: research `proyecto/research/organization-as-code/` (04 doctrina Palantir · 05 SOTA §base
+> Base: research `docs/research/organization-as-code/` (04 doctrina Palantir · 05 SOTA §base
 > teórica · 06 Gartner DTO features · 07 TO-BE 37 capacidades) + estado real de
 > `sistema/schema/objeto.schema.yaml` y `sistema/metodo/methodologies.yaml` (31 M-cards).
 
@@ -141,7 +141,7 @@ formalizable como contrato de entidad publicable estilo Backstage (`apiVersion/k
 | Procesos — flujo | BPMN 2.0 (subset "BPMN-lite": lane/tipo/disparador) | ancla + proyección swimlane | editor de diagramas NO; export XML = intercambio V2 · **SIPOC = proyección de bordes** (tabla 1-página para validar con el dueño en M1) — el dato ya está absorbido (`proveedor_ref`/`cliente_ref`, D-08/D-11), NO M-card |
 | Riesgo y controles | ISO 9001 cl.6.1 (risk-based thinking) | ancla | COSO / ISO 31000 = horizonte; `riesgos[]` tipado por proceso = schema-v2 (hoy strings libres — hueco declarado por auditoría) |
 | Organización (personas/roles/áreas) | RACI + ISO 9001 cl.5.3 + TOGAF org decomposition | ancla + proyección organigrama | no es suite RRHH |
-| Estrategia (objetivos→OKR→KPI) | capas 0-5 de `sistema/schema/metodologia/objetivos.md §6` (SSoT de precedencia): Hoshin = mapa 3-5a · OKR = motor 90d · BSC = **solo checklist** de perspectivas · COBIT = cascade de anclaje | ancla (alignment + catchball — NO cascada estricta, §8) | strategy-map como proyección SOLO cuando exista dato `perspectiva`/causal (schema-v2); X-matrix ceremonial NO |
+| Estrategia (objetivos→OKR→KPI) | capas 0-5 de `docs/metodo/objeto/objetivos.md §6` (SSoT de precedencia): Hoshin = mapa 3-5a · OKR = motor 90d · BSC = **solo checklist** de perspectivas · COBIT = cascade de anclaje | ancla (alignment + catchball — NO cascada estricta, §8) | strategy-map como proyección SOLO cuando exista dato `perspectiva`/causal (schema-v2); X-matrix ceremonial NO |
 | Madurez y brecha | COBIT niveles 0-5 + ISO 19011 (evidencia) + WSJF + FinOps | ancla | — |
 | Calidad / loop de mejora | ISO 9001 (ontología cl.4 + PDCA) | paraguas | sin aparato de certificación (VISION §ISO) |
 | Provenance (todo dato AS-IS) | struct `fuente`+`conf` (M23, patrón Palantir) | transversal obligatorio | — |
@@ -204,7 +204,7 @@ formalizable como contrato de entidad publicable estilo Backstage (`apiVersion/k
   al enum para hospedar las cards nuevas; las cabeceras de sección "I-NN" (fichas legacy) se
   renombran para no colisionar. La card de verbos NO toma el id M32 mientras el book lo asocie a
   Bloom (id limpio tras el barrido).
-- **Barrido de residuos (book + prosa):** `sistema/schema/metodologia/` (Bloom residual en
+- **Barrido de residuos (book + prosa):** `docs/metodo/objeto/` (Bloom residual en
   README §6/procesos.md/ejemplo · nota-fuente de SOMA — hoy ancla citada ~15× sin definirse en
   ninguna parte · fila SIPOC en tabla §6 · ref muerta `process.schema` · "paso" al glosario · L5
   declarado diferido) + saneo de la prosa no-GEN de `METODOLOGIA.md §0-§3` (refs rotas a
@@ -301,7 +301,7 @@ residuos). Lo que NO se arregla aquí queda cementado como insumo o diferido con
 - **SC-9** Dado el repo tras el merge, cuando busco el hilo de oro, entonces existe UNA sola
   cascada canónica (la de esta spec) y METODOLOGIA.md §2 + el mapeo del TO-BE la reflejan (las
   tres definiciones incompatibles detectadas quedan reconciliadas).
-- **SC-10** Dado `sistema/schema/metodologia/` (book) tras el barrido, cuando grep-eo Bloom como
+- **SC-10** Dado `docs/metodo/objeto/` (book) tras el barrido, cuando grep-eo Bloom como
   candidata vigente, SOMA sin nota-fuente, o la ref muerta `process.schema`, entonces cero
   residuos; la matriz incluye la fila "Riesgo y controles".
 - **SC-6** Dado `NOTACIONES.html` abierto en navegador, cuando el operador lo lee, entonces puede

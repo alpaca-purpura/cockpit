@@ -13,11 +13,11 @@ dependencies:
   stories: []
 context:
   job: "Como custodio del entorno quiero borrar las carpetas ~/Proyectos/campaign-* originales para eliminar el residuo ya rescatado fuera del repo."
-  why: "El contenido ya está rescatado en proyecto/research/; borrar las carpetas originales elimina duplicación, pero es decisión del operador."
+  why: "El contenido ya está rescatado en docs/research/; borrar las carpetas originales elimina duplicación, pero es decisión del operador."
 provenance:
   backlog_id: BL-09
   titulo: "Borrar carpetas ~/Proyectos/campaign-* originales"
-  detalle: "Contenido ya rescatado en proyecto/research/. Borrado pendiente — decisión del operador."
+  detalle: "Contenido ya rescatado en docs/research/. Borrado pendiente — decisión del operador."
   origen: "deuda CK-10"
   estado_legacy: pendiente
 links:
