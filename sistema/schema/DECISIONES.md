@@ -181,18 +181,34 @@ preguntan. Provenance = `Declarado` (dato del dueño), no `Inferido`. **Los obje
 negocio), no se heredan hipótesis. Fuente = SOLO el volcado + `empresa.yaml` (identidad); `_deprecated/negocio.yaml` =
 referencia/backup, no autoritativo; **marketing FUERA**. Es el dogfood del flujo real del m1 (cliente vuelca → mapeamos).
 
-## D-17 · Subesquema `tarea` bajo `actividad` (el L5 estructurado) — `en-discusión` (**PROPUESTA — pendiente ratificación del operador**)
-**Propone** formalizar las tareas de una actividad como dato tipado: `actividad.tareas[]`, subesquema
+## D-17 · Subesquema `tarea` bajo `actividad` (el L5 estructurado) — `clavada` (ratificada operador 2026-07-24)
+Formaliza las tareas de una actividad como dato tipado: `actividad.tareas[]`, subesquema
 `tarea = { orden, verbo?, texto, sistemas_ref? }`, `met: "ISO 10013 nivel 3 · APQC L5"`. El `verbo?`
 usa el MISMO vocabulario controlado que `actividad.verbo` (`sistema/schema/verbos.yaml`, refichado WS5 —
-fuera de vocabulario = warning). **NO deroga D-08** (el manual sigue disuelto): `desc` NARRA el cómo
+fuera de vocabulario = warning) → habilita **triage con granularidad L5** (skill de arnés candidateado
+por tarea, no por actividad entera). **NO deroga D-08** (el manual sigue disuelto): `desc` NARRA el cómo
 (narrativa original como evidencia), `tareas[]` lo ESTRUCTURA en pasos ordenados; la **instrucción de
 trabajo (z3) se GENERA** de `tareas[]` + la tortuga del proceso — el "manual"/instrucción sigue siendo
 **proyección, NO entidad** (misma doctrina que `documentos`, línea D-08). Origen: mockup del twin
 (historia `cockpit/twin-territorio-mapa-zoomable`, decisiones 16-17 — la escalera z0→z3 ancla z3 a
-ISO 10013 nivel 3 × APQC L5; hoy el mockup rinde z3 con tareas *canned* en `DATA.z3`). **Alcance de
-esta ficha: SOLO docs** — cero cambio a `objeto.schema.yaml`/Go; la materialización aterriza con el
-refinamiento de la historia, tras ratificación (`/metodo-aprende` si toca M-cards).
+ISO 10013 nivel 3 × APQC L5). **Materializada en `objeto.schema.yaml`** (2026-07-24, mismo evento que
+la ratificación); el wiring Go (`go/objeto.go` → `/api/objeto`) y el render z3 desde dato real =
+refinamiento de la historia.
+
+## D-18 · Derivación del triage as-code — `sistema/schema/triage.yaml` — `clavada` (ratificada operador 2026-07-24)
+La FÓRMULA de los dos scores de automatizabilidad (M36) deja de ser doctrina-en-prosa y se
+**materializa como dato**: `triage.yaml` = SSoT de la derivación (base por `capacidad_mgi` del verbo →
+ajuste por `clase_alm` → modificadores por inputs de `actividad.automatizacion` → clamp 0-100), la
+**propagación de conf** (input ausente → conf baja VISIBLE), los **cortes previos** en orden doctrinal
+(1 ECRS/M35: `eliminable` jamás sale de los scores · 2 `mandato` protege compliance · 3 accountability/M25:
+aprobar/firmar → `humano-por-diseño` sin importar scores) y los **umbrales del veredicto propuesto**
+(el motor PROPONE, el consultor RATIFICA — `triage.veredicto` con provenance). Invariantes intactas:
+los scores se **COMPUTAN al leer, jamás se persisten** (identidad_vs_observacion); mismo patrón de
+gobernanza que `verbos.yaml` (RN-11: cambiar un peso = PR; `gen_schema.py` valida coherencia de claves
+contra MGI/ALM/enums y la presencia de los 3 cortes). **Provenance de los pesos: `conf: baja` —
+HIPÓTESIS CALIBRABLE** (Lacity & Willcocks + práctica agéntica + juicio propio; se calibran con
+evidencia M29 y el loop de proyectos cerrados con veredicto KPI-movido). El **motor** que ejecuta esta
+derivación = historia futura (los scores del mockup siguen canned hasta entonces).
 
 ---
 

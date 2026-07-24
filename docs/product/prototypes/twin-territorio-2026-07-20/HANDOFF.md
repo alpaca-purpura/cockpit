@@ -85,8 +85,10 @@ aislado se re-corre antes de diagnosticar) · screenshots headless z0/z2-perm/z3
 
 ## Pendientes conocidos (visuales, menores)
 
-- `tareas[]` como campo tipado del schema: ficha **D-17 PROPUESTA** escrita (`sistema/schema/DECISIONES.md`)
-  — falta ratificación del operador; materialización = refinamiento de la historia (z3 lo rinde canned).
+- ~~`tareas[]` como campo tipado~~ → **RATIFICADA y MATERIALIZADA** (2026-07-24): D-17 `clavada`
+  (`actividad.tareas[]` en `objeto.schema.yaml`) + D-18 `triage.yaml` (derivación de scores M36
+  as-code, gate en `gen_schema.py`). Falta el wiring Go + render z3 desde dato real (refinamiento
+  de la historia — z3 sigue canned en el mockup).
 
 - ~~Banda Gente roza label SISTEMAS~~ → resuelto v8 (ySis dinámico tras wrap de gente).
 - ~~Pin z1 roza la card de arriba~~ → resuelto v8 (`.pin.down`: cuelga DEBAJO de la card).

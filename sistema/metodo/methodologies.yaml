@@ -881,7 +881,7 @@ M36:
   nombre_corto: "Criterios RPA + agente"
   familia: I
   fuente: { autor: "Lacity & Willcocks (criterios RPA) · práctica agéntica 2025-26 · propia (scores)", obra: "RPA suitability + criterios agente-LLM — dos scores derivados (spec CK-21)", url: "https://en.wikipedia.org/wiki/Robotic_process_automation" }
-  que: "DOS scores DERIVADOS por actividad: score-RPA = f(datos estructurados, reglas estables, volumen, %excepciones) · score-agente = f(dato no estructurado, criterio expresable en prompt/policy, tolerancia a revisión humana, riesgo de error)"
+  que: "DOS scores DERIVADOS por actividad: score-RPA = f(datos estructurados, reglas estables, volumen, %excepciones) · score-agente = f(dato no estructurado, criterio expresable en prompt/policy, tolerancia a revisión humana, riesgo de error). Derivación MATERIALIZADA as-code: sistema/schema/triage.yaml (D-18 — pesos con provenance conf:baja, calibrables con M29)"
   aporte_unico: "los DOS SCORES con conf propagada + el VEREDICTO enum (eliminable · automatizable-RPA · automatizable-agente · aumentable · humano-por-diseño) — se calculan, jamás se etiquetan a mano"
   cuando_usar: "triage de actividades tras ECRS: puntuar candidatos y emitir veredicto con incertidumbre visible"
   objeto_primario: O3
@@ -908,7 +908,7 @@ M37:
   fuente: { autor: "propia (Cockpit) · marcos: Autor-Levy-Murnane (2003) + McKinsey Global Institute", obra: "Vocabulario controlado de verbos — clase ALM × capacidad MGI (supersede cand. Bloom)", url: "https://doi.org/10.1162/003355303322552801" }
   que: "vocabulario controlado: cada actividad narra con UN verbo canónico (+ sinónimos es-419); cada verbo clasifica en 2 ejes — clase de tarea ALM (rutinaria/no-rutinaria × manual/cognitiva-analítica/interpersonal) × capacidad requerida MGI (recolectar/procesar datos · físico predecible/impredecible · interfaz-stakeholder · experticia/decisión · gestión de personas)"
   aporte_unico: "el ESTÁNDAR PROPIO que vuelve comparable la narrativa: 1 verbo = 1 actividad (los compuestos se PARTEN en el ingest), verbo con provenance (el ingest propone con conf, el consultor corrige, auditado)"
-  cuando_usar: "narrativa de actividades (el nivel más bajo del twin) — levantamiento y mantenimiento"
+  cuando_usar: "narrativa de actividades y de sus tareas (D-17: tareas[] = APQC L5, mismo vocabulario) — levantamiento y mantenimiento"
   objeto_primario: O3
   objetos_secundarios: [O4, T1]
   principios: [P4, P5]

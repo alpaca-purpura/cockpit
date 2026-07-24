@@ -224,6 +224,7 @@ nodos:
         tipo:      { tipo: enum, enum: tipo_actividad, requerido: false, met: "BPMN-lite (M11)" }
         tiempos:   { tipo: obj, requerido: false, met: "VSM real (M09; insumo 4) — v2 REEMPLAZA `tiempo` str (forma vieja = ERROR)", forma: "{ toque, espera }" }
         desc:      { tipo: str, requerido: false, met: "el 'cómo' (= el manual disuelto, D-08). La NARRATIVA original queda como evidencia (evidencia_ref)" }
+        tareas:    { tipo: list, requerido: false, met: "ISO 10013 nivel 3 · APQC L5 (D-17) — `desc` NARRA, `tareas[]` ESTRUCTURA; la instrucción de trabajo (z3) se GENERA de acá (proyección, NO entidad — D-08 intacta)", subesquema: tarea }
         sistemas_ref: { tipo: list, requerido: false, a: sistema }
         raci:      { tipo: obj, requerido: false, met: "RACI (M25) — A exactamente 1", forma: "{ R:[ref→rol], A: ref→rol, C:[...], I:[...] }" }
         flujos_alternos: { tipo: list, requerido: false, met: "PROCESS-AS-DATA (insumo 4) — `orden` lineal no narra 'si X entonces Y'", item: "{ cuando, secuencia: [ref local pr-x#aN] }" }
@@ -235,6 +236,11 @@ nodos:
         fuente:    { tipo: enum, enum: fuente, requerido: false, met: "M23 (insumo 4 — v1 violaba el principio cardinal)" }
         conf:      { tipo: enum, enum: conf, requerido: false, met: M23 }
         evidencia_ref: { tipo: str, requerido: false, met: "ancla a la narrativa/transcript de origen (cadena de evidencia del score — refichado WS5)" }
+      tarea:                                                # weak-entity inline bajo actividad (D-17 · ISO 10013 n3 · APQC L5)
+        orden:     { tipo: int, requerido: true }
+        verbo:     { tipo: str, requerido: false, met: "MISMO vocabulario controlado que actividad.verbo (verbos.yaml · RN-11) — habilita triage con granularidad L5 (skill de arnés candidateado por tarea)" }
+        texto:     { tipo: str, requerido: true, met: "el paso concreto de la instrucción (imperativo, 1 tarea = 1 paso)" }
+        sistemas_ref: { tipo: list, requerido: false, a: sistema, met: "con qué se ejecuta ESTE paso (puede diferir del sistema de la actividad)" }
 
   # ---------- O5 · sistema (Application Component + aspecto Product opt-in) ----------
   sistema:

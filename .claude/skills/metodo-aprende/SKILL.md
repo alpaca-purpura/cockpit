@@ -66,6 +66,15 @@ python3 sistema/metodo/gen_metodo.py --check    # anti-drift en sync
   resuelve o se justifica en el commit body · el INFO de asimetrías se revisa (¿falta la recíproca?).
 - Releer `GRAFO.md` §1-§2 y confirmar: la card nueva aparece, sus aristas también, nada quedó huérfano.
 
+### Si el aprendizaje toca `sistema/schema/**` (audit 2026-07-24 — 4º gate schema-v2)
+
+- **Gate adicional obligatorio:** `python3 sistema/schema/gen_schema.py` (valida `objeto.schema.yaml`
+  v2 + `verbos.yaml` + `triage.yaml`; pre-commit lo corre como 4º gate — el skill nació antes de él).
+- **Decisión del schema → ficha D-NN en `sistema/schema/DECISIONES.md`** (no LEDGER: CK-NN es solo
+  dogma del método/producto; el log del contrato del objeto es DECISIONES.md).
+- **Paridad schema↔Go:** `cd go && go test ./...` — `TestParidadSchema` lee el MISMO YAML; tocar
+  enums/transiciones sin correrlo = rotura silenciosa.
+
 ## Paso 5 — Commit
 
 Pathspec exacto (`methodologies.yaml` + generados que el hook re-agrega + lo tocado), mensaje

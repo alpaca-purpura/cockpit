@@ -519,7 +519,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Principios:** P1, P3
 
 <a id="m36"></a>**M36 · Criterios de automatizabilidad — RPA + agente-LLM (dos scores)**
-- **Qué:** DOS scores DERIVADOS por actividad: score-RPA = f(datos estructurados, reglas estables, volumen, %excepciones) · score-agente = f(dato no estructurado, criterio expresable en prompt/policy, tolerancia a revisión humana, riesgo de error)
+- **Qué:** DOS scores DERIVADOS por actividad: score-RPA = f(datos estructurados, reglas estables, volumen, %excepciones) · score-agente = f(dato no estructurado, criterio expresable en prompt/policy, tolerancia a revisión humana, riesgo de error). Derivación MATERIALIZADA as-code: sistema/schema/triage.yaml (D-18 — pesos con provenance conf:baja, calibrables con M29)
 - **Fuente:** Lacity & Willcocks (criterios RPA) · práctica agéntica 2025-26 · propia (scores) — RPA suitability + criterios agente-LLM — dos scores derivados (spec CK-21). [https://en.wikipedia.org/wiki/Robotic_process_automation](https://en.wikipedia.org/wiki/Robotic_process_automation)
 - **Objeto:** O3 Proceso · sec: O6, O4
 - **Aporte único:** los DOS SCORES con conf propagada + el VEREDICTO enum (eliminable · automatizable-RPA · automatizable-agente · aumentable · humano-por-diseño) — se calculan, jamás se etiquetan a mano
@@ -532,7 +532,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Fuente:** propia (Cockpit) · marcos: Autor-Levy-Murnane (2003) + McKinsey Global Institute — Vocabulario controlado de verbos — clase ALM × capacidad MGI (supersede cand. Bloom). [https://doi.org/10.1162/003355303322552801](https://doi.org/10.1162/003355303322552801)
 - **Objeto:** O3 Proceso · sec: O4, T1
 - **Aporte único:** el ESTÁNDAR PROPIO que vuelve comparable la narrativa: 1 verbo = 1 actividad (los compuestos se PARTEN en el ingest), verbo con provenance (el ingest propone con conf, el consultor corrige, auditado)
-- **Cuándo:** narrativa de actividades (el nivel más bajo del twin) — levantamiento y mantenimiento
+- **Cuándo:** narrativa de actividades y de sus tareas (D-17: tareas[] = APQC L5, mismo vocabulario) — levantamiento y mantenimiento
 - **Combina:** M36 (la clase ALM×MGI alimenta los dos scores) · M23 (el verbo lleva conf del ingest — sin provenance el score es gameable eligiendo verbos 'suaves') · M35 (la narrativa normalizada es lo que ECRS ordena)
 - **Principios:** P4, P5
 

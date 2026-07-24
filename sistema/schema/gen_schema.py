@@ -180,6 +180,57 @@ def check_verbos(path: Path) -> int:
     return len(verbos)
 
 
+def check_triage(path: Path, schema: dict) -> int:
+    """triage.yaml (D-18): la derivación de los dos scores M36 coherente con ALM/MGI/enums del objeto."""
+    if not path.exists():
+        err("falta sistema/schema/triage.yaml (derivación de scores M36 — D-18)")
+        return 0
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    enums = schema.get("enums", {})
+
+    if not (data.get("meta") or {}).get("decision"):
+        err("triage.yaml: meta.decision ausente (provenance de la decisión)")
+    if (data.get("meta") or {}).get("conf") not in set(enums.get("conf", [])):
+        err("triage.yaml: meta.conf inválida (los pesos llevan provenance — M23)")
+
+    base = data.get("base_por_capacidad") or {}
+    if set(base.keys()) != MGI:
+        err(f"triage.yaml: base_por_capacidad ≠ capacidades MGI: faltan {sorted(MGI - set(base))} · sobran {sorted(set(base) - MGI)}")
+    ajuste = data.get("ajuste_por_clase_alm") or {}
+    if set((ajuste.get("rutina") or {}).keys()) != ALM_RUTINA:
+        err("triage.yaml: ajuste_por_clase_alm.rutina ≠ {rutinaria, no-rutinaria}")
+    if set((ajuste.get("tipo") or {}).keys()) != ALM_TIPO:
+        err("triage.yaml: ajuste_por_clase_alm.tipo ≠ clases ALM de tipo")
+
+    mods = data.get("modificadores") or {}
+    por_enum = {"datos": "datos_auto", "reglas": "reglas_auto",
+                "tolerancia_revision": "conf", "riesgo_error": "impacto"}
+    for mod, enum_ref in por_enum.items():
+        esperado = set(enums.get(enum_ref, []))
+        tiene = set((mods.get(mod) or {}).keys())
+        if esperado and tiene != esperado:
+            err(f"triage.yaml: modificadores.{mod} ≠ enum {enum_ref}: faltan {sorted(esperado - tiene)} · sobran {sorted(tiene - esperado)}")
+
+    for pesos in base.values():
+        for lado in ("rpa", "agente"):
+            v = (pesos or {}).get(lado)
+            if not isinstance(v, (int, float)) or not 0 <= v <= 100:
+                err(f"triage.yaml: base_por_capacidad con `{lado}: {v}` fuera de [0,100]")
+
+    veredictos_validos = set(enums.get("veredicto_triage", []))
+    propuestos = [v.get("veredicto") for v in data.get("veredicto_propuesto") or []]
+    for v in propuestos:
+        if v not in veredictos_validos:
+            err(f"triage.yaml: veredicto_propuesto `{v}` ∉ enum veredicto_triage")
+    if "eliminable" in propuestos:
+        err("triage.yaml: `eliminable` NO sale de los scores — es de ECRS (M35, cortes_previos)")
+    cortes = {c.get("corte") for c in data.get("cortes_previos") or []}
+    for req in ("ecrs", "mandato", "accountability"):
+        if req not in cortes:
+            err(f"triage.yaml: falta el corte previo `{req}` (doctrina M35/M25)")
+    return len(base) + len(mods)
+
+
 def main() -> int:
     schema_path = RAIZ / "objeto.schema.yaml"
     schema = yaml.safe_load(schema_path.read_text(encoding="utf-8"))
@@ -196,6 +247,7 @@ def main() -> int:
     n_acc = check_acciones(schema)
     n_tra = check_transiciones(schema)
     n_ver = check_verbos(RAIZ / "verbos.yaml")
+    n_tri = check_triage(RAIZ / "triage.yaml", schema)
 
     if ERRORES:
         print("gen_schema: el contrato NO valida:")
@@ -203,7 +255,7 @@ def main() -> int:
             print(f"  ✖ {e}")
         return 1
     print(f"OK · objeto.schema v2 — {len(nodos)} nodos · {n_enum} refs enum · {n_rel} relaciones · "
-          f"{n_acc} acciones · {n_tra} estados proyecto · {n_ver} verbos")
+          f"{n_acc} acciones · {n_tra} estados proyecto · {n_ver} verbos · triage {n_tri} bloques")
     return 0
 
 
