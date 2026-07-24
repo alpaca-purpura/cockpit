@@ -20,6 +20,7 @@ fases:
     - negocio-schema-ssot-plugin-vs-repo
   F1.1-twin-pintado:
     - organizacion-ficticia-golden-fixture
+    - twin-territorio-mapa-zoomable
     - cruce-estructura-operacion-indicadores
     - brecha-proyecto-ciclo-vida
   F1.2-metodo-operable:
@@ -57,6 +58,7 @@ stories:
   - construir-lakehouse-dlt-ducklake
   - cruce-estructura-operacion-indicadores
   - brecha-proyecto-ciclo-vida
+  - twin-territorio-mapa-zoomable
   - comprador-pricing-exito-12-meses
 dropped: [motor-discovery-n1-serverside]
 exit_criteria: >-

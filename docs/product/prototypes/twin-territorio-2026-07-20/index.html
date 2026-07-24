@@ -1,0 +1,1359 @@
+<title>Twin · Terranova — Cockpit</title>
+<style>
+  /* ============================================================
+     Cockpit — Twin como Territorio · concepto (PRENTER dark-first)
+     Design system: PRENTER · teal único acento · dark single-theme
+     Datos: Desarrolladora Terranova S.A.C. (shell real)
+     Shell v2 (2026-07-20): investigación DTO/what-if/canvas —
+       izquierda = qué existe (escala + capas con leyenda inline)
+       derecha   = inspector contextual (sin selección: sala de mando)
+       arriba    = identidad As-Is/corrida + filtros chips + búsqueda
+       abajo-izq = zoom/fit + niveles (LOD) · abajo-der = minimapa
+     ============================================================ */
+  :root {
+    --teal-50:#e6f8f6; --teal-100:#c2efea; --teal-200:#8fe3da; --teal-300:#54d4c8;
+    --teal-400:#1fc6b8; --teal-500:#00b7aa; --teal-600:#009d92; --teal-700:#007f76;
+    --teal-800:#0a605a; --teal-900:#0d4944;
+    --bg:#000000; --panel:#0c1110; --raised:#141a19; --raised2:#181f1e;
+    --border:#1f2826; --border-soft:#161d1c;
+    --brand:var(--teal-500); --brand-hi:var(--teal-400);
+    --tx:rgba(255,255,255,.92); --tx-mut:rgba(255,255,255,.58); --tx-faint:rgba(255,255,255,.34);
+    --ok:#5cc99a; --warn:#e0ad4e; --crit:#e2766b;
+    --ok-dim:rgba(92,201,154,.14); --warn-dim:rgba(224,173,78,.14); --crit-dim:rgba(226,118,107,.16);
+    --font-display:'Coco Gothic','Jost','Century Gothic','URW Gothic',system-ui,sans-serif;
+    --font-body:'Sansation','Mulish',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --rail:246px; --insp:318px;
+    color-scheme:dark; /* dark-first deliberado (doctrina PRENTER, decisión de la historia) */
+  }
+  * { box-sizing:border-box; }
+  html,body { height:100%; background:#000; }
+  body {
+    margin:0; background:var(--bg); color:var(--tx);
+    font-family:var(--font-body); font-size:15px; line-height:1.45;
+    -webkit-font-smoothing:antialiased; overflow:hidden;
+  }
+  body::before {
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
+    background:
+      radial-gradient(1100px 700px at 78% -10%, rgba(0,183,170,.06), transparent 60%),
+      radial-gradient(900px 600px at 8% 108%, rgba(0,183,170,.04), transparent 55%);
+  }
+  .eyebrow { font-family:var(--font-mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--tx-faint); }
+  .mono { font-family:var(--font-mono); }
+  button { font-family:inherit; color:inherit; cursor:pointer; background:none; border:none; padding:0; }
+  :focus-visible { outline:2px solid var(--brand-hi); outline-offset:2px; }
+  ::-webkit-scrollbar{width:9px;height:9px} ::-webkit-scrollbar-thumb{background:#20302d;border-radius:8px}
+
+  .app { position:relative; z-index:1; display:grid; grid-template-columns:var(--rail) 1fr var(--insp); height:100vh; }
+
+  /* ---------- rail izquierdo — qué existe: escala + capas ---------- */
+  .rail { border-right:1px solid var(--border); background:var(--panel); display:flex; flex-direction:column; min-height:0; }
+  .brand { padding:16px 16px 13px; border-bottom:1px solid var(--border); }
+  .brand h1 { margin:0; font-family:var(--font-display); font-size:18px; font-weight:800; letter-spacing:-.01em; }
+  .brand .sub { margin-top:3px; }
+  .brand .dot { color:var(--brand); }
+  .rail-scroll { overflow-y:auto; flex:1; min-height:0; padding:14px 12px 20px; display:flex; flex-direction:column; gap:18px; }
+  .rail-sec > .eyebrow { display:block; margin:0 4px 8px; }
+
+  .escalas { display:flex; flex-direction:column; gap:3px; }
+  .esc { display:flex; align-items:center; gap:9px; padding:7px 9px; border-radius:8px; border:1px solid transparent;
+    color:var(--tx-mut); font-size:13px; text-align:left; width:100%; background:none; transition:background .12s,border-color .12s,color .12s; }
+  .esc:hover { background:var(--raised); }
+  .esc .z { font-family:var(--font-mono); font-size:10px; color:var(--tx-faint); width:20px; }
+  .esc.on { background:var(--raised); border-color:var(--border); color:var(--tx); }
+  .esc.on .z { color:var(--brand); }
+  .esc.off { opacity:.4; pointer-events:none; }
+  .esc .crumb { color:var(--tx-faint); font-size:11px; margin-left:auto; max-width:86px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+  .capas { display:flex; flex-direction:column; gap:5px; }
+  .capa { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:9px; border:1px solid var(--border);
+    background:var(--raised); width:100%; text-align:left; transition:border-color .14s, background .14s; }
+  .capa:hover { border-color:#2b3a37; }
+  .capa .sw { width:28px; height:16px; border-radius:20px; background:#232e2c; position:relative; flex:0 0 auto; transition:background .16s; }
+  .capa .sw::after { content:""; position:absolute; top:2px; left:2px; width:12px; height:12px; border-radius:50%; background:#5c6b68; transition:transform .16s, background .16s; }
+  .capa.on .sw { background:var(--teal-800); }
+  .capa.on .sw::after { transform:translateX(12px); background:var(--brand); }
+  .capa .lab { display:flex; flex-direction:column; gap:1px; min-width:0; }
+  .capa .lab b { font-size:12.5px; font-weight:600; }
+  .capa .lab span { font-size:10px; color:var(--tx-faint); }
+  .capa .oc { margin-left:auto; font-family:var(--font-mono); font-size:9px; color:var(--tx-faint); border:1px solid var(--border); border-radius:4px; padding:1px 4px; }
+  /* disable honesto: capa sin efecto en la escala actual = atenuada, no oculta */
+  .capa.na { opacity:.35; pointer-events:none; }
+  .capa.na + .capa-leg { display:none !important; }
+  /* leyenda inline por capa (Felt-style: la leyenda vive con su capa, no en un widget suelto) */
+  .capa-leg { display:none; margin:1px 2px 3px 10px; padding-left:9px; border-left:1px solid var(--border-soft); font-size:10px; color:var(--tx-faint); line-height:1.5; }
+  .capa.on + .capa-leg { display:block; }
+
+  .salud-sub { margin:1px 0 3px 8px; padding-left:10px; border-left:1px solid var(--border); display:none; flex-direction:column; gap:4px; }
+  .capa-salud.on ~ .salud-sub { display:flex; }
+  .sub-t { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--tx-mut); background:none; border:none; padding:3px 2px; text-align:left; }
+  .sub-t .k { width:9px; height:9px; border-radius:50%; border:1px solid #333; }
+  .sub-t.on { color:var(--tx); }
+  .sub-t.on .k { box-shadow:0 0 0 2px rgba(255,255,255,.08); }
+  .sub-leg { font-size:10px; color:var(--tx-faint); display:flex; flex-direction:column; gap:3px; margin:2px 0 2px 2px; }
+  .sub-leg .row { display:flex; align-items:center; gap:6px; }
+  .sub-leg .d { width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
+
+  /* ---------- main stage ---------- */
+  .main { position:relative; min-width:0; overflow:hidden; background:var(--bg); }
+  .topbar { position:absolute; top:0; left:0; right:0; z-index:20; display:flex; align-items:center; gap:10px; padding:11px 14px; pointer-events:none; }
+  .topbar > * { pointer-events:auto; }
+  .crumbline { display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--tx-mut); white-space:nowrap; min-width:0; flex-shrink:1; overflow:hidden; }
+  .crumbline b { color:var(--tx); font-weight:600; }
+  .crumbline .sep { color:var(--tx-faint); }
+  .btn { display:inline-flex; align-items:center; gap:7px; padding:7px 12px; border-radius:8px; border:1px solid var(--border); white-space:nowrap;
+    background:rgba(12,17,16,.82); backdrop-filter:blur(6px); font-size:12.5px; color:var(--tx-mut); transition:border-color .14s,color .14s,background .14s; }
+  .btn:hover { border-color:#2f3f3c; color:var(--tx); }
+  .btn.ghost { background:transparent; }
+  .btn:disabled { opacity:.35; pointer-events:none; }
+  .btn .arw { font-size:14px; }
+
+  /* identidad del contexto — As-Is hoy; nombre de la corrida cuando exista simulación */
+  .idwrap { position:relative; }
+  .idpill { display:inline-flex; align-items:center; gap:8px; padding:7px 12px; border-radius:8px; border:1px solid var(--teal-800);
+    background:rgba(10,96,90,.14); backdrop-filter:blur(6px); font-size:12.5px; color:var(--tx); font-weight:600; white-space:nowrap; }
+  .idpill .st { width:7px; height:7px; border-radius:50%; background:var(--ok); box-shadow:0 0 8px var(--ok); }
+  .idpill .car { color:var(--tx-faint); font-size:10px; }
+  .idmenu { position:absolute; top:calc(100% + 6px); left:0; z-index:40; min-width:264px; background:var(--panel); border:1px solid var(--border);
+    border-radius:11px; padding:6px; box-shadow:0 24px 60px -24px rgba(0,0,0,.95); display:none; }
+  .idmenu.open { display:block; }
+  .idmenu .it { display:flex; align-items:center; gap:9px; width:100%; text-align:left; background:none; border:none; border-radius:8px; padding:9px 10px; font-size:12.5px; color:var(--tx); }
+  .idmenu .it:hover { background:var(--raised); }
+  .idmenu .it .chk { color:var(--brand); font-size:12px; width:14px; }
+  .idmenu .it.dis { opacity:.45; pointer-events:none; }
+  .idmenu .it small { display:block; color:var(--tx-faint); font-size:10px; }
+  .idmenu .sep { height:1px; background:var(--border-soft); margin:5px 4px; }
+
+  .fchip { display:inline-flex; align-items:center; gap:7px; border:1px solid var(--teal-700); color:var(--brand-hi);
+    border-radius:20px; padding:5px 11px; font-size:11.5px; background:rgba(0,183,170,.07); backdrop-filter:blur(6px); max-width:200px; }
+  .fchip .t { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .fchip { min-width:0; flex-shrink:1; }
+  .fchip button { background:none; border:none; color:inherit; font-size:12px; padding:0; line-height:1; }
+  .count { font-family:var(--font-mono); font-size:10px; color:var(--tx-faint); white-space:nowrap; }
+
+  .search { display:flex; align-items:center; gap:7px; border:1px solid var(--border); border-radius:8px;
+    background:rgba(12,17,16,.82); backdrop-filter:blur(6px); padding:6px 10px; }
+  .search .ic { color:var(--tx-faint); font-size:12px; }
+  .search input { background:none; border:none; color:var(--tx); outline:none; width:116px; font-family:inherit; font-size:12.5px; }
+  .search input::placeholder { color:var(--tx-faint); }
+  .search kbd { font-family:var(--font-mono); font-size:9px; color:var(--tx-faint); border:1px solid var(--border); border-radius:4px; padding:1px 4px; }
+
+  .piel-toggle { display:flex; border:1px solid var(--border); border-radius:9px; overflow:hidden; background:rgba(12,17,16,.82); backdrop-filter:blur(6px); }
+  .piel-toggle button { padding:7px 12px; font-size:12px; color:var(--tx-mut); background:none; border:none; white-space:nowrap; }
+  .piel-toggle button.on { background:var(--teal-900); color:var(--brand-hi); }
+  .piel-toggle.hide { display:none; }
+
+  .stage { position:absolute; inset:0; cursor:grab; }
+  .stage.drag { cursor:grabbing; }
+  .world { position:absolute; top:0; left:0; width:1440px; height:900px; transform-origin:0 0; will-change:transform; }
+  .world.anim { transition:transform .5s cubic-bezier(.22,.61,.36,1); }
+  svg.edges { position:absolute; inset:0; overflow:visible; pointer-events:none; z-index:1; }
+  svg.edges path { fill:none; }
+  .layer { position:absolute; inset:0; }
+  .layer.nodes { z-index:3; }
+  .layer.pins { z-index:4; }
+  .node { position:absolute; transform:translate(-50%,-50%); }
+
+  /* área node */
+  .area-node { width:162px; background:transparent; border:1px solid var(--border);
+    border-radius:12px; padding:10px 11px 9px; text-align:left; cursor:pointer;
+    transition:border-color .16s, transform .16s, background .16s, opacity .3s; }
+  .area-node:hover { border-color:#3a4d48; background:rgba(0,183,170,.05); transform:translate(-50%,-50%) translateY(-2px); }
+  .area-node .hd { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+  .area-node .nm { font-family:var(--font-display); font-weight:700; font-size:14px; letter-spacing:-.01em; line-height:1.15; }
+  .area-node .lider { font-size:10.5px; color:var(--tx-faint); margin-top:2px; }
+  .area-node .stat { display:flex; align-items:center; gap:6px; margin-top:10px; }
+  .area-node .heatwrap { flex:1; display:flex; gap:2px; height:5px; }
+  .area-node .heatwrap i { border-radius:3px; display:block; }
+  .area-node .cnt { font-family:var(--font-mono); font-size:10px; color:var(--tx-faint); border:1px solid var(--border); border-radius:5px; padding:1px 5px; }
+  .area-node .cnt.fold { color:var(--brand-hi); border-color:var(--teal-800); }
+  .health-dot { width:9px; height:9px; border-radius:50%; flex:0 0 auto; }
+  .node.dim { opacity:.2; }
+  .node.hot .area-node { border-color:var(--brand); background:rgba(0,183,170,.06); box-shadow:0 0 0 1px var(--teal-700); }
+  .node.hot .obj-node { border-color:var(--brand); box-shadow:0 0 0 1px var(--teal-700); }
+  .vac { font-family:var(--font-mono); font-size:8px; color:var(--warn); border:1px solid rgba(224,173,78,.4); border-radius:4px; padding:0 3px; }
+
+  /* objetivo node (BSC) */
+  .obj-node { width:184px; background:var(--raised); border:1px solid var(--border); border-radius:11px; padding:11px 12px; text-align:left; cursor:pointer; transition:border-color .16s, transform .16s, opacity .3s; }
+  .obj-node:hover { border-color:#33443f; transform:translate(-50%,-50%) translateY(-2px); }
+  .obj-node.hot { border-color:var(--brand); box-shadow:0 0 0 1px var(--teal-700); }
+  .obj-node .nm { font-size:12.5px; font-weight:600; line-height:1.25; }
+  .obj-node .kr { display:flex; align-items:baseline; gap:5px; margin-top:8px; font-family:var(--font-mono); font-size:12px; flex-wrap:wrap; }
+  .obj-node .kr .m { flex-basis:100%; color:var(--tx-faint); font-size:9px; text-transform:uppercase; letter-spacing:.04em; margin-bottom:2px; }
+  .obj-node .kr .from { color:var(--tx-faint); text-decoration:line-through; }
+  .obj-node .kr .cur { color:var(--brand-hi); }
+  .obj-node .kr .to { color:var(--tx); font-weight:600; }
+  .obj-node .kr .u { font-size:9px; color:var(--tx-faint); }
+  .obj-node .kr .ar { color:var(--brand); }
+
+  /* proceso node (z1) */
+  .proc-node { width:196px; background:var(--raised); border:1px solid var(--border); border-radius:10px; padding:10px 12px; text-align:left; cursor:pointer; transition:border-color .16s, transform .16s, opacity .3s; }
+  .proc-node:hover { border-color:#33443f; }
+  .proc-node .top { display:flex; align-items:flex-start; gap:8px; }
+  .proc-node .nm { font-size:13px; font-weight:600; line-height:1.2; }
+  .proc-node .meta { font-family:var(--font-mono); font-size:10px; color:var(--tx-faint); margin-top:6px; line-height:1.35; }
+  .proc-node.serves { border-color:var(--teal-700); }
+  .proc-node.orphan-lit { border-color:rgba(224,173,78,.5); }
+  .proc-node .flag { display:inline-flex; gap:5px; margin-top:7px; }
+  .tag { font-family:var(--font-mono); font-size:8.5px; letter-spacing:.06em; text-transform:uppercase; border:1px solid var(--border); border-radius:4px; padding:1px 4px; color:var(--tx-faint); }
+  .tag.warn { color:var(--warn); border-color:rgba(224,173,78,.4); }
+  .tag.ok { color:var(--ok); border-color:rgba(92,201,154,.4); }
+  .tag.teal { color:var(--brand-hi); border-color:var(--teal-700); }
+
+  /* KPIs por proceso — semáforo por banda (capa Hilo/Indicadores) */
+  .kpis-mini { display:flex; flex-direction:column; gap:3px; margin-top:8px; border-top:1px solid var(--border-soft); padding-top:7px; }
+  .krow { display:flex; align-items:center; gap:6px; width:100%; font-family:var(--font-mono); font-size:9.5px; color:var(--tx-mut); text-align:left; }
+  .krow:hover { color:var(--tx); }
+  .krow .kd { width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
+  .krow .kn { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .krow .kv { margin-left:auto; color:var(--tx); white-space:nowrap; }
+
+  .grouplab { position:absolute; }
+
+  /* brecha pin */
+  .pin { position:absolute; transform:translate(-50%,-108%); display:flex; flex-direction:column; align-items:center; cursor:pointer; z-index:6; }
+  .pin .body { background:var(--crit-dim); border:1px solid var(--crit); color:var(--crit); border-radius:9px; padding:6px 9px; max-width:206px;
+    font-size:11px; line-height:1.25; box-shadow:0 12px 30px -16px rgba(226,118,107,.5); backdrop-filter:blur(3px); }
+  .pin.med .body { background:var(--warn-dim); border-color:var(--warn); color:var(--warn); }
+  .pin.low .body { background:rgba(255,255,255,.05); border-color:var(--border); color:var(--tx-mut); }
+  .pin .body .cost { font-family:var(--font-mono); font-size:9.5px; opacity:.85; margin-top:3px; display:block; }
+  .pin .stem { width:1px; height:13px; background:currentColor; opacity:.5; }
+  .pin .head { width:13px; height:13px; border-radius:50%; background:currentColor; box-shadow:0 0 12px currentColor; }
+  /* severidad = tamaño (spec twin O6), no solo color */
+  .pin.med .body { font-size:10px; }
+  .pin.med .head { width:10px; height:10px; }
+  .pin.low .body { font-size:9.5px; }
+  .pin.low .head { width:7px; height:7px; box-shadow:none; }
+  .pin.low .stem { height:9px; }
+
+  /* cinética token */
+  .kin { position:absolute; transform:translate(-50%,-50%); z-index:7; cursor:pointer; background:rgba(0,183,170,.1); border:1px dashed var(--brand);
+    color:var(--brand-hi); border-radius:20px; padding:5px 11px 5px 8px; font-size:11px; display:flex; align-items:center; gap:7px; backdrop-filter:blur(3px); }
+  .kin .pdca { font-family:var(--font-mono); font-size:8.5px; background:var(--teal-900); color:var(--brand-hi); border-radius:4px; padding:1px 5px; }
+  .kin .spark { width:7px; height:7px; border-radius:50%; background:var(--brand); box-shadow:0 0 10px var(--brand); animation:pulse 1.8s infinite; }
+  @keyframes pulse { 0%,100%{opacity:.4;transform:scale(.8)} 50%{opacity:1;transform:scale(1.25)} }
+
+  /* z2 lienzo */
+  .lienzo { position:absolute; top:0; left:0; padding:78px 40px 40px; width:100%; }
+  .lienzo-hd { max-width:1200px; margin:0 auto 20px; }
+  .lienzo-hd h2 { font-family:var(--font-display); font-weight:800; font-size:24px; margin:0; letter-spacing:-.01em; }
+  .lienzo-hd .sub { color:var(--tx-mut); font-size:13px; margin-top:4px; max-width:70ch; }
+  .swim { max-width:1200px; margin:0 auto; border:1px solid var(--border); border-radius:14px; overflow:hidden; background:var(--panel); }
+  .lane { display:grid; grid-template-columns:186px 1fr; border-bottom:1px solid var(--border-soft); }
+  .lane:last-child { border-bottom:none; }
+  .lane-hd { padding:16px 14px; border-right:1px solid var(--border); background:var(--raised); display:flex; flex-direction:column; gap:3px; }
+  .lane-hd .role { font-size:13px; font-weight:600; }
+  .lane-hd .role-k { font-family:var(--font-mono); font-size:9px; color:var(--tx-faint); text-transform:uppercase; letter-spacing:.1em; }
+  .lane-body { padding:16px 22px 16px 14px; display:flex; align-items:center; gap:26px; flex-wrap:wrap; }
+  .act { position:relative; min-width:172px; max-width:212px; background:var(--raised); border:1px solid var(--border); border-radius:10px; padding:10px 12px; cursor:pointer; transition:border-color .14s, transform .14s; }
+  .act:hover { border-color:#34443f; transform:translateY(-2px); }
+  .act .typ { position:absolute; top:9px; right:9px; width:7px; height:7px; border-radius:50%; }
+  .act .ord { font-family:var(--font-mono); font-size:9px; color:var(--brand); }
+  .act .ttl { font-size:12.5px; font-weight:600; margin-top:3px; line-height:1.25; }
+  .act .tv { font-family:var(--font-mono); font-size:9.5px; color:var(--tx-faint); margin-top:6px; display:flex; gap:9px; flex-wrap:wrap; }
+  .act .tv .t { color:var(--ok); } .act .tv .e { color:var(--warn); }
+  .act .tri { display:inline-block; margin-top:7px; font-family:var(--font-mono); font-size:8px; letter-spacing:.05em; text-transform:uppercase; border:1px solid var(--border); border-radius:4px; padding:1px 4px; color:var(--tx-faint); }
+  .act .tri.elim { color:var(--crit); border-color:rgba(226,118,107,.4); }
+  .act .tri.rpa, .act .tri.agente { color:var(--brand-hi); border-color:var(--teal-700); }
+  .act .rtlx { color:var(--warn); border:1px solid rgba(224,173,78,.4); }
+
+  /* z2 v2 — lienzo en el world: bandas de carril + edges reales (secuencia + flujos alternos) */
+  .laneband { position:absolute; left:0; right:0; border-top:1px solid var(--border-soft); }
+  .laneband .lhd { position:absolute; left:26px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:3px; max-width:200px; }
+  .laneband .lhd .role { font-size:13px; font-weight:600; }
+  .laneband .lhd .role-k { font-family:var(--font-mono); font-size:9px; color:var(--tx-faint); text-transform:uppercase; letter-spacing:.1em; }
+  .elab { position:absolute; transform:translate(-50%,-50%); font-family:var(--font-mono); font-size:8.5px; color:var(--warn);
+    background:rgba(12,17,16,.92); border:1px solid rgba(224,173,78,.35); border-radius:5px; padding:1px 6px; z-index:5; pointer-events:none; white-space:nowrap; }
+  .elab.main { color:var(--tx-faint); border-color:var(--border); }
+  .kchip { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); border-radius:7px; padding:4px 9px;
+    font-family:var(--font-mono); font-size:10px; color:var(--tx-mut); background:rgba(12,17,16,.6); cursor:pointer; }
+  .kchip:hover { border-color:#33443f; color:var(--tx); }
+  .kchip .kd { width:8px; height:8px; border-radius:50%; }
+
+  /* ---------- viewport: zoom + LOD abajo-izq · minimapa abajo-der ---------- */
+  .viewctl { position:absolute; left:16px; bottom:16px; z-index:15; display:flex; align-items:center; gap:8px; }
+  .zoomctl { display:flex; align-items:center; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:rgba(12,17,16,.86); backdrop-filter:blur(6px); }
+  .zoomctl button { width:34px; height:32px; background:none; border:none; color:var(--tx-mut); font-size:15px; display:flex; align-items:center; justify-content:center; }
+  .zoomctl button:hover { background:var(--raised); color:var(--tx); }
+  .zoomctl .zlevel { font-family:var(--font-mono); font-size:10px; color:var(--tx-faint); min-width:40px; text-align:center; border-left:1px solid var(--border); border-right:1px solid var(--border); align-self:stretch; display:flex; align-items:center; justify-content:center; }
+  .lodctl { display:flex; align-items:center; gap:2px; border:1px solid var(--border); border-radius:10px; background:rgba(12,17,16,.86); backdrop-filter:blur(6px); padding:3px 6px 3px 9px; }
+  .lodctl .lab { font-family:var(--font-mono); font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--tx-faint); margin-right:5px; }
+  .lodctl button { width:26px; height:26px; border:none; background:none; border-radius:7px; font-family:var(--font-mono); font-size:11px; color:var(--tx-mut); }
+  .lodctl button:hover { background:var(--raised); color:var(--tx); }
+  .lodctl button.on { background:var(--teal-900); color:var(--brand-hi); }
+  .lodctl.hide, .minimap.hide { display:none; }
+
+  .minimap { position:absolute; right:16px; bottom:16px; z-index:15; width:158px; height:100px; border:1px solid var(--border); border-radius:10px;
+    background:rgba(12,17,16,.86); backdrop-filter:blur(6px); overflow:hidden; cursor:pointer; }
+  .minimap i { position:absolute; width:5px; height:4px; border-radius:2px; background:#3a4d48; }
+  .minimap .vw { position:absolute; border:1px solid var(--brand); background:rgba(0,183,170,.08); border-radius:3px; }
+
+  /* ---------- inspector derecho — contextual ---------- */
+  .inspector { border-left:1px solid var(--border); background:var(--panel); display:flex; flex-direction:column; min-height:0; }
+  .ihd { padding:15px 16px 13px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; gap:12px; min-height:64px; }
+  .ihd .k { flex:1; min-width:0; }
+  .ihd .eyebrow { display:block; margin-bottom:4px; }
+  .ihd h3 { margin:0; font-family:var(--font-display); font-size:16px; font-weight:700; letter-spacing:-.01em; line-height:1.2; }
+  .ihd .x { width:28px; height:28px; border-radius:7px; border:1px solid var(--border); background:var(--raised); color:var(--tx-mut); flex:0 0 auto; }
+  .ihd .x:hover { color:var(--tx); }
+  .ibody { overflow-y:auto; flex:1; min-height:0; padding:15px 16px; display:flex; flex-direction:column; gap:13px; }
+  .drow { display:flex; justify-content:space-between; gap:14px; align-items:baseline; }
+  .drow dt { font-size:12px; color:var(--tx-faint); flex:0 0 auto; }
+  .drow dd { margin:0; font-size:13px; text-align:right; }
+  .dgroup { border:1px solid var(--border); border-radius:11px; padding:12px; background:var(--raised); display:flex; flex-direction:column; gap:10px; }
+  .dgroup .gt { font-family:var(--font-mono); font-size:9.5px; text-transform:uppercase; letter-spacing:.12em; color:var(--tx-faint); }
+  .chip { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); border-radius:6px; padding:3px 8px; font-size:12px; color:var(--tx-mut); }
+  .chip.teal { border-color:var(--teal-700); color:var(--brand-hi); }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; }
+
+  /* sala de mando (estado sin selección del inspector) */
+  .pulso-dots { display:flex; gap:4px; flex-wrap:wrap; }
+  .pulso-dots i { width:12px; height:12px; border-radius:3px; }
+  .apuesta-card { border:1px solid var(--teal-800); background:linear-gradient(180deg, rgba(20,26,25,.9), rgba(12,17,16,.9));
+    border-radius:11px; padding:13px; display:flex; flex-direction:column; gap:0; box-shadow:0 0 0 1px rgba(0,183,170,.06); }
+  .apuesta-card .hd { display:flex; align-items:center; gap:8px; }
+  .apuesta-card .hd .live { width:7px; height:7px; border-radius:50%; background:var(--crit); box-shadow:0 0 10px var(--crit); }
+  .apuesta-card .body { font-size:13px; line-height:1.4; margin-top:9px; }
+  .apuesta-card .body b { color:var(--tx); }
+  .apuesta-card .biz { display:flex; gap:14px; margin-top:11px; padding-top:11px; border-top:1px solid var(--border); }
+  .apuesta-card .biz div { display:flex; flex-direction:column; gap:2px; }
+  .apuesta-card .biz .k { font-family:var(--font-mono); font-size:9px; color:var(--tx-faint); text-transform:uppercase; letter-spacing:.08em; }
+  .apuesta-card .biz .v { font-family:var(--font-mono); font-size:13px; font-weight:600; }
+  .apuesta-card .biz .v.cost { color:var(--crit); } .apuesta-card .biz .v.kr { color:var(--brand-hi); }
+  .apuesta-card .go { margin-top:12px; width:100%; justify-content:center; border-color:var(--teal-700); color:var(--brand-hi); background:rgba(0,183,170,.08); }
+  .apuesta-card .go:hover { background:rgba(0,183,170,.16); }
+  .loop-it { display:flex; align-items:center; gap:9px; background:none; border:none; border-radius:8px; padding:6px 6px; text-align:left; width:100%; font-size:12px; color:var(--tx-mut); }
+  .loop-it:hover { background:var(--raised2); color:var(--tx); }
+  .loop-it .pdca { font-family:var(--font-mono); font-size:8.5px; background:var(--teal-900); color:var(--brand-hi); border-radius:4px; padding:1px 5px; flex:0 0 auto; }
+
+  /* drawer KPI + lente personas */
+  .sembig { display:flex; align-items:center; gap:10px; }
+  .sembig .d { width:14px; height:14px; border-radius:50%; flex:0 0 auto; }
+  .sembig .v { font-family:var(--font-mono); font-size:22px; font-weight:600; }
+  .sembig .u { font-size:11px; color:var(--tx-faint); }
+  .medlist { font-family:var(--font-mono); font-size:10px; color:var(--tx-mut); display:flex; flex-direction:column; gap:2px; }
+  .medlist .r { display:flex; justify-content:space-between; }
+  .rolrow { display:flex; align-items:center; gap:8px; font-size:12px; padding:2px 0; }
+  .rolrow .who { margin-left:auto; color:var(--tx-mut); font-size:11.5px; text-align:right; }
+  .rolrow .who.vac { color:var(--warn); font-family:var(--font-mono); font-size:9px; text-transform:uppercase; letter-spacing:.05em; }
+
+  /* ---------- corrida (what-if): banner + tinte + diffs — señales redundantes (NN/g) ---------- */
+  .corrida-banner { display:none; position:absolute; top:0; left:0; right:0; z-index:25; align-items:center; gap:9px;
+    padding:8px 16px; font-size:12px; color:var(--tx); background:linear-gradient(180deg, rgba(224,173,78,.16), rgba(224,173,78,.08));
+    border-bottom:1px solid rgba(224,173,78,.45); backdrop-filter:blur(8px); }
+  .corrida-banner .cb-dot { width:8px; height:8px; border-radius:50%; background:var(--warn); box-shadow:0 0 10px var(--warn); }
+  .corrida-banner .btn { padding:4px 10px; font-size:11.5px; }
+  .main.corrida .corrida-banner { display:flex; }
+  .main.corrida .topbar { top:36px; }
+  .main.corrida::after { content:""; position:absolute; inset:0; pointer-events:none; z-index:24;
+    box-shadow:inset 0 0 0 2px rgba(224,173,78,.35); }
+  .node.diff .area-node, .node.diff .proc-node { border-color:var(--warn); box-shadow:0 0 0 1px rgba(224,173,78,.45); }
+  .dtag { font-family:var(--font-mono); font-size:8.5px; color:var(--warn); border:1px solid rgba(224,173,78,.4); border-radius:4px; padding:1px 5px; }
+
+  /* ---------- vistas de módulo (Mejora · Método · Cambios) — páginas en el world ---------- */
+  .pageview { position:absolute; left:40px; top:30px; width:1280px; display:flex; flex-direction:column; gap:18px; }
+  .pv-hd h2 { font-family:var(--font-display); font-weight:800; font-size:26px; margin:5px 0 0; letter-spacing:-.01em; }
+  .pv-hd .sub { color:var(--tx-mut); font-size:13px; margin-top:5px; max-width:86ch; }
+  .fcols { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; align-items:start; }
+  .fcol { border:1px solid var(--border); border-radius:13px; background:var(--panel); padding:14px; display:flex; flex-direction:column; gap:9px; }
+  .fcol > .eyebrow { display:block; margin-bottom:2px; }
+  .fitem { border:1px solid var(--border); border-radius:10px; background:var(--raised); padding:10px 12px; text-align:left; width:100%; transition:border-color .14s; display:flex; flex-direction:column; gap:5px; }
+  .fitem:hover { border-color:#33443f; }
+  .fitem .t { font-size:12.5px; font-weight:600; line-height:1.25; }
+  .fitem .m { font-family:var(--font-mono); font-size:10px; color:var(--tx-faint); display:flex; gap:9px; flex-wrap:wrap; }
+  .fitem.dim2 { opacity:.55; }
+  .farrow { text-align:center; font-size:16px; color:var(--teal-700); margin:4px 0 -4px; }
+  .stage-row { display:flex; align-items:center; gap:10px; }
+  .gate-pill { font-family:var(--font-mono); font-size:9px; letter-spacing:.06em; border:1px solid var(--teal-700); color:var(--brand-hi); border-radius:20px; padding:2px 9px; }
+  .gate-pill.pend { border-color:var(--border); color:var(--tx-faint); }
+  .prog { flex:1; height:5px; border-radius:4px; background:#1a2422; overflow:hidden; display:flex; }
+  .prog i { display:block; }
+  .cambio-row { display:grid; grid-template-columns:64px 1fr 190px 150px; gap:12px; align-items:center;
+    border:1px solid var(--border); border-radius:10px; background:var(--raised); padding:11px 14px; text-align:left; width:100%; }
+  .cambio-row:hover { border-color:#33443f; }
+  .cambio-row .sc { font-family:var(--font-mono); font-size:10px; color:var(--tx-faint); }
+  .cambio-row .tt { font-size:12.5px; font-weight:600; }
+  .cambio-row .ap { font-family:var(--font-mono); font-size:9.5px; color:var(--tx-mut); }
+  .mcards { display:flex; flex-wrap:wrap; gap:6px; }
+  .mcards .chip { font-size:11px; }
+
+  .hint { position:absolute; top:58px; left:50%; transform:translateX(-50%); z-index:14; font-size:12px; color:var(--tx-mut);
+    background:rgba(12,17,16,.82); border:1px solid var(--border); border-radius:20px; padding:6px 15px; backdrop-filter:blur(6px); transition:opacity .4s; max-width:min(700px,56vw); text-align:center; }
+  .hint.gone { opacity:0; }
+
+  @media (prefers-reduced-motion: reduce) { .world.anim { transition:none; } .kin .spark { animation:none; } }
+  @media (max-width:1220px){ .inspector{display:none} .app{grid-template-columns:var(--rail) 1fr} }
+  @media (max-width:880px){ .rail{display:none} .app{grid-template-columns:1fr} }
+</style>
+
+<div class="app" id="app">
+  <aside class="rail">
+    <div class="brand">
+      <h1>Cockpit<span class="dot">.</span></h1>
+      <div class="sub eyebrow">Twin · Desarrolladora Terranova</div>
+    </div>
+    <div class="rail-scroll">
+      <div class="rail-sec">
+        <span class="eyebrow">Módulos</span>
+        <div class="escalas" id="modulos">
+          <button class="esc on" data-mod="territorio"><span class="z">N13</span><span>Territorio</span><span class="crumb">el twin</span></button>
+          <button class="esc" data-mod="mejora"><span class="z">O6·7</span><span>Mejora</span><span class="crumb">brecha→KPI</span></button>
+          <button class="esc" data-mod="metodo"><span class="z">M1·3</span><span>Método</span><span class="crumb">engagement</span></button>
+          <button class="esc" data-mod="cambios"><span class="z">ISO</span><span>Cambios</span><span class="crumb">versiones</span></button>
+        </div>
+      </div>
+      <div class="rail-sec">
+        <span class="eyebrow">Capas — se pintan encima</span>
+        <div class="capas" id="capas">
+          <button class="capa on" data-capa="estructura"><span class="sw"></span><span class="lab"><b>Estructura</b><span>organigrama conectado</span></span><span class="oc">O4</span></button>
+          <div class="capa-leg">línea sólida = jerárquico · punteada = funcional (matricial)</div>
+          <button class="capa on" data-capa="hilo"><span class="sw"></span><span class="lab"><b>Hilo de oro</b><span>objetivo → KR → KPI → proceso</span></span><span class="oc">O2</span></button>
+          <div class="capa-leg">objetivo → su hilo se enciende · KPIs = semáforo por banda (gris = sin dato, nunca rojo por ausencia)</div>
+          <button class="capa on capa-salud" data-capa="salud"><span class="sw"></span><span class="lab"><b>Salud</b><span>3 semáforos, sin fusionar</span></span><span class="oc">O3/5</span></button>
+          <div class="salud-sub" id="saludsub">
+            <button class="sub-t on" data-sub="digital"><span class="k" style="background:var(--crit)"></span>Digitalización</button>
+            <button class="sub-t" data-sub="conf"><span class="k" style="background:var(--warn)"></span>Confianza (provenance)</button>
+            <button class="sub-t" data-sub="madurez"><span class="k" style="background:var(--teal-500)"></span>Madurez (COBIT)</button>
+            <div class="sub-leg" id="subLegend"></div>
+          </div>
+          <button class="capa on" data-capa="brechas"><span class="sw"></span><span class="lab"><b>Brechas</b><span>pin sobre lo que ataca</span></span><span class="oc">O6</span></button>
+          <div class="capa-leg">▲ color = severidad · etiqueta = costo de no hacer</div>
+          <button class="capa" data-capa="cinetica"><span class="sw"></span><span class="lab"><b>Cinética</b><span>brecha → proyecto → KPI</span></span><span class="oc">O7</span></button>
+          <div class="capa-leg">● proyecto en vuelo · etiqueta = fase PDCA</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main" id="mainEl">
+    <div class="corrida-banner" id="corridabanner">
+      <span class="cb-dot"></span><b>Corrida · Cobranza digital fase 2</b>&nbsp;— borrador what-if · rama sobre el repo oficial · el As-Is NO se toca
+      <span style="flex:1"></span>
+      <button class="btn" id="corridaGate" title="Gate explícito: el diff pasa por aprobación (PR a N6)">Enviar a aprobación ›</button>
+      <button class="btn" id="corridaExit">‹ Volver al As-Is</button>
+    </div>
+    <div class="topbar">
+      <div class="idwrap">
+        <button class="idpill" id="idpill"><span class="st"></span>As-Is · Terranova<span class="car">▾</span></button>
+        <div class="idmenu" id="idmenu">
+          <button class="it" id="itAsis"><span class="chk">✓</span><span><b>As-Is · rama principal</b><small>estado real observado — solo lectura</small></span></button>
+          <button class="it" id="itCorrida"><span class="chk"></span><span><b>Corrida · Cobranza digital fase 2</b><small>what-if en borrador — rama sobre N6, no toca el As-Is</small></span></button>
+          <div class="sep"></div>
+          <button class="it dis"><span class="chk"></span><span>＋ Nueva corrida<small>escenario con nombre, diffs y deltas</small></span></button>
+        </div>
+      </div>
+      <button class="btn ghost" id="back" disabled><span class="arw">‹</span> Big picture</button>
+      <div class="crumbline" id="crumbline"><b>Sala de mando</b></div>
+      <span style="flex:1"></span>
+      <span id="chips" style="display:inline-flex;gap:6px;min-width:0;overflow:hidden"></span>
+      <span class="count" id="count"></span>
+      <label class="search"><span class="ic">⌕</span><input id="search" type="text" placeholder="Buscar área o proceso"><kbd>⌘K</kbd></label>
+      <div class="piel-toggle" id="pieltoggle">
+        <button class="on" data-piel="territorio">Territorio</button>
+        <button data-piel="bsc" title="Strategy map (BSC)">BSC</button>
+      </div>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="world anim" id="world">
+        <svg class="edges" id="edges"></svg>
+        <div class="layer nodes" id="nodes"></div>
+        <div class="layer pins" id="pins"></div>
+        <div class="lienzo" id="lienzo" style="display:none"></div>
+      </div>
+    </div>
+
+    <div class="viewctl">
+      <div class="zoomctl"><button id="zout" title="Alejar">−</button><span class="zlevel" id="zlevel">100%</span><button id="zin" title="Acercar">+</button><button id="zfit" title="Encajar">⤢</button></div>
+      <div class="lodctl" id="lodctl"><span class="lab">Niveles</span><button data-lod="1">1</button><button data-lod="2">2</button><button class="on" data-lod="3">3</button></div>
+    </div>
+    <div class="minimap" id="minimap"><div id="mmdots"></div><div class="vw" id="mmview"></div></div>
+
+    <div class="hint" id="hint">Módulos a la izquierda · tocá un área para bajar · doble-click <b>Cobranza de cuotas</b> abre su lienzo · el pill As-Is abre las corridas what-if</div>
+  </main>
+
+  <aside class="inspector" id="inspector">
+    <div class="ihd"><div class="k"><span class="eyebrow" id="inEye"></span><h3 id="inTitle"></h3></div><button class="x" id="inClose" style="display:none">✕</button></div>
+    <div class="ibody" id="inBody"></div>
+  </aside>
+</div>
+
+<script>
+const S={ok:'var(--ok)',warn:'var(--warn)',crit:'var(--crit)'};
+const health={verde:'var(--ok)',ambar:'var(--warn)',rojo:'var(--crit)'};
+const confCol=c=>({alta:S.ok,media:S.warn,baja:S.crit}[c]||'var(--tx-faint)');
+
+/* ============================================================
+   DATA — Desarrolladora Terranova S.A.C. (shell real)
+   ============================================================ */
+const DATA = {
+  empresa:{ id:'terranova', razon:'Desarrolladora Terranova S.A.C.',
+    mision:'Desarrollar y construir vivienda media en Lima que las familias puedan pagar y habitar con orgullo, integrando promoción, construcción propia y postventa en un solo ciclo.',
+    vision:'Ser al 2030 la desarrolladora de vivienda media de referencia en Lima Metropolitana, reconocida por entregar a tiempo, con calidad verificable y la confianza de bancos y compradores.' },
+
+  objetivos:[
+    {id:'o-hog', nm:'Hogares de calidad accesibles en Lima',           persp:'cliente',    kr:{m:'viviendas acumuladas', from:480, to:2000, cur:640, u:'viv'},   salud:'ambar'},
+    {id:'o-lid', nm:'Consolidar el liderazgo en vivienda media de Lima',persp:'financiera', kr:{m:'margen bruto / proyecto', from:14, to:18, cur:15.8, u:'%'},    salud:'ambar'},
+    {id:'o-caja',nm:'Caja sana en todos los proyectos',                 persp:'financiera', kr:{m:'DSO consolidado', from:88, to:60, cur:58, u:'días'},          salud:'verde'},
+    {id:'o-mar', nm:'Reactivar la venta y sanear el stock de Marina',   persp:'cliente',    kr:{m:'absorción consolidada', from:2.4, to:3.5, cur:2.6, u:'%/mes'},salud:'rojo'},
+    {id:'o-eq',  nm:'Equipo estable y competente en obra y oficina',    persp:'aprendizaje',kr:{m:'rotación mensual', from:4.8, to:2.5, cur:3.9, u:'%/mes'},      salud:'ambar'},
+    {id:'o-cob', nm:'Digitalizar la cobranza',                          persp:'procesos',   kr:{m:'cobranza por canal digital', from:15, to:60, cur:15, u:'%'},  salud:'rojo'},
+    {id:'o-vis', nm:'Reactivar Marina este trimestre',                  persp:'procesos',   kr:{m:'visitas diarias a caseta', from:12, to:25, cur:14, u:'/día'}, salud:'rojo'},
+  ],
+
+  // áreas — el árbol se auto-calcula de parent (reporta_a real)
+  areas:[
+    {id:'a-ger', nm:'Gerencia General',       lider:'Ricardo Salazar Cárdenas · Gerente General', parent:null,  madurez:'ambar', conf:'alta'},
+    {id:'a-com', nm:'Comercial',              lider:'Gabriela Quispe Ríos · Gerente Comercial',   parent:'a-ger', madurez:'rojo',  conf:'media'},
+    {id:'a-ven', nm:'Ventas',                 lider:'Alonso Mendoza Vega · Jefe de Ventas',       parent:'a-com', madurez:'ambar', conf:'media'},
+    {id:'a-mkt', nm:'Marketing',              lider:'Brenda Navarro Quiroz · Jefe de Marketing',  parent:'a-com', madurez:'rojo',  conf:'baja'},
+    {id:'a-dev', nm:'Desarrollo y Proyectos', lider:'Edwin Cabrera León · Gerente de Desarrollo', parent:'a-ger', madurez:'ambar', conf:'media'},
+    {id:'a-fin', nm:'Finanzas',               lider:'Daniel Torres Medina · CFO',                 parent:'a-ger', madurez:'verde', conf:'alta'},
+    {id:'a-con', nm:'Contabilidad',           lider:'Rosa Medina Chávez · Contador General',      parent:'a-fin', madurez:'verde', conf:'alta'},
+    {id:'a-tes', nm:'Tesorería y Cobranza',   lider:'Milagros Chávez Delgado · Jefe de Cobranza', parent:'a-fin', madurez:'ambar', conf:'baja', vacante:'jefatura Tesorería vacante'},
+    {id:'a-rh',  nm:'Gestión Humana',         lider:'Doris Mendoza Cárdenas · Gerente de GH',     parent:'a-ger', madurez:'ambar', conf:'media'},
+    {id:'a-ope', nm:'Operaciones',            lider:'Alberto Guerrero Osorio · Gte. Construcción',parent:'a-ger', madurez:'ambar', conf:'baja'},
+    {id:'a-oft', nm:'Oficina Técnica',        lider:'Luis Huamán Villanueva · Jefe Of. Técnica',  parent:'a-ope', madurez:'verde', conf:'media'},
+    {id:'a-log', nm:'Logística de Obra',      lider:'Ernesto Dávila Castillo · Jefe de Logística',parent:'a-ope', madurez:'ambar', conf:'media'},
+    {id:'a-ti',  nm:'TI',                     lider:'Inés Dávila Núñez · Jefe de TI',             parent:'a-ger', madurez:'ambar', conf:'alta'},
+  ],
+  matrixEdges:[['a-fin','a-ope']], // controllers de obra: reporte funcional al CFO (matricial)
+
+  procesos:[
+    {id:'p-cob',   nm:'Cobranza de cuotas',                areas:['a-tes'],        dueno:'Jefe de Cobranza',     digital:'integrado', sist:['Nubecont ERP','Estudio legal'], sirve:['o-caja'],        conf:'alta',  flagship:true},
+    {id:'p-vta',   nm:'Venta de inmuebles',               areas:['a-ven'],        dueno:'Jefe de Ventas',       digital:'integrado', sist:['CRM Vendo','OSE FacturaLima'],   sirve:['o-mar','o-vis'], conf:'alta'},
+    {id:'p-cierre',nm:'Cierre contable mensual',          areas:['a-con','a-fin','a-ope'], dueno:'Contador General',digital:'integrado', sist:['Nubecont ERP','Excel caja obra'],sirve:['o-lid','o-caja'],conf:'alta'},
+    {id:'p-ejec',  nm:'Ejecución de obra',                areas:['a-ope'],        dueno:'Residente de Obra',    digital:'integrado', sist:['ValorizApp','BIM'],             sirve:['o-lid'],          conf:'media'},
+    {id:'p-val',   nm:'Valorización de obra',             areas:['a-oft'],        dueno:'Jefe de Oficina Técnica',digital:'integrado',sist:['ValorizApp','BIM'],           sirve:['o-lid'],          conf:'alta'},
+    {id:'p-pago',  nm:'Pago a proveedores y subcontratistas',areas:['a-con','a-tes'],dueno:'Contador General',  digital:'integrado', sist:['Nubecont ERP','Banca Empresas'],sirve:['o-caja'],         conf:'alta'},
+    {id:'p-rec',   nm:'Reclutamiento e incorporación',    areas:['a-rh'],         dueno:'Gerente de GH',        digital:'manual',    sist:['—'],                            sirve:['o-eq'],           conf:'media'},
+    {id:'p-camp',  nm:'Campañas de marketing',            areas:['a-mkt'],        dueno:'Jefe de Marketing',    digital:'externo',   sist:['CRM Vendo','Meta Ads'],         sirve:['o-vis'],          conf:'media', driver:true},
+    {id:'p-fact',  nm:'Facturación de ventas',            areas:['a-con','a-ven'],dueno:'Contador General',     digital:'integrado', sist:['Nubecont ERP','OSE FacturaLima'],sirve:[],                conf:'alta'},
+    {id:'p-post',  nm:'Postventa y garantías',            areas:['a-com'],        dueno:'Coordinador de Postventa',digital:'integrado',sist:['CRM Vendo','Portal clientes'], sirve:[],                conf:'media', star:'NPS 42→31 · ningún KR la mide'},
+    {id:'p-liq',   nm:'Liquidación de obra',              areas:['a-con','a-oft'],dueno:'Contador General',     digital:'integrado', sist:['Nubecont ERP'],                 sirve:[],                conf:'media'},
+    {id:'p-caja',  nm:'Caja chica de obra',               areas:['a-tes','a-ope'],dueno:'Analista de Tesorería',digital:'manual',    sist:['Excel caja obra'],              sirve:[],                conf:'baja'},
+    {id:'p-perm',  nm:'Permisos y licencias',             areas:['a-dev'],        dueno:'Jefe de Permisos',     digital:'externo',   sist:['Estudio legal'],                sirve:[],                conf:'baja'},
+    {id:'p-dis',   nm:'Diseño y desarrollo del proyecto', areas:['a-dev','a-oft'],dueno:'Gerente de Desarrollo',digital:'integrado', sist:['BIM'],                          sirve:[],                conf:'alta'},
+    {id:'p-nom',   nm:'Nómina y planillas',               areas:['a-rh'],         dueno:'Gerente de GH',        digital:'externo',   sist:['Nubecont ERP','Banca Empresas'],sirve:[],                conf:'media'},
+    {id:'p-conc',  nm:'Conciliación bancaria',            areas:['a-tes'],        dueno:'Jefe de Tesorería (vacante)',digital:'externo',sist:['Nubecont ERP','Banca Empresas'],sirve:[],              conf:'baja'},
+    {id:'p-sop',   nm:'Soporte y operación TI',           areas:['a-ti'],         dueno:'Jefe de TI',           digital:'integrado', sist:['Nubecont ERP','CRM Vendo'],     sirve:[],                conf:'alta'},
+  ],
+
+  brechas:[
+    {id:'g-avc', nm:'El avance real de Marina (87%) va detrás del declarado (95%) y compromete la entrega',
+      sub:'Ocho puntos de brecha entre corte declarado y valorizable: cada mes de atraso son ~S/35k de gastos generales y una entrega que se corre.',
+      tipo:'Desvío de meta', against:'p-ejec', obj:'o-lid', costo:'S/ 35k/mes', sev:'alta', prio:'alta', estado:'accionable', apuesta:true},
+    {id:'g-dso', nm:'El DSO de Marina (91 días) bloquea la meta de caja',
+      sub:'Cada día de DSO en Marina ≈ S/500 de puente; la cola dura no responde a recordatorios y arrastra el consolidado.',
+      tipo:'Desvío de meta', against:'p-cob', obj:'o-caja', costo:'S/ 180k/año', sev:'alta', prio:'alta', estado:'accionable'},
+    {id:'g-post',nm:'La postventa se deteriora y ningún KR del ciclo la mide',
+      sub:'El NPS de propietarios cayó 42→31 en un año; cada punto son referidos que no llegan a caseta. Brecha real, sin ancla de valor que la mida.',
+      tipo:'Hallazgo', against:'p-post', obj:null, costo:'NPS 42→31', sev:'media', prio:'media', estado:'sin-ancla-de-valor'},
+    {id:'g-tes', nm:'La jefatura de Tesorería está vacante y la conciliación depende de una sola persona',
+      sub:'Rol vacante hace 5 meses; la conciliación depende de un analista y el CFO aprueba por excepción.',
+      tipo:'Hallazgo', against:'p-conc', obj:null, costo:'rol vacante 5m', sev:'media', prio:'media', estado:'accionable'},
+    {id:'g-cvis',nm:'La posición de caja por obra no es visible ni confiable entre cierres',
+      sub:'La caja consolidada se arma a mano con ~5 días de rezago; entre cierres la dirección decide a ciegas.',
+      tipo:'Hallazgo', against:'p-caja', obj:null, costo:'decisión a ciegas', sev:'media', prio:'media', estado:'a-corroborar', conf:'baja'},
+    {id:'g-mca', nm:'La marca Terranova es débil y el tráfico comercial depende de portales pagados',
+      sub:'Sin marca propia que jale tráfico, cada visita a caseta se compra: el costo por lead sube todos los trimestres.',
+      tipo:'Hallazgo', against:'p-camp', obj:null, costo:'costo/lead ↑', sev:'baja', prio:'baja', estado:'off-thread'},
+  ],
+
+  // kpis — banda {target, rojo} (dirección se infiere: target<rojo = menor-es-mejor) · semáforo DERIVADO al leer
+  kpis:[
+    {id:'k-avc', nm:'desvío avance Marina',   unidad:'pp',    proc:'p-ejec',  dueno:'Residente de Obra',       obj:'o-lid',  peso:0.5, banda:{target:0,  rojo:5},  freq:'semanal',    conf:'media', fuente:'ValorizApp',
+      mediciones:[{f:'feb',v:3},{f:'mar',v:4},{f:'abr',v:6},{f:'may',v:7},{f:'jun',v:7},{f:'jul',v:8}]},
+    {id:'k-dso', nm:'DSO Marina',             unidad:'días',  proc:'p-cob',   dueno:'Jefe de Cobranza',        obj:'o-caja', peso:0.6, banda:{target:60, rojo:90}, freq:'mensual',    conf:'alta',  fuente:'Nubecont ERP',
+      mediciones:[{f:'feb',v:88},{f:'mar',v:90},{f:'abr',v:89},{f:'may',v:92},{f:'jun',v:90},{f:'jul',v:91}]},
+    {id:'k-cob', nm:'cobranza digital',       unidad:'%',     proc:'p-cob',   dueno:'Jefe de Cobranza',        obj:'o-cob',  peso:1,   banda:{target:60, rojo:8},  freq:'mensual',    conf:'alta',  fuente:'Nubecont ERP',
+      mediciones:[{f:'feb',v:15},{f:'mar',v:14},{f:'abr',v:15},{f:'may',v:16},{f:'jun',v:15},{f:'jul',v:15}]},
+    {id:'k-abs', nm:'absorción consolidada',  unidad:'%/mes', proc:'p-vta',   dueno:'Jefe de Ventas',          obj:'o-mar',  peso:0.7, banda:{target:3.5,rojo:2.4},freq:'mensual',    conf:'alta',  fuente:'CRM Vendo',
+      mediciones:[{f:'feb',v:2.4},{f:'mar',v:2.5},{f:'abr',v:2.4},{f:'may',v:2.7},{f:'jun',v:2.5},{f:'jul',v:2.6}]},
+    {id:'k-vis', nm:'visitas a caseta',       unidad:'/día',  proc:'p-camp',  dueno:'Jefe de Marketing',       obj:'o-vis',  peso:0.8, banda:{target:25, rojo:12}, freq:'semanal',    conf:'baja',  fuente:'Declarado (caseta)', stale:true,
+      mediciones:[{f:'mar',v:12},{f:'abr',v:13},{f:'may',v:15},{f:'jun',v:14}]},
+    {id:'k-rot', nm:'rotación mensual',       unidad:'%/mes', proc:'p-rec',   dueno:'Gerente de GH',           obj:'o-eq',   peso:1,   banda:{target:2.5,rojo:4.5},freq:'mensual',    conf:'media', fuente:'Nómina',
+      mediciones:[{f:'feb',v:4.8},{f:'mar',v:4.4},{f:'abr',v:4.2},{f:'may',v:4.0},{f:'jun',v:4.1},{f:'jul',v:3.9}]},
+    {id:'k-cie', nm:'días de cierre contable',unidad:'días',  proc:'p-cierre',dueno:'Contador General',        obj:'o-lid',  peso:0.3, banda:{target:5,  rojo:12}, freq:'mensual',    conf:'alta',  fuente:'Nubecont ERP',
+      mediciones:[{f:'feb',v:9},{f:'mar',v:8},{f:'abr',v:7},{f:'may',v:6},{f:'jun',v:5},{f:'jul',v:4.5}]},
+    {id:'k-nps', nm:'NPS propietarios',       unidad:'',      proc:'p-post',  dueno:'Coordinador de Postventa',obj:null,     peso:null,banda:{target:50, rojo:35}, freq:'trimestral', conf:'media', fuente:'Encuesta postventa',
+      mediciones:[{f:'T3-25',v:42},{f:'T4-25',v:39},{f:'T1-26',v:35},{f:'T2-26',v:31}]},
+    {id:'k-caj', nm:'rezago caja por obra',   unidad:'días',  proc:'p-caja',  dueno:'Analista de Tesorería',   obj:'o-caja', peso:0.2, banda:{target:1,  rojo:5},  freq:'diaria',     conf:'baja',  fuente:'—',
+      mediciones:[]},
+  ],
+
+  // cinética — proyectos_mejora (ilustrativos del loop O7) · pm-cie = loop CERRADO con veredicto (KPI movido)
+  proyectos:[
+    {id:'pm-mar', nm:'Recuperación de avance Marina', estado:'en-ejecución', pdca:'DO',   brecha:'g-avc', mueve:'k-avc', area:'a-ope', roi:'2.4×', delta:'−8pp → −2pp'},
+    {id:'pm-cob', nm:'Cobranza digital · fase 1',     estado:'en-evaluación',pdca:'PLAN', brecha:'g-dso', mueve:'k-cob', area:'a-tes', roi:'1.8×', delta:'15% → 40%'},
+    {id:'pm-cie', nm:'Cierre contable exprés',        estado:'cerrado',      pdca:'ACT',  brecha:null,    mueve:'k-cie', area:'a-con', roi:'3.1×', delta:'9 → 4.5 días',
+      resultado:{delta_observado:'9 → 4.5 días', veredicto:'movió', nota:'ACT documentado: checklist pre-cierre estandarizado (M16 PDCA)'} },
+  ],
+
+  bscBands:[ {k:'financiera',nm:'Financiera',y:150},{k:'cliente',nm:'Cliente',y:335},{k:'procesos',nm:'Procesos internos',y:520},{k:'aprendizaje',nm:'Aprendizaje y crecimiento',y:705} ],
+  bscEdges:[ ['o-eq','o-cob'],['o-eq','o-vis'],['o-cob','o-caja'],['o-vis','o-mar'],['o-mar','o-lid'],['o-hog','o-lid'],['o-lid','o-caja'] ],
+
+  flagship:{ proc:'p-cob', nm:'Cobranza de cuotas',
+    sub:'AS-IS · ancla del DSO · dueño Jefe de Cobranza. Disparador: factura por vencer. Carriles = roles (BPMN) · tiempos toque/espera (VSM) · triage de automatización por actividad (ECRS + scores).',
+    lanes:[ {role:'Analista de Cobranza',k:'carril'}, {role:'Jefe de Cobranza',k:'carril'}, {role:'Gestor de Cobranza en Campo',k:'campo'} ],
+    vsm:{toque:'13h', espera:'1d'},
+    acts:[
+      {ord:1, lane:0, verbo:'monitorear', ttl:'Monitorear la cartera y sus vencimientos por proyecto', tipo:'humana', toque:'1h', espera:'—', sist:['Nubecont ERP'], triage:'aumentable', conf:'alta', fte:'Nubecont ERP (leído)', note:'1.400 cuentas activas · alimenta DSO + antigüedad de saldos'},
+      {ord:2, lane:0, verbo:'clasificar', ttl:'Clasificar la morosidad por tramo y riesgo (0-30/31-60/61-90/>90)', tipo:'humana', toque:'2h', espera:'—', sist:['Nubecont ERP'], triage:'automatizable-rpa', conf:'alta', fte:'Nubecont ERP (leído)', note:'datos estructurados, reglas estables → RPA'},
+      {ord:3, lane:0, verbo:'contactar', ttl:'Contactar a los compradores morosos (recordatorios y llamadas)', tipo:'humana', toque:'3h', espera:'—', sist:['Nubecont ERP'], triage:'automatizable-agente', rtlx:71, conf:'media', fte:'Entrevista + RTLX del rol', raci:{R:'Analista de Cobranza', A:'Jefe de Cobranza'}, note:'carga emocional alta (RTLX 71, agregado por rol) · deriva por flujos alternos: mora dura → negociar · sin respuesta ×3 → campo'},
+      {ord:4, lane:1, verbo:'negociar', ttl:'Negociar refinanciamientos con compradores en mora dura', tipo:'humana', toque:'90m', espera:'—', sist:['—'], triage:'humano-por-diseño', conf:'media', fte:'Entrevista Jefe de Cobranza', raci:{R:'Jefe de Cobranza', A:'CFO'}, note:'40 convenios/mes · fuera de política escala al CFO'},
+      {ord:5, lane:2, verbo:'visitar', ttl:'Visitar en campo a compradores sin respuesta', tipo:'humana', toque:'4h', espera:'1d', sist:['—'], conf:'alta', fte:'Observación en campo (auditado)', note:'verbo corregido por el consultor (el ingest propuso “transportar”) — auditado'},
+      {ord:6, lane:0, verbo:'verificar', ttl:'Verificar los pagos recibidos y aplicarlos a la cuota', tipo:'humana', toque:'1h', espera:'—', sist:['Nubecont ERP'], mandato:'preventivo', conf:'alta', fte:'Nubecont ERP (leído)', raci:{R:'Analista de Cobranza', A:'Jefe de Cobranza'}, note:'cruza abonos de tesorería contra cuotas — control preventivo, protegido del triage'},
+      {ord:7, lane:0, verbo:'registrar', ttl:'Registrar los compromisos de pago en la hoja paralela', tipo:'humana', toque:'30m', espera:'—', sist:['—'], triage:'eliminable', conf:'media', fte:'Entrevista analista', note:'duplica el convenio ya en el ERP — hoja que nadie consulta'},
+    ],
+    // secuencia real (edges): f→t · c = condición (flujo alterno cuando alt:true)
+    seq:[ {f:1,t:2},{f:2,t:3},{f:3,t:6,c:'paga'},{f:3,t:4,c:'mora dura',alt:true},{f:3,t:5,c:'sin respuesta ×3',alt:true},{f:4,t:6},{f:5,t:6},{f:6,t:7} ]
+  },
+};
+
+/* ============================================================
+   ENGINE
+   ============================================================ */
+const world=document.getElementById('world'), stage=document.getElementById('stage');
+const $nodes=document.getElementById('nodes'), $pins=document.getElementById('pins'),
+      $edges=document.getElementById('edges'), $lienzo=document.getElementById('lienzo');
+const NS='http://www.w3.org/2000/svg';
+const byId=(a,id)=>a.find(o=>o.id===id);
+const areaProcs=id=>DATA.procesos.filter(p=>p.areas.includes(id));
+const digHealth=d=>d==='integrado'?'verde':d==='externo'?'ambar':'rojo';
+const kids=id=>DATA.areas.filter(a=>a.parent===id);
+function descendants(id){ const o=[id]; kids(id).forEach(c=>o.push(...descendants(c.id))); return o; }
+function subtreeProcs(id){ const set=new Set(descendants(id)); return DATA.procesos.filter(p=>p.areas.some(a=>set.has(a))); }
+const worstDig=procs=>procs.reduce((w,p)=>{const h=digHealth(p.digital);return (h==='rojo'||w==='rojo')?'rojo':((h==='ambar'||w==='ambar')?'ambar':'verde');},'verde');
+
+/* motor de indicadores (derivado al leer, nunca persistido — doctrina cruce-estructura) */
+const SEMC={verde:'var(--ok)',ambar:'var(--warn)',rojo:'var(--crit)',gris:'#5c6b68'};
+const kcur=k=>k.mediciones.length?k.mediciones[k.mediciones.length-1].v:null;
+function semaforo(k){ const c=kcur(k); if(c==null) return 'gris';           // sin dato = GRIS, nunca rojo
+  const menor=k.banda.target<k.banda.rojo;
+  if(menor){ if(c<=k.banda.target)return 'verde'; if(c>=k.banda.rojo)return 'rojo'; }
+  else     { if(c>=k.banda.target)return 'verde'; if(c<=k.banda.rojo)return 'rojo'; }
+  return 'ambar'; }
+const kpisByProc=id=>DATA.kpis.filter(k=>k.proc===id);
+const krowHTML=k=>{ const s=semaforo(k), c=kcur(k);
+  return `<button class="krow" data-k="${k.id}"><span class="kd" style="background:${SEMC[s]}"></span><span class="kn">${k.nm}${k.stale?' ⌛':''}</span><span class="kv">${c==null?'s/d':c+(k.unidad||'')} → ${k.banda.target}${k.unidad||''}</span></button>`; };
+/* lente personas: ocupante del rol por scan de líderes (vacante = delatada, no inventada) */
+function rolOcupante(rol){ const vac=/vacante/i.test(rol); const core=rol.replace(/\s*\(vacante\)/i,'');
+  const a=DATA.areas.find(x=>x.lider.split(' · ')[1]===core);
+  return { rol:core, vac, quien:a?a.lider.split(' · ')[0]:null }; }
+
+/* profundidad + visibilidad por LOD (level-of-detail declarativo: mostrar N niveles) */
+function depth(a){ let d=0,x=a; while(x.parent){ x=byId(DATA.areas,x.parent); d++; } return d; }
+const isVis=a=>depth(a)<state.lod;
+function visAncestor(id){ let a=byId(DATA.areas,id); while(a && !isVis(a)) a=byId(DATA.areas,a.parent); return a; }
+
+let state={ mod:'territorio', corrida:false, escala:'z0', foco:null, piel:'territorio', activeObj:null,
+  capas:new Set(['estructura','hilo','salud','brechas']), sub:'digital',
+  lod:3, search:'', insp:'home', cw:1440, ch:900 };
+let view={x:0,y:0,z:1};
+let MM_PTS=[]; // puntos del minimapa (se llenan en cada render)
+
+/* tree layout desde parent (reporta_a) — solo áreas visibles según LOD */
+function treeLayout(){
+  const rowH=192, topY=150, slotW=178, x0=120;
+  let slot=0;
+  (function walk(a,d){
+    const ch=kids(a.id).filter(isVis);
+    if(!ch.length){ a.x=x0+slot*slotW; slot++; }
+    else { ch.forEach(c=>walk(c,d+1)); a.x=(ch[0].x+ch[ch.length-1].x)/2; }
+    a.y=topY+d*rowH;
+  })(DATA.areas.find(a=>!a.parent),0);
+  const depths=DATA.areas.filter(isVis).map(depth), maxD=Math.max(...depths);
+  return { w:x0+Math.max(slot-1,1)*slotW+150, h:topY+maxD*rowH+160 };
+}
+
+function setCanvas(w,h){ state.cw=w; state.ch=h; world.style.width=w+'px'; world.style.height=h+'px';
+  $edges.setAttribute('width',w); $edges.setAttribute('height',h); $edges.setAttribute('viewBox',`0 0 ${w} ${h}`); }
+
+function applyView(anim=true){ world.classList.toggle('anim',anim);
+  world.style.transform=`translate(${view.x}px,${view.y}px) scale(${view.z})`;
+  document.getElementById('zlevel').textContent=Math.round(view.z*100)+'%'; mmView(); }
+function fit(anim=true){ const vw=stage.clientWidth, vh=stage.clientHeight;
+  const z=Math.min((vw-56)/state.cw,(vh-90)/state.ch,1.08);
+  view.z=z; view.x=(vw-state.cw*z)/2; view.y=(vh-state.ch*z)/2 + (state.escala==='z2'?0:14); applyView(anim); }
+document.getElementById('zin').onclick =()=>{view.z=Math.min(2,view.z+0.12); applyView();};
+document.getElementById('zout').onclick=()=>{view.z=Math.max(0.3,view.z-0.12); applyView();};
+document.getElementById('zfit').onclick=()=>fit();
+
+let drag=null;
+stage.addEventListener('mousedown',e=>{ if(e.target.closest('.area-node,.obj-node,.proc-node,.pin,.kin,.act,.btn'))return;
+  drag={sx:e.clientX,sy:e.clientY,ox:view.x,oy:view.y}; stage.classList.add('drag'); });
+window.addEventListener('mousemove',e=>{ if(!drag)return; view.x=drag.ox+(e.clientX-drag.sx); view.y=drag.oy+(e.clientY-drag.sy); applyView(false); });
+window.addEventListener('mouseup',()=>{ drag=null; stage.classList.remove('drag'); });
+stage.addEventListener('wheel',e=>{ e.preventDefault(); const f=e.deltaY<0?1.1:0.9; const nz=Math.max(0.3,Math.min(2,view.z*f));
+  const r=stage.getBoundingClientRect(), mx=e.clientX-r.left, my=e.clientY-r.top;
+  view.x=mx-(mx-view.x)*(nz/view.z); view.y=my-(my-view.y)*(nz/view.z); view.z=nz; applyView(false); },{passive:false});
+
+function el(t,c,h){ const n=document.createElement(t); if(c)n.className=c; if(h!=null)n.innerHTML=h; return n; }
+function pathEl(d,stroke,w,op,dash){ const p=document.createElementNS(NS,'path'); p.setAttribute('d',d);
+  p.setAttribute('stroke',stroke); p.setAttribute('stroke-width',w); p.setAttribute('opacity',op); if(dash)p.setAttribute('stroke-dasharray',dash);
+  $edges.appendChild(p); }
+const curve=(x1,y1,x2,y2)=>{ const dx=(x2-x1)*0.45; return `M${x1},${y1} C${x1+dx},${y1} ${x2-dx},${y2} ${x2},${y2}`; };
+const vcurve=(x1,y1,x2,y2)=>{ const dy=(y2-y1)*0.5; return `M${x1},${y1} C${x1},${y1+dy} ${x2},${y2-dy} ${x2},${y2}`; };
+
+/* búsqueda — spotlight (atenúa lo no-matcheado; no recorta) */
+const q=()=>state.search.trim().toLowerCase();
+function areaMatch(a){ const s=q(); if(!s) return true;
+  if((a.nm+' '+a.lider).toLowerCase().includes(s)) return true;
+  return subtreeProcs(a.id).some(p=>p.nm.toLowerCase().includes(s)); }
+const procMatch=p=>{ const s=q(); return !s || p.nm.toLowerCase().includes(s) || p.dueno.toLowerCase().includes(s); };
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function render(){
+  const terr=state.mod==='territorio';
+  document.querySelectorAll('#modulos .esc').forEach(b=>b.classList.toggle('on', b.dataset.mod===state.mod));
+  document.getElementById('back').disabled = !terr || state.escala==='z0';
+  document.getElementById('pieltoggle').classList.toggle('hide', !terr || state.escala!=='z0');
+  document.getElementById('lodctl').classList.toggle('hide', !(terr&&state.escala==='z0'&&state.piel==='territorio'));
+  document.getElementById('minimap').classList.toggle('hide', !terr);
+  document.getElementById('search').disabled=!terr;
+  document.querySelector('.search').style.opacity=terr?'':'.4';
+
+  // corrida (what-if): señales redundantes — banner + tinte + identidad del header
+  document.getElementById('mainEl').classList.toggle('corrida', state.corrida);
+  document.getElementById('idpill').innerHTML = state.corrida
+    ? `<span class="st" style="background:var(--warn);box-shadow:0 0 8px var(--warn)"></span>Corrida · Cobranza fase 2<span class="car">▾</span>`
+    : `<span class="st"></span>As-Is · Terranova<span class="car">▾</span>`;
+  document.querySelector('#itAsis .chk').textContent=state.corrida?'':'✓';
+  document.querySelector('#itCorrida .chk').textContent=state.corrida?'✓':'';
+
+  // disable honesto: capa sin efecto en el módulo/escala actual → atenuada con razón, no oculta
+  const CAPAS_APLICAN={ 'z0-territorio':['estructura','hilo','salud','brechas','cinetica'], 'z0-bsc':['hilo'],
+    'z1':['hilo','salud','brechas','cinetica'], 'z2':['hilo','salud','brechas'] };
+  const apl=terr?CAPAS_APLICAN[state.escala==='z0'?('z0-'+state.piel):state.escala]:[];
+  document.querySelectorAll('.capa').forEach(b=>{ const na=!apl.includes(b.dataset.capa);
+    b.classList.toggle('na',na); b.title=na?(terr?'Sin efecto en esta escala — no hay dato de esta capa aquí':'Las capas pintan sobre el Territorio'):''; });
+
+  const MODNM={mejora:'Mejora — el loop brecha → proyecto → KPI', metodo:'Método — engagement M1·M2·M3', cambios:'Cambios — gestión ISO, git invisible'};
+  let crumb=terr?'<b>Territorio</b>':`<b>${MODNM[state.mod]}</b>`;
+  if(terr&&state.escala==='z1'){ const a=byId(DATA.areas,state.foco); crumb=`Territorio <span class="sep">›</span> <b>${a.nm}</b>`; }
+  if(terr&&state.escala==='z2'){ crumb=`Territorio <span class="sep">›</span> … <span class="sep">›</span> <b>${DATA.flagship.nm}</b> · lienzo`; }
+  document.getElementById('crumbline').innerHTML=crumb;
+  subLegend(); chips();
+
+  MM_PTS=[];
+  $nodes.innerHTML=''; $pins.innerHTML=''; $edges.innerHTML=''; $lienzo.style.display='none'; $nodes.style.display=''; $pins.style.display='';
+  if(!terr){ ({mejora:renderMejora, metodo:renderMetodo, cambios:renderCambios})[state.mod](); }
+  else if(state.escala==='z0') state.piel==='bsc'?renderBSC():renderTerritorio();
+  else if(state.escala==='z1') renderArea();
+  else renderLienzo();
+  mmDots(); if(state.insp==='home') inspectorHome();
+}
+
+/* vista de módulo = página HTML en el world (hereda pan/zoom/fit) */
+function pageView(html){
+  const pv=el('div','pageview',html); $nodes.appendChild(pv);
+  setCanvas(1360,900);
+  requestAnimationFrame(()=>{ setCanvas(1360, Math.max(640, pv.offsetHeight+80)); fit(); });
+  fit(); return pv;
+}
+
+/* ---------- z0 territorio ---------- */
+function renderTerritorio(){
+  const dim=treeLayout(); setCanvas(dim.w,dim.h);
+  const rank={alta:3,media:2,baja:1};
+  const vis=DATA.areas.filter(isVis);
+  // hilo: área iluminada si sus procesos sostienen el objetivo activo (plegada: su subtree)
+  const lit=new Set();
+  if(state.capas.has('hilo') && state.activeObj) DATA.procesos.filter(p=>p.sirve.includes(state.activeObj))
+    .forEach(p=>p.areas.forEach(a=>{ const v=visAncestor(a); if(v)lit.add(v.id); }));
+  if(state.capas.has('estructura')){
+    vis.filter(a=>a.parent).forEach(a=>{ const p=byId(DATA.areas,a.parent); if(!isVis(p))return; pathEl(vcurve(p.x,p.y+40,a.x,a.y-40),'#2a3733',1.4,.82); });
+    DATA.matrixEdges.forEach(([x,y])=>{ const A=visAncestor(x),B=visAncestor(y); if(!A||!B||A.id===B.id)return; pathEl(curve(A.x+72,A.y,B.x-72,B.y),'#2a3733',1.2,.4,'4 4'); });
+  }
+
+  const searching=!!q();
+  vis.forEach(a=>{
+    const folded=kids(a.id).some(c=>!isVis(c));
+    const procs=folded?subtreeProcs(a.id):areaProcs(a.id);
+    const hidden=folded?descendants(a.id).length-1:0;
+    const subVis=kids(a.id).filter(isVis).length;
+    const n=el('button','node'); n.style.left=a.x+'px'; n.style.top=a.y+'px';
+    MM_PTS.push({x:a.x,y:a.y});
+    const match=areaMatch(a);
+    if(searching){ if(match)n.classList.add('hot'); else n.classList.add('dim'); }
+    else{
+      if(state.capas.has('hilo') && state.activeObj && !lit.has(a.id)) n.classList.add('dim');
+      if(lit.has(a.id)) n.classList.add('hot');
+    }
+    let dotColor='#2a3733';
+    if(state.capas.has('salud')) dotColor = state.sub==='digital'?(procs.length?health[worstDig(procs)]:'#2a3733') : state.sub==='conf'?confCol(a.conf) : health[a.madurez];
+    let heat='<div class="heatwrap"><i style="flex:1;background:#22302d"></i></div>';
+    if(state.capas.has('salud') && state.sub==='digital' && procs.length){
+      const mi=procs.filter(p=>p.digital==='manual').length, me=procs.filter(p=>p.digital==='externo').length, ma=procs.filter(p=>p.digital==='integrado').length;
+      heat=`<div class="heatwrap"><i style="flex:${ma+.01};background:var(--ok)"></i><i style="flex:${me+.01};background:var(--warn)"></i><i style="flex:${mi+.01};background:var(--crit)"></i></div>`;
+    }
+    n.innerHTML=`<div class="area-node">
+      <div class="hd"><div><div class="nm">${a.nm}</div><div class="lider">${a.lider.split(' · ')[0]}</div>${a.vacante?'<span class="vac">rol vacante</span>':''}</div>
+        <span class="health-dot" style="background:${dotColor}"></span></div>
+      <div class="stat">${heat}<span class="cnt">${procs.length}</span>${folded?`<span class="cnt fold">+${hidden} áreas</span>`:(subVis?`<span class="cnt">+${subVis}</span>`:'')}</div>
+    </div>`;
+    n.querySelector('.area-node').onclick=()=>drillArea(a.id);
+    $nodes.appendChild(n);
+  });
+
+  // brechas: 1 pin COMPACTO por área visible (las plegadas ruedan a su ancestro visible)
+  if(state.capas.has('brechas')){
+    const byArea={};
+    DATA.brechas.forEach(g=>{ if(state.capas.has('hilo')&&state.activeObj&&g.obj!==state.activeObj)return;
+      const proc=byId(DATA.procesos,g.against); const area=proc&&visAncestor(proc.areas[0]); if(!area)return;
+      (byArea[area.id]=byArea[area.id]||[]).push(g); });
+    Object.keys(byArea).forEach(aid=>{ const area=byId(DATA.areas,aid), gs=byArea[aid].sort((x,y)=>rank[y.sev]-rank[x.sev]), g=gs[0];
+      const pin=el('div','pin '+(g.sev==='alta'?'':g.sev==='media'?'med':'low'));
+      pin.style.left=(area.x+52)+'px'; pin.style.top=(area.y-40)+'px';
+      pin.innerHTML=`<div class="body" style="white-space:nowrap">▲ ${g.sev}${gs.length>1?` +${gs.length-1}`:''} · ${g.costo}</div><div class="stem"></div><div class="head"></div>`;
+      pin.onclick=()=>openBrecha(g); $pins.appendChild(pin);
+    });
+  }
+
+  if(state.corrida){ const t=visAncestor('a-tes'); if(t){ // diff de la corrida: ámbar = editado (patrón scenario-objeto)
+    const d=[...$nodes.querySelectorAll('.node')].find(n=>n.querySelector('.nm')&&n.querySelector('.nm').textContent===t.nm);
+    if(d){ d.classList.add('diff'); d.querySelector('.stat').insertAdjacentHTML('beforeend','<span class="dtag">Δ editado</span>'); } } }
+  if(state.capas.has('cinetica')) DATA.proyectos.filter(pm=>pm.estado!=='cerrado').forEach(pm=>{
+    const a=visAncestor(pm.area); if(!a)return; const kx=a.x, ky=a.y+52;
+    const k=el('div','kin'); k.style.left=kx+'px'; k.style.top=ky+'px';
+    k.innerHTML=`<span class="spark"></span><span class="pdca">${pm.pdca}</span>${pm.nm} · ROI ${pm.roi}`; k.onclick=()=>openProyecto(pm); $pins.appendChild(k);
+    pathEl(vcurve(kx,ky-6,a.x,a.y+40),'var(--teal-600)',1.4,.55,'5 5');
+  });
+
+  counter(`${vis.length}/${DATA.areas.length} áreas · ${DATA.procesos.length} procesos`);
+  fit();
+}
+
+/* ---------- z0 BSC strategy map ---------- */
+function renderBSC(){
+  setCanvas(1520,880);
+  const pos={};
+  DATA.bscBands.forEach(b=>{
+    const lab=el('div','grouplab'); lab.style.left='60px'; lab.style.top=(b.y-58)+'px';
+    lab.innerHTML=`<span class="eyebrow">${b.nm}</span>`; $nodes.appendChild(lab);
+    pathEl(`M50,${b.y+30} L1470,${b.y+30}`,'#182220',1,.7);
+    const objs=DATA.objetivos.filter(o=>o.persp===b.k), gap=1300/(objs.length+1);
+    objs.forEach((o,i)=>pos[o.id]={x:150+gap*(i+1),y:b.y});
+  });
+  DATA.bscEdges.forEach(([a,b])=>{ if(pos[a]&&pos[b]) pathEl(curve(pos[a].x,pos[a].y+30,pos[b].x,pos[b].y-30),'var(--teal-700)',1.5,.5); });
+  const searching=!!q();
+  DATA.objetivos.forEach(o=>{ const p=pos[o.id]; if(!p)return;
+    const n=el('button','node'); n.style.left=p.x+'px'; n.style.top=p.y+'px';
+    MM_PTS.push({x:p.x,y:p.y});
+    const match=!searching || (o.nm+' '+o.kr.m).toLowerCase().includes(q());
+    if(searching){ if(match)n.classList.add('hot'); else n.classList.add('dim'); }
+    else if(state.activeObj && state.activeObj!==o.id) n.classList.add('dim');
+    n.innerHTML=`<div class="obj-node ${state.activeObj===o.id?'hot':''}">
+      <span class="health-dot" style="background:${health[o.salud]};float:right;margin-top:2px"></span>
+      <div class="nm">${o.nm}</div>
+      <div class="kr"><span class="m">${o.kr.m}</span><span class="from">${o.kr.from}</span><span class="ar">→</span><span class="cur">${o.kr.cur}</span><span class="ar">→</span><span class="to">${o.kr.to}</span><span class="u">${o.kr.u}</span></div>
+    </div>`;
+    n.querySelector('.obj-node').onclick=()=>{ state.activeObj=state.activeObj===o.id?null:o.id; render(); };
+    $nodes.appendChild(n);
+  });
+  counter(`${DATA.objetivos.length} objetivos · 4 perspectivas BSC`);
+  fit();
+}
+
+/* ---------- z1 área ---------- */
+function drillArea(id){ state.escala='z1'; state.foco=id; state.insp='home'; render(); }
+function renderArea(){
+  const a=byId(DATA.areas,state.foco), procs=subtreeProcs(a.id), subs=kids(a.id);
+  const cols=Math.min(3,Math.max(1,procs.length)), rows=Math.ceil(procs.length/cols);
+  const CW=Math.max(960,cols*248+160), CH=200+rows*232+80, cx0=CW/2; setCanvas(CW,CH);
+  const lab=el('div','grouplab'); lab.style.left=cx0+'px'; lab.style.top='96px'; lab.style.transform='translate(-50%,0)'; lab.style.textAlign='center';
+  lab.innerHTML=`<span class="eyebrow">${a.parent?'Área':'Gerencia'} · ${a.lider}${subs.length?` · ${subs.map(s=>s.nm).join(' + ')}`:''}</span><div style="font-family:var(--font-display);font-weight:800;font-size:26px;margin-top:5px;letter-spacing:-.01em">${a.nm}</div>`;
+  $nodes.appendChild(lab);
+  const rowH=232, x0=cx0-((cols-1)*248)/2, y0=250, procPos={};
+  const searching=!!q();
+  procs.forEach((p,i)=>{
+    const cx=x0+(i%cols)*248, cy=y0+Math.floor(i/cols)*rowH; procPos[p.id]={cx,cy}; // alto de fila deja aire para pin arriba + KPIs abajo
+    MM_PTS.push({x:cx,y:cy});
+    const serves=state.capas.has('hilo')&&state.activeObj&&p.sirve.includes(state.activeObj);
+    const orphan=p.sirve.length===0;
+    const n=el('button','node'); n.style.left=cx+'px'; n.style.top=cy+'px';
+    if(searching && !procMatch(p)) n.classList.add('dim');
+    let dc=health[digHealth(p.digital)];
+    if(state.capas.has('salud')&&state.sub==='conf')dc=confCol(p.conf);
+    else if(state.capas.has('salud')&&state.sub==='madurez')dc=health[a.madurez];
+    const vacDueno=/vacante/i.test(p.dueno);
+    const ks=state.capas.has('hilo')?kpisByProc(p.id):[];
+    n.innerHTML=`<div class="proc-node ${serves?'serves':''} ${orphan&&state.capas.has('hilo')?'orphan-lit':''}">
+      <div class="top"><span class="health-dot" style="background:${state.capas.has('salud')?dc:'#2a3733'}"></span><div class="nm">${p.nm}</div></div>
+      <div class="meta">${byId(DATA.areas,p.areas[0]).nm} · ${p.dueno}<br>${p.sist.join(' · ')}</div>
+      <div class="flag">
+        ${p.flagship?'<span class="tag teal">lienzo ›</span>':''}
+        ${state.corrida&&p.id==='p-cob'?'<span class="dtag">Δ +1 actividad · portal de pagos</span>':''}
+        ${vacDueno?'<span class="tag warn">rol vacante</span>':''}
+        ${orphan?'<span class="tag warn">huérfano</span>':''}
+        ${p.star?'<span class="tag warn">★ sin ancla</span>':''}
+        ${p.sirve.length&&state.capas.has('hilo')?`<span class="tag ok">sostiene ${p.sirve.length}</span>`:''}
+      </div>
+      ${ks.length?`<div class="kpis-mini">${ks.map(krowHTML).join('')}</div>`:''}</div>`;
+    const card=n.querySelector('.proc-node');
+    card.onclick=()=>openProceso(p);
+    card.ondblclick=()=>{ if(p.flagship) drillLienzo(); };
+    n.querySelectorAll('.krow').forEach(b=>b.onclick=e=>{ e.stopPropagation(); openKpi(byId(DATA.kpis,b.dataset.k)); });
+    $nodes.appendChild(n);
+  });
+  // cinética (capa O7): proyecto en vuelo sobre el proceso que mejora
+  if(state.capas.has('cinetica')) DATA.proyectos.filter(pm=>pm.estado!=='cerrado').forEach(pm=>{
+    const g=byId(DATA.brechas,pm.brecha), pr=g&&byId(DATA.procesos,g.against), pos=pr&&procPos[pr.id]; if(!pos)return;
+    const k=el('div','kin'); k.style.left=pos.cx+'px'; k.style.top=(pos.cy+96)+'px';
+    k.innerHTML=`<span class="spark"></span><span class="pdca">${pm.pdca}</span>${pm.nm} · ROI ${pm.roi}`;
+    k.onclick=()=>openProyecto(pm); $pins.appendChild(k);
+  });
+  const setA=new Set(descendants(a.id));
+  if(state.capas.has('brechas')) DATA.brechas.filter(g=>{const pr=byId(DATA.procesos,g.against);return pr&&pr.areas.some(x=>setA.has(x));}).forEach(g=>{
+    const pos=procPos[g.against]; if(!pos)return; // pin SOBRE el proceso que ataca
+    const pin=el('div','pin '+(g.sev==='alta'?'':g.sev==='media'?'med':'low'));
+    pin.style.left=pos.cx+'px'; pin.style.top=(pos.cy-42)+'px';
+    pin.innerHTML=`<div class="body">${g.nm.length>46?g.nm.slice(0,44)+'…':g.nm}<span class="cost">▲ ${g.costo} · ${g.estado}</span></div><div class="stem"></div><div class="head"></div>`;
+    pin.onclick=()=>openBrecha(g); $pins.appendChild(pin);
+  });
+  counter(`${procs.length} procesos · ${DATA.brechas.filter(g=>{const pr=byId(DATA.procesos,g.against);return pr&&pr.areas.some(x=>setA.has(x));}).length} brechas`);
+  fit();
+}
+
+/* ---------- z2 lienzo (v2: en el world — bandas de carril + edges reales + capas encima) ---------- */
+function drillLienzo(){ state.escala='z2'; state.insp='home'; render(); }
+function renderLienzo(){
+  const f=DATA.flagship, p=byId(DATA.procesos,f.proc);
+  const laneH=176, headH=168, x0=300, colW=228;
+  const W=x0+6*colW+230, H=headH+f.lanes.length*laneH+40;
+  setCanvas(W,H);
+  const triCls=t=>t==='eliminable'?'elim':(t&&t.startsWith('automatizable')?(t.includes('rpa')?'rpa':'agente'):'');
+
+  // header: título + capas ENCIMA del lienzo (hilo=KPIs+objetivo · salud=dot · VSM totales)
+  const hd=el('div','grouplab'); hd.style.left='26px'; hd.style.top='20px'; hd.style.maxWidth=(W-60)+'px';
+  const kchips=state.capas.has('hilo')?kpisByProc(f.proc).map(k=>{ const s=semaforo(k), c=kcur(k);
+    return `<button class="kchip" data-k="${k.id}"><span class="kd" style="background:${SEMC[s]}"></span>${k.nm} ${c==null?'s/d':c+(k.unidad||'')} → ${k.banda.target}${k.unidad||''}</button>`; }).join(''):'';
+  const objChip=state.capas.has('hilo')&&p.sirve.length?`<span class="tag teal" style="font-size:9px">sostiene · ${byId(DATA.objetivos,p.sirve[0]).nm}</span>`:'';
+  const saludDot=state.capas.has('salud')?`<span class="health-dot" style="background:${health[digHealth(p.digital)]};display:inline-block;margin-right:8px"></span>`:'';
+  hd.innerHTML=`<span class="eyebrow">z2 · proceso como lienzo · carriles = roles · flujo = secuencia + alternos</span>
+    <h2 style="font-family:var(--font-display);font-weight:800;font-size:24px;margin:4px 0 0;letter-spacing:-.01em">${saludDot}${f.nm}</h2>
+    <div style="color:var(--tx-mut);font-size:12px;margin-top:4px;max-width:78ch">${f.sub}</div>
+    <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap">${kchips}${objChip}
+      <span class="mono" style="font-size:10px;color:var(--tx-faint)">VSM · ◔ toque total ${f.vsm.toque} · ⏳ espera ${f.vsm.espera} · 30m eliminables</span></div>`;
+  $nodes.appendChild(hd);
+  hd.querySelectorAll('.kchip').forEach(b=>b.onclick=()=>openKpi(byId(DATA.kpis,b.dataset.k)));
+
+  // bandas de carril (rol = lane, carril_ref)
+  f.lanes.forEach((ln,li)=>{
+    const band=el('div','laneband');
+    band.style.top=(headH+li*laneH)+'px'; band.style.height=laneH+'px';
+    band.innerHTML=`<div class="lhd"><span class="role-k">carril ${li+1}${ln.k!=='carril'?' · '+ln.k:''}</span><span class="role">${ln.role}</span></div>`;
+    $nodes.appendChild(band);
+  });
+
+  // actividades como nodos posicionados por (orden, carril)
+  const pos={};
+  f.acts.forEach(a=>{
+    const cx=x0+(a.ord-1)*colW+100, cy=headH+a.lane*laneH+laneH/2; pos[a.ord]={cx,cy};
+    MM_PTS.push({x:cx,y:cy});
+    const tc={humana:'var(--teal-400)',sistema:'var(--ok)',reunion:'var(--warn)',decision:'var(--brand)',espera:'var(--tx-faint)'}[a.tipo]||'var(--tx-faint)';
+    const n=el('button','node'); n.style.left=cx+'px'; n.style.top=cy+'px';
+    n.innerHTML=`<div class="act" style="width:200px">
+      <span class="typ" style="background:${tc}" title="${a.tipo}"></span>
+      <span class="ord">${String(a.ord).padStart(2,'0')} · ${a.verbo}</span>
+      <div class="ttl">${a.ttl}</div>
+      <div class="tv"><span class="t">◔ ${a.toque}</span>${a.espera!=='—'?`<span class="e">⏳ ${a.espera}</span>`:''}<span>${a.sist.join(' · ')}</span></div>
+      ${a.triage?`<span class="tri ${triCls(a.triage)}">${a.triage}</span>`:''}${a.rtlx?`<span class="tri rtlx">RTLX ${a.rtlx}</span>`:''}${a.mandato?`<span class="tri" style="color:var(--brand-hi);border-color:var(--teal-700)">mandato · ${a.mandato}</span>`:''}
+    </div>`;
+    n.querySelector('.act').onclick=()=>openActividad(a);
+    $nodes.appendChild(n);
+  });
+
+  // edges reales: secuencia_ref (sólido) + flujos_alternos (punteado warn con condición)
+  f.seq.forEach(s=>{
+    const A=pos[s.f], B=pos[s.t]; if(!A||!B)return;
+    const x1=A.cx+102, x2=B.cx-102;
+    pathEl(curve(x1,A.cy,x2,B.cy), s.alt?'var(--warn)':'#3d4f4a', s.alt?1.3:1.7, s.alt?.6:.85, s.alt?'5 4':null);
+    if(s.c){ const lab=el('div','elab'+(s.alt?'':' main'),s.c); // etiqueta al 30% del camino (cerca del origen, no sobre la card destino)
+      lab.style.left=(x1+(x2-x1)*0.3)+'px'; lab.style.top=(A.cy+(B.cy-A.cy)*0.3)+'px'; $pins.appendChild(lab); }
+  });
+
+  // capa brechas ENCIMA del lienzo: pin sobre el proceso que ataca
+  if(state.capas.has('brechas')){
+    const g=DATA.brechas.find(x=>x.against===f.proc);
+    if(g){ const pin=el('div','pin '+(g.sev==='alta'?'':g.sev==='media'?'med':'low'));
+      pin.style.left=(W-330)+'px'; pin.style.top='96px';
+      pin.innerHTML=`<div class="body" style="white-space:nowrap">▲ ${g.sev} · ${g.costo} · ${g.nm.slice(0,34)}…</div><div class="stem"></div><div class="head"></div>`;
+      pin.onclick=()=>openBrecha(g); $pins.appendChild(pin); }
+  }
+
+  counter(`${f.acts.length} actividades · ${f.lanes.length} carriles · ${f.seq.length} flujos`);
+  fit();
+}
+
+/* ---------- módulo Mejora: el loop brecha → proyecto → KPI movido ---------- */
+function renderMejora(){
+  const rank={alta:3,media:2,baja:1};
+  const gs=[...DATA.brechas].sort((a,b)=>rank[b.sev]-rank[a.sev]);
+  const sevC={alta:'var(--crit)',media:'var(--warn)',baja:'var(--tx-faint)'};
+  const vuelo=DATA.proyectos.filter(p=>p.estado!=='cerrado'), done=DATA.proyectos.filter(p=>p.estado==='cerrado');
+  const pv=pageView(`
+    <div class="pv-hd"><span class="eyebrow">Mejora · O6 → O7 · el loop vive DENTRO del twin — ningún vendor lo cierra in-tool</span>
+      <h2>Brecha → proyecto → KPI movido</h2>
+      <div class="sub">Cada brecha lleva costo de no hacer y caso de negocio; de ahí nacen los proyectos (PDCA con loop-back permitido); el cierre se declara con el <b>delta observado en el KPI</b>, no con "terminamos las tareas".</div></div>
+    <div class="fcols">
+      <div class="fcol"><span class="eyebrow">1 · Brechas — rankeadas por costo/ROI</span>
+        ${gs.map(g=>`<button class="fitem ${g.estado==='off-thread'?'dim2':''}" data-g="${g.id}">
+          <span class="t">${g.nm.length>64?g.nm.slice(0,62)+'…':g.nm}</span>
+          <span class="m"><span style="color:${sevC[g.sev]}">▲ ${g.sev}</span><span>${g.costo}</span><span>${g.estado}</span>${g.apuesta?'<span style="color:var(--brand-hi)">WSJF ①</span>':''}</span>
+        </button>`).join('')}</div>
+      <div class="fcol"><span class="eyebrow">2 · Proyectos en vuelo — PDCA</span>
+        ${vuelo.map(p=>`<button class="fitem" data-pm="${p.id}">
+          <span class="t">${p.nm}</span>
+          <span class="m"><span class="gate-pill">${p.pdca}</span><span>${p.estado}</span><span>ROI ${p.roi}</span><span style="color:var(--brand-hi)">${p.delta}</span></span>
+        </button>`).join('')}
+        <div style="font-size:10.5px;color:var(--tx-faint)">máquina de 12 estados · loop-back en-verificación → en-ejecución permitido (PDCA real, no waterfall)</div></div>
+      <div class="fcol"><span class="eyebrow">3 · KPI movido — veredicto con dato real</span>
+        ${done.map(p=>`<button class="fitem" data-pm="${p.id}" style="border-color:var(--teal-800)">
+          <span class="t">${p.nm}</span>
+          <span class="m"><span class="gate-pill">CERRADO</span><span style="color:var(--ok)">✓ ${p.resultado.veredicto}</span><span style="color:var(--brand-hi)">${p.resultado.delta_observado}</span><span>ROI real ${p.roi}</span></span>
+        </button>`).join('')}
+        <div style="font-size:10.5px;color:var(--tx-faint)">veredicto ∈ {movió · parcial · no-movió} — se escribe contra la serie del KPI, con procedencia</div></div>
+    </div>`);
+  pv.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>openBrecha(byId(DATA.brechas,b.dataset.g)));
+  pv.querySelectorAll('[data-pm]').forEach(b=>b.onclick=()=>openProyecto(byId(DATA.proyectos,b.dataset.pm)));
+  counter(`${gs.length} brechas · ${vuelo.length} en vuelo · ${done.length} cerrado`);
+}
+
+/* ---------- módulo Método: engagement M1·M2·M3 + metodología as-code ---------- */
+function renderMetodo(){
+  const pv=pageView(`
+    <div class="pv-hd"><span class="eyebrow">Método · el engagement del consultor — plantilla versionada, instancia por cliente (N6)</span>
+      <h2>M1 Levantamiento · M3 Espinazo · M2 Mantenimiento</h2>
+      <div class="sub">El método es <b>dato, no prosa</b>: 31 M-cards versionadas en git (methodologies.yaml) — cada capa del twin cae de una M-card. Los gates conectan el engagement con el ciclo de mejora.</div></div>
+    <div class="fcols">
+      <div class="fcol"><span class="eyebrow">M1 · Levantamiento — construir el As-Is</span>
+        <div class="fitem"><span class="t">Ingesta multi-fuente</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>ERP · CRM · 14 entrevistas</span></span></div>
+        <div class="fitem"><span class="t">Mapa As-Is (objeto normalizado, 9 entidades)</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>13 áreas · 17 procesos</span></span>
+          <div class="stage-row"><span class="mono" style="font-size:9px;color:var(--tx-faint)">provenance</span><span class="prog"><i style="flex:52;background:var(--ok)"></i><i style="flex:30;background:var(--warn)"></i><i style="flex:18;background:var(--crit)"></i></span><span class="mono" style="font-size:9px;color:var(--tx-faint)">52·30·18</span></div></div>
+        <div class="fitem"><span class="t">Hilo de oro medido</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>7 objetivos · 9 KPIs con banda</span></span></div>
+        <div class="fitem"><span class="t">Validación con dueños (acuses)</span><span class="m"><span class="gate-pill pend">◐ 12/17</span><span>gate G1 → habilita el Espinazo</span></span></div></div>
+      <div class="fcol"><span class="eyebrow">M3 · Espinazo — del diagnóstico a LA Apuesta</span>
+        <div class="fitem"><span class="t">Etapa 0 · Diagnóstico anclado a plata</span><span class="m"><span class="gate-pill">✓ G2</span><span>6 brechas costeadas</span></span></div>
+        <div class="fitem"><span class="t">LA Apuesta — UN próximo paso, no 50</span><span class="m"><span class="gate-pill">✓ RATIFICADA</span><span style="color:var(--brand-hi)">Marina 87→95% · mueve margen →18%</span></span></div>
+        <div class="fitem"><span class="t">Etapa 1 · Proyectos de mejora en vuelo</span><span class="m"><span class="gate-pill pend">◐ EN CURSO</span><span>2 en vuelo · 1 cerrado (KPI movido)</span></span></div></div>
+      <div class="fcol"><span class="eyebrow">M2 · Mantenimiento — el twin no se pudre</span>
+        <div class="fitem"><span class="t">Frescura de indicadores</span><span class="m"><span style="color:var(--warn)">⌛ 1 KPI vencido</span><span>visitas a caseta (Declarado, 40d)</span></span></div>
+        <div class="fitem"><span class="t">Revisiones periódicas</span><span class="m"><span class="gate-pill pend">PRÓX</span><span>Cobranza de cuotas v2 · 15 ago</span></span></div>
+        <div class="fitem"><span class="t">Crowdsourcing a dueños del dato</span><span class="m"><span class="gate-pill pend">V2</span><span>encuestas + chat grounded con decision-trace</span></span></div></div>
+    </div>
+    <div class="fcol" style="margin-top:2px"><span class="eyebrow">Trazabilidad — qué M-card sostiene cada cosa que ves (method-as-code)</span>
+      <div class="mcards">
+        <span class="chip">M30 BSC → piel Strategy map</span><span class="chip">M26 Hoshin → cascada objetivo→área</span>
+        <span class="chip">M09 VSM → tiempos toque/espera z2</span><span class="chip">M15 COBIT → capa madurez</span>
+        <span class="chip">M23 provenance → confianza 🟢🟡🔴</span><span class="chip">M16 PDCA → cinética + loop-back</span>
+        <span class="chip">SOMA C7 → semáforo digitalización</span><span class="chip">ECRS+RTLX → triage automatización</span></div></div>`);
+  counter('M1 ✓ · M3 en curso · M2 activo · 31 M-cards');
+}
+
+/* ---------- módulo Cambios: gestión de cambios ISO — git invisible ---------- */
+function renderCambios(){
+  const pv=pageView(`
+    <div class="pv-hd"><span class="eyebrow">Gestión de cambios · ISO — solicitudes, versiones, aprobaciones y acuses · el motor versiona en git (N6), el usuario JAMÁS lo ve</span>
+      <h2>Cambios sobre el twin</h2>
+      <div class="sub">Cada acción cinética declara su tipo de aprobación: <b>directa</b> (se aplica y queda trazada) · <b>revisión-dueño</b> · <b>gestión-de-cambios</b> (comité). Toda versión: borrador → vigente → obsoleto, con entornos dev → UAT → prod.</div></div>
+    <button class="cambio-row"><span class="sc">SC-13</span><div><div class="tt">Ajustar banda de "cobranza digital" 60% → 50%</div><div class="ap">acción: ajustar-banda-kpi · solicita: Jefe de Cobranza</div></div><span class="ap">⛔ gestión-de-cambios</span><span class="gate-pill pend">PENDIENTE COMITÉ</span></button>
+    <button class="cambio-row"><span class="sc">SC-12</span><div><div class="tt">Publicar mapa de proceso "Cobranza de cuotas" v2</div><div class="ap">acción: publicar-mapa-proceso · borrador en dev</div></div><span class="ap">👁 revisión-dueño</span><span class="gate-pill pend">EN REVISIÓN</span></button>
+    <button class="cambio-row"><span class="sc">SC-11</span><div><div class="tt">Corregir verbo actividad 05: "transportar" → "visitar"</div><div class="ap">acción: corregir-verbo-actividad · evidencia: auditoría en campo</div></div><span class="ap">✓ directa</span><span class="gate-pill">APLICADA + ACUSE</span></button>
+    <button class="cambio-row"><span class="sc">SC-10</span><div><div class="tt">Registrar medición k-dso · julio (91 días)</div><div class="ap">acción: registrar-medicion-kpi · fuente: Nubecont ERP</div></div><span class="ap">✓ directa</span><span class="gate-pill">APLICADA</span></button>
+    <div class="fcol"><span class="eyebrow">Versiones vigentes (por entorno)</span>
+      <div class="fitem"><span class="t">Cobranza de cuotas — mapa de proceso</span><span class="m"><span class="gate-pill">v1 VIGENTE · prod</span><span class="gate-pill pend">v2 borrador · dev</span><span>revisión periódica: 15 ago</span></span></div>
+      <div class="fitem"><span class="t">Corrida · Cobranza digital fase 2 (what-if)</span><span class="m"><span class="gate-pill pend">RAMA ABIERTA</span><span>merge = pasa por ESTA cola de aprobación</span></span></div></div>`);
+  counter('2 pendientes · 2 aplicadas · 1 rama what-if');
+}
+
+/* ---------- topbar: chips de filtro + contador de subset ---------- */
+function counter(t){ document.getElementById('count').textContent=t; }
+function chips(){ const c=document.getElementById('chips'); c.innerHTML='';
+  if(state.activeObj){ const o=byId(DATA.objetivos,state.activeObj);
+    const ch=el('span','fchip',`<span class="t">hilo · ${o.nm}</span><button title="Quitar">✕</button>`);
+    ch.querySelector('button').onclick=()=>{ state.activeObj=null; render(); }; c.appendChild(ch); }
+}
+function subLegend(){ const L=document.getElementById('subLegend');
+  const sets={ digital:[['Integrado',S.ok],['Tercero / externo',S.warn],['Manual / Excel',S.crit]],
+    conf:[['Confianza alta',S.ok],['Media',S.warn],['Baja / hueco',S.crit]],
+    madurez:[['Listo (COBIT 4-5)',S.ok],['Parcial (2-3)',S.warn],['No listo (0-1)',S.crit]] };
+  L.innerHTML=(sets[state.sub]||[]).map(([t,c])=>`<div class="row"><span class="d" style="background:${c}"></span>${t}</div>`).join(''); }
+
+/* ---------- minimapa (abajo-derecha, convención node-graph) ---------- */
+const MM_W=158, MM_H=100;
+function mmScale(){ const s=Math.min((MM_W-10)/state.cw,(MM_H-10)/state.ch);
+  return { s, ox:(MM_W-state.cw*s)/2, oy:(MM_H-state.ch*s)/2 }; }
+function mmDots(){ const d=document.getElementById('mmdots'); d.innerHTML='';
+  const {s,ox,oy}=mmScale();
+  MM_PTS.forEach(p=>{ const i=document.createElement('i'); i.style.left=(ox+p.x*s-2)+'px'; i.style.top=(oy+p.y*s-2)+'px'; d.appendChild(i); }); }
+function mmView(){ const v=document.getElementById('mmview'); if(!v)return; const {s,ox,oy}=mmScale();
+  const wx=-view.x/view.z, wy=-view.y/view.z, ww=stage.clientWidth/view.z, wh=stage.clientHeight/view.z;
+  v.style.left=(ox+wx*s)+'px'; v.style.top=(oy+wy*s)+'px'; v.style.width=Math.max(8,ww*s)+'px'; v.style.height=Math.max(6,wh*s)+'px'; }
+document.getElementById('minimap').addEventListener('click',e=>{
+  const r=e.currentTarget.getBoundingClientRect(), {s,ox,oy}=mmScale();
+  const wx=(e.clientX-r.left-ox)/s, wy=(e.clientY-r.top-oy)/s;
+  view.x=stage.clientWidth/2-wx*view.z; view.y=stage.clientHeight/2-wy*view.z; applyView(); });
+
+/* ============================================================
+   INSPECTOR (derecha) — contextual: sin selección = sala de mando
+   ============================================================ */
+const inEye=document.getElementById('inEye'), inTitle=document.getElementById('inTitle'),
+      inBody=document.getElementById('inBody'), inClose=document.getElementById('inClose');
+function openDrawer(eye,title,body){ state.insp='sel'; inEye.textContent=eye; inTitle.textContent=title;
+  inBody.innerHTML=body; inClose.style.display=''; inBody.scrollTop=0;
+  inBody.querySelectorAll('[data-k]').forEach(b=>b.onclick=e=>{ e.stopPropagation(); openKpi(byId(DATA.kpis,b.dataset.k)); }); }
+inClose.onclick=()=>{ state.insp='home'; inspectorHome(); };
+
+function inspectorHome(){
+  inClose.style.display='none';
+  if(state.mod==='mejora'){
+    inEye.textContent='Mejora · el loop'; inTitle.textContent='6 brechas → 2 en vuelo → 1 movido';
+    inBody.innerHTML=`<div class="dgroup"><div class="gt">El money shot del director</div>
+      <div style="font-size:12.5px;line-height:1.5">El ciclo <b>brecha → proyecto → KPI movido</b> vive dentro del twin con dato real de cierre. El veredicto se escribe contra la serie del KPI — no contra un checklist.</div></div>
+      <div style="font-size:12px;color:var(--tx-faint)">Tocá una brecha o proyecto para su ficha. El proyecto cerrado muestra el delta observado y su veredicto.</div>`;
+    return; }
+  if(state.mod==='metodo'){
+    inEye.textContent='Método · engagement'; inTitle.textContent='M1 ✓ · M3 en curso · M2 activo';
+    inBody.innerHTML=`<div class="dgroup"><div class="gt">Plantilla vs instancia</div>
+      <div style="font-size:12.5px;line-height:1.5">La <b>Definición</b> (M1·M2·M3, 31 M-cards) es IP versionada del fabricante; la <b>Instancia</b> (este engagement, sus gates y acuses) vive en el repo del cliente (N6). Los gates conectan el método con el ciclo de mejora.</div></div>
+      <div style="font-size:12px;color:var(--tx-faint)">Todo lo que el twin pinta es trazable a una M-card — el método es dato, no opinión.</div>`;
+    return; }
+  if(state.mod==='cambios'){
+    inEye.textContent='Cambios · ISO'; inTitle.textContent='2 pendientes de aprobación';
+    inBody.innerHTML=`<div class="dgroup"><div class="gt">Niveles de aprobación</div>
+      <div style="font-size:12.5px;line-height:1.6"><b>directa</b> — se aplica y queda trazada<br><b>revisión-dueño</b> — el dueño del proceso acusa<br><b>gestión-de-cambios</b> — comité (banda de KPI, mapa de proceso)</div></div>
+      <div style="font-size:12px;color:var(--tx-faint)">Debajo: git real en N6 (dev → UAT → prod). El usuario ve solicitudes y versiones; el hash jamás.</div>`;
+    return; }
+  if(state.corrida){
+    inEye.textContent='Corrida · impactos en vivo'; inTitle.textContent='Cobranza digital fase 2';
+    inBody.innerHTML=`
+      <div class="dgroup"><div class="gt">Cambios propuestos (diff)</div>
+        <div class="drow"><dt>Tesorería y Cobranza</dt><dd><span class="dtag">Δ editado</span></dd></div>
+        <div class="drow"><dt>Cobranza de cuotas</dt><dd style="font-size:12px">+1 actividad · portal de pagos</dd></div>
+        <div class="drow"><dt>Rol nuevo</dt><dd style="font-size:12px">Analista de cobranza digital (propuesto)</dd></div></div>
+      <div class="dgroup"><div class="gt">Impacto proyectado — previous → new</div>
+        <div class="medlist">
+          <div class="r"><span>DSO Marina</span><span>91 → <b style="color:var(--brand-hi)">75 días</b></span></div>
+          <div class="r"><span>cobranza digital</span><span>15% → <b style="color:var(--brand-hi)">40%</b></span></div>
+          <div class="r"><span>costo one-time</span><span style="color:var(--crit)">S/ 60k</span></div>
+          <div class="r"><span>headcount</span><span>+1 rol</span></div></div>
+        <div style="border-top:1px solid var(--border);margin-top:4px;padding-top:8px;font-family:var(--font-mono);font-size:11px">neto · payback 5 meses · ROI 1.8×</div></div>
+      <div class="dgroup"><div class="gt">Salida de la corrida — gate explícito</div>
+        <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">Aplicar = PR a la rama principal (N6) por la cola de <b>Cambios</b>. Nada se mergea implícito.</div>
+        <button class="btn" style="justify-content:center" onclick="document.getElementById('corridaGate').click()">Enviar a aprobación ›</button></div>`;
+    return; }
+  if(state.escala==='z0'){
+    inEye.textContent='Sala de mando · directorio';
+    const ok=DATA.objetivos.filter(o=>o.salud==='verde').length;
+    inTitle.textContent=`Pulso · ${ok}/${DATA.objetivos.length} en banda`;
+    const g=DATA.brechas.find(b=>b.apuesta), o=byId(DATA.objetivos,g.obj);
+    inBody.innerHTML=`
+      <div class="dgroup"><div class="gt">Pulso del directorio — KRs en banda</div>
+        <div class="pulso-dots">${DATA.objetivos.map(x=>`<i style="background:${health[x.salud]}" title="${x.nm}"></i>`).join('')}</div>
+        <div style="font-size:11px;color:var(--tx-faint)">verde = KR dentro de banda · tocá un objetivo en el mapa para encender su hilo</div></div>
+      <div class="apuesta-card">
+        <div class="hd"><span class="live"></span><h3 class="eyebrow" style="margin:0;color:var(--tx-mut);letter-spacing:.1em">La apuesta · próximo paso</h3></div>
+        <div class="body">Cerrar <b>Marina 87→95% de avance</b> — la brecha ALTA atada a <b>${o.nm}</b>.</div>
+        <div class="biz">
+          <div><span class="k">Cuesta</span><span class="v cost">${g.costo}</span></div>
+          <div><span class="k">Mueve KR</span><span class="v kr">margen →18%</span></div>
+          <div><span class="k">Prio</span><span class="v">WSJF ①</span></div>
+        </div>
+        <button class="btn go" id="apuestaGo">Ver el hilo que mueve ›</button>
+      </div>
+      <div class="dgroup"><div class="gt">Estado del loop — brecha → proyecto → KPI</div>
+        ${DATA.proyectos.map(pm=>`<button class="loop-it" data-pm="${pm.id}"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}</span><span class="mono" style="font-size:10px;color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}
+        <div style="font-size:11px;color:var(--tx-faint)">2 proyectos en vuelo · prendé la capa Cinética para verlos sobre el mapa</div></div>`;
+    inBody.querySelector('#apuestaGo').onclick=()=>{ state.piel='territorio';
+      document.querySelectorAll('.piel-toggle button').forEach(x=>x.classList.toggle('on',x.dataset.piel==='territorio'));
+      if(!state.capas.has('hilo')){state.capas.add('hilo');document.querySelector('[data-capa=hilo]').classList.add('on');}
+      state.activeObj='o-lid'; render(); };
+    inBody.querySelectorAll('.loop-it').forEach(b=>b.onclick=()=>openProyecto(byId(DATA.proyectos,b.dataset.pm)));
+  }
+  else if(state.escala==='z1'){
+    const a=byId(DATA.areas,state.foco), procs=subtreeProcs(a.id), setA=new Set(descendants(a.id));
+    const gaps=DATA.brechas.filter(g=>{const pr=byId(DATA.procesos,g.against);return pr&&pr.areas.some(x=>setA.has(x));});
+    const ks=procs.flatMap(p=>kpisByProc(p.id));
+    const cnt={verde:0,ambar:0,rojo:0,gris:0}; ks.forEach(k=>cnt[semaforo(k)]++);
+    const roles=[...new Set([a.lider.split(' · ')[1], ...procs.map(p=>p.dueno)])].map(rolOcupante);
+    inEye.textContent='Área · contexto'; inTitle.textContent=a.nm;
+    inBody.innerHTML=`
+      <div class="dgroup">
+        <div class="drow"><dt>Líder</dt><dd>${a.lider}</dd></div>
+        <div class="drow"><dt>Procesos</dt><dd class="mono">${procs.length}</dd></div>
+        <div class="drow"><dt>Brechas abiertas</dt><dd class="mono" style="color:${gaps.length?'var(--warn)':'var(--ok)'}">${gaps.length}</dd></div>
+      </div>
+      <div class="dgroup"><div class="gt">Indicadores del área — por banda</div>
+        <div style="display:flex;gap:12px;font-family:var(--font-mono);font-size:11px">
+          <span style="color:var(--crit)">● ${cnt.rojo}</span><span style="color:var(--warn)">● ${cnt.ambar}</span>
+          <span style="color:var(--ok)">● ${cnt.verde}</span><span style="color:${SEMC.gris}">● ${cnt.gris} sin dato</span></div>
+        ${ks.map(krowHTML).join('')}</div>
+      <div class="dgroup"><div class="gt">Roles del área — quién los cumple</div>
+        ${roles.map(r=>`<div class="rolrow"><span>${r.rol}</span><span class="who ${r.vac?'vac':''}">${r.vac?'sin persona asignada':(r.quien||'equipo')}</span></div>`).join('')}
+        <div style="font-size:10px;color:var(--tx-faint)">métricas por ROL, jamás por persona nombrada (frontera CK-24)</div></div>
+      <div style="font-size:12px;color:var(--tx-faint)">Tocá un proceso para su ficha · doble-click <b style="color:var(--tx-mut)">Cobranza de cuotas</b> abre el lienzo.</div>`;
+  }
+  else{
+    const f=DATA.flagship, ks=kpisByProc(f.proc);
+    const g=DATA.brechas.find(x=>x.against===f.proc);
+    inEye.textContent='Proceso · lienzo'; inTitle.textContent=f.nm;
+    const tri=f.acts.filter(a=>a.triage&&a.triage.startsWith('automatizable')).length, elim=f.acts.filter(a=>a.triage==='eliminable').length;
+    inBody.innerHTML=`
+      <div class="dgroup"><div class="gt">KPIs del proceso</div>${ks.map(krowHTML).join('')}</div>
+      <div class="dgroup">
+        <div class="drow"><dt>Actividades</dt><dd class="mono">${f.acts.length}</dd></div>
+        <div class="drow"><dt>Automatizables</dt><dd class="mono" style="color:var(--brand-hi)">${tri}</dd></div>
+        <div class="drow"><dt>Eliminables</dt><dd class="mono" style="color:var(--crit)">${elim}</dd></div>
+        <div class="drow"><dt>VSM</dt><dd class="mono">◔ ${f.vsm.toque} · ⏳ ${f.vsm.espera}</dd></div>
+      </div>
+      ${g?`<div class="dgroup"><div class="gt">Brecha activa sobre este proceso</div>
+        <button class="loop-it" id="z2gap"><span style="color:var(--crit)">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.nm}</span><span class="mono" style="font-size:10px;color:var(--crit)">${g.costo}</span></button></div>`:''}
+      <div style="font-size:12px;color:var(--tx-faint)">Tocá una actividad para su detalle (VSM, triage, RACI, procedencia).</div>`;
+    inBody.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>openKpi(byId(DATA.kpis,b.dataset.k)));
+    const gb=inBody.querySelector('#z2gap'); if(gb) gb.onclick=()=>openBrecha(g);
+  }
+  inBody.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>openKpi(byId(DATA.kpis,b.dataset.k)));
+}
+
+function prov(fuente,conf){ return `<div class="dgroup"><div class="gt">Procedencia · sin falsa certeza</div>
+  <div class="drow"><dt>Fuente</dt><dd>${fuente}</dd></div>
+  <div class="drow"><dt>Confianza</dt><dd><span class="chip"><span class="health-dot" style="width:8px;height:8px;background:${confCol(conf)}"></span>${conf}</span></dd></div></div>`; }
+
+function openProceso(p){ const objs=p.sirve.map(id=>byId(DATA.objetivos,id));
+  openDrawer('Proceso · '+byId(DATA.areas,p.areas[0]).nm, p.nm,
+    `<div class="dgroup">
+      <div class="drow"><dt>Dueño (rol)</dt><dd>${p.dueno}</dd></div>
+      <div class="drow"><dt>Áreas que cruza</dt><dd>${p.areas.map(a=>byId(DATA.areas,a).nm).join(', ')}</dd></div>
+      <div class="drow"><dt>Digitalización</dt><dd><span class="chip"><span class="health-dot" style="width:8px;height:8px;background:${health[digHealth(p.digital)]}"></span>${p.digital}</span></dd></div>
+      <div class="drow"><dt>Sistemas</dt><dd>${p.sist.join(' · ')}</dd></div></div>
+     <div class="dgroup"><div class="gt">KPIs del proceso — semáforo por banda</div>
+      ${kpisByProc(p.id).length?kpisByProc(p.id).map(krowHTML).join(''):'<span style="font-size:12px;color:var(--tx-faint)">Sin KPI declarado — candidato del levantamiento.</span>'}</div>
+     <div class="dgroup"><div class="gt">Objetivos que sostiene (hilo de oro)</div>
+      ${objs.length?`<div class="chips">${objs.map(o=>`<span class="chip teal">${o.nm}</span>`).join('')}</div>`
+      :`<span style="color:var(--warn);font-size:13px">Huérfano — no sube a ningún objetivo del directorio.${p.star?' <b>'+p.star+'</b>':''}</span>`}</div>
+     ${prov(p.conf==='alta'?'Sistema leído':'Entrevista',p.conf)}
+     ${p.flagship?'<button class="btn" style="justify-content:center" onclick="drillLienzo()">Abrir lienzo del proceso ›</button>':''}`);
+}
+function openBrecha(g){ const o=g.obj?byId(DATA.objetivos,g.obj):null; const proc=byId(DATA.procesos,g.against);
+  const sc={alta:S.crit,media:S.warn,baja:'var(--tx-mut)'}[g.sev];
+  const est={'accionable':'accionable','sin-ancla-de-valor':'sin ancla de valor','a-corroborar':'a corroborar','off-thread':'off-thread'}[g.estado]||g.estado;
+  openDrawer('Brecha · O6 assessment', g.nm,
+    `<div style="font-size:13px;color:var(--tx-mut);line-height:1.45">${g.sub}</div>
+     <div class="dgroup">
+      <div class="drow"><dt>Tipo</dt><dd>${g.tipo}</dd></div>
+      <div class="drow"><dt>Ataca a</dt><dd>${proc?proc.nm:'—'}</dd></div>
+      <div class="drow"><dt>Objetivo que bloquea</dt><dd>${o?`<span class="chip teal">${o.nm}</span>`:'<span class="chip" style="border-color:var(--warn);color:var(--warn)">sin objetivo</span>'}</dd></div>
+      <div class="drow"><dt>Costo de no hacer</dt><dd style="color:${sc};font-family:var(--font-mono)">${g.costo}</dd></div>
+      <div class="drow"><dt>Severidad · prio</dt><dd><span class="chip" style="border-color:${sc};color:${sc}">${g.sev} · ${g.prio}</span></dd></div>
+      <div class="drow"><dt>Estado</dt><dd><span class="chip">${est}</span></dd></div></div>
+     <div class="dgroup"><div class="gt">Cierra el loop (O7 cinética)</div>
+      ${DATA.proyectos.filter(pm=>pm.brecha===g.id).map(pm=>`<div class="drow"><dt>Proyecto</dt><dd>${pm.nm}<br><span class="mono" style="color:var(--brand-hi);font-size:11px">${pm.pdca} · mueve ${pm.delta} · ROI ${pm.roi}</span></dd></div>`).join('')
+        || '<span style="font-size:12px;color:var(--tx-faint)">Sin proyecto de mejora aún — candidata a la Apuesta.</span>'}</div>`);
+}
+function openProyecto(pm){ const g=byId(DATA.brechas,pm.brecha), k=byId(DATA.kpis,pm.mueve);
+  openDrawer('Proyecto de mejora · O7 (ilustrativo)', pm.nm,
+    `<div class="dgroup">
+      <div class="drow"><dt>Estado (PDCA)</dt><dd><span class="chip teal">${pm.estado} · ${pm.pdca}</span></dd></div>
+      <div class="drow"><dt>Nace de la brecha</dt><dd>${g?g.nm.slice(0,46)+'…':'—'}</dd></div>
+      <div class="drow"><dt>KPI que mueve</dt><dd>${k?krowHTML(k):'—'}</dd></div>
+      <div class="drow"><dt>Compromiso</dt><dd class="mono" style="color:var(--brand-hi)">${pm.delta}</dd></div>
+      <div class="drow"><dt>ROI del caso</dt><dd class="mono">${pm.roi}</dd></div></div>
+     ${pm.resultado?`<div class="dgroup"><div class="gt">Resultado — KPI movido (cierre del loop)</div>
+      <div class="drow"><dt>Delta observado</dt><dd class="mono" style="color:var(--ok)">${pm.resultado.delta_observado}</dd></div>
+      <div class="drow"><dt>Veredicto</dt><dd><span class="chip" style="border-color:var(--ok);color:var(--ok)">✓ ${pm.resultado.veredicto}</span></dd></div>
+      <div style="font-size:11.5px;color:var(--tx-faint)">${pm.resultado.nota}</div></div>`:''}
+     <div style="font-size:12px;color:var(--tx-faint)">El loop <b style="color:var(--tx-mut)">brecha → proyecto → KPI movido</b> vive dentro del twin, con dato real de cierre. Ningún vendor lo cierra in-tool.</div>`);
+}
+function openActividad(a){ openDrawer('Actividad · '+a.verbo, a.ttl,
+  `<div class="dgroup">
+    <div class="drow"><dt>Orden</dt><dd class="mono">${String(a.ord).padStart(2,'0')}</dd></div>
+    <div class="drow"><dt>Tipo</dt><dd>${a.tipo}</dd></div>
+    <div class="drow"><dt>Toque</dt><dd class="mono" style="color:var(--ok)">${a.toque}</dd></div>
+    <div class="drow"><dt>Espera</dt><dd class="mono" style="color:var(--warn)">${a.espera}</dd></div>
+    <div class="drow"><dt>Sistemas</dt><dd>${a.sist.join(' · ')}</dd></div>
+    ${a.raci?`<div class="drow"><dt>RACI</dt><dd style="font-size:12px">R · ${a.raci.R}<br>A · ${a.raci.A}</dd></div>`:''}
+    ${a.mandato?`<div class="drow"><dt>Mandato</dt><dd><span class="chip teal">${a.mandato}</span> <span style="font-size:10px;color:var(--tx-faint)">protegido del triage</span></dd></div>`:''}
+    ${a.triage?`<div class="drow"><dt>Triage automatización</dt><dd><span class="chip teal">${a.triage}</span></dd></div>`:''}
+    ${a.rtlx?`<div class="drow"><dt>Carga (NASA-RTLX)</dt><dd class="mono" style="color:var(--warn)">${a.rtlx} <span style="font-size:9px;color:var(--tx-faint)">agregado por rol</span></dd></div>`:''}</div>
+   ${prov(a.fte||'Entrevista',a.conf||'media')}
+   <div style="font-size:12px;color:var(--tx-faint)">${a.note}</div>`); }
+
+/* ---------- drawer KPI: semáforo grande + sparkline + cadena kpi→KR→objetivo ---------- */
+function sparkSVG(k){ const ms=k.mediciones; if(ms.length<2) return '';
+  const W=300,H=54,P=9; const vs=ms.map(m=>m.v).concat([k.banda.target]);
+  const mn=Math.min(...vs), mx=Math.max(...vs), sp=(mx-mn)||1;
+  const X=i=>P+i*(W-2*P)/(ms.length-1), Y=v=>(H-14)-((v-mn)*(H-14-P)/sp);
+  const pts=ms.map((m,i)=>`${X(i).toFixed(1)},${Y(m.v).toFixed(1)}`).join(' ');
+  const ty=Y(k.banda.target).toFixed(1), lc=SEMC[semaforo(k)];
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="max-width:100%" role="img" aria-label="serie de mediciones">
+    <line x1="${P}" y1="${ty}" x2="${W-P}" y2="${ty}" stroke="rgba(255,255,255,.22)" stroke-dasharray="4 4" stroke-width="1"/>
+    <polyline points="${pts}" fill="none" stroke="var(--teal-400)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${X(ms.length-1).toFixed(1)}" cy="${Y(ms[ms.length-1].v).toFixed(1)}" r="3.5" fill="${lc}" stroke="var(--panel)" stroke-width="1.5"/>
+    <text x="${P}" y="${H-2}" font-size="8" fill="rgba(255,255,255,.34)">${ms[0].f}</text>
+    <text x="${W-P}" y="${H-2}" text-anchor="end" font-size="8" fill="rgba(255,255,255,.34)">banda ┄ ${k.banda.target}${k.unidad||''} · últ. ${ms[ms.length-1].f}</text>
+  </svg>`; }
+function openKpi(k){ const s=semaforo(k), c=kcur(k), o=k.obj?byId(DATA.objetivos,k.obj):null, p=byId(DATA.procesos,k.proc);
+  const menor=k.banda.target<k.banda.rojo;
+  openDrawer('KPI · '+(p?p.nm:''), k.nm,
+   `<div class="dgroup">
+      <div class="sembig"><span class="d" style="background:${SEMC[s]}"></span>
+        <span class="v" style="color:${s==='gris'?'var(--tx-mut)':SEMC[s]}">${c==null?'—':c}</span>
+        <span class="u">${k.unidad||''} · banda <b style="color:${SEMC[s]}">${s.toUpperCase()}</b>${k.stale?' · ⌛ frescura vencida':''}</span></div>
+      ${sparkSVG(k)}
+      <div class="drow"><dt>Banda</dt><dd class="mono">verde ${menor?'≤':'≥'} ${k.banda.target}${k.unidad||''} · rojo ${menor?'≥':'≤'} ${k.banda.rojo}${k.unidad||''}</dd></div>
+      <div class="drow"><dt>Dueño (rol)</dt><dd>${k.dueno}</dd></div>
+      <div class="drow"><dt>Frecuencia</dt><dd>${k.freq}${k.stale?'<br><span style="color:var(--warn);font-size:11px">última medición vieja — el semáforo se degrada, jamás verde mentiroso</span>':''}</dd></div></div>
+    <div class="dgroup"><div class="gt">Cadena del hilo — KPI → KR → objetivo</div>
+      ${o?`<div style="font-size:12.5px;line-height:1.55">mueve el KR <b>${o.kr.m}</b> (peso ${k.peso}) →<br><span class="chip teal" style="margin-top:4px">${o.nm}</span><br>
+        <span class="mono" style="font-size:10.5px;color:var(--tx-faint)">KR: ${o.kr.from} → <span style="color:var(--brand-hi)">${o.kr.cur}</span> → ${o.kr.to} ${o.kr.u}</span></div>`
+      :`<span style="color:var(--warn);font-size:12.5px">⚠ Sin ancla de valor — ningún KR del ciclo mide este KPI. La brecha es real pero invisible para el directorio.</span>`}</div>
+    <div class="dgroup"><div class="gt">Mediciones${k.mediciones.length?'':' — sin dato'}</div>
+      ${k.mediciones.length?`<div class="medlist">${k.mediciones.slice(-6).map(m=>`<div class="r"><span>${m.f}</span><span>${m.v}${k.unidad||''}</span></div>`).join('')}</div>`
+      :'<span style="font-size:12px;color:var(--tx-faint)">Gris = sin dato (regla del motor: la ausencia NUNCA pinta rojo). Este dato hoy se arma a mano entre cierres.</span>'}</div>
+    ${prov(k.fuente,k.conf)}`); }
+
+/* ============================================================
+   CONTROLS
+   ============================================================ */
+document.getElementById('back').onclick=()=>{ state.escala='z0'; state.foco=null; state.insp='home'; render(); };
+document.querySelectorAll('#modulos .esc').forEach(b=>b.onclick=()=>{ state.mod=b.dataset.mod;
+  if(state.mod!=='territorio'){ state.escala='z0'; state.foco=null; } state.insp='home'; render(); });
+document.getElementById('itAsis').onclick=()=>{ state.corrida=false; idmenu.classList.remove('open'); state.insp='home'; render(); };
+document.getElementById('itCorrida').onclick=()=>{ state.corrida=true; state.mod='territorio'; idmenu.classList.remove('open'); state.insp='home'; render(); };
+document.getElementById('corridaExit').onclick=()=>{ state.corrida=false; state.insp='home'; render(); };
+document.getElementById('corridaGate').onclick=()=>{ state.mod='cambios'; state.insp='home'; render(); }; // el diff pasa por la cola de aprobación
+document.querySelectorAll('.piel-toggle button').forEach(b=>b.onclick=()=>{ document.querySelectorAll('.piel-toggle button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  state.piel=b.dataset.piel; state.activeObj=null; render(); });
+document.querySelectorAll('.capa').forEach(b=>b.onclick=()=>{ const c=b.dataset.capa;
+  if(state.capas.has(c)){ state.capas.delete(c); b.classList.remove('on'); } else { state.capas.add(c); b.classList.add('on'); } render(); });
+document.querySelectorAll('.sub-t').forEach(b=>b.onclick=()=>{ document.querySelectorAll('.sub-t').forEach(x=>x.classList.remove('on')); b.classList.add('on'); state.sub=b.dataset.sub; render(); });
+document.querySelectorAll('.lodctl button').forEach(b=>b.onclick=()=>{ document.querySelectorAll('.lodctl button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  state.lod=+b.dataset.lod; render(); });
+
+/* identidad As-Is / corridas (teaser del eje simular) */
+const idmenu=document.getElementById('idmenu');
+document.getElementById('idpill').onclick=e=>{ e.stopPropagation(); idmenu.classList.toggle('open'); };
+document.addEventListener('click',e=>{ if(!e.target.closest('.idwrap')) idmenu.classList.remove('open'); });
+
+/* búsqueda — ⌘K, spotlight en vivo */
+const $search=document.getElementById('search');
+$search.addEventListener('input',()=>{ state.search=$search.value; render(); });
+document.addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); $search.focus(); $search.select(); return; }
+  if(e.key==='Escape'){
+    if(document.activeElement===$search && state.search){ state.search=''; $search.value=''; $search.blur(); render(); return; }
+    if(state.search){ state.search=''; $search.value=''; render(); return; }
+    if(state.insp==='sel'){ state.insp='home'; inspectorHome(); return; }
+    if(state.escala!=='z0'){ state.escala='z0'; state.foco=null; render(); }
+  }
+});
+
+setTimeout(()=>document.getElementById('hint').classList.add('gone'),7000);
+window.addEventListener('resize',()=>fit(false));
+render();
+</script>
