@@ -561,7 +561,7 @@
     </div>
     <div class="minimap" id="minimap"><div id="mmdots"></div><div class="vw" id="mmview"></div></div>
 
-    <div class="hint" id="hint">El mapa de valor: estrategia → cadena → apoyo → gente → sistemas, unidos por el hilo · tocá un objetivo y su hilo cruza las bandas · doble-click un proceso abre su lienzo (flujograma) · piel <b>Organigrama</b> = la estructura como lente</div>
+    <div class="hint" id="hint">El mapa de valor: estrategia → cadena → apoyo → gente → sistemas, unidos por el hilo · toca un objetivo y su hilo cruza las bandas · doble-click un proceso abre su lienzo (flujograma) · piel <b>Organigrama</b> = la estructura como lente</div>
   </main>
 
   <aside class="inspector" id="inspector">
@@ -1213,9 +1213,18 @@ function applyView(anim=true){ world.classList.toggle('anim',anim);
 function fit(anim=true){ const vw=stage.clientWidth, vh=stage.clientHeight;
   const z=Math.min((vw-56)/state.cw,(vh-90)/state.ch,1.08);
   view.z=z; view.x=(vw-state.cw*z)/2; view.y=(vh-state.ch*z)/2 + (state.escala==='z2'?0:14); applyView(anim); }
+// z2/z3: zoom mínimo 0.6 anclado al INICIO del flujo (puertos S·I + primeras actividades legibles);
+// el resto del lienzo se alcanza con pan/rueda + minimapa (mismo trade-off que z0, decisión 3 + LOD)
+function fitFlujo(anim=true){ const vw=stage.clientWidth, vh=stage.clientHeight;
+  const z=Math.max(0.6, Math.min((vw-56)/state.cw,(vh-90)/state.ch,1.08));
+  view.z=z;
+  view.x = state.cw*z<=vw-56 ? (vw-state.cw*z)/2 : 28;
+  view.y = state.ch*z<=vh-90 ? (vh-state.ch*z)/2 : 24;
+  applyView(anim); }
+const refit=(anim=true)=>(state.escala==='z2'||state.escala==='z3')?fitFlujo(anim):fit(anim);
 document.getElementById('zin').onclick =()=>{view.z=Math.min(2,view.z+0.12); applyView();};
 document.getElementById('zout').onclick=()=>{view.z=Math.max(0.3,view.z-0.12); applyView();};
-document.getElementById('zfit').onclick=()=>fit();
+document.getElementById('zfit').onclick=()=>refit();
 
 let drag=null;
 stage.addEventListener('mousedown',e=>{ if(e.target.closest('.area-node,.obj-node,.proc-node,.pin,.kin,.act,.btn,.chev,.soporte,.rolchip,.sysplat'))return;
@@ -1719,7 +1728,7 @@ function renderLienzo(){
   }
 
   counter(stub?`${f.acts.length} pasos macro · actividades sin levantar (M1)`:`${f.acts.length} actividades · ${f.lanes.length} carriles · ${f.seq.length} flujos`);
-  fit();
+  fitFlujo();
 }
 
 /* ---------- z3 · instrucción de trabajo — ISO 10013 nivel 3 · APQC L5 (el "cómo") ----------
@@ -1793,7 +1802,7 @@ function renderInstruccion(){
     ${alts.length?alts.map(s=>{ const t2=f.acts.find(x=>x.ord===s.t);
       return `<button class="loop-it" onclick="drillActividad('${pid}',${s.t})"><span class="pdca" style="${s.alt?'background:rgba(224,173,78,.15);color:var(--warn)':''}">${s.alt?'alterno':'sigue'}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.c?s.c+' → ':''}${String(s.t).padStart(2,'0')} · ${t2?t2.verbo:''}</span></button>`;}).join('')
     :'<span style="font-size:12px;color:var(--tx-faint)">— actividad final del flujo</span>'}
-    <div style="font-size:10px;color:var(--tx-faint)">tocá un flujo para saltar a ESA instrucción — el viaje no se corta</div>`);
+    <div style="font-size:10px;color:var(--tx-faint)">toca un flujo para saltar a ESA instrucción — el viaje no se corta</div>`);
   let cx2=40;
   cards.forEach(html=>{ const c=el('div','z3card',html); c.style.left=cx2+'px'; c.style.top=cY+'px'; wireLinks(c); $pins.appendChild(c); cx2+=352+30; });
 
@@ -1805,7 +1814,7 @@ function renderInstruccion(){
   wireLinks(piso); $pins.appendChild(piso);
 
   counter(d?`${d.tareas.length} tareas · instrucción levantada`:'instrucción sin levantar (M1)');
-  fit();
+  fitFlujo();
 }
 
 /* ---------- módulo Mejora: el loop brecha → proyecto → KPI movido ---------- */
@@ -1949,7 +1958,7 @@ function inspectorHome(){
     inEye.textContent='Mejora · el loop'; inTitle.textContent='6 brechas → 2 en vuelo → 1 movido';
     inBody.innerHTML=`<div class="dgroup"><div class="gt">El money shot del director</div>
       <div style="font-size:12.5px;line-height:1.5">El ciclo <b>brecha → proyecto → KPI movido</b> vive dentro del twin con dato real de cierre. El veredicto se escribe contra la serie del KPI — no contra un checklist.</div></div>
-      <div style="font-size:12px;color:var(--tx-faint)">Tocá una brecha o proyecto para su ficha. El proyecto cerrado muestra el delta observado y su veredicto.</div>`;
+      <div style="font-size:12px;color:var(--tx-faint)">Toca una brecha o proyecto para su ficha. El proyecto cerrado muestra el delta observado y su veredicto.</div>`;
     return; }
   if(state.mod==='metodo'){
     inEye.textContent='Método · engagement'; inTitle.textContent='M1 ✓ · M3 en curso · M2 activo';
@@ -1989,7 +1998,7 @@ function inspectorHome(){
     inBody.innerHTML=`
       <div class="dgroup"><div class="gt">Pulso del directorio — KRs en banda</div>
         <div class="pulso-dots">${DATA.objetivos.map(x=>`<i style="background:${health[x.salud]}" title="${x.nm}"></i>`).join('')}</div>
-        <div style="font-size:11px;color:var(--tx-faint)">verde = KR dentro de banda · tocá un objetivo en el mapa para encender su hilo</div></div>
+        <div style="font-size:11px;color:var(--tx-faint)">verde = KR dentro de banda · toca un objetivo en el mapa para encender su hilo</div></div>
       <div class="apuesta-card">
         <div class="hd"><span class="live"></span><h3 class="eyebrow" style="margin:0;color:var(--tx-mut);letter-spacing:.1em">La apuesta · próximo paso</h3></div>
         <div class="body">Cerrar <b>Marina 87→95% de avance</b> — la brecha ALTA atada a <b>${o.nm}</b>.</div>
@@ -2002,7 +2011,7 @@ function inspectorHome(){
       </div>
       <div class="dgroup"><div class="gt">Estado del loop — brecha → proyecto → KPI</div>
         ${DATA.proyectos.map(pm=>`<button class="loop-it" data-pm="${pm.id}"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}</span><span class="mono" style="font-size:10px;color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}
-        <div style="font-size:11px;color:var(--tx-faint)">2 proyectos en vuelo · prendé la capa Cinética para verlos sobre el mapa</div></div>
+        <div style="font-size:11px;color:var(--tx-faint)">2 proyectos en vuelo · prende la capa Cinética para verlos sobre el mapa</div></div>
       <div class="dgroup"><div class="gt">El twin compila trabajo — arneses por puesto</div>
         <div style="font-size:12.5px;line-height:1.5"><b class="mono" style="color:var(--brand-hi)">${DATA.arneses.length}/${DATA.puestosTotal}</b> puestos operan con arnés compilado del twin · <span style="color:var(--warn)">${DATA.arneses.filter(h=>h.estado==='desactualizado').length} desactualizado</span> (el twin cambió → recompilar). El resto opera a mano: el gap de la era agéntica, visible.</div>
         <button class="btn" id="verTrabajo" style="justify-content:center">Prender la capa Trabajo ›</button></div>`;
@@ -2034,7 +2043,7 @@ function inspectorHome(){
       <div class="dgroup"><div class="gt">Roles del área — quién los cumple · con qué arnés</div>
         ${roles.map(r=>`<div class="rolrow"><span class="plnk" data-rol="${r.rol}">${r.rol}</span> ${harnBadge(arnesDeRol(r.rol))}<span class="who ${r.vac?'vac':''}" ${(!r.vac&&r.quien)?`data-per="${r.quien}" style="cursor:pointer"`:''}>${r.vac?'sin persona asignada':(r.quien||'equipo')}</span></div>`).join('')}
         <div style="font-size:10px;color:var(--tx-faint)">métricas por ROL, jamás por persona nombrada (frontera CK-24) · ⛨ = arnés compilado del twin (CK-29)</div></div>
-      <div style="font-size:12px;color:var(--tx-faint)">Tocá un proceso para su ficha (con su caracterización SIPOC) · doble-click abre su lienzo (flujograma).</div>`;
+      <div style="font-size:12px;color:var(--tx-faint)">Toca un proceso para su ficha (con su caracterización SIPOC) · doble-click abre su lienzo (flujograma).</div>`;
   }
   else if(state.escala==='z3'&&state.act){
     const lf=lienzoData(state.act.pid), aa=lf&&lf.acts.find(x=>x.ord===state.act.ord);
@@ -2046,7 +2055,7 @@ function inspectorHome(){
       <div class="dgroup"><div class="gt">Acciones (kinética)</div>
         <button class="btn" data-acc="corregir-instruccion">Proponer corrección de instrucción › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · gestión-de-cambios → recompila arnés</span></button>
         <button class="btn" data-acc="enviar-idea">Proponer mejora al funil › <span class="mono" style="font-size:9px;color:var(--tx-faint)">operativo · directa · autoría reconocida</span></button></div>
-      <div style="font-size:12px;color:var(--tx-faint);line-height:1.5">Debajo de la instrucción no hay más zoom: el piso es el <b>arnés del puesto</b> (CK-29). Tocá una tarea, un rol o el arnés para seguir el viaje.</div>`;
+      <div style="font-size:12px;color:var(--tx-faint);line-height:1.5">Debajo de la instrucción no hay más zoom: el piso es el <b>arnés del puesto</b> (CK-29). Toca una tarea, un rol o el arnés para seguir el viaje.</div>`;
     wireLinks(inBody); return;
   }
   else{
@@ -2073,7 +2082,7 @@ function inspectorHome(){
           <div class="drow"><dt>VSM</dt><dd class="mono">${f.vsm?`◔ ${f.vsm.toque} · ⏳ ${f.vsm.espera}`:'sin medir (M1)'}</dd></div>
         </div>
         ${gapsHTML}
-        <div style="font-size:12px;color:var(--tx-faint)">Tocá una actividad para su detalle (VSM, triage, RACI, procedencia).</div>`;
+        <div style="font-size:12px;color:var(--tx-faint)">Toca una actividad para su detalle (VSM, triage, RACI, procedencia).</div>`;
     }
   }
   wireLinks(inBody);
@@ -2390,6 +2399,6 @@ const brandSub=document.querySelector('.brand .sub'); brandSub.style.cursor='poi
 brandSub.onclick=()=>openEmpresa();
 
 setTimeout(()=>document.getElementById('hint').classList.add('gone'),9000);
-window.addEventListener('resize',()=>fit(false));
+window.addEventListener('resize',()=>refit(false));
 render();
 </script>

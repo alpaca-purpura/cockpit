@@ -181,6 +181,19 @@ preguntan. Provenance = `Declarado` (dato del dueño), no `Inferido`. **Los obje
 negocio), no se heredan hipótesis. Fuente = SOLO el volcado + `empresa.yaml` (identidad); `_deprecated/negocio.yaml` =
 referencia/backup, no autoritativo; **marketing FUERA**. Es el dogfood del flujo real del m1 (cliente vuelca → mapeamos).
 
+## D-17 · Subesquema `tarea` bajo `actividad` (el L5 estructurado) — `en-discusión` (**PROPUESTA — pendiente ratificación del operador**)
+**Propone** formalizar las tareas de una actividad como dato tipado: `actividad.tareas[]`, subesquema
+`tarea = { orden, verbo?, texto, sistemas_ref? }`, `met: "ISO 10013 nivel 3 · APQC L5"`. El `verbo?`
+usa el MISMO vocabulario controlado que `actividad.verbo` (`sistema/schema/verbos.yaml`, refichado WS5 —
+fuera de vocabulario = warning). **NO deroga D-08** (el manual sigue disuelto): `desc` NARRA el cómo
+(narrativa original como evidencia), `tareas[]` lo ESTRUCTURA en pasos ordenados; la **instrucción de
+trabajo (z3) se GENERA** de `tareas[]` + la tortuga del proceso — el "manual"/instrucción sigue siendo
+**proyección, NO entidad** (misma doctrina que `documentos`, línea D-08). Origen: mockup del twin
+(historia `cockpit/twin-territorio-mapa-zoomable`, decisiones 16-17 — la escalera z0→z3 ancla z3 a
+ISO 10013 nivel 3 × APQC L5; hoy el mockup rinde z3 con tareas *canned* en `DATA.z3`). **Alcance de
+esta ficha: SOLO docs** — cero cambio a `objeto.schema.yaml`/Go; la materialización aterriza con el
+refinamiento de la historia, tras ratificación (`/metodo-aprende` si toca M-cards).
+
 ---
 
 ## Micro-opens bancados (no frenan; se resuelven al construir)

@@ -5,8 +5,10 @@
 > **Objetivo de la próxima sesión (pedido del operador):** terminar el **mockup de la visión
 > COMPLETA del cockpit, de inicio a fin** — el operador llega con VARIOS comentarios nuevos.
 
-## Estado actual (v8 · publicado)
+## Estado actual (v8.2 · publicado)
 
+- **v8.2 (2026-07-24):** tuteo es-419 (voseo = 0) · clamp de zoom z2/z3 (`fitFlujo`, mín 0.6 anclado
+  al inicio del flujo) · ficha **D-17 PROPUESTA** (`tarea` bajo `actividad`) en DECISIONES.md. Suite 19/19.
 - **v8 (2026-07-24, decisiones 16-17):** escalera completa z0→z2→z3→arnés (APQC L1-L5 × ISO 10013) —
   z2 CARACTERIZADO (header C1 ISO 4.4.1 + puertos SIPOC como geografía) · z3 instrucción de trabajo
   (tareas + M36 dos scores con inputs + RACI/RTLX + flujos saltables + piso arnés CK-29) · empresa
@@ -63,36 +65,28 @@
 Anchors v8: `function renderInstruccion` (z3) · `drillActividad` · `DATA.z3` · `sipoc:{`/`sipocC1:{` ·
 `lienzos:{` · `.portbox`/`.c1row`/`.z3card`/`.piso-arnes` (CSS). Back = escalera de a un peldaño.
 
-## ⚠ EN CURSO — deuda consciente ratificada "resuelve todo de una vez" (sesión colgada 2026-07-24)
+## ✔ RESUELTO (2026-07-24) — la deuda consciente de la sesión colgada, cerrada
 
-Estado git: TODO commiteado hasta `4a9a365` (v8.1) · artifact publicado v8.1 · working tree limpio.
-Las 3 tareas ratificadas quedaron SIN EMPEZAR (solo inventario del voseo hecho):
+Las 3 tareas ratificadas se ejecutaron y verificaron (v8.2):
 
-1. **Barrido voseo → tuteo neutro (es-419, `[[cockpit-stack]]`)** en `index.html`. Inventario
-   (líneas drifean — re-grepear): 8 instancias — `tocá` ×3, `Tocá` ×4, `prendé` ×1. Grep verbatim:
-   `grep -n "Tocá\|tocá\|prendé\|Volvé\|volvé" index.html` → reemplazar por Toca/toca/prende/Vuelve.
-   Meta: grep = 0. OJO: solo microcopy; no tocar datos/nombres.
-2. **Clamp de zoom en fit() de z2 y z3**: zoom mínimo ~0.6, anclado al INICIO del flujo
-   (izquierda — puertos S·I y primeras actividades legibles); el resto se alcanza con pan/rueda +
-   minimapa. Hoy `fit()` encoge a 35-42% en lienzos de 9 actividades (p-perm). Implementación:
-   variante de fit con clamp llamada solo desde `renderLienzo()` y `renderInstruccion()` (~10 líneas).
-   Mismo trade-off ya ratificado en z0 (decisión 3 + LOD).
-3. **Ficha D-NN PROPUESTA en `sistema/schema/DECISIONES.md`**: subesquema `tarea` bajo `actividad`
-   — `{orden, verbo?, texto, sistemas_ref?}`, `met: "ISO 10013 nivel 3 · APQC L5"`. NO deroga D-08
-   (manual disuelto): `desc` narra, `tareas[]` estructura; la instrucción z3 se GENERA de ahí.
-   Marcarla **PROPUESTA — pendiente ratificación del operador**; solo docs (cero cambio a
-   `objeto.schema.yaml`/Go — eso aterriza con el refinamiento de la historia). Antes: leer el
-   formato de fichas existentes en DECISIONES.md + grep anti-contradicción (`desc`, D-08) +
-   pre-commit valida.
+1. **Voseo → tuteo neutro**: 8 instancias reemplazadas (`Tocá`→`Toca` ×4, `tocá`→`toca` ×3,
+   `prendé`→`prende` ×1). Grep de verificación = 0 matches. Solo microcopy, datos intactos.
+2. **Clamp de zoom z2/z3**: `fitFlujo()` (zoom mínimo 0.6, ancla izquierda si el lienzo no entra
+   a lo ancho, arriba si no entra a lo alto) llamada desde `renderLienzo()` y `renderInstruccion()`;
+   `refit()` rutea el botón fit y el resize por la variante correcta según `state.escala` (sin eso,
+   un resize en z2/z3 deshacía el clamp). Verificado con ojos: p-perm abre a 60% (antes ~35-42%)
+   con puertos S·I + primeras actividades legibles; z0 intacto (58%, sin clamp).
+3. **Ficha D-17 PROPUESTA** en `sistema/schema/DECISIONES.md`: subesquema `tarea` bajo `actividad`
+   (`{orden, verbo?, texto, sistemas_ref?}`, met ISO 10013 n3 · APQC L5), estado `en-discusión` —
+   **pendiente ratificación del operador**. NO deroga D-08; solo docs, cero cambio a schema/Go.
 
-Al terminar: `./verify.sh` (19/19) → screenshot headless de un lienzo largo (clamp visible) →
-commit+push → republicar mismo artifact (`url` de arriba) → WebFetch check → avisar Ctrl+Shift+R →
-marcar esta sección como resuelta.
+Verificación: `./verify.sh` 19/19 + ERRS=[] (ojo: la suite es flaky en frío — un "SIN RESULTADO"
+aislado se re-corre antes de diagnosticar) · screenshots headless z0/z2-perm/z3 revisados a ojo.
 
 ## Pendientes conocidos (visuales, menores)
 
-- Voseo pre-existente en microcopy ("Tocá…") viola es-419 sin voseo del stack — barrido pendiente.
-- `tareas[]` como campo tipado del schema = evolución pendiente (hoy `desc` D-08; z3 lo rinde canned).
+- `tareas[]` como campo tipado del schema: ficha **D-17 PROPUESTA** escrita (`sistema/schema/DECISIONES.md`)
+  — falta ratificación del operador; materialización = refinamiento de la historia (z3 lo rinde canned).
 
 - ~~Banda Gente roza label SISTEMAS~~ → resuelto v8 (ySis dinámico tras wrap de gente).
 - ~~Pin z1 roza la card de arriba~~ → resuelto v8 (`.pin.down`: cuelga DEBAJO de la card).
