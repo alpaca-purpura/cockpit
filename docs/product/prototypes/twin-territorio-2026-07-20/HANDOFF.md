@@ -5,10 +5,16 @@
 > **Objetivo de la próxima sesión (pedido del operador):** terminar el **mockup de la visión
 > COMPLETA del cockpit, de inicio a fin** — el operador llega con VARIOS comentarios nuevos.
 
-## Estado actual (v6 · commit `8ce4c55` · publicado)
+## Estado actual (v8 · publicado)
 
+- **v8 (2026-07-24, decisiones 16-17):** escalera completa z0→z2→z3→arnés (APQC L1-L5 × ISO 10013) —
+  z2 CARACTERIZADO (header C1 ISO 4.4.1 + puertos SIPOC como geografía) · z3 instrucción de trabajo
+  (tareas + M36 dos scores con inputs + RACI/RTLX + flujos saltables + piso arnés CK-29) · empresa
+  entera ~100 personas (nómina en `personasExtra`, 27 puestos ×N, 40 roles) · 11 lienzos plenos
+  (`DATA.lienzos` — incluye Permisos = P03 del SOMA con g-dep/g-doc) · 14 instrucciones (`DATA.z3`,
+  key `'pid:ord'`) · SIPOC 17 (`DATA.sipoc` + `sipocC1`) · Salud = lentes color-by. Suite 19/19.
 - **Archivo único:** `index.html` (este directorio) — autocontenido, vanilla JS/SVG, PRENTER dark/teal,
-  datos canned de Terranova. ~1750 líneas.
+  datos canned de Terranova. ~2300 líneas.
 - **Artifact (mismo URL siempre):** `https://claude.ai/code/artifact/20907d03-3979-42f2-b5c8-b33fa5e383f6`
   → republicar con tool Artifact pasando `url` (desde otra conversación) o mismo file_path (misma).
   **El CDN tarda minutos en propagar** → tras publicar, verificar con WebFetch (busca un marcador del
@@ -54,7 +60,13 @@
    screenshot fresco y confirmar el efecto, o instrumentar la página con un logger on-screen de eventos.
 5. Iterar → correr `./verify.sh` → screenshot headless de los estados tocados → commit → republicar.
 
+Anchors v8: `function renderInstruccion` (z3) · `drillActividad` · `DATA.z3` · `sipoc:{`/`sipocC1:{` ·
+`lienzos:{` · `.portbox`/`.c1row`/`.z3card`/`.piso-arnes` (CSS). Back = escalera de a un peldaño.
+
 ## Pendientes conocidos (visuales, menores)
+
+- Voseo pre-existente en microcopy ("Tocá…") viola es-419 sin voseo del stack — barrido pendiente.
+- `tareas[]` como campo tipado del schema = evolución pendiente (hoy `desc` D-08; z3 lo rinde canned).
 
 - Banda Gente 2ª fila roza el label "SISTEMAS" (solape leve de labels con wrap).
 - Pin de brecha en z1 puede rozar la card de arriba (se movió a -96; revisar con datos densos).

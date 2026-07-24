@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Suite de verificación del mockup — clicks con HIT-TESTING REAL (elementFromPoint), no element.click().
-# Uso: ./verify.sh   → imprime V7SUITE :: OK ... | ERRS=[]  (13/13 esperado)
+# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (19/19 esperado)
 set -euo pipefail
 cd "$(dirname "$0")"
 TMP=$(mktemp -d)
@@ -49,12 +49,29 @@ window.addEventListener('load',()=>{whenReady(()=>{
   t('lienzo-stub-honesto',()=>{ mclick(document.getElementById('back'));
     mclick([...document.querySelectorAll('.soporte')].find(x=>x.textContent.includes('Nómina')),true);
     A(state.escala==='z2'&&state.lienzo==='p-nom','lienzo='+state.lienzo); A(document.body.textContent.includes('SIN LEVANTAR'),'sin banner honesto'); });
+  t('z2-puertos-sipoc',()=>{ mclick(document.getElementById('back'));
+    mclick([...document.querySelectorAll('.chev .nm')].find(x=>x.textContent.includes('Cobranza')),true);
+    A(state.escala==='z2','escala='+state.escala); const pb=document.querySelectorAll('.portbox'); A(pb.length===2,'puertos='+pb.length);
+    const up=[...document.querySelectorAll('.portbox [data-proc]')].find(x=>x.textContent.includes('Facturación')); A(up,'sin proveedor navegable');
+    A(document.body.textContent.includes('Propósito'),'sin C1 en header'); });
+  t('z3-instruccion',()=>{ const act3=[...document.querySelectorAll('.act')].find(x=>x.textContent.includes('Contactar')); A(act3,'sin act 03');
+    mclick(act3,true); A(state.escala==='z3'&&state.act.ord===3,'act='+JSON.stringify(state.act));
+    A(document.querySelectorAll('.tarea').length>=4,'tareas='+document.querySelectorAll('.tarea').length);
+    A(document.querySelectorAll('.scorebar').length===2,'sin dos scores M36'); });
+  t('z3-flujo-salta',()=>{ const fl=[...document.querySelectorAll('.z3card .loop-it')].find(x=>x.textContent.includes('mora dura')); A(fl,'sin flujo alterno');
+    mclick(fl); A(state.escala==='z3'&&state.act.ord===4,'salto roto: '+JSON.stringify(state.act)); });
+  t('z3-piso-arnes',()=>{ state.act={pid:'p-cob',ord:3}; render();
+    const hb=document.querySelector('.piso-arnes .harn[data-h]'); A(hb,'piso sin arnés');
+    mclick(hb); A(eye().includes('Arnés'),eye()); });
+  t('z3-back-escalera',()=>{ mclick(document.getElementById('back')); A(state.escala==='z2','back z3→z2 roto: '+state.escala);
+    mclick(document.getElementById('back')); A(state.escala==='z0','back z2→z0 roto: '+state.escala); });
+  t('rolchip-headcount',()=>{ const rc=[...document.querySelectorAll('.rolchip .who')].find(x=>/\+\d/.test(x.textContent)); A(rc,'sin headcount ×N en gente'); });
   R.push('ERRS='+JSON.stringify(window.__ERRS||[]));
-  document.title='V7SUITE :: '+R.join(' | ');
+  document.title='V8SUITE :: '+R.join(' | ');
 });});
 </script>
 EOF
 google-chrome --headless=new --disable-gpu --user-data-dir="$TMP/profile" --window-size=1680,1050 \
-  --virtual-time-budget=14000 --dump-dom "file://$TMP/t.html" 2>/dev/null | grep -o '<title>V7SUITE[^<]*' \
+  --virtual-time-budget=18000 --dump-dom "file://$TMP/t.html" 2>/dev/null | grep -o '<title>V8SUITE[^<]*' \
   || { echo "SIN RESULTADO — revisar errores JS"; exit 1; }
 rm -rf "$TMP"

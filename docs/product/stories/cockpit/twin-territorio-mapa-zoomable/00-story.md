@@ -270,6 +270,29 @@ un sistema interconectado. Sal de la caja y proponme algo mejor."
     a **piel secundaria** ("la estructura como lente"). Todo lo previo (capas, fichas, corrida,
     módulos, z1/z2) se conserva.
 
+## v7-v8 · La escalera de detalle completa (2026-07-24, ratificada)
+
+16. **La escalera de zoom se ancla a método** — APQC PCF L1-L5 × pirámide documental ISO 10013
+    (M38): z0 Mapa de Valor (L1-L2, el "manual") → **z2 lienzo CARACTERIZADO** (L3-L4, el
+    "procedimiento": header C1 identidad ISO 4.4.1 + **bordes SIPOC como GEOGRAFÍA** — puertos
+    S·I a la izquierda del flujo, O·C a la derecha, navegables) → **z3 instrucción de trabajo**
+    (L5, el "cómo": micro-flujo de tareas + dos scores M36 con inputs visibles + RACI/RTLX +
+    procedencia + flujos alternos saltables) → **piso = el arnés del puesto** (CK-29: debajo de
+    la última tarea no hay más twin — hay trabajo COMPILADO). Los "registros" ISO = pulso,
+    transversal. Análisis previo: el SIPOC de 11 capas del SOMA (demo Prospera) fue ABSORBIDO
+    por el schema capa por capa (C1→proposito/disparador · C2-C6→bordes · C7→sistema ·
+    C8→rol/RACI · C9→documentos · C10→kpi · C11→brecha · IAA→M36 · Bloom→M37); la tabla-documento
+    NO vuelve — cada capa es entidad viva navegable. Salud rail rediseñado como lentes color-by
+    (radio real + leyenda pegada + conteo). SIPOC también como sección en la ficha (drawer).
+17. **Empresa demo completa (~100 personas)** — nómina Terranova entera (14 líderes + 86
+    ocupantes, área Obras con 3 proyectos), 27 puestos operando la cadena (chips ×N), 40 roles,
+    17 SIPOC, 11 lienzos plenos (incl. **Permisos y licencias** = el P03 del SOMA vivo en el twin,
+    con g-dep bus-factor-1 y g-doc sin-procedimiento como brechas), 14 instrucciones z3 con
+    tareas+M36, 11 sistemas, 12 KPIs. Casuística visible: vacante, sin-arnés, desactualizado,
+    KPI stale, sin-ancla, mandato protegido, eliminable, RTLX alto, subcontratados, provisto
+    externamente. Pendiente de schema: formalizar `tareas[]` bajo actividad (hoy `desc` D-08) —
+    ficha D-NN vía `/metodo-aprende` cuando se ratifique.
+
 ## ⚠ PENDIENTE — ajustes del operador (continuar en conversación nueva)
 
 **El operador sigue iterando el mockup.** Estado tras la sesión 2 (shell v2):
@@ -383,3 +406,11 @@ tabs actual. Ratificación del operador + (si es decisión de fondo) ficha CK-NN
   hilo de oro como edges verticales; organigrama → piel-lente; BSC absorbido por la banda Estrategia;
   pasos mini por proceso (lenguaje fractal Arnesia); transversales por ancho. Suite v6 hit-tested:
   9/9, 0 errores JS.
+- v7 2026-07-24 — Salud como **lentes color-by** (radio real, leyenda pegada al lente activo con
+  alcance+pregunta+conteo — mata los puntos-semáforo falsos) · **SIPOC en ficha** de todo proceso
+  (proyección de bordes D-08/D-11, navegable) · **lienzo universal** (dblclick cualquier proceso;
+  honesto sin actividades). Suite 13/13.
+- v8 2026-07-24 — **la escalera completa + empresa entera** (decisiones 16-17): z2 caracterizado
+  (C1 + puertos SIPOC como geografía) · z3 instrucción de trabajo (tareas · M36 dos scores con
+  inputs · RACI · flujos saltables · piso = arnés CK-29) · nómina 100 personas · 11 lienzos plenos
+  (Permisos = P03 del SOMA) · 14 instrucciones z3 · brechas g-dep/g-doc. Suite 19/19, 0 errores JS.

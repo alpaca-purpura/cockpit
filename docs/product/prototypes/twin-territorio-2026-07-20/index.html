@@ -279,6 +279,30 @@
   .kchip:hover { border-color:#33443f; color:var(--tx); }
   .kchip .kd { width:8px; height:8px; border-radius:50%; }
 
+  /* z2 caracterizado — C1 (identidad ISO 4.4.1) en el header + puertos SIPOC como geografía */
+  .c1row { display:flex; gap:16px; flex-wrap:wrap; margin-top:9px; font-size:11px; color:var(--tx-mut); max-width:110ch; }
+  .c1row .c1i { max-width:250px; line-height:1.35; }
+  .c1row .c1i b { font-family:var(--font-mono); font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--tx-faint); display:block; font-weight:600; }
+  .portbox { position:absolute; transform:translate(0,-50%); width:232px; background:rgba(12,17,16,.72); border:1px dashed var(--teal-800); border-radius:11px; padding:11px 13px; z-index:3; }
+  .portbox .pt { font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--brand-hi); margin-bottom:7px; }
+  .portbox .pitems { display:flex; flex-direction:column; gap:3px; font-size:10.5px; color:var(--tx-mut); margin-top:7px; line-height:1.3; }
+  .portbox .chips .chip { font-size:10px; padding:2px 7px; }
+
+  /* z3 — instrucción de trabajo (ISO 10013 nivel 3): tareas + M36 + RACI + piso arnés */
+  .tarea { width:198px; background:var(--raised); border:1px solid var(--border); border-radius:10px; padding:10px 12px; text-align:left; }
+  .tarea .tv2 { font-family:var(--font-mono); font-size:9px; color:var(--brand); }
+  .tarea .tt2 { font-size:12px; line-height:1.35; margin-top:3px; }
+  .z3card { position:absolute; width:352px; background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:13px 15px; display:flex; flex-direction:column; gap:8px; }
+  .z3card .gt { font-family:var(--font-mono); font-size:9.5px; text-transform:uppercase; letter-spacing:.12em; color:var(--tx-faint); }
+  .scorebar { display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:10px; color:var(--tx-mut); }
+  .scorebar .lb { width:52px; }
+  .scorebar .tr2 { flex:1; height:6px; border-radius:4px; background:#1a2422; overflow:hidden; }
+  .scorebar .tr2 i { display:block; height:100%; border-radius:4px; }
+  .scorebar .v2 { width:24px; text-align:right; color:var(--tx); }
+  .m36in { display:flex; flex-wrap:wrap; gap:4px; }
+  .m36in .chip { font-size:10px; padding:2px 7px; }
+  .piso-arnes { position:absolute; border:1px dashed var(--teal-700); background:rgba(0,183,170,.05); border-radius:12px; padding:13px 16px; width:560px; font-size:12.5px; line-height:1.5; }
+
   /* ---------- viewport: zoom + LOD abajo-izq · minimapa abajo-der ---------- */
   .viewctl { position:absolute; left:16px; bottom:16px; z-index:15; display:flex; align-items:center; gap:8px; }
   .zoomctl { display:flex; align-items:center; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:rgba(12,17,16,.86); backdrop-filter:blur(6px); }
@@ -581,6 +605,7 @@ const DATA = {
     {id:'a-ope', nm:'Operaciones',            lider:'Alberto Guerrero Osorio · Gte. Construcción',parent:'a-ger', madurez:'ambar', conf:'baja'},
     {id:'a-oft', nm:'Oficina Técnica',        lider:'Luis Huamán Villanueva · Jefe Of. Técnica',  parent:'a-ope', madurez:'verde', conf:'media'},
     {id:'a-log', nm:'Logística de Obra',      lider:'Ernesto Dávila Castillo · Jefe de Logística',parent:'a-ope', madurez:'ambar', conf:'media'},
+    {id:'a-obr', nm:'Obras — proyectos',      lider:'Marco Silva Peralta · Residente de Obra',    parent:'a-ope', madurez:'ambar', conf:'media'},
     {id:'a-ti',  nm:'TI',                     lider:'Inés Dávila Núñez · Jefe de TI',             parent:'a-ger', madurez:'ambar', conf:'alta'},
   ],
   matrixEdges:[['a-fin','a-ope']], // controllers de obra: reporte funcional al CFO (matricial)
@@ -589,7 +614,7 @@ const DATA = {
     {id:'p-cob',   nm:'Cobranza de cuotas',                areas:['a-tes'],        dueno:'Jefe de Cobranza',     digital:'integrado', sist:['Nubecont ERP','Estudio legal'], sirve:['o-caja'],        conf:'alta',  flagship:true},
     {id:'p-vta',   nm:'Venta de inmuebles',               areas:['a-ven'],        dueno:'Jefe de Ventas',       digital:'integrado', sist:['CRM Vendo','OSE FacturaLima'],   sirve:['o-mar','o-vis'], conf:'alta'},
     {id:'p-cierre',nm:'Cierre contable mensual',          areas:['a-con','a-fin','a-ope'], dueno:'Contador General',digital:'integrado', sist:['Nubecont ERP','Excel caja obra'],sirve:['o-lid','o-caja'],conf:'alta'},
-    {id:'p-ejec',  nm:'Ejecución de obra',                areas:['a-ope'],        dueno:'Residente de Obra',    digital:'integrado', sist:['ValorizApp','BIM'],             sirve:['o-lid'],          conf:'media'},
+    {id:'p-ejec',  nm:'Ejecución de obra',                areas:['a-obr','a-ope'],dueno:'Residente de Obra',    digital:'integrado', sist:['ValorizApp','BIM'],             sirve:['o-lid'],          conf:'media'},
     {id:'p-val',   nm:'Valorización de obra',             areas:['a-oft'],        dueno:'Jefe de Oficina Técnica',digital:'integrado',sist:['ValorizApp','BIM'],           sirve:['o-lid'],          conf:'alta'},
     {id:'p-pago',  nm:'Pago a proveedores y subcontratistas',areas:['a-con','a-tes'],dueno:'Contador General',  digital:'integrado', sist:['Nubecont ERP','Banca Empresas'],sirve:['o-caja'],         conf:'alta'},
     {id:'p-rec',   nm:'Reclutamiento e incorporación',    areas:['a-rh'],         dueno:'Gerente de GH',        digital:'manual',    sist:['—'],                            sirve:['o-eq'],           conf:'media'},
@@ -598,7 +623,7 @@ const DATA = {
     {id:'p-post',  nm:'Postventa y garantías',            areas:['a-com'],        dueno:'Coordinador de Postventa',digital:'integrado',sist:['CRM Vendo','Portal clientes'], sirve:[],                conf:'media', star:'NPS 42→31 · ningún KR la mide'},
     {id:'p-liq',   nm:'Liquidación de obra',              areas:['a-con','a-oft'],dueno:'Contador General',     digital:'integrado', sist:['Nubecont ERP'],                 sirve:[],                conf:'media'},
     {id:'p-caja',  nm:'Caja chica de obra',               areas:['a-tes','a-ope'],dueno:'Analista de Tesorería',digital:'manual',    sist:['Excel caja obra'],              sirve:[],                conf:'baja'},
-    {id:'p-perm',  nm:'Permisos y licencias',             areas:['a-dev'],        dueno:'Jefe de Permisos',     digital:'externo',   sist:['Estudio legal'],                sirve:[],                conf:'baja'},
+    {id:'p-perm',  nm:'Permisos y licencias',             areas:['a-dev'],        dueno:'Jefe de Permisos',     digital:'externo',   sist:['Portal municipal','Estudio legal','BIM'], sirve:['o-lid'],  conf:'media'},
     {id:'p-dis',   nm:'Diseño y desarrollo del proyecto', areas:['a-dev','a-oft'],dueno:'Gerente de Desarrollo',digital:'integrado', sist:['BIM'],                          sirve:[],                conf:'alta'},
     {id:'p-nom',   nm:'Nómina y planillas',               areas:['a-rh'],         dueno:'Gerente de GH',        digital:'externo',   sist:['Nubecont ERP','Banca Empresas'],sirve:[],                conf:'media'},
     {id:'p-conc',  nm:'Conciliación bancaria',            areas:['a-tes'],        dueno:'Jefe de Tesorería (vacante)',digital:'externo',sist:['Nubecont ERP','Banca Empresas'],sirve:[],              conf:'baja'},
@@ -624,6 +649,12 @@ const DATA = {
     {id:'g-mca', nm:'La marca Terranova es débil y el tráfico comercial depende de portales pagados',
       sub:'Sin marca propia que jale tráfico, cada visita a caseta se compra: el costo por lead sube todos los trimestres.',
       tipo:'Hallazgo', against:'p-camp', obj:null, costo:'costo/lead ↑', sev:'baja', prio:'baja', estado:'off-thread'},
+    {id:'g-dep', nm:'El conocimiento municipal de permisos vive en UNA sola persona (bus factor 1)',
+      sub:'El "cómo" de cada municipio (SM · PL · Surquillo) está en la cabeza de la Jefa de Permisos. Si sale, se va con ella — y un retraso de licencia bloquea el cronograma con banco y compradores de 3 proyectos.',
+      tipo:'Hallazgo', against:'p-perm', obj:'o-lid', costo:'bus factor 1 · 3 proyectos', sev:'alta', prio:'alta', estado:'accionable'},
+    {id:'g-doc', nm:'No existe procedimiento escrito de permisos y licencias',
+      sub:'Cero guías en el corpus: cada expediente se arma de memoria y la tasa de observaciones (60%) no baja porque nadie registra el porqué de cada rechazo por municipio.',
+      tipo:'Hallazgo', against:'p-perm', obj:null, costo:'observaciones 60%', sev:'media', prio:'media', estado:'accionable'},
   ],
 
   // kpis — banda {target, rojo} (dirección se infiere: target<rojo = menor-es-mejor) · semáforo DERIVADO al leer
@@ -646,6 +677,12 @@ const DATA = {
       mediciones:[{f:'T3-25',v:42},{f:'T4-25',v:39},{f:'T1-26',v:35},{f:'T2-26',v:31}]},
     {id:'k-caj', nm:'rezago caja por obra',   unidad:'días',  proc:'p-caja',  dueno:'Analista de Tesorería',   obj:'o-caja', peso:0.2, banda:{target:1,  rojo:5},  freq:'diaria',     conf:'baja',  fuente:'—',
       mediciones:[]},
+    {id:'k-lic', nm:'días para licencia',     unidad:'días',  proc:'p-perm',  dueno:'Jefe de Permisos',        obj:'o-lid',  peso:0.2, banda:{target:60, rojo:120},freq:'por expediente',conf:'media',fuente:'Excel de permisos (a mano)',
+      mediciones:[{f:'exp-11',v:74},{f:'exp-12',v:96},{f:'exp-13',v:88},{f:'exp-14',v:112}]},
+    {id:'k-obs', nm:'tasa de observaciones',  unidad:'%',     proc:'p-perm',  dueno:'Jefe de Permisos',        obj:null,     peso:null,banda:{target:20, rojo:50}, freq:'por expediente',conf:'baja', fuente:'Declarado — NO se mide por municipio (hallazgo)',
+      mediciones:[{f:'T1-26',v:60},{f:'T2-26',v:60}]},
+    {id:'k-sla', nm:'días a cierre postventa',unidad:'días',  proc:'p-post',  dueno:'Coordinador de Postventa',obj:null,     peso:null,banda:{target:15, rojo:30}, freq:'mensual',    conf:'media', fuente:'Portal clientes',
+      mediciones:[{f:'abr',v:19},{f:'may',v:24},{f:'jun',v:28},{f:'jul',v:31}]},
   ],
 
   // cinética — proyectos_mejora (ilustrativos del loop O7) · pm-cie = loop CERRADO con veredicto (KPI movido)
@@ -657,10 +694,60 @@ const DATA = {
   ],
 
   /* ---- CK-29: el cerebro completo — personas · sistemas · capabilities · arneses · conocimiento · ideas ---- */
-  personasExtra:[  // ocupantes no-líderes (la persona = ocupante del rol, CK-24)
-    {nm:'Julio Paredes', rol:'Analista de Cobranza',  area:'a-tes', vinculo:'empleado'},
-    {nm:'Carmen Rojas',  rol:'Analista de Tesorería', area:'a-tes', vinculo:'empleado'},
-    {nm:'Katia Flores',  rol:'Asesor de Ventas',      area:'a-ven', vinculo:'empleado'},
+  // ocupantes no-líderes (la persona = ocupante del rol, CK-24) — nómina completa Terranova:
+  // 86 acá + 14 líderes de área = 100 personas. El twin MIDE roles; la persona es ocupante/autora.
+  personasExtra:[
+    {nm:'Lucía Cárdenas Vidal', rol:'Asistente de Gerencia', area:'a-ger', vinculo:'empleado'},
+    // Ventas (caseta por proyecto)
+    ...['Katia Flores','Renato Aguilar','Fiorella Paz','Diego Salinas','Vanessa Ríos','Óscar Mamani']
+      .map(nm=>({nm, rol:'Asesor de Ventas', area:'a-ven', vinculo:'empleado'})),
+    {nm:'Claudia Herrera Soto', rol:'Coordinador de Sala de Ventas', area:'a-ven', vinculo:'empleado'},
+    // Marketing
+    ...['Bruno Espinoza','Camila Torres'].map(nm=>({nm, rol:'Analista de Marketing', area:'a-mkt', vinculo:'empleado'})),
+    {nm:'Sergio Luna Prado', rol:'Diseñador Gráfico', area:'a-mkt', vinculo:'empleado'},
+    // Postventa (bajo Comercial)
+    ...['Iván Quispe','Rosa Delgado','Pablo Chumpitaz'].map(nm=>({nm, rol:'Técnico de Postventa', area:'a-com', vinculo:'empleado'})),
+    // Desarrollo y Proyectos
+    {nm:'Andrés Vega Rondón', rol:'Analista de Cabida', area:'a-dev', vinculo:'empleado'},
+    ...['Mariel Soto','Jorge Campos'].map(nm=>({nm, rol:'Arquitecto de Proyecto', area:'a-dev', vinculo:'empleado'})),
+    {nm:'Tania Beltrán Ugarte', rol:'Jefe de Permisos', area:'a-dev', vinculo:'empleado'},
+    {nm:'Milton Cruz Ayala', rol:'Asistente de Permisos', area:'a-dev', vinculo:'empleado'},
+    // Finanzas
+    {nm:'Paola Guzmán Terry', rol:'Analista Financiero', area:'a-fin', vinculo:'empleado'},
+    // Contabilidad
+    ...['Hugo Ponce','Silvia Aranda','Martín Cueva'].map(nm=>({nm, rol:'Analista Contable', area:'a-con', vinculo:'empleado'})),
+    ...['Leslie Ramos','Junior Palacios'].map(nm=>({nm, rol:'Asistente Contable', area:'a-con', vinculo:'empleado'})),
+    // Tesorería y Cobranza
+    ...['Julio Paredes','Estefanía Gil','Ramiro Ccopa'].map(nm=>({nm, rol:'Analista de Cobranza', area:'a-tes', vinculo:'empleado'})),
+    ...['Carmen Rojas','Alexandra Bustos'].map(nm=>({nm, rol:'Analista de Tesorería', area:'a-tes', vinculo:'empleado'})),
+    ...['Nilo Huarcaya','Gladys Ttito'].map(nm=>({nm, rol:'Gestor de Cobranza en Campo', area:'a-tes', vinculo:'empleado'})),
+    // Gestión Humana
+    {nm:'Daniela Farfán Ochoa', rol:'Analista de Reclutamiento', area:'a-rh', vinculo:'empleado'},
+    {nm:'Roberto Ñahui Ccama', rol:'Analista de Nómina', area:'a-rh', vinculo:'empleado'},
+    {nm:'Yolanda Cáceres Junco', rol:'Trabajadora Social', area:'a-rh', vinculo:'empleado'},
+    // Operaciones (staff central)
+    {nm:'Víctor Sandoval Meza', rol:'Jefe de Calidad y SSOMA', area:'a-ope', vinculo:'empleado'},
+    ...['Elmer Julca','Karen Poma'].map(nm=>({nm, rol:'Prevencionista', area:'a-ope', vinculo:'empleado'})),
+    // Oficina Técnica
+    ...['Freddy Condori','Alicia Zapata'].map(nm=>({nm, rol:'Metrador', area:'a-oft', vinculo:'empleado'})),
+    {nm:'Christian Neyra Palma', rol:'Cadista', area:'a-oft', vinculo:'empleado'},
+    // Logística de Obra
+    ...['Norma Alvarado','Raúl Chirinos'].map(nm=>({nm, rol:'Comprador', area:'a-log', vinculo:'empleado'})),
+    ...['Simón Curo','Elvis Taipe','Rocío Ancco'].map(nm=>({nm, rol:'Almacenero de Obra', area:'a-log', vinculo:'empleado'})),
+    // Obras — 3 proyectos en ejecución (Marina 87 · Parque Central · Aires de Surco)
+    ...['Patricia Oré','Manuel Zegarra'].map(nm=>({nm, rol:'Residente de Obra', area:'a-obr', vinculo:'empleado'})),
+    ...['Kevin Apaza','Lorena Mestas','Franco Bellido'].map(nm=>({nm, rol:'Asistente de Residente', area:'a-obr', vinculo:'empleado'})),
+    ...['Aurelio Puma','Sixto Villanueva','Edgar Huamaní','Rufino Ayvar','Teodoro Ccanto','Wilber Sulca']
+      .map(nm=>({nm, rol:'Capataz', area:'a-obr', vinculo:'empleado'})),
+    ...['Pedro Yupanqui','Santos Quilca','Máximo Rimachi','Abel Curi','Nemesio Puclla','Faustino Ayma']
+      .map(nm=>({nm, rol:'Oficial de Obra', area:'a-obr', vinculo:'empleado'})),
+    ...['Juan Ccahuana','Marcos Taco','Felipe Yauri','Ricardo Mollo','Esteban Pillco','Damián Choque','Guido Mamani','Cirilo Huanca',
+        'Timoteo Apari','Basilio Ccorahua','Julián Quispe','Aniceto Vilca','Rómulo Chuquimia','Fidel Arotoma']
+      .map(nm=>({nm, rol:'Operario de Obra', area:'a-obr', vinculo:'empleado'})),
+    ...['Eloy Huamán','Nicanor Sacsi','Porfirio Ttica','Zenón Curasi','Abdón Layme','Melquiades Puma','Gerardo Ancalle','Leoncio Raymi']
+      .map(nm=>({nm, rol:'Operario de Obra', area:'a-obr', vinculo:'subcontratado'})),
+    // TI
+    {nm:'Gino Salcedo Ruiz', rol:'Analista de Soporte TI', area:'a-ti', vinculo:'empleado'},
   ],
   sistemas:[  // pulso: cada sistema declara su conector al lakehouse (N16)
     {id:'s-nub', nm:'Nubecont ERP',    digital:'integrado', conector:'dlt → lakehouse · sync diaria 06:00 · 14 tablas', caps:['c-cobrar','c-cerrar']},
@@ -669,6 +756,11 @@ const DATA = {
     {id:'s-val', nm:'ValorizApp',      digital:'integrado', conector:'dlt → lakehouse · sync semanal (valorizaciones)', caps:[]},
     {id:'s-ban', nm:'Banca Empresas',  digital:'externo',   conector:'extracto CSV manual · candidato a conector', caps:[]},
     {id:'s-bim', nm:'BIM',             digital:'integrado', conector:'sin conector (documentos de diseño)', caps:[]},
+    {id:'s-ose', nm:'OSE FacturaLima', digital:'externo',   conector:'API del OSE · CDR por comprobante', caps:[]},
+    {id:'s-meta',nm:'Meta Ads',        digital:'externo',   conector:'export CSV semanal — candidato a conector (CPL)', caps:[]},
+    {id:'s-por', nm:'Portal clientes', digital:'integrado', conector:'dlt → lakehouse · tickets postventa + NPS', caps:[]},
+    {id:'s-mun', nm:'Portal municipal',digital:'externo',   conector:'SIN conector — seguimiento a mano por distrito (SM · PL · Surquillo)', caps:[]},
+    {id:'s-leg', nm:'Estudio legal',   digital:'externo',   conector:'proceso provisto externamente (ISO 8.4) — correo + expediente físico', caps:[]},
   ],
   capabilities:[  // qué SABE hacer la empresa (M31) — madurez COBIT
     {id:'c-cobrar', nm:'Cobrar cuotas',            madurez:3, via:['p-cob','s-nub']},
@@ -689,17 +781,25 @@ const DATA = {
     {id:'h-cont', rol:'Contador General', area:'a-con', v:'v2', estado:'vigente',
      compilado:'2026-07-10 · RECOMPILADO al cerrar pm-cie (checklist pre-cierre estandarizado → skill)',
      skills:['checklist-pre-cierre','conciliar-intercompañías','preparar-eeff'], uso:'12 corridas/sem · agregado por rol', acts:[], mueve:['k-cie']},
+    {id:'h-metr', rol:'Metrador', area:'a-oft', v:'v1', estado:'vigente',
+     compilado:'2026-07-15 · desde: mapa Valorización v1 + verbos + hilo (desvío avance)',
+     skills:['consolidar-metrados','contrastar-avance-vs-cronograma','preparar-valorizacion'], uso:'9 corridas/sem · agregado por rol', acts:[], mueve:['k-avc']},
   ],
-  puestosTotal:14,
+  puestosTotal:40,   // roles distintos en la nómina (14 líderes + 26 de plantilla) — 4 con arnés: el gap agéntico visible
   conocimiento:{  // know-how anclado a proceso/rol — teaser F3 (conocimiento/<proceso>/<rol>/ en N6)
     'p-cob':   {n:'3 guías · 12 casos', d:'política de refinanciamiento · playbook de llamadas · casos de mora dura 2024-25'},
     'p-cierre':{n:'2 guías · 8 casos',  d:'checklist pre-cierre (estandarizado por el proyecto) · calendario de obligaciones'},
     'p-caja':  {n:'0 guías',            d:'el know-how vive en la cabeza del analista — brecha de conocimiento'},
+    'p-vta':   {n:'2 guías · 6 casos',  d:'guion de visita a caseta · matriz de objeciones · casos de cierre 2025'},
+    'p-perm':  {n:'0 guías',            d:'NO existe procedimiento escrito (g-doc) — el cómo por municipio vive en una persona (g-dep)'},
+    'p-ejec':  {n:'1 guía · 4 casos',   d:'protocolo de corte quincenal de avance · lecciones Marina 87'},
+    'p-post':  {n:'1 guía',             d:'catálogo de garantías por partida (borrador)'},
   },
   ideas:[  // funil kaizen (M44) — separación idea ↔ proyecto · autoría reconocida (RN-16)
     {id:'i-wsp',    nm:'Plantillas de WhatsApp para recordatorios de pago', prop:'Julio Paredes · Analista de Cobranza', estado:'promovida', a:'pm-cob', nota:'reconocida — origen del alcance de Cobranza digital fase 1'},
     {id:'i-agente', nm:'Agente que prepara el contacto de morosos (act. 03)', prop:'triage M36 → Jefe de Cobranza', estado:'en-evaluacion', origen:'triage', nota:'RTLX 71 + veredicto automatizable-agente → candidato a skill del arnés del puesto (Arnesia)'},
     {id:'i-caja',   nm:'Foto diaria de caja desde Banca Empresas', prop:'Carmen Rojas · Analista de Tesorería', estado:'enviada', nota:'ataca la ceguera de caja (g-cvis) sin esperar proyecto formal'},
+    {id:'i-mun',    nm:'Bitácora por municipio: registrar el porqué de cada observación', prop:'Milton Cruz Ayala · Asistente de Permisos', estado:'enviada', nota:'ataca g-doc/g-dep — convierte el conocimiento de cabeza en corpus'},
   ],
 
   bscEdges:[ ['o-eq','o-cob'],['o-eq','o-vis'],['o-cob','o-caja'],['o-vis','o-mar'],['o-mar','o-lid'],['o-hog','o-lid'],['o-lid','o-caja'] ],
@@ -752,6 +852,54 @@ const DATA = {
     'p-post':{ disp:'entrega de unidad / reclamo del propietario',
       prov:[{proc:'p-ejec'},{ext:'Propietario (reclamo)'}], in:['acta de entrega','reclamos','manual del propietario'],
       out:['atenciones cerradas','NPS propietarios'], cli:[{ext:'Propietario'}], ctrl:['SLA de atención 15 días','NPS ≥ 50'] },
+    'p-cierre':{ disp:'día 1 del mes (calendario de cierre)',
+      prov:[{proc:'p-cob'},{proc:'p-val'},{proc:'p-caja'},{proc:'p-nom'}], in:['pagos aplicados','valorizaciones','rendiciones de caja','planilla'],
+      out:['EEFF mensuales','análisis de márgenes por proyecto'], cli:[{ext:'Directorio'},{ext:'Banco financiador'},{ext:'SUNAT'}], ctrl:['cierre ≤ 5 días hábiles','cero diferencias inter-compañías'] },
+    'p-pago':{ disp:'valorización aprobada / factura de proveedor recibida',
+      prov:[{proc:'p-val'},{ext:'Subcontratistas'},{ext:'Proveedores'}], in:['valorización aprobada','facturas','contratos y retenciones'],
+      out:['pagos programados y ejecutados','estado de cuenta por proveedor'], cli:[{proc:'p-conc'},{ext:'Proveedores'}], ctrl:['pago solo contra valorización aprobada','doble firma sobre S/ 50k'] },
+    'p-perm':{ disp:'terreno adquirido — expediente por armar (P03 del SOMA)',
+      prov:[{proc:'p-dis'},{ext:'Municipalidad (SM · PL · Surquillo)'},{ext:'SEDAPAL'},{ext:'Bomberos'}], in:['expediente técnico','planos visados','parámetros urbanísticos','título saneado'],
+      out:['licencia de edificación','factibilidad de servicios'], cli:[{proc:'p-ejec'},{ext:'Banco financiador'}], ctrl:['licencia antes de movilizar obra','observaciones ≤ 20% (hoy 60%)'] },
+    'p-rec':{ disp:'requisición de puesto aprobada',
+      prov:[{ext:'Bolsas / referidos'},{ext:'Gerencias (requisición)'}], in:['perfil del puesto','requisición','presupuesto de plaza'],
+      out:['persona incorporada con contrato e inducción'], cli:[{proc:'p-nom'},{ext:'Área solicitante'}], ctrl:['tiempo de cobertura ≤ 30 días','inducción SSOMA obligatoria en obra'] },
+    'p-nom':{ disp:'cierre de tareo mensual (día 25)',
+      prov:[{proc:'p-rec'},{ext:'Tareo de obra (capataces)'}], in:['tareo por proyecto','contratos','variables (HE · bonos · descuentos)'],
+      out:['planilla pagada','boletas','declaraciones (PLAME · AFP)'], cli:[{proc:'p-cierre'},{ext:'SUNAT / AFP'},{ext:'Personal'}], ctrl:['pago día 30 sin errores','declaración en plazo'] },
+    'p-caja':{ disp:'apertura de caja chica por obra',
+      prov:[{proc:'p-pago'},{ext:'Obra (rendiciones)'}], in:['fondo asignado','comprobantes de gasto'],
+      out:['rendición aprobada','reposición del fondo'], cli:[{proc:'p-cierre'},{proc:'p-conc'}], ctrl:['rendición semanal','tope por gasto S/ 500'] },
+    'p-conc':{ disp:'extracto bancario disponible (día 1)',
+      prov:[{proc:'p-cob'},{proc:'p-pago'},{ext:'Banca Empresas (extractos)'}], in:['extractos','auxiliar contable de bancos'],
+      out:['conciliación mensual firmada','partidas en tránsito identificadas'], cli:[{proc:'p-cierre'}], ctrl:['cero partidas sin identificar > 30 días'] },
+    'p-sop':{ disp:'ticket de soporte / alta-baja de usuario',
+      prov:[{ext:'Usuarios internos'},{ext:'Proveedores SaaS'}], in:['tickets','licencias','inventario de equipos'],
+      out:['ticket resuelto','usuario aprovisionado'], cli:[{ext:'Todas las áreas'}], ctrl:['SLA 8h hábiles','backup diario verificado'] },
+    'p-liq':{ disp:'obra recepcionada — expediente de liquidación',
+      prov:[{proc:'p-val'},{proc:'p-pago'}], in:['valorizaciones acumuladas','actas de recepción','saldos de contratos'],
+      out:['liquidación de obra aprobada','lecciones aprendidas'], cli:[{proc:'p-cierre'},{ext:'Directorio'}], ctrl:['liquidar ≤ 90 días tras recepción'] },
+  },
+
+  // C1 · identidad del proceso (ISO 9001 4.4.1 · APQC PCF) — header del lienzo caracterizado
+  sipocC1:{
+    'p-camp':{prop:'Generar demanda calificada para las casetas al menor costo por lead', fin:'lead entregado a Ventas con consentimiento', apqc:'3.5 · Marketing'},
+    'p-vta': {prop:'Convertir leads en minutas firmadas con cronograma de cuotas sano', fin:'separación registrada y expediente completo', apqc:'3.5.2 · Ventas'},
+    'p-dis': {prop:'Concebir proyectos que cumplan el IRR objetivo y sean licenciables', fin:'expediente técnico aprobado por Gerencia', apqc:'2.1 · Diseño de producto'},
+    'p-ejec':{prop:'Construir en plazo, costo y calidad — tres proyectos en paralelo', fin:'unidades terminadas y recepcionadas', apqc:'4.3 · Producción/Obra'},
+    'p-val': {prop:'Medir el avance real y convertirlo en valorización defendible', fin:'valorización aprobada por doble firma', apqc:'4.3.4 · Control de obra'},
+    'p-fact':{prop:'Emitir comprobantes válidos a tiempo por cada hito', fin:'CDR aceptado por el OSE', apqc:'8.2 · Facturación'},
+    'p-cob': {prop:'Convertir el cronograma de cuotas en caja — sostener el DSO', fin:'pago aplicado o convenio firmado', apqc:'8.2.3 · Cuentas por cobrar'},
+    'p-post':{prop:'Cerrar el ciclo con el propietario y proteger la reputación (NPS)', fin:'atención cerrada con conformidad', apqc:'6.3 · Servicio postventa'},
+    'p-cierre':{prop:'Cerrar el mes con EEFF confiables por proyecto', fin:'EEFF entregados a Directorio y banco', apqc:'8.1 · Contabilidad'},
+    'p-pago':{prop:'Pagar lo ejecutado — nunca antes, nunca de más', fin:'pago ejecutado y notificado', apqc:'8.3 · Cuentas por pagar'},
+    'p-perm':{prop:'Obtener licencias y permisos para iniciar y ejecutar legalmente cada proyecto', fin:'licencia recepcionada, registrada y obra notificada', apqc:'2.4 · Permisología'},
+    'p-rec': {prop:'Cubrir plazas con la persona correcta a tiempo', fin:'incorporación con inducción completa', apqc:'7.2 · Reclutamiento'},
+    'p-nom': {prop:'Pagar a las 100 personas correcto y a tiempo, cumpliendo la ley', fin:'planilla pagada y declarada', apqc:'7.4 · Nómina'},
+    'p-caja':{prop:'Dar liquidez operativa a la obra con control', fin:'rendición aprobada y fondo repuesto', apqc:'8.6 · Caja chica'},
+    'p-conc':{prop:'Garantizar que el banco y los libros digan lo mismo', fin:'conciliación firmada', apqc:'8.7 · Conciliación'},
+    'p-sop': {prop:'Mantener a la organización operando sobre sus sistemas', fin:'ticket resuelto dentro de SLA', apqc:'13.2 · Soporte TI'},
+    'p-liq': {prop:'Cerrar económicamente cada obra y capturar lecciones', fin:'liquidación aprobada por Directorio', apqc:'4.5 · Cierre de obra'},
   },
 
   // lienzos adicionales al flagship — mismo shape (lanes/vsm/acts/seq). El resto de procesos
@@ -770,6 +918,180 @@ const DATA = {
       ],
       seq:[ {f:1,t:2},{f:1,t:3,c:'ya conoce el proyecto',alt:true},{f:2,t:3},{f:3,t:4,c:'listo para cerrar'},{f:4,t:5} ]
     },
+    'p-camp':{ proc:'p-camp', nm:'Campañas de marketing',
+      sub:'AS-IS · alimenta las visitas a caseta · dueño Jefe de Marketing. Disparador: plan comercial del trimestre aprobado.',
+      lanes:[ {role:'Jefe de Marketing',k:'carril'}, {role:'Analista de Marketing',k:'carril'} ],
+      vsm:{toque:'11h/sem', espera:'—'},
+      acts:[
+        {ord:1, lane:0, verbo:'planificar', ttl:'Planificar la campaña por proyecto (mix y presupuesto)', tipo:'humana', toque:'4h', espera:'—', sist:['—'], triage:'humano-por-diseño', conf:'media', fte:'Entrevista Jefe de Marketing', note:'decisión de mix por stock y estacionalidad'},
+        {ord:2, lane:1, verbo:'pautar', ttl:'Pautar y publicar los anuncios en portales y Meta', tipo:'humana', toque:'3h', espera:'—', sist:['Meta Ads'], triage:'automatizable-rpa', conf:'alta', fte:'Meta Ads (leído)', note:'carga repetitiva de variantes por proyecto'},
+        {ord:3, lane:1, verbo:'captar', ttl:'Captar y responder los leads entrantes (primer contacto)', tipo:'humana', toque:'2h/día', espera:'—', sist:['CRM Vendo'], triage:'automatizable-agente', conf:'media', fte:'CRM Vendo + entrevista', note:'respuesta fuera de horario se pierde — candidato a agente de primer contacto'},
+        {ord:4, lane:1, verbo:'medir', ttl:'Medir CPL y calidad de lead por canal', tipo:'humana', toque:'2h/sem', espera:'—', sist:['Meta Ads','CRM Vendo'], triage:'aumentable', conf:'media', fte:'Export CSV semanal', note:'cruce a mano Meta↔CRM — sin conector (candidato)'},
+      ],
+      seq:[ {f:1,t:2},{f:2,t:3},{f:3,t:4},{f:2,t:4,c:'campaña pausada',alt:true} ]
+    },
+    'p-dis':{ proc:'p-dis', nm:'Diseño y desarrollo del proyecto',
+      sub:'AS-IS · el origen del margen · dueño Gerente de Desarrollo. Disparador: terreno adquirido / decisión de lanzar.',
+      lanes:[ {role:'Gerente de Desarrollo',k:'carril'}, {role:'Analista de Cabida',k:'carril'}, {role:'Arquitecto de Proyecto',k:'carril'} ],
+      vsm:{toque:'~6 sem', espera:'~4 sem'},
+      acts:[
+        {ord:1, lane:1, verbo:'concebir', ttl:'Correr el estudio de cabida y el IRR objetivo', tipo:'humana', toque:'2sem', espera:'—', sist:['BIM'], triage:'aumentable', conf:'alta', fte:'BIM + modelo financiero', note:'cabida×precio×velocidad — el arnés puede iterar escenarios'},
+        {ord:2, lane:2, verbo:'diseñar', ttl:'Desarrollar el anteproyecto y el expediente técnico', tipo:'humana', toque:'3sem', espera:'2sem', sist:['BIM'], triage:'humano-por-diseño', conf:'alta', fte:'BIM (leído)', note:'espera = visado de especialidades externas'},
+        {ord:3, lane:0, verbo:'presupuestar', ttl:'Presupuestar la obra y validar el margen', tipo:'humana', toque:'1sem', espera:'—', sist:['BIM'], mandato:'preventivo', conf:'alta', fte:'Presupuesto maestro', note:'gate: si no cierra el IRR, el proyecto NO pasa — control protegido del triage'},
+        {ord:4, lane:0, verbo:'licenciar', ttl:'Entregar el expediente a Permisos y acompañar el trámite', tipo:'humana', toque:'2d', espera:'—', sist:['—'], conf:'media', fte:'Entrevista', note:'handoff al proceso Permisos y licencias (P03)'},
+      ],
+      seq:[ {f:1,t:2},{f:2,t:3},{f:3,t:4,c:'margen OK'},{f:1,t:3,c:'cabida no cierra — descartar',alt:true} ]
+    },
+    'p-ejec':{ proc:'p-ejec', nm:'Ejecución de obra',
+      sub:'AS-IS · 3 proyectos en paralelo (Marina 87 · Parque Central · Aires de Surco) · dueño Residente de Obra. Disparador: licencia emitida.',
+      lanes:[ {role:'Residente de Obra',k:'carril'}, {role:'Capataz',k:'obra'}, {role:'Jefe de Calidad y SSOMA',k:'carril'} ],
+      vsm:{toque:'continuo', espera:'—'},
+      acts:[
+        {ord:1, lane:0, verbo:'planificar', ttl:'Planificar el frente semanal (lookahead)', tipo:'humana', toque:'3h/sem', espera:'—', sist:['—'], triage:'aumentable', conf:'media', fte:'Entrevista residentes', note:'lookahead a mano en pizarra + Excel'},
+        {ord:2, lane:1, verbo:'construir', ttl:'Ejecutar las partidas del frente con las cuadrillas', tipo:'humana', toque:'continuo', espera:'—', sist:['—'], triage:'humano-por-diseño', conf:'alta', fte:'Observación en campo', note:'52 personas en obra entre propios y subcontratados'},
+        {ord:3, lane:0, verbo:'supervisar', ttl:'Supervisar avance y registrar el corte diario', tipo:'humana', toque:'2h/día', espera:'—', sist:['ValorizApp'], triage:'aumentable', conf:'alta', fte:'ValorizApp (leído)', note:'el corte alimenta el desvío de avance (KPI) — candidato a asistente de reporte'},
+        {ord:4, lane:2, verbo:'controlar', ttl:'Controlar calidad y SSOMA por frente', tipo:'humana', toque:'4h/día', espera:'—', sist:['—'], mandato:'preventivo', conf:'alta', fte:'Checklist SSOMA', note:'control protegido — jamás entra al triage de automatización'},
+      ],
+      seq:[ {f:1,t:2},{f:2,t:3},{f:3,t:4},{f:3,t:1,c:'re-planificar el frente',alt:true} ]
+    },
+    'p-val':{ proc:'p-val', nm:'Valorización de obra',
+      sub:'AS-IS · convierte avance físico en plata defendible · dueño Jefe de Oficina Técnica. Disparador: corte quincenal.',
+      lanes:[ {role:'Metrador',k:'campo'}, {role:'Jefe de Oficina Técnica',k:'carril'}, {role:'Residente de Obra',k:'carril'} ],
+      vsm:{toque:'22h/quincena', espera:'2d'},
+      acts:[
+        {ord:1, lane:0, verbo:'medir', ttl:'Medir el avance físico en campo por partida', tipo:'humana', toque:'8h', espera:'—', sist:['—'], triage:'humano-por-diseño', conf:'alta', fte:'Observación en campo', note:'metrado real, no declarado — el antídoto del desvío Marina'},
+        {ord:2, lane:0, verbo:'consolidar', ttl:'Consolidar metrados y contrastar contra cronograma', tipo:'humana', toque:'6h', espera:'—', sist:['ValorizApp'], triage:'automatizable-rpa', conf:'alta', fte:'ValorizApp (leído)', note:'con arnés del Metrador (⛨ h-metr) — ya corre asistido'},
+        {ord:3, lane:1, verbo:'valorizar', ttl:'Armar la valorización con precios unitarios', tipo:'humana', toque:'4h', espera:'—', sist:['ValorizApp'], triage:'aumentable', conf:'alta', fte:'ValorizApp (leído)', note:''},
+        {ord:4, lane:2, verbo:'sustentar', ttl:'Sustentar el corte ante la residencia', tipo:'humana', toque:'2h', espera:'—', sist:['—'], triage:'humano-por-diseño', conf:'media', fte:'Entrevista', note:'discusión técnica de metrados observados'},
+        {ord:5, lane:1, verbo:'aprobar', ttl:'Aprobar con doble firma (OT + Residente)', tipo:'humana', toque:'1h', espera:'2d', sist:['ValorizApp'], mandato:'preventivo', conf:'alta', fte:'ValorizApp (leído)', note:'gate de pago a subcontratistas — protegido'},
+      ],
+      seq:[ {f:1,t:2},{f:2,t:3},{f:3,t:4},{f:4,t:5,c:'conforme'},{f:4,t:1,c:'metrado observado — volver a campo',alt:true} ]
+    },
+    'p-fact':{ proc:'p-fact', nm:'Facturación de ventas',
+      sub:'AS-IS · del hito a un comprobante válido · dueño Contador General. Disparador: cuota por vencer / hito de venta.',
+      lanes:[ {role:'Asistente Contable',k:'carril'}, {role:'Contador General',k:'carril'} ],
+      vsm:{toque:'40m/comprobante', espera:'—'},
+      acts:[
+        {ord:1, lane:0, verbo:'emitir', ttl:'Emitir el comprobante contra el cronograma de cuotas', tipo:'humana', toque:'15m', espera:'—', sist:['Nubecont ERP'], triage:'automatizable-rpa', conf:'alta', fte:'Nubecont ERP (leído)', note:'dato estructurado + regla estable → RPA claro'},
+        {ord:2, lane:0, verbo:'enviar', ttl:'Enviar al OSE y esperar el CDR', tipo:'sistema', toque:'5m', espera:'—', sist:['OSE FacturaLima'], conf:'alta', fte:'OSE (leído)', note:'ya automatizado — único paso tipo sistema del AS-IS'},
+        {ord:3, lane:0, verbo:'registrar', ttl:'Registrar y archivar el CDR aceptado', tipo:'humana', toque:'10m', espera:'—', sist:['Nubecont ERP'], triage:'automatizable-rpa', conf:'alta', fte:'Nubecont ERP (leído)', note:''},
+        {ord:4, lane:1, verbo:'corregir', ttl:'Corregir comprobantes rechazados por el OSE', tipo:'humana', toque:'30m', espera:'—', sist:['Nubecont ERP','OSE FacturaLima'], triage:'aumentable', conf:'media', fte:'Entrevista', note:'~5% de rechazos — el porqué no se registra'},
+      ],
+      seq:[ {f:1,t:2},{f:2,t:3,c:'CDR aceptado'},{f:2,t:4,c:'CDR rechazado (~5%)',alt:true},{f:4,t:2} ]
+    },
+    'p-post':{ proc:'p-post', nm:'Postventa y garantías',
+      sub:'AS-IS · el proceso que ningún KR mide (★ sin ancla) · dueño Coordinador de Postventa. Disparador: entrega / reclamo.',
+      lanes:[ {role:'Coordinador de Postventa',k:'carril'}, {role:'Técnico de Postventa',k:'campo'} ],
+      vsm:{toque:'6h/caso', espera:'9d'},
+      acts:[
+        {ord:1, lane:0, verbo:'recibir', ttl:'Recibir y tipificar el reclamo del propietario', tipo:'humana', toque:'30m', espera:'—', sist:['Portal clientes'], triage:'automatizable-rpa', conf:'alta', fte:'Portal clientes (leído)', note:'tipificación por catálogo de garantías'},
+        {ord:2, lane:0, verbo:'diagnosticar', ttl:'Diagnosticar si procede por garantía', tipo:'humana', toque:'1h', espera:'2d', sist:['Portal clientes'], triage:'aumentable', conf:'media', fte:'Entrevista', note:'criterio técnico por partida — el catálogo (borrador) lo asistiría'},
+        {ord:3, lane:1, verbo:'atender', ttl:'Atender la reparación en la unidad', tipo:'humana', toque:'4h', espera:'7d', sist:['—'], triage:'humano-por-diseño', conf:'alta', fte:'Observación', note:'espera = agenda del propietario + cuadrilla disponible'},
+        {ord:4, lane:0, verbo:'cerrar', ttl:'Cerrar con conformidad firmada del propietario', tipo:'humana', toque:'30m', espera:'—', sist:['Portal clientes'], mandato:'preventivo', conf:'alta', fte:'Portal clientes (leído)', note:'sin conformidad no hay cierre — control protegido'},
+        {ord:5, lane:0, verbo:'medir', ttl:'Medir NPS y consolidar causas raíz', tipo:'humana', toque:'2h/mes', espera:'—', sist:['Portal clientes'], triage:'automatizable-rpa', conf:'media', fte:'Encuesta postventa', note:'las causas raíz NO llegan a Diseño ni Obra — loop abierto'},
+      ],
+      seq:[ {f:1,t:2},{f:2,t:3,c:'procede garantía'},{f:2,t:4,c:'no procede — informar',alt:true},{f:3,t:4},{f:4,t:5} ]
+    },
+    'p-cierre':{ proc:'p-cierre', nm:'Cierre contable mensual',
+      sub:'AS-IS · de 9 a 4.5 días tras pm-cie (loop CERRADO con veredicto) · dueño Contador General. Disparador: día 1 del mes.',
+      lanes:[ {role:'Analista Contable',k:'carril'}, {role:'Contador General',k:'carril'}, {role:'Analista Financiero',k:'carril'} ],
+      vsm:{toque:'4.5d', espera:'—'},
+      acts:[
+        {ord:1, lane:0, verbo:'conciliar', ttl:'Conciliar bancos, caja de obra y módulos del ERP', tipo:'humana', toque:'1.5d', espera:'—', sist:['Nubecont ERP','Banca Empresas'], triage:'automatizable-rpa', conf:'alta', fte:'Nubecont ERP (leído)', note:'insumo: conciliación bancaria + rendiciones de caja'},
+        {ord:2, lane:0, verbo:'provisionar', ttl:'Provisionar gastos y devengar por proyecto', tipo:'humana', toque:'1d', espera:'—', sist:['Nubecont ERP'], triage:'aumentable', conf:'alta', fte:'Nubecont ERP (leído)', note:''},
+        {ord:3, lane:1, verbo:'cerrar', ttl:'Correr el checklist pre-cierre y cerrar el período', tipo:'humana', toque:'1d', espera:'—', sist:['Nubecont ERP'], mandato:'preventivo', conf:'alta', fte:'Checklist (arnés ⛨ h-cont)', note:'el checklist nació del proyecto pm-cie y se recompiló al arnés — el loop llegó al edge'},
+        {ord:4, lane:2, verbo:'analizar', ttl:'Analizar márgenes por proyecto contra presupuesto', tipo:'humana', toque:'0.5d', espera:'—', sist:['Nubecont ERP'], triage:'aumentable', conf:'media', fte:'Modelo en Excel', note:'candidato: el twin ya tiene el hilo margen→objetivo'},
+        {ord:5, lane:1, verbo:'reportar', ttl:'Reportar EEFF a Directorio y banco', tipo:'humana', toque:'0.5d', espera:'—', sist:['Nubecont ERP'], conf:'alta', fte:'Entrevista', note:''},
+      ],
+      seq:[ {f:1,t:2},{f:2,t:3},{f:3,t:4},{f:4,t:5},{f:3,t:1,c:'diferencia detectada — reabrir',alt:true} ]
+    },
+    'p-pago':{ proc:'p-pago', nm:'Pago a proveedores y subcontratistas',
+      sub:'AS-IS · nunca antes, nunca de más · dueño Contador General. Disparador: valorización aprobada / factura recibida.',
+      lanes:[ {role:'Analista de Tesorería',k:'carril'}, {role:'Contador General',k:'carril'} ],
+      vsm:{toque:'5h/tanda', espera:'3d'},
+      acts:[
+        {ord:1, lane:0, verbo:'recibir', ttl:'Recibir y registrar facturas de proveedores', tipo:'humana', toque:'2h', espera:'—', sist:['Nubecont ERP'], triage:'automatizable-rpa', conf:'alta', fte:'Nubecont ERP (leído)', note:'XML del comprobante ya trae el dato estructurado'},
+        {ord:2, lane:1, verbo:'validar', ttl:'Validar contra valorización aprobada y contrato', tipo:'humana', toque:'1h', espera:'—', sist:['Nubecont ERP','ValorizApp'], mandato:'preventivo', conf:'alta', fte:'Cruce ERP↔ValorizApp', note:'pago solo contra valorización — control protegido'},
+        {ord:3, lane:0, verbo:'programar', ttl:'Programar la tanda semanal según caja', tipo:'humana', toque:'1h', espera:'—', sist:['Banca Empresas'], triage:'aumentable', conf:'media', fte:'Entrevista', note:'prioriza contra la foto de caja (hoy con rezago — g-cvis)'},
+        {ord:4, lane:1, verbo:'pagar', ttl:'Ejecutar con doble firma (>S/ 50k: CFO)', tipo:'humana', toque:'30m', espera:'3d', sist:['Banca Empresas'], mandato:'preventivo', conf:'alta', fte:'Banca (leído)', note:'espera = turno de firmas'},
+        {ord:5, lane:0, verbo:'notificar', ttl:'Avisar por correo a cada proveedor pagado', tipo:'humana', toque:'30m', espera:'—', sist:['—'], triage:'eliminable', conf:'media', fte:'Entrevista', note:'el banco ya notifica — correo duplicado que nadie lee'},
+      ],
+      seq:[ {f:1,t:2},{f:2,t:3,c:'conforme'},{f:2,t:1,c:'sin valorización — devolver',alt:true},{f:3,t:4},{f:4,t:5} ]
+    },
+    'p-perm':{ proc:'p-perm', nm:'Permisos y licencias',
+      sub:'AS-IS · el P03 del levantamiento SOMA, ahora vivo en el twin · dueño Jefe de Permisos. Disparador: terreno adquirido. Bus factor 1 (g-dep) y cero procedimiento escrito (g-doc).',
+      lanes:[ {role:'Jefe de Permisos',k:'carril'}, {role:'Asistente de Permisos',k:'carril'} ],
+      vsm:{toque:'28h/expediente', espera:'~85d'},
+      acts:[
+        {ord:1, lane:0, verbo:'revisar', ttl:'Revisar parámetros urbanísticos del distrito', tipo:'humana', toque:'2h', espera:'—', sist:['Portal municipal'], triage:'aumentable', conf:'alta', fte:'Certificado de parámetros', note:'cada municipio publica distinto — SM · PL · Surquillo'},
+        {ord:2, lane:0, verbo:'preparar', ttl:'Preparar el expediente técnico completo', tipo:'humana', toque:'8h', espera:'—', sist:['BIM'], triage:'aumentable', conf:'media', fte:'Entrevista Jefa de Permisos', note:'sin checklist escrito — se arma de memoria (g-doc)'},
+        {ord:3, lane:1, verbo:'tramitar', ttl:'Tramitar factibilidad SEDAPAL en línea', tipo:'humana', toque:'3h', espera:'15d', sist:['Portal municipal'], triage:'automatizable-rpa', conf:'alta', fte:'Portal SEDAPAL', note:'formulario estable — RPA claro'},
+        {ord:4, lane:0, verbo:'pre-revisar', ttl:'Pre-revisar en el portal digital municipal (SM)', tipo:'humana', toque:'1h', espera:'—', sist:['Portal municipal'], triage:'automatizable-rpa', conf:'media', fte:'Portal SM (nuevo)', note:'solo San Miguel lo ofrece — reduce observaciones'},
+        {ord:5, lane:1, verbo:'presentar', ttl:'Presentar el expediente en ventanilla', tipo:'humana', toque:'4h', espera:'—', sist:['—'], conf:'alta', fte:'Observación', note:'cola presencial — PL y Surquillo sin canal digital'},
+        {ord:6, lane:1, verbo:'seguir', ttl:'Hacer seguimiento del expediente por municipio', tipo:'humana', toque:'2h/sem', espera:'~60d', sist:['Portal municipal'], triage:'automatizable-rpa', conf:'alta', fte:'Portal + llamadas', note:'el score alto del SOMA (IAA 74) hoy = candidato RPA con alertas'},
+        {ord:7, lane:0, verbo:'levantar', ttl:'Levantar las observaciones municipales', tipo:'humana', toque:'6h', espera:'10d', sist:['BIM'], triage:'humano-por-diseño', rtlx:68, conf:'media', fte:'Entrevista + RTLX del rol', raci:{R:'Jefe de Permisos', A:'Gerente de Desarrollo'}, note:'negociación + criterio técnico + relación con cada municipio (el IAA 22 del SOMA) — 60% de expedientes observados'},
+        {ord:8, lane:1, verbo:'recepcionar', ttl:'Recepcionar la licencia aprobada', tipo:'humana', toque:'1h', espera:'—', sist:['—'], conf:'alta', fte:'Expediente', note:''},
+        {ord:9, lane:1, verbo:'registrar', ttl:'Registrar y notificar a Obra para iniciar', tipo:'humana', toque:'1h', espera:'—', sist:['Nubecont ERP'], triage:'automatizable-rpa', conf:'alta', fte:'ERP (leído)', note:'notificación manual — Obra a veces se entera tarde'},
+      ],
+      seq:[ {f:1,t:2},{f:2,t:3},{f:3,t:4},{f:4,t:5},{f:2,t:5,c:'distrito sin portal',alt:true},{f:5,t:6},{f:6,t:7,c:'observado (60%)',alt:true},{f:7,t:6},{f:6,t:8,c:'aprobado'},{f:8,t:9} ]
+    },
+  },
+
+  /* ---- z3 · instrucción de trabajo (ISO 10013 nivel 3 · APQC L5) — el "cómo" por actividad.
+     key = '<proc>:<ord>'. tareas = el manual disuelto (D-08) renderizado como pasos.
+     m36 = INPUTS de los dos scores (RPA + agente) — los scores se computan, jamás se guardan. ---- */
+  z3:{
+    'p-cob:1':{ ins:['cartera activa (1.400 cuentas)','cronograma de cuotas'], out:'tablero de vencimientos del día',
+      tareas:[{v:'abrir',t:'Abrir el reporte de cartera del ERP (filtro: cuotas del mes)'},{v:'cruzar',t:'Cruzar vencimientos contra pagos aplicados ayer'},{v:'marcar',t:'Marcar cuentas que entran a gestión hoy'},{v:'priorizar',t:'Priorizar por monto y tramo de mora'}],
+      m36:{volumen:'diario ×1.400', exc:'5%', datos:'estructurados', reglas:'estables', promptable:true, tolerancia:'alta', riesgo:'bajo', rpa:78, agente:64} },
+    'p-cob:2':{ ins:['tablero de vencimientos'], out:'cartera clasificada por tramo y riesgo',
+      tareas:[{v:'segmentar',t:'Segmentar por tramo 0-30 / 31-60 / 61-90 / >90'},{v:'etiquetar',t:'Etiquetar riesgo según historial de pago'},{v:'exportar',t:'Exportar la lista de gestión al día'}],
+      m36:{volumen:'diario', exc:'2%', datos:'estructurados', reglas:'estables', promptable:true, tolerancia:'alta', riesgo:'bajo', rpa:91, agente:55} },
+    'p-cob:3':{ ins:['cartera clasificada','playbook de llamadas','política de refinanciamiento'], out:'compromisos de pago + derivaciones (mora dura · campo)',
+      tareas:[{v:'preparar',t:'Preparar el contexto de cada cuenta (historial + última promesa)'},{v:'contactar',t:'Llamar / escribir según el guion del tramo'},{v:'negociar',t:'Ofrecer fecha de pago dentro de política'},{v:'registrar',t:'Registrar el compromiso y la próxima acción'},{v:'derivar',t:'Derivar: mora dura → Jefe · sin respuesta ×3 → campo'}],
+      m36:{volumen:'~60 contactos/día', exc:'25%', datos:'semi-estructurados', reglas:'con criterio', promptable:true, tolerancia:'media', riesgo:'medio', rpa:34, agente:72},
+      nota:'RTLX 71 (agregado por rol) — carga emocional alta. El agente PREPARA y REDACTA; la conversación difícil queda humana. Candidato a skill del arnés (idea i-agente en el funil).' },
+    'p-cob:4':{ ins:['casos de mora dura','política de refinanciamiento'], out:'convenio firmado o escalamiento al CFO',
+      tareas:[{v:'evaluar',t:'Evaluar capacidad de pago y garantías del caso'},{v:'proponer',t:'Armar propuesta dentro de política (plazo × tasa)'},{v:'negociar',t:'Negociar con el comprador (40 convenios/mes)'},{v:'escalar',t:'Fuera de política → escalar al CFO con sustento'}],
+      m36:{volumen:'40/mes', exc:'40%', datos:'no estructurados', reglas:'criterio experto', promptable:false, tolerancia:'baja', riesgo:'alto', rpa:8, agente:22},
+      nota:'humano-por-diseño: negociación con criterio y autoridad — el arnés solo prepara el expediente del caso.' },
+    'p-cob:5':{ ins:['lista sin respuesta ×3'], out:'acta de visita con resultado',
+      tareas:[{v:'planificar',t:'Armar la ruta del día por distrito'},{v:'visitar',t:'Visitar y documentar con foto + acta'},{v:'reportar',t:'Reportar resultado y siguiente paso'}],
+      m36:{volumen:'~15 visitas/sem', exc:'30%', datos:'no estructurados', reglas:'con criterio', promptable:false, tolerancia:'baja', riesgo:'medio', rpa:5, agente:18} },
+    'p-cob:6':{ ins:['abonos de tesorería','compromisos registrados'], out:'pagos aplicados a cuota',
+      tareas:[{v:'cruzar',t:'Cruzar abonos bancarios contra cuotas pendientes'},{v:'aplicar',t:'Aplicar el pago a la cuota correcta'},{v:'alertar',t:'Alertar diferencias (pago parcial / sin identificar)'}],
+      m36:{volumen:'diario', exc:'8%', datos:'estructurados', reglas:'estables', promptable:true, tolerancia:'media', riesgo:'medio', rpa:70, agente:48},
+      nota:'mandato PREVENTIVO: el control no se elimina — se asiste. La aplicación la confirma el humano.' },
+    'p-cob:7':{ ins:['convenios del día'], out:'(hoja paralela — duplicada)',
+      tareas:[{v:'copiar',t:'Copiar el convenio ya registrado en el ERP a la hoja'},{v:'archivar',t:'Archivar la hoja que nadie consulta'}],
+      m36:{volumen:'diario', exc:'0%', datos:'estructurados', reglas:'estables', promptable:true, tolerancia:'alta', riesgo:'bajo', rpa:0, agente:0},
+      nota:'veredicto ECRS: ELIMINABLE — no se automatiza el desperdicio, se elimina (M35 antes que M36).' },
+    'p-vta:1':{ ins:['lead de campañas (CRM)'], out:'lead registrado y asignado',
+      tareas:[{v:'verificar',t:'Verificar datos y consentimiento del lead'},{v:'registrar',t:'Registrar en CRM (hoy también en cuaderno — duplicado)'},{v:'asignar',t:'Asignar asesor por caseta y turno'}],
+      m36:{volumen:'~40/día', exc:'5%', datos:'estructurados', reglas:'estables', promptable:true, tolerancia:'alta', riesgo:'bajo', rpa:82, agente:60} },
+    'p-vta:2':{ ins:['lead asignado','stock de unidades'], out:'visita realizada + interés calificado',
+      tareas:[{v:'recibir',t:'Recibir en caseta y calificar necesidad'},{v:'mostrar',t:'Mostrar piloto según perfil (guion de visita)'},{v:'calificar',t:'Calificar interés y registrar siguiente paso'}],
+      m36:{volumen:'~25 visitas/día', exc:'—', datos:'no estructurados', reglas:'criterio experto', promptable:false, tolerancia:'baja', riesgo:'alto', rpa:3, agente:12},
+      nota:'humano-por-diseño: la visita ES la venta. El arnés prepara el contexto del lead antes, no reemplaza el encuentro.' },
+    'p-vta:3':{ ins:['interés calificado','lista de precios'], out:'cotización + simulación entregada',
+      tareas:[{v:'cotizar',t:'Armar cotización por unidad elegida'},{v:'simular',t:'Simular cuota inicial + financiamiento bancario'},{v:'enviar',t:'Enviar y registrar seguimiento a 48h'}],
+      m36:{volumen:'~15/día', exc:'15%', datos:'semi-estructurados', reglas:'con criterio', promptable:true, tolerancia:'media', riesgo:'medio', rpa:41, agente:68},
+      nota:'candidato a skill del arnés del Asesor (puesto HOY sin arnés — el gap visible).' },
+    'p-vta:4':{ ins:['cotización aceptada','pre-aprobación bancaria'], out:'minuta firmada',
+      tareas:[{v:'negociar',t:'Negociar condiciones finales dentro de política'},{v:'armar',t:'Armar expediente del comprador (KYC completo)'},{v:'firmar',t:'Firmar minuta y registrar hito'}],
+      m36:{volumen:'~20/mes', exc:'30%', datos:'no estructurados', reglas:'criterio experto', promptable:false, tolerancia:'baja', riesgo:'alto', rpa:6, agente:20} },
+    'p-vta:5':{ ins:['minuta firmada'], out:'separación + cronograma en ERP',
+      tareas:[{v:'registrar',t:'Registrar separación en CRM'},{v:'replicar',t:'Replicar cronograma de cuotas al ERP (doble registro a mano)'},{v:'verificar',t:'Verificar consistencia CRM↔ERP'}],
+      m36:{volumen:'~20/mes', exc:'10%', datos:'estructurados', reglas:'estables', promptable:true, tolerancia:'media', riesgo:'medio', rpa:74, agente:50},
+      nota:'mandato PREVENTIVO sobre el cronograma — la réplica es candidata a integración, el control queda.' },
+    'p-perm:6':{ ins:['expediente presentado','cargo de recepción'], out:'estado semanal por expediente + alerta de observación',
+      tareas:[{v:'consultar',t:'Consultar portal municipal por expediente (SM) / llamar (PL · Surquillo)'},{v:'registrar',t:'Registrar estado y fecha en el Excel de permisos'},{v:'alertar',t:'Alertar si aparece observación o vence un plazo'}],
+      m36:{volumen:'~12 expedientes ×1/sem', exc:'10%', datos:'semi-estructurados', reglas:'estables', promptable:true, tolerancia:'alta', riesgo:'bajo', rpa:76, agente:58},
+      nota:'el "IAA 74" del levantamiento SOMA, hoy con dos scores: RPA alto (consulta+registro) — la llamada a PL/Surquillo queda humana.' },
+    'p-perm:7':{ ins:['pliego de observaciones','expediente técnico','historial por municipio'], out:'expediente re-presentado con observaciones levantadas',
+      tareas:[{v:'analizar',t:'Analizar el pliego: qué pide realmente el revisor'},{v:'consultar',t:'Consultar el criterio histórico de ESE municipio (hoy: memoria de la Jefa — g-dep)'},{v:'corregir',t:'Corregir planos/memoria con el Arquitecto'},{v:'negociar',t:'Sustentar en mesa técnica con el revisor municipal'},{v:'re-presentar',t:'Re-presentar y reiniciar el seguimiento'}],
+      m36:{volumen:'~7/trimestre', exc:'60%', datos:'no estructurados', reglas:'criterio experto', promptable:false, tolerancia:'baja', riesgo:'alto', rpa:4, agente:15},
+      nota:'el "IAA 22" del SOMA: negociación + criterio + relación por municipio. RTLX 68. La bitácora por municipio (idea i-mun) convertiría la memoria en corpus — y subiría el score del agente.' },
   },
 
   flagship:{ proc:'p-cob', nm:'Cobranza de cuotas',
@@ -821,6 +1143,11 @@ function rolOcupante(rol){ const vac=/vacante/i.test(rol); const core=rol.replac
   const a=DATA.areas.find(x=>x.lider.split(' · ')[1]===core);
   const ex=DATA.personasExtra.find(p=>p.rol===core);
   return { rol:core, vac, quien:a?a.lider.split(' · ')[0]:(ex?ex.nm:null) }; }
+// todos los ocupantes del rol (líderes de área + plantilla) — headcount real de la nómina
+function rolOcupantes(rol){ const core=String(rol).replace(/\s*\(vacante\)/i,''); const out=[];
+  DATA.areas.forEach(a=>{ const [nm,r]=a.lider.split(' · '); if(r===core) out.push(nm); });
+  DATA.personasExtra.forEach(p=>{ if(p.rol===core) out.push(p.nm); }); return out; }
+const sipocRefChip=r=>r.proc?`<span class="chip lk" data-proc="${r.proc}">${byId(DATA.procesos,r.proc).nm} ›</span>`:`<span class="chip" title="actor externo">${r.ext} · ext</span>`;
 
 /* CK-29: arneses por puesto — helpers */
 const sisByName=n=>DATA.sistemas.find(s=>s.nm===n);
@@ -934,7 +1261,7 @@ function render(){
 
   // disable honesto: capa sin efecto en el módulo/escala actual → atenuada con razón, no oculta
   const CAPAS_APLICAN={ 'z0-valor':['hilo','salud','brechas','cinetica','trabajo'], 'z0-org':['estructura','hilo','salud','brechas','cinetica','trabajo'],
-    'z1':['hilo','salud','brechas','cinetica','trabajo'], 'z2':['hilo','salud','brechas','trabajo'] };
+    'z1':['hilo','salud','brechas','cinetica','trabajo'], 'z2':['hilo','salud','brechas','trabajo'], 'z3':['trabajo'] };
   const apl=terr?CAPAS_APLICAN[state.escala==='z0'?('z0-'+state.piel):state.escala]:[];
   document.querySelectorAll('.capa').forEach(b=>{ const na=!apl.includes(b.dataset.capa);
     b.classList.toggle('na',na); b.title=na?(terr?'Sin efecto en esta escala — no hay dato de esta capa aquí':'Las capas pintan sobre el Territorio'):''; });
@@ -943,6 +1270,8 @@ function render(){
   let crumb=terr?'<b>Territorio</b>':`<b>${MODNM[state.mod]}</b>`;
   if(terr&&state.escala==='z1'){ const a=byId(DATA.areas,state.foco); crumb=`Territorio <span class="sep">›</span> <b>${a.nm}</b>`; }
   if(terr&&state.escala==='z2'){ crumb=`Territorio <span class="sep">›</span> … <span class="sep">›</span> <b>${byId(DATA.procesos,state.lienzo||DATA.flagship.proc).nm}</b> · lienzo`; }
+  if(terr&&state.escala==='z3'&&state.act){ const lf=lienzoData(state.act.pid), aa=lf&&lf.acts.find(x=>x.ord===state.act.ord);
+    crumb=`Territorio <span class="sep">›</span> … <span class="sep">›</span> <span class="plnk" onclick="drillLienzo('${state.act.pid}')">${byId(DATA.procesos,state.act.pid).nm}</span> <span class="sep">›</span> <b>${String(state.act.ord).padStart(2,'0')} · ${aa?aa.verbo:''}</b> · instrucción`; }
   document.getElementById('crumbline').innerHTML=crumb;
   subLegend(); chips();
 
@@ -951,6 +1280,7 @@ function render(){
   if(!terr){ ({mejora:renderMejora, metodo:renderMetodo, cambios:renderCambios})[state.mod](); }
   else if(state.escala==='z0') state.piel==='org'?renderOrganigrama():renderValor();
   else if(state.escala==='z1') renderArea();
+  else if(state.escala==='z3') renderInstruccion();
   else renderLienzo();
   mmDots(); if(state.insp==='home') inspectorHome();
 }
@@ -1143,7 +1473,8 @@ function renderValor(){
     const occ=rolOcupante(r), h=arnesDeRol(r);
     const hot=hotRol.has(r);
     const c=el('button','rolchip '+(hot?'hot':'')); if(act&&!hot)c.classList.add('dim');
-    c.innerHTML=`${r}<span class="who">${occ.vac||!occ.quien?'—':occ.quien.split(' ')[0]}</span>${state.capas.has('trabajo')?harnBadge(h):''}`;
+    const nOcc=rolOcupantes(r).length;
+    c.innerHTML=`${r}<span class="who">${occ.vac||!nOcc?'—':(occ.quien.split(' ')[0]+(nOcc>1?' +'+(nOcc-1):''))}</span>${state.capas.has('trabajo')?harnBadge(h):''}`;
     $nodes.appendChild(c);
     const wCh=c.offsetWidth||(r.length*6.4+70);
     if(rx+wCh>W-60){ rx=120; ry+=46; }              // wrap REAL: nueva fila, no encima
@@ -1153,19 +1484,22 @@ function renderValor(){
   });
 
   /* — banda 5 · SISTEMAS (plataformas: ancho = cuántos procesos sirven · pulso al lakehouse) — */
-  bandLab(Y.sis+row*58,'Sistemas — sobre qué corre todo','ancho = procesos que sirve · el lakehouse (N16) los observa: ese es el pulso del twin');
-  const sy=Y.sis+row*58+4; let sx=120; const sPos={};
+  const ySis=Math.max(Y.sis+row*58, ry+66);   // la banda Gente creció (nómina completa) → Sistemas cede, no se solapa
+  bandLab(ySis,'Sistemas — sobre qué corre todo','ancho = procesos que sirve · el lakehouse (N16) los observa: ese es el pulso del twin');
+  let sy2=ySis+4, sx=120; const sPos={};
   DATA.sistemas.forEach(s2=>{
     const served=DATA.procesos.filter(p=>p.sist.includes(s2.nm)).length;
     const wPx=96+served*34;
+    if(sx+wPx>W-60){ sx=120; sy2+=44; }          // wrap real (11 sistemas ya no caben en una fila)
     const hot=hotSis.has(s2.id);
     const b=el('button','sysplat '+(hot?'hot':'')); if(act&&!hot)b.classList.add('dim');
-    b.style.left=sx+'px'; b.style.top=sy+'px'; b.style.width=wPx+'px';
+    b.style.left=sx+'px'; b.style.top=sy2+'px'; b.style.width=wPx+'px';
     b.innerHTML=`<span class="health-dot" style="width:7px;height:7px;background:${health[digHealth(s2.digital)]}"></span>${s2.nm}<span style="margin-left:auto;font-size:8.5px;color:var(--tx-faint)">${served} proc</span>`;
     b.onclick=()=>openSistema(s2);
-    sPos[s2.id]={x:sx+wPx/2,y:sy};
+    sPos[s2.id]={x:sx+wPx/2,y:sy2};
     $nodes.appendChild(b); sx+=wPx+16;
   });
+  setCanvas(W, Math.max(920, sy2+130));
 
   /* — capas Brechas + Cinética sobre la geografía de valor (pin/token sobre SU proceso) — */
   if(state.capas.has('brechas')) DATA.brechas.forEach(g=>{
@@ -1278,10 +1612,11 @@ function renderLienzo(){
       acts:(DATA.pasosMini[pid]||[]).map((v,i)=>({ord:i+1,lane:0,verbo:v,ttl:'Paso macro — actividad sin levantar',tipo:'humana',toque:'s/d',espera:'—',sist:(p.sist||[]).filter(s=>s!=='—'),conf:'baja',fte:'Pasos macro (ingesta)',note:'detalle pendiente del levantamiento M1'})),
       seq:(DATA.pasosMini[pid]||[]).slice(1).map((_,i)=>({f:i+1,t:i+2})) };
   }
-  const laneH=176, headH=168, x0=300, colW=228;
+  const laneH=176, headH=222, x0=560, colW=228;
   const maxOrd=Math.max(1,...f.acts.map(a=>a.ord));
-  const W=x0+(maxOrd-1)*colW+330, H=headH+f.lanes.length*laneH+40;
+  const W=x0+(maxOrd-1)*colW+330+280, H=headH+f.lanes.length*laneH+40;
   setCanvas(W,H);
+  const sp=DATA.sipoc[pid], c1=DATA.sipocC1[pid], know=DATA.conocimiento[pid];
   const triCls=t=>t==='eliminable'?'elim':(t&&t.startsWith('automatizable')?(t.includes('rpa')?'rpa':'agente'):'');
 
   // header: título + capas ENCIMA del lienzo (hilo=KPIs+objetivo · salud=dot · VSM totales)
@@ -1290,11 +1625,20 @@ function renderLienzo(){
     return `<button class="kchip" data-k="${k.id}"><span class="kd" style="background:${SEMC[s]}"></span>${k.nm} ${c==null?'s/d':c+(k.unidad||'')} → ${k.banda.target}${k.unidad||''}</button>`; }).join(''):'';
   const objChip=state.capas.has('hilo')&&p.sirve.length?`<span class="tag teal" style="font-size:9px">sostiene · ${byId(DATA.objetivos,p.sirve[0]).nm}</span>`:'';
   const saludDot=state.capas.has('salud')?`<span class="health-dot" style="background:${health[digHealth(p.digital)]};display:inline-block;margin-right:8px"></span>`:'';
-  hd.innerHTML=`<span class="eyebrow">z2 · proceso como lienzo · carriles = roles · flujo = secuencia + alternos</span>
+  hd.innerHTML=`<span class="eyebrow">z2 · proceso caracterizado (procedimiento · ISO 10013 n2) · bordes SIPOC como geografía · carriles = roles · doble-click actividad = instrucción (z3)</span>
     <h2 style="font-family:var(--font-display);font-weight:800;font-size:24px;margin:4px 0 0;letter-spacing:-.01em">${saludDot}${f.nm}</h2>
-    <div style="color:var(--tx-mut);font-size:12px;margin-top:4px;max-width:78ch">${f.sub}</div>
-    <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap">${kchips}${objChip}
+    <div style="color:var(--tx-mut);font-size:12px;margin-top:4px;max-width:96ch">${f.sub}</div>
+    ${c1?`<div class="c1row">
+      <span class="c1i"><b>Propósito (4.4.1)</b>${c1.prop}</span>
+      <span class="c1i"><b>Inicia cuando</b>${sp&&sp.disp?sp.disp:'—'}</span>
+      <span class="c1i"><b>Termina cuando</b>${c1.fin}</span>
+      <span class="c1i"><b>Clasificación</b>APQC ${c1.apqc}</span>
+      ${know?`<span class="c1i"><b>Conocimiento</b><span class="plnk" data-proc="${pid}">${know.n} ›</span></span>`:''}
+      ${sp&&sp.ctrl?`<span class="c1i"><b>Criterios de control (4.4.1c)</b>${sp.ctrl.join(' · ')}</span>`:''}
+    </div>`:''}
+    <div style="display:flex;gap:8px;margin-top:9px;align-items:center;flex-wrap:wrap">${kchips}${objChip}
       <span class="mono" style="font-size:10px;color:var(--tx-faint)">${f.vsm?`VSM · ◔ toque total ${f.vsm.toque} · ⏳ espera ${f.vsm.espera}${pid===DATA.flagship.proc?' · 30m eliminables':''}`:'VSM · sin medir — tiempos pendientes del levantamiento (M1)'}</span></div>`;
+  wireLinks(hd);
   $nodes.appendChild(hd);
   hd.querySelectorAll('.kchip').forEach(b=>b.onclick=()=>openKpi(byId(DATA.kpis,b.dataset.k)));
 
@@ -1324,9 +1668,30 @@ function renderLienzo(){
     </div>`;
     if(!stub) n.querySelector('.act').onclick=()=>openActividad(a);
     else n.querySelector('.act').title='actividad sin levantar — candidato del levantamiento (M1)';
+    n.querySelector('.act').ondblclick=()=>drillActividad(pid,a.ord);
     wireLinks(n);
     $nodes.appendChild(n);
   });
+
+  // puertos SIPOC — la caracterización como GEOGRAFÍA: S·I a la izquierda del flujo, O·C a la derecha
+  if(sp){
+    const midY=headH+(f.lanes.length*laneH)/2;
+    const firstOrd=Math.min(...f.acts.map(a=>a.ord)), lastOrd=Math.max(...f.acts.map(a=>a.ord));
+    const A0=pos[firstOrd], A1=pos[lastOrd];
+    const lp=el('div','portbox'); lp.style.left='280px'; lp.style.top=midY+'px';
+    lp.innerHTML=`<div class="pt">S · proveedores → I · entradas</div>
+      <div class="chips">${sp.prov.map(sipocRefChip).join('')}</div>
+      <div class="pitems">${sp.in.map(i=>`<span>⇥ ${i}</span>`).join('')}</div>`;
+    wireLinks(lp); $pins.appendChild(lp); MM_PTS.push({x:396,y:midY});
+    const rpx=(A1?A1.cx:x0)+102+52;
+    const rp=el('div','portbox'); rp.style.left=rpx+'px'; rp.style.top=midY+'px';
+    rp.innerHTML=`<div class="pt">O · salidas → C · clientes</div>
+      <div class="pitems" style="margin-top:0;margin-bottom:7px">${sp.out.map(o=>`<span>${o} ⇥</span>`).join('')}</div>
+      <div class="chips">${sp.cli.map(sipocRefChip).join('')}</div>`;
+    wireLinks(rp); $pins.appendChild(rp); MM_PTS.push({x:rpx+116,y:midY});
+    if(A0) pathEl(curve(516,midY,A0.cx-104,A0.cy),'var(--teal-800)',1.4,.8,'6 5');
+    if(A1) pathEl(curve(A1.cx+104,A1.cy,rpx-4,midY),'var(--teal-800)',1.4,.8,'6 5');
+  }
 
   // edges reales: secuencia_ref (sólido) + flujos_alternos (punteado warn con condición)
   f.seq.forEach(s=>{
@@ -1349,6 +1714,92 @@ function renderLienzo(){
   }
 
   counter(stub?`${f.acts.length} pasos macro · actividades sin levantar (M1)`:`${f.acts.length} actividades · ${f.lanes.length} carriles · ${f.seq.length} flujos`);
+  fit();
+}
+
+/* ---------- z3 · instrucción de trabajo — ISO 10013 nivel 3 · APQC L5 (el "cómo") ----------
+   El piso del zoom semántico: debajo de la última tarea no hay más twin — hay ARNÉS (CK-29):
+   el procedimiento se COMPILA al puesto (Arnesia N15 → Colab Studio N17). */
+function drillActividad(pid,ord){ state.lienzo=pid; state.act={pid,ord}; state.escala='z3'; state.insp='home'; render(); }
+function renderInstruccion(){
+  const {pid,ord}=state.act, p=byId(DATA.procesos,pid), f=lienzoData(pid);
+  const a=f?f.acts.find(x=>x.ord===ord):null;
+  if(!a){ state.escala='z2'; render(); return; }
+  const d=DATA.z3[pid+':'+ord];
+  const rolCarril=f.lanes[a.lane]?f.lanes[a.lane].role:p.dueno;
+  const h=arnesDeRol(rolCarril);
+  const W=Math.max(1620, d?320+d.tareas.length*232+300:0), H=980; setCanvas(W,H);
+  const triCls=t=>t==='eliminable'?'elim':(t&&t.startsWith('automatizable')?(t.includes('rpa')?'rpa':'agente'):'');
+
+  const hd=el('div','grouplab'); hd.style.left='26px'; hd.style.top='20px'; hd.style.maxWidth=(W-60)+'px';
+  hd.innerHTML=`<span class="eyebrow">z3 · instrucción de trabajo · ISO 10013 nivel 3 · APQC L5 — el "cómo" de una actividad</span>
+    <h2 style="font-family:var(--font-display);font-weight:800;font-size:23px;margin:4px 0 0;letter-spacing:-.01em">${String(ord).padStart(2,'0')} · ${a.verbo} — ${a.ttl}</h2>
+    <div style="color:var(--tx-mut);font-size:12px;margin-top:5px;max-width:100ch">Actividad del proceso <span class="plnk" data-proc="${pid}">${p.nm}</span> · carril <span class="plnk" data-rol="${rolCarril}">${rolCarril}</span>
+      · ◔ ${a.toque}${a.espera&&a.espera!=='—'?` · ⏳ ${a.espera}`:''}${a.triage?` · <span class="tri ${triCls(a.triage)}" style="font-size:9px">${a.triage}</span>`:''}${a.mandato?` · <span class="tri" style="font-size:9px;color:var(--brand-hi);border-color:var(--teal-700)">mandato · ${a.mandato}</span>`:''}${a.rtlx?` · <span class="tri rtlx" style="font-size:9px">RTLX ${a.rtlx}</span>`:''}</div>`;
+  wireLinks(hd); $nodes.appendChild(hd);
+
+  const tY=300;
+  if(d){
+    // puertos de la actividad (insumos → tareas → salida)
+    const lp=el('div','portbox'); lp.style.left='40px'; lp.style.top=tY+'px'; lp.style.width='212px';
+    lp.innerHTML=`<div class="pt">⇥ insumos</div><div class="pitems" style="margin-top:0">${d.ins.map(i=>`<span>${i}</span>`).join('')}</div>`;
+    $pins.appendChild(lp); MM_PTS.push({x:140,y:tY});
+    let tx=320;
+    d.tareas.forEach((t,i)=>{
+      const n=el('div','node'); n.style.left=(tx+99)+'px'; n.style.top=tY+'px';
+      n.innerHTML=`<div class="tarea"><span class="tv2">${String(i+1).padStart(2,'0')} · ${t.v}</span><div class="tt2">${t.t}</div></div>`;
+      $nodes.appendChild(n); MM_PTS.push({x:tx+99,y:tY});
+      if(i<d.tareas.length-1){ const ar=el('div','chev-arrow','▸'); ar.style.left=(tx+198+16)+'px'; ar.style.top=tY+'px'; $pins.appendChild(ar); }
+      tx+=198+34;
+    });
+    const rp=el('div','portbox'); rp.style.left=(tx+14)+'px'; rp.style.top=tY+'px'; rp.style.width='212px';
+    rp.innerHTML=`<div class="pt">salida ⇥</div><div class="pitems" style="margin-top:0"><span>${d.out}</span></div>`;
+    $pins.appendChild(rp); MM_PTS.push({x:tx+120,y:tY});
+  } else {
+    const hb=el('div','node'); hb.style.left='560px'; hb.style.top=tY+'px';
+    hb.innerHTML=`<div class="dia-card" style="width:560px;border-color:rgba(224,173,78,.5)"><b style="color:var(--warn)">Instrucción SIN LEVANTAR.</b>
+      El "cómo" de esta actividad vive en la cabeza del ocupante — todavía no es corpus. Se construye en el levantamiento (M1 · entrevista + observación) o con la bitácora del funil de ideas.${a.note?`<br><span style="color:var(--tx-faint);font-size:11.5px">Nota del AS-IS: ${a.note}</span>`:''}</div>`;
+    $nodes.appendChild(hb);
+  }
+
+  // fila de caracterización de la actividad
+  const cY=520, cards=[];
+  if(d&&d.m36) cards.push(`<div class="gt">Automatizabilidad — dos scores (M36), inputs visibles</div>
+    <div class="scorebar"><span class="lb">RPA</span><div class="tr2"><i style="width:${d.m36.rpa}%;background:${d.m36.rpa>=60?'var(--ok)':d.m36.rpa>=35?'var(--warn)':'#3a4d48'}"></i></div><span class="v2">${d.m36.rpa}</span></div>
+    <div class="scorebar"><span class="lb">Agente</span><div class="tr2"><i style="width:${d.m36.agente}%;background:${d.m36.agente>=60?'var(--ok)':d.m36.agente>=35?'var(--warn)':'#3a4d48'}"></i></div><span class="v2">${d.m36.agente}</span></div>
+    <div class="m36in">${[['volumen',d.m36.volumen],['excepciones',d.m36.exc],['datos',d.m36.datos],['reglas',d.m36.reglas],['promptable',d.m36.promptable?'sí':'no'],['tolerancia a revisión',d.m36.tolerancia],['riesgo de error',d.m36.riesgo]].map(([k,v])=>`<span class="chip" title="${k}">${k}: <b style="color:var(--tx)">${v}</b></span>`).join('')}</div>
+    <div style="font-size:10px;color:var(--tx-faint)">los scores se COMPUTAN de los inputs con la confianza propagada — jamás se guardan (M36 · WS5)</div>`);
+  cards.push(`<div class="gt">Autoridad (RACI · M25)${a.rtlx?' + carga (RTLX · M39)':''}</div>
+    ${a.raci?`<div class="drow"><dt>R · ejecuta</dt><dd><span class="plnk" data-rol="${a.raci.R}">${a.raci.R}</span></dd></div>
+    <div class="drow"><dt>A · responde</dt><dd><span class="plnk" data-rol="${a.raci.A}">${a.raci.A}</span></dd></div>`
+    :`<div class="drow"><dt>R · ejecuta</dt><dd><span class="plnk" data-rol="${rolCarril}">${rolCarril}</span></dd></div>
+    <div class="drow"><dt>A · responde</dt><dd><span class="plnk" data-rol="${p.dueno}">${p.dueno}</span></dd></div>`}
+    ${a.rtlx?`<div class="drow"><dt>RTLX (agregado por rol)</dt><dd class="mono" style="color:var(--warn)">${a.rtlx} / 100</dd></div>
+    <div style="font-size:10.5px;color:var(--tx-faint)">medido SOLO porque el triage la pre-flageó — jamás censal, jamás por persona (CK-24)</div>`:''}
+    ${a.mandato?`<div style="font-size:11px;color:var(--brand-hi)">⚑ mandato ${a.mandato}: control protegido — el triage no puede eliminarlo</div>`:''}`);
+  cards.push(`<div class="gt">Sistemas · conocimiento · procedencia (M23)</div>
+    <div class="drow"><dt>Con qué (C7)</dt><dd>${(a.sist&&a.sist.length&&a.sist[0]!=='—')?a.sist.map(s=>sisByName(s)?`<span class="plnk" data-sis="${s}">${s}</span>`:s).join(' · '):'— (a mano)'}</dd></div>
+    ${DATA.conocimiento[pid]?`<div class="drow"><dt>Conocimiento</dt><dd style="font-size:11.5px">${DATA.conocimiento[pid].n}</dd></div>`:''}
+    <div class="drow"><dt>Fuente</dt><dd style="font-size:11.5px">${a.fte||'—'}</dd></div>
+    <div class="drow"><dt>Confianza</dt><dd><span class="chip" style="border-color:${a.conf==='alta'?'var(--ok)':a.conf==='media'?'var(--warn)':'var(--crit)'};color:${a.conf==='alta'?'var(--ok)':a.conf==='media'?'var(--warn)':'var(--crit)'}">${a.conf||'s/d'}</span></dd></div>
+    ${d&&d.nota?`<div style="font-size:11px;color:var(--tx-mut);line-height:1.45;border-top:1px solid var(--border-soft);padding-top:7px">${d.nota}</div>`:''}`);
+  const alts=(f.seq||[]).filter(s=>s.f===ord&&s.c);
+  cards.push(`<div class="gt">Flujos que nacen aquí</div>
+    ${alts.length?alts.map(s=>{ const t2=f.acts.find(x=>x.ord===s.t);
+      return `<button class="loop-it" onclick="drillActividad('${pid}',${s.t})"><span class="pdca" style="${s.alt?'background:rgba(224,173,78,.15);color:var(--warn)':''}">${s.alt?'alterno':'sigue'}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.c} → ${String(s.t).padStart(2,'0')} · ${t2?t2.verbo:''}</span></button>`;}).join('')
+    :'<span style="font-size:12px;color:var(--tx-faint)">— flujo lineal: sigue a la actividad '+(ord<Math.max(...f.acts.map(x=>x.ord))?String(ord+1).padStart(2,'0'):'final')+'</span>'}
+    <div style="font-size:10px;color:var(--tx-faint)">tocá un flujo para saltar a ESA instrucción — el viaje no se corta</div>`);
+  let cx2=40;
+  cards.forEach(html=>{ const c=el('div','z3card',html); c.style.left=cx2+'px'; c.style.top=cY+'px'; wireLinks(c); $pins.appendChild(c); cx2+=352+30; });
+
+  // EL PISO (CK-29): debajo de la instrucción no hay más zoom — hay arnés compilado
+  const piso=el('div','piso-arnes'); piso.style.left='40px'; piso.style.top='820px'; piso.style.width='1100px';
+  piso.innerHTML=`<div class="gt" style="margin-bottom:6px">El piso del twin — de la instrucción al trabajo compilado (CK-29)</div>
+    ${h?`Este procedimiento ${h.acts.includes(ord)?'YA está compilado':'alimenta'} el arnés del puesto ${harnBadge(h)} — la vista GENERADA del twin para <span class="plnk" data-rol="${rolCarril}">${rolCarril}</span>. Cuando esta instrucción cambie (gestión de cambios), el arnés se <b>recompila</b>, jamás se edita a mano.`
+    :`El puesto <span class="plnk" data-rol="${rolCarril}">${rolCarril}</span> HOY no tiene arnés — esta instrucción es candidata a compilarse como skill (Arnesia N15 → Colab Studio N17). ${a.triage&&a.triage.startsWith('automatizable')?'El triage ya la marcó <b>'+a.triage+'</b>: el gap agéntico, visible.':'El gap de la era agéntica, visible.'}`}`;
+  wireLinks(piso); $pins.appendChild(piso);
+
+  counter(d?`${d.tareas.length} tareas · instrucción levantada`:'instrucción sin levantar (M1)');
   fit();
 }
 
@@ -1414,7 +1865,7 @@ function renderMetodo(){
         <div class="fitem"><span class="t">Frescura de indicadores</span><span class="m"><span style="color:var(--warn)">⌛ 1 KPI vencido</span><span>visitas a caseta (Declarado, 40d)</span></span></div>
         <div class="fitem"><span class="t">Revisiones periódicas</span><span class="m"><span class="gate-pill pend">PRÓX</span><span>Cobranza de cuotas v2 · 15 ago</span></span></div>
         <div class="fitem"><span class="t">Crowdsourcing a dueños del dato</span><span class="m"><span class="gate-pill pend">V2</span><span>encuestas + chat grounded con decision-trace</span></span></div>
-        <div class="fitem"><span class="t">Arneses por puesto (Arnesia → Colab)</span><span class="m"><span class="gate-pill pend">◐ 3/14</span><span style="color:var(--warn)">1 requiere recompilación</span><span>el método ENTREGADO al puesto</span></span></div></div>
+        <div class="fitem"><span class="t">Arneses por puesto (Arnesia → Colab)</span><span class="m"><span class="gate-pill pend">◐ 4/40</span><span style="color:var(--warn)">1 requiere recompilación</span><span>el método ENTREGADO al puesto</span></span></div></div>
     </div>
     <div class="fcol" style="margin-top:2px"><span class="eyebrow">Trazabilidad — qué M-card sostiene cada cosa que ves (method-as-code)</span>
       <div class="mcards">
@@ -1580,6 +2031,19 @@ function inspectorHome(){
         <div style="font-size:10px;color:var(--tx-faint)">métricas por ROL, jamás por persona nombrada (frontera CK-24) · ⛨ = arnés compilado del twin (CK-29)</div></div>
       <div style="font-size:12px;color:var(--tx-faint)">Tocá un proceso para su ficha (con su caracterización SIPOC) · doble-click abre su lienzo (flujograma).</div>`;
   }
+  else if(state.escala==='z3'&&state.act){
+    const lf=lienzoData(state.act.pid), aa=lf&&lf.acts.find(x=>x.ord===state.act.ord);
+    const dd=DATA.z3[state.act.pid+':'+state.act.ord];
+    inEye.textContent='Actividad · instrucción de trabajo'; inTitle.textContent=aa?(aa.verbo+' — '+String(state.act.ord).padStart(2,'0')):'—';
+    inBody.innerHTML=`
+      ${dd&&dd.m36?`<div class="dgroup"><div class="gt">Veredicto del triage</div>
+        <div style="font-size:12.5px;line-height:1.5">${aa.triage?`<b>${aa.triage}</b> — `:''}RPA <b class="mono">${dd.m36.rpa}</b> · Agente <b class="mono">${dd.m36.agente}</b>. ${dd.m36.rpa<35&&dd.m36.agente<35?'Queda humana: criterio, negociación o relación.':dd.m36.agente>dd.m36.rpa?'El agente del arnés puede prepararla/asistirla.':'Automatizable con reglas (RPA).'}</div></div>`:''}
+      <div class="dgroup"><div class="gt">Acciones (kinética)</div>
+        <button class="btn" data-acc="corregir-instruccion">Proponer corrección de instrucción › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · gestión-de-cambios → recompila arnés</span></button>
+        <button class="btn" data-acc="enviar-idea">Proponer mejora al funil › <span class="mono" style="font-size:9px;color:var(--tx-faint)">operativo · directa · autoría reconocida</span></button></div>
+      <div style="font-size:12px;color:var(--tx-faint);line-height:1.5">Debajo de la instrucción no hay más zoom: el piso es el <b>arnés del puesto</b> (CK-29). Tocá una tarea, un rol o el arnés para seguir el viaje.</div>`;
+    wireLinks(inBody); return;
+  }
   else{
     const pid=state.lienzo||DATA.flagship.proc, f=lienzoData(pid), p2=byId(DATA.procesos,pid), ks=kpisByProc(pid);
     const g=DATA.brechas.find(x=>x.against===pid);
@@ -1712,9 +2176,10 @@ function openActividad(a){ const hAct=DATA.arneses.find(h=>h.acts.includes(a.ord
    ${candidato?`<div class="dgroup"><div class="gt">El triage NO es una etiqueta — alimenta la fábrica</div>
     <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">Veredicto <b>${a.triage}</b> → candidato a <b>skill del arnés del puesto</b>: la cadena es triage (M36) → funil de ideas (M44) → Arnesia (N15) compila → Colab Studio (N17) lo corre.</div>
     ${a.ord===3?'<button class="btn" style="justify-content:center" id="actIdea">Ver su idea en el funil › <span class="mono" style="font-size:9px;color:var(--tx-faint)">M36 → M44 → Arnesia</span></button>':'<button class="btn" data-acc="enviar-idea" style="justify-content:center">Proponer al funil › <span class="mono" style="font-size:9px;color:var(--tx-faint)">operativo · directa · autoría reconocida</span></button>'}</div>`:''}
-   ${conocimientoHTML('p-cob')}
+   ${conocimientoHTML(state.lienzo||'p-cob')}
    ${prov(a.fte||'Entrevista',a.conf||'media')}
-   <div style="font-size:12px;color:var(--tx-faint)">${a.note}</div>`);
+   <div style="font-size:12px;color:var(--tx-faint)">${a.note}</div>
+   <button class="btn" style="justify-content:center" onclick="drillActividad('${state.lienzo||DATA.flagship.proc}',${a.ord})">Abrir la instrucción de trabajo (z3) › <span class="mono" style="font-size:9px;color:var(--tx-faint)">el cómo · tareas · scores M36</span></button>`);
   const ai=inBody.querySelector('#actIdea'); if(ai) ai.onclick=()=>openIdea(byId(DATA.ideas,'i-agente')); }
 
 /* ---------- drawer KPI: semáforo grande + sparkline + cadena kpi→KR→objetivo ---------- */
@@ -1779,14 +2244,16 @@ function openObjetivo(o){
     if(!state.capas.has('hilo')){state.capas.add('hilo');document.querySelector('[data-capa=hilo]').classList.add('on');} render(); };
 }
 function openRol(nm){ const core=String(nm).replace(/\s*\(vacante\)/i,'');
-  const occ=rolOcupante(core), h=arnesDeRol(core);
+  const occ=rolOcupante(core), h=arnesDeRol(core), occs=rolOcupantes(core);
   const own=DATA.procesos.filter(p=>p.dueno.replace(/\s*\(vacante\)/i,'')===core);
-  const enCarril=DATA.flagship.lanes.some(l=>l.role===core)&&!own.some(p=>p.id===DATA.flagship.proc);
+  const carriles=[DATA.flagship,...Object.values(DATA.lienzos)].filter(l=>l.lanes.some(x=>x.role===core)&&!own.some(p=>p.id===l.proc));
   const ks=DATA.kpis.filter(k=>k.dueno===core);
   openDrawer('Rol · puesto', core, `
    <div class="dgroup">
-     <div class="drow"><dt>Ocupante</dt><dd>${occ.quien?`<span class="plnk" data-per="${occ.quien}">${occ.quien}</span>`:'<span class="chip" style="border-color:var(--warn);color:var(--warn)">SIN PERSONA ASIGNADA</span>'}</dd></div>
-     <div class="drow"><dt>Actúa en</dt><dd><div class="chips" style="justify-content:flex-end">${[...own.map(p=>`<span class="chip lk" data-proc="${p.id}">${p.nm}</span>`),...(enCarril?[`<span class="chip lk" data-proc="${DATA.flagship.proc}">${DATA.flagship.nm} · carril</span>`]:[])].join('')||'—'}</div></dd></div></div>
+     <div class="drow"><dt>Ocupantes</dt><dd class="mono" style="font-size:12px">${occs.length||'—'}${occ.vac?' · <span style="color:var(--warn)">vacante parcial</span>':''}</dd></div>
+     ${occs.length?`<div class="chips" style="justify-content:flex-end">${occs.slice(0,8).map(q=>`<span class="chip lk" data-per="${q}">${q}</span>`).join('')}${occs.length>8?`<span class="chip">+${occs.length-8} más</span>`:''}</div>`
+       :'<div style="text-align:right"><span class="chip" style="border-color:var(--warn);color:var(--warn)">SIN PERSONA ASIGNADA</span></div>'}
+     <div class="drow"><dt>Actúa en</dt><dd><div class="chips" style="justify-content:flex-end">${[...own.map(p=>`<span class="chip lk" data-proc="${p.id}">${p.nm}</span>`),...carriles.map(l=>`<span class="chip lk" data-proc="${l.proc}">${l.nm} · carril</span>`)].join('')||'—'}</div></dd></div></div>
    ${ks.length?`<div class="dgroup"><div class="gt">KPIs de los que es dueño — por rol, jamás por persona (CK-24)</div>${ks.map(krowHTML).join('')}</div>`:''}
    <div class="dgroup"><div class="gt">Puesto & arnés — el twin compila el trabajo (CK-29)</div>
      <div class="drow"><dt>Arnés</dt><dd>${harnBadge(h)}</dd></div>
@@ -1808,7 +2275,7 @@ function openPersona(nm){
     <div class="dgroup">
       <div class="drow"><dt>Cumple el rol</dt><dd>${rol?`<span class="plnk" data-rol="${rol}">${rol}</span>`:'—'}</dd></div>
       <div class="drow"><dt>Área</dt><dd>${area?area.nm:'—'}</dd></div>
-      <div class="drow"><dt>Vínculo</dt><dd>empleado</dd></div>
+      <div class="drow"><dt>Vínculo</dt><dd>${extra&&extra.vinculo?extra.vinculo:'empleado'}</dd></div>
       <div class="drow"><dt>Su puesto</dt><dd>${harnBadge(h)}</dd></div></div>
     <div class="dgroup"><div class="gt">Ideas propuestas — autoría reconocida (funil M44)</div>
       ${ideas.length?ideas.map(i=>`<button class="loop-it" data-idea="${i.id}"><span class="pdca">${i.estado}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.nm}</span></button>`).join(''):'<span style="font-size:12px;color:var(--tx-faint)">— todavía ninguna</span>'}</div>
@@ -1879,7 +2346,9 @@ function openEmpresa(){ const e=DATA.empresa;
 /* ============================================================
    CONTROLS
    ============================================================ */
-document.getElementById('back').onclick=()=>{ state.escala='z0'; state.foco=null; state.insp='home'; render(); };
+document.getElementById('back').onclick=()=>{
+  if(state.escala==='z3'){ state.escala='z2'; state.insp='home'; render(); return; }   // la escalera se sube de a un peldaño
+  state.escala='z0'; state.foco=null; state.insp='home'; render(); };
 document.querySelectorAll('#modulos .esc').forEach(b=>b.onclick=()=>{ state.mod=b.dataset.mod;
   if(state.mod!=='territorio'){ state.escala='z0'; state.foco=null; } state.insp='home'; render(); });
 document.getElementById('itAsis').onclick=()=>{ state.corrida=false; idmenu.classList.remove('open'); state.insp='home'; render(); };
