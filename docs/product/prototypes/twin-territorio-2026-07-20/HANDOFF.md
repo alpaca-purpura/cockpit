@@ -63,6 +63,32 @@
 Anchors v8: `function renderInstruccion` (z3) · `drillActividad` · `DATA.z3` · `sipoc:{`/`sipocC1:{` ·
 `lienzos:{` · `.portbox`/`.c1row`/`.z3card`/`.piso-arnes` (CSS). Back = escalera de a un peldaño.
 
+## ⚠ EN CURSO — deuda consciente ratificada "resuelve todo de una vez" (sesión colgada 2026-07-24)
+
+Estado git: TODO commiteado hasta `4a9a365` (v8.1) · artifact publicado v8.1 · working tree limpio.
+Las 3 tareas ratificadas quedaron SIN EMPEZAR (solo inventario del voseo hecho):
+
+1. **Barrido voseo → tuteo neutro (es-419, `[[cockpit-stack]]`)** en `index.html`. Inventario
+   (líneas drifean — re-grepear): 8 instancias — `tocá` ×3, `Tocá` ×4, `prendé` ×1. Grep verbatim:
+   `grep -n "Tocá\|tocá\|prendé\|Volvé\|volvé" index.html` → reemplazar por Toca/toca/prende/Vuelve.
+   Meta: grep = 0. OJO: solo microcopy; no tocar datos/nombres.
+2. **Clamp de zoom en fit() de z2 y z3**: zoom mínimo ~0.6, anclado al INICIO del flujo
+   (izquierda — puertos S·I y primeras actividades legibles); el resto se alcanza con pan/rueda +
+   minimapa. Hoy `fit()` encoge a 35-42% en lienzos de 9 actividades (p-perm). Implementación:
+   variante de fit con clamp llamada solo desde `renderLienzo()` y `renderInstruccion()` (~10 líneas).
+   Mismo trade-off ya ratificado en z0 (decisión 3 + LOD).
+3. **Ficha D-NN PROPUESTA en `sistema/schema/DECISIONES.md`**: subesquema `tarea` bajo `actividad`
+   — `{orden, verbo?, texto, sistemas_ref?}`, `met: "ISO 10013 nivel 3 · APQC L5"`. NO deroga D-08
+   (manual disuelto): `desc` narra, `tareas[]` estructura; la instrucción z3 se GENERA de ahí.
+   Marcarla **PROPUESTA — pendiente ratificación del operador**; solo docs (cero cambio a
+   `objeto.schema.yaml`/Go — eso aterriza con el refinamiento de la historia). Antes: leer el
+   formato de fichas existentes en DECISIONES.md + grep anti-contradicción (`desc`, D-08) +
+   pre-commit valida.
+
+Al terminar: `./verify.sh` (19/19) → screenshot headless de un lienzo largo (clamp visible) →
+commit+push → republicar mismo artifact (`url` de arriba) → WebFetch check → avisar Ctrl+Shift+R →
+marcar esta sección como resuelta.
+
 ## Pendientes conocidos (visuales, menores)
 
 - Voseo pre-existente en microcopy ("Tocá…") viola es-419 sin voseo del stack — barrido pendiente.
