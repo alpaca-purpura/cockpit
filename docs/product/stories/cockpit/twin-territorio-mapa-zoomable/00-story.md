@@ -15,6 +15,11 @@ links:
 > **Estado: `idea`.** Concepto capturado en la sesión 2026-07-20. **El operador tiene MÁS ajustes
 > visuales que dará en una conversación nueva** — esta historia es el punto de continuidad. NO está
 > refinada ni ratificada; el mockup es un prototipo para iterar, no la vista final.
+>
+> **📁 DOSSIER COMPLETO (2026-07-24): [`dossier/README.md`](./dossier/README.md)** — TODO el avance
+> consolidado en 6 docs (visión/doctrina · mockup elemento-por-elemento · decisiones+porqués ·
+> datos+casuística · construcción real · pendientes+ideas minadas del transcript). La sesión que
+> continúe arranca AHÍ; este 00-story queda como registro de la idea y sus decisiones.
 
 ## Job-To-Be-Done
 

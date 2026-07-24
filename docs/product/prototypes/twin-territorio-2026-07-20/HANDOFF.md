@@ -1,7 +1,9 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-24 → siguiente)
 
-> **Para la sesión que continúa.** Leer esto + `00-story.md` de la historia
-> (`docs/product/stories/cockpit/twin-territorio-mapa-zoomable/`) ANTES de tocar nada.
+> **Para la sesión que continúa.** ARRANCAR por el **dossier consolidado**:
+> `docs/product/stories/cockpit/twin-territorio-mapa-zoomable/dossier/README.md` (2026-07-24 —
+> visión, mockup elemento-por-elemento, decisiones+porqués, datos, construcción real, pendientes).
+> Este HANDOFF queda como la OPERATIVA de sesión de mockup (verificación, artifact, anchors).
 > **Objetivo de la próxima sesión (pedido del operador):** terminar el **mockup de la visión
 > COMPLETA del cockpit, de inicio a fin** — el operador llega con VARIOS comentarios nuevos.
 
