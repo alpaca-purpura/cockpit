@@ -924,7 +924,54 @@ re-ubica) · CK-17 (gates que fijan qué NO puede moverse) · `[[arquitectura-as
 `[[metodologia-as-code]]` (los ejes cuya frontera fuente↔lectura esta ficha endurece) ·
 `docs/README.md` (las 5 reglas de ubicación = doctrina operativa de esta decisión).
 
-<!-- Próximas: CK-29, … -->
+### CK-29 · El twin es un cerebro que compila trabajo — tesis unificadora + componente conocimiento + fin-estado orquestador — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-24):* "no debería haber mucha diferencia entre la metodología y el dogma…
+tiene que ser todo unificado… si tengo todos los procesos, yo debería poder generar arneses con
+Arnesia… para entregárselos en el Colab Studio, por puestos… estos arneses ya tendrían sus objetivos,
+qué es lo que tiene que hacer, por dónde no se tiene que ir, y sería como un asistente conectado a
+este gran cerebro que es el digital twin… el cerebro de la organización no solamente son sus
+procesos… hay cierto know-how, usualmente establecido en data histórica… no lo vamos a abordar en
+este preciso momento, pero tiene que estar conectado… que los arneses sepan dónde buscar cada cosa…
+cada colaborador en su día a día realmente no se dedique a hacer el trabajo él mismo… su labor diaria
+sea la de orquestar el trabajo, midiendo la eficiencia, modificando sus propios arneses, poniendo
+proyectos… el cockpit como tal es ese cerebro, ese todo que permite que los demás pasos lleguen en su
+debido momento". Aclaración del mismo evento: cada app tiene SU repo (`~/Proyectos/harness-studio` ·
+`~/Proyectos/dev-studio` · `~/Proyectos/consultio` · Colab Studio por crear) — en cockpit viven solo
+sus historias (`docs/product/stories/`), jamás su código.
+
+*Contexto encontrado:* la sustancia estaba ~80% escrita pero dispersa y sin frase cardinal: la ficha
+N15 ya decía "compila el objeto normalizado + el método en `SKILL.md`/plugins por rol";
+`cerebro-conocimiento/03` ya diseñaba el GRAFO-por-organización como índice que viaja dentro del
+arnés; el know-how tácito ya tenía fila (`conocimiento/<proceso>/<rol>/` en N6, files-first, historia
+F3) y la capability #23 ya nombraba los arneses por puesto. Pero VISION.md no declaraba nada de esto
+como núcleo del twin — y dos lecturas del agente (visión vs doctrina) pudieron sonar a dos visiones
+distintas. Detectado de paso: VISION.md decía "9 entidades" (stale — CK-26 fijó 12).
+
+**Decisiones:** (1) **Tesis unificadora** — visión, método y forma de trabajo son UNA máquina a tres
+escalas: organización como codebase (SSoT versionada → vistas generadas → gates anti-drift; nada se
+borra, se invalida con firma; el LLM propone, el humano con autoridad dispone). **El arnés es la
+vista GENERADA del twin para un puesto** — se compila (Arnesia N15), jamás se edita a mano, se
+recompila cuando el twin cambia. (2) **El twin es un cerebro de tres cuerpos:** estructura (12
+entidades) × conocimiento (know-how + data histórica — gateado a F3, files-first, pero conectado
+desde el día uno: los arneses nacen con punteros a dónde buscar) × pulso (lakehouse N16). (3)
+**Fin-estado del trabajo:** el colaborador no ejecuta — orquesta agentes; su labor = dirigir, medir
+eficiencia, mejorar su propio arnés, proponer proyectos. Cockpit = la cabina del cerebro. (4) **Cero
+cambio de arquitectura** — los 16 nodos absorben todo; cada producto del ecosistema en su repo, sin
+import cruzado (re-afirmación I-39/CK-25).
+
+*Ejecutado:* VISION.md — tesis unificadora + fin-estado en §Identidad, cuerpo "cerebro que compila
+trabajo" en §Twin, Consultio/Colab Studio al §Ecosistema con sus repos, fix 9→12 entidades. Memoria
+del agente (`vision-unificada-guardian`): todo pedido se contrasta contra esta formulación y el
+agente avisa si algo se desvía (el operador firma la última palabra).
+
+*Conecta:* CK-21 (la fórmula que esta ficha amplía a cerebro) · CK-18 (el método se entrega en
+arneses — aquí el arnés se vuelve proyección compilada) · CK-25 (consultio repo propio, studio-core)
+· CK-24 (la frontera persona rige también dentro del arnés) · CK-26 (las 12 entidades) ·
+`docs/research/cerebro-conocimiento/03-proyeccion-twin.md` (mapeo 1:1 cerebro propio → twin) ·
+fichas N15/N17 de NODOS.md · historia `knowledge-database-files-first` (F3).
+
+<!-- Próximas: CK-30, … -->
 
 ## Log
 
@@ -949,3 +996,4 @@ re-ubica) · CK-17 (gates que fijan qué NO puede moverse) · `[[arquitectura-as
 | 2026-07-17 | Consultio no se clona: se extrae `studio-core` (kernel Go compartido) y `dev-studio`(N5)/`consultio`(N14) lo consumen por import semver — disciplina upstream-first + ban de mirror producto→producto (misma doctrina que backflow del arnés); 10 decisiones de arquitectura (A1-A10) tras stress-test de 11 escenarios de fallo contra dev-studio real. Ejecutado y verificado en vivo el mismo día: `studio-core` v0.1.0 (SC-01) con fitness gate propio + `consultio` primitivo (CN-01) corriendo — engagement→repo git, arnés instalado con lock+commit real, sesión ligada, turno con SSE — dev-studio intacto. N14 re-fichado "clon de DevStudio"→"app fina sobre studio-core"; riesgo (2) de N5 cerrado. | CK-25 |
 | 2026-07-20 | Design system PRENTER adoptado (materializa BL-04): SSoT visual = proyecto Claude Design "PRENTER Design System" (dark-first, teal único acento, atomic design). Tokens ported a `ui/app/globals.css` (mata el púrpura leftover de devhub); átomos `.tsx` en `ui/components/ds/atoms/` (Button/Badge/Card/Input, token-driven=DRY); catálogo vivo embebido `/design-system` (fork del operador: ruta showcase, no Storybook.js); regla `.claude/rules/ui-design-system.md` (consumir-no-duplicar, un solo acento, cataloga-en-el-mismo-cambio); seam `design_system_ref` pending→adopted; story `design-system-atomic-storybook` F2→F1. Verificado: tsc + `next build` + render en vivo. | CK-27 |
 | 2026-07-23 | Refactoring del grafo de conocimiento: `proyecto/` disuelto en `docs/` (research·prototypes·plans·_archive), dedup `docs/process` raíz↔harness, y frontera hexagonal fuente↔lectura en `sistema/` (visión CTO + book del objeto + veredicto ISO → `docs/{architecture,metodo}/`); mapa + 5 reglas de ubicación en `docs/README.md`; auditoría 74 archivos con refs entrantes; gates verdes. | CK-28 |
+| 2026-07-24 | El twin es un cerebro que compila trabajo: tesis unificadora (una doctrina, tres escalas — el arnés = vista generada del twin por puesto, compilada por Arnesia, entregada por Colab Studio); twin = estructura (12 entidades) × conocimiento (know-how/data histórica, gateado F3, conectado — los arneses saben dónde buscar) × pulso (N16); fin-estado: el colaborador orquesta agentes, no ejecuta; Cockpit = cabina del cerebro. Aclaración repos: cada app en su repo (consultio existe; colab-studio por crear); en cockpit solo historias. Fix stale 9→12 entidades en VISION. | CK-29 |

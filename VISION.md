@@ -37,6 +37,19 @@ Kit, fabricados en Arnesia/P4) o con software a medida (P2 · DevStudio, tambié
 devs del cliente). La brecha **no es un entregable puntual de consultoría: es un loop permanente**
 — el twin la recalcula continuamente contra la operación real (drift organizacional, §Twin).
 
+**Fin-estado del trabajo (CK-29):** con el twin lleno, el colaborador no ejecuta el trabajo — **lo
+orquesta**: dirige agentes (Claude Code + el arnés de su puesto), mide su eficiencia, mejora su
+propio arnés y propone proyectos que aceleren la entrega de valor. Cockpit es la cabina de ese
+cerebro: hace que cada pieza — dato, decisión, arnés, proyecto — llegue en su momento, y mide si llegó.
+
+**Una sola doctrina, tres escalas (CK-29):** la visión del producto, el método que vende y nuestra
+forma de trabajo son la MISMA máquina — organización como codebase: SSoT versionada → vistas
+generadas (dashboards, docs, **arneses**) → gates anti-drift; nada se borra (se invalida con firma);
+el LLM propone, el humano con autoridad dispone. Nuestro cerebro de trabajo (`sistema/metodo/`) es
+el prototipo 1:1 del cerebro que el twin le da a cada cliente
+(`docs/research/cerebro-conocimiento/03-proyeccion-twin.md`). Un pedido que no quepa en esta
+formulación se cuestiona antes de construirse.
+
 ## Organization as Code → Organization Twin (decisión CK-21)
 
 La visión con nombre propio — el término está libre en el mercado; la categoría externa para
@@ -44,7 +57,7 @@ analistas es **DTO** (Digital Twin of an Organization, Gartner). SOTA completo +
 capacidades en [`docs/research/organization-as-code/`](./docs/research/organization-as-code/).
 
 - **Organization as Code (la tesis):** procesos, roles, objetivos, personas/puestos y funciones
-  viven como **dato versionado en git** (el objeto normalizado, 9 entidades + provenance
+  viven como **dato versionado en git** (el objeto normalizado, 12 entidades — schema v2, CK-26 — + provenance
   `fuente`+`conf` por hecho); todo cambio viaja por **propuesta → revisión → merge** con tres
   entornos (**dev → UAT → prod**: borrador / aprobado / vigente por gerencia) — la Gestión de
   Cambios ISO es ese pipeline con UI que oculta git.
@@ -61,11 +74,20 @@ capacidades en [`docs/research/organization-as-code/`](./docs/research/organizat
   trabajo diario de todos con ese hilo: cada puesto opera apuntando al OKR de su nivel.
   Posicionamiento: **el twin de ejecución estratégica** — "del objetivo del directorio al clic del
   analista, y de vuelta".
-- **Ontología operable (doctrina Palantir adoptada):** las 9 entidades son la capa **semántica**;
+- **Ontología operable (doctrina Palantir adoptada):** las 12 entidades son la capa **semántica**;
   CK-21 agrega la capa **kinética** — acciones válidas por entidad (quién modifica qué, con qué
   aprobación) declaradas en `objeto.schema.yaml`. Twin que solo se lee = foto; con acciones =
   volante. Naming navegable por agentes, anti-patterns vigilados, historia = git
   (ver `docs/research/organization-as-code/04-doctrina-ontologia-palantir.md`).
+- **El twin es un cerebro que compila trabajo (CK-29):** tres cuerpos — **estructura** (las 12
+  entidades del objeto), **conocimiento** (know-how + data histórica de la organización:
+  `conocimiento/<proceso>/<rol>/` en N6, files-first, gateado a F3 — no se construye antes de
+  demanda, pero los arneses nacen sabiendo dónde buscar) y **pulso** (la operación real, N16). De
+  ese cerebro **Arnesia (N15) compila los arneses por puesto** — cada uno con su rebanada del hilo
+  de oro (objetivos), sus guardrails (por dónde no ir) y el GRAFO de su organización como índice —
+  y **Colab Studio (N17)** los entrega al día a día. El arnés es la **vista GENERADA del twin para
+  un puesto** (la misma tríada SSoT→vista→gate de los ejes as-code): jamás se edita a mano, se
+  recompila cuando el twin cambia.
 - **Horizontes gateados (anti-especulación, precedente CK-10):** (1) what-if estructural — branch
   del repo = escenario comparable; (2) simulación de procesos con estándares (BPSim/DEMO, no
   inventar); (3) **ensayo del TO-BE con agentes LLM corriendo los arneses de cada rol** — nuestros
@@ -174,6 +196,10 @@ self-hosted. Tres planos — ver `sistema/arquitectura/NODOS.md` (16 nodos, SSoT
   ascendida en CK-18)**: produce y versiona los arneses por rol-en-proceso que cargan Consultio,
   Colab Studio y DevStudio; se entrega al cliente para que mantenga los suyos. Es pieza central del
   Plano del Fabricante, no ya un plano de talento aparte.
+- **Consultio** (`~/Proyectos/consultio`) — App del Consultor (N14), app fina sobre `studio-core`
+  (CK-25). **Colab Studio** (repo por crear) — app del trabajador (N17). Como todo el ecosistema:
+  cada app vive en SU repo, sin import cruzado; en este repo viven solo sus historias
+  (`docs/product/stories/{consultio,colab-studio}/`), jamás su código (aclaración CK-29).
 
 ## Estado heredado al graduarse (2026-07-06)
 
