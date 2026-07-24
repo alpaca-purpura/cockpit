@@ -249,6 +249,27 @@ decisiones". Auditoría previa contra CK-29 encontró: el mockup era CK-21 compl
     Cambios (SC-14: recompilar arnés por drift).
 14. **Fixes de dato:** 9→12 entidades (CK-26) · 31→45 M-cards · pins con title completo.
 
+## v6 · El Mapa de Valor (2026-07-24, ratificado "dale") — la geografía correcta
+
+**Crítica del operador (verbatim resumido):** "los procesos usualmente son con pasos — en Arnesia los
+arneses los hice como mapa de proceso; al ver los procesos de una empresa debería verlos similar…
+hay procesos transversales… el BSC así no le encuentro sentido… los objetivos deberían estar en el
+lienzo también, y no veo objetivos ni KPIs ni OKRs ni personas — se ven cuadrados y bloques pero no
+un sistema interconectado. Sal de la caja y proponme algo mejor."
+
+15. **La geografía deja de ser el organigrama y pasa a ser el MAPA DE VALOR** — ISO 9001 (enfoque a
+    procesos) × cadena de valor Porter × strategy map, en 5 bandas sobre UN lienzo (mismo ADN de
+    bandas que el map-canvas de harness-studio — fractal con el arnés):
+    **Estrategia** (objetivos+KR, perspectivas BSC como orden interno — muere la piel BSC; la
+    causalidad = arcos dentro de la banda) → **Cadena de valor** (8 misionales izq→der, cada proceso
+    = mini-mapa con sus pasos como micro-chevrons; doble-click = lienzo) → **Apoyo** (transversales
+    ANCHOS: el ancho dice cuántas áreas cruzan) → **Gente & arneses** (los ~15 puestos con ocupante
+    y ⛨) → **Sistemas** (plataformas, ancho = procesos que sirven). **El hilo de oro = edges
+    VERTICALES reales** cruzando las bandas: tenues siempre; click en un objetivo → su hilo completo
+    se enciende (drivers + roles + sistemas), el resto se atenúa. El organigrama NO muere: se degrada
+    a **piel secundaria** ("la estructura como lente"). Todo lo previo (capas, fichas, corrida,
+    módulos, z1/z2) se conserva.
+
 ## ⚠ PENDIENTE — ajustes del operador (continuar en conversación nueva)
 
 **El operador sigue iterando el mockup.** Estado tras la sesión 2 (shell v2):
@@ -353,3 +374,12 @@ tabs actual. Ratificación del operador + (si es decisión de fondo) ficha CK-NN
   (columna Ideas M44 en Mejora; SC-14 recompilación en Cambios; pm-cie recompila al arnés al cerrar),
   fichas nuevas persona/rol/arnés/sistema/objetivo/idea/capability/empresa, bloque "el twin compila
   trabajo" en sala de mando, fixes 12 entidades/45 M-cards. Verificado headless (8 estados, capturas).
+- v5.1 2026-07-24 — fix crítico de interacción: la capa de pins (div full-cover z4) se tragaba TODOS
+  los clicks reales del mouse (`pointer-events`); presente desde el shell v2 — las verificaciones
+  previas usaban dispatch directo que salta el hit-testing. Suite nueva de 15 viajes con
+  `elementFromPoint` (hit-testing real): 15/15. + verificación en el artifact REAL vía Chrome del
+  operador (claude-in-chrome): drill confirmado con eventos confiables.
+- v6 2026-07-24 — **El Mapa de Valor** (decisión 15, ratificada): geografía nueva de 5 bandas con el
+  hilo de oro como edges verticales; organigrama → piel-lente; BSC absorbido por la banda Estrategia;
+  pasos mini por proceso (lenguaje fractal Arnesia); transversales por ancho. Suite v6 hit-tested:
+  9/9, 0 errores JS.

@@ -380,6 +380,39 @@
   .mcards { display:flex; flex-wrap:wrap; gap:6px; }
   .mcards .chip { font-size:11px; }
 
+  /* ---------- v6 · Mapa de Valor — 5 bandas, un sistema interconectado ---------- */
+  .chev { width:192px; background:var(--raised); border:1px solid var(--border); border-radius:10px; padding:10px 12px 9px;
+    text-align:left; cursor:pointer; transition:border-color .16s, opacity .3s; }
+  .chev:hover { border-color:#33443f; }
+  .chev .nm { font-size:12.5px; font-weight:600; line-height:1.2; }
+  .chev .dueno { font-family:var(--font-mono); font-size:9px; color:var(--tx-faint); margin-top:3px; }
+  .node.hot .chev { border-color:var(--brand); box-shadow:0 0 0 1px var(--teal-700); background:rgba(0,183,170,.05); }
+  .mini-pasos { display:flex; gap:3px; margin-top:8px; }
+  .mini-pasos i { flex:1; height:9px; border-radius:2px; background:#243230; border:1px solid #2c3b38;
+    clip-path:polygon(0 0, calc(100% - 4px) 0, 100% 50%, calc(100% - 4px) 100%, 0 100%, 4px 50%); }
+  .mini-pasos i.t-agente,.mini-pasos i.t-rpa { background:var(--teal-800); border-color:var(--teal-700); }
+  .mini-pasos i.t-elim { background:rgba(226,118,107,.35); border-color:var(--crit); }
+  .mini-pasos i.t-hum { background:#2c3b38; }
+  .chev-arrow { position:absolute; transform:translate(-50%,-50%); color:var(--teal-700); font-size:20px; pointer-events:none; }
+  .soporte { position:absolute; transform:translate(0,-50%); background:var(--raised); border:1px solid var(--border); border-radius:9px;
+    padding:8px 12px; text-align:left; cursor:pointer; transition:border-color .16s, opacity .3s; }
+  .soporte:hover { border-color:#33443f; }
+  .soporte .nm { font-size:11.5px; font-weight:600; }
+  .soporte .meta { font-family:var(--font-mono); font-size:8.5px; color:var(--tx-faint); margin-top:2px; }
+  .node.hot .soporte, .soporte.hot { border-color:var(--brand); box-shadow:0 0 0 1px var(--teal-700); }
+  .rolchip { position:absolute; transform:translate(0,-50%); display:inline-flex; align-items:center; gap:7px;
+    border:1px solid var(--border); border-radius:20px; background:var(--raised); padding:5px 11px; cursor:pointer;
+    font-size:11px; white-space:nowrap; transition:border-color .16s, opacity .3s; }
+  .rolchip:hover { border-color:#33443f; }
+  .rolchip .who { color:var(--tx-faint); font-size:9.5px; font-family:var(--font-mono); }
+  .rolchip.hot { border-color:var(--brand); box-shadow:0 0 0 1px var(--teal-700); }
+  .sysplat { position:absolute; transform:translate(0,-50%); border:1px solid var(--border); border-radius:8px;
+    background:rgba(20,26,25,.72); padding:6px 12px; cursor:pointer; font-family:var(--font-mono); font-size:10.5px;
+    color:var(--tx-mut); display:flex; align-items:center; gap:8px; transition:border-color .16s, opacity .3s; }
+  .sysplat:hover { border-color:#33443f; color:var(--tx); }
+  .sysplat.hot { border-color:var(--brand); box-shadow:0 0 0 1px var(--teal-700); color:var(--tx); }
+  .persp-lab { font-family:var(--font-mono); font-size:8.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--tx-faint); }
+
   /* ---------- CK-29: capa Trabajo (arneses por puesto) + viaje completo ---------- */
   .harn { display:inline-flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:8.5px; letter-spacing:.04em;
     border:1px solid var(--teal-800); color:var(--brand-hi); border-radius:4px; padding:1px 5px; cursor:pointer; background:rgba(0,183,170,.06); white-space:nowrap; }
@@ -466,8 +499,8 @@
       <span class="count" id="count"></span>
       <label class="search"><span class="ic">⌕</span><input id="search" type="text" placeholder="Buscar área o proceso"><kbd>⌘K</kbd></label>
       <div class="piel-toggle" id="pieltoggle">
-        <button class="on" data-piel="territorio">Territorio</button>
-        <button data-piel="bsc" title="Strategy map (BSC)">BSC</button>
+        <button class="on" data-piel="valor" title="Mapa de valor: estrategia → cadena → apoyo → gente → sistemas">Mapa de valor</button>
+        <button data-piel="org" title="La estructura como lente: quién responde por qué">Organigrama</button>
       </div>
     </div>
 
@@ -486,7 +519,7 @@
     </div>
     <div class="minimap" id="minimap"><div id="mmdots"></div><div class="vw" id="mmview"></div></div>
 
-    <div class="hint" id="hint">Todo es navegable: área · líder · rol · KPI · sistema · arnés — tocá y baja · doble-click <b>Cobranza de cuotas</b> abre su lienzo · prendé la capa <b>Trabajo</b> para ver los arneses</div>
+    <div class="hint" id="hint">El mapa de valor: estrategia → cadena → apoyo → gente → sistemas, unidos por el hilo · tocá un objetivo y su hilo cruza las bandas · doble-click <b>Cobranza de cuotas</b> abre su lienzo · piel <b>Organigrama</b> = la estructura como lente</div>
   </main>
 
   <aside class="inspector" id="inspector">
@@ -652,8 +685,28 @@ const DATA = {
     {id:'i-caja',   nm:'Foto diaria de caja desde Banca Empresas', prop:'Carmen Rojas · Analista de Tesorería', estado:'enviada', nota:'ataca la ceguera de caja (g-cvis) sin esperar proyecto formal'},
   ],
 
-  bscBands:[ {k:'financiera',nm:'Financiera',y:150},{k:'cliente',nm:'Cliente',y:335},{k:'procesos',nm:'Procesos internos',y:520},{k:'aprendizaje',nm:'Aprendizaje y crecimiento',y:705} ],
   bscEdges:[ ['o-eq','o-cob'],['o-eq','o-vis'],['o-cob','o-caja'],['o-vis','o-mar'],['o-mar','o-lid'],['o-hog','o-lid'],['o-lid','o-caja'] ],
+
+  /* ---- v6 · Mapa de Valor: la cadena misional (Porter) + pasos mini (lenguaje fractal Arnesia) ---- */
+  cadena:[ 'p-camp','p-vta','p-dis','p-ejec','p-val','p-fact','p-cob','p-post' ],
+  pasosMini:{
+    'p-camp':['planificar','pautar','captar','medir'],
+    'p-vta': ['recibir','visitar','cotizar','cerrar','separar'],
+    'p-dis': ['concebir','diseñar','presupuestar','licenciar'],
+    'p-ejec':['planificar','construir','supervisar','controlar'],
+    'p-val': ['medir','valorizar','sustentar','aprobar'],
+    'p-fact':['emitir','enviar','registrar'],
+    'p-post':['recibir','diagnosticar','atender','cerrar'],
+    'p-cierre':['conciliar','provisionar','cerrar','reportar'],
+    'p-pago':['recibir','validar','programar','pagar'],
+    'p-liq': ['consolidar','liquidar','archivar'],
+    'p-rec': ['requerir','publicar','evaluar','incorporar'],
+    'p-nom': ['calcular','validar','pagar','declarar'],
+    'p-caja':['registrar','rendir','reponer'],
+    'p-conc':['descargar','cruzar','ajustar'],
+    'p-perm':['expedientar','tramitar','levantar'],
+    'p-sop': ['atender','resolver','mantener'],
+  },
 
   flagship:{ proc:'p-cob', nm:'Cobranza de cuotas',
     sub:'AS-IS · ancla del DSO · dueño Jefe de Cobranza. Disparador: factura por vencer. Carriles = roles (BPMN) · tiempos toque/espera (VSM) · triage de automatización por actividad (ECRS + scores).',
@@ -738,7 +791,7 @@ function depth(a){ let d=0,x=a; while(x.parent){ x=byId(DATA.areas,x.parent); d+
 const isVis=a=>depth(a)<state.lod;
 function visAncestor(id){ let a=byId(DATA.areas,id); while(a && !isVis(a)) a=byId(DATA.areas,a.parent); return a; }
 
-let state={ mod:'territorio', corrida:false, escala:'z0', foco:null, piel:'territorio', activeObj:null,
+let state={ mod:'territorio', corrida:false, escala:'z0', foco:null, piel:'valor', activeObj:null,
   capas:new Set(['estructura','hilo','salud','brechas']), sub:'digital',
   lod:3, search:'', insp:'home', cw:1440, ch:900 };
 let view={x:0,y:0,z:1};
@@ -772,7 +825,7 @@ document.getElementById('zout').onclick=()=>{view.z=Math.max(0.3,view.z-0.12); a
 document.getElementById('zfit').onclick=()=>fit();
 
 let drag=null;
-stage.addEventListener('mousedown',e=>{ if(e.target.closest('.area-node,.obj-node,.proc-node,.pin,.kin,.act,.btn'))return;
+stage.addEventListener('mousedown',e=>{ if(e.target.closest('.area-node,.obj-node,.proc-node,.pin,.kin,.act,.btn,.chev,.soporte,.rolchip,.sysplat'))return;
   drag={sx:e.clientX,sy:e.clientY,ox:view.x,oy:view.y}; stage.classList.add('drag'); });
 window.addEventListener('mousemove',e=>{ if(!drag)return; view.x=drag.ox+(e.clientX-drag.sx); view.y=drag.oy+(e.clientY-drag.sy); applyView(false); });
 window.addEventListener('mouseup',()=>{ drag=null; stage.classList.remove('drag'); });
@@ -802,7 +855,7 @@ function render(){
   document.querySelectorAll('#modulos .esc').forEach(b=>b.classList.toggle('on', b.dataset.mod===state.mod));
   document.getElementById('back').disabled = !terr || state.escala==='z0';
   document.getElementById('pieltoggle').classList.toggle('hide', !terr || state.escala!=='z0');
-  document.getElementById('lodctl').classList.toggle('hide', !(terr&&state.escala==='z0'&&state.piel==='territorio'));
+  document.getElementById('lodctl').classList.toggle('hide', !(terr&&state.escala==='z0'&&state.piel==='org'));
   document.getElementById('minimap').classList.toggle('hide', !terr);
   document.getElementById('search').disabled=!terr;
   document.querySelector('.search').style.opacity=terr?'':'.4';
@@ -816,7 +869,7 @@ function render(){
   document.querySelector('#itCorrida .chk').textContent=state.corrida?'✓':'';
 
   // disable honesto: capa sin efecto en el módulo/escala actual → atenuada con razón, no oculta
-  const CAPAS_APLICAN={ 'z0-territorio':['estructura','hilo','salud','brechas','cinetica','trabajo'], 'z0-bsc':['hilo'],
+  const CAPAS_APLICAN={ 'z0-valor':['hilo','salud','brechas','cinetica','trabajo'], 'z0-org':['estructura','hilo','salud','brechas','cinetica','trabajo'],
     'z1':['hilo','salud','brechas','cinetica','trabajo'], 'z2':['hilo','salud','brechas','trabajo'] };
   const apl=terr?CAPAS_APLICAN[state.escala==='z0'?('z0-'+state.piel):state.escala]:[];
   document.querySelectorAll('.capa').forEach(b=>{ const na=!apl.includes(b.dataset.capa);
@@ -832,7 +885,7 @@ function render(){
   MM_PTS=[];
   $nodes.innerHTML=''; $pins.innerHTML=''; $edges.innerHTML=''; $lienzo.style.display='none'; $nodes.style.display=''; $pins.style.display='';
   if(!terr){ ({mejora:renderMejora, metodo:renderMetodo, cambios:renderCambios})[state.mod](); }
-  else if(state.escala==='z0') state.piel==='bsc'?renderBSC():renderTerritorio();
+  else if(state.escala==='z0') state.piel==='org'?renderOrganigrama():renderValor();
   else if(state.escala==='z1') renderArea();
   else renderLienzo();
   mmDots(); if(state.insp==='home') inspectorHome();
@@ -846,8 +899,8 @@ function pageView(html){
   fit(); return pv;
 }
 
-/* ---------- z0 territorio ---------- */
-function renderTerritorio(){
+/* ---------- z0 · piel Organigrama (la estructura como LENTE — quién responde por qué) ---------- */
+function renderOrganigrama(){
   const dim=treeLayout(); setCanvas(dim.w,dim.h);
   const rank={alta:3,media:2,baja:1};
   const vis=DATA.areas.filter(isVis);
@@ -922,34 +975,164 @@ function renderTerritorio(){
   fit();
 }
 
-/* ---------- z0 BSC strategy map ---------- */
-function renderBSC(){
-  setCanvas(1520,880);
-  const pos={};
-  DATA.bscBands.forEach(b=>{
-    const lab=el('div','grouplab'); lab.style.left='60px'; lab.style.top=(b.y-58)+'px';
-    lab.innerHTML=`<span class="eyebrow">${b.nm}</span>`; $nodes.appendChild(lab);
-    pathEl(`M50,${b.y+30} L1470,${b.y+30}`,'#182220',1,.7);
-    const objs=DATA.objetivos.filter(o=>o.persp===b.k), gap=1300/(objs.length+1);
-    objs.forEach((o,i)=>pos[o.id]={x:150+gap*(i+1),y:b.y});
-  });
-  DATA.bscEdges.forEach(([a,b])=>{ if(pos[a]&&pos[b]) pathEl(curve(pos[a].x,pos[a].y+30,pos[b].x,pos[b].y-30),'var(--teal-700)',1.5,.5); });
+/* ---------- z0 · piel MAPA DE VALOR (default) — 5 bandas, un sistema interconectado ----------
+   Geografía: ISO 9001 enfoque a procesos (estratégico/misional/apoyo) × cadena de valor Porter ×
+   strategy map absorbido en la banda Estrategia. El hilo de oro = edges VERTICALES reales.
+   Mismo ADN de bandas que harness-studio (map-canvas): fractal con el arnés. Decisión v6 (2026-07-24). */
+function renderValor(){
+  const W=1840, Y={est:170, cad:432, apo:640, gen:762, sis:856}; setCanvas(W, 920);
   const searching=!!q();
-  DATA.objetivos.forEach(o=>{ const p=pos[o.id]; if(!p)return;
-    const n=el('button','node'); n.style.left=p.x+'px'; n.style.top=p.y+'px';
-    MM_PTS.push({x:p.x,y:p.y});
-    const match=!searching || (o.nm+' '+o.kr.m).toLowerCase().includes(q());
-    if(searching){ if(match)n.classList.add('hot'); else n.classList.add('dim'); }
-    else if(state.activeObj && state.activeObj!==o.id) n.classList.add('dim');
-    n.innerHTML=`<div class="obj-node ${state.activeObj===o.id?'hot':''}">
+  const act=state.activeObj;
+  const hiloOn=state.capas.has('hilo');
+  // el conjunto encendido: objetivo activo + sus drivers + roles + sistemas (spine del hilo)
+  const drivers=act?DATA.procesos.filter(p=>p.sirve.includes(act)).map(p=>p.id):null;
+  const hotProc=id=>drivers&&drivers.includes(id);
+  const hotRol=new Set(), hotSis=new Set();
+  if(drivers) drivers.forEach(id=>{ const p=byId(DATA.procesos,id);
+    hotRol.add(p.dueno.replace(/\s*\(vacante\)/i,'')); p.sist.forEach(s=>{const x=sisByName(s); if(x)hotSis.add(x.id);}); });
+  const dimIf=c=>act&&!c?'dim':'';
+
+  const bandLab=(y,t,sub)=>{ const l=el('div','grouplab'); l.style.left='30px'; l.style.top=(y-52)+'px';
+    l.innerHTML=`<span class="eyebrow">${t}</span>${sub?`<div style="font-size:9.5px;color:var(--tx-faint);margin-top:2px">${sub}</div>`:''}`;
+    $nodes.appendChild(l); pathEl(`M24,${y-62} L${W-24},${y-62}`,'#131b1a',1,.9); };
+
+  /* — banda 1 · ESTRATEGIA (objetivos por perspectiva; causalidad BSC = arcos DENTRO de la banda) — */
+  bandLab(Y.est,'Estrategia — objetivos del directorio · KR del trimestre','perspectivas BSC como orden, no como piel: financiera · cliente · procesos · aprendizaje');
+  const PERSP=['financiera','cliente','procesos','aprendizaje'];
+  const oPos={}; let ox=120;
+  PERSP.forEach(pk=>{
+    const objs=DATA.objetivos.filter(o=>o.persp===pk); if(!objs.length)return;
+    const lab=el('div','grouplab'); lab.style.left=ox+'px'; lab.style.top=(Y.est-40)+'px';
+    lab.innerHTML=`<span class="persp-lab">${pk}</span>`; $nodes.appendChild(lab);
+    objs.forEach(o=>{ oPos[o.id]={x:ox+92,y:Y.est+18}; ox+=204; }); ox+=34;
+  });
+  DATA.bscEdges.forEach(([a,b])=>{ const A=oPos[a],B=oPos[b]; if(!A||!B)return;
+    pathEl(`M${A.x},${A.y-34} C${A.x},${A.y-72} ${B.x},${B.y-72} ${B.x},${B.y-34}`,'var(--teal-700)',1.1, act?( [a,b].includes(act)?.6:.08 ):.22); });
+  DATA.objetivos.forEach(o=>{ const p=oPos[o.id]; if(!p)return;
+    const n=el('button','node '+dimIf(act===o.id)); n.style.left=p.x+'px'; n.style.top=p.y+'px';
+    MM_PTS.push(p);
+    if(searching && !(o.nm+' '+o.kr.m).toLowerCase().includes(q())) n.classList.add('dim');
+    n.innerHTML=`<div class="obj-node ${act===o.id?'hot':''}" style="width:188px">
       <span class="health-dot" style="background:${health[o.salud]};float:right;margin-top:2px"></span>
-      <div class="nm">${o.nm}</div>
+      <div class="nm" style="font-size:11.5px">${o.nm}</div>
       <div class="kr"><span class="m">${o.kr.m}</span><span class="from">${o.kr.from}</span><span class="ar">→</span><span class="cur">${o.kr.cur}</span><span class="ar">→</span><span class="to">${o.kr.to}</span><span class="u">${o.kr.u}</span></div>
     </div>`;
-    n.querySelector('.obj-node').onclick=()=>{ state.activeObj=state.activeObj===o.id?null:o.id; render(); if(state.activeObj===o.id) openObjetivo(o); };
+    n.querySelector('.obj-node').onclick=()=>{ state.activeObj=act===o.id?null:o.id; render(); if(state.activeObj===o.id) openObjetivo(o); };
     $nodes.appendChild(n);
   });
-  counter(`${DATA.objetivos.length} objetivos · 4 perspectivas BSC`);
+
+  /* — banda 2 · CADENA DE VALOR (misionales, izq→der; cada proceso = mini-mapa de pasos) — */
+  bandLab(Y.cad,'Cadena de valor — los procesos misionales, en el orden del negocio','cada proceso es un mini-mapa: sus pasos como micro-chevrons · doble-click = lienzo (mismo lenguaje que un arnés en Arnesia)');
+  const cPos={}; const cx0=120, cw=192, cgap=32;
+  DATA.cadena.forEach((pid,i)=>{
+    const p=byId(DATA.procesos,pid); const x=cx0+i*(cw+cgap)+cw/2, y=Y.cad+16; cPos[pid]={x,y};
+    MM_PTS.push({x,y});
+    if(i<DATA.cadena.length-1){ const a=el('div','chev-arrow','▸'); a.style.left=(x+cw/2+cgap/2)+'px'; a.style.top=y+'px'; $pins.appendChild(a); }
+    const ks=state.capas.has('hilo')?kpisByProc(pid):[];
+    const steps=pid===DATA.flagship.proc?DATA.flagship.acts.map(a2=>({v:a2.verbo,t:a2.triage})):(DATA.pasosMini[pid]||[]).map(v=>({v}));
+    const dc=state.capas.has('salud')?(state.sub==='conf'?confCol(p.conf):health[digHealth(p.digital)]):'#2a3733';
+    const hot=hotProc(pid);
+    const n=el('button','node '+(hot?'hot':dimIf(false||hot))); if(act&&!hot)n.classList.add('dim');
+    if(searching&&!procMatch(p))n.classList.add('dim');
+    n.style.left=x+'px'; n.style.top=y+'px';
+    n.innerHTML=`<div class="chev">
+      <div style="display:flex;gap:7px;align-items:flex-start"><span class="health-dot" style="background:${dc}"></span><div class="nm">${p.nm}</div></div>
+      <div class="dueno"><span class="plnk" data-rol="${p.dueno}">${p.dueno}</span>${p.flagship?' · <span style="color:var(--brand-hi)">lienzo ›</span>':''}</div>
+      <div class="mini-pasos">${steps.map(s=>`<i title="${s.v}${s.t?' · '+s.t:''}" class="${s.t?('t-'+(s.t.includes('rpa')?'rpa':s.t.includes('agente')?'agente':s.t==='eliminable'?'elim':'hum')):''}"></i>`).join('')}</div>
+      ${ks.length?`<div class="kpis-mini">${ks.map(krowHTML).join('')}</div>`:''}
+      ${state.capas.has('trabajo')?`<div style="margin-top:6px">${harnBadge(arnesDeRol(p.dueno))}</div>`:''}
+    </div>`;
+    const card=n.querySelector('.chev');
+    card.onclick=()=>openProceso(p);
+    card.ondblclick=()=>{ if(p.flagship) drillLienzo(); };
+    n.querySelectorAll('.krow').forEach(b=>b.onclick=e=>{ e.stopPropagation(); openKpi(byId(DATA.kpis,b.dataset.k)); });
+    wireLinks(n);
+    $nodes.appendChild(n);
+  });
+
+  /* — banda 3 · APOYO (transversales ANCHOS: el ancho dice cuánto cruzan) — */
+  bandLab(Y.apo,'Procesos de apoyo — sostienen la cadena','transversal = más ancho: cruza más áreas · mismo click = ficha');
+  const apoyo=DATA.procesos.filter(p=>!DATA.cadena.includes(p.id)).sort((a,b)=>b.areas.length-a.areas.length);
+  const aPos={}; let ax=120, ay=Y.apo+8, row=0;
+  apoyo.forEach(p=>{
+    const wPx=118+p.areas.length*62;
+    if(ax+wPx>W-60){ ax=120; ay+=58; row++; }
+    aPos[p.id]={x:ax+wPx/2,y:ay};
+    const dc=state.capas.has('salud')?(state.sub==='conf'?confCol(p.conf):health[digHealth(p.digital)]):'#2a3733';
+    const hot=hotProc(p.id);
+    const s=el('button','soporte '+(hot?'hot':'')); if(act&&!hot)s.classList.add('dim'); if(searching&&!procMatch(p))s.classList.add('dim');
+    s.style.left=ax+'px'; s.style.top=ay+'px'; s.style.width=wPx+'px';
+    s.innerHTML=`<div style="display:flex;gap:7px;align-items:center"><span class="health-dot" style="width:7px;height:7px;background:${dc}"></span><span class="nm">${p.nm}</span>${p.areas.length>1?`<span class="tag" style="margin-left:auto">cruza ${p.areas.length}</span>`:''}</div>
+      <div class="meta">${p.dueno}${state.capas.has('trabajo')?' '+harnBadge(arnesDeRol(p.dueno)):''}</div>`;
+    s.onclick=()=>openProceso(p); wireLinks(s);
+    MM_PTS.push(aPos[p.id]);
+    $nodes.appendChild(s); ax+=wPx+18;
+  });
+
+  /* — banda 4 · GENTE & ARNESES (los 14 puestos; CK-29: quién opera, con qué arnés) — */
+  bandLab(Y.gen+row*58,'Gente & arneses — quién opera la cadena','puesto = rol con ocupante · ⛨ = arnés compilado del twin (capa Trabajo) · métricas por rol, jamás por persona (CK-24)');
+  const gy=Y.gen+row*58+6;
+  const rolesTodos=[...new Set([...DATA.procesos.map(p=>p.dueno.replace(/\s*\(vacante\)/i,'')), ...DATA.flagship.lanes.map(l=>l.role)])];
+  const rPos={}; let rx=120, ry=gy;
+  rolesTodos.forEach(r=>{
+    const occ=rolOcupante(r), h=arnesDeRol(r);
+    const hot=hotRol.has(r);
+    const c=el('button','rolchip '+(hot?'hot':'')); if(act&&!hot)c.classList.add('dim');
+    c.innerHTML=`${r}<span class="who">${occ.vac||!occ.quien?'—':occ.quien.split(' ')[0]}</span>${state.capas.has('trabajo')?harnBadge(h):''}`;
+    $nodes.appendChild(c);
+    const wCh=c.offsetWidth||(r.length*6.4+70);
+    if(rx+wCh>W-60){ rx=120; ry+=46; }              // wrap REAL: nueva fila, no encima
+    c.style.left=rx+'px'; c.style.top=ry+'px';
+    c.onclick=()=>openRol(r); wireLinks(c);
+    rPos[r]={x:rx+wCh/2,y:ry}; rx+=wCh+14;
+  });
+
+  /* — banda 5 · SISTEMAS (plataformas: ancho = cuántos procesos sirven · pulso al lakehouse) — */
+  bandLab(Y.sis+row*58,'Sistemas — sobre qué corre todo','ancho = procesos que sirve · el lakehouse (N16) los observa: ese es el pulso del twin');
+  const sy=Y.sis+row*58+4; let sx=120; const sPos={};
+  DATA.sistemas.forEach(s2=>{
+    const served=DATA.procesos.filter(p=>p.sist.includes(s2.nm)).length;
+    const wPx=96+served*34;
+    const hot=hotSis.has(s2.id);
+    const b=el('button','sysplat '+(hot?'hot':'')); if(act&&!hot)b.classList.add('dim');
+    b.style.left=sx+'px'; b.style.top=sy+'px'; b.style.width=wPx+'px';
+    b.innerHTML=`<span class="health-dot" style="width:7px;height:7px;background:${health[digHealth(s2.digital)]}"></span>${s2.nm}<span style="margin-left:auto;font-size:8.5px;color:var(--tx-faint)">${served} proc</span>`;
+    b.onclick=()=>openSistema(s2);
+    sPos[s2.id]={x:sx+wPx/2,y:sy};
+    $nodes.appendChild(b); sx+=wPx+16;
+  });
+
+  /* — capas Brechas + Cinética sobre la geografía de valor (pin/token sobre SU proceso) — */
+  if(state.capas.has('brechas')) DATA.brechas.forEach(g=>{
+    if(act&&g.obj!==act)return;
+    const P=cPos[g.against]||aPos[g.against]; if(!P)return;
+    const pin=el('div','pin '+(g.sev==='alta'?'':g.sev==='media'?'med':'low'));
+    pin.style.left=(P.x+56)+'px'; pin.style.top=(P.y-58)+'px';
+    pin.innerHTML=`<div class="body" style="white-space:nowrap">▲ ${g.sev} · ${g.costo}</div><div class="stem"></div><div class="head"></div>`;
+    pin.title=g.nm; pin.onclick=()=>openBrecha(g); $pins.appendChild(pin);
+  });
+  if(state.capas.has('cinetica')) DATA.proyectos.filter(pm=>pm.estado!=='cerrado').forEach(pm=>{
+    const g=byId(DATA.brechas,pm.brecha), pr=g&&byId(DATA.procesos,g.against), P=pr&&(cPos[pr.id]||aPos[pr.id]); if(!P)return;
+    const k=el('div','kin'); k.style.left=P.x+'px'; k.style.top=(P.y+92)+'px';
+    k.innerHTML=`<span class="spark"></span><span class="pdca">${pm.pdca}</span>${pm.nm} · ROI ${pm.roi}`;
+    k.onclick=()=>openProyecto(pm); $pins.appendChild(k);
+  });
+
+  /* — EL HILO: edges verticales cruzando las bandas (tenues siempre; encendidos con el objetivo activo) — */
+  const eop=(on)=>act?(on?.75:.05):(hiloOn?.13:.05);
+  DATA.objetivos.forEach(o=>{ const A=oPos[o.id]; if(!A)return;
+    DATA.procesos.filter(p=>p.sirve.includes(o.id)).forEach(p=>{
+      const B=cPos[p.id]||aPos[p.id]; if(!B)return;
+      pathEl(vcurve(A.x,A.y+40,B.x,B.y-46),'var(--teal-500)',1.2,eop(act===o.id)); });
+  });
+  DATA.procesos.forEach(p=>{ const A=cPos[p.id]||aPos[p.id]; if(!A)return;
+    const core=p.dueno.replace(/\s*\(vacante\)/i,''); const R=rPos[core];
+    if(R) pathEl(vcurve(A.x,A.y+52,R.x,R.y-16),'#3d4f4a',1,eop(hotProc(p.id)));
+    p.sist.forEach(sn=>{ const s2=sisByName(sn); const S=s2&&sPos[s2.id]; if(!S)return;
+      pathEl(vcurve(A.x,A.y+52,S.x,S.y-14),'#33413e',0.9,eop(hotProc(p.id))*0.8); });
+  });
+
+  counter(`${DATA.cadena.length} misionales · ${apoyo.length} apoyo · ${DATA.objetivos.length} objetivos · ${rolesTodos.length} puestos · ${DATA.sistemas.length} sistemas`);
   fit();
 }
 
@@ -1284,8 +1467,8 @@ function inspectorHome(){
       <div class="dgroup"><div class="gt">El twin compila trabajo — arneses por puesto</div>
         <div style="font-size:12.5px;line-height:1.5"><b class="mono" style="color:var(--brand-hi)">${DATA.arneses.length}/${DATA.puestosTotal}</b> puestos operan con arnés compilado del twin · <span style="color:var(--warn)">${DATA.arneses.filter(h=>h.estado==='desactualizado').length} desactualizado</span> (el twin cambió → recompilar). El resto opera a mano: el gap de la era agéntica, visible.</div>
         <button class="btn" id="verTrabajo" style="justify-content:center">Prender la capa Trabajo ›</button></div>`;
-    inBody.querySelector('#apuestaGo').onclick=()=>{ state.piel='territorio';
-      document.querySelectorAll('.piel-toggle button').forEach(x=>x.classList.toggle('on',x.dataset.piel==='territorio'));
+    inBody.querySelector('#apuestaGo').onclick=()=>{ state.piel='valor';
+      document.querySelectorAll('.piel-toggle button').forEach(x=>x.classList.toggle('on',x.dataset.piel==='valor'));
       if(!state.capas.has('hilo')){state.capas.add('hilo');document.querySelector('[data-capa=hilo]').classList.add('on');}
       state.activeObj='o-lid'; render(); };
     inBody.querySelector('#verTrabajo').onclick=()=>{ if(!state.capas.has('trabajo')){state.capas.add('trabajo');document.querySelector('[data-capa=trabajo]').classList.add('on');} render(); };
@@ -1476,7 +1659,8 @@ function openObjetivo(o){
     <div class="dgroup"><div class="gt">Acciones (kinética)</div>
       <button class="btn" data-acc="aprobar-version-objetivo">Aprobar nueva versión › <span class="mono" style="font-size:9px;color:var(--tx-faint)">gobernanza · gestión-de-cambios</span></button></div>
     <button class="btn" style="justify-content:center" id="objHilo">Encender su hilo en el mapa ›</button>`);
-  const b=inBody.querySelector('#objHilo'); if(b) b.onclick=()=>{ state.mod='territorio'; state.escala='z0'; state.activeObj=o.id;
+  const b=inBody.querySelector('#objHilo'); if(b) b.onclick=()=>{ state.mod='territorio'; state.escala='z0'; state.piel='valor'; state.activeObj=o.id;
+    document.querySelectorAll('.piel-toggle button').forEach(x=>x.classList.toggle('on',x.dataset.piel==='valor'));
     if(!state.capas.has('hilo')){state.capas.add('hilo');document.querySelector('[data-capa=hilo]').classList.add('on');} render(); };
 }
 function openRol(nm){ const core=String(nm).replace(/\s*\(vacante\)/i,'');
