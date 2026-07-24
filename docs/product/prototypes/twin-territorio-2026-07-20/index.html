@@ -85,14 +85,21 @@
   .capa-leg { display:none; margin:1px 2px 3px 10px; padding-left:9px; border-left:1px solid var(--border-soft); font-size:10px; color:var(--tx-faint); line-height:1.5; }
   .capa.on + .capa-leg { display:block; }
 
-  .salud-sub { margin:1px 0 3px 8px; padding-left:10px; border-left:1px solid var(--border); display:none; flex-direction:column; gap:4px; }
+  .salud-sub { margin:1px 0 3px 8px; padding-left:10px; border-left:1px solid var(--border); display:none; flex-direction:column; gap:2px; }
   .capa-salud.on ~ .salud-sub { display:flex; }
-  .sub-t { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--tx-mut); background:none; border:none; padding:3px 2px; text-align:left; }
-  .sub-t .k { width:9px; height:9px; border-radius:50%; border:1px solid #333; }
+  /* lentes = radio real (uno pinta a la vez) — SIN colores de semáforo en el selector */
+  .sub-t { display:flex; align-items:flex-start; gap:8px; font-size:12px; color:var(--tx-mut); background:none; border:none; padding:3px 2px; text-align:left; }
+  .sub-t .r { width:12px; height:12px; margin-top:1px; border-radius:50%; border:1.5px solid var(--tx-faint); flex:0 0 auto; position:relative; }
   .sub-t.on { color:var(--tx); }
-  .sub-t.on .k { box-shadow:0 0 0 2px rgba(255,255,255,.08); }
-  .sub-leg { font-size:10px; color:var(--tx-faint); display:flex; flex-direction:column; gap:3px; margin:2px 0 2px 2px; }
+  .sub-t.on .r { border-color:var(--brand-hi); }
+  .sub-t.on .r::after { content:''; position:absolute; inset:2px; border-radius:50%; background:var(--brand-hi); }
+  .sub-t .sl { display:flex; flex-direction:column; gap:1px; min-width:0; }
+  .sub-t .sl .q { font-size:10px; color:var(--tx-faint); line-height:1.35; }
+  /* la leyenda vive PEGADA a su lente activo (no al final del grupo) */
+  .sub-leg { display:none; font-size:10px; color:var(--tx-faint); flex-direction:column; gap:3px; margin:1px 8px 5px 22px; }
+  .sub-t.on + .sub-leg { display:flex; }
   .sub-leg .row { display:flex; align-items:center; gap:6px; }
+  .sub-leg .row .n { margin-left:auto; font-family:var(--font-mono); font-size:9px; }
   .sub-leg .d { width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
 
   /* ---------- main stage ---------- */
@@ -304,6 +311,13 @@
   .drow dt { font-size:12px; color:var(--tx-faint); flex:0 0 auto; }
   .drow dd { margin:0; font-size:13px; text-align:right; }
   .dgroup { border:1px solid var(--border); border-radius:11px; padding:12px; background:var(--raised); display:flex; flex-direction:column; gap:10px; }
+  /* SIPOC = proyección de bordes del proceso (ISO 9001 4.4.1) — filas S/I/P/O/C en el drawer */
+  .sip-row { display:flex; gap:8px; align-items:flex-start; }
+  .sip-row .sip-k { flex:0 0 16px; width:16px; height:16px; border:1px solid var(--teal-700); border-radius:4px; color:var(--brand-hi); font-family:var(--font-mono); font-size:9px; display:flex; align-items:center; justify-content:center; margin-top:1px; }
+  .sip-b { display:flex; flex-direction:column; gap:2px; min-width:0; font-size:11.5px; line-height:1.4; }
+  .sip-lab { font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--tx-faint); }
+  .sip-pasos { font-family:var(--font-mono); font-size:10px; color:var(--tx-mut); line-height:1.6; }
+  .sip-na { color:var(--tx-faint); font-style:italic; font-size:11px; }
   .dgroup .gt { font-family:var(--font-mono); font-size:9.5px; text-transform:uppercase; letter-spacing:.12em; color:var(--tx-faint); }
   .chip { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); border-radius:6px; padding:3px 8px; font-size:12px; color:var(--tx-mut); }
   .chip.teal { border-color:var(--teal-700); color:var(--brand-hi); }
@@ -457,12 +471,14 @@
           <div class="capa-leg">línea sólida = jerárquico · punteada = funcional (matricial)</div>
           <button class="capa on" data-capa="hilo"><span class="sw"></span><span class="lab"><b>Hilo de oro</b><span>objetivo → KR → KPI → proceso</span></span><span class="oc">O2</span></button>
           <div class="capa-leg">objetivo → su hilo se enciende · KPIs = semáforo por banda (gris = sin dato, nunca rojo por ausencia)</div>
-          <button class="capa on capa-salud" data-capa="salud"><span class="sw"></span><span class="lab"><b>Salud</b><span>3 semáforos, sin fusionar</span></span><span class="oc">O3/5</span></button>
+          <button class="capa on capa-salud" data-capa="salud"><span class="sw"></span><span class="lab"><b>Salud — ver el mapa por</b><span>tres lentes, uno a la vez · nunca se mezclan en un color</span></span><span class="oc">O3/5</span></button>
           <div class="salud-sub" id="saludsub">
-            <button class="sub-t on" data-sub="digital"><span class="k" style="background:var(--crit)"></span>Digitalización</button>
-            <button class="sub-t" data-sub="conf"><span class="k" style="background:var(--warn)"></span>Confianza (provenance)</button>
-            <button class="sub-t" data-sub="madurez"><span class="k" style="background:var(--teal-500)"></span>Madurez (COBIT)</button>
-            <div class="sub-leg" id="subLegend"></div>
+            <button class="sub-t on" data-sub="digital"><span class="r"></span><span class="sl"><b>Digitalización</b><span class="q">¿cómo corre el proceso? · pinta procesos</span></span></button>
+            <div class="sub-leg" data-leg="digital"></div>
+            <button class="sub-t" data-sub="conf"><span class="r"></span><span class="sl"><b>Confianza del dato</b><span class="q">¿cuánto le creo al AS-IS? (provenance) · pinta todo</span></span></button>
+            <div class="sub-leg" data-leg="conf"></div>
+            <button class="sub-t" data-sub="madurez"><span class="r"></span><span class="sl"><b>Madurez</b><span class="q">¿qué tan lejos del TO-BE? (COBIT) · pinta áreas</span></span></button>
+            <div class="sub-leg" data-leg="madurez"></div>
           </div>
           <button class="capa on" data-capa="brechas"><span class="sw"></span><span class="lab"><b>Brechas</b><span>pin sobre lo que ataca</span></span><span class="oc">O6</span></button>
           <div class="capa-leg">▲ color = severidad · etiqueta = costo de no hacer</div>
@@ -519,7 +535,7 @@
     </div>
     <div class="minimap" id="minimap"><div id="mmdots"></div><div class="vw" id="mmview"></div></div>
 
-    <div class="hint" id="hint">El mapa de valor: estrategia → cadena → apoyo → gente → sistemas, unidos por el hilo · tocá un objetivo y su hilo cruza las bandas · doble-click <b>Cobranza de cuotas</b> abre su lienzo · piel <b>Organigrama</b> = la estructura como lente</div>
+    <div class="hint" id="hint">El mapa de valor: estrategia → cadena → apoyo → gente → sistemas, unidos por el hilo · tocá un objetivo y su hilo cruza las bandas · doble-click un proceso abre su lienzo (flujograma) · piel <b>Organigrama</b> = la estructura como lente</div>
   </main>
 
   <aside class="inspector" id="inspector">
@@ -644,6 +660,7 @@ const DATA = {
   personasExtra:[  // ocupantes no-líderes (la persona = ocupante del rol, CK-24)
     {nm:'Julio Paredes', rol:'Analista de Cobranza',  area:'a-tes', vinculo:'empleado'},
     {nm:'Carmen Rojas',  rol:'Analista de Tesorería', area:'a-tes', vinculo:'empleado'},
+    {nm:'Katia Flores',  rol:'Asesor de Ventas',      area:'a-ven', vinculo:'empleado'},
   ],
   sistemas:[  // pulso: cada sistema declara su conector al lakehouse (N16)
     {id:'s-nub', nm:'Nubecont ERP',    digital:'integrado', conector:'dlt → lakehouse · sync diaria 06:00 · 14 tablas', caps:['c-cobrar','c-cerrar']},
@@ -706,6 +723,53 @@ const DATA = {
     'p-conc':['descargar','cruzar','ajustar'],
     'p-perm':['expedientar','tramitar','levantar'],
     'p-sop': ['atender','resolver','mantener'],
+  },
+
+  // SIPOC = proyección de bordes (ISO 9001 4.4.1 · SOMA C3/C5) — se DERIVA, jamás se edita.
+  // prov/cli: {proc:id} = navegable · {ext:'nombre'} = actor externo. Levantado para los 8 misionales.
+  sipoc:{
+    'p-camp':{ disp:'plan comercial del trimestre aprobado',
+      prov:[{ext:'Agencia de medios'},{ext:'Gerencia Comercial (brief)'}], in:['brief por proyecto','presupuesto de pauta','stock disponible por proyecto'],
+      out:['leads calificados','reporte de campaña (CPL)'], cli:[{proc:'p-vta'}], ctrl:['CPL dentro de presupuesto','leads con consentimiento de datos'] },
+    'p-vta':{ disp:'lead calificado asignado a caseta',
+      prov:[{proc:'p-camp'},{ext:'Banco (pre-aprobación)'}], in:['lead calificado','lista de precios vigente','stock de unidades'],
+      out:['minuta firmada','cronograma de cuotas','separación registrada'], cli:[{proc:'p-fact'},{ext:'Comprador'}], ctrl:['precio dentro de política comercial','expediente del comprador completo'] },
+    'p-dis':{ disp:'terreno adquirido / decisión de lanzar proyecto',
+      prov:[{ext:'Municipalidad (parámetros)'},{ext:'Estudio de arquitectura'}], in:['estudio de cabida','parámetros urbanísticos','presupuesto objetivo'],
+      out:['expediente técnico','presupuesto de obra','cronograma maestro'], cli:[{proc:'p-ejec'},{proc:'p-perm'}], ctrl:['cabida cumple IRR objetivo','expediente aprobado por Gerencia'] },
+    'p-ejec':{ disp:'licencia de obra emitida',
+      prov:[{proc:'p-dis'},{ext:'Subcontratistas'},{ext:'Proveedores de materiales'}], in:['expediente técnico','cronograma','materiales y subcontratos'],
+      out:['avance físico valorizable','unidades terminadas'], cli:[{proc:'p-val'},{proc:'p-post'}], ctrl:['desvío de avance ≤ 5pp','seguridad en obra'] },
+    'p-val':{ disp:'corte quincenal de avance',
+      prov:[{proc:'p-ejec'}], in:['avance físico','metrados','precios unitarios'],
+      out:['valorización aprobada'], cli:[{proc:'p-pago'},{proc:'p-cierre'}], ctrl:['metrados sustentados en campo','doble aprobación Residente + Of. Técnica'] },
+    'p-fact':{ disp:'cuota por vencer / hito de venta',
+      prov:[{proc:'p-vta'}], in:['minuta + cronograma de cuotas','datos fiscales del comprador'],
+      out:['factura / boleta electrónica'], cli:[{proc:'p-cob'},{ext:'SUNAT (vía OSE)'}], ctrl:['emisión ≤ 24h del hito','validación OSE sin rechazo'] },
+    'p-cob':{ disp:'factura por vencer',
+      prov:[{proc:'p-fact'},{ext:'Banco (extractos)'}], in:['facturas emitidas','cronograma de cuotas','extracto bancario'],
+      out:['pagos aplicados','convenios de refinanciamiento','alertas de mora'], cli:[{proc:'p-conc'},{proc:'p-cierre'}], ctrl:['DSO por proyecto','antigüedad de saldos revisada semanal'] },
+    'p-post':{ disp:'entrega de unidad / reclamo del propietario',
+      prov:[{proc:'p-ejec'},{ext:'Propietario (reclamo)'}], in:['acta de entrega','reclamos','manual del propietario'],
+      out:['atenciones cerradas','NPS propietarios'], cli:[{ext:'Propietario'}], ctrl:['SLA de atención 15 días','NPS ≥ 50'] },
+  },
+
+  // lienzos adicionales al flagship — mismo shape (lanes/vsm/acts/seq). El resto de procesos
+  // abre lienzo HONESTO (pasos macro, actividades sin levantar → candidato M1).
+  lienzos:{
+    'p-vta':{ proc:'p-vta', nm:'Venta de inmuebles',
+      sub:'AS-IS · ancla de la absorción · dueño Jefe de Ventas. Disparador: lead calificado asignado a caseta. Carriles = roles (BPMN) · tiempos toque/espera (VSM) · triage por actividad.',
+      lanes:[ {role:'Asesor de Ventas',k:'caseta'}, {role:'Jefe de Ventas',k:'carril'} ],
+      vsm:{toque:'4h35m', espera:'3d'},
+      acts:[
+        {ord:1, lane:0, verbo:'recibir', ttl:'Recibir y registrar al interesado (lead de campañas)', tipo:'humana', toque:'20m', espera:'—', sist:['CRM Vendo'], triage:'automatizable-rpa', conf:'alta', fte:'CRM Vendo (leído)', note:'registro duplicado CRM + cuaderno de caseta — candidato RPA'},
+        {ord:2, lane:0, verbo:'visitar', ttl:'Atender la visita en caseta y departamento piloto', tipo:'humana', toque:'1h', espera:'—', sist:['—'], triage:'humano-por-diseño', conf:'media', fte:'Observación en caseta', note:'la visita ES el momento de venta — no se automatiza'},
+        {ord:3, lane:0, verbo:'cotizar', ttl:'Cotizar la unidad y simular el financiamiento', tipo:'humana', toque:'45m', espera:'—', sist:['CRM Vendo'], triage:'aumentable', conf:'media', fte:'Entrevista Jefe de Ventas', note:'simulación a mano por asesor — candidato a skill del arnés'},
+        {ord:4, lane:1, verbo:'cerrar', ttl:'Cerrar la venta: negociar y firmar la minuta', tipo:'humana', toque:'2h', espera:'3d', sist:['CRM Vendo'], triage:'humano-por-diseño', conf:'alta', fte:'Entrevista Jefe de Ventas', raci:{R:'Jefe de Ventas', A:'Gerente Comercial'}, note:'espera = pre-aprobación bancaria del comprador'},
+        {ord:5, lane:0, verbo:'separar', ttl:'Registrar la separación y el cronograma de cuotas', tipo:'humana', toque:'30m', espera:'—', sist:['CRM Vendo','Nubecont ERP'], mandato:'preventivo', conf:'alta', fte:'CRM Vendo (leído)', note:'doble registro CRM→ERP a mano — control del cronograma, protegido del triage'},
+      ],
+      seq:[ {f:1,t:2},{f:1,t:3,c:'ya conoce el proyecto',alt:true},{f:2,t:3},{f:3,t:4,c:'listo para cerrar'},{f:4,t:5} ]
+    },
   },
 
   flagship:{ proc:'p-cob', nm:'Cobranza de cuotas',
@@ -791,7 +855,7 @@ function depth(a){ let d=0,x=a; while(x.parent){ x=byId(DATA.areas,x.parent); d+
 const isVis=a=>depth(a)<state.lod;
 function visAncestor(id){ let a=byId(DATA.areas,id); while(a && !isVis(a)) a=byId(DATA.areas,a.parent); return a; }
 
-let state={ mod:'territorio', corrida:false, escala:'z0', foco:null, piel:'valor', activeObj:null,
+let state={ mod:'territorio', corrida:false, escala:'z0', foco:null, piel:'valor', lienzo:'p-cob', activeObj:null,
   capas:new Set(['estructura','hilo','salud','brechas']), sub:'digital',
   lod:3, search:'', insp:'home', cw:1440, ch:900 };
 let view={x:0,y:0,z:1};
@@ -878,7 +942,7 @@ function render(){
   const MODNM={mejora:'Mejora — el loop brecha → proyecto → KPI', metodo:'Método — engagement M1·M2·M3', cambios:'Cambios — gestión ISO, git invisible'};
   let crumb=terr?'<b>Territorio</b>':`<b>${MODNM[state.mod]}</b>`;
   if(terr&&state.escala==='z1'){ const a=byId(DATA.areas,state.foco); crumb=`Territorio <span class="sep">›</span> <b>${a.nm}</b>`; }
-  if(terr&&state.escala==='z2'){ crumb=`Territorio <span class="sep">›</span> … <span class="sep">›</span> <b>${DATA.flagship.nm}</b> · lienzo`; }
+  if(terr&&state.escala==='z2'){ crumb=`Territorio <span class="sep">›</span> … <span class="sep">›</span> <b>${byId(DATA.procesos,state.lienzo||DATA.flagship.proc).nm}</b> · lienzo`; }
   document.getElementById('crumbline').innerHTML=crumb;
   subLegend(); chips();
 
@@ -1029,7 +1093,8 @@ function renderValor(){
     MM_PTS.push({x,y});
     if(i<DATA.cadena.length-1){ const a=el('div','chev-arrow','▸'); a.style.left=(x+cw/2+cgap/2)+'px'; a.style.top=y+'px'; $pins.appendChild(a); }
     const ks=state.capas.has('hilo')?kpisByProc(pid):[];
-    const steps=pid===DATA.flagship.proc?DATA.flagship.acts.map(a2=>({v:a2.verbo,t:a2.triage})):(DATA.pasosMini[pid]||[]).map(v=>({v}));
+    const ld=lienzoData(pid);
+    const steps=ld?ld.acts.map(a2=>({v:a2.verbo,t:a2.triage})):(DATA.pasosMini[pid]||[]).map(v=>({v}));
     const dc=state.capas.has('salud')?(state.sub==='conf'?confCol(p.conf):health[digHealth(p.digital)]):'#2a3733';
     const hot=hotProc(pid);
     const n=el('button','node '+(hot?'hot':dimIf(false||hot))); if(act&&!hot)n.classList.add('dim');
@@ -1037,14 +1102,14 @@ function renderValor(){
     n.style.left=x+'px'; n.style.top=y+'px';
     n.innerHTML=`<div class="chev">
       <div style="display:flex;gap:7px;align-items:flex-start"><span class="health-dot" style="background:${dc}"></span><div class="nm">${p.nm}</div></div>
-      <div class="dueno"><span class="plnk" data-rol="${p.dueno}">${p.dueno}</span>${p.flagship?' · <span style="color:var(--brand-hi)">lienzo ›</span>':''}</div>
+      <div class="dueno"><span class="plnk" data-rol="${p.dueno}">${p.dueno}</span> · <span style="color:var(--brand-hi)" title="doble-click abre el flujograma">lienzo ›</span></div>
       <div class="mini-pasos">${steps.map(s=>`<i title="${s.v}${s.t?' · '+s.t:''}" class="${s.t?('t-'+(s.t.includes('rpa')?'rpa':s.t.includes('agente')?'agente':s.t==='eliminable'?'elim':'hum')):''}"></i>`).join('')}</div>
       ${ks.length?`<div class="kpis-mini">${ks.map(krowHTML).join('')}</div>`:''}
       ${state.capas.has('trabajo')?`<div style="margin-top:6px">${harnBadge(arnesDeRol(p.dueno))}</div>`:''}
     </div>`;
     const card=n.querySelector('.chev');
     card.onclick=()=>openProceso(p);
-    card.ondblclick=()=>{ if(p.flagship) drillLienzo(); };
+    card.ondblclick=()=>drillLienzo(p.id);
     n.querySelectorAll('.krow').forEach(b=>b.onclick=e=>{ e.stopPropagation(); openKpi(byId(DATA.kpis,b.dataset.k)); });
     wireLinks(n);
     $nodes.appendChild(n);
@@ -1064,7 +1129,7 @@ function renderValor(){
     s.style.left=ax+'px'; s.style.top=ay+'px'; s.style.width=wPx+'px';
     s.innerHTML=`<div style="display:flex;gap:7px;align-items:center"><span class="health-dot" style="width:7px;height:7px;background:${dc}"></span><span class="nm">${p.nm}</span>${p.areas.length>1?`<span class="tag" style="margin-left:auto">cruza ${p.areas.length}</span>`:''}</div>
       <div class="meta">${p.dueno}${state.capas.has('trabajo')?' '+harnBadge(arnesDeRol(p.dueno)):''}</div>`;
-    s.onclick=()=>openProceso(p); wireLinks(s);
+    s.onclick=()=>openProceso(p); s.ondblclick=()=>drillLienzo(p.id); wireLinks(s);
     MM_PTS.push(aPos[p.id]);
     $nodes.appendChild(s); ax+=wPx+18;
   });
@@ -1072,7 +1137,7 @@ function renderValor(){
   /* — banda 4 · GENTE & ARNESES (los 14 puestos; CK-29: quién opera, con qué arnés) — */
   bandLab(Y.gen+row*58,'Gente & arneses — quién opera la cadena','puesto = rol con ocupante · ⛨ = arnés compilado del twin (capa Trabajo) · métricas por rol, jamás por persona (CK-24)');
   const gy=Y.gen+row*58+6;
-  const rolesTodos=[...new Set([...DATA.procesos.map(p=>p.dueno.replace(/\s*\(vacante\)/i,'')), ...DATA.flagship.lanes.map(l=>l.role)])];
+  const rolesTodos=[...new Set([...DATA.procesos.map(p=>p.dueno.replace(/\s*\(vacante\)/i,'')), ...DATA.flagship.lanes.map(l=>l.role), ...Object.values(DATA.lienzos).flatMap(l=>l.lanes.map(x=>x.role))])];
   const rPos={}; let rx=120, ry=gy;
   rolesTodos.forEach(r=>{
     const occ=rolOcupante(r), h=arnesDeRol(r);
@@ -1163,7 +1228,7 @@ function renderArea(){
       <div class="top"><span class="health-dot" style="background:${state.capas.has('salud')?dc:'#2a3733'}"></span><div class="nm">${p.nm}</div></div>
       <div class="meta">${byId(DATA.areas,p.areas[0]).nm} · <span class="plnk" data-rol="${p.dueno}">${p.dueno}</span><br>${p.sist.map(s=>sisByName(s)?`<span class="plnk" data-sis="${s}">${s}</span>`:s).join(' · ')}</div>
       <div class="flag">
-        ${p.flagship?'<span class="tag teal">lienzo ›</span>':''}
+        <span class="tag teal" title="doble-click abre el flujograma">lienzo ›</span>
         ${state.corrida&&p.id==='p-cob'?'<span class="dtag">Δ +1 actividad · portal de pagos</span>':''}
         ${vacDueno?'<span class="tag warn">rol vacante</span>':''}
         ${orphan?'<span class="tag warn">huérfano</span>':''}
@@ -1174,7 +1239,7 @@ function renderArea(){
       ${ks.length?`<div class="kpis-mini">${ks.map(krowHTML).join('')}</div>`:''}</div>`;
     const card=n.querySelector('.proc-node');
     card.onclick=()=>openProceso(p);
-    card.ondblclick=()=>{ if(p.flagship) drillLienzo(); };
+    card.ondblclick=()=>drillLienzo(p.id);
     n.querySelectorAll('.krow').forEach(b=>b.onclick=e=>{ e.stopPropagation(); openKpi(byId(DATA.kpis,b.dataset.k)); });
     wireLinks(n);
     $nodes.appendChild(n);
@@ -1200,11 +1265,22 @@ function renderArea(){
 }
 
 /* ---------- z2 lienzo (v2: en el world — bandas de carril + edges reales + capas encima) ---------- */
-function drillLienzo(){ state.escala='z2'; state.insp='home'; render(); }
+function lienzoData(pid){ return pid===DATA.flagship.proc?DATA.flagship:(DATA.lienzos[pid]||null); }
+function drillLienzo(pid){ state.lienzo=pid||state.lienzo||DATA.flagship.proc; state.escala='z2'; state.insp='home'; render(); }
 function renderLienzo(){
-  const f=DATA.flagship, p=byId(DATA.procesos,f.proc);
+  const pid=state.lienzo||DATA.flagship.proc, p=byId(DATA.procesos,pid);
+  let f=lienzoData(pid), stub=false;
+  if(!f){ // lienzo HONESTO: proceso sin actividades levantadas — pasos macro + candidato M1 (disable honesto)
+    stub=true;
+    f={ proc:pid, nm:p.nm,
+      sub:`AS-IS · dueño ${p.dueno}. <b style="color:var(--warn)">Actividades SIN LEVANTAR</b> — se muestran los pasos macro declarados en la ingesta. Candidato del levantamiento (M1 · entrevista + observación).`,
+      lanes:[{role:p.dueno.replace(/\s*\(vacante\)/i,''),k:'carril'}], vsm:null,
+      acts:(DATA.pasosMini[pid]||[]).map((v,i)=>({ord:i+1,lane:0,verbo:v,ttl:'Paso macro — actividad sin levantar',tipo:'humana',toque:'s/d',espera:'—',sist:(p.sist||[]).filter(s=>s!=='—'),conf:'baja',fte:'Pasos macro (ingesta)',note:'detalle pendiente del levantamiento M1'})),
+      seq:(DATA.pasosMini[pid]||[]).slice(1).map((_,i)=>({f:i+1,t:i+2})) };
+  }
   const laneH=176, headH=168, x0=300, colW=228;
-  const W=x0+6*colW+230, H=headH+f.lanes.length*laneH+40;
+  const maxOrd=Math.max(1,...f.acts.map(a=>a.ord));
+  const W=x0+(maxOrd-1)*colW+330, H=headH+f.lanes.length*laneH+40;
   setCanvas(W,H);
   const triCls=t=>t==='eliminable'?'elim':(t&&t.startsWith('automatizable')?(t.includes('rpa')?'rpa':'agente'):'');
 
@@ -1218,7 +1294,7 @@ function renderLienzo(){
     <h2 style="font-family:var(--font-display);font-weight:800;font-size:24px;margin:4px 0 0;letter-spacing:-.01em">${saludDot}${f.nm}</h2>
     <div style="color:var(--tx-mut);font-size:12px;margin-top:4px;max-width:78ch">${f.sub}</div>
     <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap">${kchips}${objChip}
-      <span class="mono" style="font-size:10px;color:var(--tx-faint)">VSM · ◔ toque total ${f.vsm.toque} · ⏳ espera ${f.vsm.espera} · 30m eliminables</span></div>`;
+      <span class="mono" style="font-size:10px;color:var(--tx-faint)">${f.vsm?`VSM · ◔ toque total ${f.vsm.toque} · ⏳ espera ${f.vsm.espera}${pid===DATA.flagship.proc?' · 30m eliminables':''}`:'VSM · sin medir — tiempos pendientes del levantamiento (M1)'}</span></div>`;
   $nodes.appendChild(hd);
   hd.querySelectorAll('.kchip').forEach(b=>b.onclick=()=>openKpi(byId(DATA.kpis,b.dataset.k)));
 
@@ -1246,7 +1322,8 @@ function renderLienzo(){
       ${a.triage?`<span class="tri ${triCls(a.triage)}">${a.triage}</span>`:''}${a.rtlx?`<span class="tri rtlx">RTLX ${a.rtlx}</span>`:''}${a.mandato?`<span class="tri" style="color:var(--brand-hi);border-color:var(--teal-700)">mandato · ${a.mandato}</span>`:''}
       ${state.capas.has('trabajo')?(h=>h?` ${harnBadge(h)}`:'')(DATA.arneses.find(h=>h.acts.includes(a.ord))):''}
     </div>`;
-    n.querySelector('.act').onclick=()=>openActividad(a);
+    if(!stub) n.querySelector('.act').onclick=()=>openActividad(a);
+    else n.querySelector('.act').title='actividad sin levantar — candidato del levantamiento (M1)';
     wireLinks(n);
     $nodes.appendChild(n);
   });
@@ -1257,7 +1334,8 @@ function renderLienzo(){
     const x1=A.cx+102, x2=B.cx-102;
     pathEl(curve(x1,A.cy,x2,B.cy), s.alt?'var(--warn)':'#3d4f4a', s.alt?1.3:1.7, s.alt?.6:.85, s.alt?'5 4':null);
     if(s.c){ const lab=el('div','elab'+(s.alt?'':' main'),s.c); // etiqueta al 30% del camino (cerca del origen, no sobre la card destino)
-      lab.style.left=(x1+(x2-x1)*0.3)+'px'; lab.style.top=(A.cy+(B.cy-A.cy)*0.3)+'px'; $pins.appendChild(lab); }
+      const skip=A.cy===B.cy&&(x2-x1)>colW; // salto mismo-carril: el tramo pasa por detrás de las cards → etiqueta ARRIBA de la fila
+      lab.style.left=(x1+(x2-x1)*(skip?0.5:0.3))+'px'; lab.style.top=(skip?(A.cy-84):(A.cy+(B.cy-A.cy)*0.3))+'px'; $pins.appendChild(lab); }
   });
 
   // capa brechas ENCIMA del lienzo: pin sobre el proceso que ataca
@@ -1270,7 +1348,7 @@ function renderLienzo(){
       pin.onclick=()=>openBrecha(g); $pins.appendChild(pin); }
   }
 
-  counter(`${f.acts.length} actividades · ${f.lanes.length} carriles · ${f.seq.length} flujos`);
+  counter(stub?`${f.acts.length} pasos macro · actividades sin levantar (M1)`:`${f.acts.length} actividades · ${f.lanes.length} carriles · ${f.seq.length} flujos`);
   fit();
 }
 
@@ -1373,11 +1451,16 @@ function chips(){ const c=document.getElementById('chips'); c.innerHTML='';
     const ch=el('span','fchip',`<span class="t">hilo · ${o.nm}</span><button title="Quitar">✕</button>`);
     ch.querySelector('button').onclick=()=>{ state.activeObj=null; render(); }; c.appendChild(ch); }
 }
-function subLegend(){ const L=document.getElementById('subLegend');
-  const sets={ digital:[['Integrado',S.ok],['Tercero / externo',S.warn],['Manual / Excel',S.crit]],
-    conf:[['Confianza alta',S.ok],['Media',S.warn],['Baja / hueco',S.crit]],
+function subLegend(){
+  // cada lente lleva su leyenda PEGADA (visible solo bajo el lente activo, CSS .sub-t.on + .sub-leg) + conteo por estado
+  const cnt={ digital:['integrado','externo','manual'].map(v=>DATA.procesos.filter(p=>p.digital===v).length),
+    conf:['alta','media','baja'].map(v=>[...DATA.areas,...DATA.procesos].filter(x=>x.conf===v).length),
+    madurez:['verde','ambar','rojo'].map(v=>DATA.areas.filter(a=>a.madurez===v).length) };
+  const sets={ digital:[['Integrado al stack',S.ok],['Tercero / externo',S.warn],['Manual / Excel',S.crit]],
+    conf:[['Sólido — sistema leído',S.ok],['Inferido — entrevista',S.warn],['Hueco / a corroborar',S.crit]],
     madurez:[['Listo (COBIT 4-5)',S.ok],['Parcial (2-3)',S.warn],['No listo (0-1)',S.crit]] };
-  L.innerHTML=(sets[state.sub]||[]).map(([t,c])=>`<div class="row"><span class="d" style="background:${c}"></span>${t}</div>`).join(''); }
+  document.querySelectorAll('.sub-leg').forEach(L=>{ const k=L.dataset.leg;
+    L.innerHTML=(sets[k]||[]).map(([t,c],i)=>`<div class="row"><span class="d" style="background:${c}"></span>${t}<span class="n">${cnt[k][i]}</span></div>`).join(''); }); }
 
 /* ---------- minimapa (abajo-derecha, convención node-graph) ---------- */
 const MM_W=158, MM_H=100;
@@ -1495,24 +1578,34 @@ function inspectorHome(){
       <div class="dgroup"><div class="gt">Roles del área — quién los cumple · con qué arnés</div>
         ${roles.map(r=>`<div class="rolrow"><span class="plnk" data-rol="${r.rol}">${r.rol}</span> ${harnBadge(arnesDeRol(r.rol))}<span class="who ${r.vac?'vac':''}" ${(!r.vac&&r.quien)?`data-per="${r.quien}" style="cursor:pointer"`:''}>${r.vac?'sin persona asignada':(r.quien||'equipo')}</span></div>`).join('')}
         <div style="font-size:10px;color:var(--tx-faint)">métricas por ROL, jamás por persona nombrada (frontera CK-24) · ⛨ = arnés compilado del twin (CK-29)</div></div>
-      <div style="font-size:12px;color:var(--tx-faint)">Tocá un proceso para su ficha · doble-click <b style="color:var(--tx-mut)">Cobranza de cuotas</b> abre el lienzo.</div>`;
+      <div style="font-size:12px;color:var(--tx-faint)">Tocá un proceso para su ficha (con su caracterización SIPOC) · doble-click abre su lienzo (flujograma).</div>`;
   }
   else{
-    const f=DATA.flagship, ks=kpisByProc(f.proc);
-    const g=DATA.brechas.find(x=>x.against===f.proc);
-    inEye.textContent='Proceso · lienzo'; inTitle.textContent=f.nm;
-    const tri=f.acts.filter(a=>a.triage&&a.triage.startsWith('automatizable')).length, elim=f.acts.filter(a=>a.triage==='eliminable').length;
-    inBody.innerHTML=`
-      <div class="dgroup"><div class="gt">KPIs del proceso</div>${ks.map(krowHTML).join('')}</div>
-      <div class="dgroup">
-        <div class="drow"><dt>Actividades</dt><dd class="mono">${f.acts.length}</dd></div>
-        <div class="drow"><dt>Automatizables</dt><dd class="mono" style="color:var(--brand-hi)">${tri}</dd></div>
-        <div class="drow"><dt>Eliminables</dt><dd class="mono" style="color:var(--crit)">${elim}</dd></div>
-        <div class="drow"><dt>VSM</dt><dd class="mono">◔ ${f.vsm.toque} · ⏳ ${f.vsm.espera}</dd></div>
-      </div>
-      ${g?`<div class="dgroup"><div class="gt">Brecha activa sobre este proceso</div>
-        <button class="loop-it" id="z2gap"><span style="color:var(--crit)">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.nm}</span><span class="mono" style="font-size:10px;color:var(--crit)">${g.costo}</span></button></div>`:''}
-      <div style="font-size:12px;color:var(--tx-faint)">Tocá una actividad para su detalle (VSM, triage, RACI, procedencia).</div>`;
+    const pid=state.lienzo||DATA.flagship.proc, f=lienzoData(pid), p2=byId(DATA.procesos,pid), ks=kpisByProc(pid);
+    const g=DATA.brechas.find(x=>x.against===pid);
+    inEye.textContent='Proceso · lienzo'; inTitle.textContent=p2.nm;
+    if(!f){ // lienzo honesto (sin actividades levantadas)
+      inBody.innerHTML=`
+        ${ks.length?`<div class="dgroup"><div class="gt">KPIs del proceso</div>${ks.map(krowHTML).join('')}</div>`:''}
+        <div class="dgroup"><div class="gt">Actividades sin levantar</div>
+          <div style="font-size:12px;line-height:1.5">Este lienzo muestra los <b>pasos macro</b> declarados en la ingesta. El detalle (carriles, tiempos VSM, triage, RACI) se construye en el levantamiento <b>M1 · entrevista + observación</b>.</div></div>
+        ${g?`<div class="dgroup"><div class="gt">Brecha activa sobre este proceso</div>
+          <button class="loop-it" id="z2gap"><span style="color:var(--crit)">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.nm}</span><span class="mono" style="font-size:10px;color:var(--crit)">${g.costo}</span></button></div>`:''}
+        <div style="font-size:12px;color:var(--tx-faint)">Volver: ‹ Big picture · la ficha del proceso tiene su caracterización SIPOC.</div>`;
+    } else {
+      const tri=f.acts.filter(a=>a.triage&&a.triage.startsWith('automatizable')).length, elim=f.acts.filter(a=>a.triage==='eliminable').length;
+      inBody.innerHTML=`
+        ${ks.length?`<div class="dgroup"><div class="gt">KPIs del proceso</div>${ks.map(krowHTML).join('')}</div>`:''}
+        <div class="dgroup">
+          <div class="drow"><dt>Actividades</dt><dd class="mono">${f.acts.length}</dd></div>
+          <div class="drow"><dt>Automatizables</dt><dd class="mono" style="color:var(--brand-hi)">${tri}</dd></div>
+          <div class="drow"><dt>Eliminables</dt><dd class="mono" style="color:var(--crit)">${elim}</dd></div>
+          <div class="drow"><dt>VSM</dt><dd class="mono">◔ ${f.vsm.toque} · ⏳ ${f.vsm.espera}</dd></div>
+        </div>
+        ${g?`<div class="dgroup"><div class="gt">Brecha activa sobre este proceso</div>
+          <button class="loop-it" id="z2gap"><span style="color:var(--crit)">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.nm}</span><span class="mono" style="font-size:10px;color:var(--crit)">${g.costo}</span></button></div>`:''}
+        <div style="font-size:12px;color:var(--tx-faint)">Tocá una actividad para su detalle (VSM, triage, RACI, procedencia).</div>`;
+    }
     const gb=inBody.querySelector('#z2gap'); if(gb) gb.onclick=()=>openBrecha(g);
   }
   wireLinks(inBody);
@@ -1522,6 +1615,27 @@ function prov(fuente,conf){ return `<div class="dgroup"><div class="gt">Proceden
   <div class="drow"><dt>Fuente</dt><dd>${fuente}</dd></div>
   <div class="drow"><dt>Confianza</dt><dd><span class="chip"><span class="health-dot" style="width:8px;height:8px;background:${confCol(conf)}"></span>${conf}</span></dd></div></div>`; }
 
+/* SIPOC = proyección de bordes del proceso (ISO 9001 4.4.1 · SOMA C3/C5) — derivada de
+   entradas/salidas/secuencia; NUNCA un diagrama editable (D-08/D-11). Sin dato → honesto (M1). */
+function sipocHTML(p){
+  const sp=DATA.sipoc[p.id];
+  const ci=DATA.cadena.indexOf(p.id);
+  const prev=ci>0?DATA.cadena[ci-1]:null, next=(ci>=0&&ci<DATA.cadena.length-1)?DATA.cadena[ci+1]:null;
+  const refChip=r=>r.proc?`<span class="chip lk" data-proc="${r.proc}">${byId(DATA.procesos,r.proc).nm} ›</span>`:`<span class="chip" title="actor externo">${r.ext} · ext</span>`;
+  const prov=sp?sp.prov:(prev?[{proc:prev}]:[]);
+  const cli=sp?sp.cli:(next?[{proc:next}]:[]);
+  const ld=lienzoData(p.id);
+  const pasos=ld?ld.acts.map(a=>a.verbo):(DATA.pasosMini[p.id]||[]);
+  const row=(k,lab,body)=>`<div class="sip-row"><span class="sip-k">${k}</span><div class="sip-b"><span class="sip-lab">${lab}</span><div>${body}</div></div></div>`;
+  return `<div class="dgroup"><div class="gt">Caracterización — SIPOC <span class="mono" style="font-size:9px;color:var(--tx-faint)">proyección de bordes · ISO 9001 4.4.1 · se deriva, no se edita</span></div>
+    ${sp&&sp.disp?`<div class="drow"><dt>Disparador</dt><dd style="font-size:12px">${sp.disp}</dd></div>`:''}
+    ${row('S','Proveedores',prov.length?`<div class="chips">${prov.map(refChip).join('')}</div>`:'<span class="sip-na">sin levantar — candidato M1</span>')}
+    ${row('I','Entradas',sp&&sp.in?sp.in.join(' · '):'<span class="sip-na">sin levantar — candidato M1</span>')}
+    ${row('P','Proceso',`<span class="sip-pasos">${pasos.join(' ▸ ')||'—'}</span>`)}
+    ${row('O','Salidas',sp&&sp.out?sp.out.join(' · '):'<span class="sip-na">sin levantar — candidato M1</span>')}
+    ${row('C','Clientes',cli.length?`<div class="chips">${cli.map(refChip).join('')}</div>`:'<span class="sip-na">sin levantar — candidato M1</span>')}
+    ${sp&&sp.ctrl?`<div class="drow"><dt>Criterios de control</dt><dd style="font-size:11.5px">${sp.ctrl.join(' · ')}</dd></div>`:''}</div>`;
+}
 function openProceso(p){ const objs=p.sirve.map(id=>byId(DATA.objetivos,id));
   const caps=DATA.capabilities.filter(c=>c.via.includes(p.id));
   openDrawer('Proceso · '+byId(DATA.areas,p.areas[0]).nm, p.nm,
@@ -1531,6 +1645,7 @@ function openProceso(p){ const objs=p.sirve.map(id=>byId(DATA.objetivos,id));
       <div class="drow"><dt>Digitalización</dt><dd><span class="chip"><span class="health-dot" style="width:8px;height:8px;background:${health[digHealth(p.digital)]}"></span>${p.digital}</span></dd></div>
       <div class="drow"><dt>Sistemas</dt><dd>${p.sist.map(s=>sisByName(s)?`<span class="plnk" data-sis="${s}">${s}</span>`:s).join(' · ')}</dd></div>
       ${caps.length?`<div class="drow"><dt>Realiza</dt><dd><div class="chips" style="justify-content:flex-end">${caps.map(c=>`<span class="chip lk" data-cap="${c.id}">${c.nm}</span>`).join('')}</div></dd></div>`:''}</div>
+     ${sipocHTML(p)}
      <div class="dgroup"><div class="gt">KPIs del proceso — semáforo por banda</div>
       ${kpisByProc(p.id).length?kpisByProc(p.id).map(krowHTML).join(''):'<span style="font-size:12px;color:var(--tx-faint)">Sin KPI declarado — candidato del levantamiento.</span>'}</div>
      <div class="dgroup"><div class="gt">Objetivos que sostiene (hilo de oro)</div>
@@ -1540,7 +1655,7 @@ function openProceso(p){ const objs=p.sirve.map(id=>byId(DATA.objetivos,id));
      ${prov(p.conf==='alta'?'Sistema leído':'Entrevista',p.conf)}
      <div class="dgroup"><div class="gt">Acciones (kinética)</div>
       <button class="btn" data-acc="publicar-mapa-proceso">Publicar versión del mapa › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · gestión-de-cambios · dev→UAT→prod</span></button></div>
-     ${p.flagship?'<button class="btn" style="justify-content:center" onclick="drillLienzo()">Abrir lienzo del proceso ›</button>':''}`);
+     <button class="btn" style="justify-content:center" onclick="drillLienzo('${p.id}')">Abrir lienzo del proceso (flujograma) ›</button>`);
 }
 function openBrecha(g){ const o=g.obj?byId(DATA.objetivos,g.obj):null; const proc=byId(DATA.procesos,g.against);
   const sc={alta:S.crit,media:S.warn,baja:'var(--tx-mut)'}[g.sev];
