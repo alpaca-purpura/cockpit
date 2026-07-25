@@ -12,9 +12,17 @@ links:
   ledger: ../../../../../LEDGER.md
 ---
 
-> **Estado: `idea`.** Concepto capturado en la sesión 2026-07-20. **El operador tiene MÁS ajustes
-> visuales que dará en una conversación nueva** — esta historia es el punto de continuidad. NO está
-> refinada ni ratificada; el mockup es un prototipo para iterar, no la vista final.
+> **Estado: `idea`.** **Objetivo vigente de esta historia** (creció desde v1 — ver decisión 10 en
+> `dossier/03-decisiones-y-porques.md`): definir, vía **UN mockup/prototipo interactivo con datos
+> hardcodeados (canned)**, el **estado final completo de la solución Cockpit** — territorio (twin) +
+> Mejora + Método + Cambios, las 12 entidades navegables, zoom semántico + capas — como **contrato
+> visual a ratificar ANTES de construir**. No es "una vista más entre otras": es la maqueta de
+> inicio-a-fin que guía la construcción real de `cockpit-ui`. (Arrancó más chico — "ver el twin como
+> mapa navegable" — el `story_id` quedó ese nombre por continuidad de links; el alcance real es mayor.)
+>
+> **El operador tiene MÁS ajustes visuales pendientes** — los "muchos comentarios" prometidos en la
+> sesión 2026-07-24 **nunca se dieron** (deuda #1 de `dossier/06-pendientes-e-ideas.md`). Pedirlos/
+> recibirlos es el primer paso de la sesión que continúe, antes de dar el mockup por cerrado.
 >
 > **📁 DOSSIER COMPLETO (2026-07-24): [`dossier/README.md`](./dossier/README.md)** — TODO el avance
 > consolidado en 6 docs (visión/doctrina · mockup elemento-por-elemento · decisiones+porqués ·
@@ -23,11 +31,15 @@ links:
 
 ## Job-To-Be-Done
 
-**Como** director (o consultor operando el twin)
-**Quiero** ver la organización entera como **un mapa navegable** (organigrama conectado) con **zoom
-semántico** y **capas que se pintan encima**
-**Para** leer el big picture de un vistazo, drillar donde importe (área → proceso → detalle) y volver
-al panorama en cualquier momento, sin perder el hilo de oro.
+**Como** equipo de Cockpit (operador + quien construye la app real)
+**Quiero** UN mockup/prototipo interactivo, con datos hardcodeados, que muestre **el estado final
+completo de la solución** — territorio (twin: mapa navegable con zoom semántico + capas), Mejora,
+Método y Cambios, el viaje de las 12 entidades — todo en un solo artefacto navegable
+**Para** tener la **maqueta de inicio a fin ya ratificada** ANTES de construir: el contrato visual
+que dicta qué se construye en `cockpit-ui`, no una exploración parcial de una sola pantalla.
+
+*(El JTBD original, más chico — "director viendo el twin como mapa navegable" — sigue siendo CIERTO
+como descripción del módulo Territorio; dejó de ser el alcance completo de la historia.)*
 
 ## Por qué importa
 
@@ -419,3 +431,23 @@ tabs actual. Ratificación del operador + (si es decisión de fondo) ficha CK-NN
   (C1 + puertos SIPOC como geografía) · z3 instrucción de trabajo (tareas · M36 dos scores con
   inputs · RACI · flujos saltables · piso = arnés CK-29) · nómina 100 personas · 11 lienzos plenos
   (Permisos = P03 del SOMA) · 14 instrucciones z3 · brechas g-dep/g-doc. Suite 19/19, 0 errores JS.
+- v9 2026-07-25 — **primera sesión con comentarios en vivo del operador** (cierra la deuda #1 de
+  `dossier/06-pendientes-e-ideas.md`; detalle completo en `dossier/03-decisiones-y-porques.md`
+  decisiones 18-21): 2 bugs de interacción reales cazados con `getBoundingClientRect` (hover-jump de
+  -94px en objetivo/área por `transform` duplicado; tarjetas de Estrategia tapando sus labels por
+  margen ~0) · **notación por tipo** iterada 3 veces hasta la versión ratificable — glifo mono
+  (rechazado, ilegible) → badge de forma abstracta (rechazado, "no me dice nada") → **badge con
+  pictograma SVG dibujado** (bandera/barras/personita/mini-organigrama/flecha/componente/alerta/
+  foco/loop), anclado al `archimate:` que ya vive en el schema (M13). Pendiente: "me gusta" final
+  del operador + republicar al Artifact. Verificado con crops reales (`getBoundingClientRect` +
+  screenshots), 0 errores JS en las 4 vistas tocadas.
+- v10 2026-07-25 — **materiales por capa ArchiMate** (decisión 22, ratificada "me gusta V2"): el
+  operador pidió distinguir el tipo de entidad **más allá del ícono**, por el recuadro. Auditoría del
+  DOM confirmó el root cause (casi todos los contenedores = mismo material `#1f2826/#141a19`). En vez
+  de color-literal-por-tipo (rompía PRENTER "un solo acento" + chocaba con el semáforo de salud y con
+  el teal de "seleccionado" — se avisó ANTES de aplicar), se codificó el tipo por **valor+forma+borde
+  agrupado por capa ArchiMate**: 4 materiales (Motivación=vidrio teal+spine · Negocio=sólido neutro ·
+  Aplicación=marco técnico+barra teal · Implementación=punteado teal), el ícono desambigua dentro de
+  la capa. Horneado en `index.html` (tokens `--mat-*` + bloque CSS); verificado en recarga fresca
+  (sin inyección) — estados hot/serves/diff siguen mandando por especificidad. Receta de réplica
+  completa en `dossier/03-decisiones-y-porques.md` decisión 22. Pendiente: republicar al Artifact.

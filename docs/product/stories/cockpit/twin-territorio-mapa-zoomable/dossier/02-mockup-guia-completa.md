@@ -1,6 +1,6 @@
 # 02 · El mockup elemento por elemento — qué muestra, cómo y dónde vive
 
-> Parte del dossier. Fuente: lectura completa de `index.html` v8.2 (2404 líneas, single-file
+> Parte del dossier. Fuente: lectura completa de `index.html` v9 (2439 líneas, single-file
 > vanilla JS/SVG). Anchors = línea/función de esa versión (drifean con ediciones — re-grepear).
 > Los PORQUÉS de fondo: `03-decisiones-y-porques.md`. Los datos: `04-datos-canned.md`.
 
@@ -13,6 +13,63 @@
   inspector, <880px oculta rail. Trama corporativa = 2 radial-gradients teal (`body::before`).
 - **Estado**: TODO deriva de `state` (mod/corrida/escala/foco/piel/lienzo/activeObj/capas Set/sub/
   lod/search/insp) + `view{x,y,z}` + `const DATA`; `render()` re-renderiza entero, sin diffing.
+
+## 0.1 · Notación por tipo — íconos dibujados (v9, sesión 2026-07-25)
+
+**Por qué existe:** el operador entró al mockup y no pudo distinguir a simple vista qué caja era
+proceso/kpi/persona — "todo se ve demasiado similar". Se iteró en vivo 3 veces (ver
+`03-decisiones-y-porques.md` § De la sesión 2026-07-25) hasta la versión ratificada: un **badge con
+un pictograma DIBUJADO** (SVG inline, no forma abstracta ni carácter mono) que se lee sin leyenda.
+
+**Fuente de la lógica:** no se inventó — cada entidad ya trae su tipo ArchiMate M13 en
+`sistema/schema/objeto.schema.yaml` (campo `archimate:`, ancla SOLO-TIPOS — ver
+`sistema/metodo/NOTACIONES.html`, "ArchiMate como METAMODELO completo DESCARTADO; sobrevive
+SOLO-TIPOS como ancla de vocabulario"). El ícono es la traducción visual de ese tipo, no un invento
+del mockup.
+
+**Código** (`index.html` ~L591-604):
+- `const TICO` — diccionario `tipo → SVG inline` (8 pictogramas, viewBox 14×14, `stroke`/`fill`
+  heredan `var(--brand-hi)` vía CSS `.tbadge svg *`/`.eg-ico svg *`, cero color nuevo — PRENTER
+  "un solo acento").
+- `tbadge(tipo, title)` — **badge de esquina** (`.tbadge`, 19×19px, `position:absolute` sobre la
+  tarjeta, `border:1.6px solid var(--brand)` + glow): para nodos del mapa espacial (tarjetas
+  z0/z1/organigrama). Requiere que el contenedor host tenga `position:relative` (u `absolute`).
+- `iico(tipo, title)` — **ícono inline chico** (`.eg-ico`, 11px, sin badge de esquina, `margin-right`):
+  para chips/filas de una sola línea (kchip, filas del funnel Mejora, tokens `.kin`).
+- `title` de cada uno = el tipo ArchiMate completo (tooltip on-hover, ej. "objetivo · Goal/Outcome
+  (M13 ArchiMate, Motivation)") — el hover enseña la doctrina, no la esconde.
+
+**Mapa entidad → ícono → dónde vive:**
+
+| Entidad | Ícono (`TICO[...]`) | Se lee como | Helper | Dónde (`class`/función) |
+|---|---|---|---|---|
+| objetivo | bandera | meta/hito | `tbadge` | `.obj-node` (Estrategia, z0-valor) |
+| kpi | 3 barras ascendentes | métrica | `iico` | `.kchip` (header z2, chips KPI) |
+| rol | personita (cabeza+hombros) | quién | `tbadge` | `.rolchip` (Gente&arneses, z0-valor) |
+| área | mini-organigrama (3 cajas+líneas) | unidad org | `tbadge` | `.area-node .hd .nm` (piel Organigrama) |
+| proceso | chevron/flecha `▶` | flujo | `tbadge` | `.chev` (cadena valor) · `.soporte` (apoyo) · `.proc-node` (z1) |
+| sistema | componente (rect + 2 fichas, ícono oficial ArchiMate Application Component) | la máquina | `tbadge` | `.sysplat` (banda Sistemas) |
+| brecha | triángulo de alerta + `!` | riesgo/gap | `iico` | funnel Mejora col.1 (`.fitem`) |
+| idea | foco | ocurrencia/propuesta | `iico` | funnel Mejora col.0 (`.fitem`) |
+| proyecto_mejora | flecha cíclica (loop) | en curso/PDCA | `iico` | `.kin` (tokens cinética ×3) + funnel col.2/3 |
+
+**Sin badge propio** (no tienen contenedor dedicado en el mapa hoy — ver `06-pendientes-e-ideas.md`):
+capability, empresa, persona (persona vive dentro del chip de `rol` como "ocupante", sin nodo propio).
+
+**2 bugs reales cazados construyendo esto** (detalle completo + evidencia en
+`03-decisiones-y-porques.md`): (1) `.obj-node:hover`/`.area-node:hover` duplicaban por error el
+`transform:translate(-50%,-50%)` del wrapper centrador sobre el hijo — saltaba ~94px al hacer hover
+(medido con `getBoundingClientRect`, no a ojo). (2) el badge-triángulo de proceso no se veía porque
+`* { box-sizing:border-box }` (global, línea 29) rompe el truco clásico CSS de triángulo con
+`width:0;height:0;border`; hace falta `box-sizing:content-box` explícito en ESE elemento.
+
+**Material por capa (v10, decisión 22) — el segundo canal de tipo.** Además del ícono, el
+**contenedor** ahora tiene un **material distinto por capa ArchiMate** (sin hue nuevo — PRENTER
+teal-only): **Motivación** (objetivo/kpi/brecha/idea) = vidrio teal tenue + spine izquierdo ·
+**Negocio** (proceso/rol/área) = sólido neutro elevado · **Aplicación** (sistema) = marco técnico
+oscuro + barra teal arriba · **Implementación** (proyecto_mejora) = punteado teal. Bloque CSS
+comentado antes de `</style>` + tokens `--mat-*` tras `--border`. Receta completa + clases +
+selectores del funnel + estados que mandan: `03-decisiones-y-porques.md` **decisión 22**.
 
 ## 1 · Shell
 

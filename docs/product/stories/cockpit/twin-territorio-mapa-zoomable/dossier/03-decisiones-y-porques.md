@@ -144,3 +144,99 @@
   con alcance+pregunta+conteo — mata los "puntos-semáforo" falsos.
 - **Lienzo universal** (v7): dblclick en CUALQUIER proceso abre lienzo; sin actividades = banner
   honesto "SIN LEVANTAR (M1)" — disable/estado honesto como principio transversal.
+
+## De la sesión 2026-07-25 — notación por tipo + 2 bugs de interacción reales
+
+Primera sesión donde el operador entró al mockup ÉL MISMO (Chrome real vía claude-in-chrome) y dio
+comentarios puntuales sobre lo que veía — cierra la deuda #1 de `06-pendientes-e-ideas.md` (los
+"muchos comentarios" prometidos el 2026-07-24 y nunca entregados).
+
+18. **Notación por tipo — 3 iteraciones hasta la correcta.** Pedido original: *"los recuadros se ven
+    todos parecidos… debería poder ubicar qué es proceso, qué es indicador, qué es persona."*
+    - **v1 (rechazada por el operador):** glifo mono inline (1 carácter Unicode, ej. `◆` objetivo,
+      `▬` proceso) antes del nombre. Falló: a 69-71% zoom (el default) el carácter es ilegible — 2
+      glifos (`◆`,`✦`) directamente colapsaban a un "+" borroso por cobertura de fuente pobre en
+      el bloque Unicode Dingbats (`✦` U+2726) vs Geometric Shapes (bien soportado). *"no veo las
+      figuritas… lo veo todo demasiado similar."*
+    - **v2 (rechazada por el operador):** badge de esquina con FORMA abstracta (cuadrado=Estructura,
+      triángulo=Proceso, rombo=Sistema, círculo=Motivación), 2x más grande, color teal (único acento
+      PRENTER) + glow. Se veía, pero sin significado propio: *"ese cuadrado, rectángulo, etc. no me
+      dice nada… ¿tiene alguna lógica?"* — una forma geométrica arbitraria exige leyenda; no se lee
+      "de lejos" sin traducir primero.
+    - **v3 (RATIFICADA — en construcción, pendiente de "me gusta" final del operador):** el mismo
+      badge, pero con un **pictograma DIBUJADO** adentro (SVG inline, `const TICO` en `index.html`)
+      en vez de forma abstracta o carácter: bandera=objetivo, barras=kpi, personita=rol, mini-
+      organigrama=área, flecha=proceso, componente(2 fichas)=sistema, alerta=brecha, foco=idea,
+      loop=proyecto_mejora. Pedido explícito: *"¿puedes dibujar algo dentro? ¿cómo podría ser?"*
+    - **Por qué la lógica NO es arbitraria** (aunque la silueta v2 sí lo era): cada ícono traduce el
+      tipo `archimate:` que YA vive en `sistema/schema/objeto.schema.yaml` por entidad (M13, ancla
+      SOLO-TIPOS — `sistema/metodo/NOTACIONES.html`). El pictograma es la representación visual de
+      ese dato, no una convención nueva inventada para el mockup.
+    - **Restricción de diseño que descartó "color por familia":** PRENTER prohíbe un segundo acento
+      saturado (`.claude/rules/ui-design-system.md`, "el teal es el único color de marca"). La
+      tentación obvia (colorear cada familia con un hue distinto) queda descartada; el canal de
+      color sigue reservado 100% a salud/severidad. La forma/ícono es el único canal libre para tipo.
+19. **Bug real cazado — hover que "se sale de la zona clickeable".** El operador pidió
+    verificarlo con devtools ("prueba tu mismo"). Medido con `getBoundingClientRect` antes/después
+    (no a ojo): `.obj-node:hover` y `.area-node:hover` reaplicaban por error el
+    `transform:translate(-50%,-50%)` del WRAPPER centrador (`.node`) sobre el DIV INTERNO (que no lo
+    necesita, ya está centrado por su padre) — saltaba **-94px/-48px** (objetivo) y **-81px/-40px**
+    (área) al primer hover: la tarjeta se iba de debajo del cursor, perdía `:hover`, volvía, el
+    cursor volvía a entrar → loop de parpadeo. Fix: sacar `transform` de esas 2 reglas hover (ya
+    usaban border-color, suficiente — mismo patrón que `.proc-node:hover`/`.chev:hover`/etc en el
+    resto del archivo). De paso, `.act:hover` (z2) se alineó al mismo patrón (tenía un
+    `translateY(-2px)` real pero minúsculo e inconsistente).
+20. **Bug real cazado — tarjetas tapaban las etiquetas de la banda Estrategia.** Medido: el margen
+    entre el label de perspectiva BSC (`financiera`/`cliente`/…) y el top de la tarjeta de objetivo
+    era de **~0.1px** (prácticamente cero) para cualquier card con título de 2 líneas. Fix: bajar el
+    ancla de las tarjetas (`Y.est+18`→`Y.est+54`) y subir los labels de perspectiva
+    (`Y.est-40`→`Y.est-14`), dejando ~10px de aire real.
+21. **Aprendizaje técnico — `box-sizing:border-box` global rompe el truco CSS del triángulo.** El
+    badge-triángulo de proceso (v2, luego reemplazado en v3) medía 0 al construirlo con
+    `width:0;height:0;border-left:10px solid` porque el reset `* { box-sizing:border-box }` (L29)
+    fuerza el border-box completo a 0. Fix: `box-sizing:content-box` explícito en ESE elemento. Si
+    se vuelve a necesitar el truco del triángulo-vía-border en cualquier parte del mockup, aplica
+    el mismo fix.
+22. **Materiales por capa ArchiMate — diferenciar el CONTENEDOR, no solo el ícono (RATIFICADA
+    "me gusta V2", 2026-07-25).** Segundo pedido en vivo del operador: *"cada elemento (objetivo,
+    kpi, proceso, persona…) que su recuadro sea un poco diferente, por color de borde o fondo;
+    quiero identificarlo más allá del ícono."*
+    - **Auditoría del DOM (root cause real):** casi todos los contenedores eran **el mismo material**
+      — `border:1px solid var(--border)` (`#1f2826`) sobre `background:var(--raised)` (`#141a19`);
+      `.obj-node`, `.rolchip` y `.chev` **idénticos** salvo el `border-radius` (20 vs 10). Por eso "se
+      ven parecidos". (El teal que se veía en `.soporte`/`.sysplat` **no** era incoherencia: es el
+      hilo activo `.serves` del objetivo seleccionado — comportamiento correcto, no un bug.)
+    - **Por qué NO color literal por tipo (choque de doctrina — se avisó ANTES de aplicar):** el
+      pedido al pie de la letra rompía 3 cosas — (1) PRENTER "un solo acento" (la **decisión 18** ya
+      había descartado color-por-familia), (2) un borde de color por tipo **compite con el semáforo de
+      salud** (`--ok`/`--warn`/`--crit` = verde/ámbar/rojo), (3) **teal ya significa "seleccionado"**
+      (`.node.hot`) → un borde teal por tipo mata esa señal. Los canales de HUE están reservados.
+    - **La salida:** codificar el tipo por los canales **libres** — **valor de superficie, forma,
+      peso/estilo de borde, esquina** — SIN hue nuevo, agrupando por **capa ArchiMate** (el `archimate:`
+      que el schema ya trae por entidad, M13). Así son **4 materiales legibles, no 12 bordes de
+      colores**; el ícono `TICO` (decisión 18) desambigua dentro de la capa. Se descartó "por tipo
+      individual" (9+ estilos = ruido, vuelve al problema) y se eligió **v2 (fuerte)** sobre v1 (sutil)
+      porque v1 se lavaba a zoom de mapa — justo la queja original.
+    - **Receta EXACTA para replicar** (horneada en `index.html`: tokens tras `--border`; bloque
+      comentado antes de `</style>`). Tokens nuevos:
+      `--mat-mot-bg:rgba(0,183,170,.09)` · `--mat-neg-bg:#1e2624` · `--mat-neg-bd:#2c3936` ·
+      `--mat-app-bg:#080b0a`.
+
+      | Capa ArchiMate | Entidades | Clases | Material (CSS) |
+      |---|---|---|---|
+      | **Motivación** | objetivo·kpi·brecha·idea | `.obj-node` · `.kchip` · `.fitem[data-idea]` · `.fitem[data-g]` | `background:var(--mat-mot-bg)` (vidrio teal .09) + `border-color:var(--teal-800)` + **`border-left:3px solid var(--teal-700)`** (spine). `.kchip` sin spine (chip), tinte .07. |
+      | **Negocio** | proceso·rol·área | `.chev` · `.soporte` · `.proc-node` · `.rolchip` · `.area-node` | `background:var(--mat-neg-bg)` (neutro elevado) + `border-color:var(--mat-neg-bd)`. **Excepción `.area-node`: queda `background:transparent` (decisión 4)** — solo hereda el borde. |
+      | **Aplicación** | sistema | `.sysplat` | `background:var(--mat-app-bg)` (más oscuro) + `border-color:var(--border)` + **`border-top:2px solid var(--teal-800)`** (barra técnica) + `border-radius:2px` + `box-shadow:inset 0 0 0 1px var(--border-soft)`. |
+      | **Implementación** | proyecto_mejora | `.kin` (mapa, ya existía) · `.fitem[data-pm]` (funnel) | punteado teal: `.fitem[data-pm]{background:rgba(0,183,170,.06);border-left:3px dashed var(--brand)}`. `.kin` sin cambio. |
+
+    - **Los estados siguen mandando (verificado):** `.node.hot`, `.serves`, `.node.diff` son reglas de
+      **2 clases** → ganan por especificidad sobre el material de reposo (1 clase). Seleccionar,
+      encender el hilo y la corrida (diff ámbar) intactos. `* {box-sizing:border-box}` (L29) hace que
+      el `border-left:3px`/`border-top:2px` **no cambien el layout** (ancho/alto estables).
+    - **Funnel Método vs Mejora:** `.fitem` se comparte, pero los ítems de **Método** (M1/M2/M3) **no
+      llevan** `data-*` (son pasos, no entidades) → los selectores de atributo `[data-idea]`/`[data-g]`/
+      `[data-pm]` **solo tocan Mejora**. Correcto por diseño.
+    - **Cómo replicar en `cockpit-ui`:** los **mismos 4 materiales** como variantes sobre los átomos
+      `ui/components/ds/` (p.ej. una prop `layer="motivacion|negocio|aplicacion|implementacion"` en el
+      `Card`/contenedor), con los tokens portados a `ui/app/globals.css`. El tipo cae del `archimate:`
+      del objeto normalizado; el ícono (`TICO`) desambigua. Cero hue nuevo — respeta `[[ui-design-system]]`.

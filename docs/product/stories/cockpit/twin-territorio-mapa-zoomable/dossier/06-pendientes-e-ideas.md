@@ -4,12 +4,35 @@
 > cockpit" (2026-07-24) + estado v8.2. Esto es lo que una sesión nueva NO encontraría en ningún
 > otro doc. Nada de aquí está ratificado como decisión — son insumos.
 
-## ⚠ Deuda abierta #1 — los "muchos comentarios" del operador
+## ✓ Deuda abierta #1 — CERRADA en la sesión 2026-07-25
 
-07:26 de esa sesión, verbatim: *"Tengo muchos comentarios… Quiero terminar la próxima sesión con
-el mockup de la visión completa de cómo quiero que quede el cockpit, de inicio a fin."*
-**Esos comentarios NUNCA se dieron** (ni en la sesión colgada v7-v8 ni en la v8.2). Son el input
-principal pendiente del operador. La sesión que continúe debe pedirlos/recibirlos primero.
+07:26 de la sesión 2026-07-24, verbatim: *"Tengo muchos comentarios… Quiero terminar la próxima
+sesión con el mockup de la visión completa de cómo quiero que quede el cockpit, de inicio a fin."*
+Esos comentarios no se habían dado en v7-v8.2. **En la sesión 2026-07-25 sí se dieron, en vivo**
+(el operador entró al mockup con su propio Chrome vía claude-in-chrome): encoding roto al servir
+local, 2 bugs reales de interacción (ver `03-decisiones-y-porques.md` decisiones 19-20), y 3
+iteraciones de la notación por tipo hasta la v3 con íconos dibujados (decisión 18). Detalle completo
+del código: `02-mockup-guia-completa.md § 0.1`.
+
+## ⚠ Pendiente nuevo — de la sesión 2026-07-25
+
+- **Republicar al Artifact** — el link publicado (`claude.ai/code/artifact/20907d03-…`) sigue
+  mostrando la versión PRE-sesión; el HTML del repo ya tiene todo (notación v3 + los 2 fixes).
+  Republicar pasando `url` al mismo artifact cuando el operador confirme que quiere verlo ahí.
+- **Sin commitear** — los cambios están en el working tree, no en un commit. Incluye ahora
+  (sesión 2026-07-25 cont.) la **decisión 22 · materiales por capa ArchiMate** horneada en
+  `index.html` (tokens `--mat-*` + bloque CSS antes de `</style>`) — ratificada "me gusta V2".
+- **QA visual no exhaustivo** de los 3 íconos del funnel Mejora (idea/brecha/proyecto) y de kpi
+  (barras) — se verificaron con crops reales pero no en TODAS las vistas donde aparecen (drawer,
+  ficha). Revisar si aparece algo roto al seguir iterando.
+- **La v3 (íconos) está construida pero el operador todavía NO dio el "me gusta" final** — falta su
+  confirmación explícita antes de tratarla como ratificada/decisión de fondo (CK-NN o D-19).
+- **capability, empresa, persona sin badge propio** — no tienen contenedor dedicado en el mapa
+  (persona vive dentro del chip de `rol`). Si el operador los quiere en el mapa, es una superficie
+  nueva, no un ícono suelto — evaluar en el refinamiento.
+- **Fase 3 (descartada por ahora, no pedida):** acento de borde por capa ArchiMate (Business/
+  Application/Motivation/Strategy/Implementation) — se ofreció como escalón siguiente si el ícono
+  solo no alcanzaba; con la v3 (pictograma) no hizo falta. Queda anotada por si se revive.
 
 ## Ideas propuestas en conversación, sin destino escrito (evaluar en refinamiento)
 

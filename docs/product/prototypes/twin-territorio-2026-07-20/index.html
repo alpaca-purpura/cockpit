@@ -16,6 +16,8 @@
     --teal-800:#0a605a; --teal-900:#0d4944;
     --bg:#000000; --panel:#0c1110; --raised:#141a19; --raised2:#181f1e;
     --border:#1f2826; --border-soft:#161d1c;
+    /* Materiales por capa ArchiMate v2 — decisión 22 (2026-07-25) */
+    --mat-mot-bg:rgba(0,183,170,.09); --mat-neg-bg:#1e2624; --mat-neg-bd:#2c3936; --mat-app-bg:#080b0a;
     --brand:var(--teal-500); --brand-hi:var(--teal-400);
     --tx:rgba(255,255,255,.92); --tx-mut:rgba(255,255,255,.58); --tx-faint:rgba(255,255,255,.34);
     --ok:#5cc99a; --warn:#e0ad4e; --crit:#e2766b;
@@ -164,10 +166,10 @@
   .node { position:absolute; transform:translate(-50%,-50%); }
 
   /* área node */
-  .area-node { width:162px; background:transparent; border:1px solid var(--border);
+  .area-node { position:relative; width:162px; background:transparent; border:1px solid var(--border);
     border-radius:12px; padding:10px 11px 9px; text-align:left; cursor:pointer;
     transition:border-color .16s, transform .16s, background .16s, opacity .3s; }
-  .area-node:hover { border-color:#3a4d48; background:rgba(0,183,170,.05); transform:translate(-50%,-50%) translateY(-2px); }
+  .area-node:hover { border-color:#3a4d48; background:rgba(0,183,170,.05); }
   .area-node .hd { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
   .area-node .nm { font-family:var(--font-display); font-weight:700; font-size:14px; letter-spacing:-.01em; line-height:1.15; }
   .area-node .lider { font-size:10.5px; color:var(--tx-faint); margin-top:2px; display:inline-block; max-width:100%; }  /* inline: el hit-target es el TEXTO, no una franja de toda la card */
@@ -177,14 +179,34 @@
   .area-node .cnt { font-family:var(--font-mono); font-size:10px; color:var(--tx-faint); border:1px solid var(--border); border-radius:5px; padding:1px 5px; }
   .area-node .cnt.fold { color:var(--brand-hi); border-color:var(--teal-800); }
   .health-dot { width:9px; height:9px; border-radius:50%; flex:0 0 auto; }
+  /* notación por tipo (M13 ArchiMate, ancla SOLO-TIPOS — sistema/schema/objeto.schema.yaml campo `archimate:`).
+     Glifo mono + familia Motivation (objetivo/kpi/idea/brecha) con radio más suave que Business/Application/
+     Implementation — el color queda libre para salud/severidad, la forma/glifo distingue el TIPO. */
+  .eg { font-family:var(--font-mono); opacity:.85; margin-right:5px; font-size:1.05em; display:inline-block; }
+  /* badge de ÍCONO (v3 — reemplaza las siluetas abstractas v2: cuadrado/triángulo/rombo no se
+     entendían sin leyenda). UN solo contenedor consistente + un pictograma DIBUJADO adentro que
+     se lee sin traducir: flecha=Proceso · barras=KPI · personita=Rol · organigrama mini=Área ·
+     bandera=Objetivo · enchufe=Sistema. Un solo acento (teal, PRENTER); el color de salud/severidad
+     no se toca. SVG inline — cero dependencia nueva. */
+  .tbadge { position:absolute; top:-9px; left:-9px; z-index:3; width:19px; height:19px; display:flex;
+    align-items:center; justify-content:center; background:var(--panel2); border:1.6px solid var(--brand);
+    border-radius:5px; box-shadow:0 0 6px rgba(0,183,170,.5), 0 1px 4px rgba(0,0,0,.7); pointer-events:none; }
+  .tbadge svg { width:12px; height:12px; overflow:visible; }
+  .tbadge svg * { stroke:var(--brand-hi); }
+  .tbadge svg .fl { fill:var(--brand-hi); stroke:none; }
+  /* versión chica del ícono (sin badge de esquina) — para chips/filas de una sola línea (kpi/idea/brecha/proyecto). */
+  .eg-ico { display:inline-flex; margin-right:5px; opacity:.92; }
+  .eg-ico svg { width:11px; height:11px; overflow:visible; }
+  .eg-ico svg * { stroke:var(--brand-hi); }
+  .eg-ico svg .fl { fill:var(--brand-hi); stroke:none; }
   .node.dim { opacity:.2; }
   .node.hot .area-node { border-color:var(--brand); background:rgba(0,183,170,.06); box-shadow:0 0 0 1px var(--teal-700); }
   .node.hot .obj-node { border-color:var(--brand); box-shadow:0 0 0 1px var(--teal-700); }
   .vac { font-family:var(--font-mono); font-size:8px; color:var(--warn); border:1px solid rgba(224,173,78,.4); border-radius:4px; padding:0 3px; }
 
   /* objetivo node (BSC) */
-  .obj-node { width:184px; background:var(--raised); border:1px solid var(--border); border-radius:11px; padding:11px 12px; text-align:left; cursor:pointer; transition:border-color .16s, transform .16s, opacity .3s; }
-  .obj-node:hover { border-color:#33443f; transform:translate(-50%,-50%) translateY(-2px); }
+  .obj-node { position:relative; width:184px; background:var(--raised); border:1px solid var(--border); border-radius:20px; padding:11px 14px; text-align:left; cursor:pointer; transition:border-color .16s, transform .16s, opacity .3s; }
+  .obj-node:hover { border-color:#33443f; }
   .obj-node.hot { border-color:var(--brand); box-shadow:0 0 0 1px var(--teal-700); }
   .obj-node .nm { font-size:12.5px; font-weight:600; line-height:1.25; }
   .obj-node .kr { display:flex; align-items:baseline; gap:5px; margin-top:8px; font-family:var(--font-mono); font-size:12px; flex-wrap:wrap; }
@@ -196,7 +218,7 @@
   .obj-node .kr .ar { color:var(--brand); }
 
   /* proceso node (z1) */
-  .proc-node { width:196px; background:var(--raised); border:1px solid var(--border); border-radius:10px; padding:10px 12px; text-align:left; cursor:pointer; transition:border-color .16s, transform .16s, opacity .3s; }
+  .proc-node { position:relative; width:196px; background:var(--raised); border:1px solid var(--border); border-radius:10px; padding:10px 12px; text-align:left; cursor:pointer; transition:border-color .16s, transform .16s, opacity .3s; }
   .proc-node:hover { border-color:#33443f; }
   .proc-node .top { display:flex; align-items:flex-start; gap:8px; }
   .proc-node .nm { font-size:13px; font-weight:600; line-height:1.2; }
@@ -221,7 +243,7 @@
 
   /* brecha pin */
   .pin { position:absolute; transform:translate(-50%,-108%); display:flex; flex-direction:column; align-items:center; cursor:pointer; z-index:6; }
-  .pin .body { background:var(--crit-dim); border:1px solid var(--crit); color:var(--crit); border-radius:9px; padding:6px 9px; max-width:206px;
+  .pin .body { background:var(--crit-dim); border:1px solid var(--crit); color:var(--crit); border-radius:14px; padding:6px 9px; max-width:206px;
     font-size:11px; line-height:1.25; box-shadow:0 12px 30px -16px rgba(226,118,107,.5); backdrop-filter:blur(3px); }
   .pin.med .body { background:var(--warn-dim); border-color:var(--warn); color:var(--warn); }
   .pin.low .body { background:rgba(255,255,255,.05); border-color:var(--border); color:var(--tx-mut); }
@@ -257,7 +279,7 @@
   .lane-hd .role-k { font-family:var(--font-mono); font-size:9px; color:var(--tx-faint); text-transform:uppercase; letter-spacing:.1em; }
   .lane-body { padding:16px 22px 16px 14px; display:flex; align-items:center; gap:26px; flex-wrap:wrap; }
   .act { position:relative; min-width:172px; max-width:212px; background:var(--raised); border:1px solid var(--border); border-radius:10px; padding:10px 12px; cursor:pointer; transition:border-color .14s, transform .14s; }
-  .act:hover { border-color:#34443f; transform:translateY(-2px); }
+  .act:hover { border-color:#34443f; }
   .act .typ { position:absolute; top:9px; right:9px; width:7px; height:7px; border-radius:50%; }
   .act .ord { font-family:var(--font-mono); font-size:9px; color:var(--brand); }
   .act .ttl { font-size:12.5px; font-weight:600; margin-top:3px; line-height:1.25; }
@@ -276,7 +298,7 @@
   .elab { position:absolute; transform:translate(-50%,-50%); font-family:var(--font-mono); font-size:8.5px; color:var(--warn);
     background:rgba(12,17,16,.92); border:1px solid rgba(224,173,78,.35); border-radius:5px; padding:1px 6px; z-index:5; pointer-events:none; white-space:nowrap; }
   .elab.main { color:var(--tx-faint); border-color:var(--border); }
-  .kchip { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); border-radius:7px; padding:4px 9px;
+  .kchip { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); border-radius:999px; padding:4px 10px;
     font-family:var(--font-mono); font-size:10px; color:var(--tx-mut); background:rgba(12,17,16,.6); cursor:pointer; }
   .kchip:hover { border-color:#33443f; color:var(--tx); }
   .kchip .kd { width:8px; height:8px; border-radius:50%; }
@@ -421,7 +443,7 @@
   .mcards .chip { font-size:11px; }
 
   /* ---------- v6 · Mapa de Valor — 5 bandas, un sistema interconectado ---------- */
-  .chev { width:192px; background:var(--raised); border:1px solid var(--border); border-radius:10px; padding:10px 12px 9px;
+  .chev { position:relative; width:192px; background:var(--raised); border:1px solid var(--border); border-radius:10px; padding:10px 12px 9px;
     text-align:left; cursor:pointer; transition:border-color .16s, opacity .3s; }
   .chev:hover { border-color:#33443f; }
   .chev .nm { font-size:12.5px; font-weight:600; line-height:1.2; }
@@ -472,6 +494,28 @@
   @media (prefers-reduced-motion: reduce) { .world.anim { transition:none; } .kin .spark { animation:none; } }
   @media (max-width:1220px){ .inspector{display:none} .app{grid-template-columns:var(--rail) 1fr} }
   @media (max-width:880px){ .rail{display:none} .app{grid-template-columns:1fr} }
+  /* ═══════════════════════════════════════════════════════════════════
+     MATERIALES POR CAPA ArchiMate v2 — decisión 22 (2026-07-25)
+     Tipo de entidad legible por el MATERIAL del contenedor (no solo el
+     ícono TICO), SIN hue nuevo: PRENTER teal-only, el color queda 100%
+     reservado a salud/severidad. Se agrupa por capa ArchiMate (el campo
+     archimate: del schema) → 4 materiales, no 12 bordes de colores.
+     Los estados (.node.hot / .serves / .node.diff) son de 2 clases →
+     ganan por especificidad y siguen mandando sobre el material de reposo.
+     Replicar en cockpit-ui: mismos 4 materiales sobre los átomos ds/.
+     ─────────────────────────────────────────────────────────────────── */
+  /* Motivación — objetivo·kpi·brecha·idea: vidrio teal tenue + spine izq */
+  .obj-node{ background:var(--mat-mot-bg); border-color:var(--teal-800); border-left:3px solid var(--teal-700); }
+  .kchip{ background:rgba(0,183,170,.07); border-color:var(--teal-800); }
+  .fitem[data-idea], .fitem[data-g]{ background:var(--mat-mot-bg); border-color:var(--teal-800); border-left:3px solid var(--teal-700); }
+  /* Negocio — proceso·rol·área: sólido neutro elevado (el músculo) */
+  .chev, .soporte, .proc-node, .rolchip{ background:var(--mat-neg-bg); border-color:var(--mat-neg-bd); }
+  .area-node{ border-color:var(--mat-neg-bd); }   /* área queda transparente — decisión 4 */
+  /* Aplicación — sistema: marco técnico oscuro, esquinas rectas + barra teal */
+  .sysplat{ background:var(--mat-app-bg); border-color:var(--border); border-top:2px solid var(--teal-800); border-radius:2px; box-shadow:inset 0 0 0 1px var(--border-soft); }
+  /* Implementación — proyecto_mejora: movimiento (punteado teal) */
+  .fitem[data-pm]{ background:rgba(0,183,170,.06); border-left:3px dashed var(--brand); }
+  /* .kin (proyecto en el mapa) ya es punteado teal — sin cambio */
 </style>
 
 <div class="app" id="app">
@@ -573,6 +617,21 @@
 <script>
 const S={ok:'var(--ok)',warn:'var(--warn)',crit:'var(--crit)'};
 const health={verde:'var(--ok)',ambar:'var(--warn)',rojo:'var(--crit)'};
+/* badge de ícono por tipo (M13 ArchiMate, ancla SOLO-TIPOS — objeto.schema.yaml campo `archimate:`).
+   Pictograma DIBUJADO, no forma abstracta ni letra — se lee sin leyenda. SVG inline, cero dep nueva. */
+const TICO={
+  proceso:'<svg viewBox="0 0 14 14"><path d="M3.5 2 L10 7 L3.5 12" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  sistema:'<svg viewBox="0 0 14 14"><rect x="4" y="1.5" width="8.5" height="11" fill="none" stroke-width="1.3"/><rect class="fl" x="1" y="3.8" width="3.3" height="2.2"/><rect class="fl" x="1" y="8" width="3.3" height="2.2"/></svg>',
+  rol:'<svg viewBox="0 0 14 14"><circle cx="7" cy="4.3" r="2.5" fill="none" stroke-width="1.5"/><path d="M2 12.6c0-3.1 2.2-5 5-5s5 1.9 5 5" fill="none" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  area:'<svg viewBox="0 0 14 14"><rect x="5" y="1" width="4" height="3" fill="none" stroke-width="1.2"/><rect x="1" y="10" width="4" height="3" fill="none" stroke-width="1.2"/><rect x="9" y="10" width="4" height="3" fill="none" stroke-width="1.2"/><path d="M7 4v3M7 7H3v3M7 7h4v3" fill="none" stroke-width="1.1"/></svg>',
+  objetivo:'<svg viewBox="0 0 14 14"><path d="M3 1v12" stroke-width="1.4" stroke-linecap="round"/><path class="fl" d="M3 1.4c2-1 3.6 1 5.6 0v5c-2 1-3.6-1-5.6 0z"/></svg>',
+  kpi:'<svg viewBox="0 0 14 14"><rect class="fl" x="1.3" y="8" width="2.6" height="4.6"/><rect class="fl" x="5.7" y="5" width="2.6" height="7.6"/><rect class="fl" x="10.1" y="2" width="2.6" height="10.6"/></svg>',
+  brecha:'<svg viewBox="0 0 14 14"><path d="M7 1.5 L13 12.5 L1 12.5 Z" fill="none" stroke-width="1.4" stroke-linejoin="round"/><line x1="7" y1="5.2" x2="7" y2="8.6" stroke-width="1.4" stroke-linecap="round"/><circle class="fl" cx="7" cy="10.6" r="0.9"/></svg>',
+  idea:'<svg viewBox="0 0 14 14"><path d="M7 1.5a4 4 0 0 0-2 7.5c.5.4.8 1 .8 1.6h2.4c0-.6.3-1.2.8-1.6A4 4 0 0 0 7 1.5z" fill="none" stroke-width="1.3"/><line x1="5.2" y1="12.3" x2="8.8" y2="12.3" stroke-width="1.2" stroke-linecap="round"/></svg>',
+  proyecto:'<svg viewBox="0 0 14 14"><path d="M11.5 4.5A5 5 0 1 0 12.5 8" fill="none" stroke-width="1.4" stroke-linecap="round"/><path d="M11.5 1.5v3.3h-3.3" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+};
+const tbadge=(tipo,title)=>`<span class="tbadge" title="${title}">${TICO[tipo]}</span>`;
+const iico=(tipo,title)=>`<span class="eg-ico" title="${title}">${TICO[tipo]}</span>`;
 const confCol=c=>({alta:S.ok,media:S.warn,baja:S.crit}[c]||'var(--tx-faint)');
 
 /* ============================================================
@@ -1342,7 +1401,7 @@ function renderOrganigrama(){
     const hs=state.capas.has('trabajo')?arnesesArea(a.id):null;
     const hChip=hs?`<span class="cnt" style="color:${hs.some(h=>h.estado==='desactualizado')?'var(--warn)':(hs.length?'var(--brand-hi)':'var(--tx-faint)')}" title="puestos con arnés compilado del twin">⛨ ${hs.length}${hs.some(h=>h.estado==='desactualizado')?' ⚠':''}</span>`:'';
     n.innerHTML=`<div class="area-node">
-      <div class="hd"><div><div class="nm">${a.nm}</div><div class="lider plnk" title="ficha de la persona">${a.lider.split(' · ')[0]}</div>${a.vacante?'<span class="vac">rol vacante</span>':''}</div>
+      <div class="hd"><div><div class="nm">${tbadge('area','área · Business Actor organizacional (M13 ArchiMate)')}${a.nm}</div><div class="lider plnk" title="ficha de la persona">${a.lider.split(' · ')[0]}</div>${a.vacante?'<span class="vac">rol vacante</span>':''}</div>
         <span class="health-dot" style="background:${dotColor}"></span></div>
       <div class="stat">${heat}<span class="cnt">${procs.length}</span>${hChip}${folded?`<span class="cnt fold">+${hidden} áreas</span>`:(subVis?`<span class="cnt">+${subVis}</span>`:'')}</div>
     </div>`;
@@ -1372,7 +1431,7 @@ function renderOrganigrama(){
   if(state.capas.has('cinetica')) DATA.proyectos.filter(pm=>pm.estado!=='cerrado').forEach(pm=>{
     const a=visAncestor(pm.area); if(!a)return; const kx=a.x, ky=a.y+52;
     const k=el('div','kin'); k.style.left=kx+'px'; k.style.top=ky+'px';
-    k.innerHTML=`<span class="spark"></span><span class="pdca">${pm.pdca}</span>${pm.nm} · ROI ${pm.roi}`; k.onclick=()=>openProyecto(pm); $pins.appendChild(k);
+    k.innerHTML=`${iico('proyecto','proyecto de mejora · Work Package (M13 ArchiMate)')}<span class="spark"></span><span class="pdca">${pm.pdca}</span>${pm.nm} · ROI ${pm.roi}`; k.onclick=()=>openProyecto(pm); $pins.appendChild(k);
     pathEl(vcurve(kx,ky-6,a.x,a.y+40),'var(--teal-600)',1.4,.55,'5 5');
   });
 
@@ -1407,9 +1466,9 @@ function renderValor(){
   const oPos={}; let ox=120;
   PERSP.forEach(pk=>{
     const objs=DATA.objetivos.filter(o=>o.persp===pk); if(!objs.length)return;
-    const lab=el('div','grouplab'); lab.style.left=ox+'px'; lab.style.top=(Y.est-40)+'px';
+    const lab=el('div','grouplab'); lab.style.left=ox+'px'; lab.style.top=(Y.est-14)+'px';
     lab.innerHTML=`<span class="persp-lab">${pk}</span>`; $nodes.appendChild(lab);
-    objs.forEach(o=>{ oPos[o.id]={x:ox+92,y:Y.est+18}; ox+=204; }); ox+=34;
+    objs.forEach(o=>{ oPos[o.id]={x:ox+92,y:Y.est+54}; ox+=204; }); ox+=34;
   });
   DATA.bscEdges.forEach(([a,b])=>{ const A=oPos[a],B=oPos[b]; if(!A||!B)return;
     pathEl(`M${A.x},${A.y-34} C${A.x},${A.y-72} ${B.x},${B.y-72} ${B.x},${B.y-34}`,'var(--teal-700)',1.1, act?( [a,b].includes(act)?.6:.08 ):.22); });
@@ -1419,7 +1478,7 @@ function renderValor(){
     if(searching && !(o.nm+' '+o.kr.m).toLowerCase().includes(q())) n.classList.add('dim');
     n.innerHTML=`<div class="obj-node ${act===o.id?'hot':''}" style="width:188px">
       <span class="health-dot" style="background:${health[o.salud]};float:right;margin-top:2px"></span>
-      <div class="nm" style="font-size:11.5px">${o.nm}</div>
+      <div class="nm" style="font-size:11.5px">${tbadge('objetivo','objetivo · Goal/Outcome (M13 ArchiMate, Motivation)')}${o.nm}</div>
       <div class="kr"><span class="m">${o.kr.m}</span><span class="from">${o.kr.from}</span><span class="ar">→</span><span class="cur">${o.kr.cur}</span><span class="ar">→</span><span class="to">${o.kr.to}</span><span class="u">${o.kr.u}</span></div>
     </div>`;
     n.querySelector('.obj-node').onclick=()=>{ state.activeObj=act===o.id?null:o.id; render(); if(state.activeObj===o.id) openObjetivo(o); };
@@ -1442,7 +1501,7 @@ function renderValor(){
     if(searching&&!procMatch(p))n.classList.add('dim');
     n.style.left=x+'px'; n.style.top=y+'px';
     n.innerHTML=`<div class="chev">
-      <div style="display:flex;gap:7px;align-items:flex-start"><span class="health-dot" style="background:${dc}"></span><div class="nm">${p.nm}</div></div>
+      <div style="display:flex;gap:7px;align-items:flex-start"><span class="health-dot" style="background:${dc}"></span><div class="nm">${tbadge('proceso','proceso · Business Process (M13 ArchiMate)')}${p.nm}</div></div>
       <div class="dueno"><span class="plnk" data-rol="${p.dueno}">${p.dueno}</span> · <span style="color:var(--brand-hi)" title="doble-click abre el flujograma">lienzo ›</span></div>
       <div class="mini-pasos">${steps.map(s=>`<i title="${s.v}${s.t?' · '+s.t:''}" class="${s.t?('t-'+(s.t.includes('rpa')?'rpa':s.t.includes('agente')?'agente':s.t==='eliminable'?'elim':'hum')):''}"></i>`).join('')}</div>
       ${ks.length?`<div class="kpis-mini">${ks.map(krowHTML).join('')}</div>`:''}
@@ -1468,7 +1527,7 @@ function renderValor(){
     const hot=hotProc(p.id);
     const s=el('button','soporte '+(hot?'hot':'')); if(act&&!hot)s.classList.add('dim'); if(searching&&!procMatch(p))s.classList.add('dim');
     s.style.left=ax+'px'; s.style.top=ay+'px'; s.style.width=wPx+'px';
-    s.innerHTML=`<div style="display:flex;gap:7px;align-items:center"><span class="health-dot" style="width:7px;height:7px;background:${dc}"></span><span class="nm">${p.nm}</span>${p.areas.length>1?`<span class="tag" style="margin-left:auto">cruza ${p.areas.length}</span>`:''}</div>
+    s.innerHTML=`<div style="display:flex;gap:7px;align-items:center"><span class="health-dot" style="width:7px;height:7px;background:${dc}"></span><span class="nm">${tbadge('proceso','proceso · Business Process (M13 ArchiMate)')}${p.nm}</span>${p.areas.length>1?`<span class="tag" style="margin-left:auto">cruza ${p.areas.length}</span>`:''}</div>
       <div class="meta">${p.dueno}${state.capas.has('trabajo')?' '+harnBadge(arnesDeRol(p.dueno)):''}</div>`;
     s.onclick=()=>openProceso(p); s.ondblclick=()=>drillLienzo(p.id); wireLinks(s);
     MM_PTS.push(aPos[p.id]);
@@ -1485,7 +1544,7 @@ function renderValor(){
     const hot=hotRol.has(r);
     const c=el('button','rolchip '+(hot?'hot':'')); if(act&&!hot)c.classList.add('dim');
     const nOcc=rolOcupantes(r).length;
-    c.innerHTML=`${r}<span class="who">${occ.vac||!nOcc?'—':(occ.quien.split(' ')[0]+(nOcc>1?' +'+(nOcc-1):''))}</span>${state.capas.has('trabajo')?harnBadge(h):''}`;
+    c.innerHTML=`${tbadge('rol','rol · Business Role (M13 ArchiMate)')}${r}<span class="who">${occ.vac||!nOcc?'—':(occ.quien.split(' ')[0]+(nOcc>1?' +'+(nOcc-1):''))}</span>${state.capas.has('trabajo')?harnBadge(h):''}`;
     $nodes.appendChild(c);
     const wCh=c.offsetWidth||(r.length*6.4+70);
     if(rx+wCh>W-60){ rx=120; ry+=46; }              // wrap REAL: nueva fila, no encima
@@ -1505,7 +1564,7 @@ function renderValor(){
     const hot=hotSis.has(s2.id);
     const b=el('button','sysplat '+(hot?'hot':'')); if(act&&!hot)b.classList.add('dim');
     b.style.left=sx+'px'; b.style.top=sy2+'px'; b.style.width=wPx+'px';
-    b.innerHTML=`<span class="health-dot" style="width:7px;height:7px;background:${health[digHealth(s2.digital)]}"></span>${s2.nm}<span style="margin-left:auto;font-size:8.5px;color:var(--tx-faint)">${served} proc</span>`;
+    b.innerHTML=`${tbadge('sistema','sistema · Application Component (M13 ArchiMate)')}<span class="health-dot" style="width:7px;height:7px;background:${health[digHealth(s2.digital)]}"></span>${s2.nm}<span style="margin-left:auto;font-size:8.5px;color:var(--tx-faint)">${served} proc</span>`;
     b.onclick=()=>openSistema(s2);
     sPos[s2.id]={x:sx+wPx/2,y:sy2};
     $nodes.appendChild(b); sx+=wPx+16;
@@ -1524,7 +1583,7 @@ function renderValor(){
   if(state.capas.has('cinetica')) DATA.proyectos.filter(pm=>pm.estado!=='cerrado').forEach(pm=>{
     const g=byId(DATA.brechas,pm.brecha), pr=g&&byId(DATA.procesos,g.against), P=pr&&(cPos[pr.id]||aPos[pr.id]); if(!P)return;
     const k=el('div','kin'); k.style.left=P.x+'px'; k.style.top=(P.y+92)+'px';
-    k.innerHTML=`<span class="spark"></span><span class="pdca">${pm.pdca}</span>${pm.nm} · ROI ${pm.roi}`;
+    k.innerHTML=`${iico('proyecto','proyecto de mejora · Work Package (M13 ArchiMate)')}<span class="spark"></span><span class="pdca">${pm.pdca}</span>${pm.nm} · ROI ${pm.roi}`;
     k.onclick=()=>openProyecto(pm); $pins.appendChild(k);
   });
 
@@ -1570,7 +1629,7 @@ function renderArea(){
     const vacDueno=/vacante/i.test(p.dueno);
     const ks=state.capas.has('hilo')?kpisByProc(p.id):[];
     n.innerHTML=`<div class="proc-node ${serves?'serves':''} ${orphan&&state.capas.has('hilo')?'orphan-lit':''}">
-      <div class="top"><span class="health-dot" style="background:${state.capas.has('salud')?dc:'#2a3733'}"></span><div class="nm">${p.nm}</div></div>
+      <div class="top"><span class="health-dot" style="background:${state.capas.has('salud')?dc:'#2a3733'}"></span><div class="nm">${tbadge('proceso','proceso · Business Process (M13 ArchiMate)')}${p.nm}</div></div>
       <div class="meta">${byId(DATA.areas,p.areas[0]).nm} · <span class="plnk" data-rol="${p.dueno}">${p.dueno}</span><br>${p.sist.map(s=>sisByName(s)?`<span class="plnk" data-sis="${s}">${s}</span>`:s).join(' · ')}</div>
       <div class="flag">
         <span class="tag teal" title="doble-click abre el flujograma">lienzo ›</span>
@@ -1593,7 +1652,7 @@ function renderArea(){
   if(state.capas.has('cinetica')) DATA.proyectos.filter(pm=>pm.estado!=='cerrado').forEach(pm=>{
     const g=byId(DATA.brechas,pm.brecha), pr=g&&byId(DATA.procesos,g.against), pos=pr&&procPos[pr.id]; if(!pos)return;
     const k=el('div','kin'); k.style.left=pos.cx+'px'; k.style.top=(pos.cy+96)+'px';
-    k.innerHTML=`<span class="spark"></span><span class="pdca">${pm.pdca}</span>${pm.nm} · ROI ${pm.roi}`;
+    k.innerHTML=`${iico('proyecto','proyecto de mejora · Work Package (M13 ArchiMate)')}<span class="spark"></span><span class="pdca">${pm.pdca}</span>${pm.nm} · ROI ${pm.roi}`;
     k.onclick=()=>openProyecto(pm); $pins.appendChild(k);
   });
   const setA=new Set(descendants(a.id));
@@ -1633,7 +1692,7 @@ function renderLienzo(){
   // header: título + capas ENCIMA del lienzo (hilo=KPIs+objetivo · salud=dot · VSM totales)
   const hd=el('div','grouplab'); hd.style.left='26px'; hd.style.top='20px'; hd.style.maxWidth=(W-60)+'px';
   const kchips=state.capas.has('hilo')?kpisByProc(f.proc).map(k=>{ const s=semaforo(k), c=kcur(k);
-    return `<button class="kchip" data-k="${k.id}"><span class="kd" style="background:${SEMC[s]}"></span>${k.nm} ${c==null?'s/d':c+(k.unidad||'')} → ${k.banda.target}${k.unidad||''}</button>`; }).join(''):'';
+    return `<button class="kchip" data-k="${k.id}">${iico('kpi','kpi · Outcome/Metric (M13 ArchiMate, Motivation)')}<span class="kd" style="background:${SEMC[s]}"></span>${k.nm} ${c==null?'s/d':c+(k.unidad||'')} → ${k.banda.target}${k.unidad||''}</button>`; }).join(''):'';
   const objChip=state.capas.has('hilo')&&p.sirve.length?`<span class="tag teal" style="font-size:9px">sostiene · ${byId(DATA.objetivos,p.sirve[0]).nm}</span>`:'';
   const saludDot=state.capas.has('salud')?`<span class="health-dot" style="background:${health[digHealth(p.digital)]};display:inline-block;margin-right:8px"></span>`:'';
   hd.innerHTML=`<span class="eyebrow">z2 · proceso caracterizado (procedimiento · ISO 10013 n2) · bordes SIPOC como geografía · carriles = roles · doble-click actividad = instrucción (z3)</span>
@@ -1830,24 +1889,24 @@ function renderMejora(){
     <div class="fcols" style="grid-template-columns:repeat(4,1fr)">
       <div class="fcol"><span class="eyebrow">0 · Ideas — funil del personal (kaizen)</span>
         ${DATA.ideas.map(i=>`<button class="fitem" data-idea="${i.id}">
-          <span class="t">${i.nm.length>58?i.nm.slice(0,56)+'…':i.nm}</span>
+          <span class="t">${iico('idea','idea · Driver (M13 ArchiMate, Motivation)')}${i.nm.length>58?i.nm.slice(0,56)+'…':i.nm}</span>
           <span class="m"><span class="gate-pill ${i.estado==='promovida'?'':'pend'}">${i.estado}</span><span>${i.prop.split(' · ')[0]}</span>${i.origen==='triage'?'<span style="color:var(--brand-hi)">← triage</span>':''}</span>
         </button>`).join('')}
         <div style="font-size:10.5px;color:var(--tx-faint)">idea ↔ proyecto separados (M44) · autoría reconocida, jamás medición (CK-24)</div></div>
       <div class="fcol"><span class="eyebrow">1 · Brechas — rankeadas por costo/ROI</span>
         ${gs.map(g=>`<button class="fitem ${g.estado==='off-thread'?'dim2':''}" data-g="${g.id}">
-          <span class="t">${g.nm.length>64?g.nm.slice(0,62)+'…':g.nm}</span>
+          <span class="t">${iico('brecha','brecha · Assessment (M13 ArchiMate, Motivation)')}${g.nm.length>64?g.nm.slice(0,62)+'…':g.nm}</span>
           <span class="m"><span style="color:${sevC[g.sev]}">▲ ${g.sev}</span><span>${g.costo}</span><span>${g.estado}</span>${g.apuesta?'<span style="color:var(--brand-hi)">WSJF ①</span>':''}</span>
         </button>`).join('')}</div>
       <div class="fcol"><span class="eyebrow">2 · Proyectos en vuelo — PDCA</span>
         ${vuelo.map(p=>`<button class="fitem" data-pm="${p.id}">
-          <span class="t">${p.nm}</span>
+          <span class="t">${iico('proyecto','proyecto de mejora · Work Package (M13 ArchiMate)')}${p.nm}</span>
           <span class="m"><span class="gate-pill">${p.pdca}</span><span>${p.estado}</span><span>ROI ${p.roi}</span><span style="color:var(--brand-hi)">${p.delta}</span></span>
         </button>`).join('')}
         <div style="font-size:10.5px;color:var(--tx-faint)">máquina de 12 estados · loop-back en-verificación → en-ejecución permitido (PDCA real, no waterfall)</div></div>
       <div class="fcol"><span class="eyebrow">3 · KPI movido — veredicto con dato real</span>
         ${done.map(p=>`<button class="fitem" data-pm="${p.id}" style="border-color:var(--teal-800)">
-          <span class="t">${p.nm}</span>
+          <span class="t">${iico('proyecto','proyecto de mejora · Work Package (M13 ArchiMate)')}${p.nm}</span>
           <span class="m"><span class="gate-pill">CERRADO</span><span style="color:var(--ok)">✓ ${p.resultado.veredicto}</span><span style="color:var(--brand-hi)">${p.resultado.delta_observado}</span><span>ROI real ${p.roi}</span></span>
         </button>`).join('')}
         <div style="font-size:10.5px;color:var(--tx-faint)">veredicto ∈ {movió · parcial · no-movió} — se escribe contra la serie del KPI, con procedencia</div></div>

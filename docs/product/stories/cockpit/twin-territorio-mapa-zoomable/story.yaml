@@ -16,11 +16,11 @@ dependencies:
     - schema-v2-hilo-de-oro-kinetica           # el grafo O2-O7 + hilo medible que el mapa pinta
     - organizacion-ficticia-golden-fixture     # el dato real (terranova) que el mockup consume
 context:
-  job: "Como director/consultor quiero ver el twin de la organización como UN mapa navegable (organigrama conectado) con zoom semántico y capas conmutables, para leer el big picture y drillar donde importe sin perder el hilo."
-  why: "Hoy el twin son 4 tabs planas (Mapa/Hilo/Brechas/Personas) — fragmentado. El director necesita un solo lienzo: pulso → apuesta → loop, con el hilo de oro y las brechas pintados SOBRE la estructura. Es el diferenciador visual del producto (Organization as Code → Organization Twin, CK-21)."
+  job: "Como equipo de Cockpit quiero UN mockup/prototipo interactivo con datos hardcodeados que muestre el ESTADO FINAL COMPLETO de la solución (territorio/twin + Mejora + Método + Cambios, zoom semántico, capas, las 12 entidades), para tener el contrato visual ratificado ANTES de construir la app real (decisión 10, 2026-07-24 — creció desde 'solo el mapa del twin')."
+  why: "Hoy el twin son 4 tabs planas (Mapa/Hilo/Brechas/Personas) — fragmentado, y el resto del producto (Mejora/Método/Cambios) no tiene vista de referencia. Sin una maqueta de inicio-a-fin ratificada, construir es adivinar el estado final pieza por pieza. Es el diferenciador visual del producto (Organization as Code → Organization Twin, CK-21) Y el plano de construcción."
 provenance:
   backlog_id: null
-  titulo: "Twin como territorio — mapa zoomable + conmutador de capas (paradigma de visualización N13)"
+  titulo: "Mockup del estado final de Cockpit — territorio+Mejora+Método+Cambios, datos canned, contrato visual pre-construcción (creció desde 'twin como territorio')"
   detalle: >-
     Concepto de sesión 2026-07-20 (post CK-27, design system PRENTER adoptado). Re-concibe la
     superficie /negocio: de 4 tabs planas a UN mapa (organigrama conectado) con zoom semántico
