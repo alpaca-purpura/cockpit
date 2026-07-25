@@ -14,25 +14,36 @@ local, 2 bugs reales de interacción (ver `03-decisiones-y-porques.md` decisione
 iteraciones de la notación por tipo hasta la v3 con íconos dibujados (decisión 18). Detalle completo
 del código: `02-mockup-guia-completa.md § 0.1`.
 
-## ⚠ Pendiente nuevo — de la sesión 2026-07-25
+## ✓ Resuelto en la sesión 2026-07-25 (cont.) — decisiones 22-26
 
-- **Republicar al Artifact** — el link publicado (`claude.ai/code/artifact/20907d03-…`) sigue
-  mostrando la versión PRE-sesión; el HTML del repo ya tiene todo (notación v3 + los 2 fixes).
-  Republicar pasando `url` al mismo artifact cuando el operador confirme que quiere verlo ahí.
-- **Sin commitear** — los cambios están en el working tree, no en un commit. Incluye ahora
-  (sesión 2026-07-25 cont.) la **decisión 22 · materiales por capa ArchiMate** horneada en
-  `index.html` (tokens `--mat-*` + bloque CSS antes de `</style>`) — ratificada "me gusta V2".
-- **QA visual no exhaustivo** de los 3 íconos del funnel Mejora (idea/brecha/proyecto) y de kpi
-  (barras) — se verificaron con crops reales pero no en TODAS las vistas donde aparecen (drawer,
-  ficha). Revisar si aparece algo roto al seguir iterando.
-- **La v3 (íconos) está construida pero el operador todavía NO dio el "me gusta" final** — falta su
-  confirmación explícita antes de tratarla como ratificada/decisión de fondo (CK-NN o D-19).
-- **capability, empresa, persona sin badge propio** — no tienen contenedor dedicado en el mapa
-  (persona vive dentro del chip de `rol`). Si el operador los quiere en el mapa, es una superficie
-  nueva, no un ícono suelto — evaluar en el refinamiento.
-- **Fase 3 (descartada por ahora, no pedida):** acento de borde por capa ArchiMate (Business/
-  Application/Motivation/Strategy/Implementation) — se ofreció como escalón siguiente si el ícono
-  solo no alcanzaba; con la v3 (pictograma) no hizo falta. Queda anotada por si se revive.
+- **Artifact republicado** — el link (`claude.ai/code/artifact/20907d03-…`) ya muestra la versión
+  actual (**v11**: notación inline "dentro" + materiales por capa + 3 tipos nuevos + aire entre
+  bandas). Republicado varias veces; **Ctrl+Shift+R** para bustear caché.
+- **Los 3 tipos "sin badge propio" → RESUELTOS** (decisión 23): empresa (edificio), persona (personita
+  sólida), capability (hexágono) ya tienen ícono + superficie. **Cobertura 12/12.**
+- **Notación ratificada** — el operador iteró en vivo (materiales "me gusta V2" explícito · notación
+  inline DENTRO · 3 tipos nuevos · aire entre bandas) y construyó SOBRE ella. Se trata como aceptada.
+
+## ⚠ Pendiente abierto
+
+- **Commit** — decisiones 22-26 horneadas en `index.html`; el **v10 (materiales, decisión 22) ya está
+  commiteado** (`38d24a2`). Las **decisiones 23-26 + toda la doc de esta auditoría se commitean al
+  cierre** de esta sesión. [actualizar al commitear]
+- **Band de mapa para capability** (capa Strategy) — hoy es ícono + chip teal, sin nodo propio. Darle un
+  band/lente = superficie nueva grande (el **5º material Strategy queda reservado**). Follow-up si se pide.
+- **Deuda de fondo: center-anchoring de los nodos** (decisión 26) — el aire entre bandas mitiga pero no
+  elimina la raíz; cajas MUY altas podrían volver a rozar un label. Fix robusto = top-anchorear los nodos
+  (tocaría el ruteo de edges del hilo de oro). No hecho.
+- **QA visual no exhaustivo** de los íconos del funnel Mejora (idea/brecha/proyecto) y kpi (barras) en
+  TODAS sus vistas (drawer, ficha) — verificados con crops, no exhaustivo.
+- **`CLAUDE.md` / reglas dicen "9 entidades"** — contradice el schema v2 real (**12**, CK-26). Está fuera
+  del scope de esta historia (es rule file, no doc de la historia); anotado para saldar aparte.
+
+## Descartado / anotado
+
+- **"Fase 3 — acento de borde por capa ArchiMate"** (Business/Application/Motivation/Strategy/Impl.): se
+  había anotado como escalón futuro; **se materializó como los "materiales por capa" (decisión 22)** — ya
+  no es futuro, es lo construido. La variante "color por familia" sigue descartada (PRENTER un solo acento).
 
 ## Ideas propuestas en conversación, sin destino escrito (evaluar en refinamiento)
 

@@ -20,9 +20,11 @@ links:
 > inicio-a-fin que guía la construcción real de `cockpit-ui`. (Arrancó más chico — "ver el twin como
 > mapa navegable" — el `story_id` quedó ese nombre por continuidad de links; el alcance real es mayor.)
 >
-> **El operador tiene MÁS ajustes visuales pendientes** — los "muchos comentarios" prometidos en la
-> sesión 2026-07-24 **nunca se dieron** (deuda #1 de `dossier/06-pendientes-e-ideas.md`). Pedirlos/
-> recibirlos es el primer paso de la sesión que continúe, antes de dar el mockup por cerrado.
+> **Comentarios en vivo del operador — YA entregados (v9→v11, sesión 2026-07-25).** Los "muchos
+> comentarios" prometidos el 2026-07-24 se dieron: notación por tipo (íconos SVG), materiales por capa,
+> 12/12 entidades con ícono, notación inline DENTRO, íconos en fichas, aire entre bandas (decisiones
+> 18-26). **Próximo paso (nueva sesión):** el operador entra a **más detalle por elemento** — el cómo se
+> muestra y qué se muestra de cada entidad. Ver el prompt de continuación al pie de esta nota / en el chat.
 >
 > **📁 DOSSIER COMPLETO (2026-07-24): [`dossier/README.md`](./dossier/README.md)** — TODO el avance
 > consolidado en 6 docs (visión/doctrina · mockup elemento-por-elemento · decisiones+porqués ·
@@ -451,3 +453,13 @@ tabs actual. Ratificación del operador + (si es decisión de fondo) ficha CK-NN
   la capa. Horneado en `index.html` (tokens `--mat-*` + bloque CSS); verificado en recarga fresca
   (sin inyección) — estados hot/serves/diff siguen mandando por especificidad. Receta de réplica
   completa en `dossier/03-decisiones-y-porques.md` decisión 22. Pendiente: republicar al Artifact.
+- v11 2026-07-25 — **cobertura total de tipos + notación DENTRO + aire** (decisiones 23-26, sesión
+  cont. con comentarios en vivo del operador sobre el Artifact): (23) los 3 tipos "sin badge propio"
+  → ícono + superficie — empresa=edificio · persona=personita sólida (CK-24: ícono ≠ nodo medible) ·
+  capability=hexágono (capa Strategy, chip teal; 5º material reservado) — **cobertura 12/12**; (24)
+  ícono de tipo en el header de TODA ficha (`.dico`, `openDrawer` auto-parsea el eyebrow — 1 cambio,
+  0 callers); (25) el badge del tipo pasa de esquina-colgando-afuera a **inline DENTRO** de la tarjeta
+  (`position:static`) — **supersede la posición de la decisión 18**; (26) **aire entre bandas** — las
+  cajas altas tapaban los labels de riel (center-anchoring) → más gap (canvas 920→1300), Cadena +48px,
+  separadores más visibles, 5 checks de solape = false. Artifact republicado (v11). Auditoría de
+  consistencia de todo el dossier (02 §0.1 / 03 / 06 / 00) — sin contradicciones, refleja el mockup real.

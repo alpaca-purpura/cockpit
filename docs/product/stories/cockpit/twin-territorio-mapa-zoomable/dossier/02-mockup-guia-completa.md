@@ -14,7 +14,7 @@
 - **Estado**: TODO deriva de `state` (mod/corrida/escala/foco/piel/lienzo/activeObj/capas Set/sub/
   lod/search/insp) + `view{x,y,z}` + `const DATA`; `render()` re-renderiza entero, sin diffing.
 
-## 0.1 · Notación por tipo — íconos dibujados (v9, sesión 2026-07-25)
+## 0.1 · Notación por tipo — íconos dibujados (v9→v11, sesión 2026-07-25)
 
 **Por qué existe:** el operador entró al mockup y no pudo distinguir a simple vista qué caja era
 proceso/kpi/persona — "todo se ve demasiado similar". Se iteró en vivo 3 veces (ver
@@ -27,34 +27,43 @@ un pictograma DIBUJADO** (SVG inline, no forma abstracta ni carácter mono) que 
 SOLO-TIPOS como ancla de vocabulario"). El ícono es la traducción visual de ese tipo, no un invento
 del mockup.
 
-**Código** (`index.html` ~L591-604):
-- `const TICO` — diccionario `tipo → SVG inline` (8 pictogramas, viewBox 14×14, `stroke`/`fill`
-  heredan `var(--brand-hi)` vía CSS `.tbadge svg *`/`.eg-ico svg *`, cero color nuevo — PRENTER
-  "un solo acento").
-- `tbadge(tipo, title)` — **badge de esquina** (`.tbadge`, 19×19px, `position:absolute` sobre la
-  tarjeta, `border:1.6px solid var(--brand)` + glow): para nodos del mapa espacial (tarjetas
-  z0/z1/organigrama). Requiere que el contenedor host tenga `position:relative` (u `absolute`).
-- `iico(tipo, title)` — **ícono inline chico** (`.eg-ico`, 11px, sin badge de esquina, `margin-right`):
-  para chips/filas de una sola línea (kchip, filas del funnel Mejora, tokens `.kin`).
-- `title` de cada uno = el tipo ArchiMate completo (tooltip on-hover, ej. "objetivo · Goal/Outcome
-  (M13 ArchiMate, Motivation)") — el hover enseña la doctrina, no la esconde.
+**Código** (`index.html`: `const TICO` ~L622 · helpers `tbadge`/`iico` ~L633 · `openDrawer` auto-ícono ~L2009):
+- `const TICO` — diccionario `tipo → SVG inline` (**12 pictogramas — las 12 entidades del schema**,
+  viewBox 14×14, `stroke`/`fill` heredan `var(--brand-hi)` vía `.tbadge/.eg-ico/.dico svg *`; cero
+  color nuevo — PRENTER "un solo acento").
+- `tbadge(tipo, title)` — **badge INLINE, DENTRO de la tarjeta, antes del título** (`.tbadge`,
+  17×17px, `display:inline-flex`, `border:1.4px solid var(--brand)` + glow): para nodos del mapa
+  (z0/z1/organigrama). **v11 · decisión 25:** antes era badge de esquina (`position:absolute;
+  top:-9;left:-9`) que colgaba FUERA del borde; el operador lo quiso DENTRO — el markup ya lo tenía
+  inline, bastó `position:static`. **Supersede el "badge de esquina" de la decisión 18.**
+- `iico(tipo, title)` — **ícono inline chico** (`.eg-ico`, 11px, `margin-right`): chips/filas de una
+  línea (kchip, funnel Mejora, `.kin`, chips de capability `[data-cap]`).
+- `.dico` (**decisión 24**) — el ícono del tipo en el **header de TODA ficha**: `openDrawer` lo
+  auto-inyecta parseando la 1ª palabra del eyebrow (`Persona · …` → persona). 1 cambio, cero tocar
+  los 14 `open*`.
+- `title` de cada uno = el tipo ArchiMate completo (tooltip on-hover) — el hover enseña la doctrina.
 
-**Mapa entidad → ícono → dónde vive:**
+**Mapa entidad → ícono → dónde vive (las 12, v11):**
 
 | Entidad | Ícono (`TICO[...]`) | Se lee como | Helper | Dónde (`class`/función) |
 |---|---|---|---|---|
-| objetivo | bandera | meta/hito | `tbadge` | `.obj-node` (Estrategia, z0-valor) |
+| objetivo | bandera | meta/hito | `tbadge` (inline) | `.obj-node` (Estrategia, z0-valor) |
 | kpi | 3 barras ascendentes | métrica | `iico` | `.kchip` (header z2, chips KPI) |
-| rol | personita (cabeza+hombros) | quién | `tbadge` | `.rolchip` (Gente&arneses, z0-valor) |
-| área | mini-organigrama (3 cajas+líneas) | unidad org | `tbadge` | `.area-node .hd .nm` (piel Organigrama) |
-| proceso | chevron/flecha `▶` | flujo | `tbadge` | `.chev` (cadena valor) · `.soporte` (apoyo) · `.proc-node` (z1) |
-| sistema | componente (rect + 2 fichas, ícono oficial ArchiMate Application Component) | la máquina | `tbadge` | `.sysplat` (banda Sistemas) |
-| brecha | triángulo de alerta + `!` | riesgo/gap | `iico` | funnel Mejora col.1 (`.fitem`) |
-| idea | foco | ocurrencia/propuesta | `iico` | funnel Mejora col.0 (`.fitem`) |
-| proyecto_mejora | flecha cíclica (loop) | en curso/PDCA | `iico` | `.kin` (tokens cinética ×3) + funnel col.2/3 |
+| rol | personita (contorno cabeza+hombros) | quién (el puesto) | `tbadge` (inline) | `.rolchip` (Gente&arneses, z0-valor) |
+| área | mini-organigrama (3 cajas+líneas) | unidad org | `tbadge` (inline) | `.area-node` (piel Organigrama) |
+| proceso | chevron/flecha `▶` | flujo | `tbadge` (inline) | `.chev` (cadena) · `.soporte` (apoyo) · `.proc-node` (z1) |
+| sistema | componente (rect + 2 fichas, ArchiMate App Component) | la máquina | `tbadge` (inline) | `.sysplat` (banda Sistemas) |
+| brecha | triángulo de alerta + `!` | riesgo/gap | `iico` | funnel Mejora col.1 (`.fitem[data-g]`) |
+| idea | foco | ocurrencia/propuesta | `iico` | funnel Mejora col.0 (`.fitem[data-idea]`) |
+| proyecto_mejora | flecha cíclica (loop) | en curso/PDCA | `iico` | `.kin` (cinética) + funnel col.2/3 (`.fitem[data-pm]`) |
+| **empresa** *(v11)* | edificio | la organización | `.dico` | brand del rail (`.brand .sub` → abre ficha) + header de ficha |
+| **persona** *(v11)* | personita **sólida (rellena)** — ≠ rol (contorno) | el ocupante | `.dico` | header de ficha `openPersona` (CK-24: ícono, NO nodo medible; vive como ocupante del rol) |
+| **capability** *(v11)* | hexágono + núcleo | qué sabe hacer (capa **Strategy**) | `iico` | chips `.chip.lk[data-cap]` (fichas sistema/proceso, borde teal-800) + header de ficha |
 
-**Sin badge propio** (no tienen contenedor dedicado en el mapa hoy — ver `06-pendientes-e-ideas.md`):
-capability, empresa, persona (persona vive dentro del chip de `rol` como "ocupante", sin nodo propio).
+**Cobertura completa (v11, decisión 23):** las **12 entidades** tienen ícono. empresa/persona/capability
+—antes "sin badge propio"— ahora se marcan por ícono en sus superficies existentes. Límites deliberados:
+**persona** NO es nodo de mapa medible (CK-24 — el twin mide roles, no personas); **capability** no tiene
+band de mapa propio aún (Strategy layer = 5º material reservado; hoy ícono + chip teal · follow-up en `06`).
 
 **2 bugs reales cazados construyendo esto** (detalle completo + evidencia en
 `03-decisiones-y-porques.md`): (1) `.obj-node:hover`/`.area-node:hover` duplicaban por error el
@@ -67,9 +76,17 @@ capability, empresa, persona (persona vive dentro del chip de `rol` como "ocupan
 **contenedor** ahora tiene un **material distinto por capa ArchiMate** (sin hue nuevo — PRENTER
 teal-only): **Motivación** (objetivo/kpi/brecha/idea) = vidrio teal tenue + spine izquierdo ·
 **Negocio** (proceso/rol/área) = sólido neutro elevado · **Aplicación** (sistema) = marco técnico
-oscuro + barra teal arriba · **Implementación** (proyecto_mejora) = punteado teal. Bloque CSS
-comentado antes de `</style>` + tokens `--mat-*` tras `--border`. Receta completa + clases +
+oscuro + barra teal arriba · **Implementación** (proyecto_mejora) = punteado teal · **Strategy**
+(capability, v11) = 5º material RESERVADO (hoy sólo chip con borde teal-800, sin nodo de mapa). Bloque
+CSS comentado antes de `</style>` + tokens `--mat-*` tras `--border`. Receta completa + clases +
 selectores del funnel + estados que mandan: `03-decisiones-y-porques.md` **decisión 22**.
+
+**Aire entre bandas (v11, decisión 26).** Las cajas altas (chevrons de Cadena con filas de KPI)
+—centradas en su ancla— crecían hacia arriba y **tapaban el label de su propia banda** ("Cadena de
+valor"…). Fix: más gap entre bandas (`Y={est:170,cad:480,apo:770,gen:965,sis:1150}`, canvas 920→1300),
+Cadena empujada +48px, labels 8px más arriba, **separador de riel más visible** (`#243330`), y la
+cesión dinámica Gente→Sistemas de 66→86px. Verificado: 0 solapes (5 checks). El fit por defecto baja a
+~58% (más aire = arranca más lejos). Detalle: **decisión 26**.
 
 ## 1 · Shell
 

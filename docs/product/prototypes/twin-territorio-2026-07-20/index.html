@@ -188,10 +188,10 @@
      se lee sin traducir: flecha=Proceso · barras=KPI · personita=Rol · organigrama mini=Área ·
      bandera=Objetivo · enchufe=Sistema. Un solo acento (teal, PRENTER); el color de salud/severidad
      no se toca. SVG inline — cero dependencia nueva. */
-  .tbadge { position:absolute; top:-9px; left:-9px; z-index:3; width:19px; height:19px; display:flex;
-    align-items:center; justify-content:center; background:var(--panel2); border:1.6px solid var(--brand);
-    border-radius:5px; box-shadow:0 0 6px rgba(0,183,170,.5), 0 1px 4px rgba(0,0,0,.7); pointer-events:none; }
-  .tbadge svg { width:12px; height:12px; overflow:visible; }
+  .tbadge { display:inline-flex; width:17px; height:17px; margin-right:6px; vertical-align:-3px; flex:0 0 auto;
+    align-items:center; justify-content:center; background:var(--panel2); border:1.4px solid var(--brand);
+    border-radius:5px; box-shadow:0 0 5px rgba(0,183,170,.4); pointer-events:none; }
+  .tbadge svg { width:11px; height:11px; overflow:visible; }
   .tbadge svg * { stroke:var(--brand-hi); }
   .tbadge svg .fl { fill:var(--brand-hi); stroke:none; }
   /* versión chica del ícono (sin badge de esquina) — para chips/filas de una sola línea (kpi/idea/brecha/proyecto). */
@@ -199,6 +199,13 @@
   .eg-ico svg { width:11px; height:11px; overflow:visible; }
   .eg-ico svg * { stroke:var(--brand-hi); }
   .eg-ico svg .fl { fill:var(--brand-hi); stroke:none; }
+  /* ícono de tipo en el header de la ficha (decisión 23) — auto desde el eyebrow */
+  .dico { display:inline-flex; width:17px; height:17px; vertical-align:-3px; margin-right:8px; }
+  .dico svg { width:17px; height:17px; overflow:visible; }
+  .dico svg * { stroke:var(--brand-hi); }
+  .dico svg .fl { fill:var(--brand-hi); stroke:none; }
+  /* capability = capa Strategy (5ª) — hoy sin nodo de mapa: chip con borde teal (decisión 23) */
+  .chip.lk[data-cap] { border-color:var(--teal-800); }
   .node.dim { opacity:.2; }
   .node.hot .area-node { border-color:var(--brand); background:rgba(0,183,170,.06); box-shadow:0 0 0 1px var(--teal-700); }
   .node.hot .obj-node { border-color:var(--brand); box-shadow:0 0 0 1px var(--teal-700); }
@@ -522,7 +529,7 @@
   <aside class="rail">
     <div class="brand">
       <h1>Cockpit<span class="dot">.</span></h1>
-      <div class="sub eyebrow">Twin · Desarrolladora Terranova</div>
+      <div class="sub eyebrow"><span class="eg-ico" title="empresa · Business Actor organizacional (M13 ArchiMate) — la ficha del twin completo"><svg viewBox="0 0 14 14"><path d="M2 12.6V5l5-3 5 3v7.6" fill="none" stroke-width="1.3" stroke-linejoin="round"/><rect class="fl" x="4.1" y="6" width="1.6" height="1.6"/><rect class="fl" x="8.3" y="6" width="1.6" height="1.6"/><path d="M5.6 12.6V9.4h2.8v3.2" fill="none" stroke-width="1.2"/></svg></span>Twin · Desarrolladora Terranova</div>
     </div>
     <div class="rail-scroll">
       <div class="rail-sec">
@@ -629,6 +636,9 @@ const TICO={
   brecha:'<svg viewBox="0 0 14 14"><path d="M7 1.5 L13 12.5 L1 12.5 Z" fill="none" stroke-width="1.4" stroke-linejoin="round"/><line x1="7" y1="5.2" x2="7" y2="8.6" stroke-width="1.4" stroke-linecap="round"/><circle class="fl" cx="7" cy="10.6" r="0.9"/></svg>',
   idea:'<svg viewBox="0 0 14 14"><path d="M7 1.5a4 4 0 0 0-2 7.5c.5.4.8 1 .8 1.6h2.4c0-.6.3-1.2.8-1.6A4 4 0 0 0 7 1.5z" fill="none" stroke-width="1.3"/><line x1="5.2" y1="12.3" x2="8.8" y2="12.3" stroke-width="1.2" stroke-linecap="round"/></svg>',
   proyecto:'<svg viewBox="0 0 14 14"><path d="M11.5 4.5A5 5 0 1 0 12.5 8" fill="none" stroke-width="1.4" stroke-linecap="round"/><path d="M11.5 1.5v3.3h-3.3" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  empresa:'<svg viewBox="0 0 14 14"><path d="M2 12.6V5l5-3 5 3v7.6" fill="none" stroke-width="1.3" stroke-linejoin="round"/><rect class="fl" x="4.1" y="6" width="1.6" height="1.6"/><rect class="fl" x="8.3" y="6" width="1.6" height="1.6"/><path d="M5.6 12.6V9.4h2.8v3.2" fill="none" stroke-width="1.2"/></svg>',
+  persona:'<svg viewBox="0 0 14 14"><circle class="fl" cx="7" cy="4.2" r="2.6"/><path class="fl" d="M2 12.8c0-2.9 2.2-5.1 5-5.1s5 2.2 5 5.1z"/></svg>',
+  capability:'<svg viewBox="0 0 14 14"><path d="M7 1.2 12.1 4.1v5.8L7 12.8 1.9 9.9V4.1z" fill="none" stroke-width="1.3" stroke-linejoin="round"/><circle class="fl" cx="7" cy="7" r="1.9"/></svg>',
 };
 const tbadge=(tipo,title)=>`<span class="tbadge" title="${title}">${TICO[tipo]}</span>`;
 const iico=(tipo,title)=>`<span class="eg-ico" title="${title}">${TICO[tipo]}</span>`;
@@ -1444,7 +1454,7 @@ function renderOrganigrama(){
    strategy map absorbido en la banda Estrategia. El hilo de oro = edges VERTICALES reales.
    Mismo ADN de bandas que harness-studio (map-canvas): fractal con el arnés. Decisión v6 (2026-07-24). */
 function renderValor(){
-  const W=1840, Y={est:170, cad:432, apo:640, gen:762, sis:856}; setCanvas(W, 920);
+  const W=1840, Y={est:170, cad:480, apo:770, gen:965, sis:1150}; setCanvas(W, 1300);
   const searching=!!q();
   const act=state.activeObj;
   const hiloOn=state.capas.has('hilo');
@@ -1456,9 +1466,9 @@ function renderValor(){
     hotRol.add(p.dueno.replace(/\s*\(vacante\)/i,'')); p.sist.forEach(s=>{const x=sisByName(s); if(x)hotSis.add(x.id);}); });
   const dimIf=c=>act&&!c?'dim':'';
 
-  const bandLab=(y,t,sub)=>{ const l=el('div','grouplab'); l.style.left='30px'; l.style.top=(y-52)+'px';
+  const bandLab=(y,t,sub)=>{ const l=el('div','grouplab'); l.style.left='30px'; l.style.top=(y-60)+'px';
     l.innerHTML=`<span class="eyebrow">${t}</span>${sub?`<div style="font-size:9.5px;color:var(--tx-faint);margin-top:2px">${sub}</div>`:''}`;
-    $nodes.appendChild(l); pathEl(`M24,${y-62} L${W-24},${y-62}`,'#131b1a',1,.9); };
+    $nodes.appendChild(l); pathEl(`M24,${y-72} L${W-24},${y-72}`,'#243330',1,.95); };
 
   /* — banda 1 · ESTRATEGIA (objetivos por perspectiva; causalidad BSC = arcos DENTRO de la banda) — */
   bandLab(Y.est,'Estrategia — objetivos del directorio · KR del trimestre','perspectivas BSC como orden, no como piel: financiera · cliente · procesos · aprendizaje');
@@ -1489,7 +1499,7 @@ function renderValor(){
   bandLab(Y.cad,'Cadena de valor — los procesos misionales, en el orden del negocio','cada proceso es un mini-mapa: sus pasos como micro-chevrons · doble-click = lienzo (mismo lenguaje que un arnés en Arnesia)');
   const cPos={}; const cx0=120, cw=192, cgap=32;
   DATA.cadena.forEach((pid,i)=>{
-    const p=byId(DATA.procesos,pid); const x=cx0+i*(cw+cgap)+cw/2, y=Y.cad+16; cPos[pid]={x,y};
+    const p=byId(DATA.procesos,pid); const x=cx0+i*(cw+cgap)+cw/2, y=Y.cad+64; cPos[pid]={x,y};
     MM_PTS.push({x,y});
     if(i<DATA.cadena.length-1){ const a=el('div','chev-arrow','▸'); a.style.left=(x+cw/2+cgap/2)+'px'; a.style.top=y+'px'; $pins.appendChild(a); }
     const ks=state.capas.has('hilo')?kpisByProc(pid):[];
@@ -1554,7 +1564,7 @@ function renderValor(){
   });
 
   /* — banda 5 · SISTEMAS (plataformas: ancho = cuántos procesos sirven · pulso al lakehouse) — */
-  const ySis=Math.max(Y.sis+row*58, ry+66);   // la banda Gente creció (nómina completa) → Sistemas cede, no se solapa
+  const ySis=Math.max(Y.sis+row*58, ry+86);   // la banda Gente creció (nómina completa) → Sistemas cede, no se solapa
   bandLab(ySis,'Sistemas — sobre qué corre todo','ancho = procesos que sirve · el lakehouse (N16) los observa: ese es el pulso del twin');
   let sy2=ySis+4, sx=120; const sPos={};
   DATA.sistemas.forEach(s2=>{
@@ -2006,7 +2016,9 @@ document.getElementById('minimap').addEventListener('click',e=>{
    ============================================================ */
 const inEye=document.getElementById('inEye'), inTitle=document.getElementById('inTitle'),
       inBody=document.getElementById('inBody'), inClose=document.getElementById('inClose');
-function openDrawer(eye,title,body){ state.insp='sel'; inEye.textContent=eye; inTitle.textContent=title;
+function openDrawer(eye,title,body){ state.insp='sel'; inEye.textContent=eye;
+  const ic=TICO[eye.split(' ')[0].toLowerCase()];   // ícono de tipo desde el eyebrow (decisión 23)
+  inTitle.innerHTML=(ic?`<span class="dico" title="${eye}">${ic}</span>`:'')+title;
   inBody.innerHTML=body; inClose.style.display=''; inBody.scrollTop=0;
   wireLinks(inBody); }
 inClose.onclick=()=>{ state.insp='home'; inspectorHome(); };
@@ -2180,7 +2192,7 @@ function openProceso(p){ const objs=p.sirve.map(id=>byId(DATA.objetivos,id));
       <div class="drow"><dt>Áreas que cruza</dt><dd>${p.areas.map(a=>byId(DATA.areas,a).nm).join(', ')}</dd></div>
       <div class="drow"><dt>Digitalización</dt><dd><span class="chip"><span class="health-dot" style="width:8px;height:8px;background:${health[digHealth(p.digital)]}"></span>${p.digital}</span></dd></div>
       <div class="drow"><dt>Sistemas</dt><dd>${p.sist.map(s=>sisByName(s)?`<span class="plnk" data-sis="${s}">${s}</span>`:s).join(' · ')}</dd></div>
-      ${caps.length?`<div class="drow"><dt>Realiza</dt><dd><div class="chips" style="justify-content:flex-end">${caps.map(c=>`<span class="chip lk" data-cap="${c.id}">${c.nm}</span>`).join('')}</div></dd></div>`:''}</div>
+      ${caps.length?`<div class="drow"><dt>Realiza</dt><dd><div class="chips" style="justify-content:flex-end">${caps.map(c=>`<span class="chip lk" data-cap="${c.id}">${iico('capability','capability · Business Capability (M13 ArchiMate, Strategy)')}${c.nm}</span>`).join('')}</div></dd></div>`:''}</div>
      ${sipocHTML(p)}
      <div class="dgroup"><div class="gt">KPIs del proceso — semáforo por banda</div>
       ${kpisByProc(p.id).length?kpisByProc(p.id).map(krowHTML).join(''):'<span style="font-size:12px;color:var(--tx-faint)">Sin KPI declarado — candidato del levantamiento.</span>'}</div>
@@ -2379,7 +2391,7 @@ function openSistema(s){ if(!s)return;
    <div class="dgroup"><div class="gt">Procesos que sirve</div>
      <div class="chips">${procs.map(p=>`<span class="chip lk" data-proc="${p.id}">${p.nm}</span>`).join('')||'—'}</div></div>
    ${s.caps&&s.caps.length?`<div class="dgroup"><div class="gt">Capabilities que realiza</div>
-     <div class="chips">${s.caps.map(c=>{const cc=byId(DATA.capabilities,c);return `<span class="chip lk" data-cap="${c}">${cc.nm}</span>`;}).join('')}</div></div>`:''}
+     <div class="chips">${s.caps.map(c=>{const cc=byId(DATA.capabilities,c);return `<span class="chip lk" data-cap="${c}">${iico('capability','capability · Business Capability (M13 ArchiMate, Strategy)')}${cc.nm}</span>`;}).join('')}</div></div>`:''}
    <div style="font-size:11px;color:var(--tx-faint)">${s.digital==='manual'?'Manual/Excel: el pulso de este dato NO llega solo al lakehouse — candidato a conector o a captura con acuse.':'El lakehouse (N16) observa el SER; el repo (N6) declara el DEBER-SER — el twin compara ambos.'}</div>`);
 }
 function openIdea(i){ if(!i)return; const pm=i.a?byId(DATA.proyectos,i.a):null;

@@ -176,6 +176,9 @@ comentarios puntuales sobre lo que veía — cierra la deuda #1 de `06-pendiente
       saturado (`.claude/rules/ui-design-system.md`, "el teal es el único color de marca"). La
       tentación obvia (colorear cada familia con un hue distinto) queda descartada; el canal de
       color sigue reservado 100% a salud/severidad. La forma/ícono es el único canal libre para tipo.
+    - **★ v11 — la POSICIÓN del badge cambió (decisión 25):** el pictograma dibujado se conserva, pero
+      dejó de ser badge de esquina (`position:absolute`, colgando fuera del borde) y pasó a **inline
+      DENTRO** de la tarjeta, antes del título — pedido explícito del operador. Ver **decisión 25**.
 19. **Bug real cazado — hover que "se sale de la zona clickeable".** El operador pidió
     verificarlo con devtools ("prueba tu mismo"). Medido con `getBoundingClientRect` antes/después
     (no a ojo): `.obj-node:hover` y `.area-node:hover` reaplicaban por error el
@@ -240,3 +243,52 @@ comentarios puntuales sobre lo que veía — cierra la deuda #1 de `06-pendiente
       `ui/components/ds/` (p.ej. una prop `layer="motivacion|negocio|aplicacion|implementacion"` en el
       `Card`/contenedor), con los tokens portados a `ui/app/globals.css`. El tipo cae del `archimate:`
       del objeto normalizado; el ícono (`TICO`) desambigua. Cero hue nuevo — respeta `[[ui-design-system]]`.
+
+## De la sesión 2026-07-25 (cont.) — cobertura total de tipos + notación DENTRO + aire entre bandas
+
+> Continuación de la misma sesión (decisiones 18-22 arriba). El operador entró al Artifact, dio
+> comentarios en vivo, y pidió cerrar con "toma nota de todo, audita que las notas no se contradigan".
+
+23. **Los 3 tipos "sin contenedor" → ícono + superficie (empresa · persona · capability).** Tras ver las
+    12 entidades juntas (swatch), el operador: *"darles superficie/icono... revisa todo lo ya realizado
+    para que siga tu propuesta."* La cobertura pasa de **9/12 a 12/12**. Diseño anclado a ArchiMate M13:
+    - **empresa** — Business Actor organizacional. Ícono = **edificio**. Superficie: el brand del rail
+      (`.brand .sub` "Twin · Desarrolladora Terranova", abre `openEmpresa`) + header de ficha. NO es
+      nodo de mapa (la empresa ES el mapa entero).
+    - **persona** — Business Actor individual. Ícono = **personita sólida (rellena)**, distinta a `rol`
+      (contorno). Superficie: header de ficha `openPersona`. **CK-24 intacto:** ícono ≠ nodo medible.
+    - **capability** — Business Capability (**capa Strategy**, TOGAF). Ícono = **hexágono + núcleo**.
+      Superficie: sus chips `.chip.lk[data-cap]` (fichas de sistema/proceso) con **borde teal-800**
+      (guiño de material Strategy) + header de ficha. **Sin band de mapa** (sería superficie nueva
+      grande — follow-up en `06`). El **5º material (Strategy)** queda RESERVADO.
+    - 3 SVG nuevos en `const TICO`. El canal de color sigue 100% salud (decisión 18).
+
+24. **Ícono de tipo en el header de TODA ficha (`.dico`).** Hallazgo de la pasada de revisión: las 14
+    fichas (`open*`) nombraban el tipo en el eyebrow pero **no mostraban su ícono** — gap con "ícono por
+    tipo en todos lados". Fix DRY: `openDrawer(eye,title,body)` **auto-inyecta** el ícono parseando la
+    1ª palabra del eyebrow (`eye.split(' ')[0].toLowerCase()` → clave de `TICO`; `Proyecto de mejora`→
+    proyecto, `KPI`→kpi; `Actividad`/`Arnés` sin match → sin ícono). **1 cambio, cero tocar los 14
+    callers.** CSS `.dico` (17px, `vertical-align:-3px`). Verificado ×6 tipos con `.dico` ✓.
+
+25. **El badge del tipo va DENTRO de la tarjeta (inline), no colgando en la esquina.** El operador,
+    viéndolo en el Artifact: *"el icono está afuera no dentro."* **Causa raíz:** el markup ya ponía el
+    `tbadge` inline (antes del título), pero `.tbadge{position:absolute; top:-9px; left:-9px}` lo sacaba
+    del flujo y lo colgaba FUERA del borde sup-izq — resto de la **decisión 18 ("badge de esquina")**.
+    **Fix (1 cambio de CSS):** `.tbadge` → `display:inline-flex; position:static; margin-right:6px;
+    vertical-align:-3px` (17×17, border 1.4px, glow suave). Ahora fluye inline dentro de la tarjeta, antes
+    del título, en las 5 bandas — coherente con el swatch y con `.dico`. Verificado `badgeInside:true`.
+    **Supersede la POSICIÓN de la decisión 18** (el pictograma se conserva; sólo cambia dónde vive).
+
+26. **Aire entre bandas — las cajas ya no tapan los labels de riel.** El operador: *"algunas cajas están
+    tapando las letras de los títulos que los separan; dale más respiro entre riel y riel para que también
+    visualmente veamos que son diferentes."* **Causa:** los nodos están **centrados en su ancla** → las
+    cajas altas (chevrons de Cadena con filas de KPI, h≈135) crecían hacia ARRIBA hasta el label de su
+    propia banda (top 381 ≈ label 380). **Fix (`renderValor`):** (a) más gap entre bandas —
+    `Y={est:170,cad:480,apo:770,gen:965,sis:1150}` (era `{...cad:432,apo:640,gen:762,sis:856}`),
+    `setCanvas(W,1300)` (era 920); (b) Cadena empujada +48px (`y=Y.cad+64`, era `+16`); (c) label 8px
+    más arriba (`y-60`, era `y-52`); (d) separador de riel más visible (`#243330`, era `#131b1a`, en
+    `y-72`); (e) cesión dinámica Gente→Sistemas `ry+86` (era `+66`). Verificado data-driven: **5 checks
+    de solape = false**, clearances 11-142px. Trade-off: fit por defecto 69%→**58%** (más aire = arranca
+    más lejos; el operador lo aceptó). **Deuda de fondo:** la raíz (center-anchoring) sigue viva — cajas
+    MUY altas podrían volver a rozar; el fix robusto sería top-anchorear los nodos (no hecho: tocaría el
+    ruteo de edges/hilo del hilo de oro).
