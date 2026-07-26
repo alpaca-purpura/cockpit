@@ -12,6 +12,12 @@
 > `v14 · capa de ACCIÓN` · `renderDirectorio` · `renderTactico` · `gotoNivel` · `openApuesta`.
 > Pendientes de dato que v14 re-confirma: apuesta/apetito como entidad + acciones · catchball ·
 > metas de trimestre 1ª clase (A2). Próximo: comentarios del operador SOBRE v14 en el 🗺️.
+> **v14.1/.2 (misma sesión, commits `96d3ebd`+`8a1a870`+fix visor):** el visor del Artifact mostraba
+> NEGRO → el archivo ahora trae **doctype/html/head/charset propios** (ya NO envolver para servir
+> local — se sirve directo) + `min-height:640px` en html/body/.app. VERIFICADO en el Artifact
+> publicado con ojos propios (nivel 1 renderizando + clic en elevador navega). Ojo visor: el primer
+> pintado puede tardar/necesitar un clic — Ctrl+Shift+R y un gesto; captureScreenshot del MCP puede
+> timeoutear ~30s con este frame (reintentar, el top frame responde).
 
 > **RUMBO NUEVO (2026-07-26, post-v13 — contexto de cómo se llegó):** el operador firmó navegar por **4 niveles
 > de gestión** (1 Directorio · 2 Estratégico · 3 Táctico · 4 Operativo): bajar = traducción (cambia
@@ -129,9 +135,11 @@ capa-trabajo-valor ahora exige `deriva_de`+guardrails) · pasada visual completa
   `https://claude.ai/code/artifact/20907d03-3979-42f2-b5c8-b33fa5e383f6`. Si el tool Artifact
   rechaza con "hasn't viewed the latest version" → WebFetch del URL primero, luego publicar con
   `url:` (así se hizo esta sesión). Favicon estable: 🗺️.
-- Servir local: envolver con `<!doctype><head><meta charset>` (el raw no trae charset) →
-  `python3 -m http.server 8777` en scratchpad. **El scratchpad se limpia entre turnos** — re-crear
-  dir y re-levantar server si curl da 000.
+- Servir local: **desde v14.2 el archivo YA es documento completo** (doctype+charset propios) —
+  `python3 -m http.server 8777` en scratchpad y servir directo, sin envolver. **El scratchpad se
+  limpia entre turnos** — re-crear dir y re-levantar server si curl da 000. OJO `pkill` del server:
+  usar patrón `"http[.]server 8777"` en un comando SEPARADO (si la misma línea relanza el server,
+  pkill mata la propia shell — exit 144).
 - claude-in-chrome: la extensión SE DESCONECTA a veces (reintentar `tabs_context_mcp
   createIfEmpty` más tarde — esta sesión volvió sola). Screenshots timeoutean ~30s tras renders
   pesados → wait 3-8s y reintentar (pasó ~8 veces, siempre salió). NO usar el crop de región
@@ -144,7 +152,8 @@ capa-trabajo-valor ahora exige `deriva_de`+guardrails) · pasada visual completa
   `document.title` por poll) · re-render+fit en reintentos · mclick con retry+re-fit · resets
   programáticos de estado en tests legacy · budget 40000. **Sigue flaky EN FRÍO**: "SIN RESULTADO"
   aislado = re-correr (hasta 3-4 veces); cuando arranca → estable. No diagnosticar sin
-  re-correr. Esperado: **24/24** (v13).
+  re-correr. Esperado: **26/26** (v14 — +nivel1-directorio +nivel3-tactico). Correrlo DESDE el dir
+  del prototipo; git commit SIEMPRE desde la raíz del repo (cwd persiste entre comandos Bash).
 - Auditar DATA sin navegador: `new Function('document','window',…, <script>)` con Proxy-stub que
   se devuelve a sí mismo en todo get (receta dossier/07 § Recetas) — así se midió 46/27/roster.
 - Ciclo: editar → verify.sh → screenshots → ojos propios (¡las fichas por dentro, no solo z0!) →
@@ -165,6 +174,12 @@ capa-trabajo-valor ahora exige `deriva_de`+guardrails) · pasada visual completa
 | Guardrails CSS | `.grchip` · stack org: `.prows` |
 | Íconos nuevos | `TICO` → `puesto:` / `arnes:` |
 | z3 piso rol×proceso | `EL PISO (CK-30)` |
+| v14 · catálogo de acciones + autoridad + historial | `v14 · capa de ACCIÓN` (ACC · RANGO · ejecutarAccion · toast) |
+| v14 · tablero Directorio (nivel 1) | `function renderDirectorio` · `bandejaRows` |
+| v14 · tablero Táctico (nivel 3) | `function renderTactico` · `sinContra` · `topArea` |
+| v14 · elevador + gobierno | `#niveles` (HTML rail) · `gotoNivel` · `#cicloSel` `#verComoSel` |
+| v14 · ficha de apuesta | `function openApuesta` · `DATA.apuestas` / `DATA.apetito` / `DATA.historial` |
+| v14 · tu-día operativo | `tuDia` (en inspectorHome, rama z2) |
 
 ## Contexto de visión (no re-derivar — ya firmado)
 
