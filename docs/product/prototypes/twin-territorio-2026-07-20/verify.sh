@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Suite de verificación del mockup — clicks con HIT-TESTING REAL (elementFromPoint), no element.click().
-# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (26/26 esperado — v14: 4 niveles + capa de acción)
+# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (27/27 esperado — v14.3: +capa Respaldo del método)
 set -euo pipefail
 cd "$(dirname "$0")"
 TMP=$(mktemp -d)
@@ -109,6 +109,15 @@ window.addEventListener('load',()=>{whenReady(()=>{
   t('nivel3-tactico',()=>{ gotoNivel(3); A(document.querySelectorAll('.tcol').length>=4,'cols='+document.querySelectorAll('.tcol').length);
     A(document.body.textContent.includes('contramedida'),'sin regla de contramedida');
     A(document.body.textContent.includes('Embudo de ideas'),'sin embudo'); gotoNivel(2); });
+  t('respaldo-capa',()=>{ /* v14.3: capa Respaldo del método — cita en cabecera + ficha con procedencia */
+    gotoNivel(1); mclick(document.querySelector('[data-capa=respaldo]'));
+    const bs=document.querySelectorAll('[data-resp]'); A(bs.length>=9,'citas='+bs.length);
+    openRespaldo('dir-cambio30'); A(eye().includes('Respaldo'),eye());
+    A(document.getElementById('inBody').textContent.includes('revisión por la dirección'),'ficha sin fuente común');
+    A(document.getElementById('inBody').innerHTML.includes('M16'),'ficha sin código de procedencia');
+    gotoNivel(3); A(document.querySelectorAll('[data-resp]').length>=5,'nivel 3 sin citas');
+    mclick(document.querySelector('[data-capa=respaldo]'));
+    A(!document.querySelector('[data-resp]'),'apagada sigue pintando'); gotoNivel(2); });
   R.push('ERRS='+JSON.stringify(window.__ERRS||[]));
   document.title='V8SUITE :: '+R.join(' | ');
 });});

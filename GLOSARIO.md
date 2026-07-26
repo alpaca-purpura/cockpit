@@ -51,6 +51,7 @@ operador firma y pasa a `firmado`. Nada se usa en pantalla estando `propuesto`.
 | flujograma | lienzo (z2) | pendiente aplicar en twin |
 | clasificación (automatizable o no) | triage | pendiente aplicar en twin |
 | procesos del negocio / procesos clave | misionales (en UI) | "misional" queda en specs ISO |
+| respaldo del método · cita "§ fuente" | tokens M-NN sueltos en pantalla, met:, method-as-code | capa v14.3 (firmada 2026-07-26 al aprobar la propuesta); el código M-NN vive SOLO dentro de la ficha de respaldo, como procedencia |
 
 **Términos del rubro que SÍ se usan tal cual** (no son jerga — son el nombre común): apetito de
 riesgo · cadena de valor · compromiso · apuesta · madurez · brecha · capacidad · organigrama ·

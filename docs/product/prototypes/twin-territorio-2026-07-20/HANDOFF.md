@@ -1,5 +1,20 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-26 → siguiente)
 
+> **★ v14.3 EJECUTADA (2026-07-26 — capa "Respaldo del método"):** pedido del operador ("referencia
+> elegante de la metodología en cada punto del Directorio") → propuesta A firmada: **capa nueva en el
+> rail** (`data-capa="respaldo"`, oc N2) — apagada cero ruido; encendida, cada panel pinta cita mono
+> `§ fuente` (nombre común, cero jerga) + `title=` de refuerzo; **clic = ficha en drawer** (`openRespaldo`)
+> con fuentes, uso en ese nivel, token M-NN SOLO ahí (procedencia, letra chica), hueco declarado si lo
+> hay (apetito empresarial → ISO 31000/COSO horizonte) y enlace al módulo Método (trazabilidad).
+> Catálogo `RESPALDO` (18 entradas) espejo del `met:` del schema/pasos — SSoT real methodologies.yaml.
+> Cobertura: nivel 1 (7 paneles + 4 grupos de sala de mando) · nivel 3 (5) · Mejora (4, y sus citas
+> ad-hoc visibles M44/CK-24/CK-29 ABSORBIDAS al respaldo). En territorio/Método/Cambios la capa se
+> atenúa con razón honesta ("vivirá en las fichas — próximo paso"). GLOSARIO §1 +fila "respaldo del
+> método" (firmada al aprobar la propuesta). verify.sh **27/27** (+`respaldo-capa`). Anchors:
+> `v14.3 · capa RESPALDO DEL MÉTODO` · `RESPALDO` · `respBadge` · `respAplica` · `openRespaldo`.
+> Pendiente que abre: portar respaldo a fichas del territorio (nivel 2) y nivel 4 (z2/z3 aún tienen
+> "RACI · M25"/"M23" en gt de instrucción — barrido §1b sigue esperando firma fila por fila).
+
 > **★ v14 EJECUTADA (2026-07-26, commit `16a8af5` — leer PRIMERO):** la FUSIÓN firmada ya vive en
 > `index.html` (Artifact 🗺️, republicado): el twin es la base, el sandbox aportó estructura y QUEDA
 > RETIRADO (no iterar más el 🛗). v14 = elevador de 4 niveles en el rail (1 Directorio=tablero nuevo
@@ -152,7 +167,7 @@ capa-trabajo-valor ahora exige `deriva_de`+guardrails) · pasada visual completa
   `document.title` por poll) · re-render+fit en reintentos · mclick con retry+re-fit · resets
   programáticos de estado en tests legacy · budget 40000. **Sigue flaky EN FRÍO**: "SIN RESULTADO"
   aislado = re-correr (hasta 3-4 veces); cuando arranca → estable. No diagnosticar sin
-  re-correr. Esperado: **26/26** (v14 — +nivel1-directorio +nivel3-tactico). Correrlo DESDE el dir
+  re-correr. Esperado: **27/27** (v14.3 — +respaldo-capa). Correrlo DESDE el dir
   del prototipo; git commit SIEMPRE desde la raíz del repo (cwd persiste entre comandos Bash).
 - Auditar DATA sin navegador: `new Function('document','window',…, <script>)` con Proxy-stub que
   se devuelve a sí mismo en todo get (receta dossier/07 § Recetas) — así se midió 46/27/roster.
@@ -180,6 +195,7 @@ capa-trabajo-valor ahora exige `deriva_de`+guardrails) · pasada visual completa
 | v14 · elevador + gobierno | `#niveles` (HTML rail) · `gotoNivel` · `#cicloSel` `#verComoSel` |
 | v14 · ficha de apuesta | `function openApuesta` · `DATA.apuestas` / `DATA.apetito` / `DATA.historial` |
 | v14 · tu-día operativo | `tuDia` (en inspectorHome, rama z2) |
+| v14.3 · capa Respaldo del método | `v14.3 · capa RESPALDO DEL MÉTODO` (catálogo `RESPALDO` · `respBadge` · `respAplica` · `openRespaldo`) · CSS `.resp` · rail `data-capa="respaldo"` |
 
 ## Contexto de visión (no re-derivar — ya firmado)
 

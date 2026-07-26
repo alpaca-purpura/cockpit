@@ -568,6 +568,12 @@
   .dpane{ border:1px dashed var(--border); border-radius:10px; padding:10px 12px; flex:1; min-width:230px; }
   .dpane .pt{ font-family:var(--font-mono); font-size:8.5px; letter-spacing:.12em; color:var(--tx-faint); text-transform:uppercase; margin-bottom:8px; }
   .dpane.solid{ border-style:solid; border-color:#2a3835; background:rgba(0,183,170,.03); }
+  /* v14.3 · capa Respaldo del método — la cita "§ fuente" en cabecera de panel */
+  .resp{ font-family:var(--font-mono); font-size:8.5px; letter-spacing:.05em; text-transform:none;
+    color:var(--brand-hi); background:none; border:1px dashed var(--teal-800); border-radius:4px;
+    padding:1px 5px; margin-left:8px; cursor:pointer; vertical-align:1px; white-space:nowrap; }
+  .resp:hover{ border-style:solid; background:rgba(0,183,170,.07); }
+  .pt .resp, .gt .resp{ float:right; margin-left:8px; }
   .dpane .cambio-row, .tcol .cambio-row{ display:flex; align-items:center; gap:8px; width:100%; padding:7px 8px; }
   .dpane .cambio-row .tt, .tcol .cambio-row .tt{ font-size:11.5px; line-height:1.3; white-space:normal; }
   .dpane .cambio-row .ap, .tcol .cambio-row .ap{ white-space:nowrap; flex:none; }
@@ -645,6 +651,8 @@
           <div class="capa-leg">● proyecto en vuelo · etiqueta = fase PDCA</div>
           <button class="capa" data-capa="trabajo"><span class="sw"></span><span class="lab"><b>Trabajo</b><span>arneses por puesto</span></span><span class="oc">N15·17</span></button>
           <div class="capa-leg">el twin COMPILA el trabajo (CK-29): ⛨ arnés vigente · ⚠ desactualizado (el twin cambió) · gris = puesto sin arnés (el gap)</div>
+          <button class="capa" data-capa="respaldo"><span class="sw"></span><span class="lab"><b>Respaldo del método</b><span>cada panel cita su fuente</span></span><span class="oc">N2</span></button>
+          <div class="capa-leg">§ = la metodología detrás de lo que ves · clic en la cita = su ficha · nada de lo que se pinta es opinión</div>
         </div>
       </div>
     </div>
@@ -724,6 +732,7 @@ const TICO={
   capability:'<svg viewBox="0 0 14 14"><path d="M7 1.2 12.1 4.1v5.8L7 12.8 1.9 9.9V4.1z" fill="none" stroke-width="1.3" stroke-linejoin="round"/><circle class="fl" cx="7" cy="7" r="1.9"/></svg>',
   puesto:'<svg viewBox="0 0 14 14"><rect x="1.6" y="1.6" width="10.8" height="10.8" rx="2" fill="none" stroke-width="1.2"/><circle cx="7" cy="5.3" r="1.8" fill="none" stroke-width="1.2"/><path d="M4.1 10.7c0-1.7 1.3-2.9 2.9-2.9s2.9 1.2 2.9 2.9" fill="none" stroke-width="1.2" stroke-linecap="round"/></svg>',
   arnes:'<svg viewBox="0 0 14 14"><path d="M7 1.3 12 3.1v4c0 3-2.1 5-5 5.6-2.9-.6-5-2.6-5-5.6v-4z" fill="none" stroke-width="1.3" stroke-linejoin="round"/><path d="M4.7 7 6.3 8.6 9.3 5.4" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  respaldo:'<svg viewBox="0 0 14 14"><path d="M7 3.2C5.8 2.2 4 2 2.2 2v9.3c1.8 0 3.6.2 4.8 1.2 1.2-1 3-1.2 4.8-1.2V2C10 2 8.2 2.2 7 3.2z" fill="none" stroke-width="1.2" stroke-linejoin="round"/><path d="M7 3.2v9.3" fill="none" stroke-width="1.1"/></svg>',
 };
 const tbadge=(tipo,title)=>`<span class="tbadge" title="${title}">${TICO[tipo]}</span>`;
 const iico=(tipo,title)=>`<span class="eg-ico" title="${title}">${TICO[tipo]}</span>`;
@@ -1444,6 +1453,77 @@ function ejecutarAccion(b){ const a=ACC[b.dataset.acc];
   DATA.historial.unshift(`ahora · <b>${quien}</b> · ${a[2]} · ${a[1]}`);
   toast('Registrado en el historial · aprobación: '+a[1]+(a[1]==='directa'?' (queda trazada)':' — entra a la cola de Cambios.'));
 }
+/* ===== v14.3 · capa RESPALDO DEL MÉTODO — cada panel cita la metodología que lo sostiene =====
+   Espejo del `met:` que ya llevan el schema (222 campos) y los pasos del proceso: el panel declara
+   sus fuentes igual que todo lo demás. SSoT real = sistema/metodo/methodologies.yaml (46 cartas).
+   En superficie: nombre común de la fuente (cero jerga). El código M-NN = procedencia, SOLO en la ficha. */
+const RESPALDO={
+  'dir-apetito':{ cita:'Shape Up', t:'Apetito de riesgo', items:[
+    {f:'Shape Up — el apetito de la apuesta', uso:'cuánto estamos dispuestos a gastar se fija ANTES de apostar: tiempo fijo, alcance variable, con "hasta aquí no" explícitos.', m:'M04'} ],
+    gap:'El apetito EMPRESARIAL por categoría (liquidez · reputación · expansión) se apoya en ISO 31000 / COSO — declarados horizonte del método, aún sin carta propia. La ficha de dato (D-NN) sigue pendiente.' },
+  'dir-pulso':{ cita:'OKR · Hoshin', t:'¿Avanzan las apuestas?', items:[
+    {f:'OKR — objetivos con meta del trimestre', uso:'una apuesta avanza solo si sus objetivos del ciclo se mueven hacia la meta; el punto de color resume el peor de ellos.', m:'M21'},
+    {f:'Hoshin Kanri — despliegue de la estrategia', uso:'pocas apuestas del directorio bajan en cascada: plan a 3 años → año → trimestre.', m:'M26'},
+    {f:'GPD (Falconi) — gestión por directrices', uso:'en modo anual o mixto el despliegue baja por niveles y ciertas metas pagan bono ★.', m:'M41'} ]},
+  'dir-alertas':{ cita:'GPD · ISO 9001', t:'Alertas que escalaron', items:[
+    {f:'GPD (Falconi) — tratamiento de anomalías', uso:'al directorio solo sube lo que quedó fuera de banda sin contramedida — la excepción, jamás el detalle.', m:'M41'},
+    {f:'ISO 9001 — seguimiento y medición', uso:'qué es "fuera" lo decide la banda definida de cada indicador, no una opinión.', m:'M16'} ]},
+  'dir-apuestas':{ cita:'Shape Up · FinOps', t:'Las apuestas', items:[
+    {f:'Shape Up — apostar, no planear en exceso', uso:'pocas apuestas selladas, con riesgo y apetito explícitos; sellar es un acto con firma (paso 5 · etapa 0 del método).', m:'M04'},
+    {f:'FinOps — valor cuantificado', uso:'cada apuesta declara el valor que persigue en dinero, no en adjetivos.', m:'M22'} ]},
+  'bandeja':{ cita:'ISO 9001', t:'Espera tu decisión', items:[
+    {f:'ISO 9001 — gestión de cambios', uso:'toda decisión que cambia la organización pasa por su aprobación y queda registrada en el historial.', m:'M16'},
+    {f:'Matriz de responsabilidades (RACI) — autoridad', uso:'quién firma cada decisión está declarado por nivel: nada espera a la persona equivocada.', m:'M25'} ]},
+  'dir-cambio30':{ cita:'ISO 9001 §9.3', t:'Qué cambió desde la última sesión', items:[
+    {f:'ISO 9001 — revisión por la dirección (§9.3)', uso:'la sesión compara contra la anterior: qué se degradó, qué cerró con veredicto, qué espera firma.', m:'M16'} ]},
+  'dir-portafolio':{ cita:'PDCA · WSJF', t:'Proyectos en curso', items:[
+    {f:'Ciclo PDCA (ISO 9001 — mejora)', uso:'cada proyecto declara su fase y cierra con el cambio observado en el indicador, no con un acta.', m:'M16'},
+    {f:'WSJF — costo de esperar', uso:'el orden del portafolio sale de cuánto cuesta NO hacer cada cosa por mes.', m:'M28'},
+    {f:'FinOps — valor cuantificado', uso:'el retorno esperado acompaña a cada proyecto; el real se escribe al cierre.', m:'M22'} ]},
+  'sala-pulso':{ cita:'OKR', t:'Pulso del directorio', items:[
+    {f:'OKR — objetivos con meta del trimestre', uso:'verde = la meta avanza dentro de su banda.', m:'M21'},
+    {f:'Impact Mapping — trazar del objetivo al trabajo', uso:'tocar un objetivo enciende su cadena completa: objetivo → meta → indicador → proceso.', m:'M06'} ]},
+  'sala-jugada':{ cita:'WSJF', t:'La apuesta · próximo paso', items:[
+    {f:'WSJF — costo de esperar', uso:'la próxima jugada es la brecha que más cuesta por mes de espera — por eso es la ①.', m:'M28'},
+    {f:'FinOps — valor cuantificado', uso:'la jugada declara cuánto cuesta y qué meta mueve.', m:'M22'} ]},
+  'sala-loop':{ cita:'PDCA', t:'Estado del loop', items:[
+    {f:'Ciclo PDCA (ISO 9001 — mejora)', uso:'brecha → proyecto → indicador movido: el ciclo completo vive dentro del twin.', m:'M16'},
+    {f:'COBIT — brecha de madurez', uso:'la distancia entre cómo estás y el objetivo se mide y se cierra por proyectos.', m:'M15'} ]},
+  'sala-trabajo':{ cita:'arnés del puesto', t:'El twin compila trabajo', items:[
+    {f:'Arnés por rol×proceso — el trabajo compilado', uso:'el twin compila el trabajo de cada puesto; cuando el twin cambia, el arnés se recompila — jamás se edita a mano.', m:'M46'},
+    {f:'Frontera persona ↔ twin', uso:'se mide el rol y el puesto, jamás la persona.', m:'M40'} ]},
+  'tac-metas':{ cita:'OKR · GPD', t:'Metas del ciclo', items:[
+    {f:'OKR — metas del trimestre', uso:'cada compromiso del nivel declara a qué meta aporta.', m:'M21'},
+    {f:'GPD (Falconi)', uso:'en modo anual las metas bajan en cascada y ★ marca las que pagan bono.', m:'M41'} ]},
+  'tac-contramedida':{ cita:'GPD', t:'Regla de la reunión', items:[
+    {f:'GPD (Falconi) — tratamiento de anomalías', uso:'indicador fuera de banda EXIGE contramedida comprometida; sin ella, escala sola al directorio.', m:'M41'},
+    {f:'ISO 9001 — seguimiento y medición', uso:'la banda del indicador define qué es una anomalía.', m:'M16'} ]},
+  'tac-brechas':{ cita:'costo de no actuar', t:'Aquí nacen los compromisos', items:[
+    {f:'WSJF — costo de esperar', uso:'cada brecha lleva cuánto cuesta no actuar — ese número ordena qué se compromete primero.', m:'M28'},
+    {f:'FinOps — valor cuantificado', uso:'toda brecha lleva su costo en dinero, no en adjetivos.', m:'M22'} ]},
+  'ideas':{ cita:'kaizen', t:'Embudo de ideas', items:[
+    {f:'Gestión de ideas (kaizen)', uso:'el personal propone; idea y proyecto viven separados; la evaluación siempre responde al autor.', m:'M44'},
+    {f:'Frontera persona ↔ twin', uso:'la autoría se reconoce — jamás se usa para medir a la persona.', m:'M40'} ]},
+  'mej-brechas':{ cita:'costo/ROI', t:'Brechas — el ranking', items:[
+    {f:'WSJF — costo de esperar', uso:'las brechas se ordenan por costo de no hacer y retorno esperado.', m:'M28'},
+    {f:'FinOps — valor cuantificado', uso:'toda brecha lleva su costo en dinero.', m:'M22'} ]},
+  'mej-proyectos':{ cita:'PDCA', t:'Proyectos en vuelo', items:[
+    {f:'Ciclo PDCA (ISO 9001 — mejora)', uso:'fases con vuelta atrás permitida — mejora real, no cascada.', m:'M16'},
+    {f:'DMAIC / MASP — proyectos con caso formal', uso:'cuando el proyecto exige caso de negocio formal o cultura Falconi, el método trae las variantes.', m:'M42'} ]},
+  'mej-kpimovido':{ cita:'dato real', t:'KPI movido — el veredicto', items:[
+    {f:'FinOps — valor cuantificado', uso:'el veredicto (movió · parcial · no movió) se escribe contra la serie real del indicador.', m:'M22'},
+    {f:'Procedencia del dato', uso:'todo dato del cierre lleva fuente y confianza declaradas.', m:'M23'} ]},
+};
+const respAplica=()=>state.mod==='mejora'||(state.mod==='territorio'&&(state.nivel===1||state.nivel===3));
+function respBadge(id){ const r=RESPALDO[id]; if(!r||!state.capas.has('respaldo')||!respAplica()) return '';
+  return `<button class="resp" data-resp="${id}" title="Respaldo del método: ${r.items.map(i=>i.f).join(' · ')} — clic = la ficha">§ ${r.cita}</button>`; }
+function openRespaldo(id){ const r=RESPALDO[id]; if(!r) return;
+  openDrawer('Respaldo del método', r.t,
+    `<div style="font-size:11px;color:var(--tx-faint);margin-bottom:4px">Lo que este panel muestra no es opinión: cada pieza baja de una metodología del catálogo del método. En superficie se cita por su nombre común; el código de carta (a la derecha) es la procedencia interna.</div>`
+    + r.items.map(i=>`<div class="dgroup"><div class="gt">${i.f}<span class="mono" style="float:right;font-weight:400;font-size:9px;color:var(--tx-faint)">${i.m}</span></div>
+        <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">${i.uso}</div></div>`).join('')
+    + (r.gap?`<div class="dgroup"><div class="gt" style="color:var(--warn)">Donde el respaldo aún es horizonte</div><div style="font-size:12px;color:var(--tx-mut);line-height:1.5">${r.gap}</div></div>`:'')
+    + `<div style="font-size:11px;color:var(--tx-faint);border-top:1px solid var(--border);padding-top:8px;margin-top:4px">El método es dato versionado (46 cartas) — la misma fuente que respalda cada campo del twin y cada paso del engagement. <span class="plnk" onclick="state.mod='metodo';state.insp='home';render()">Ver la trazabilidad completa — módulo Método ›</span></div>`); }
 /* ancestro de primer nivel (columna del tablero táctico) */
 function topArea(id){ let a=byId(DATA.areas,id); while(a&&a.parent&&a.parent!=='a-ger') a=byId(DATA.areas,a.parent); return a; }
 /* regla de la reunión de resultados (Falconi): rojo sin proyecto que lo mueva NI brecha con respuesta = sin contramedida */
@@ -1465,6 +1545,7 @@ function wireLinks(c){
     cap:b=>openCapability(byId(DATA.capabilities,b.dataset.cap)), proc:b=>openProceso(byId(DATA.procesos,b.dataset.proc)),
     pm2:b=>openProyecto(byId(DATA.proyectos,b.dataset.pm2)), g2:b=>openBrecha(byId(DATA.brechas,b.dataset.g2)),
     ap:b=>openApuesta(byId(DATA.apuestas,b.dataset.ap)),
+    resp:b=>openRespaldo(b.dataset.resp),
     acc:b=>ejecutarAccion(b) };
   Object.keys(W).forEach(key=>c.querySelectorAll(`[data-${key}]`).forEach(b=>{
     if(b.classList.contains('none'))return;
@@ -1584,8 +1665,9 @@ function render(){
   const CAPAS_APLICAN={ 'z0-valor':['hilo','salud','brechas','cinetica','trabajo'], 'z0-org':['estructura','hilo','salud','brechas','cinetica','trabajo'],
     'z1':['hilo','salud','brechas','cinetica','trabajo'], 'z2':['hilo','salud','brechas','trabajo'], 'z3':['trabajo'] };
   const apl=(terr&&!tablero)?CAPAS_APLICAN[state.escala==='z0'?('z0-'+state.piel):state.escala]:[];
-  document.querySelectorAll('.capa').forEach(b=>{ const na=!apl.includes(b.dataset.capa);
-    b.classList.toggle('na',na); b.title=na?(terr?'Sin efecto en esta escala — no hay dato de esta capa aquí':'Las capas pintan sobre el Territorio'):''; });
+  document.querySelectorAll('.capa').forEach(b=>{ const isR=b.dataset.capa==='respaldo';
+    const na=isR?!respAplica():!apl.includes(b.dataset.capa);
+    b.classList.toggle('na',na); b.title=na?(isR?'El respaldo está anotado en los tableros (niveles 1 y 3) y en Mejora — sobre el territorio vivirá en las fichas (próximo paso)':(terr?'Sin efecto en esta escala — no hay dato de esta capa aquí':'Las capas pintan sobre el Territorio')):''; });
 
   const MODNM={mejora:'Mejora — el loop brecha → proyecto → KPI', metodo:'Método — engagement M1·M2·M3', cambios:'Cambios — gestión ISO, git invisible'};
   let crumb=terr?'<b>Territorio</b>':`<b>${MODNM[state.mod]}</b>`;
@@ -2135,28 +2217,28 @@ function renderDirectorio(){
       <h2>Sala del directorio</h2>
       <div class="sub">Pocas apuestas, el riesgo contra el apetito y solo las excepciones que escalaron. El directorio no navega el detalle: decide — y cada decisión queda en el historial de la organización.</div></div>
     <div class="dirgrid">
-      <div class="dpane"><div class="pt">Apetito de riesgo (dato simulado — ficha D-NN pendiente)</div>
+      <div class="dpane"><div class="pt">Apetito de riesgo (dato simulado — ficha D-NN pendiente)${respBadge('dir-apetito')}</div>
         <span style="font-family:var(--font-mono);font-size:11px;color:var(--tx-mut)">liquidez <b style="color:var(--warn)">${DATA.apetito.liquidez}</b> · reputación <b style="color:var(--ok)">${DATA.apetito.reputacion}</b> · expansión <b style="color:var(--crit)">${DATA.apetito.expansion}</b></span></div>
-      <div class="dpane" title="Cada punto = una apuesta: ¿sus objetivos del ciclo avanzan hacia la meta?"><div class="pt">¿Avanzan las apuestas? (${ciclo})</div>
+      <div class="dpane" title="Cada punto = una apuesta: ¿sus objetivos del ciclo avanzan hacia la meta?"><div class="pt">¿Avanzan las apuestas? (${ciclo})${respBadge('dir-pulso')}</div>
         <div class="pulso-dots">${DATA.apuestas.map((a,i)=>`<i style="background:${health[sts[i]]}" title="${a.nm}"></i>`).join('')}</div>
         <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--tx-mut)">${nG} en meta · ${nA} cerca · ${nR} fuera</span></div>
-      <div class="dpane"><div class="pt">Alertas que escalaron — solo lo que subió solo</div>
+      <div class="dpane"><div class="pt">Alertas que escalaron — solo lo que subió solo${respBadge('dir-alertas')}</div>
         <button class="cambio-row" data-g="g-avc" data-g2="g-avc"><span class="sc">▲</span><div><div class="tt">Avance de Marina: 87% real vs 95% declarado</div></div><span class="ap" style="color:var(--crit)">S/ 35k/mes</span></button>
         <button class="cambio-row" data-g="g-dso" data-g2="g-dso"><span class="sc">▲</span><div><div class="tt">Cobranza de Marina: 91 días bloquea la caja</div></div><span class="ap" style="color:var(--crit)">S/ 180k/año</span></button>
         <button class="cambio-row" data-g="g-post" data-g2="g-post"><span class="sc">▲</span><div><div class="tt">La postventa se deteriora y ninguna meta la mide</div></div><span class="ap" style="color:var(--warn)">42 → 31</span></button>
         <button class="cambio-row" data-area="a-tes"><span class="sc">▲</span><div><div class="tt">Jefatura de Tesorería vacante hace 5 meses</div></div><span class="ap" style="color:var(--warn)">sin persona</span></button></div>
     </div>
-    <span class="eyebrow">Las apuestas — clic = ficha y acciones · lo que las sostiene vive en el nivel 2</span>
+    <span class="eyebrow">Las apuestas — clic = ficha y acciones · lo que las sostiene vive en el nivel 2${respBadge('dir-apuestas')}</span>
     <div class="apcards" style="margin-top:8px">${DATA.apuestas.map((a,i)=>{ const objs=a.objetivos.map(objOf);
       return `<button class="apcard" data-ap="${a.id}"><span class="un">apuesta ${a.sellada?'· sellada':'· <b style="color:var(--warn)">por sellar</b>'}</span>
         <span class="nm">${a.nm}</span>
         <span class="mt"><span class="health-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${health[sts[i]]};margin-right:5px"></span>${objs.map(o=>o.kr.m).join(' · ')}</span>
         <span class="mt">riesgo <b style="color:${a.riesgo==='alto'?'var(--crit)':'var(--warn)'}">${a.riesgo}</b> · sostiene ${objs.length} objetivo${objs.length>1?'s':''}</span></button>`; }).join('')}</div>
     <div class="dirgrid">
-      <div class="dpane solid"><div class="pt">Espera tu decisión · ${bandeja.length}</div>${bandejaRows(bandeja)}</div>
-      <div class="dpane"><div class="pt">Qué cambió desde la última sesión (hace 30 días)</div>
+      <div class="dpane solid"><div class="pt">Espera tu decisión · ${bandeja.length}${respBadge('bandeja')}</div>${bandejaRows(bandeja)}</div>
+      <div class="dpane"><div class="pt">Qué cambió desde la última sesión (hace 30 días)${respBadge('dir-cambio30')}</div>
         <div style="font-size:12px;color:var(--tx-mut);line-height:1.8">· cobranza Marina: 90 → 91 días (se degrada)<br>· "Cierre exprés" CERRÓ con veredicto: <b style="color:var(--ok)">movió</b> (9 → 4.5 días)<br>· satisfacción de propietarios 35 → 31 — sigue sin meta que la mida<br>· ${bandeja.length} decisiones esperan tu firma</div></div>
-      <div class="dpane"><div class="pt">Proyectos en curso — el portafolio</div>
+      <div class="dpane"><div class="pt">Proyectos en curso — el portafolio${respBadge('dir-portafolio')}</div>
         ${DATA.proyectos.map(pm=>`<button class="cambio-row" data-pm="${pm.id}" data-pm2="${pm.id}"><span class="sc">${pm.pdca}</span><div><div class="tt">${pm.nm}</div><div class="ap">${pm.estado} · ${pm.delta}</div></div><span class="ap" style="color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}</div>
     </div>`);
   wireLinks(pv);
@@ -2178,12 +2260,12 @@ function renderTactico(){
   const pv=pageView(`
     <div class="pv-hd"><span class="eyebrow">Nivel 3 · Táctico — el compromiso entre áreas · reunión de resultados</span>
       <h2>Compromisos e indicadores por área</h2>
-      <div class="sub">Regla de la reunión: indicador fuera de banda EXIGE contramedida comprometida — la anomalía sin respuesta es alerta, no excusa. Los compromisos nacen de brechas o de ideas, jamás de la nada.${state.ciclo!=='okr'?' · ★ = meta atada a bono (modo anual)':''}</div></div>
-    <span class="eyebrow">Metas ${ciclo} a las que se aporta (contexto)</span>
+      <div class="sub">Regla de la reunión: indicador fuera de banda EXIGE contramedida comprometida — la anomalía sin respuesta es alerta, no excusa. Los compromisos nacen de brechas o de ideas, jamás de la nada.${state.ciclo!=='okr'?' · ★ = meta atada a bono (modo anual)':''}${respBadge('tac-contramedida')}</div></div>
+    <span class="eyebrow">Metas ${ciclo} a las que se aporta (contexto)${respBadge('tac-metas')}</span>
     <div class="chips" style="margin:8px 0 4px">${DATA.objetivos.map(o=>`<span class="chip lk" data-obj="${o.id}"><span class="health-dot" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${health[o.salud]};margin-right:4px"></span>${o.kr.m}: ${o.kr.from} → ${o.kr.to}${state.ciclo!=='okr'&&o.bono?' <b style="color:var(--warn)">★</b>':''}</span>`).join('')}</div>
     <div class="dirgrid" style="margin-top:10px">
-      <div class="dpane solid" style="max-width:520px"><div class="pt">Espera tu decisión · ${bandeja.length}</div>${bandejaRows(bandeja)}</div>
-      <div class="dpane"><div class="pt">Aquí NACEN los compromisos — brechas sin respuesta</div>
+      <div class="dpane solid" style="max-width:520px"><div class="pt">Espera tu decisión · ${bandeja.length}${respBadge('bandeja')}</div>${bandejaRows(bandeja)}</div>
+      <div class="dpane"><div class="pt">Aquí NACEN los compromisos — brechas sin respuesta${respBadge('tac-brechas')}</div>
         ${DATA.brechas.filter(g=>!DATA.proyectos.some(pm=>pm.brecha===g.id)&&g.estado!=='off-thread').map(g=>`<button class="cambio-row" data-g="${g.id}" data-g2="${g.id}"><span class="sc" style="color:${g.sev==='alta'?'var(--crit)':'var(--warn)'}">▲</span><div><div class="tt">${g.nm.length>62?g.nm.slice(0,60)+'…':g.nm}</div></div><span class="ap">${g.costo}</span></button>`).join('')}</div>
     </div>
     <div class="tcols">
@@ -2194,7 +2276,7 @@ function renderTactico(){
           ${pms.map(pm=>`<button class="cambio-row" data-pm="${pm.id}" data-pm2="${pm.id}"><span class="sc">${pm.pdca}</span><div><div class="tt">${pm.nm}</div><div class="ap">${pm.estado} · mueve ${byId(DATA.kpis,pm.mueve).nm}</div></div><span class="ap" style="color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}
           ${ks.map(k=>krowHTML(k)+(sinContra(k)?`<div class="ncm">▲ sin contramedida comprometida · <span class="plnk" data-acc="comprometer-contramedida">comprometer ›</span></div>`:'')).join('')}
         </div>`; }).join('')}
-      <div class="tcol"><div class="th">Embudo de ideas — participación del personal</div>
+      <div class="tcol"><div class="th">Embudo de ideas — participación del personal${respBadge('ideas')}</div>
         ${DATA.ideas.map(i=>`<button class="cambio-row" data-idea="${i.id}"><span class="sc">💡</span><div><div class="tt">${i.nm}</div><div class="ap">${i.prop} · ${i.estado}</div></div></button>`).join('')}</div>
     </div>`);
   wireLinks(pv);
@@ -2209,26 +2291,26 @@ function renderMejora(){
   const pv=pageView(`
     <div class="pv-hd"><span class="eyebrow">Mejora · funil de ideas + O6 → O7 · el loop vive DENTRO del twin — ningún vendor lo cierra in-tool</span>
       <h2>Idea → brecha → proyecto → KPI movido</h2>
-      <div class="sub">El personal propone (funil kaizen, M44) y el triage detecta candidatos; cada brecha lleva costo de no hacer; de ahí nacen los proyectos (PDCA con loop-back permitido); el cierre se declara con el <b>delta observado en el KPI</b> — y la mejora se <b>compila al arnés del puesto</b> (CK-29).</div></div>
+      <div class="sub">El personal propone (embudo kaizen) y el triage detecta candidatos; cada brecha lleva costo de no hacer; de ahí nacen los proyectos (PDCA con loop-back permitido); el cierre se declara con el <b>delta observado en el KPI</b> — y la mejora se <b>compila al arnés del puesto</b>.</div></div>
     <div class="fcols" style="grid-template-columns:repeat(4,1fr)">
-      <div class="fcol"><span class="eyebrow">0 · Ideas — funil del personal (kaizen)</span>
+      <div class="fcol"><span class="eyebrow">0 · Ideas — funil del personal (kaizen)${respBadge('ideas')}</span>
         ${DATA.ideas.map(i=>`<button class="fitem" data-idea="${i.id}">
           <span class="t">${iico('idea','idea · Driver (M13 ArchiMate, Motivation)')}${i.nm.length>58?i.nm.slice(0,56)+'…':i.nm}</span>
           <span class="m"><span class="gate-pill ${i.estado==='promovida'?'':'pend'}">${i.estado}</span><span>${i.prop.split(' · ')[0]}</span>${i.origen==='triage'?'<span style="color:var(--brand-hi)">← triage</span>':''}</span>
         </button>`).join('')}
-        <div style="font-size:10.5px;color:var(--tx-faint)">idea ↔ proyecto separados (M44) · autoría reconocida, jamás medición (CK-24)</div></div>
-      <div class="fcol"><span class="eyebrow">1 · Brechas — rankeadas por costo/ROI</span>
+        <div style="font-size:10.5px;color:var(--tx-faint)">idea y proyecto viven separados · autoría reconocida, jamás medición de la persona</div></div>
+      <div class="fcol"><span class="eyebrow">1 · Brechas — rankeadas por costo/ROI${respBadge('mej-brechas')}</span>
         ${gs.map(g=>`<button class="fitem ${g.estado==='off-thread'?'dim2':''}" data-g="${g.id}">
           <span class="t">${iico('brecha','brecha · Assessment (M13 ArchiMate, Motivation)')}${g.nm.length>64?g.nm.slice(0,62)+'…':g.nm}</span>
           <span class="m"><span style="color:${sevC[g.sev]}">▲ ${g.sev}</span><span>${g.costo}</span><span>${g.estado}</span>${g.apuesta?'<span style="color:var(--brand-hi)">WSJF ①</span>':''}</span>
         </button>`).join('')}</div>
-      <div class="fcol"><span class="eyebrow">2 · Proyectos en vuelo — PDCA</span>
+      <div class="fcol"><span class="eyebrow">2 · Proyectos en vuelo — PDCA${respBadge('mej-proyectos')}</span>
         ${vuelo.map(p=>`<button class="fitem" data-pm="${p.id}">
           <span class="t">${iico('proyecto','proyecto de mejora · Work Package (M13 ArchiMate)')}${p.nm}</span>
           <span class="m"><span class="gate-pill">${p.pdca}</span><span>${p.estado}</span><span>ROI ${p.roi}</span><span style="color:var(--brand-hi)">${p.delta}</span></span>
         </button>`).join('')}
         <div style="font-size:10.5px;color:var(--tx-faint)">máquina de 12 estados · loop-back en-verificación → en-ejecución permitido (PDCA real, no waterfall)</div></div>
-      <div class="fcol"><span class="eyebrow">3 · KPI movido — veredicto con dato real</span>
+      <div class="fcol"><span class="eyebrow">3 · KPI movido — veredicto con dato real${respBadge('mej-kpimovido')}</span>
         ${done.map(p=>`<button class="fitem" data-pm="${p.id}" style="border-color:var(--teal-800)">
           <span class="t">${iico('proyecto','proyecto de mejora · Work Package (M13 ArchiMate)')}${p.nm}</span>
           <span class="m"><span class="gate-pill">CERRADO</span><span style="color:var(--ok)">✓ ${p.resultado.veredicto}</span><span style="color:var(--brand-hi)">${p.resultado.delta_observado}</span><span>ROI real ${p.roi}</span></span>
@@ -2238,6 +2320,7 @@ function renderMejora(){
   pv.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>openBrecha(byId(DATA.brechas,b.dataset.g)));
   pv.querySelectorAll('[data-pm]').forEach(b=>b.onclick=()=>openProyecto(byId(DATA.proyectos,b.dataset.pm)));
   pv.querySelectorAll('[data-idea]').forEach(b=>b.onclick=()=>openIdea(byId(DATA.ideas,b.dataset.idea)));
+  pv.querySelectorAll('[data-resp]').forEach(b=>b.onclick=()=>openRespaldo(b.dataset.resp));
   counter(`${DATA.ideas.length} ideas · ${gs.length} brechas · ${vuelo.length} en vuelo · ${done.length} cerrado`);
 }
 
@@ -2384,11 +2467,11 @@ function inspectorHome(){
     inTitle.textContent=`Pulso · ${ok}/${DATA.objetivos.length} en banda`;
     const g=DATA.brechas.find(b=>b.apuesta), o=byId(DATA.objetivos,g.obj);
     inBody.innerHTML=`
-      <div class="dgroup"><div class="gt">Pulso del directorio — KRs en banda</div>
+      <div class="dgroup"><div class="gt">Pulso del directorio — KRs en banda${respBadge('sala-pulso')}</div>
         <div class="pulso-dots">${DATA.objetivos.map(x=>`<i style="background:${health[x.salud]}" title="${x.nm}"></i>`).join('')}</div>
         <div style="font-size:11px;color:var(--tx-faint)">verde = KR dentro de banda · toca un objetivo en el mapa para encender su hilo</div></div>
       <div class="apuesta-card">
-        <div class="hd"><span class="live"></span><h3 class="eyebrow" style="margin:0;color:var(--tx-mut);letter-spacing:.1em">La apuesta · próximo paso</h3></div>
+        <div class="hd"><span class="live"></span><h3 class="eyebrow" style="margin:0;color:var(--tx-mut);letter-spacing:.1em">La apuesta · próximo paso${respBadge('sala-jugada')}</h3></div>
         <div class="body">Cerrar <b>Marina 87→95% de avance</b> — la brecha ALTA atada a <b>${o.nm}</b>.</div>
         <div class="biz">
           <div><span class="k">Cuesta</span><span class="v cost">${g.costo}</span></div>
@@ -2397,10 +2480,10 @@ function inspectorHome(){
         </div>
         <button class="btn go" id="apuestaGo">Ver el hilo que mueve ›</button>
       </div>
-      <div class="dgroup"><div class="gt">Estado del loop — brecha → proyecto → KPI</div>
+      <div class="dgroup"><div class="gt">Estado del loop — brecha → proyecto → KPI${respBadge('sala-loop')}</div>
         ${DATA.proyectos.map(pm=>`<button class="loop-it" data-pm="${pm.id}"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}</span><span class="mono" style="font-size:10px;color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}
         <div style="font-size:11px;color:var(--tx-faint)">2 proyectos en vuelo · prende la capa Cinética para verlos sobre el mapa</div></div>
-      <div class="dgroup"><div class="gt">El twin compila trabajo — se compila por rol×proceso · se ensambla por puesto (CK-30)</div>
+      <div class="dgroup"><div class="gt">El twin compila trabajo — se compila por rol×proceso · se ensambla por puesto (CK-30)${respBadge('sala-trabajo')}</div>
         <div style="font-size:12.5px;line-height:1.5"><b class="mono" style="color:var(--brand-hi)">${new Set(DATA.arneses.map(h=>h.deriva_de.puesto)).size}/${DATA.puestosTotal}</b> puestos con arnés en su roster · <b class="mono">${DATA.arneses.length}</b> arneses compilados · <span style="color:var(--warn)">${DATA.arneses.filter(h=>arnesEstado(h)==='desactualizado').length} desactualizado</span> (el twin cambió → recompilar). El resto opera a mano: el gap de la era agéntica, visible.</div>
         <button class="btn" id="verTrabajo" style="justify-content:center">Prender la capa Trabajo ›</button></div>`;
     inBody.querySelector('#apuestaGo').onclick=()=>{ state.nivel=2; setPiel('valor');
@@ -2408,6 +2491,7 @@ function inspectorHome(){
       state.activeObj='o-lid'; render(); };
     inBody.querySelector('#verTrabajo').onclick=()=>{ if(!state.capas.has('trabajo')){state.capas.add('trabajo');document.querySelector('[data-capa=trabajo]').classList.add('on');} render(); };
     inBody.querySelectorAll('.loop-it').forEach(b=>b.onclick=()=>openProyecto(byId(DATA.proyectos,b.dataset.pm)));
+    inBody.querySelectorAll('[data-resp]').forEach(b=>b.onclick=()=>openRespaldo(b.dataset.resp));
   }
   else if(state.escala==='z1'){
     const a=byId(DATA.areas,state.foco), procs=subtreeProcs(a.id), setA=new Set(descendants(a.id));
