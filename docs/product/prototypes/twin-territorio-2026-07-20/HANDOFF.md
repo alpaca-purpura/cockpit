@@ -5,7 +5,16 @@
 > la pregunta y la unidad), grafo no árbol (subir≠atrás, selector al subir), niveles con
 > desalineaciones visibles, trazado vertical, "ver como" con siluetas. Se valida en
 > **`sandbox-4capas.html`** (mismo dir, gray-box DESECHABLE, Artifact 🛗
-> `claude.ai/code/artifact/e6eef1d5-a56f-471e-83eb-36260c628764`, v2.2 commit `16aed28`).
+> `claude.ai/code/artifact/e6eef1d5-a56f-471e-83eb-36260c628764`, **v3 commit `fdf29e9`**).
+> **v3 (2026-07-26, propuesta "v2 accionable" FIRMADA):** de visor a sistema operativo — panel
+> derecho ficha+botonera (acciones del catálogo kinético del schema, nivel de autoridad + tipo de
+> aprobación; lente ver-como fija qué ejecutas) · bandeja de decisiones por nivel · modo ciclo
+> OKR/GPD-anual/mixto con ★ paga-bono (LATAM/BR) · historial de la organización · N2 objetivos
+> primera clase + brechas por costo de no actuar · N3 indicadores por área (fuera de meta sin
+> contramedida = alerta) + embudo de ideas + entrega-entre-áreas · N4 "tu día" + clasificación
+> como oferta + arnés + se-mide-el-rol-jamás-la-persona. Pendientes de schema NUEVOS (además de
+> A2 + ficha apuesta/riesgo): acciones de la apuesta · campo catchball (acuerdo ida-vuelta al
+> bajar meta) · "última revisión" por nivel (candidato: derivar del historial, cero dato nuevo).
 > **Al operador el twin v13 le gusta MÁS visualmente; el sandbox trae la lógica que quiere afinar.**
 > Meta: iterar el sandbox con sus comentarios → portar lo firmado al twin (v14: nivel Directorio
 > nuevo, partir el mapa actual en niveles 2/3, z2/z3 = nivel 4; prerequisitos de schema: A2/KR +
