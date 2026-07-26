@@ -8,6 +8,11 @@
        la cadena · Organigrama = plano del puesto (nivel 4 = nómina) · arnés = REGISTRO por
        rol×proceso (deriva_de · hash/drift derivado · autonomía CSA · supervisión medida ·
        guardrails con mecanismo) · fichas nuevas: puesto / área / rol re-significado.
+     v13 (2026-07-26 · firmado operador): z1 = FOCO del mapa de valor, no mundo aparte —
+       renderArea muere; el área ilumina SUS procesos EN SU LUGAR (bandas/orden/hilo
+       intactos), vecinos de cadena a media luz, resto fantasma; cámara encuadra el foco
+       (fitPts); pins/cinética/hilo solo del set enfocado; ficha área: chips de proceso
+       con semáforo · misional/apoyo · dueño. Un solo territorio, dos puertas (pieles).
      Shell v2 (2026-07-20): investigación DTO/what-if/canvas —
        izquierda = qué existe (escala + capas con leyenda inline)
        derecha   = inspector contextual (sin selección: sala de mando)
@@ -211,6 +216,11 @@
   /* capability = capa Strategy (5ª) — hoy sin nodo de mapa: chip con borde teal (decisión 23) */
   .chip.lk[data-cap] { border-color:var(--teal-800); }
   .node.dim { opacity:.2; }
+  /* v13 · foco de área sobre el mapa de valor: dim genérico (soporte/gente/sistemas también
+     se apagan), vecino de cadena a media luz, foco = anillo hairline (color queda para salud) */
+  .soporte.dim, .rolchip.dim, .sysplat.dim, .chev-arrow.dim { opacity:.2; }
+  .node.vecino, .soporte.vecino { opacity:.45; }
+  .node.foco .chev, .soporte.foco { border-color:var(--teal-700); }
   .node.hot .area-node { border-color:var(--brand); background:rgba(0,183,170,.06); box-shadow:0 0 0 1px var(--teal-700); }
   .node.hot .obj-node { border-color:var(--brand); box-shadow:0 0 0 1px var(--teal-700); }
   .vac { font-family:var(--font-mono); font-size:8px; color:var(--warn); border:1px solid rgba(224,173,78,.4); border-radius:4px; padding:0 3px; }
@@ -1378,6 +1388,13 @@ function applyView(anim=true){ world.classList.toggle('anim',anim);
 function fit(anim=true){ const vw=stage.clientWidth, vh=stage.clientHeight;
   const z=Math.min((vw-56)/state.cw,(vh-90)/state.ch,1.08);
   view.z=z; view.x=(vw-state.cw*z)/2; view.y=(vh-state.ch*z)/2 + (state.escala==='z2'?0:14); applyView(anim); }
+// v13 · cámara del foco de área: encuadra los puntos del set enfocado (no el canvas entero)
+function fitPts(pts,anim=true){ if(!pts||!pts.length){ fit(anim); return; }
+  const xs=pts.map(p=>p.x), ys=pts.map(p=>p.y);
+  const x0=Math.min(...xs)-200, x1=Math.max(...xs)+200, y0=Math.min(...ys)-170, y1=Math.max(...ys)+190;
+  const vw=stage.clientWidth, vh=stage.clientHeight;
+  const z=Math.max(.45, Math.min((vw-40)/(x1-x0), (vh-70)/(y1-y0), 1.02));
+  view.z=z; view.x=(vw-(x0+x1)*z)/2; view.y=(vh-(y0+y1)*z)/2; applyView(anim); }
 // z2/z3: zoom mínimo 0.6 anclado al INICIO del flujo (puertos S·I + primeras actividades legibles);
 // el resto del lienzo se alcanza con pan/rueda + minimapa (mismo trade-off que z0, decisión 3 + LOD)
 function fitFlujo(anim=true){ const vw=stage.clientWidth, vh=stage.clientHeight;
@@ -1456,7 +1473,7 @@ function render(){
   $nodes.innerHTML=''; $pins.innerHTML=''; $edges.innerHTML=''; $lienzo.style.display='none'; $nodes.style.display=''; $pins.style.display='';
   if(!terr){ ({mejora:renderMejora, metodo:renderMetodo, cambios:renderCambios})[state.mod](); }
   else if(state.escala==='z0') state.piel==='org'?renderOrganigrama():renderValor();
-  else if(state.escala==='z1') renderArea();
+  else if(state.escala==='z1') renderValor();   // v13: z1 = el MISMO mapa de valor con foco de área (renderArea murió)
   else if(state.escala==='z3') renderInstruccion();
   else renderLienzo();
   mmDots(); if(state.insp==='home') inspectorHome();
@@ -1563,6 +1580,21 @@ function renderValor(){
   const searching=!!q();
   const act=state.activeObj;
   const hiloOn=state.capas.has('hilo');
+  /* — v13 · FOCO DE ÁREA (firmado 2026-07-26): z1 no es un mundo aparte — es este mismo mapa
+     con el área como lente. Sus procesos se encienden EN SU LUGAR (banda/orden intactos),
+     los vecinos inmediatos de cadena quedan a media luz (fronteras del área), el resto es
+     fantasma. Pins, cinética e hilo se restringen al set enfocado. — */
+  const focoA = state.escala==='z1' ? byId(DATA.areas, state.foco) : null;
+  const focoSet = focoA ? new Set(descendants(focoA.id)) : null;
+  const focoProcs = focoA ? new Set(subtreeProcs(focoA.id).map(p=>p.id)) : null;
+  const enFoco = pid => !!(focoProcs && focoProcs.has(pid));
+  const vecinos = new Set();
+  if(focoA) DATA.cadena.forEach((pid,i)=>{ if(enFoco(pid))
+    [DATA.cadena[i-1],DATA.cadena[i+1]].forEach(v=>{ if(v&&!enFoco(v)) vecinos.add(v); }); });
+  const focoCls = pid => !focoA ? '' : (enFoco(pid) ? 'foco' : vecinos.has(pid) ? 'vecino' : 'dim');
+  const focoObjs = new Set();
+  if(focoA) DATA.procesos.forEach(p=>{ if(enFoco(p.id)) p.sirve.forEach(o=>focoObjs.add(o)); });
+  const focoPts = [];
   // el conjunto encendido: objetivo activo + sus drivers + roles + sistemas (spine del hilo)
   const drivers=act?DATA.procesos.filter(p=>p.sirve.includes(act)).map(p=>p.id):null;
   const hotProc=id=>drivers&&drivers.includes(id);
@@ -1591,6 +1623,7 @@ function renderValor(){
     const n=el('button','node '+dimIf(act===o.id)); n.style.left=p.x+'px'; n.style.top=p.y+'px';
     MM_PTS.push(p);
     if(searching && !(o.nm+' '+o.kr.m).toLowerCase().includes(q())) n.classList.add('dim');
+    if(focoA){ if(!focoObjs.has(o.id)) n.classList.add('dim'); else focoPts.push(p); }   // v13: foco — solo objetivos que el área sostiene
     n.innerHTML=`<div class="obj-node ${act===o.id?'hot':''}" style="width:188px">
       <span class="health-dot" style="background:${health[o.salud]};float:right;margin-top:2px"></span>
       <div class="nm" style="font-size:11.5px">${tbadge('objetivo','objetivo · Goal/Outcome (M13 ArchiMate, Motivation)')}${o.nm}</div>
@@ -1606,13 +1639,15 @@ function renderValor(){
   DATA.cadena.forEach((pid,i)=>{
     const p=byId(DATA.procesos,pid); const x=cx0+i*(cw+cgap)+cw/2, y=Y.cad+64; cPos[pid]={x,y};
     MM_PTS.push({x,y});
-    if(i<DATA.cadena.length-1){ const a=el('div','chev-arrow','▸'); a.style.left=(x+cw/2+cgap/2)+'px'; a.style.top=y+'px'; $pins.appendChild(a); }
+    if(i<DATA.cadena.length-1){ const dimArrow=focoA&&!(enFoco(pid)||enFoco(DATA.cadena[i+1]));
+      const a=el('div','chev-arrow'+(dimArrow?' dim':''),'▸'); a.style.left=(x+cw/2+cgap/2)+'px'; a.style.top=y+'px'; $pins.appendChild(a); }
     const ks=state.capas.has('hilo')?kpisByProc(pid):[];
     const ld=lienzoData(pid);
     const steps=ld?ld.acts.map(a2=>({v:a2.verbo,t:a2.triage})):(DATA.pasosMini[pid]||[]).map(v=>({v}));
     const dc=state.capas.has('salud')?(state.sub==='conf'?confCol(p.conf):health[digHealth(p.digital)]):'#2a3733';
     const hot=hotProc(pid);
     const n=el('button','node '+(hot?'hot':dimIf(false||hot))); if(act&&!hot)n.classList.add('dim');
+    if(focoA){ n.classList.remove('dim'); const fc=focoCls(pid); if(fc)n.classList.add(fc); if(enFoco(pid))focoPts.push({x,y}); }
     if(searching&&!procMatch(p))n.classList.add('dim');
     n.style.left=x+'px'; n.style.top=y+'px';
     n.innerHTML=`<div class="chev">
@@ -1640,7 +1675,9 @@ function renderValor(){
     aPos[p.id]={x:ax+wPx/2,y:ay};
     const dc=state.capas.has('salud')?(state.sub==='conf'?confCol(p.conf):health[digHealth(p.digital)]):'#2a3733';
     const hot=hotProc(p.id);
-    const s=el('button','soporte '+(hot?'hot':'')); if(act&&!hot)s.classList.add('dim'); if(searching&&!procMatch(p))s.classList.add('dim');
+    const s=el('button','soporte '+(hot?'hot':'')); if(act&&!hot)s.classList.add('dim');
+    if(focoA){ s.classList.remove('dim'); const fc=focoCls(p.id); if(fc)s.classList.add(fc); if(enFoco(p.id))focoPts.push(aPos[p.id]); }
+    if(searching&&!procMatch(p))s.classList.add('dim');
     s.style.left=ax+'px'; s.style.top=ay+'px'; s.style.width=wPx+'px';
     s.innerHTML=`<div style="display:flex;gap:7px;align-items:center"><span class="health-dot" style="width:7px;height:7px;background:${dc}"></span><span class="nm">${tbadge('proceso','proceso · Business Process (M13 ArchiMate)')}${p.nm}</span>${p.areas.length>1?`<span class="tag" style="margin-left:auto">cruza ${p.areas.length}</span>`:''}</div>
       <div class="meta">${p.dueno}${state.capas.has('trabajo')?' '+harnBadge(arnesDe(p.dueno,p.id)):''}</div>`;
@@ -1659,6 +1696,8 @@ function renderValor(){
     const occ=puestoOcupante(r);
     const hot=hotRol.has(r);
     const c=el('button','rolchip '+(hot?'hot':'')); if(act&&!hot)c.classList.add('dim');
+    if(focoA){ c.classList.remove('dim');
+      if(!(pu.pares.some(x=>focoProcs.has(x.proc))||focoSet.has(pu.area))) c.classList.add('dim'); }
     const nOcc=puestoOcupantes(r).length;
     c.innerHTML=`${tbadge('puesto','puesto · posición del organigrama (D-19 · ArchiMate Business Actor)')}${r}<span class="who">${occ.vac||!nOcc?'—':(occ.quien.split(' ')[0]+(nOcc>1?' +'+(nOcc-1):''))}</span>${state.capas.has('trabajo')?rosterBadge(r):''}`;
     $nodes.appendChild(c);
@@ -1667,6 +1706,7 @@ function renderValor(){
     c.style.left=rx+'px'; c.style.top=ry+'px';
     c.onclick=()=>openPuesto(r); wireLinks(c);
     rPos[r]={x:rx+wCh/2,y:ry}; rx+=wCh+14;
+    if(focoA && !c.classList.contains('dim')) focoPts.push(rPos[r]);   // v13: la gente del área entra al encuadre
   });
 
   /* — banda 5 · SISTEMAS (plataformas: ancho = cuántos procesos sirven · pulso al lakehouse) — */
@@ -1679,6 +1719,7 @@ function renderValor(){
     if(sx+wPx>W-60){ sx=120; sy2+=44; }          // wrap real (11 sistemas ya no caben en una fila)
     const hot=hotSis.has(s2.id);
     const b=el('button','sysplat '+(hot?'hot':'')); if(act&&!hot)b.classList.add('dim');
+    if(focoA && !DATA.procesos.some(p=>enFoco(p.id)&&p.sist.includes(s2.nm))) b.classList.add('dim');
     b.style.left=sx+'px'; b.style.top=sy2+'px'; b.style.width=wPx+'px';
     b.innerHTML=`${tbadge('sistema','sistema · Application Component (M13 ArchiMate)')}<span class="health-dot" style="width:7px;height:7px;background:${health[digHealth(s2.digital)]}"></span>${s2.nm}<span style="margin-left:auto;font-size:8.5px;color:var(--tx-faint)">${served} proc</span>`;
     b.onclick=()=>openSistema(s2);
@@ -1690,6 +1731,7 @@ function renderValor(){
   /* — capas Brechas + Cinética sobre la geografía de valor (pin/token sobre SU proceso) — */
   if(state.capas.has('brechas')) DATA.brechas.forEach(g=>{
     if(act&&g.obj!==act)return;
+    if(focoA&&!enFoco(g.against))return;   // v13: en foco, solo las brechas del área
     const P=cPos[g.against]||aPos[g.against]; if(!P)return;
     const pin=el('div','pin '+(g.sev==='alta'?'':g.sev==='media'?'med':'low'));
     pin.style.left=(P.x+56)+'px'; pin.style.top=(P.y-58)+'px';
@@ -1698,91 +1740,39 @@ function renderValor(){
   });
   if(state.capas.has('cinetica')) DATA.proyectos.filter(pm=>pm.estado!=='cerrado').forEach(pm=>{
     const g=byId(DATA.brechas,pm.brecha), pr=g&&byId(DATA.procesos,g.against), P=pr&&(cPos[pr.id]||aPos[pr.id]); if(!P)return;
+    if(focoA&&!enFoco(pr.id))return;   // v13: en foco, solo la cinética del área
     const k=el('div','kin'); k.style.left=P.x+'px'; k.style.top=(P.y+92)+'px';
     k.innerHTML=`${iico('proyecto','proyecto de mejora · Work Package (M13 ArchiMate)')}<span class="spark"></span><span class="pdca">${pm.pdca}</span>${pm.nm} · ROI ${pm.roi}`;
     k.onclick=()=>openProyecto(pm); $pins.appendChild(k);
   });
 
   /* — EL HILO: edges verticales cruzando las bandas (tenues siempre; encendidos con el objetivo activo) — */
-  const eop=(on)=>act?(on?.75:.05):(hiloOn?.13:.05);
+  const eop=(on)=>focoA?(on?.6:.04):act?(on?.75:.05):(hiloOn?.13:.05);   // v13: en foco, el hilo del área
   DATA.objetivos.forEach(o=>{ const A=oPos[o.id]; if(!A)return;
     DATA.procesos.filter(p=>p.sirve.includes(o.id)).forEach(p=>{
       const B=cPos[p.id]||aPos[p.id]; if(!B)return;
-      pathEl(vcurve(A.x,A.y+40,B.x,B.y-46),'var(--teal-500)',1.2,eop(act===o.id)); });
+      pathEl(vcurve(A.x,A.y+40,B.x,B.y-46),'var(--teal-500)',1.2,eop(focoA?enFoco(p.id):act===o.id)); });
   });
   DATA.procesos.forEach(p=>{ const A=cPos[p.id]||aPos[p.id]; if(!A)return;
     const core=p.dueno.replace(/\s*\(vacante\)/i,''); const R=rPos[core];
-    if(R) pathEl(vcurve(A.x,A.y+52,R.x,R.y-16),'#3d4f4a',1,eop(hotProc(p.id)));
+    if(R) pathEl(vcurve(A.x,A.y+52,R.x,R.y-16),'#3d4f4a',1,eop(focoA?enFoco(p.id):hotProc(p.id)));
     p.sist.forEach(sn=>{ const s2=sisByName(sn); const S=s2&&sPos[s2.id]; if(!S)return;
-      pathEl(vcurve(A.x,A.y+52,S.x,S.y-14),'#33413e',0.9,eop(hotProc(p.id))*0.8); });
+      pathEl(vcurve(A.x,A.y+52,S.x,S.y-14),'#33413e',0.9,eop(focoA?enFoco(p.id):hotProc(p.id))*0.8); });
   });
 
-  counter(`${DATA.cadena.length} misionales · ${apoyo.length} apoyo · ${cadenaPuestos.length}/${PUESTOS.length} puestos · ${DATA.sistemas.length} sistemas`);
-  fit();
+  if(focoA){
+    const ng=DATA.brechas.filter(g=>enFoco(g.against)).length;
+    counter(`Foco: ${focoA.nm} · ${focoProcs.size} procesos en su lugar del mapa · ${ng} brechas · Territorio ‹ sale del foco`);
+    fitPts(focoPts);
+  } else {
+    counter(`${DATA.cadena.length} misionales · ${apoyo.length} apoyo · ${cadenaPuestos.length}/${PUESTOS.length} puestos · ${DATA.sistemas.length} sistemas`);
+    fit();
+  }
 }
 
-/* ---------- z1 área ---------- */
+/* ---------- z1 área = FOCO del mapa de valor (v13 — renderArea MURIÓ, decisión firmada 2026-07-26):
+   drillArea solo fija el lente; renderValor pinta el mismo territorio con el área encendida ---------- */
 function drillArea(id){ state.escala='z1'; state.foco=id; state.insp='home'; render(); }
-function renderArea(){
-  const a=byId(DATA.areas,state.foco), procs=subtreeProcs(a.id), subs=kids(a.id);
-  const cols=Math.min(3,Math.max(1,procs.length)), rows=Math.ceil(procs.length/cols);
-  const CW=Math.max(960,cols*248+160), CH=200+rows*232+80, cx0=CW/2; setCanvas(CW,CH);
-  const lab=el('div','grouplab'); lab.style.left=cx0+'px'; lab.style.top='96px'; lab.style.transform='translate(-50%,0)'; lab.style.textAlign='center';
-  lab.innerHTML=`<span class="eyebrow">${a.parent?'Área':'Gerencia'} · ${a.lider}${subs.length?` · ${subs.map(s=>s.nm).join(' + ')}`:''}</span><div style="font-family:var(--font-display);font-weight:800;font-size:26px;margin-top:5px;letter-spacing:-.01em">${a.nm}</div>`;
-  $nodes.appendChild(lab);
-  const rowH=232, x0=cx0-((cols-1)*248)/2, y0=250, procPos={};
-  const searching=!!q();
-  procs.forEach((p,i)=>{
-    const cx=x0+(i%cols)*248, cy=y0+Math.floor(i/cols)*rowH; procPos[p.id]={cx,cy}; // alto de fila deja aire para pin arriba + KPIs abajo
-    MM_PTS.push({x:cx,y:cy});
-    const serves=state.capas.has('hilo')&&state.activeObj&&p.sirve.includes(state.activeObj);
-    const orphan=p.sirve.length===0;
-    const n=el('button','node'); n.style.left=cx+'px'; n.style.top=cy+'px';
-    if(searching && !procMatch(p)) n.classList.add('dim');
-    let dc=health[digHealth(p.digital)];
-    if(state.capas.has('salud')&&state.sub==='conf')dc=confCol(p.conf);
-    else if(state.capas.has('salud')&&state.sub==='madurez')dc=health[a.madurez];
-    const vacDueno=/vacante/i.test(p.dueno);
-    const ks=state.capas.has('hilo')?kpisByProc(p.id):[];
-    n.innerHTML=`<div class="proc-node ${serves?'serves':''} ${orphan&&state.capas.has('hilo')?'orphan-lit':''}">
-      <div class="top"><span class="health-dot" style="background:${state.capas.has('salud')?dc:'#2a3733'}"></span><div class="nm">${tbadge('proceso','proceso · Business Process (M13 ArchiMate)')}${p.nm}</div></div>
-      <div class="meta">${byId(DATA.areas,p.areas[0]).nm} · <span class="plnk" data-rol="${p.dueno}">${p.dueno}</span><br>${p.sist.map(s=>sisByName(s)?`<span class="plnk" data-sis="${s}">${s}</span>`:s).join(' · ')}</div>
-      <div class="flag">
-        <span class="tag teal" title="doble-click abre el flujograma">lienzo ›</span>
-        ${state.corrida&&p.id==='p-cob'?'<span class="dtag">Δ +1 actividad · portal de pagos</span>':''}
-        ${vacDueno?'<span class="tag warn">rol vacante</span>':''}
-        ${orphan?'<span class="tag warn">huérfano</span>':''}
-        ${p.star?'<span class="tag warn">★ sin ancla</span>':''}
-        ${p.sirve.length&&state.capas.has('hilo')?`<span class="tag ok">sostiene ${p.sirve.length}</span>`:''}
-        ${state.capas.has('trabajo')?harnBadge(arnesDe(p.dueno,p.id)):''}
-      </div>
-      ${ks.length?`<div class="kpis-mini">${ks.map(krowHTML).join('')}</div>`:''}</div>`;
-    const card=n.querySelector('.proc-node');
-    card.onclick=()=>openProceso(p);
-    card.ondblclick=()=>drillLienzo(p.id);
-    n.querySelectorAll('.krow').forEach(b=>b.onclick=e=>{ e.stopPropagation(); openKpi(byId(DATA.kpis,b.dataset.k)); });
-    wireLinks(n);
-    $nodes.appendChild(n);
-  });
-  // cinética (capa O7): proyecto en vuelo sobre el proceso que mejora
-  if(state.capas.has('cinetica')) DATA.proyectos.filter(pm=>pm.estado!=='cerrado').forEach(pm=>{
-    const g=byId(DATA.brechas,pm.brecha), pr=g&&byId(DATA.procesos,g.against), pos=pr&&procPos[pr.id]; if(!pos)return;
-    const k=el('div','kin'); k.style.left=pos.cx+'px'; k.style.top=(pos.cy+96)+'px';
-    k.innerHTML=`${iico('proyecto','proyecto de mejora · Work Package (M13 ArchiMate)')}<span class="spark"></span><span class="pdca">${pm.pdca}</span>${pm.nm} · ROI ${pm.roi}`;
-    k.onclick=()=>openProyecto(pm); $pins.appendChild(k);
-  });
-  const setA=new Set(descendants(a.id));
-  if(state.capas.has('brechas')) DATA.brechas.filter(g=>{const pr=byId(DATA.procesos,g.against);return pr&&pr.areas.some(x=>setA.has(x));}).forEach(g=>{
-    const pos=procPos[g.against]; if(!pos)return; // pin invertido: cuelga BAJO la card que ataca (el gap entre filas es espacio libre)
-    const pin=el('div','pin down '+(g.sev==='alta'?'':g.sev==='media'?'med':'low'));
-    pin.style.left=(pos.cx+58)+'px'; pin.style.top=(pos.cy+64)+'px';
-    pin.innerHTML=`<div class="body">${g.nm.length>46?g.nm.slice(0,44)+'…':g.nm}<span class="cost">▲ ${g.costo} · ${g.estado}</span></div><div class="stem"></div><div class="head"></div>`;
-    pin.title=g.nm;
-    pin.onclick=()=>openBrecha(g); $pins.appendChild(pin);
-  });
-  counter(`${procs.length} procesos · ${DATA.brechas.filter(g=>{const pr=byId(DATA.procesos,g.against);return pr&&pr.areas.some(x=>setA.has(x));}).length} brechas`);
-  fit();
-}
 
 /* ---------- z2 lienzo (v2: en el world — bandas de carril + edges reales + capas encima) ---------- */
 function lienzoData(pid){ return pid===DATA.flagship.proc?DATA.flagship:(DATA.lienzos[pid]||null); }
@@ -2220,7 +2210,7 @@ function inspectorHome(){
         ${pusZ1.map(nm=>{ const o=puestoOcupante(nm);
           return `<div class="rolrow"><span class="plnk" data-pu="${nm}">${nm}</span> ${rosterBadge(nm)}<span class="who ${o.vac?'vac':''}" ${(!o.vac&&o.quien)?`data-per="${o.quien}" style="cursor:pointer"`:''}>${o.vac?'sin persona asignada':(o.quien||'equipo')}</span></div>`; }).join('')}
         <div style="font-size:10px;color:var(--tx-faint)">métricas por PUESTO/ROL, jamás por persona nombrada (frontera CK-24) · ⛨ = roster compilado del twin (D-20)</div></div>
-      <div style="font-size:12px;color:var(--tx-faint)">Toca un proceso para su ficha (con su caracterización SIPOC) · doble-click abre su lienzo (flujograma).</div>`;
+      <div style="font-size:12px;color:var(--tx-faint)">El área es un LENTE sobre el mapa de valor: sus procesos encendidos en su lugar, los vecinos de cadena a media luz = sus fronteras (qué la alimenta · a quién alimenta). Toca un proceso para su ficha (SIPOC) · doble-click abre su lienzo (flujograma).</div>`;
   }
   else if(state.escala==='z3'&&state.act){
     const lf=lienzoData(state.act.pid), aa=lf&&lf.acts.find(x=>x.ord===state.act.ord);
@@ -2557,11 +2547,12 @@ function openArea(a){ if(!a)return;
      ${pus.length?pus.map(p=>{ const occ=puestoOcupantes(p.nm).length;
        return `<div class="rolrow"><span class="plnk" data-pu="${p.nm}">${p.nm}</span> ${rosterBadge(p.nm)}<span class="who ${p.vac?'vac':''}">${p.vac?'vacante':(occ+' pers.')}</span></div>`; }).join(''):'<span style="font-size:12px;color:var(--tx-faint)">— sin puestos directos (ver sub-áreas)</span>'}</div>
    <div class="dgroup"><div class="gt">Procesos del subtree</div>
-     <div class="chips">${procs.map(p=>`<span class="chip lk" data-proc="${p.id}">${p.nm}</span>`).join('')||'—'}</div></div>
+     <div class="chips">${procs.map(p=>{ const mis=DATA.cadena.includes(p.id);
+       return `<span class="chip lk" data-proc="${p.id}"><span class="health-dot" style="width:7px;height:7px;background:${health[digHealth(p.digital)]}"></span>${p.nm} <span style="color:var(--tx-faint);font-size:9px">${mis?'misional':'apoyo'} · ${coreNm(p.dueno)}</span></span>`; }).join('')||'—'}</div></div>
    ${ks.length?`<div class="dgroup"><div class="gt">Indicadores — por banda</div>${ks.slice(0,6).map(krowHTML).join('')}${ks.length>6?`<div style="font-size:10px;color:var(--tx-faint)">+${ks.length-6} más en la vista del área</div>`:''}</div>`:''}
    ${gaps.length?`<div class="dgroup"><div class="gt">Brechas abiertas</div>
      ${gaps.map(g=>`<button class="loop-it" data-g2="${g.id}"><span style="color:${g.sev==='alta'?'var(--crit)':'var(--warn)'}">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.nm}</span></button>`).join('')}</div>`:''}
-   <button class="btn" style="justify-content:center" onclick="drillArea('${a.id}')">Entrar al área (z1) ›</button>
+   <button class="btn" style="justify-content:center" onclick="drillArea('${a.id}')">Enfocar en el mapa de valor ›</button>
    <button class="btn" style="justify-content:center" onclick="setPiel('org');state.escala='z0';render()">Ver en el organigrama ›</button>`);
 }
 function openSistema(s){ if(!s)return;

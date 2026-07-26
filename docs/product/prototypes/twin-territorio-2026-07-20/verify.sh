@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Suite de verificación del mockup — clicks con HIT-TESTING REAL (elementFromPoint), no element.click().
-# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (23/23 esperado — v12: puesto/rol/área/roster)
+# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (24/24 esperado — v13: z1 = foco del mapa de valor)
 set -euo pipefail
 cd "$(dirname "$0")"
 TMP=$(mktemp -d)
@@ -46,6 +46,13 @@ window.addEventListener('load',()=>{whenReady(()=>{
   t('piel-org+ficha-area',()=>{ mclick(document.querySelector('[data-piel=org]'));
     mclick([...document.querySelectorAll('.area-node .nm')].find(x=>x.textContent==='Finanzas')); A(eye().includes('Área'),eye()); A(state.escala==='z0','no debía drillear: '+state.escala); });
   t('org-dblclick-drill',()=>{ mclick([...document.querySelectorAll('.area-node .nm')].find(x=>x.textContent==='Finanzas'),true); A(state.escala==='z1','escala='+state.escala); });
+  t('z1-foco-valor',()=>{ /* v13 firmado 2026-07-26: z1 = el MISMO mapa de valor con foco, no un mundo aparte */
+    drillArea('a-tes'); A(state.escala==='z1','escala='+state.escala);
+    A(document.querySelector('.chev'),'sin cadena en z1 (mundo aparte revivido?)');
+    const lit=document.querySelectorAll('.node.foco,.soporte.foco'); A(lit.length>=3,'foco='+lit.length);
+    A(document.querySelectorAll('.node.vecino').length>=1,'sin vecinos de cadena a media luz');
+    A(document.querySelectorAll('.node.dim,.soporte.dim').length>=8,'el resto no es fantasma');
+    const np=document.querySelectorAll('.pin').length; A(np>=1&&np<=5,'pins fuera de foco: '+np); });
   t('org-nivel4-puestos',()=>{ mclick(document.getElementById('back')); mclick(document.querySelector('[data-lod="4"]'));
     const pr=[...document.querySelectorAll('.prow')]; A(pr.length>=30,'prows='+pr.length);
     const one=pr.find(x=>{const r=x.getBoundingClientRect();return r.top>0&&r.bottom<innerHeight&&r.left>0&&r.right<innerWidth&&document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);});

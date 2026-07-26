@@ -49,7 +49,29 @@
   levantado proporcional al stack en lod4 · nodo área 190px en lod4 (nombres legibles) · copy z3
   inspector CK-29→"rol×proceso (M46 · CK-30)" · `›` sin huérfano en botones.
 
-**Verificación hecha:** Node stub (46/27/roster) · `verify.sh` **23/23** (4 tests nuevos:
+**v13 (2026-07-26) = z1 es FOCO del mapa de valor — firmado por el operador** (análisis UX de esta
+sesión: z1-mundo-aparte perdía cadena/bandas/hilo; "un solo territorio, dos puertas"):
+
+- **`renderArea` MURIÓ.** `drillArea` solo fija el lente (`escala:'z1'` + `foco`); `render()` z1
+  despacha a `renderValor()`, que ahora arma el foco: procesos del área **encendidos EN SU LUGAR**
+  (clase `.foco`, anillo teal-700 hairline), **vecinos inmediatos de cadena a media luz**
+  (`.vecino`, 0.45 — las fronteras del área), resto `.dim` fantasma (dim genérico nuevo para
+  soporte/rolchip/sysplat/chev-arrow). Objetivos que el área sostiene + puestos con pares en el
+  foco + sistemas que sirven al foco: encendidos; resto dim. Pins/cinética/hilo SOLO del set
+  enfocado. Cámara = `fitPts()` (bbox de foco: objetivos lit + procesos + gente lit).
+- Sala de mando contextual z1 intacta + línea "El área es un LENTE…". Counter: "Foco: <área> ·
+  N procesos en su lugar del mapa · M brechas". Salida: crumb Territorio → vuelve a la piel de
+  origen (entraste por org, vuelves al org).
+- **Ficha de área**: chips de "Procesos del subtree" ahora cargan estado (semáforo digital ·
+  misional/apoyo · dueño); botón "Entrar al área (z1)" → **"Enfocar en el mapa de valor ›"**.
+- CSS `.proc-node` quedó huérfano (solo lo usaba renderArea) — se dejó por diff mínimo.
+- Cierra de paso el pendiente "z1 solo accesible vía piel Organigrama" (el foco se dispara desde
+  cualquier ficha de área, en cualquier piel).
+
+**Verificación hecha (v13):** `verify.sh` **24/24** (test nuevo `z1-foco-valor`: cadena presente en
+z1 + ≥3 `.foco` + vecinos + fantasmas + pins solo del foco) · pasada visual con ojos propios
+(foco a-tes desde org: hilo vertical objetivo→cadena→apoyo→gente→sistemas encuadrado · ficha área
+chips nuevos · salida por crumb limpia). Previo v12: Node stub (46/27/roster) · 23/23 (4 tests:
 piel-org+ficha-area · org-dblclick-drill · org-nivel4-puestos · roster-contador +
 capa-trabajo-valor ahora exige `deriva_de`+guardrails) · pasada visual completa con claude-in-chrome
 (org-lod4 zoom, las 4 fichas nuevas, ficha arnés entera, banda gente 105%, z2 carriles, z3 piso).
@@ -86,8 +108,8 @@ capa-trabajo-valor ahora exige `deriva_de`+guardrails) · pasada visual completa
   disparaba. Remedios YA en el script: layout-pump (leer `stage.clientWidth` + escribir
   `document.title` por poll) · re-render+fit en reintentos · mclick con retry+re-fit · resets
   programáticos de estado en tests legacy · budget 40000. **Sigue flaky EN FRÍO**: "SIN RESULTADO"
-  aislado = re-correr (hasta 3-4 veces); cuando arranca → 23/23 estable. No diagnosticar sin
-  re-correr. Esperado: **23/23**.
+  aislado = re-correr (hasta 3-4 veces); cuando arranca → estable. No diagnosticar sin
+  re-correr. Esperado: **24/24** (v13).
 - Auditar DATA sin navegador: `new Function('document','window',…, <script>)` con Proxy-stub que
   se devuelve a sí mismo en todo get (receta dossier/07 § Recetas) — así se midió 46/27/roster.
 - Ciclo: editar → verify.sh → screenshots → ojos propios (¡las fichas por dentro, no solo z0!) →
@@ -101,7 +123,8 @@ capa-trabajo-valor ahora exige `deriva_de`+guardrails) · pasada visual completa
 | Derivación PUESTOS + helpers D-19 | `D-19 · puesto ≠ rol` |
 | Helpers arnés (arnesDe/rosterDe/arnesEstado/rosterBadge/setPiel) | `CK-30/D-20 · arnés = REGISTRO` |
 | Banda Gente (27 chips puesto) | `banda 4 · GENTE & ARNESES` |
-| Organigrama (click=ficha · dblclick=z1 · lod4 stacks) | `function renderOrganigrama` |
+| Organigrama (click=ficha · dblclick=foco · lod4 stacks) | `function renderOrganigrama` |
+| Foco de área v13 (z1 = mapa de valor enfocado) | `FOCO DE ÁREA` (en renderValor) · `function fitPts` |
 | lod4 rowH/slotW | `function treeLayout` |
 | Fichas nuevas | `function openPuesto` / `openRol` / `openArea` / `openArnes` / `openPersona` |
 | Guardrails CSS | `.grchip` · stack org: `.prows` |
