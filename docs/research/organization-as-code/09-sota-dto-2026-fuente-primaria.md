@@ -10,8 +10,10 @@
 > **Marcas:** **[V]** verificado en fuente primaria · **[V-2ª]** primaria bloqueada, verificado en
 > secundaria oficial · **[I]** inferencia del investigador, no hallazgo.
 >
-> **Estado:** la línea **process-as-code / workflow engines (§1)** quedó corriendo y se archiva
-> aparte cuando cierre. Todo lo demás está triangulado.
+> **Estado / alcance real:** la línea **process-as-code / workflow engines** (Camunda · Temporal ·
+> Argo · Airflow · Dagster · BPMN/DMN as code) y el detalle del **modelo de entidades de Backstage**
+> como prior art **se cancelaron antes de cerrar** (2026-07-25) — **no están investigadas, no se
+> infirieron**. Todo lo que SÍ está en este doc está triangulado con fuente.
 
 ---
 

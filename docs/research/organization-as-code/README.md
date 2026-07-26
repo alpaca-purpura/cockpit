@@ -23,4 +23,4 @@
 
 **Nota:** hermano de `docs/research/rediseno-total/` (CK-18). Aquel definió la arquitectura física; éste define la visión de producto y el TO-BE funcional.
 
-**Pendiente:** la línea **process-as-code / workflow engines** (Camunda · Temporal · Argo · Airflow · Dagster · BPMN/DMN as code) y el detalle del modelo de entidades de **Backstage** como prior art quedaron corriendo — se archivan al cerrar.
+**Hueco conocido (no investigado):** **process-as-code / workflow engines** (Camunda · Temporal · Argo · Airflow · Dagster · BPMN/DMN as code) y el **modelo de entidades de Backstage** (`catalog-info.yaml`, `apiVersion/kind/spec`, relaciones) como prior art del catálogo-de-la-organización. Esa línea se canceló antes de cerrar (2026-07-25). **No hay conclusiones sobre esos temas en `09`/`10` — si hacen falta, se investigan de cero.**
