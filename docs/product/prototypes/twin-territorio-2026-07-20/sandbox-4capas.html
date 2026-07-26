@@ -250,8 +250,15 @@ function renderD(hiloSet){
   const ap=place(el('div','pane'),120,86,760,64);
   ap.innerHTML=`<div class="pt">Apetito de riesgo (tira — dato simulado)</div>
    <span class="mt" style="font-family:var(--mono);font-size:10px;color:var(--tx-mut)">liquidez <b style="color:var(--warn)">media</b> · reputación <b style="color:var(--ok)">baja</b> · expansión <b style="color:var(--crit)">alta</b></span>`;
-  const pu=place(el('div','pane'),920,86,380,64);
-  pu.innerHTML=`<div class="pt">Pulso — KRs en banda</div><div>${nodes.filter(n=>n.capa==='D').map(n=>`<span class="dot ${n.krst}"></span>`).join('')} <span class="mt">2/5 en banda</span></div>`;
+  /* v2.1: sin jerga ("pulso"/"en banda" no se explican solas) — la pregunta del directorio, literal,
+     y el conteo DERIVADO del dato (antes era texto hardcodeado que contradecía los puntos) */
+  const dd=nodes.filter(n=>n.capa==='D'), nG=dd.filter(n=>n.krst==='g').length,
+        nA=dd.filter(n=>n.krst==='a').length, nR=dd.filter(n=>n.krst==='r').length;
+  const pu=place(el('div','pane'),920,86,380,72);
+  pu.title='Cada punto = una apuesta: ¿su número del trimestre se mueve hacia la meta?';
+  pu.innerHTML=`<div class="pt">¿Avanzan las apuestas? (este trimestre)</div>
+    <div>${dd.map(n=>`<span class="dot ${n.krst}" title="${n.label}: ${n.kr}"></span>`).join('')}
+    <span class="mt">${nG} en meta · ${nA} cerca · ${nR} fuera</span></div>`;
   /* excepciones que SUBIERON (burbujeo agregado) */
   const ex=place(el('div','pane'),1340,86,220,150);
   ex.innerHTML=`<div class="pt">Subió del piso</div>
