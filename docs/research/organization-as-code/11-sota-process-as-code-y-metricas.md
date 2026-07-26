@@ -701,13 +701,25 @@ Restringido a estos 5 temas. No repite los gaps de `09` (DTO) ni de `10` (arnés
 
 **I1 · Adoptar el envelope de Backstage, no inventar uno.** `apiVersion` + `kind` + `metadata` + `spec` es un contrato probado a 2.572 repos públicos [V]. Concretamente: (a) versionar el schema **en el archivo** (`apiVersion: cockpit.alpacapurpura.lat/v2`) y no sólo en `meta.version` — así una instancia vieja es detectable sin consultar el schema; (b) adoptar su restricción de `name` (1-63 chars, `[a-zA-Z0-9]` separados por `[-_.]`) para nuestros `id`; (c) evaluar el prefijo de kind en las refs (`kpi:rotacion-personal-pct`) — hoy nuestras refs son ambiguas cuando un campo acepta `rol|area` (`kpi.dueño_ref`, `brecha.against_ref`), y el prefijo lo resuelve sin campo extra.
 
-**I2 · La garantía de "no persistir el derivado" debe ser ESTRUCTURAL, no normativa.** La lección de dbt es que **el schema no tiene dónde escribir el valor**; la de Port es que la doctrina sin estructura **se dobla a los 100k entities**. Acción: `gen_schema.py` debe rechazar **claves desconocidas** en las entidades. Un `kpi.yaml` con un campo `semaforo:` o `valor_actual:` tiene que **fallar el commit**. Y anticipar el problema de Port: si los rollups se vuelven caros, la salida correcta **no** es persistirlos en el YAML sino materializar un *read-model reconstruible* al estilo del stitcher de Backstage (ver I4).
+**I2 · La garantía de "no persistir el derivado" debe ser ESTRUCTURAL, no normativa.**
+*(Precedente propio ya implementado: `go/objeto.go:63` llama `derivaDivergente(t["kpis"])` con el
+comentario `// anotación en el payload — el disco no se toca (RN-9)`, y la función vive en
+`go/objeto.go:250`. La doctrina ya corre en Go; lo que falta es que el **schema** la haga
+imposible de violar.)* La lección de dbt es que **el schema no tiene dónde escribir el valor**; la de Port es que la doctrina sin estructura **se dobla a los 100k entities**. Acción: `gen_schema.py` debe rechazar **claves desconocidas** en las entidades. Un `kpi.yaml` con un campo `semaforo:` o `valor_actual:` tiene que **fallar el commit**. Y anticipar el problema de Port: si los rollups se vuelven caros, la salida correcta **no** es persistirlos en el YAML sino materializar un *read-model reconstruible* al estilo del stitcher de Backstage (ver I4).
 
 **I3 · Copiar el `qualifier` de OCEL para las relaciones ambiguas.** `E2O ⊆ E × U_qual × O` es exactamente la primitiva que le falta a `persona.roles` y a `persona.reporta_a`. Ya lo hacemos parcialmente (`reporta_a: [{ref, tipo}]`); conviene generalizarlo: **toda relación N:M lleva qualifier tipado**. Beneficio adicional: nos alinea con el formato que va a hablar el Lakehouse (N16).
 
 **I4 · Introducir el *stitcher* como capa explícita entre `empresa/**` y `/api/objeto`.** Backstage resuelve lo mismo con: entidad procesada + relaciones emitidas (tabla dedicada) + **hash determinístico** que saltea el re-stitch si nada cambió [V]. Traducción: un `objeto.Stitch()` en Go que produzca el grafo completo (inversos, rollups, `divergente`, scores) con un hash sobre (cuerpo + refs + errores); reconstruible desde cero, nunca commiteado. Preserva "un-hecho-un-lugar" en la **autoría** sin pagar el scan en cada lectura. Sumar el equivalente de `backstage.io/orphan`: una ref colgante hoy es warning; conviene marcar la entidad huérfana explícitamente en la respuesta.
 
 **I5 · El gate debe bajar del meta-nivel al nivel de instancia.** Hoy `.githooks/pre-commit` valida **el schema**, y las instancias se validan en runtime — **el mismo shape que Backstage** y, por lo tanto, **no es todavía nuestro diferenciador**. El diferenciador aparece cuando el pre-commit valida `empresa/<tipo>/*.yaml` contra el schema **y** contra los invariantes de negocio. **Ése es G1 y hoy está a medio construir.** Modelo de referencia para el CLI: `dg check yaml` de Dagster [V].
+
+> **Anclajes de código para accionar esto** (verificados 2026-07-25): los 4 gates viven en
+> `.githooks/pre-commit:20-41` (`gen_arquitectura` · `gen_metodo` · `gen_roadmap` · `gen_schema`).
+> **`sistema/schema/gen_schema.py` no tiene ni una referencia a `empresa/`, a un glob ni a
+> "instancia"** — confirma la autocrítica de forma independiente. Los invariantes de negocio están
+> implementados en `go/objeto.go` y corren al leer (p.ej. el ERROR de `kpi.dueño_ref → persona` en
+> `go/objeto.go:686`). El trabajo es **levantar esos invariantes a un validador de instancias
+> invocable desde el hook**, no re-escribirlos.
 
 **I6 · Instrucción de trabajo por PUESTO = nuestra vista diferencial (G2).** Nadie corta por el puesto; todos cortan por el proceso. Tenemos el material: `proceso.actividad[].carril_ref` + `raci` + `rol` + `kpi.dueño_ref` + `actividad.alimenta_kpi_refs` permiten proyectar *"todo lo que hace y mide este rol"* sin dato nuevo. **Y es también el artefacto que se compila a la config del agente por puesto** — con lo que la instrucción de trabajo humana y el arnés del agente salen del mismo nodo del grafo, que es precisamente lo que ni Maestro (ejecuta, no documenta) ni ARIS (documenta, no ejecuta) hacen. *(Conecta directo con CK-30.)*
 
