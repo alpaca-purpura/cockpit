@@ -27,9 +27,15 @@ links:
 > muestra y qué se muestra de cada entidad. Ver el prompt de continuación al pie de esta nota / en el chat.
 >
 > **📁 DOSSIER COMPLETO (2026-07-24): [`dossier/README.md`](./dossier/README.md)** — TODO el avance
-> consolidado en 6 docs (visión/doctrina · mockup elemento-por-elemento · decisiones+porqués ·
-> datos+casuística · construcción real · pendientes+ideas minadas del transcript). La sesión que
-> continúe arranca AHÍ; este 00-story queda como registro de la idea y sus decisiones.
+> consolidado en 7 docs (visión/doctrina · mockup elemento-por-elemento · decisiones+porqués ·
+> datos+casuística · construcción real · pendientes+ideas minadas del transcript · **auditoría
+> visual↔escrito**). La sesión que continúe arranca AHÍ; este 00-story queda como registro de la
+> idea y sus decisiones.
+>
+> **🔍 AUDITORÍA 2026-07-25 → [`dossier/07-auditoria-hallazgos.md`](./dossier/07-auditoria-hallazgos.md)**
+> — tablero de deuda medida (mockup vivo × docs × schema × método): 6 desvíos de fondo, 5
+> sobre-promesas, 8 sincronías documentales YA corregidas, 4 de método/proceso. **Siguiente = A1**
+> (el arnés es la tesis CK-29 y no existe en `objeto.schema.yaml`).
 
 ## Job-To-Be-Done
 
@@ -282,8 +288,9 @@ un sistema interconectado. Sal de la caja y proponme algo mejor."
     **Estrategia** (objetivos+KR, perspectivas BSC como orden interno — muere la piel BSC; la
     causalidad = arcos dentro de la banda) → **Cadena de valor** (8 misionales izq→der, cada proceso
     = mini-mapa con sus pasos como micro-chevrons; doble-click = lienzo) → **Apoyo** (transversales
-    ANCHOS: el ancho dice cuántas áreas cruzan) → **Gente & arneses** (los ~15 puestos con ocupante
-    y ⛨) → **Sistemas** (plataformas, ancho = procesos que sirven). **El hilo de oro = edges
+    ANCHOS: el ancho dice cuántas áreas cruzan) → **Gente & arneses** (los **27** puestos con ocupante
+    y ⛨ — v6 decía "~15", conteo real 27) → **Sistemas** (plataformas, ancho = procesos que sirven).
+    **El hilo de oro = edges
     VERTICALES reales** cruzando las bandas: tenues siempre; click en un objetivo → su hilo completo
     se enciende (drivers + roles + sistemas), el resto se atenúa. El organigrama NO muere: se degrada
     a **piel secundaria** ("la estructura como lente"). Todo lo previo (capas, fichas, corrida,
@@ -304,7 +311,9 @@ un sistema interconectado. Sal de la caja y proponme algo mejor."
     NO vuelve — cada capa es entidad viva navegable. Salud rail rediseñado como lentes color-by
     (radio real + leyenda pegada + conteo). SIPOC también como sección en la ficha (drawer).
 17. **Empresa demo completa (~100 personas)** — nómina Terranova entera (14 líderes + 86
-    ocupantes, área Obras con 3 proyectos), 27 puestos operando la cadena (chips ×N), 40 roles,
+    ocupantes, área Obras con 3 proyectos), **27 puestos DIBUJADOS** en la banda Gente (chips ×N)
+    sobre un universo declarado de **`puestosTotal: 40`** (el denominador de "4/40 con arnés" — 40
+    son PUESTOS, no "roles": v8 los llamó roles por error),
     17 SIPOC, 11 lienzos plenos (incl. **Permisos y licencias** = el P03 del SOMA vivo en el twin,
     con g-dep bus-factor-1 y g-doc sin-procedimiento como brechas), 14 instrucciones z3 con
     tareas+M36, 11 sistemas, 12 KPIs. Casuística visible: vacante, sin-arnés, desactualizado,
@@ -463,3 +472,16 @@ tabs actual. Ratificación del operador + (si es decisión de fondo) ficha CK-NN
   cajas altas tapaban los labels de riel (center-anchoring) → más gap (canvas 920→1300), Cadena +48px,
   separadores más visibles, 5 checks de solape = false. Artifact republicado (v11). Auditoría de
   consistencia de todo el dossier (02 §0.1 / 03 / 06 / 00) — sin contradicciones, refleja el mockup real.
+- v11.1 2026-07-25 — **auditoría visual ↔ escrito** (pedido del operador; vía `/metodo`: GRAFO →
+  M32·M36·M40·M30). Se midió el mockup vivo (DOM + `const DATA` evaluado en Node con stub de DOM)
+  contra los 7 docs, `objeto.schema.yaml` y el catálogo de métodos. Resultado en el tablero nuevo
+  **`dossier/07-auditoria-hallazgos.md`**: 6 desvíos de fondo (**A1** el arnés es la tesis CK-29 y
+  no existe como entidad del schema · **A2** el hilo se ancla al objetivo en vez de al KR · **A3**
+  `area` sin ficha — "las 12 navegables" son 11 · **A4** 3 campos visual-only (`objetivo.salud`,
+  `area.madurez`, `sistema.conector`) · **A5** las 4 acciones que cierran el loop sin superficie ·
+  **A6** provenance M23 en 3/13 fichas), 5 sobre-promesas (B), 4 de método/proceso (**D1** M32 dice
+  "9 entidades" · **D2** `CLAUDE.md` idem · **D3** `state: idea` sin `01-spec` · **D4** M40/M30
+  limpios). **8 discrepancias doc↔mockup (C1-C8) corregidas en el acto**: huérfanos 6→8 ·
+  `g-mar`→`g-dso` · "~15"→27 puestos · "40 roles"→`puestosTotal: 40` (puestos) · canvas 920→1300 ·
+  v9/2439→v11/2475 líneas · orden real de módulos · fit 58% = relativo al viewport. **Cero cambio al
+  mockup — sólo docs.** Siguiente: **A1**.

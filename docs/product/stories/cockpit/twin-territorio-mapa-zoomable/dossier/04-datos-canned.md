@@ -42,7 +42,9 @@ p-liq. Instrucciones z3: p-cob:1..7 · p-vta:1..5 · p-perm:6 · p-perm:7.
 - **k-caj `mediciones:[]`** — GRIS: la ausencia NUNCA pinta rojo.
 - **k-obs** — "NO se mide por municipio (hallazgo)" (el hueco de medición como dato).
 - **k-cie 9→4.5** — la serie mejorando = el loop CERRADO visible (pm-cie).
-- **6 procesos huérfanos** (`sirve:[]`) — no suben a ningún objetivo.
+- **8 procesos huérfanos** (`sirve:[]`) — no suben a ningún objetivo: p-fact · p-post · p-liq ·
+  p-caja · p-dis · p-nom · p-conc · p-sop. *(corregido 2026-07-25 — el doc decía 6; conteo real
+  sobre `DATA.procesos`.)*
 - **o-caja verde** con DSO ya en 58 — no todo es rojo; el pulso distingue.
 
 ### Organización / frontera persona
@@ -56,7 +58,8 @@ p-liq. Instrucciones z3: p-cob:1..7 · p-vta:1..5 · p-perm:6 · p-perm:7.
 ### Brechas (8, una por tipo de historia)
 g-avc `apuesta` (LA Apuesta WSJF ①) · g-post `sin-ancla-de-valor` (obj null) · g-tes (rol
 vacante) · g-cvis `a-corroborar` + conf baja · g-mca `off-thread` (atenuada en el funil) ·
-**g-dep** (bus-factor-1 en Permisos) · **g-doc** (cero procedimiento escrito) · g-mar ALTA.
+**g-dep** (bus-factor-1 en Permisos) · **g-doc** (cero procedimiento escrito) · **g-dso** ALTA.
+*(corregido 2026-07-25 — el doc citaba `g-mar`, id inexistente en `DATA.brechas`.)*
 
 ### Triage / trabajo (CK-29)
 - **p-cob:3 "contactar"** — agente 72 > RPA 34, RTLX 71 → candidata a skill → idea `i-agente`

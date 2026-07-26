@@ -37,10 +37,28 @@ Kit, fabricados en Arnesia/P4) o con software a medida (P2 · DevStudio, tambié
 devs del cliente). La brecha **no es un entregable puntual de consultoría: es un loop permanente**
 — el twin la recalcula continuamente contra la operación real (drift organizacional, §Twin).
 
-**Fin-estado del trabajo (CK-29):** con el twin lleno, el colaborador no ejecuta el trabajo — **lo
-orquesta**: dirige agentes (Claude Code + el arnés de su puesto), mide su eficiencia, mejora su
-propio arnés y propone proyectos que aceleren la entrega de valor. Cockpit es la cabina de ese
-cerebro: hace que cada pieza — dato, decisión, arnés, proyecto — llegue en su momento, y mide si llegó.
+**Fin-estado del trabajo (CK-29, invertido en CK-30):** con el twin lleno, **las personas supervisan
+a los agentes — no los agentes ayudan a las personas.** El colaborador no ejecuta el trabajo: dirige
+la intención, aprueba las excepciones, mide la eficiencia, mejora su propio arnés y propone
+proyectos. El trabajo lo hacen los **agentes** = Colab Studio (N17) con Claude Code detrás + los
+arneses a los que se le dio permiso, **todos conectados al cerebro de la organización, que es el
+twin**. Cockpit es la cabina de ese cerebro: hace que cada pieza — dato, decisión, arnés, proyecto —
+llegue en su momento, y mide si llegó.
+
+**Y la supervisión no se declara: se especifica y se mide (CK-30).** Cada arnés declara *qué* debe
+verificar el humano, *con qué evidencia* y *en cuánto tiempo*; el twin mide si ocurrió. Un arnés que
+sólo dice "hay supervisión humana" construye una **zona de deformación moral** — el trabajador
+absorbe la culpa de un sistema que no puede vigilar de verdad (Elish · Green). Ratio de anulación en
+cero durante meses = **brecha**, igual que un KPI fuera de banda: el loop del producto aplicado a sí
+mismo. Corolario técnico: un guardrail escrito en prosa **no es un guardrail** — la regla la hace
+cumplir el runtime (permiso · hook · sandbox), nunca el prompt.
+
+**El trabajo se compila por rol × proceso (CK-30).** Tres unidades que no se confunden:
+`persona ─ocupa→ **puesto** ─agrega→ **rol** ─carril/RACI→ actividad ⊂ proceso`. El arnés **se
+compila** por rol×proceso (dato puro del twin), **se ensambla** por puesto (roster de N arneses — el
+puesto ejecuta N roles), y **se instala y corre** por persona (su runtime, su licencia, su
+telemetría). La frontera CK-24 cae exactamente entre *entregar* y *correr*: el twin mide puesto, rol,
+proceso y área — nunca persona.
 
 **Una sola doctrina, tres escalas (CK-29):** la visión del producto, el método que vende y nuestra
 forma de trabajo son la MISMA máquina — organización como codebase: SSoT versionada → vistas

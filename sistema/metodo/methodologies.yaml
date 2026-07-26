@@ -13,7 +13,7 @@
 
 _meta:
   fuente_humana: "sistema/metodo/METODOLOGIA.md §4 (compendio narrativo)"
-  total: 45
+  total: 46
   backbone: "objeto (capa de contexto / Hilo de Oro)"
   # Etiquetas de familias y del backbone — SSoT de los rótulos que el generador imprime en §4.
   familias:
@@ -487,6 +487,7 @@ M25:
     - { m: M15, como: "el Accountable del KR ejecuta el gate" }
     - { m: M24, como: "alimenta el stakeholder map" }
     - { m: M36, como: "humano-por-diseño ancla a la A (accountability, firma, responsabilidad legal)" }
+    - { m: M46, como: "la A define quién supervisa el arnés y qué gates humanos lleva adentro; C/I = contexto de lectura, no generan skills" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -510,6 +511,7 @@ M38:
   combina_con:
     - { m: M16, como: "instancia cl.7.5 (información documentada) del paraguas ISO 9001" }
     - { m: M12, como: "el documento clasificado ancla al proceso APQC que gobierna" }
+    - { m: M46, como: "la instrucción de trabajo (nivel 3) y el skill del arnés salen de la MISMA fuente: un origen, dos salidas" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -792,13 +794,14 @@ M32:
   fuente: { autor: "Palantir", obra: "Foundry Ontology — best practices (adoptada CK-21)", url: "https://www.palantir.com/docs/foundry/ontology/" }
   que: "la GRAMÁTICA del objeto.schema: semántica (entidades + relaciones) + kinética (acciones/cambio) + provenance structs + principio open/closed (extensible sin fork)"
   aporte_unico: "el METAMODELO PROPIO as-code en git — entidad-primero (no notation-first), con provenance y extensión por cliente como propiedades de la gramática"
-  cuando_usar: "siempre — es la gramática de las 9 entidades del twin; toda evolución del schema la respeta"
+  cuando_usar: "siempre — es la gramática de las 12 entidades del twin (CK-26; +`puesto`/`arnes` al materializar D-19/D-20 · CK-30); toda evolución del schema la respeta"
   objeto_primario: O7
   objetos_secundarios: [T1]
   principios: [P4, P5]
   combina_con:
     - { m: M23, como: "los provenance structs (fuente+conf) son parte de la gramática" }
     - { m: M13, como: "ArchiMate presta tipos como vocabulario DENTRO del metamodelo propio" }
+    - { m: M46, como: "el arnés entra a la gramática como entidad REGISTRO (procedencia+versión+drift), jamás como contenido" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: paraguas
   twin:
@@ -892,6 +895,7 @@ M36:
     - { m: M29, como: "mining alimenta volumen/%excepciones con evidencia observada" }
     - { m: M35, como: "solo se puntúa lo que sobrevivió al orden ECRS" }
     - { m: M25, como: "humano-por-diseño ancla a accountability (RACI A, firma, responsabilidad legal)" }
+    - { m: M46, como: "el veredicto es el CANDIDATO a skill del arnés: automatizable-*/aumentable entran, humano-por-diseño queda como gate" }
   donde: { modulos: [m1, m3], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -916,6 +920,7 @@ M37:
     - { m: M36, como: "la clase ALM×MGI alimenta los dos scores" }
     - { m: M23, como: "el verbo lleva conf del ingest — sin provenance el score es gameable eligiendo verbos 'suaves'" }
     - { m: M35, como: "la narrativa normalizada es lo que ECRS ordena" }
+    - { m: M46, como: "el verbo canónico es la unidad narrativa que se compila a procedimiento; su clase ALM×MGI informa la autonomía sugerida" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -963,6 +968,7 @@ M40:
     - { m: M23, como: "gemela transversal: provenance del dato ↔ gobernanza del dato de persona" }
     - { m: M39, como: "TLX/desgaste se agrega por rol/proceso bajo esta frontera" }
     - { m: M25, como: "el acceso sigue los niveles (Gobernanza > Estratégico > Táctico > Operativo)" }
+    - { m: M46, como: "la frontera cae entre ENSAMBLAR el arnés (por puesto, dato del twin) y CORRERLO (por persona): el uso se agrega por rol antes de volver" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -1092,3 +1098,31 @@ M45:
     dimensiones: [mejora-proyectos]
     cuando_si: "cuando un cliente exija certificación de innovación (V2+ / demanda — precedente D9/CK-10)"
     cuando_no: "NO es el marco dominante del proyecto de mejora operacional hoy — ese rol lo cumplen PDCA/MASP/DMAIC bajo ISO 9001 cl.10"
+
+# ── M46 · doctrina del arnés (CK-30, 2026-07-25) ──
+M46:
+  nombre: "Arnés por rol×proceso — el trabajo compilado del twin"
+  nombre_corto: "Arnés por rol×proceso"
+  familia: I
+  fuente: { autor: "propia (Cockpit, CK-30) · marcos: Agent Skills (estándar abierto, Anthropic) · CSA Agentic AI Autonomy Levels L0-L5 · Elish (moral crumple zones) · Green (flaws of human oversight)", obra: "El arnés como vista COMPILADA del twin — unidad rol×proceso, ensamblaje por puesto, corrida por persona; autonomía derivada del riesgo y supervisión especificada y medida", url: "https://agentskills.io/specification" }
+  que: "el paquete ejecutable (skills · subagentes · hooks · permisos · sandbox) que opera UN rol dentro de UN proceso, GENERADO del twin y jamás editado a mano. Tres unidades distintas: se COMPILA por rol×proceso (1 plugin; sus skills = los procedimientos de ese rol) · se ENSAMBLA por puesto (roster de N arneses con versión y canal — el puesto ejecuta N roles) · se INSTALA y CORRE por persona (su runtime, su licencia, su telemetría). Lleva su rebanada del hilo de oro (a qué KPI apunta), sus guardrails (por dónde no ir, con MECANISMO declarado) y punteros al conocimiento (dónde buscar)"
+  aporte_unico: "el ANCLAJE `deriva_de{puesto, rol, proceso}` + `hash_fuente` con gate anti-drift: el arnés no puede divergir del modelo porque el gate rechaza el commit. Ningún registro de agentes del mercado (Workday ASOR · SAP LeanIX AI Agent Hub · CSA Agent Registry v1) apunta al elemento organizacional que justifica al agente — todos tienen dueño humano, ninguno tiene procedencia. Y la SUPERVISIÓN se especifica y se mide (qué verificar · con qué evidencia · en cuánto tiempo), no se declara: supervisión declarada = zona de deformación moral (Elish/Green)"
+  cuando_usar: "al compilar, versionar o auditar el trabajo de un puesto; al decidir la granularidad de un skill (actividad hoy, tarea con id); al fijar autonomía y puertas de aprobación de un agente que opera en nombre de un trabajador"
+  objeto_primario: O4
+  objetos_secundarios: [O3, O7, T3]
+  principios: [P7, P5, P4]
+  combina_con:
+    - { m: M25, como: "la A del RACI define quién supervisa y qué gates humanos existen dentro del arnés; C/I = contexto de lectura, NO generan skills" }
+    - { m: M36, como: "el veredicto del triage es el CANDIDATO a skill: automatizable-* / aumentable entran al arnés, humano-por-diseño se queda como gate del supervisor" }
+    - { m: M37, como: "el verbo canónico es la unidad narrativa que se compila a procedimiento; su clase ALM×MGI informa la autonomía sugerida" }
+    - { m: M40, como: "la frontera CK-24 cae entre ENSAMBLAR (por puesto, dato del twin) y CORRER (por persona): la telemetría de uso se agrega por rol antes de volver al twin" }
+    - { m: M32, como: "el arnés entra al metamodelo como entidad REGISTRO (procedencia + versión + drift), no como contenido — el contenido lo compila la fábrica" }
+    - { m: M38, como: "la instrucción de trabajo (ISO 10013 n3) es la fuente humana del mismo procedimiento que el skill ejecuta: un origen, dos salidas" }
+  donde: { modulos: [m2, m3], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: [arnes-compilado, roster-por-puesto]
+    dimensiones: [trabajo-compilado, organizacion, triage-automatizacion]
+    cuando_si: "el twin declara el REGISTRO del arnés (deriva_de · version · hash_fuente · estado/drift · autonomia L0-L5 derivada del riesgo del puesto · supervisor · verificacion_humana · indicadores) y la fábrica compila el CONTENIDO; guardrail sin mecanismo (hook/permiso/sandbox) NO es guardrail — la regla la hace cumplir el runtime, no el prompt"
+    cuando_no: "el arnés NO se edita a mano (se recompila) · NO se compila por persona (dos ocupantes del mismo puesto reciben lo mismo) · NO arranca sobre L2 sin ratificación (la evidencia dice que los agentes multi-paso fallan: 30% TheAgentCompany, caída pass^1→pass^8) · identidad por impersonación PROHIBIDA (el agente tiene identidad propia y actúa en nombre de la persona)"

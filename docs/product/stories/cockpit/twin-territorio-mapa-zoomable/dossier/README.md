@@ -16,6 +16,7 @@
 | [`04-datos-canned.md`](./04-datos-canned.md) | Los datasets de Terranova + la casuística deliberada (el guion de venta encarnado en datos) | vas a portar datos al golden fixture |
 | [`05-construccion-real.md`](./05-construccion-real.md) | Del mockup a la app: qué ya está materializado, deuda de programación, veredicto técnico, historias relacionadas, doctrina de verificación, orden sugerido | vas a refinar/construir |
 | [`06-pendientes-e-ideas.md`](./06-pendientes-e-ideas.md) | Deuda abierta (⚠ los "muchos comentarios" del operador nunca entregados), ideas sin aterrizar (bandeja de decisiones, home por rol), tensión reportería↔volante, guiones de demo | al arrancar la próxima sesión |
+| [`07-auditoria-hallazgos.md`](./07-auditoria-hallazgos.md) | **TRACKER** de la auditoría visual↔escrito (2026-07-25): 6 desvíos de fondo (A) · 5 sobre-promesas (B) · 8 sincronías ✅ (C) · 4 de método/proceso (D), con evidencia `file:line` y recetas de reproducción | **antes de tocar el mockup o refinar** — es la lista de lo que falta resolver |
 
 ## El mockup mismo
 
@@ -28,7 +29,7 @@
 
 ## Cómo arrancar la próxima sesión (resumen)
 
-1. Leer este dossier (01 → 06). 2. Pedir/recibir los comentarios pendientes del operador (⚠ #1
-de 06). 3. Iterar el mockup si hay comentarios (HANDOFF = operativa) O arrancar refinamiento
+1. Leer este dossier (01 → 07). 2. Abrir **`07-auditoria-hallazgos.md`** — es el tablero de deuda
+abierta (A1 = siguiente). 3. Iterar el mockup (HANDOFF = operativa) O arrancar refinamiento
 (`05` § orden sugerido). 4. Guardián CK-29 activo: contrastar todo pedido contra `01`; desvío →
 avisar ANTES de aplicar; el operador firma.

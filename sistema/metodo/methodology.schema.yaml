@@ -48,7 +48,8 @@ enums:
   dimension: [metamodelo, vocabulario-arquitectura, procesos-clasificacion, procesos-flujo,
               organizacion, estrategia, madurez-brecha, riesgo-controles, calidad-loop,
               mejora-proyectos, provenance, narrativa-actividades, triage-automatizacion,
-              carga-cognitiva, documentacion-qms, simulacion, contrato-entidad]
+              carga-cognitiva, documentacion-qms, simulacion, contrato-entidad,
+              trabajo-compilado]                                   # ★ CK-30 (2026-07-25)
 
 # ── M-card (cada clave MNN de methodologies.yaml) ────────────────────────────
 card:
@@ -90,7 +91,7 @@ twin:
     - "cuando_si y cuando_no no pueden estar vacíos"
   # Etiquetas humanas de las dimensiones — las consume gen_metodo.py para NOTACIONES.html
   dimension_labels:
-    metamodelo:               "Metamodelo (9 entidades + relaciones + kinética)"
+    metamodelo:               "Metamodelo (12 entidades + relaciones + kinética)"
     vocabulario-arquitectura: "Vocabulario de arquitectura"
     procesos-clasificacion:   "Procesos — clasificación"
     procesos-flujo:           "Procesos — flujo"
@@ -107,6 +108,7 @@ twin:
     documentacion-qms:        "Documentación QMS (pirámide documental)"
     simulacion:               "Simulación"
     contrato-entidad:         "Contrato de entidad publicable"
+    trabajo-compilado:        "Trabajo compilado (arneses por rol×proceso)"
 
 # ── proceso/ (la Definición: plantilla del engagement, nuestra IP) ───────────
 proceso:

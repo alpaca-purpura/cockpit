@@ -24,6 +24,14 @@ del código: `02-mockup-guia-completa.md § 0.1`.
 - **Notación ratificada** — el operador iteró en vivo (materiales "me gusta V2" explícito · notación
   inline DENTRO · 3 tipos nuevos · aire entre bandas) y construyó SOBRE ella. Se trata como aceptada.
 
+## ➡ La deuda MEDIDA vive en `07-auditoria-hallazgos.md` (2026-07-25)
+
+Este doc (06) sigue siendo la **bandeja de ideas e insumos no ratificados**. La deuda **verificable**
+(hallazgos con `file:line`, medidos contra el mockup vivo + schema + método) se movió al tablero
+[`07-auditoria-hallazgos.md`](./07-auditoria-hallazgos.md). Dos ítems de abajo ya están allí con
+detalle completo y no se re-litigan acá: el band de capability (→ nota en A-follow-ups) y
+`CLAUDE.md` "9 entidades" (→ **D2**, junto con **D1**: M32 dice lo mismo).
+
 ## ⚠ Pendiente abierto
 
 - **Commit** — decisiones 22-26 horneadas en `index.html`; el **v10 (materiales, decisión 22) ya está

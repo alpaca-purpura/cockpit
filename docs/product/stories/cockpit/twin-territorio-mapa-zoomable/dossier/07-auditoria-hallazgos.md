@@ -1,0 +1,411 @@
+# 07 · Auditoría visual ↔ escrito — hallazgos abiertos (tracker)
+
+> Parte del dossier. **Auditoría del 2026-07-25** pedida por el operador: *"audita lo que tenemos
+> de forma visual vs lo que tenemos escrito … encuentra discrepancias, incoherencias y desvíos
+> respecto a nuestra visión de producto y objetivos"*.
+>
+> **Método de la auditoría** (reproducible, ver § Recetas al pie): mockup vivo (DOM + `DATA`
+> evaluado en Node con stub de DOM) × los 7 docs de la historia × `sistema/schema/objeto.schema.yaml`
+> × el cerebro metodológico (`/metodo`: `GRAFO.md` → M32 · M36 · M40 · M30). **Nada se midió a ojo:**
+> cada número de este doc sale de evaluar el `const DATA` real o de un grep con línea.
+>
+> **Cómo se usa este archivo:** es el **tracker** de la deuda. Un hallazgo se cierra poniendo
+> `estado: resuelto` + el commit/decisión que lo cerró. No se borra nunca — queda el registro.
+
+## Tablero
+
+| ID | Hallazgo | Sev | Estado | Decide |
+|---|---|---|---|---|
+| **A1** | El arnés es la tesis (CK-29) y **no existe en el schema** | 🔴 fondo | **✅ DECIDIDO 2026-07-25 — CK-30 + D-19/D-20/D-21 + M46.** Pendiente materialización (`objeto.schema.yaml` + Go + fixture + generador = historias) | firmado operador |
+| **A2** | El hilo de oro se ancla al **objetivo**, no al **KR** | 🔴 fondo | abierto | operador |
+| **A3** | `area` no abre ficha — "las 12 navegables" son 11 | 🟠 | abierto | ejecutable ya |
+| **A4** | 3 campos visual-only sin lugar en el schema (`objetivo.salud`·`area.madurez`·`sistema.conector`) | 🟠 | abierto | operador (2 de 3) |
+| **A5** | Las 4 acciones que **cierran el loop** no tienen superficie | 🔴 fondo | abierto | operador |
+| **A6** | Provenance (M23, *columna*) aplicada en 3 de 13 fichas | 🟠 | abierto | ejecutable ya |
+| **B1** | "Gramática de ficha universal" sobre-prometida | 🟡 | abierto | operador (alcance) |
+| **B2** | "SIPOC se DERIVA" — en el mockup es tabla canned paralela | 🟡 | abierto | ejecutable (copy) |
+| **B3** | `.dico` en 12/14 fichas, no en "TODA ficha" | 🟢 | abierto | ejecutable (copy) |
+| **B4** | 3 KPIs sin ancla, 1 sola brecha `sin-ancla-de-valor` | 🟡 | abierto | operador (dato) |
+| **B5** | "4/40 puestos" contra un denominador que el mapa no dibuja (27) | 🟡 | abierto | operador |
+| **C1-C8** | Dossier ≠ mockup — 8 números | 🟢 | **✅ resuelto 2026-07-25** | — |
+| **D1** | M32 dice "las 9 entidades del twin" (schema v2 = 12) | 🟠 | abierto | `/metodo-aprende` |
+| **D2** | `CLAUDE.md` / reglas dicen "9 entidades" | 🟠 | abierto | operador (rule file) |
+| **D3** | `state: idea` con 11 versiones y dossier de 7 docs — sin `01-spec` | 🟡 | abierto | operador |
+| **D4** | M40 (frontera persona) y M30 (BSC): **limpios** | ✅ | verificado | — |
+
+Severidad: 🔴 desvío de la tesis del producto · 🟠 rompe una doctrina declarada · 🟡 sobre-promesa o
+inconsistencia de dato · 🟢 sincronía documental.
+
+---
+
+# A · Desvíos de fondo (visión / as-code)
+
+## A1 · El arnés es la tesis y no existe en el schema 🔴 — SIGUIENTE A ATACAR
+
+**Qué se observó.** CK-29 es la tesis central del producto ("el twin es un cerebro que **compila
+trabajo**"; el arnés = **vista GENERADA del twin para un puesto**). El mockup lo trata como entidad
+de primera clase:
+
+| Superficie | Dónde |
+|---|---|
+| `DATA.arneses` — 11 campos (`id·rol·area·v·estado·compilado·skills·uso·acts·mueve·drift`) | `index.html` § "CK-29: el cerebro completo" |
+| Ficha propia `openArnes` (16 líneas, con doctrina "se recompila, jamás se edita") | `index.html:2369` |
+| Badge ⛨ en **5 superficies** (chevron cadena · rolchip · área subtree · carril z2 · piso z3) | `harnBadge()` |
+| Capa "Trabajo (N15·17)" en el rail | `CAPAS_APLICAN`, todas las escalas |
+| Bloque de portada "El twin compila trabajo — 4/40 puestos" | `inspectorHome()` z0 |
+| SC-14 "recompilar arnés por drift" en el módulo Cambios | `renderCambios()` |
+| Acción `recompilar-arnes` en 2 fichas (rol · arnés) | `openRol` · `openArnes` |
+
+**Qué dice el as-code.** `grep -n "arnes" sistema/schema/objeto.schema.yaml` → **cero entidad**; sólo
+aparece la palabra dentro del `met:` de otro campo (`tarea.verbo`, línea 241: *"skill de arnés
+candidateado por tarea"*). Y `acciones.catalogo` (líneas 425-449) **no declara `recompilar-arnes`**.
+
+**Qué doctrina rompe.**
+- `01-vision-y-doctrina.md § As-code`: *"todo lo que muestra existe (o existirá) como dato del
+  schema; nada se inventa visual-only sin declarar de qué entidad/campo cae"*.
+- **M32** (ontología Palantir, *paraguas*, `rol_ancla: metamodelo-propio`): la gramática del twin
+  **son** las entidades del `objeto.schema.yaml`. Una entidad de producto fuera de esa gramática es
+  exactamente el "fork" que M32 prohíbe (principio open/closed).
+- `[[metodologia-as-code]]` / `[[arquitectura-as-code]]`: SSoT → vista generada → gate. El arnés hoy
+  no tiene SSoT.
+
+**Por qué importa (no es formalismo).** Es *el* diferenciador comercial declarado en `01`: *"puestos
+sin arnés = la brecha de la era agéntica, y NADIE la pinta hoy"*. Todo lo que el mockup promete sobre
+arneses —drift, recompilación, `compilado_de`, uso agregado por rol, skills que mueven KPIs— **no
+tiene dónde guardarse** cuando se construya la app. El número de portada (4/40) es hoy una constante
+literal (`DATA.puestosTotal`), no un derivado.
+
+**Qué haría falta decidir (input del operador — la conversación que sigue).**
+1. ¿`arnes` es **entidad nueva** del objeto (13ª) o **proyección derivada** (como el SIPOC o la
+   instrucción z3), o **entidad de otro repo** (N15 Arnesia) referenciada por `ref`?
+   - Argumento pro-entidad: tiene estado propio (`vigente|desactualizado`), versión, telemetría de
+     uso y drift — cosas que **no** se derivan del twin.
+   - Argumento pro-proyección: el propio copy dice "vista GENERADA del twin … jamás se edita a mano".
+   - Argumento pro-cross-repo: el arnés se compila en N15 y corre en N17; el twin (N6/N13) sólo
+     necesita **saber que existe, su versión y si está en drift**.
+   - *(Lectura del auditor, no decisión: lo GENERADO es el contenido del arnés; lo que el twin debe
+     guardar es el **registro** del arnés — id, puesto, versión, hash del twin del que se compiló,
+     estado de drift, telemetría agregada. Eso es entidad, no proyección.)*
+2. ¿Qué campos entran y cuáles son derivados? (`estado` y `drift` parecen **derivables** comparando
+   el hash/versión del compilado contra el estado actual del twin — eso los haría "computa, jamás
+   guarda", coherente con M36/M32.)
+3. ¿`recompilar-arnes` entra a `acciones.catalogo`? Con qué `nivel_min` y `aprobacion`
+   (el mockup hoy dice "revisión-dueño").
+4. ¿`puestosTotal` de dónde cae? Hoy es constante. Candidato: contar `rol` con `es_puesto` o contar
+   ocupaciones `persona.roles[]`. Sin eso, "4/40" no es auditable.
+
+**Salida esperada:** ficha **D-NN** en `sistema/schema/DECISIONES.md` vía `/metodo-aprende` (el
+schema tiene gate), + entrada en `acciones.catalogo`, + (si aplica) M-card nueva o extensión de la
+familia I del método.
+
+**✅ RESUELTO (decisión) 2026-07-25 — LEDGER CK-30, firmado por el operador.** Las 4 preguntas se
+respondieron con 4 investigaciones paralelas (SOTA arneses-as-code · SOTA process/org-as-code ·
+relación as-code puesto-rol-proceso · qué es un arnés hoy en el ecosistema):
+
+1. **¿entidad / proyección / cross-repo?** → **entidad REGISTRO** en el twin (`deriva_de` · `version` ·
+   `hash_fuente` · `estado/drift` · `autonomia` · `supervisor` · `verificacion_humana` ·
+   `indicadores` · `uso_agregado`); el **contenido** lo compila Arnesia (N15) contra `arnes.l0.json`,
+   contrato que **ya existe** en harness-studio. Ficha **D-20**.
+2. **¿guardado vs derivado?** → `estado`/`drift` **derivados** (comparar `hash_fuente` contra el twin);
+   versión, telemetría, autonomía y supervisor **guardados** (no se derivan de nada).
+3. **`recompilar-arnes`** → sí, más `suspender-arnes` (kill-switch) y `ratificar-autonomia-arnes`. D-20.
+4. **`puestosTotal`** → deja de ser constante: `puesto` es entidad (**D-19**) y el conteo es auditable.
+
+**Además se resolvió lo que la pregunta no contemplaba:** el Misnomer `rol`(=cargo) → se parte en
+`puesto` + `rol` (D-19), y la granularidad del skill queda fijada (actividad hoy; tarea con **D-21**).
+
+**Pendiente (materialización, no decisión):** tocar `objeto.schema.yaml` + Go + fixture + escribir el
+generador. Son historias con su gate, no esta ficha.
+
+---
+
+## A2 · El hilo de oro se ancla al objetivo, no al KR 🔴
+
+**Qué se observó.**
+
+| Arista | Schema | Mockup |
+|---|---|---|
+| KPI → contrato de cambio | `kpi.contribuye_a[{ kr_ref, peso }]` (N:M contra **key_result**) | `kpi.obj` → **objetivo** + `kpi.peso` suelto |
+| brecha → qué bloquea | `brecha.kr_ref: list → key_result` | `brecha.obj` → **objetivo** |
+| KR | subesquema con 10 campos (`accountable_ref`, `kpi_ref`, `driver_refs`, `quarter`, `acople_compensacion`…) | `objetivo.kr = {m, from, to, cur, u}` — **1 solo KR por objetivo**, 5 campos |
+
+`openKpi` (`index.html:2295`) **muestra** "mueve el KR **{o.kr.m}** (peso {k.peso})" — o sea, narra la
+arista correcta pero el enlace real salta el KR. Funciona sólo porque en los datos canned cada
+objetivo tiene exactamente un KR.
+
+**Qué doctrina rompe.**
+- El diferenciador #1 de `01`: *"Hilo de oro **MEDIDO** — objetivos directorio → **KR** → KPI →
+  proceso/rol"*. Sin el eslabón KR, el hilo es "objetivo → KPI": pierde el **contrato de cambio**
+  (baseline→target→current del trimestre) que es lo que lo hace medible.
+- El schema es explícito (`kr.kpi_ref`): *"frontera permeable — el KR = contrato de CAMBIO sobre la
+  serie de un KPI existente (misma serie, distinto contrato)"*.
+- `kr.accountable_ref`: *"el ROL accountable; **JAMÁS OKR individual**"* — el mockup no lo tiene, y
+  es un guardrail de CK-24/M40, no un adorno.
+
+**Consecuencia concreta.** Quedan **imposibles de representar** las dos acciones de esa frontera, que
+el propio schema declara: `promover-kpi-a-kr` (el mockup la ofrece en `openKpi`… hacia un objetivo,
+no hacia un KR) y `decantar-kr-a-kpi` (ausente, ver A5). Y un objetivo con 2+ KRs —el caso normal en
+OKR— no tiene forma de dibujarse.
+
+**Qué hacer.** Migrar `DATA.objetivos[].kr` (objeto) → `key_results[]` (lista, con `id` local
+`obj-x#krN`), repuntar `kpi.obj`→`kpi.kr` y `brecha.obj`→`brecha.kr`, y ajustar 4 superficies:
+banda Estrategia (`renderValor`), `openKpi`, `openBrecha`, `openObjetivo`. **Esfuerzo medio**
+(toca datos canned + 4 renders). **Decide el operador** porque cambia la geografía de la banda 1
+(un objetivo con N KRs ocupa más).
+
+---
+
+## A3 · `area` no abre ficha — "las 12 navegables" son 11 🟠
+
+**Qué se observó.** `wireLinks` (`index.html:1237-1246`) cablea **11** tipos:
+`k · h · rol · per · sis · obj · idea · cap · proc · pm2 · g2` (+`acc`). Búsqueda en todo el archivo:
+`data-area` → **0 ocurrencias** · `openArea` → **0 ocurrencias**.
+
+En `openProceso:2192`, "Áreas que cruza" se renderiza como **texto plano**
+(`p.areas.map(a=>byId(DATA.areas,a).nm).join(', ')`) — no es link. Igual en `openPersona:2361`
+("Área") y en `openArnes` (el área del puesto).
+
+**Qué doctrina rompe.** Decisión 11 (`03`): *"TODA entidad del schema (las 12 …) abre ficha en el
+inspector con las mismas secciones"* + *"el viaje nunca se corta"*. `area` es una de las 12
+(`o_code: O4`, ArchiMate Business Actor organizacional) y es la **única sin `open*`**.
+
+**Nota de conteo (el doc también se equivoca):** `02 § 4` se titula "Las 12+1 fichas" y lista 13
+filas, pero esas 13 son **11 entidades + `actividad`** (subesquema, no entidad) **+ `arnés`**
+(no-entidad, ver A1). Falta `area`.
+
+**Atenuante:** el área SÍ tiene "territorio" (z1, `renderArea` + sala de mando contextual), pero
+sólo se alcanza por doble-click desde la **piel Organigrama** — que ya es un pendiente conocido
+(`06` § menores: *"z1 solo accesible vía piel Organigrama"*).
+
+**Qué hacer.** `openArea(a)` con la gramática: qué-es (propósito · líder link · parent link ·
+madurez —ver A4— · conf) · hilo (procesos del subtree · roles · KPIs por banda · brechas) · pulso ·
+acciones · botón "Entrar al área (z1) ›". + `data-area` en `wireLinks` + convertir a link las 3
+menciones de texto plano. **Barato, ejecutable ya.**
+
+---
+
+## A4 · Campos visual-only que el schema no tiene 🟠
+
+| Campo canned | Dónde pinta | Estado en el schema | Veredicto |
+|---|---|---|---|
+| `objetivo.salud` (`index.html:656+`) | dot de cada tarjeta de la banda Estrategia · "Pulso N/7 en banda" · `openObjetivo` | **no existe** | debería **derivarse** del KR (`cur` vs `from/to`) o de sus KPIs — el motor `semaforo()` ya existe para KPI |
+| `area.madurez` (`index.html:667+`) | lente **Madurez (COBIT)** del rail, que "pinta áreas" | **no existe en `area`** — COBIT vive en `capability.assessment{nivel_actual, nivel_deseado, escala}` | o se deriva (rollup de capabilities del área) o se declara campo nuevo con ficha |
+| `sistema.conector` (`index.html:824+`) | ficha sistema § "Pulso (lakehouse N16)" · texto "SIN conector — candidato" | **no existe** | el pulso N16 no está modelado en `sistema` — candidato a campo nuevo |
+
+**Qué doctrina rompe.**
+- `objetivo.salud` es **incoherencia interna del mockup**: en z3 predica en pantalla *"los scores se
+  COMPUTAN — jamás se guardan"* (M36) y en z0 pinta un semáforo **guardado**. Mismo principio que
+  `identidad ≠ observación` (M32/Palantir P1) y que `semaforo(k)` ya respeta para KPI.
+- `area.madurez`: la capa Madurez se declara anclada a **M15 COBIT / M31**; pintarla desde un campo
+  que el marco no tiene desconecta la capa de su M-card.
+- Los tres violan la regla de `01` ("nada visual-only sin declarar de qué campo cae").
+
+**Qué hacer.** `objetivo.salud` → derivar (barato, ejecutable ya). `area.madurez` y
+`sistema.conector` → **decisión del operador**: derivar vs. fichar campo nuevo (D-NN).
+
+---
+
+## A5 · Las 4 acciones que cierran el loop no tienen superficie 🔴
+
+**Qué se observó.** `acciones.catalogo` del schema declara **15** acciones. El mockup usa 12
+(`data-acc="…"`). Cruce exacto:
+
+**Declaradas y NO usadas (4):**
+
+| Acción | Entidad | Qué hace (schema) | Por qué duele |
+|---|---|---|---|
+| `verificar-beneficios` | proyecto_mejora | *"finanzas valida el beneficio real post-implementación (`firmas.finanzas.fecha_post`)"* · validación `firma-finanzas-post` | es la **doble firma RN-15**: sin ella un hard-saving no cierra. Es el gate que hace creíble el "KPI movido" |
+| `cerrar-proyecto` | proyecto_mejora | *"beneficios-en-auditoria → cerrado, con `resultado{}` (KPI movido o no — dato real)"* | **es literalmente el money shot**: el mockup muestra `pm-cie` ya cerrado, pero nunca ofrece cerrarlo |
+| `decantar-kr-a-kpi` | objetivo | *"KR logrado vuelve a KPI monitoreado (fin de ciclo)"* | la mitad que falta de la frontera permeable (ver A2) |
+| `corregir-verbo-actividad` | proceso | *"consultor corrige el verbo del ingest — auditado (provenance, anti-gaming)"* | el módulo Cambios **narra** esta historia (SC-11: "transportar"→"visitar", auditado) pero la ficha de actividad no ofrece la acción |
+
+**Usadas y NO declaradas (2):** `recompilar-arnes` (ver A1) · `corregir-instruccion` (z3).
+
+**Qué doctrina rompe.** `06 § Tensión de fondo`, verbatim del operador: *"el moat entero está en los
+**WRITES**: sellar, aprobar, promover, ciclo de proyecto"*. La medición ahora es concreta: **4 de 4
+acciones de cierre ausentes**, y las 2 que el mockup inventó son justo las que no están declaradas.
+El diferenciador #2 de `01` ("Loop brecha → proyecto → KPI movido … ningún vendor lo cierra
+in-tool") se muestra como **resultado**, nunca como **acción**.
+
+**Qué hacer.** Cablear las 4 en sus fichas (`openProyecto` ×2, `openObjetivo`, `openActividad`) con
+su nivel+aprobación reales del catálogo, y declarar las 2 inventadas (o quitarlas). **Decide el
+operador** el alcance: ¿el mockup demuestra los writes con gate simulado, o los deja de teaser?
+
+---
+
+## A6 · Provenance (M23, *columna*) aplicada en 3 de 13 fichas 🟠
+
+**Qué se observó.** `prov(fuente, conf)` sólo aparece en `openProceso` · `openActividad` · `openKpi`.
+
+**Sin provenance (10):** objetivo · brecha · proyecto · rol · persona · sistema · idea · capability ·
+empresa · arnés.
+
+Peor: los datos canned de `objetivo` **ni tienen `conf`** — 5 campos (`id, nm, persp, kr, salud`)
+cuando el schema declara `fuente`+`conf` en **las 12 entidades**. Lo mismo `sistema` (5 campos),
+`capability` (5), `persona` (4), `empresa` (4).
+
+**Caso agravado — el triage:** `actividad.triage` canned es un **string plano**
+(`triage:'automatizable-rpa'`, `index.html:984+`); el schema exige
+`{ veredicto: enum, fuente: enum, conf: enum }`. **M36 `cuando_no` dice literal:** *"jamás score sin
+su incertidumbre al lado"*. En z3 sí se muestran los 7 inputs y la conf; **en z0 los mini-chevrons
+pintan el veredicto por color sin ninguna conf** — la superficie más vista del producto es la que
+incumple.
+
+**Qué doctrina rompe.** M23 es `modo: columna`, `ancla[provenance]`, `capa_contexto: true` — o sea,
+transversal a todo el AS-IS. `01 § Doctrinas`: *"Provenance (M23): todo dato AS-IS con `fuente`+`conf`;
+incertidumbre siempre visible"*.
+
+**Qué hacer.** (a) agregar `fuente`/`conf` a los datasets canned que no lo tienen; (b) `prov()` en
+las 10 fichas; (c) que el mini-chevron del triage lleve señal de conf (opacidad/borde punteado —
+**no color**, el canal está tomado por salud). **(a)+(b) ejecutables ya; (c) es diseño → operador.**
+
+---
+
+# B · Predica ≠ practica (incoherencia interna)
+
+## B1 · "Gramática de ficha universal" sobre-prometida 🟡
+
+Decisión 11 dice *"TODA entidad abre ficha con las MISMAS secciones: qué-es · hilo · pulso ·
+conocimiento · acciones"*. Medición real sobre las 13 fichas:
+
+| Sección | Cobertura | Ausente en |
+|---|---|---|
+| qué-es | 13/13 ✅ | — |
+| hilo (links) | 12/13 | `openEmpresa` |
+| pulso | 9/13 | actividad · persona · idea · (empresa parcial) |
+| **conocimiento** | **3/13** | todas salvo proceso · actividad · rol |
+| **acciones** | **9/13** | persona · sistema · capability · empresa |
+
+**Hallazgo estructural:** la sección "acciones" **no puede** ser universal hoy — el
+`acciones.catalogo` del schema sólo cubre **6 entidades** (kpi · objetivo · idea · proyecto_mejora ·
+brecha · proceso). Para persona/sistema/capability/empresa/rol/area no hay acción declarada.
+
+**Qué hacer.** Elegir una de dos, y escribirlo: (a) ampliar el catálogo del schema, o (b) **degradar
+la promesa**: "las secciones que apliquen, en el mismo orden — una sección vacía se declara vacía
+(disable honesto), no se omite en silencio". *(La (b) es coherente con el principio de "disable
+honesto" que el mockup ya aplica a las capas.)* **Decide el operador.**
+
+## B2 · "SIPOC se DERIVA, jamás se edita" — pero es tabla canned paralela 🟡
+
+`openProceso` imprime esa frase (D-08/D-11) y el header C1 de z2 la repite. En el mockup el SIPOC
+vive en `DATA.sipoc` (17 entradas) + `DATA.sipocC1` (17) — **estructuras separadas escritas a mano**,
+no derivadas de `proceso.entradas/salidas` (que en el canned ni existen). En el schema **sí** sería
+derivado. Es una mentira honesta del prototipo, pero hoy no está declarada en ningún lado.
+
+**Qué hacer.** Nota "en el mockup es canned; en la app se deriva de `proceso.entradas/salidas`" en
+`02 § z2` y `04`. **Copy, barato.**
+
+## B3 · `.dico` en 12 de 14 fichas 🟢
+
+La decisión 24 dice *"ícono de tipo en el header de **TODA** ficha"*. `openDrawer` parsea la 1ª
+palabra del eyebrow contra `TICO`: **`Actividad`** y **`Arnés`** no matchean → sin ícono. Es
+coherente (ninguna de las dos es entidad del schema — `actividad` es subesquema, `arnés` no existe,
+ver A1), pero el doc afirma "toda ficha". **Corregir el copy del doc**, o darles ícono propio si A1
+convierte al arnés en entidad.
+
+## B4 · 3 KPIs sin ancla, 1 sola brecha `sin-ancla-de-valor` 🟡
+
+`DATA.kpis` sin `obj`: **`k-nps` · `k-obs` · `k-sla`**. `DATA.brechas` con
+`estado: 'sin-ancla-de-valor'`: **sólo `g-post`** (la del NPS).
+
+`openKpi` sí delata los 3 en su ficha ("⚠ Sin ancla de valor…"), pero el **diagnóstico** (el funil de
+Mejora, la sala de mando) sólo cuenta 1. `04` presenta el caso como "la joya del diagnóstico" — y el
+twin lo detecta 1 de 3 veces.
+
+**Qué hacer.** O generar brecha por cada KPI sin ancla (el diagnóstico debería ser exhaustivo), o
+declarar en el dato por qué `k-obs`/`k-sla` no la generan. **Decide el operador** (es guion de venta).
+
+## B5 · "4/40 puestos" contra un denominador que el mapa no dibuja 🟡
+
+La banda Gente dibuja **27** rolchips (conteo real de roles únicos). `DATA.puestosTotal = 40`. El
+número de portada del gap agéntico ("4/40 puestos operan con arnés") se calcula contra **13 puestos
+que existen como constante y no como nodo**.
+
+**Qué hacer.** O el mapa dibuja los 40, o el copy dice "27 puestos mapeados · 40 declarados", o
+`puestosTotal` pasa a derivarse. Ligado a A1.4. **Decide el operador.**
+
+---
+
+# C · Dossier ≠ mockup — ✅ RESUELTO 2026-07-25
+
+Ocho números corregidos en esta misma sesión (sincronía documental pura, cero decisión de diseño):
+
+| # | Doc | Decía | Real / corregido |
+|---|---|---|---|
+| C1 | `04:45` | 6 procesos huérfanos | **8** (p-fact·p-post·p-liq·p-caja·p-dis·p-nom·p-conc·p-sop) |
+| C2 | `04:59` | brecha `g-mar` ALTA | **`g-dso`** (`g-mar` no existe en `DATA.brechas`) |
+| C3 | `00:285` | "los ~15 puestos" | **27** |
+| C4 | `00:307` · `03:121` | "27 puestos … **40 roles**" | 27 puestos **dibujados** · `puestosTotal: 40` = **puestos**, no roles |
+| C5 | `02:154` | canvas "1840×~920" | **1840×1300** (decisión 26; el 920 quedó de piso del `Math.max`) |
+| C6 | `02:3` | "index.html **v9** (2439 líneas)" | **v11 (2475)** |
+| C7 | `02:97` | módulos "Territorio·Mejora·**Cambios·Método**" | DOM real: **Territorio·Mejora·Método·Cambios** (`index.html:538-541`) |
+| C8 | `02:89` · `03:291` | "fit por defecto **58%**" | relativo al viewport: **~58% stage ancho · ~46% @1568px** |
+
+**Lo que SÍ cuadraba** (verificado, no tocar): 7 objetivos · 14 áreas · 17 procesos · 8 brechas ·
+12 KPIs · 11 sistemas · 4 capabilities · 4 arneses · 4 ideas · 86 `personasExtra` · 11 lienzos plenos
+(10 en `DATA.lienzos` + flagship `p-cob`) + 6 stub · 14 instrucciones z3 · 17 SIPOC · la matriz
+`CAPAS_APLICAN` **idéntica** a la tabla de `02 § 3` · el "Pulso 1/7 en banda" (1 objetivo verde de 7).
+
+---
+
+# D · Método, reglas y proceso
+
+## D1 · M32 dice "las 9 entidades del twin" 🟠
+
+`sistema/metodo/methodologies.yaml:795` (`M32.cuando_usar`): *"siempre — es la gramática de **las 9
+entidades** del twin"*. El schema v2 tiene **12** (CK-26). `GRAFO.md` lo propaga (es generado).
+
+El cerebro metodológico se contradice con el schema, y M32 es justamente la card que **define la
+gramática de las entidades**. **Fix por `/metodo-aprende`** (`methodologies.yaml` tiene gate
+pre-commit; `GRAFO.md`/`METODOLOGIA.md §4` son generados y no se editan a mano).
+
+## D2 · `CLAUDE.md` y reglas dicen "9 entidades" 🟠
+
+Ya anotado en `06` como "saldar aparte". Sigue abierto. Es rule/instruction file → **lo firma el
+operador**. Va junto con D1 (misma corrección, dos SSoT distintas).
+
+## D3 · `state: idea` con 11 versiones de mockup y dossier de 7 docs 🟡
+
+La historia sigue en `state: idea`. No hay `01-spec.md`, ni § Mapa funcional, ni scenarios, ni
+`04-validators.yaml`. El arnés define `idea → refining → refined → ready → …`.
+
+Es una decisión consciente (el mockup ES el contrato visual previo al refinamiento, decisión 6+10),
+pero el riesgo es real y conviene nombrarlo: **hoy nada de esto tiene criterio de aceptación
+verificable**. `05 § orden sugerido` ya prevé el `/po-ux` a mano. **Decide el operador** cuándo se
+cruza el umbral.
+
+## D4 · M40 y M30 — limpios ✅
+
+- **M40** (frontera persona / CK-24): verificado en `openPersona`, `openRol`, `openActividad` y en la
+  leyenda de la banda Gente. RTLX agregado por rol · uso de arnés por rol · autoría de ideas
+  reconocida pero jamás medición · persona sin nodo medible. **Sin hallazgos.**
+- **M30** (BSC): la card dice `cuando_si: "SOLO-CHECKLIST de perspectivas"` y
+  `cuando_no: "NO framework completo"`. La **decisión 15** (BSC = orden interno de la banda
+  Estrategia, no piel propia) cumple la card **mejor** que la decisión 2 original. **Sin hallazgos.**
+
+---
+
+# Recetas — cómo se reproduce esta auditoría
+
+```bash
+# 1 · servir el mockup con charset (el HTML no trae <meta charset>; el Artifact se lo agrega)
+D=/tmp/twin-serve; mkdir -p $D
+SRC=docs/product/prototypes/twin-territorio-2026-07-20/index.html
+{ printf '<!doctype html>\n<html lang="es"><head><meta charset="utf-8"></head>\n'; cat $SRC; \
+  printf '\n</html>\n'; } > $D/index.html
+(cd $D && python3 -m http.server 8777)
+
+# 2 · evaluar el `const DATA` real SIN navegador (stub de DOM vía Proxy) para contar cardinalidades,
+#     huérfanos, KPIs sin ancla, campos por entidad. Ver el patrón en la sesión 2026-07-25:
+#     new Function('document','window',…, <script del html>) + Proxy que devuelve self en todo get.
+
+# 3 · gramática de fichas: extraer el cuerpo de cada `function open*` y buscar
+#     prov( · conocimientoHTML( · data-acc=" · data-<tipo>=
+# 4 · acciones mockup ↔ schema:
+grep -o 'data-acc="[^"]*"' docs/product/prototypes/twin-territorio-2026-07-20/index.html | sort -u
+grep -oE '\{ id: [a-z-]+, +entidad: [a-z_]+' sistema/schema/objeto.schema.yaml
+# 5 · método: /metodo → GRAFO.md → grep -n "^M36:" methodologies.yaml → Read offset limit=26
+```
+
+**Regla de la casa:** ningún número de este doc se escribe "a ojo". Si un hallazgo no tiene
+`file:line` o una medición reproducible, no entra al tablero.

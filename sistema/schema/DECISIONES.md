@@ -210,6 +210,96 @@ HIPÓTESIS CALIBRABLE** (Lacity & Willcocks + práctica agéntica + juicio propi
 evidencia M29 y el loop de proyectos cerrados con veredicto KPI-movido). El **motor** que ejecuta esta
 derivación = historia futura (los scores del mockup siguen canned hasta entonces).
 
+## D-19 · `puesto` ≠ `rol` — se parte el Misnomer (M32) — `clavada` (ratificada operador 2026-07-25 · CK-30)
+Hasta hoy `rol.nombre` declaraba `met: "= cargo (SOMA C8)"` — es decir, **`rol` significaba lo que el
+negocio llama PUESTO**, y `actividad.carril_ref → rol` usaba ese mismo objeto como **carril BPMN**. Dos
+conceptos de dos planos distintos bajo una palabra = **Misnomer M32**. Se parten:
+
+- **`puesto`** (entidad nueva · O4 · ArchiMate *Business Actor (organizational position)*) — la posición
+  del organigrama: lo que se contrata, se ocupa, se **vacanta** y **reporta**. Campos previstos:
+  `id · nombre · descripcion? · area_ref → area · roles_ref[] → rol · reporta_a_ref? → puesto ·
+  competencias_req[]? · autoridad? · fuente · conf`. **Owning side de puesto↔rol = `puesto.roles_ref[]`**
+  (el `rol` sigue siendo hub chico: no guarda referrers).
+- **`rol`** (existente, RE-SIGNIFICADO) — el **papel dentro de un proceso**: el carril BPMN, la fila
+  RACI. Es la definición estricta de ArchiMate *Business Role*, la que `carril_ref`/`raci` siempre
+  quisieron decir. Se le quita el `met: "= cargo"`.
+- **`persona.roles[]` → `persona.puestos[]`** — la ocupación pasa a colgar del puesto (`{puesto, desde,
+  hasta?, dedicacion}`); los roles de la persona se **DERIVAN** por `puesto.roles_ref[]` (un-hecho-un-lugar).
+  Cardinalidades: **N personas por puesto · N roles por puesto · un rol puede vivir en N puestos**.
+- **`puestosTotal` deja de ser ambiguo**: = conteo de `puesto`. (Era una constante de mockup sin campo
+  detrás; el denominador de "4/40 con arnés" pasa a ser auditable.)
+
+**Regla de derivación que esta ficha CIERRA (era ambigua, y cada lectura daba un arnés distinto):**
+*"los procesos de un rol"* = **posee** (`proceso.dueño_ref`) ∪ **ejecuta** (`actividad.carril_ref` ∨
+`actividad.raci.R`). **`raci.C` / `raci.I` = contexto de lectura, NO generan skills.**
+
+**NO deroga D-09:** `función` sigue disuelta. `puesto` es **agregador de contratación**, no función —
+lo procesal se sigue derivando del wiring (RACI), y `rol.responsabilidades[]`/`rol.autoridad` siguen
+siendo lo no-procesal. **Frontera CK-24 intacta:** el twin mide `puesto`, `rol`, `proceso`, `area` —
+todas no-persona; `persona` sigue siendo ocupante y autora, jamás eslabón de medición.
+
+**Origen:** el modelo ya era la doctrina declarada del ecosistema (`NODOS.md` N17 "cada puesto ejecuta
+N roles" · N15 "skill=procedimiento, plugin=rol" · `docs/research/rediseno-total/07-proceso-como-arnes.md`
+· visión firmada de harness-studio "rol × proceso"); el schema era la pieza desfasada. **Migración:** los
+`rol-*.yaml` del fixture son hoy puestos → se dividen (puesto + sus roles-en-proceso). Materialización en
+`objeto.schema.yaml` + Go + fixture = historia, no esta ficha.
+
+## D-20 · `arnes` = entidad REGISTRO del twin (el contenido vive en N15) — `clavada` (ratificada operador 2026-07-25 · CK-30)
+El arnés era la tesis del producto (CK-29) **sin SSoT**: `grep arnes objeto.schema.yaml` → cero entidad,
+y `recompilar-arnes` no estaba en `acciones.catalogo` pese a existir como acción en el mockup y como
+SC-14 en Gestión de Cambios. Se resuelve **partiendo registro y contenido**:
+
+- **El TWIN guarda el REGISTRO** (entidad `arnes`, O7-adyacente): `id · deriva_de{puesto_ref, rol_ref,
+  proceso_ref} · version (semver) · hash_fuente · estado{vigente|desactualizado|suspendido|deprecado} ·
+  autonomia (L0-L5) · supervisor_ref → puesto · verificacion_humana{que[], evidencia[], tiempo_estimado} ·
+  indicadores_ref[] → kpi · modelo_base + modelo_version · distribucion{marketplace, canal} ·
+  uso_agregado (por rol — CK-24) · fuente · conf`.
+- **ARNESIA (N15) produce el CONTENIDO** — skills, subagentes, hooks, `permissions`, sandbox, MCP —
+  contra el contrato **`arnes.l0.json` que YA EXISTE** en harness-studio (`required: [id, rol, proceso,
+  reporta_a]` + `empresa` + `fases[]` + `spine{estados,transiciones}`; 10 clases × 7 bandas × 3 ejes
+  ortogonales clase⊥banda⊥perfil_harness). **No se inventa formato de salida.**
+
+**Por qué entidad y no proyección pura:** `estado`/`drift` SÍ se derivan (comparar `hash_fuente` contra
+el twin actual — coherente con "computa, jamás guarda"), pero versión, telemetría de uso, autonomía y
+supervisor **no se derivan de nada**: son hecho propio del arnés instalado. **`deriva_de` es el campo
+que ningún registro de agentes del mercado tiene** (Workday ASOR, SAP LeanIX AI Agent Hub y CSA Agent
+Registry v1 tienen `ownerEmail`, ninguno apunta al elemento organizacional que justifica al agente) —
+es el diferenciador, y habilita la pregunta bidireccional rol↔arnés y el análisis de impacto ante
+rediseño.
+
+**Acciones kinéticas que entran a `acciones.catalogo`:** `recompilar-arnes` (entidad `arnes`,
+`nivel_min: tactico`, `aprobacion: revision-dueño`) · `suspender-arnes` (kill-switch,
+`nivel_min: tactico`, `aprobacion: directa`) · `ratificar-autonomia-arnes` (`nivel_min: gobernanza`,
+`aprobacion: gestion-cambios`, validación `autonomia > L2 requiere ratificación`).
+
+**Invariantes de gate previstas:** (1) `hash_fuente` divergente del twin ⇒ `estado: desactualizado`
+(anti-drift, mismo patrón que `gen_arquitectura.py --check`); (2) `autonomia >= L3` con todos los
+guardrails de `mecanismo: prompt` ⇒ **ERROR** (guardrail en prosa no es guardrail — *"Permission rules
+are enforced by Claude Code, not by the model"*); (3) `identidad.modo` **no admite `impersonation`**
+como valor (consenso Okta/Gartner/CyberArk: el agente tiene identidad propia y actúa *en nombre de*
+la persona, RFC 8693 claim `act`); (4) `auditoria.retencion_dias >= 180` (EU AI Act Art. 26(6)).
+
+## D-21 · `tarea` direccionable — el L5 que D-17 prometió (D-17-bis) — `clavada` (ratificada operador 2026-07-25 · CK-30)
+D-17 declaró `actividad.tareas[]` y prometió *"triage con granularidad L5 (skill de arnés candidateado
+**por tarea**, no por actividad entera)"*; `triage.yaml` repite la promesa. **Es hoy imposible:** el
+subesquema `tarea` sólo tiene `{orden, verbo?, texto, sistemas_ref?}` — **sin `id`** (un arnés no puede
+apuntar a un paso), **sin `carril_ref`** (dos roles no pueden repartirse los pasos de una actividad),
+**sin `triage`/`mandato`** (no hay dónde guardar el veredicto ni el corte de compliance) y **sin
+`fuente`/`conf`** (rompe el principio cardinal de provenance que `actividad` sí respeta desde el insumo 4).
+
+Se agregan a `tarea`: **`id`** (local `pr-x#aN.tM`, estable y direccionable — requerido) ·
+**`carril_ref?` → rol** (default: hereda el de la actividad; presente sólo si difiere) ·
+**`triage?`** (mismo `{veredicto, fuente, conf}` que actividad) · **`mandato?`** ·
+**`fuente`/`conf`**. `automatizacion{}` (los 7 inputs) **NO baja a tarea**: se hereda de la actividad —
+partir los inputs por paso sería precisión falsa; lo que baja es el **verbo** (que ya está) y el
+veredicto ratificable.
+
+**Doctrina de granularidad que esta ficha fija:** el **piso operable hoy** para un skill de arnés es la
+**ACTIVIDAD** (`skill = procedimiento ≈ actividad`, patrón `skill=procedimiento / plugin=rol` de N15);
+la **tarea** es el piso *fino*, y sólo se candidatea cuando tiene `id` y (si difiere) carril propio.
+Mientras el dato de una tarea no exista, el triage **declara honestamente** que corre a nivel actividad
+— jamás se simula precisión L5 sobre dato L4.
+
 ---
 
 ## Micro-opens bancados (no frenan; se resuelven al construir)
@@ -218,7 +308,11 @@ derivación = historia futura (los scores del mockup siguen canned hasta entonce
 - **wiring proceso→org:** ✅ RESUELTO (D-09) → `dueño`/`carril` = `rol`.
 - **colisión `sistema.rol`:** ✅ RESUELTO (D-10) → se disuelve: App Component (soporte) + bloque `producto` opt-in (Product); sin renombre.
 - **colisión `audiencia`:** ✅ RESUELTO (D-11, fork E) → el de negocio = **`sirve_a`** (interno|cliente-final); el `audiencia` product-paradigm queda con su sentido.
-- **persona:rol:** ✅ habilitado (D-11) → `persona.roles[]` es lista (N:M soportado: una persona, varios roles — caso Criscore).
+- **persona:rol:** ✅ habilitado (D-11) → lista N:M. **★ RE-CABLEADO por D-19:** la ocupación pasa a `persona.puestos[]`; los roles se DERIVAN por `puesto.roles_ref[]` (un-hecho-un-lugar).
+- **puesto vs rol:** ✅ RESUELTO (D-19) → se parten: `puesto` = posición de organigrama (contratación) · `rol` = papel en un proceso (carril BPMN/RACI). No revive `función` (D-09 intacta).
+- **"los procesos de un rol":** ✅ RESUELTO (D-19) → posee (`dueño_ref`) ∪ ejecuta (`carril_ref` ∨ `raci.R`); `C`/`I` = contexto de lectura, no generan skills.
+- **arnés:** ✅ RESUELTO (D-20) → entidad REGISTRO en el twin (`deriva_de` + versión + drift + autonomía + supervisor); el CONTENIDO lo compila N15 contra `arnes.l0.json`.
+- **granularidad del triage:** ✅ RESUELTO (D-21) → piso operable = actividad; tarea sólo cuando tenga `id` (+ carril si difiere). Nunca simular precisión L5 sobre dato L4.
 - **audiencia ambos:** ¿un sistema sirve a interno *y* cliente-final a la vez (CRM + portal)? → ¿primario o ambos?
 
 ## Futuros bancados (dichos de pasada, guardados)

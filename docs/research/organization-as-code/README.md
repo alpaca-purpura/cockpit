@@ -16,5 +16,11 @@
 | `06-gartner-dto-features.md` | lista Gartner ago-2025 verbatim + mapeo |
 | `07-capability-list-tobe.md` | 37 capacidades etiquetadas + MVP + derivación de arquitectura |
 | `08-pivote-comercial.md` | default hosteado single-tenant, portal, licencias, entornos |
+| **`09-sota-dto-2026-fuente-primaria.md`** ★ | **2026-07-25 (CK-30)** — Market Guide de Gartner **completo en PDF** (G00785499) · la cita de The Open Group que cierra el debate as-code (*"not intended as a persistent file format"*) · crítica académica del DTO (Becker&Pentland · Lyytinen: causalidad bidireccional + 6 obstáculos) · el renombre 2026 (Celonis→Context Model, Skan→Context Graph) · simulación organizacional en arXiv 2026 + su crisis de validez · DEMO/ISO 15704 como hueco huérfano. **Corrige a `01`/`02`/`05`/`06` en 2 puntos** (ArchiMate 4 existe; MQ de DTO = *forthcoming*, no publicado) |
+| **`10-sota-arnes-as-code.md`** ★ | **2026-07-25 (CK-30)** — anatomía comparada de config de agente as-code (AGENTS.md · Agent Skills · Claude Code · ADK · A2A · Copilot Studio · CrewAI · Letta · Bedrock AgentCore…) · **veredicto: nadie compila la config del agente desde un modelo organizacional** (negativo verificado + Challenge C1 del *Agentic BPM Manifesto*) · gobernanza (EU AI Act Annex III 4(b) + Art.14/26 · NIST · ISO 42001 · HITL/HOTL y la crítica Elish/Green) · autonomía CSA L0-L5 · identidad y delegación (RFC 8693/9396, CIBA, Entra Agent ID) · evidencia empírica con números · **los campos propuestos del arnés** |
+
+★ = fuente directa de **CK-30** (D-19/D-20/D-21 + M46).
 
 **Nota:** hermano de `docs/research/rediseno-total/` (CK-18). Aquel definió la arquitectura física; éste define la visión de producto y el TO-BE funcional.
+
+**Pendiente:** la línea **process-as-code / workflow engines** (Camunda · Temporal · Argo · Airflow · Dagster · BPMN/DMN as code) y el detalle del modelo de entidades de **Backstage** como prior art quedaron corriendo — se archivan al cerrar.

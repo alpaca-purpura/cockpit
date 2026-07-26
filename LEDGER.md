@@ -971,7 +971,171 @@ arneses — aquí el arnés se vuelve proyección compilada) · CK-25 (consultio
 `docs/research/cerebro-conocimiento/03-proyeccion-twin.md` (mapeo 1:1 cerebro propio → twin) ·
 fichas N15/N17 de NODOS.md · historia `knowledge-database-files-first` (F3).
 
-<!-- Próximas: CK-30, … -->
+### CK-30 · Puesto ≠ rol · el arnés se compila por rol×proceso · las personas SUPERVISAN a los agentes — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-25):* "**Las personas supervisan a los agentes, no los agentes ayudan a
+las personas**, las personas orquestan el trabajo y la intención y todo lo deberían hacer los
+agentes (y con agentes me refiero al colab-studio con claude code por detrás y los arneses que le
+hayamos dado permiso y/o acceso, todos conectados al cerebro de la organización el cual es el
+digital twin que estamos construyendo)". Y sobre la unidad del arnés: "los arneses se dan **por
+proceso o task al más bajo nivel por cada rol**, y que **un puesto tiene varios roles**, y una
+persona o varias ocupan el puesto".
+
+*Contexto encontrado (4 investigaciones paralelas, 2026-07-25).* (a) **El modelo del operador YA
+era la doctrina del ecosistema**, escrita en cuatro lugares independientes desde antes: `NODOS.md`
+N17 ("cada puesto ejecuta N roles"), N15 ("skill = procedimiento, plugin = rol, marketplace = mapa
+de procesos"), `docs/research/rediseno-total/07-proceso-como-arnes.md` ("definido POR ROL dentro de
+un proceso… el puesto que ejecuta N roles instala N plugins — el mapeo es literal") y la visión
+firmada de harness-studio ("framework file-based definido por **rol × proceso**"). (b) **El schema
+era el desfasado:** `objeto.schema.yaml` declara `rol.nombre met:"= cargo (SOMA C8)"` — o sea `rol`
+significaba lo que el operador llama `puesto`, y `actividad.carril_ref` usaba ese mismo `rol` como
+carril BPMN. **Misnomer M32 de manual**: una palabra, dos conceptos, dos planos del producto.
+(c) **El SOTA cerró la pregunta de contenido** con un negativo limpio (~20 productos revisados +
+academia): nadie compila configuración de agente desde un modelo organizacional versionado; el
+*Agentic BPM Research Manifesto* (Information Systems 140:102738, 2026) lo declara **Challenge C1
+abierto**; los registros de agentes que existen (Workday ASOR, SAP LeanIX AI Agent Hub, CSA Agent
+Registry v1) tienen `ownerEmail` pero **ninguno apunta al elemento del modelo organizacional que
+justifica al agente**; y la CSA confiesa su hueco: *"human oversight is assigned through the
+`ownerEmail` field… **not through an explicit autonomy-level field**"*. (d) **El contrato de salida
+ya existe** y no hay que inventarlo: `arnes.l0.json` de harness-studio (`required: [id, rol,
+proceso, reporta_a]` + `empresa` + `fases[]` + `spine{estados,transiciones}`, 10 clases × 7 bandas ×
+3 ejes ortogonales). Lo que falta es el generador y el **registro** en el twin.
+
+**Decisiones:**
+
+**(1) Tesis de inversión (amplía el fin-estado de CK-29 §3).** Las personas **supervisan** a los
+agentes; los agentes ejecutan. La persona dirige la intención, aprueba las excepciones y mejora su
+propio arnés. "Agente" = Colab Studio (N17) con Claude Code detrás + los arneses a los que se le dio
+permiso, **todos conectados al twin**. CK-29 decía "orquesta, no ejecuta"; CK-30 invierte el sujeto:
+el agente deja de ser asistente y pasa a ser ejecutor.
+
+**(2) El contrapeso es parte de la tesis, no un reparo.** La evidencia empírica dice que los agentes
+autónomos multi-paso fallan mucho (TheAgentCompany **30,3%** de tareas completadas · WorkArena++
+**2,1%** contra 93,9% humano · τ-bench cae de ~60% pass^1 a **~25%** pass^8 — la consistencia, no la
+capacidad, es el cuello de botella) y que el mal output cuesta (*workslop*: ~2h por incidente,
+**$186/empleado/mes**). Y la crítica académica de la supervisión humana es demoledora: **Elish**
+("moral crumple zones" — el humano como componente que absorbe la culpa cuando el sistema falla) y
+**Ben Green** (41 políticas revisadas: la gente no puede ejercer la supervisión que se le pide, y
+esas políticas **legitiman** algoritmos defectuosos dando *"a false sense of security"*; su
+alternativa es supervisión **institucional**, no individual). → **Doctrina: la supervisión no se
+declara, se especifica y se mide.** Cada arnés declara `verificacion_humana{qué, evidencia, tiempo}`;
+el twin mide si ocurrió. Ratio de anulación en cero durante meses = **brecha**, igual que un KPI
+fuera de banda. Es el loop del producto aplicado a sí mismo, y responde a Green por diseño.
+
+**(3) `puesto` ≠ `rol` — se parte el Misnomer.** `puesto` = posición de organigrama (se contrata,
+se ocupa, se vacanta, reporta) · `rol` = **papel dentro de un proceso** (carril BPMN, fila RACI —
+la definición estricta de ArchiMate Business Role). Cadena: `persona ─ocupa→ PUESTO ─agrega→ ROL
+─carril/RACI→ ACTIVIDAD ⊂ PROCESO`. Cardinalidades: N personas por puesto · N roles por puesto ·
+un rol puede vivir en N puestos. Ficha **D-19**.
+
+**(4) Tres unidades distintas del arnés — y ahí cae la frontera CK-24.**
+
+| Unidad | Qué | Dato | CK-24 |
+|---|---|---|---|
+| **Se COMPILA** por `rol × proceso` | 1 plugin; sus skills = los procedimientos de ese rol en ese proceso | 100% twin | ✅ cero persona |
+| **Se ENSAMBLA** por `puesto` | roster de N arneses con versión y canal (el lock `.consultio/arneses.yaml` ya live-verificado en CK-25) | 100% twin | ✅ cero persona |
+| **Se INSTALA/CORRE** por `persona` | su laptop, su suscripción (N8: "cada humano usa su propia suscripción"), su telemetría | por instalación | ⚠ **única aparición de la persona** → se agrega por rol antes de volver al twin (M40) |
+
+Tres verbos, tres unidades. **El arnés no es "por persona" ni "por puesto": se compila por rol×proceso,
+se entrega por puesto, se corre por persona.** La frontera CK-24 cae exactamente entre *entregar* y
+*correr* — y queda intacta sin excepciones.
+
+**(5) `arnes` entra al twin como REGISTRO, no como contenido.** El twin guarda el hecho auditable
+(`deriva_de{puesto,rol,proceso}` · `version` · `hash_fuente` · `estado/drift` · `autonomia` ·
+`supervisor` · `verificacion_humana` · `indicadores[]` · `uso_agregado`); el **contenido**
+(skills/hooks/permisos/sandbox) lo produce Arnesia (N15) contra el contrato `arnes.l0.json` que ya
+existe. Razón: `estado` y `drift` son **derivables** (comparar `hash_fuente` contra el twin actual),
+coherente con "computa, jamás guarda"; pero el registro (versión, telemetría, autonomía, supervisor)
+no se deriva de nada — es hecho propio. Ficha **D-20**. `deriva_de` es **el campo que ningún registro
+de agentes del mercado tiene** — es el diferenciador, literal.
+
+**(6) Granularidad: actividad hoy, tarea con D-21.** `skill = procedimiento ≈ **actividad**` funciona
+hoy (la actividad tiene `id`, `carril_ref`, `raci`, `verbo`, `triage`, `mandato`, `automatizacion`).
+La candidatura **por tarea (L5)** que D-17/M37/`triage.yaml` prometen es hoy **imposible**: `tarea`
+no tiene `id`, ni `carril_ref`, ni `raci`, ni `triage`, ni provenance — sin `id` un arnés no puede
+apuntar a un paso, y sin carril dos roles no pueden repartirse los pasos de una actividad. Ficha
+**D-21** (D-17-bis) lo habilita.
+
+**(7) "Los procesos de un rol" queda DEFINIDO** (era ambiguo y cada lectura daba un arnés distinto):
+**posee** (`proceso.dueño_ref`) ∪ **ejecuta** (`actividad.carril_ref` ∨ `raci.R`) = **su arnés**.
+**Consulta** (`raci.C` / `raci.I`) = contexto de lectura, **no** genera skills. Va en D-19.
+
+**(8) El guardrail en prosa no es un guardrail.** Doctrina de Claude Code, verbatim: *"Permission
+rules are enforced by Claude Code, **not by the model**. Instructions in your prompt or CLAUDE.md
+shape what Claude tries to do, but they don't change what Claude Code allows."* → todo guardrail del
+arnés declara su `mecanismo: hook|permiso|sandbox|prompt`, y el gate **rechaza** un arnés con
+autonomía ≥ L3 cuyos guardrails sean todos `prompt`. Corolario de producto:
+**`strictPluginOnlyCustomization`** (bloquea skills/agents/hooks de fuente usuario) es lo que hace
+cumplir *técnicamente* "el arnés no se edita a mano" — encendido en el arnés del trabajador (N17),
+apagado en el del consultor (N14) y el dev (N5).
+
+**(9) Autonomía derivada, no elegida.** Vocabulario **CSA L0-L5** (ene-2026: L0 ninguna → L1
+asistida → L2 supervisada → L3 condicional → L4 alta → L5 plena; la CSA declara L5 *"not appropriate
+for enterprise deployment today"*). El nivel **se deriva del riesgo del puesto** (acciones
+irreversibles / datos regulados / `mandato` de compliance → techo L2 sin ratificación explícita del
+operador). **Default L1-L2 con puertas de aprobación; se sube por evidencia de evaluación, no por
+optimismo** — con la evidencia de (2) en la mano. Implementación real disponible: aprobación humana
+out-of-band (CIBA) vía hook `PostToolUse`, con el token nunca entrando al contexto del modelo.
+
+**(10) Riesgo regulatorio asumido y resuelto por diseño.** **EU AI Act Annex III 4(b)** clasifica
+alto riesgo los sistemas usados *"to allocate tasks based on individual behaviour… or to monitor and
+evaluate the performance and behaviour of persons"* en relaciones laborales. Cockpit —hilo de oro
+medido + asignación de trabajo por puesto— **cae textualmente en ambas**, y el Art. 6(3) no salva
+porque profiling es siempre alto riesgo. **Camino elegido: (a)** el motor de indicadores es
+**agregado por proceso/rol/área** y la métrica individual queda **fuera del producto** — que es lo
+que CK-24/M40 ya decidieron por convicción antes de conocer la razón regulatoria. Se declara
+explícito. (El Digital Omnibus corrió la fecha de Annex III a **2-dic-2027**; el fondo no cambió.
+El Art. 50 —informar que se interactúa con IA— **no se movió: aplica desde 2-ago-2026**.)
+
+*Lo que NO es diferenciador (y hay que dejar de decir):* "arneses ejecutables por rol" a secas
+—Anthropic ya vende plugins departamentales y `plugin = rol` es su patrón publicado—, "el método
+como skills" (Decagon/Beam/Skan lo hacen en sus verticales), "agentes que conocen los procesos del
+cliente" (Celonis AgentC ya expone Process Intelligence como grounding). **El diferenciador no es el
+arnés: es de dónde sale el arnés.** Formulación honesta y estrecha que resiste escrutinio: *el único
+pipeline determinista SSoT-organizacional → arnés-por-rol×proceso → gate anti-drift → evidencia de
+operación → brecha → de vuelta al SSoT*. Cada eslabón tiene precedente; **el ciclo cerrado no**. La
+ventana es real pero corta (Workday tiene el registro y el dato de puestos; Microsoft el plano de
+control y la identidad; Camunda el modelo de proceso con el agente adentro).
+
+*Corroboración externa (SOTA archivado — `docs/research/organization-as-code/09` y `10`):* (a) **el
+sustrato as-code queda defendido por cita del propio organismo normativo** — The Open Group, sobre el
+ArchiMate Model Exchange File Format: *"**It is not intended as a persistent file format for the model
+itself**, it is a mechanism to convey instance data from one tool to another"*, y las herramientas que
+lo importan *"typically save them in their own proprietary formats afterward"*. El repositorio
+propietario **no es un descuido de los vendors: es la arquitectura que asume el estándar**. (b) **La
+forma organizacional declarada gana al enjambre:** en TheAgentCompany el framework **multi-agente
+PIERDE** contra el agente único (4,0% vs 8,6%, mismo modelo) y donde más falla es en la parte
+**social**; en OrgAgent la coordinación **jerárquica** supera a la plana (+102,73% de performance con
+−74,52% de tokens). Es el argumento empírico de por qué el arnés se compila con estructura declarada
+(rol×proceso) y no como un enjambre. (c) **El levantamiento por entrevista es ingrediente técnico, no
+servicio previo:** el estudio Stanford de 1.000 personas fue retitulado en jun-2026 a *"LLM Agents
+**Grounded in Self-Reports**…"* — 86% de accuracy con entrevista+encuesta vs 74% con sólo demografía.
+(d) **Límite de discurso que esta ficha adopta:** el mercado DTO no simula (0 de 19 vendors de
+Gartner; el propio Market Guide admite *"most suppliers still have gaps"* y *"slow start in uptake"*),
+la academia que sí simula acaba de chocar con la validez (colapso de heterogeneidad; r entre 0,23 y
+0,84 según configuración), y los líderes están **abandonando la palabra** (Celonis → "Context Model",
+Skan → "Context Graph of Work"). → **"twin" se usa como ancla de categoría ante analistas, JAMÁS como
+promesa de capacidad; "simula" no se promete.** El horizonte de simulación con arneses (VISION
+§Horizontes, gateado) exige **preregistrar la configuración** o la validación es teatro.
+
+*Ejecutado:* D-19 (`puesto`) · D-20 (`arnes` registro) · D-21 (tarea L5) en `sistema/schema/DECISIONES.md`
+· M46 "Arnés por rol×proceso" al catálogo del método (familia I) · VISION.md §Identidad (tesis de
+inversión + modelo de 4 capas) · hallazgo A1 del tracker de la historia `twin-territorio-mapa-zoomable`
+→ `decidido`. **Materialización en `objeto.schema.yaml` + fixture + generador = historias**, no esta
+ficha (la ficha decide; el schema se toca con su gate).
+
+*Conecta:* CK-29 (la tesis que esta ficha invierte y aterriza) · CK-24 + M40 (la frontera que las
+tres unidades del arnés dejan intacta — y que resulta ser la defensa regulatoria) · CK-26 (las 12
+entidades → 13 con `arnes`, 14 con `puesto`) · CK-25 (`studio-core`, el roster con lock ya
+live-verificado) · CK-18/CK-21 (el método se entrega en arneses) · D-09 (`función` disuelta — esta
+ficha NO la revive: `puesto` es agregador de contratación, no función) · D-17 (tareas[], que D-21
+completa) · fichas N15/N17/N8 de `NODOS.md` · `docs/research/rediseno-total/07-proceso-como-arnes.md`
+· harness-studio `graph.l0.schema.json` (el contrato de salida) · historias
+`fabricante/arnesia-pipeline-arnes-por-rol` (F3) y `consultio/metodo-como-arnes-v0` (F1) ·
+`docs/research/organization-as-code/09-sota-dto-2026-fuente-primaria.md` + `10-sota-arnes-as-code.md`
+(el SOTA que fundamenta esta ficha) · M46 (la doctrina, en el catálogo del método).
+
+<!-- Próximas: CK-31, … -->
 
 ## Log
 
@@ -996,4 +1160,5 @@ fichas N15/N17 de NODOS.md · historia `knowledge-database-files-first` (F3).
 | 2026-07-17 | Consultio no se clona: se extrae `studio-core` (kernel Go compartido) y `dev-studio`(N5)/`consultio`(N14) lo consumen por import semver — disciplina upstream-first + ban de mirror producto→producto (misma doctrina que backflow del arnés); 10 decisiones de arquitectura (A1-A10) tras stress-test de 11 escenarios de fallo contra dev-studio real. Ejecutado y verificado en vivo el mismo día: `studio-core` v0.1.0 (SC-01) con fitness gate propio + `consultio` primitivo (CN-01) corriendo — engagement→repo git, arnés instalado con lock+commit real, sesión ligada, turno con SSE — dev-studio intacto. N14 re-fichado "clon de DevStudio"→"app fina sobre studio-core"; riesgo (2) de N5 cerrado. | CK-25 |
 | 2026-07-20 | Design system PRENTER adoptado (materializa BL-04): SSoT visual = proyecto Claude Design "PRENTER Design System" (dark-first, teal único acento, atomic design). Tokens ported a `ui/app/globals.css` (mata el púrpura leftover de devhub); átomos `.tsx` en `ui/components/ds/atoms/` (Button/Badge/Card/Input, token-driven=DRY); catálogo vivo embebido `/design-system` (fork del operador: ruta showcase, no Storybook.js); regla `.claude/rules/ui-design-system.md` (consumir-no-duplicar, un solo acento, cataloga-en-el-mismo-cambio); seam `design_system_ref` pending→adopted; story `design-system-atomic-storybook` F2→F1. Verificado: tsc + `next build` + render en vivo. | CK-27 |
 | 2026-07-23 | Refactoring del grafo de conocimiento: `proyecto/` disuelto en `docs/` (research·prototypes·plans·_archive), dedup `docs/process` raíz↔harness, y frontera hexagonal fuente↔lectura en `sistema/` (visión CTO + book del objeto + veredicto ISO → `docs/{architecture,metodo}/`); mapa + 5 reglas de ubicación en `docs/README.md`; auditoría 74 archivos con refs entrantes; gates verdes. | CK-28 |
+| 2026-07-25 | Puesto ≠ rol · el arnés se compila por rol×proceso · las personas SUPERVISAN a los agentes: (1) tesis de inversión (el agente ejecuta, la persona supervisa) + contrapeso obligatorio — la supervisión se especifica y se mide, o es "moral crumple zone" (Elish/Green); (2) se parte el Misnomer M32 `rol`(=cargo) → `puesto` (posición, N personas, N roles) + `rol` (papel en proceso = carril BPMN/RACI) — el modelo del operador ya era la doctrina de N15/N17/harness-studio, el schema era el desfasado; (3) tres unidades del arnés — se COMPILA por rol×proceso, se ENSAMBLA por puesto, se CORRE por persona → la frontera CK-24 cae entre entregar y correr, intacta; (4) `arnes` = entidad REGISTRO en el twin (`deriva_de` = el campo que ningún registro del mercado tiene), contenido en N15 contra el contrato `arnes.l0.json` que ya existe; (5) granularidad = actividad hoy, tarea con D-21; (6) guardrail sin mecanismo declarado no es guardrail; (7) autonomía CSA L0-L5 derivada del riesgo del puesto, default L1-L2; (8) EU AI Act Annex III 4(b) resuelto por el camino agregado (CK-24 ya nos había puesto ahí). SOTA: negativo limpio en ~20 productos + Challenge C1 del *Agentic BPM Manifesto* (Information Systems, 2026). D-19/D-20/D-21 + M46; SOTA archivado en `docs/research/organization-as-code/09` (DTO desde el Market Guide primario + la cita de The Open Group que defiende el sustrato as-code) y `10` (arnés-as-code: anatomía, gobernanza, identidad, autonomía CSA). Barrido de coherencia: "9 entidades" stale corregido a 12 en 7 archivos vivos (CLAUDE.md, 2 reglas, seam, arquitectura.yaml, M32, contrato del método). | CK-30 |
 | 2026-07-24 | El twin es un cerebro que compila trabajo: tesis unificadora (una doctrina, tres escalas — el arnés = vista generada del twin por puesto, compilada por Arnesia, entregada por Colab Studio); twin = estructura (12 entidades) × conocimiento (know-how/data histórica, gateado F3, conectado — los arneses saben dónde buscar) × pulso (N16); fin-estado: el colaborador orquesta agentes, no ejecuta; Cockpit = cabina del cerebro. Aclaración repos: cada app en su repo (consultio existe; colab-studio por crear); en cockpit solo historias. Fix stale 9→12 entidades en VISION. | CK-29 |

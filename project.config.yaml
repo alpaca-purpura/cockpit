@@ -61,7 +61,7 @@ live_verify_infra:
   smoke:
     - "GET /api/portfolio            → Dueño→Empresa→Sistema"
     - "GET /api/negocio?empresa=<id> → objetivos + áreas/procesos + brechas"
-    - "GET /api/objeto?empresa=<id>  → las 9 entidades validadas juntas"
+    - "GET /api/objeto?empresa=<id>  → las 12 entidades validadas juntas"
   observability_evidence: [runtime-logs]
   test_creds: none
 

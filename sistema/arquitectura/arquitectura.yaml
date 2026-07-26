@@ -125,7 +125,7 @@ componentes:
     estado: activo
     ruta: go/objeto.go
     fichas: [CK-12, CK-13]
-    proposito: "El objeto normalizado COMPLETO (9 entidades de objeto.schema, empresa/<tipo>/ del shell · D-15), validado entero al leer. Nació como /api/personas (CK-12), generalizado en CK-13."
+    proposito: "El objeto normalizado COMPLETO (12 entidades de objeto.schema, empresa/<tipo>/ del shell · D-15), validado entero al leer. Nació como /api/personas (CK-12), generalizado en CK-13."
   - id: cockpit-shell
     tipo: vista
     plano: cockpit-app

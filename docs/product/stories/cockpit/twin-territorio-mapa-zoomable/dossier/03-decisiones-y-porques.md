@@ -118,7 +118,8 @@
     C2-C6→bordes · C7→sistema · C8→rol/RACI · C9→documentos · C10→kpi · C11→brecha · IAA→M36 ·
     Bloom→M37) — la tabla-documento NO vuelve; cada capa es entidad viva navegable.
 17. **Empresa demo completa (~100 personas)** — nómina entera (14 líderes + 86 ocupantes, Obras con
-    3 proyectos), 27 puestos ×N, 40 roles, 17 SIPOC, 11 lienzos plenos (incl. Permisos = el P03 del
+    3 proyectos), 27 puestos ×N dibujados (universo declarado `puestosTotal: 40` — son PUESTOS, no
+    "roles"; corregido 2026-07-25), 17 SIPOC, 11 lienzos plenos (incl. Permisos = el P03 del
     SOMA vivo), 14 instrucciones z3, 11 sistemas, 12 KPIs. Por qué: la casuística REAL (vacante,
     sin-arnés, desactualizado, KPI stale, sin-ancla, mandato protegido, eliminable, RTLX alto,
     subcontratados, provisto externamente) debe ser VISIBLE, no teórica.
@@ -288,7 +289,8 @@ comentarios puntuales sobre lo que veía — cierra la deuda #1 de `06-pendiente
     `setCanvas(W,1300)` (era 920); (b) Cadena empujada +48px (`y=Y.cad+64`, era `+16`); (c) label 8px
     más arriba (`y-60`, era `y-52`); (d) separador de riel más visible (`#243330`, era `#131b1a`, en
     `y-72`); (e) cesión dinámica Gente→Sistemas `ry+86` (era `+66`). Verificado data-driven: **5 checks
-    de solape = false**, clearances 11-142px. Trade-off: fit por defecto 69%→**58%** (más aire = arranca
+    de solape = false**, clearances 11-142px. Trade-off: fit por defecto 69%→**58%** con stage ancho
+    (~46% con la ventana en 1568px — `fit()` es relativo al viewport) (más aire = arranca
     más lejos; el operador lo aceptó). **Deuda de fondo:** la raíz (center-anchoring) sigue viva — cajas
     MUY altas podrían volver a rozar; el fix robusto sería top-anchorear los nodos (no hecho: tocaría el
     ruteo de edges/hilo del hilo de oro).

@@ -2,7 +2,7 @@
 # GRAFO — índice-grafo del cerebro metodológico (GENERADO)
 
 Mapa de acceso de bajo costo al método del producto. Protocolo (skill `metodo`):
-**(1)** leé este archivo (es el mapa completo, ~77 líneas de datos) →
+**(1)** leé este archivo (es el mapa completo, ~78 líneas de datos) →
 **(2)** elegí los nodos por `usar:`/objeto/twin → **(3)** cargá SOLO esos nodos con grep+Read dirigido.
 Jamás cargues `methodologies.yaml` o `METODOLOGIA.md` enteros.
 
@@ -14,7 +14,7 @@ Recetas (desde la raíz del repo):
 - Narrativas largas (solo si hace falta prosa): `M1-LEVANTAMIENTO.md` · `M3-ESPINAZO.md` · `PROCESS-AS-DATA.md`
 - Agregar/reemplazar conocimiento: skill `metodo-aprende` (protocolo anti-contradicción)
 
-Totales: **45 M-cards** (_meta.total) · **12 pasos** poblados / **8 etapas stub** · **17 unidades** de nicho en **3 verticales**.
+Totales: **46 M-cards** (_meta.total) · **12 pasos** poblados / **8 etapas stub** · **17 unidades** de nicho en **3 verticales**.
 Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensiones] · ⇄combina_con · usar:`
 
 ## §1 M-cards por familia
@@ -45,8 +45,8 @@ Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensio
 - **M15** COBIT 2019 · O6+O2 · columna·m1·ctx · ancla[estrategia,madurez-brecha] · ⇄M21,M06 · usar: Hilo de Oro + Gap Analysis (madurez digital). Modo lite, sin certificación
 - **M16** ISO 9001 · T3+O4 · columna·m1,m2,m3·ctx · ancla[calidad-loop,riesgo-controles,procesos-clasificacion,organizacion,documentacion-qms,mejora-proyectos] · ⇄M21,M25,M38 · usar: capa de contexto (vocabulario) y M2/M3 (mejora continua)
 - **M17** ITIL 4 · T3 · situacional·m1,m2 · fuera-del-twin · ⇄M16 · usar: situacional — solo si el cliente opera servicios IT. NO es la columna
-- **M25** RACI (Responsibility Assignment Matrix) · O4+T3 · columna·m1,m2,m3·ctx · ancla[organizacion,triage-automatizacion] · ⇄M16,M15,M24,M36 · usar: encuadre (autoridad) y en cada gate (quién ratifica/apuesta/acepta)
-- **M38** ISO 10013:2021 — pirámide documental (QMS) · T3+O3 · columna·m1,m2·ctx · ancla[documentacion-qms] · ⇄M16,M12 · usar: clasificar manuales/procedimientos/instrucciones/registros del cliente en el levantamiento y su mantenimiento
+- **M25** RACI (Responsibility Assignment Matrix) · O4+T3 · columna·m1,m2,m3·ctx · ancla[organizacion,triage-automatizacion] · ⇄M16,M15,M24,M36,M46 · usar: encuadre (autoridad) y en cada gate (quién ratifica/apuesta/acepta)
+- **M38** ISO 10013:2021 — pirámide documental (QMS) · T3+O3 · columna·m1,m2·ctx · ancla[documentacion-qms] · ⇄M16,M12,M46 · usar: clasificar manuales/procedimientos/instrucciones/registros del cliente en el levantamiento y su mantenimiento
 - **M42** Lean Six Sigma / DMAIC · O7+O6,O2 · situacional·m3·ctx · ancla[mejora-proyectos] · ⇄M35,M22,M28 · usar: proyecto_mejora con caso de negocio formal (metodologia: dmaic)
 - **M43** MASP — Método de Análise e Solução de Problemas (QC Story) · O7+O6 · situacional·m3·ctx · ancla[mejora-proyectos] · ⇄M42,M16,M41 · usar: proyecto_mejora en cliente brasileño / cultura Falconi (metodologia: masp)
 - **M44** Gestión de ideas (kaizen teian / funil de ideias) · O7+O4 · situacional·m2,m3·ctx · ancla[mejora-proyectos] · ⇄M42,M40,M35 · usar: entidad idea del objeto — programas de participación del personal (los CCQ migrados a plataforma: AEVO 400+ e…
@@ -73,14 +73,15 @@ Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensio
 - **M24** This Is Service Design Doing (TiSDD) · T2+O3,O4 · columna·m1,m3 · fuera-del-twin · ⇄M10,M05,M25 · usar: productizar cada etapa (interfaces frontend + actores + experiencia del sponsor)
 
 ### I · Twin & automatización del trabajo
-- **M32** Doctrina de ontología Palantir (semántica + kinética) · O7+T1 · paraguas·m1,m2,m3·ctx · metamodelo-propio[metamodelo,contrato-entidad] · ⇄M23,M13 · usar: siempre — es la gramática de las 9 entidades del twin; toda evolución del schema la respeta
+- **M32** Doctrina de ontología Palantir (semántica + kinética) · O7+T1 · paraguas·m1,m2,m3·ctx · metamodelo-propio[metamodelo,contrato-entidad] · ⇄M23,M13,M46 · usar: siempre — es la gramática de las 12 entidades del twin (CK-26; +`puesto`/`arnes` al materializar D-19/D-20 ·…
 - **M33** DEMO / Enterprise Ontology (Dietz) · O3+O4 · situacional·— · horizonte[simulacion] · ⇄M07,M34 · usar: todavía no — horizonte D9; se activa solo con la decisión de formalizar transacciones
 - **M34** BPSim (Business Process Simulation) · O3+O6 · situacional·— · horizonte[simulacion] · ⇄M11,M29 · usar: todavía no — horizonte D9; requiere twin base + datos de operación + demanda real
 - **M35** ECRS (Eliminar · Combinar · Reordenar · Simplificar) · O3+O6 · columna·m1,m3·ctx · ancla[triage-automatizacion] · ⇄M09,M36,M29 · usar: triage de actividades (diagnóstico M1 y mejora M3), antes de correr los scores
-- **M36** Criterios de automatizabilidad — RPA + agente-LLM (dos scores) · O3+O6,O4 · columna·m1,m3·ctx · ancla[triage-automatizacion] · ⇄M37,M29,M35,M25 · usar: triage de actividades tras ECRS: puntuar candidatos y emitir veredicto con incertidumbre visible
-- **M37** Taxonomía de verbos & automatizabilidad (propia, ALM×MGI) · O3+O4,T1 · columna·m1,m2·ctx · ancla[narrativa-actividades,triage-automatizacion] · ⇄M36,M23,M35 · usar: narrativa de actividades y de sus tareas (D-17: tareas[] = APQC L5, mismo vocabulario) — levantamiento y mant…
+- **M36** Criterios de automatizabilidad — RPA + agente-LLM (dos scores) · O3+O6,O4 · columna·m1,m3·ctx · ancla[triage-automatizacion] · ⇄M37,M29,M35,M25,M46 · usar: triage de actividades tras ECRS: puntuar candidatos y emitir veredicto con incertidumbre visible
+- **M37** Taxonomía de verbos & automatizabilidad (propia, ALM×MGI) · O3+O4,T1 · columna·m1,m2·ctx · ancla[narrativa-actividades,triage-automatizacion] · ⇄M36,M23,M35,M46 · usar: narrativa de actividades y de sus tareas (D-17: tareas[] = APQC L5, mismo vocabulario) — levantamiento y mant…
 - **M39** NASA-TLX / RTLX (carga cognitiva medida) · O4+O3 · situacional·m1·ctx · ancla[carga-cognitiva] · ⇄M36,M40 · usar: SOLO actividades pre-flageadas por el triage (densidad de espera/decisión, %excepciones alto, queja espontáne…
-- **M40** Métricas de persona — frontera twin ↔ individuo (CK-24) · O4+T1,T3 · columna·m1,m2,m3·ctx · ancla[organizacion,carga-cognitiva] · ⇄M23,M39,M25 · usar: transversal — cada vez que un indicador, score o medición pueda atribuirse a una persona nombrada
+- **M40** Métricas de persona — frontera twin ↔ individuo (CK-24) · O4+T1,T3 · columna·m1,m2,m3·ctx · ancla[organizacion,carga-cognitiva] · ⇄M23,M39,M25,M46 · usar: transversal — cada vez que un indicador, score o medición pueda atribuirse a una persona nombrada
+- **M46** Arnés por rol×proceso — el trabajo compilado del twin · O4+O3,O7,T3 · columna·m2,m3·ctx · ancla[trabajo-compilado,organizacion,triage-automatizacion] · ⇄M25,M36,M37,M40,M32,M38 · usar: al compilar, versionar o auditar el trabajo de un puesto; al decidir la granularidad de un skill (actividad h…
 
 ## §2 Grafo inverso — dónde se operacionaliza cada card
 
@@ -95,7 +96,7 @@ Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensio
 - M22 (FinOps — Quantify Business Value) ← pasos: m3.e0.p1, m3.e0.p2, m3.e0.p5
 - M23 (Grounding) ← pasos: m1.b1.p2, m1.b1.p3, m1.b1.p5, m1.b1.p6
 
-Sin operacionalizar aún (35 — ningún paso/nicho las cita; brecha esperable con proceso/ a medio poblar, BL-05): M01, M03, M05, M07, M08, M09, M10, M11, M15, M17, M18, M19, M20, M24, M25, M26, M27, M28, M29, M30, M31, M32, M33, M34, M35, M36, M37, M38, M39, M40, M41, M42, M43, M44, M45
+Sin operacionalizar aún (36 — ningún paso/nicho las cita; brecha esperable con proceso/ a medio poblar, BL-05): M01, M03, M05, M07, M08, M09, M10, M11, M15, M17, M18, M19, M20, M24, M25, M26, M27, M28, M29, M30, M31, M32, M33, M34, M35, M36, M37, M38, M39, M40, M41, M42, M43, M44, M45, M46
 
 ## §3 Proceso (Definición) — pasos poblados
 
@@ -144,7 +145,7 @@ Etapas SIN pasos (8 stubs — historia `sistema/poblar-metodo-m1-m3`): m1.b2, m1
 - **O1** Oportunidad / Apuesta: M01, M02, M04, M05
 - **O2** Objetivo & Valor: M06, M21, M22, M26, M30, M41
 - **O3** Proceso: M07, M09, M10, M11, M12, M33, M34, M35, M36, M37
-- **O4** Personas & Autoridad: M25, M39, M40
+- **O4** Personas & Autoridad: M25, M39, M40, M46
 - **O5** Sistema & Capabilities: M08, M13, M14, M27, M31
 - **O6** Gap & Madurez: M15, M28
 - **O7** Contrato & Código: M18, M19, M20, M32, M42, M43, M44, M45

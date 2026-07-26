@@ -38,7 +38,7 @@
 - **F · Valor, Costo & Alineación:** [OKR](#m21) · [FinOps — Quantify Business Value](#m22) · [Hoshin Kanri](#m26) · [Wardley Mapping](#m27) · [WSJF](#m28) · [Balanced Scorecard](#m30) · [GPD (Falconi)](#m41)
 - **G · IA: Grounding & Anti-alucinación:** [Grounding](#m23)
 - **H · Diseño de Servicio & Experiencia:** [This Is Service Design Doing](#m24)
-- **I · Twin & automatización del trabajo:** [Ontología Palantir](#m32) · [DEMO](#m33) · [BPSim](#m34) · [ECRS](#m35) · [Criterios RPA + agente](#m36) · [Taxonomía de verbos](#m37) · [NASA-TLX](#m39) · [Métricas de persona](#m40)
+- **I · Twin & automatización del trabajo:** [Ontología Palantir](#m32) · [DEMO](#m33) · [BPSim](#m34) · [ECRS](#m35) · [Criterios RPA + agente](#m36) · [Taxonomía de verbos](#m37) · [NASA-TLX](#m39) · [Métricas de persona](#m40) · [Arnés por rol×proceso](#m46)
 <!-- /GEN:indice -->
 
 ---
@@ -311,7 +311,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O4 Personas & Autoridad · sec: T3
 - **Aporte único:** la AUTORIDAD explícita — quién es Accountable habilita y ejecuta cada gate humano
 - **Cuándo:** encuadre (autoridad) y en cada gate (quién ratifica/apuesta/acepta)
-- **Combina:** M16 (formaliza roles/autoridad ISO cl.5.3) · M15 (el Accountable del KR ejecuta el gate) · M24 (alimenta el stakeholder map) · M36 (humano-por-diseño ancla a la A (accountability, firma, responsabilidad legal))
+- **Combina:** M16 (formaliza roles/autoridad ISO cl.5.3) · M15 (el Accountable del KR ejecuta el gate) · M24 (alimenta el stakeholder map) · M36 (humano-por-diseño ancla a la A (accountability, firma, responsabilidad legal)) · M46 (la A define quién supervisa el arnés y qué gates humanos lleva adentro; C/I = contexto de lectura, no generan skills)
 - **Principios:** P7, P2
 
 <a id="m38"></a>**M38 · ISO 10013:2021 — pirámide documental (QMS)**
@@ -320,7 +320,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** T3 Gobierno / Loop · sec: O3
 - **Aporte único:** la PIRÁMIDE que clasifica el corpus documental del CLIENTE — cada documento sabe su nivel y a qué proceso sirve
 - **Cuándo:** clasificar manuales/procedimientos/instrucciones/registros del cliente en el levantamiento y su mantenimiento
-- **Combina:** M16 (instancia cl.7.5 (información documentada) del paraguas ISO 9001) · M12 (el documento clasificado ancla al proceso APQC que gobierna)
+- **Combina:** M16 (instancia cl.7.5 (información documentada) del paraguas ISO 9001) · M12 (el documento clasificado ancla al proceso APQC que gobierna) · M46 (la instrucción de trabajo (nivel 3) y el skill del arnés salen de la MISMA fuente: un origen, dos salidas)
 - **Principios:** P4, P7
 
 <a id="m42"></a>**M42 · Lean Six Sigma / DMAIC**
@@ -487,8 +487,8 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Fuente:** Palantir — Foundry Ontology — best practices (adoptada CK-21). [https://www.palantir.com/docs/foundry/ontology/](https://www.palantir.com/docs/foundry/ontology/)
 - **Objeto:** O7 Contrato & Código · sec: T1
 - **Aporte único:** el METAMODELO PROPIO as-code en git — entidad-primero (no notation-first), con provenance y extensión por cliente como propiedades de la gramática
-- **Cuándo:** siempre — es la gramática de las 9 entidades del twin; toda evolución del schema la respeta
-- **Combina:** M23 (los provenance structs (fuente+conf) son parte de la gramática) · M13 (ArchiMate presta tipos como vocabulario DENTRO del metamodelo propio)
+- **Cuándo:** siempre — es la gramática de las 12 entidades del twin (CK-26; +`puesto`/`arnes` al materializar D-19/D-20 · CK-30); toda evolución del schema la respeta
+- **Combina:** M23 (los provenance structs (fuente+conf) son parte de la gramática) · M13 (ArchiMate presta tipos como vocabulario DENTRO del metamodelo propio) · M46 (el arnés entra a la gramática como entidad REGISTRO (procedencia+versión+drift), jamás como contenido)
 - **Principios:** P4, P5
 
 <a id="m33"></a>**M33 · DEMO / Enterprise Ontology (Dietz)**
@@ -524,7 +524,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O3 Proceso · sec: O6, O4
 - **Aporte único:** los DOS SCORES con conf propagada + el VEREDICTO enum (eliminable · automatizable-RPA · automatizable-agente · aumentable · humano-por-diseño) — se calculan, jamás se etiquetan a mano
 - **Cuándo:** triage de actividades tras ECRS: puntuar candidatos y emitir veredicto con incertidumbre visible
-- **Combina:** M37 (la clase ALM×MGI del verbo es input de ambos scores) · M29 (mining alimenta volumen/%excepciones con evidencia observada) · M35 (solo se puntúa lo que sobrevivió al orden ECRS) · M25 (humano-por-diseño ancla a accountability (RACI A, firma, responsabilidad legal))
+- **Combina:** M37 (la clase ALM×MGI del verbo es input de ambos scores) · M29 (mining alimenta volumen/%excepciones con evidencia observada) · M35 (solo se puntúa lo que sobrevivió al orden ECRS) · M25 (humano-por-diseño ancla a accountability (RACI A, firma, responsabilidad legal)) · M46 (el veredicto es el CANDIDATO a skill del arnés: automatizable-*/aumentable entran, humano-por-diseño queda como gate)
 - **Principios:** P3, P5, P7
 
 <a id="m37"></a>**M37 · Taxonomía de verbos & automatizabilidad (propia, ALM×MGI)**
@@ -533,7 +533,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O3 Proceso · sec: O4, T1
 - **Aporte único:** el ESTÁNDAR PROPIO que vuelve comparable la narrativa: 1 verbo = 1 actividad (los compuestos se PARTEN en el ingest), verbo con provenance (el ingest propone con conf, el consultor corrige, auditado)
 - **Cuándo:** narrativa de actividades y de sus tareas (D-17: tareas[] = APQC L5, mismo vocabulario) — levantamiento y mantenimiento
-- **Combina:** M36 (la clase ALM×MGI alimenta los dos scores) · M23 (el verbo lleva conf del ingest — sin provenance el score es gameable eligiendo verbos 'suaves') · M35 (la narrativa normalizada es lo que ECRS ordena)
+- **Combina:** M36 (la clase ALM×MGI alimenta los dos scores) · M23 (el verbo lleva conf del ingest — sin provenance el score es gameable eligiendo verbos 'suaves') · M35 (la narrativa normalizada es lo que ECRS ordena) · M46 (el verbo canónico es la unidad narrativa que se compila a procedimiento; su clase ALM×MGI informa la autonomía sugerida)
 - **Principios:** P4, P5
 
 <a id="m39"></a>**M39 · NASA-TLX / RTLX (carga cognitiva medida)**
@@ -551,8 +551,17 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O4 Personas & Autoridad · sec: T1, T3
 - **Aporte único:** la FRONTERA — gemela transversal de M23: como todo dato lleva fuente+conf, toda métrica de persona lleva agregación mínima + acceso por nivel + consentimiento + retención
 - **Cuándo:** transversal — cada vez que un indicador, score o medición pueda atribuirse a una persona nombrada
-- **Combina:** M23 (gemela transversal: provenance del dato ↔ gobernanza del dato de persona) · M39 (TLX/desgaste se agrega por rol/proceso bajo esta frontera) · M25 (el acceso sigue los niveles (Gobernanza > Estratégico > Táctico > Operativo))
+- **Combina:** M23 (gemela transversal: provenance del dato ↔ gobernanza del dato de persona) · M39 (TLX/desgaste se agrega por rol/proceso bajo esta frontera) · M25 (el acceso sigue los niveles (Gobernanza > Estratégico > Táctico > Operativo)) · M46 (la frontera cae entre ENSAMBLAR el arnés (por puesto, dato del twin) y CORRERLO (por persona): el uso se agrega por rol antes de volver)
 - **Principios:** P7, P5
+
+<a id="m46"></a>**M46 · Arnés por rol×proceso — el trabajo compilado del twin**
+- **Qué:** el paquete ejecutable (skills · subagentes · hooks · permisos · sandbox) que opera UN rol dentro de UN proceso, GENERADO del twin y jamás editado a mano. Tres unidades distintas: se COMPILA por rol×proceso (1 plugin; sus skills = los procedimientos de ese rol) · se ENSAMBLA por puesto (roster de N arneses con versión y canal — el puesto ejecuta N roles) · se INSTALA y CORRE por persona (su runtime, su licencia, su telemetría). Lleva su rebanada del hilo de oro (a qué KPI apunta), sus guardrails (por dónde no ir, con MECANISMO declarado) y punteros al conocimiento (dónde buscar)
+- **Fuente:** propia (Cockpit, CK-30) · marcos: Agent Skills (estándar abierto, Anthropic) · CSA Agentic AI Autonomy Levels L0-L5 · Elish (moral crumple zones) · Green (flaws of human oversight) — El arnés como vista COMPILADA del twin — unidad rol×proceso, ensamblaje por puesto, corrida por persona; autonomía derivada del riesgo y supervisión especificada y medida. [https://agentskills.io/specification](https://agentskills.io/specification)
+- **Objeto:** O4 Personas & Autoridad · sec: O3, O7, T3
+- **Aporte único:** el ANCLAJE `deriva_de{puesto, rol, proceso}` + `hash_fuente` con gate anti-drift: el arnés no puede divergir del modelo porque el gate rechaza el commit. Ningún registro de agentes del mercado (Workday ASOR · SAP LeanIX AI Agent Hub · CSA Agent Registry v1) apunta al elemento organizacional que justifica al agente — todos tienen dueño humano, ninguno tiene procedencia. Y la SUPERVISIÓN se especifica y se mide (qué verificar · con qué evidencia · en cuánto tiempo), no se declara: supervisión declarada = zona de deformación moral (Elish/Green)
+- **Cuándo:** al compilar, versionar o auditar el trabajo de un puesto; al decidir la granularidad de un skill (actividad hoy, tarea con id); al fijar autonomía y puertas de aprobación de un agente que opera en nombre de un trabajador
+- **Combina:** M25 (la A del RACI define quién supervisa y qué gates humanos existen dentro del arnés; C/I = contexto de lectura, NO generan skills) · M36 (el veredicto del triage es el CANDIDATO a skill: automatizable-* / aumentable entran al arnés, humano-por-diseño se queda como gate del supervisor) · M37 (el verbo canónico es la unidad narrativa que se compila a procedimiento; su clase ALM×MGI informa la autonomía sugerida) · M40 (la frontera CK-24 cae entre ENSAMBLAR (por puesto, dato del twin) y CORRER (por persona): la telemetría de uso se agrega por rol antes de volver al twin) · M32 (el arnés entra al metamodelo como entidad REGISTRO (procedencia + versión + drift), no como contenido — el contenido lo compila la fábrica) · M38 (la instrucción de trabajo (ISO 10013 n3) es la fuente humana del mismo procedimiento que el skill ejecuta: un origen, dos salidas)
+- **Principios:** P7, P5, P4
 <!-- /GEN:cards -->
 
 ---
@@ -619,6 +628,7 @@ YAML, regenerar con `gen_metodo.py` (gate anti-drift en pre-commit).
 | MASP (M43) |  |  | ○ | ○ |
 | Funil de ideas (M44) |  | ○ | ○ | ○ |
 | ISO 56002 (M45) |  |  | ○ |  |
+| Arnés por rol×proceso (M46) |  | ● | ● | ● |
 <!-- /GEN:tabla -->
 
 ---

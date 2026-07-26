@@ -1,6 +1,6 @@
 # 02 · El mockup elemento por elemento — qué muestra, cómo y dónde vive
 
-> Parte del dossier. Fuente: lectura completa de `index.html` v9 (2439 líneas, single-file
+> Parte del dossier. Fuente: lectura completa de `index.html` v11 (2475 líneas, single-file
 > vanilla JS/SVG). Anchors = línea/función de esa versión (drifean con ediciones — re-grepear).
 > Los PORQUÉS de fondo: `03-decisiones-y-porques.md`. Los datos: `04-datos-canned.md`.
 
@@ -85,8 +85,9 @@ selectores del funnel + estados que mandan: `03-decisiones-y-porques.md` **decis
 —centradas en su ancla— crecían hacia arriba y **tapaban el label de su propia banda** ("Cadena de
 valor"…). Fix: más gap entre bandas (`Y={est:170,cad:480,apo:770,gen:965,sis:1150}`, canvas 920→1300),
 Cadena empujada +48px, labels 8px más arriba, **separador de riel más visible** (`#243330`), y la
-cesión dinámica Gente→Sistemas de 66→86px. Verificado: 0 solapes (5 checks). El fit por defecto baja a
-~58% (más aire = arranca más lejos). Detalle: **decisión 26**.
+cesión dinámica Gente→Sistemas de 66→86px. Verificado: 0 solapes (5 checks). El fit por defecto baja
+(más aire = arranca más lejos): **~58% con stage ancho · ~46% con la ventana en 1568px** — `fit()` es
+relativo al viewport, no un número fijo. Detalle: **decisión 26**.
 
 ## 1 · Shell
 
@@ -94,7 +95,8 @@ cesión dinámica Gente→Sistemas de 66→86px. Verificado: 0 solapes (5 checks
 - **Brand** "Cockpit." + sub "Twin · Desarrolladora Terranova" — el sub es CLICKEABLE →
   `openEmpresa()` (la raíz del viaje).
 - **Módulos** (`#modulos`, 4 `.esc` con prefijo mono `N13/O6·7/M1·3/ISO`): Territorio · Mejora ·
-  Cambios · Método. Decisión 9: el rail navega MÓDULOS, la escala es estado de drill.
+  **Método · Cambios** (orden real del DOM, `index.html:538-541`). Decisión 9: el rail navega
+  MÓDULOS, la escala es estado de drill.
 - **Capas** (`#capas`, 6 toggles con O-ref): Estructura(O4) · Hilo(O2) · Salud(O3/5, con
   sub-lentes) · Brechas(O6) · Cinética(O7) · Trabajo(N15·17). Default ON: estructura+hilo+salud+
   brechas. **Leyenda inline pegada a su capa** (`.capa.on + .capa-leg`, estilo Felt).
@@ -151,7 +153,8 @@ contextual** / `'sel'` = ficha (`openDrawer()` + `wireLinks`). ✕ vuelve a home
 ## 2 · Vistas
 
 ### z0 · Mapa de Valor (default — decisión 15, `renderValor()`)
-5 bandas sobre un canvas 1840×~920, etiquetadas con `bandLab()`:
+5 bandas sobre un canvas **1840×1300** (`setCanvas(W,1300)` — decisión 26; el `920` de v10 quedó como
+piso del `Math.max` final), etiquetadas con `bandLab()`:
 1. **Estrategia** (Y=170) — 7 `.obj-node` agrupados por perspectiva BSC (labels: financiera·
    cliente·procesos·aprendizaje — "orden, no piel"); card = health-dot + nombre + KR
    `from →̶ cur → to`. Causalidad BSC = arcos DENTRO de la banda. Click = toggle hilo + ficha.
