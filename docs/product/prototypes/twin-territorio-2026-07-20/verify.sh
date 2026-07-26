@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Suite de verificación del mockup — clicks con HIT-TESTING REAL (elementFromPoint), no element.click().
-# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (24/24 esperado — v13: z1 = foco del mapa de valor)
+# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (26/26 esperado — v14: 4 niveles + capa de acción)
 set -euo pipefail
 cd "$(dirname "$0")"
 TMP=$(mktemp -d)
@@ -102,7 +102,13 @@ window.addEventListener('load',()=>{whenReady(()=>{
     mclick(hb); A(eye().includes('Arnés'),eye()); });
   t('z3-back-escalera',()=>{ mclick(document.getElementById('back')); A(state.escala==='z2','back z3→z2 roto: '+state.escala);
     mclick(document.getElementById('back')); A(state.escala==='z0','back z2→z0 roto: '+state.escala); });
-  t('rolchip-headcount',()=>{ state.escala='z0'; state.act=null; setPiel('valor'); render(); fit(false); const rc=[...document.querySelectorAll('.rolchip .who')].find(x=>/\+\d/.test(x.textContent)); A(rc,'sin headcount ×N en gente'); });
+  t('rolchip-headcount',()=>{ state.nivel=2; state.escala='z0'; state.act=null; setPiel('valor'); render(); fit(false); const rc=[...document.querySelectorAll('.rolchip .who')].find(x=>/\+\d/.test(x.textContent)); A(rc,'sin headcount ×N en gente'); });
+  t('nivel1-directorio',()=>{ gotoNivel(1); A(document.body.textContent.includes('Sala del directorio'),'sin sala');
+    A(document.querySelectorAll('.apcard').length>=4,'apuestas='+document.querySelectorAll('.apcard').length);
+    A(document.body.textContent.includes('Espera tu decisión'),'sin bandeja'); });
+  t('nivel3-tactico',()=>{ gotoNivel(3); A(document.querySelectorAll('.tcol').length>=4,'cols='+document.querySelectorAll('.tcol').length);
+    A(document.body.textContent.includes('contramedida'),'sin regla de contramedida');
+    A(document.body.textContent.includes('Embudo de ideas'),'sin embudo'); gotoNivel(2); });
   R.push('ERRS='+JSON.stringify(window.__ERRS||[]));
   document.title='V8SUITE :: '+R.join(' | ');
 });});

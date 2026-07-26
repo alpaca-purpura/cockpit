@@ -554,6 +554,35 @@
   .fitem[data-pm]{ background:rgba(0,183,170,.06); border-left:3px dashed var(--brand); }
   /* .kin (proyecto en el mapa) ya es punteado teal — sin cambio */
 </style>
+<style>
+  /* ── v14 · 4 niveles + capa de acción (fusión firmada 2026-07-26) ── */
+  .gob{ display:flex; flex-direction:column; gap:6px; }
+  .gob label{ font-family:var(--font-mono); font-size:9px; letter-spacing:.08em; color:var(--tx-faint); text-transform:uppercase; display:flex; flex-direction:column; gap:3px; }
+  .gob select{ background:var(--raised,#141a19); border:1px solid var(--border); color:var(--tx); border-radius:8px; padding:6px 8px; font-size:12px; font-family:inherit; text-transform:none; letter-spacing:0; }
+  .nivb{ color:var(--warn) !important; }
+  .dirgrid{ display:flex; flex-wrap:wrap; gap:12px; margin-bottom:14px; }
+  .dpane{ border:1px dashed var(--border); border-radius:10px; padding:10px 12px; flex:1; min-width:230px; }
+  .dpane .pt{ font-family:var(--font-mono); font-size:8.5px; letter-spacing:.12em; color:var(--tx-faint); text-transform:uppercase; margin-bottom:8px; }
+  .dpane.solid{ border-style:solid; border-color:#2a3835; background:rgba(0,183,170,.03); }
+  .dpane .cambio-row, .tcol .cambio-row{ display:flex; align-items:center; gap:8px; width:100%; padding:7px 8px; }
+  .dpane .cambio-row .tt, .tcol .cambio-row .tt{ font-size:11.5px; line-height:1.3; white-space:normal; }
+  .dpane .cambio-row .ap, .tcol .cambio-row .ap{ white-space:nowrap; flex:none; }
+  .dpane .cambio-row > div, .tcol .cambio-row > div{ flex:1; min-width:0; }
+  .dpane .cambio-row .sc, .tcol .cambio-row .sc{ flex:none; }
+  .apcards{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+  .apcard{ flex:1; min-width:215px; background:var(--mat-mot-bg,rgba(0,183,170,.05)); border:1px solid var(--teal-800); border-left:3px solid var(--teal-700); border-radius:10px; padding:10px 12px; cursor:pointer; text-align:left; color:var(--tx); display:flex; flex-direction:column; gap:5px; }
+  .apcard:hover{ border-color:var(--teal-600); }
+  .apcard .un{ font-family:var(--font-mono); font-size:8.5px; letter-spacing:.1em; color:var(--tx-faint); text-transform:uppercase; }
+  .apcard .nm{ font-size:13px; font-weight:600; line-height:1.2; }
+  .apcard .mt{ font-family:var(--font-mono); font-size:10px; color:var(--tx-mut); }
+  .tcols{ display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; margin-top:12px; }
+  .tcol{ flex:1; min-width:216px; border:1px solid var(--border); border-radius:12px; padding:10px; background:rgba(20,26,25,.35); }
+  .tcol .th{ font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; color:var(--tx-mut); text-transform:uppercase; margin-bottom:8px; cursor:pointer; }
+  .tcol .th:hover{ color:var(--brand-hi); }
+  .ncm{ font-size:10.5px; color:var(--crit); padding:1px 0 6px 4px; }
+  #toast{ position:absolute; bottom:56px; left:50%; transform:translateX(-50%); background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:8px 16px; font-size:12px; color:var(--tx-mut); opacity:0; transition:opacity .25s; pointer-events:none; z-index:60; max-width:72%; }
+  [data-acc].na2{ opacity:.38; cursor:not-allowed; }
+</style>
 
 <div class="app" id="app">
   <aside class="rail">
@@ -562,6 +591,25 @@
       <div class="sub eyebrow"><span class="eg-ico" title="empresa · Business Actor organizacional (M13 ArchiMate) — la ficha del twin completo"><svg viewBox="0 0 14 14"><path d="M2 12.6V5l5-3 5 3v7.6" fill="none" stroke-width="1.3" stroke-linejoin="round"/><rect class="fl" x="4.1" y="6" width="1.6" height="1.6"/><rect class="fl" x="8.3" y="6" width="1.6" height="1.6"/><path d="M5.6 12.6V9.4h2.8v3.2" fill="none" stroke-width="1.2"/></svg></span>Twin · Desarrolladora Terranova</div>
     </div>
     <div class="rail-scroll">
+      <div class="rail-sec">
+        <span class="eyebrow">Niveles de gestión</span>
+        <div class="escalas" id="niveles">
+          <button class="esc" data-nivel="1"><span class="z">1</span><span>Directorio</span><span class="crumb nivb" data-nb="1"></span></button>
+          <button class="esc on" data-nivel="2"><span class="z">2</span><span>Estratégico</span><span class="crumb nivb" data-nb="2"></span></button>
+          <button class="esc" data-nivel="3"><span class="z">3</span><span>Táctico</span><span class="crumb nivb" data-nb="3"></span></button>
+          <button class="esc" data-nivel="4"><span class="z">4</span><span>Operativo</span><span class="crumb nivb" data-nb="4"></span></button>
+        </div>
+        <div class="capa-leg">bajar = cambia la pregunta y la unidad · subir ≠ atrás · el nivel 2 es el territorio; 1 y 3 son tableros; 4 es el flujograma y la instrucción</div>
+      </div>
+      <div class="rail-sec">
+        <span class="eyebrow">Gobierno</span>
+        <div class="gob">
+          <label>Ciclo <select id="cicloSel" title="Cómo gobierna esta empresa su estrategia — cambia etiquetas y qué metas pagan bono (práctica LATAM/BR)">
+            <option value="okr">OKR · trimestral</option><option value="gpd">GPD · anual (bono)</option><option value="mixto">mixto</option></select></label>
+          <label>Ver como <select id="verComoSel" title="Fija tu autoridad: qué acciones puedes ejecutar (las demás se ven, deshabilitadas)">
+            <option value="">— todos (sin lente)</option><option value="dir">Director</option><option value="ger">Gerente</option><option value="jefe">Jefe de área</option><option value="ana">Analista</option></select></label>
+        </div>
+      </div>
       <div class="rail-sec">
         <span class="eyebrow">Módulos</span>
         <div class="escalas" id="modulos">
@@ -634,6 +682,7 @@
         <div class="layer pins" id="pins"></div>
         <div class="lienzo" id="lienzo" style="display:none"></div>
       </div>
+      <div id="toast"></div>
     </div>
 
     <div class="viewctl">
@@ -1258,6 +1307,24 @@ const DATA = {
   },
 };
 
+/* ---- v14 · NIVEL 1 — apuestas + apetito (⚠ aún NO son entidades del schema — ficha D-NN
+   pendiente vía /metodo-aprende; acá viven como dato del mockup, ancladas a objetivos reales) ---- */
+DATA.apuestas=[
+  {id:'ap-lid', nm:'Liderazgo en vivienda media', objetivos:['o-lid','o-hog'], riesgo:'medio', sellada:true},
+  {id:'ap-caja',nm:'Caja sana en todos los proyectos', objetivos:['o-caja','o-cob'], riesgo:'alto', sellada:true},
+  {id:'ap-mar', nm:'Reactivar Marina', objetivos:['o-mar','o-vis'], riesgo:'alto', sellada:true},
+  {id:'ap-cob', nm:'Digitalizar la cobranza', objetivos:['o-cob'], riesgo:'medio', sellada:false},
+];
+DATA.apetito={ liquidez:'media', reputacion:'baja', expansion:'alta — sin definir por el directorio' };
+DATA.objetivos.find(o=>o.id==='o-lid').bono=true;    // ★ solo pinta en modo GPD/mixto (RN-14)
+DATA.objetivos.find(o=>o.id==='o-caja').bono=true;
+/* historial de la organización — toda acción, versionada (semilla = las ya aplicadas de la cola) */
+DATA.historial=[
+  'hace 2 días · <b>Consultor</b> · corrigió el verbo de la actividad 05 ("transportar" → "visitar") · directa + acuse',
+  'hace 3 días · <b>Jefe de Cobranza</b> · registró la medición "DSO Marina" julio: 91 días · directa',
+  'hace 2 sem · <b>Contador General</b> · cerró "Cierre contable exprés" — veredicto: movió (9 → 4.5 días) · gestión-de-cambios',
+];
+
 /* ============================================================
    ENGINE
    ============================================================ */
@@ -1336,6 +1403,52 @@ function conocimientoHTML(pid){ const c=pid&&DATA.conocimiento[pid];
     ${c?`<div style="font-size:12px;line-height:1.5"><b class="mono" style="color:var(--brand-hi);font-size:10px">${c.n}</b> · ${c.d}</div>`
       :'<div style="font-size:12px;color:var(--tx-faint)">Know-how aún no capturado — brecha de conocimiento.</div>'}
     <div style="font-size:10px;color:var(--tx-faint)">conocimiento/&lt;proceso&gt;/&lt;rol&gt;/ en el repo oficial (N6) · el 3er cuerpo del cerebro — próximamente (F3)</div></div>`; }
+/* ===== v14 · capa de ACCIÓN — catálogo kinético con autoridad + aprobación (del schema) =====
+   acc: [nivel mínimo (4 dirección · 3 estratégico · 2 táctico · 1 operativo), aprobación, verbo para el historial] */
+const ACC={
+  'registrar-medicion-kpi':[1,'directa','registró una medición'],
+  'enviar-idea':[1,'directa','envió una idea al embudo (autoría reconocida)'],
+  'ajustar-banda-kpi':[2,'revisión-dueño','pidió ajustar la banda'],
+  'avanzar-tollgate':[2,'revisión-dueño','avanzó el hito del proyecto'],
+  'evaluar-idea':[2,'revisión-dueño','evaluó una idea (con respuesta al autor)'],
+  'comprometer-contramedida':[2,'directa','comprometió una contramedida'],
+  'corregir-instruccion':[2,'gestión-de-cambios','propuso corregir la instrucción'],
+  'recompilar-arnes':[2,'revisión-dueño','pidió recompilar el arnés'],
+  'cerrar-brecha':[3,'revisión-dueño','cerró la brecha con evidencia'],
+  'aprobar-charter':[3,'gestión-de-cambios','aprobó el acta del proyecto (doble firma)'],
+  'promover-idea':[3,'gestión-de-cambios','promovió la idea a proyecto'],
+  'promover-kpi-a-kr':[3,'gestión-de-cambios','promovió el indicador a meta del ciclo'],
+  'verificar-beneficios':[3,'revisión-dueño','verificó los beneficios reales (finanzas)'],
+  'suspender-arnes':[3,'directa','suspendió el arnés (kill-switch)'],
+  'ratificar-autonomia':[4,'gestión-de-cambios','ratificó la autonomía del arnés'],
+  'aprobar-version-objetivo':[4,'gestión-de-cambios','publicó una versión del objetivo'],
+  'sellar-apuesta':[4,'gestión-de-cambios','selló la apuesta'],
+  're-apostar':[4,'gestión-de-cambios','re-apostó (cambió meta o riesgo)'],
+  'retirar-apuesta':[4,'gestión-de-cambios','retiró la apuesta'],
+  'convocar-cuentas':[4,'directa','convocó rendición de cuentas'],
+  'fijar-apetito':[4,'gestión-de-cambios','fijó el apetito de riesgo'],
+};
+const RANGO={'':99, dir:4, ger:3, jefe:2, ana:1};
+const NIVAUT={4:'Dirección',3:'Estratégico',2:'Táctico',1:'Operativo'};
+let _toastT=null;
+function toast(m){ const t=document.getElementById('toast'); if(!t)return; t.textContent=m; t.style.opacity=1;
+  clearTimeout(_toastT); _toastT=setTimeout(()=>t.style.opacity=0,3400); }
+function ejecutarAccion(b){ const a=ACC[b.dataset.acc];
+  if(!a){ state.mod='cambios'; state.insp='home'; render(); return; }   // acción fuera de catálogo → cola
+  const quien={dir:'Dirección',ger:'Gerencia',jefe:'Jefatura',ana:'Analista'}[state.verComo]||'tú (sin lente)';
+  if(RANGO[state.verComo]<a[0]){ toast('Fuera de tu autoridad — esta acción la decide el nivel '+NIVAUT[a[0]]+'.'); return; }
+  DATA.historial.unshift(`ahora · <b>${quien}</b> · ${a[2]} · ${a[1]}`);
+  toast('Registrado en el historial · aprobación: '+a[1]+(a[1]==='directa'?' (queda trazada)':' — entra a la cola de Cambios.'));
+}
+/* ancestro de primer nivel (columna del tablero táctico) */
+function topArea(id){ let a=byId(DATA.areas,id); while(a&&a.parent&&a.parent!=='a-ger') a=byId(DATA.areas,a.parent); return a; }
+/* regla de la reunión de resultados (Falconi): rojo sin proyecto que lo mueva NI brecha con respuesta = sin contramedida */
+const sinContra=k=>semaforo(k)==='rojo' && !DATA.proyectos.some(pm=>pm.mueve===k.id || (pm.brecha&&byId(DATA.brechas,pm.brecha).against===k.proc));
+const sinContraKpis=()=>DATA.kpis.filter(sinContra);
+function gotoNivel(n){ state.mod='territorio'; state.nivel=n; state.insp='home';
+  if(n===4){ if(state.escala!=='z2'&&state.escala!=='z3'){ state.lienzo=state.lienzo||DATA.flagship.proc; state.act=null; state.escala='z2'; } }
+  else { state.escala='z0'; state.foco=null; }
+  render(); }
 /* toda acción kinética con aprobación ≠ directa aterriza en la cola de Cambios */
 function accion(){ state.mod='cambios'; state.insp='home'; render(); }
 /* wiring universal del viaje: cualquier data-* dentro de un contenedor abre su ficha */
@@ -1347,11 +1460,16 @@ function wireLinks(c){
     obj:b=>openObjetivo(byId(DATA.objetivos,b.dataset.obj)), idea:b=>openIdea(byId(DATA.ideas,b.dataset.idea)),
     cap:b=>openCapability(byId(DATA.capabilities,b.dataset.cap)), proc:b=>openProceso(byId(DATA.procesos,b.dataset.proc)),
     pm2:b=>openProyecto(byId(DATA.proyectos,b.dataset.pm2)), g2:b=>openBrecha(byId(DATA.brechas,b.dataset.g2)),
-    acc:()=>accion() };
+    ap:b=>openApuesta(byId(DATA.apuestas,b.dataset.ap)),
+    acc:b=>ejecutarAccion(b) };
   Object.keys(W).forEach(key=>c.querySelectorAll(`[data-${key}]`).forEach(b=>{
     if(b.classList.contains('none'))return;
     b.onclick=e=>{ e.stopPropagation(); W[key](b); };
   }));
+  /* autoridad visible: acción fuera del lente actual → atenuada con razón (jamás oculta) */
+  c.querySelectorAll('[data-acc]').forEach(b=>{ const a=ACC[b.dataset.acc]; if(!a)return;
+    const fuera=RANGO[state.verComo]<a[0];
+    b.classList.toggle('na2',fuera); b.title=fuera?('Decide '+NIVAUT[a[0]]+' — tu lente actual no ejecuta esto'):''; });
 }
 
 /* profundidad + visibilidad por LOD (level-of-detail declarativo: mostrar N niveles) */
@@ -1359,7 +1477,7 @@ function depth(a){ let d=0,x=a; while(x.parent){ x=byId(DATA.areas,x.parent); d+
 const isVis=a=>depth(a)<state.lod;
 function visAncestor(id){ let a=byId(DATA.areas,id); while(a && !isVis(a)) a=byId(DATA.areas,a.parent); return a; }
 
-let state={ mod:'territorio', corrida:false, escala:'z0', foco:null, piel:'valor', lienzo:'p-cob', activeObj:null,
+let state={ mod:'territorio', nivel:2, ciclo:'okr', verComo:'', corrida:false, escala:'z0', foco:null, piel:'valor', lienzo:'p-cob', activeObj:null,
   capas:new Set(['estructura','hilo','salud','brechas']), sub:'digital',
   lod:3, search:'', insp:'home', cw:1440, ch:900 };
 let view={x:0,y:0,z:1};
@@ -1436,13 +1554,19 @@ const procMatch=p=>{ const s=q(); return !s || p.nm.toLowerCase().includes(s) ||
    ============================================================ */
 function render(){
   const terr=state.mod==='territorio';
+  const tablero=terr&&(state.nivel===1||state.nivel===3);   // v14: niveles 1/3 = tableros pageView
   document.querySelectorAll('#modulos .esc').forEach(b=>b.classList.toggle('on', b.dataset.mod===state.mod));
-  document.getElementById('back').disabled = !terr || state.escala==='z0';
-  document.getElementById('pieltoggle').classList.toggle('hide', !terr || state.escala!=='z0');
-  document.getElementById('lodctl').classList.toggle('hide', !(terr&&state.escala==='z0'&&state.piel==='org'));
-  document.getElementById('minimap').classList.toggle('hide', !terr);
-  document.getElementById('search').disabled=!terr;
-  document.querySelector('.search').style.opacity=terr?'':'.4';
+  document.querySelectorAll('#niveles .esc').forEach(b=>b.classList.toggle('on', terr && +b.dataset.nivel===state.nivel));
+  const NB={1:3+(state.ciclo!=='okr'?1:0), 2:DATA.brechas.filter(g=>g.estado==='accionable').length,
+    3:sinContraKpis().length+DATA.ideas.filter(i=>i.estado==='enviada').length, 4:2};
+  document.querySelectorAll('.nivb').forEach(s=>{ const n=NB[+s.dataset.nb]; s.textContent=n?('▲ '+n):''; });
+  document.getElementById('back').disabled = !terr || tablero || state.escala==='z0';
+  document.getElementById('pieltoggle').classList.toggle('hide', !terr || state.nivel!==2 || state.escala!=='z0');
+  document.getElementById('lodctl').classList.toggle('hide', !(terr&&state.nivel===2&&state.escala==='z0'&&state.piel==='org'));
+  document.getElementById('minimap').classList.toggle('hide', !terr||tablero);
+  document.getElementById('search').disabled=!terr||tablero;
+  document.querySelector('.search').style.opacity=(terr&&!tablero)?'':'.4';
+  const hintEl=document.getElementById('hint'); if(hintEl) hintEl.style.display=tablero?'none':'';
 
   // corrida (what-if): señales redundantes — banner + tinte + identidad del header
   document.getElementById('mainEl').classList.toggle('corrida', state.corrida);
@@ -1455,13 +1579,15 @@ function render(){
   // disable honesto: capa sin efecto en el módulo/escala actual → atenuada con razón, no oculta
   const CAPAS_APLICAN={ 'z0-valor':['hilo','salud','brechas','cinetica','trabajo'], 'z0-org':['estructura','hilo','salud','brechas','cinetica','trabajo'],
     'z1':['hilo','salud','brechas','cinetica','trabajo'], 'z2':['hilo','salud','brechas','trabajo'], 'z3':['trabajo'] };
-  const apl=terr?CAPAS_APLICAN[state.escala==='z0'?('z0-'+state.piel):state.escala]:[];
+  const apl=(terr&&!tablero)?CAPAS_APLICAN[state.escala==='z0'?('z0-'+state.piel):state.escala]:[];
   document.querySelectorAll('.capa').forEach(b=>{ const na=!apl.includes(b.dataset.capa);
     b.classList.toggle('na',na); b.title=na?(terr?'Sin efecto en esta escala — no hay dato de esta capa aquí':'Las capas pintan sobre el Territorio'):''; });
 
   const MODNM={mejora:'Mejora — el loop brecha → proyecto → KPI', metodo:'Método — engagement M1·M2·M3', cambios:'Cambios — gestión ISO, git invisible'};
   let crumb=terr?'<b>Territorio</b>':`<b>${MODNM[state.mod]}</b>`;
-  const crumbHome=`<span class="plnk" onclick="state.escala='z0';state.foco=null;render()">Territorio</span>`;
+  if(terr&&state.nivel===1) crumb='<b>Nivel 1 · Directorio</b> — la apuesta y el riesgo';
+  if(terr&&state.nivel===3) crumb='<b>Nivel 3 · Táctico</b> — el compromiso entre áreas';
+  const crumbHome=`<span class="plnk" onclick="state.nivel=2;state.escala='z0';state.foco=null;render()">Territorio</span>`;
   if(terr&&state.escala==='z1'){ const a=byId(DATA.areas,state.foco); crumb=`${crumbHome} <span class="sep">›</span> <b>${a.nm}</b>`; }
   if(terr&&state.escala==='z2'){ crumb=`${crumbHome} <span class="sep">›</span> … <span class="sep">›</span> <b>${byId(DATA.procesos,state.lienzo||DATA.flagship.proc).nm}</b> · lienzo`; }
   if(terr&&state.escala==='z3'&&state.act){ const lf=lienzoData(state.act.pid), aa=lf&&lf.acts.find(x=>x.ord===state.act.ord);
@@ -1472,6 +1598,8 @@ function render(){
   MM_PTS=[];
   $nodes.innerHTML=''; $pins.innerHTML=''; $edges.innerHTML=''; $lienzo.style.display='none'; $nodes.style.display=''; $pins.style.display='';
   if(!terr){ ({mejora:renderMejora, metodo:renderMetodo, cambios:renderCambios})[state.mod](); }
+  else if(state.nivel===1) renderDirectorio();
+  else if(state.nivel===3) renderTactico();
   else if(state.escala==='z0') state.piel==='org'?renderOrganigrama():renderValor();
   else if(state.escala==='z1') renderValor();   // v13: z1 = el MISMO mapa de valor con foco de área (renderArea murió)
   else if(state.escala==='z3') renderInstruccion();
@@ -1772,11 +1900,11 @@ function renderValor(){
 
 /* ---------- z1 área = FOCO del mapa de valor (v13 — renderArea MURIÓ, decisión firmada 2026-07-26):
    drillArea solo fija el lente; renderValor pinta el mismo territorio con el área encendida ---------- */
-function drillArea(id){ state.escala='z1'; state.foco=id; state.insp='home'; render(); }
+function drillArea(id){ state.nivel=2; state.escala='z1'; state.foco=id; state.insp='home'; render(); }
 
 /* ---------- z2 lienzo (v2: en el world — bandas de carril + edges reales + capas encima) ---------- */
 function lienzoData(pid){ return pid===DATA.flagship.proc?DATA.flagship:(DATA.lienzos[pid]||null); }
-function drillLienzo(pid){ state.lienzo=pid||state.lienzo||DATA.flagship.proc; state.escala='z2'; state.insp='home'; render(); }
+function drillLienzo(pid){ state.lienzo=pid||state.lienzo||DATA.flagship.proc; state.nivel=4; state.escala='z2'; state.insp='home'; render(); }
 function renderLienzo(){
   const pid=state.lienzo||DATA.flagship.proc, p=byId(DATA.procesos,pid);
   let f=lienzoData(pid), stub=false;
@@ -1899,7 +2027,7 @@ function renderLienzo(){
 /* ---------- z3 · instrucción de trabajo — ISO 10013 nivel 3 · APQC L5 (el "cómo") ----------
    El piso del zoom semántico: debajo de la última tarea no hay más twin — hay ARNÉS (CK-29):
    el procedimiento se COMPILA al puesto (Arnesia N15 → Colab Studio N17). */
-function drillActividad(pid,ord){ state.lienzo=pid; state.act={pid,ord}; state.escala='z3'; state.insp='home'; render(); }
+function drillActividad(pid,ord){ state.lienzo=pid; state.act={pid,ord}; state.nivel=4; state.escala='z3'; state.insp='home'; render(); }
 function renderInstruccion(){
   const {pid,ord}=state.act, p=byId(DATA.procesos,pid), f=lienzoData(pid);
   const a=f?f.acts.find(x=>x.ord===ord):null;
@@ -1983,6 +2111,92 @@ function renderInstruccion(){
 }
 
 /* ---------- módulo Mejora: el loop brecha → proyecto → KPI movido ---------- */
+/* ---------- v14 · NIVEL 1 — sala del directorio como tablero (la sala de mando, promovida) ---------- */
+function bandejaRows(items){ return items.map(r=>`<button class="cambio-row${r.warn?' warnrow':''}" ${r.go||''}>
+    <span class="sc">${r.warn?'▲':'·'}</span><div><div class="tt">${r.t}</div>${r.d?`<div class="ap">${r.d}</div>`:''}</div>
+    <span class="ap">${r.apr}</span></button>`).join(''); }
+function renderDirectorio(){
+  const objOf=id=>byId(DATA.objetivos,id);
+  const stAp=a=>{ const ss=a.objetivos.map(id=>objOf(id).salud); return ss.includes('rojo')?'rojo':ss.includes('ambar')?'ambar':'verde'; };
+  const sts=DATA.apuestas.map(stAp), nG=sts.filter(s=>s==='verde').length, nA=sts.filter(s=>s==='ambar').length, nR=sts.filter(s=>s==='rojo').length;
+  const ciclo=state.ciclo==='okr'?'este trimestre':state.ciclo==='gpd'?'este año':'trimestre + año';
+  const bandeja=[
+    {t:'Sellar la apuesta "Digitalizar la cobranza"', d:'apuesta nueva — su objetivo va en rojo', apr:'gestión-de-cambios', go:'data-ap="ap-cob"'},
+    {t:'Aprobar el acta de "Cobranza digital · fase 1"', d:'doble firma: patrocinador ✓ · finanzas pendiente', apr:'gestión-de-cambios', go:'data-pm="pm-cob" data-pm2="pm-cob"'},
+    {t:'Fijar el apetito de riesgo de expansión (sin definir)', apr:'gestión-de-cambios', go:'data-acc="fijar-apetito"'},
+  ];
+  if(state.ciclo!=='okr') bandeja.push({t:'Decidir qué metas pagan bono este año ★', d:'acople compensación — solo en modo anual/mixto (RN-14)', apr:'gestión-de-cambios', go:'data-acc="convocar-cuentas"'});
+  const pv=pageView(`
+    <div class="pv-hd"><span class="eyebrow">Nivel 1 · Directorio — la apuesta y el riesgo · sesión mensual</span>
+      <h2>Sala del directorio</h2>
+      <div class="sub">Pocas apuestas, el riesgo contra el apetito y solo las excepciones que escalaron. El directorio no navega el detalle: decide — y cada decisión queda en el historial de la organización.</div></div>
+    <div class="dirgrid">
+      <div class="dpane"><div class="pt">Apetito de riesgo (dato simulado — ficha D-NN pendiente)</div>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--tx-mut)">liquidez <b style="color:var(--warn)">${DATA.apetito.liquidez}</b> · reputación <b style="color:var(--ok)">${DATA.apetito.reputacion}</b> · expansión <b style="color:var(--crit)">${DATA.apetito.expansion}</b></span></div>
+      <div class="dpane" title="Cada punto = una apuesta: ¿sus objetivos del ciclo avanzan hacia la meta?"><div class="pt">¿Avanzan las apuestas? (${ciclo})</div>
+        <div class="pulso-dots">${DATA.apuestas.map((a,i)=>`<i style="background:${health[sts[i]]}" title="${a.nm}"></i>`).join('')}</div>
+        <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--tx-mut)">${nG} en meta · ${nA} cerca · ${nR} fuera</span></div>
+      <div class="dpane"><div class="pt">Alertas que escalaron — solo lo que subió solo</div>
+        <button class="cambio-row" data-g="g-avc" data-g2="g-avc"><span class="sc">▲</span><div><div class="tt">Avance de Marina: 87% real vs 95% declarado</div></div><span class="ap" style="color:var(--crit)">S/ 35k/mes</span></button>
+        <button class="cambio-row" data-g="g-dso" data-g2="g-dso"><span class="sc">▲</span><div><div class="tt">Cobranza de Marina: 91 días bloquea la caja</div></div><span class="ap" style="color:var(--crit)">S/ 180k/año</span></button>
+        <button class="cambio-row" data-g="g-post" data-g2="g-post"><span class="sc">▲</span><div><div class="tt">La postventa se deteriora y ninguna meta la mide</div></div><span class="ap" style="color:var(--warn)">42 → 31</span></button>
+        <button class="cambio-row" data-area="a-tes"><span class="sc">▲</span><div><div class="tt">Jefatura de Tesorería vacante hace 5 meses</div></div><span class="ap" style="color:var(--warn)">sin persona</span></button></div>
+    </div>
+    <span class="eyebrow">Las apuestas — clic = ficha y acciones · lo que las sostiene vive en el nivel 2</span>
+    <div class="apcards" style="margin-top:8px">${DATA.apuestas.map((a,i)=>{ const objs=a.objetivos.map(objOf);
+      return `<button class="apcard" data-ap="${a.id}"><span class="un">apuesta ${a.sellada?'· sellada':'· <b style="color:var(--warn)">por sellar</b>'}</span>
+        <span class="nm">${a.nm}</span>
+        <span class="mt"><span class="health-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${health[sts[i]]};margin-right:5px"></span>${objs.map(o=>o.kr.m).join(' · ')}</span>
+        <span class="mt">riesgo <b style="color:${a.riesgo==='alto'?'var(--crit)':'var(--warn)'}">${a.riesgo}</b> · sostiene ${objs.length} objetivo${objs.length>1?'s':''}</span></button>`; }).join('')}</div>
+    <div class="dirgrid">
+      <div class="dpane solid"><div class="pt">Espera tu decisión · ${bandeja.length}</div>${bandejaRows(bandeja)}</div>
+      <div class="dpane"><div class="pt">Qué cambió desde la última sesión (hace 30 días)</div>
+        <div style="font-size:12px;color:var(--tx-mut);line-height:1.8">· cobranza Marina: 90 → 91 días (se degrada)<br>· "Cierre exprés" CERRÓ con veredicto: <b style="color:var(--ok)">movió</b> (9 → 4.5 días)<br>· satisfacción de propietarios 35 → 31 — sigue sin meta que la mida<br>· ${bandeja.length} decisiones esperan tu firma</div></div>
+      <div class="dpane"><div class="pt">Proyectos en curso — el portafolio</div>
+        ${DATA.proyectos.map(pm=>`<button class="cambio-row" data-pm="${pm.id}" data-pm2="${pm.id}"><span class="sc">${pm.pdca}</span><div><div class="tt">${pm.nm}</div><div class="ap">${pm.estado} · ${pm.delta}</div></div><span class="ap" style="color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}</div>
+    </div>`);
+  wireLinks(pv);
+  counter(`${DATA.apuestas.length} apuestas · ${nR} fuera de meta · ${bandeja.length} decisiones esperan firma`);
+}
+
+/* ---------- v14 · NIVEL 3 — el compromiso entre áreas (reunión de resultados) ---------- */
+function renderTactico(){
+  const tops=DATA.areas.filter(a=>a.parent==='a-ger');
+  const kTop=k=>topArea(byId(DATA.procesos,k.proc).areas[0]).id;
+  const pmTop=pm=>topArea(pm.area).id;
+  const ciclo=state.ciclo==='okr'?'del trimestre':state.ciclo==='gpd'?'del año':'del ciclo';
+  const bandeja=[
+    {t:'Avanzar el hito de "Recuperación de avance Marina"', d:'en ejecución (DO) — corte quincenal listo', apr:'revisión-dueño', go:'data-pm="pm-mar" data-pm2="pm-mar"'},
+    {t:'Evaluar 2 ideas del embudo', d:'"Foto diaria de caja" · "Bitácora por municipio" — con respuesta al autor', apr:'revisión-dueño', go:'data-idea="i-caja"'},
+    {t:'Promover "Agente que prepara el contacto de morosos"', d:'nació del triage — candidata a skill del arnés', apr:'gestión-de-cambios', go:'data-idea="i-agente"'},
+  ];
+  sinContraKpis().forEach(k=>bandeja.push({t:`"${k.nm}" fuera de banda y sin contramedida`, d:'anomalía exige respuesta comprometida — no excusa verbal', apr:'—', warn:true, go:`data-k="${k.id}"`}));
+  const pv=pageView(`
+    <div class="pv-hd"><span class="eyebrow">Nivel 3 · Táctico — el compromiso entre áreas · reunión de resultados</span>
+      <h2>Compromisos e indicadores por área</h2>
+      <div class="sub">Regla de la reunión: indicador fuera de banda EXIGE contramedida comprometida — la anomalía sin respuesta es alerta, no excusa. Los compromisos nacen de brechas o de ideas, jamás de la nada.${state.ciclo!=='okr'?' · ★ = meta atada a bono (modo anual)':''}</div></div>
+    <span class="eyebrow">Metas ${ciclo} a las que se aporta (contexto)</span>
+    <div class="chips" style="margin:8px 0 4px">${DATA.objetivos.map(o=>`<span class="chip lk" data-obj="${o.id}"><span class="health-dot" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${health[o.salud]};margin-right:4px"></span>${o.kr.m}: ${o.kr.from} → ${o.kr.to}${state.ciclo!=='okr'&&o.bono?' <b style="color:var(--warn)">★</b>':''}</span>`).join('')}</div>
+    <div class="dirgrid" style="margin-top:10px">
+      <div class="dpane solid" style="max-width:520px"><div class="pt">Espera tu decisión · ${bandeja.length}</div>${bandejaRows(bandeja)}</div>
+      <div class="dpane"><div class="pt">Aquí NACEN los compromisos — brechas sin respuesta</div>
+        ${DATA.brechas.filter(g=>!DATA.proyectos.some(pm=>pm.brecha===g.id)&&g.estado!=='off-thread').map(g=>`<button class="cambio-row" data-g="${g.id}" data-g2="${g.id}"><span class="sc" style="color:${g.sev==='alta'?'var(--crit)':'var(--warn)'}">▲</span><div><div class="tt">${g.nm.length>62?g.nm.slice(0,60)+'…':g.nm}</div></div><span class="ap">${g.costo}</span></button>`).join('')}</div>
+    </div>
+    <div class="tcols">
+      ${tops.map(a=>{ const pms=DATA.proyectos.filter(pm=>pmTop(pm)===a.id);
+        const ks=DATA.kpis.filter(k=>kTop(k)===a.id);
+        if(!pms.length&&!ks.length) return '';
+        return `<div class="tcol"><div class="th" data-area="${a.id}">${a.nm} ›</div>
+          ${pms.map(pm=>`<button class="cambio-row" data-pm="${pm.id}" data-pm2="${pm.id}"><span class="sc">${pm.pdca}</span><div><div class="tt">${pm.nm}</div><div class="ap">${pm.estado} · mueve ${byId(DATA.kpis,pm.mueve).nm}</div></div><span class="ap" style="color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}
+          ${ks.map(k=>krowHTML(k)+(sinContra(k)?`<div class="ncm">▲ sin contramedida comprometida · <span class="plnk" data-acc="comprometer-contramedida">comprometer ›</span></div>`:'')).join('')}
+        </div>`; }).join('')}
+      <div class="tcol"><div class="th">Embudo de ideas — participación del personal</div>
+        ${DATA.ideas.map(i=>`<button class="cambio-row" data-idea="${i.id}"><span class="sc">💡</span><div><div class="tt">${i.nm}</div><div class="ap">${i.prop} · ${i.estado}</div></div></button>`).join('')}</div>
+    </div>`);
+  wireLinks(pv);
+  counter(`${DATA.proyectos.length} compromisos · ${sinContraKpis().length} sin contramedida · ${DATA.ideas.filter(i=>i.estado==='enviada').length} ideas por evaluar`);
+}
+
 function renderMejora(){
   const rank={alta:3,media:2,baja:1};
   const gs=[...DATA.brechas].sort((a,b)=>rank[b.sev]-rank[a.sev]);
@@ -2070,8 +2284,11 @@ function renderCambios(){
     <div class="fcol"><span class="eyebrow">Versiones vigentes (por entorno)</span>
       <div class="fitem"><span class="t">Cobranza de cuotas — mapa de proceso</span><span class="m"><span class="gate-pill">v1 VIGENTE · prod</span><span class="gate-pill pend">v2 borrador · dev</span><span>revisión periódica: 15 ago</span></span></div>
       <div class="fitem"><span class="t">Arnés · Analista de Cobranza (Colab Studio)</span><span class="m"><span class="gate-pill">v3 VIGENTE</span><span>compilado del twin · 2026-07-18</span><span>uso 34/sem (rol)</span></span></div>
-      <div class="fitem"><span class="t">Corrida · Cobranza digital fase 2 (what-if)</span><span class="m"><span class="gate-pill pend">RAMA ABIERTA</span><span>merge = pasa por ESTA cola de aprobación</span></span></div></div>`);
-  counter('3 pendientes · 2 aplicadas · 1 rama what-if');
+      <div class="fitem"><span class="t">Corrida · Cobranza digital fase 2 (what-if)</span><span class="m"><span class="gate-pill pend">RAMA ABIERTA</span><span>merge = pasa por ESTA cola de aprobación</span></span></div></div>
+    <div class="fcol"><span class="eyebrow">Historial de la organización — toda acción, versionada (quién · qué · aprobación)</span>
+      ${DATA.historial.map(h=>`<div class="fitem"><span class="t" style="font-size:12px">${h}</span></div>`).join('')}
+      <div style="font-size:10px;color:var(--tx-faint);font-family:var(--font-mono)">la organización tiene historial, como el código — debajo: git real en N6</div></div>`);
+  counter(`3 pendientes · 2 aplicadas · historial: ${DATA.historial.length} acciones`);
 }
 
 /* ---------- topbar: chips de filtro + contador de subset ---------- */
@@ -2157,7 +2374,7 @@ function inspectorHome(){
         <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">Aplicar = PR a la rama principal (N6) por la cola de <b>Cambios</b>. Nada se mergea implícito.</div>
         <button class="btn" style="justify-content:center" onclick="document.getElementById('corridaGate').click()">Enviar a aprobación ›</button></div>`;
     return; }
-  if(state.escala==='z0'){
+  if(state.escala==='z0'&&!(state.mod==='territorio'&&state.nivel===3)){
     inEye.textContent='Sala de mando · directorio';
     const ok=DATA.objetivos.filter(o=>o.salud==='verde').length;
     inTitle.textContent=`Pulso · ${ok}/${DATA.objetivos.length} en banda`;
@@ -2182,7 +2399,7 @@ function inspectorHome(){
       <div class="dgroup"><div class="gt">El twin compila trabajo — se compila por rol×proceso · se ensambla por puesto (CK-30)</div>
         <div style="font-size:12.5px;line-height:1.5"><b class="mono" style="color:var(--brand-hi)">${new Set(DATA.arneses.map(h=>h.deriva_de.puesto)).size}/${DATA.puestosTotal}</b> puestos con arnés en su roster · <b class="mono">${DATA.arneses.length}</b> arneses compilados · <span style="color:var(--warn)">${DATA.arneses.filter(h=>arnesEstado(h)==='desactualizado').length} desactualizado</span> (el twin cambió → recompilar). El resto opera a mano: el gap de la era agéntica, visible.</div>
         <button class="btn" id="verTrabajo" style="justify-content:center">Prender la capa Trabajo ›</button></div>`;
-    inBody.querySelector('#apuestaGo').onclick=()=>{ setPiel('valor');
+    inBody.querySelector('#apuestaGo').onclick=()=>{ state.nivel=2; setPiel('valor');
       if(!state.capas.has('hilo')){state.capas.add('hilo');document.querySelector('[data-capa=hilo]').classList.add('on');}
       state.activeObj='o-lid'; render(); };
     inBody.querySelector('#verTrabajo').onclick=()=>{ if(!state.capas.has('trabajo')){state.capas.add('trabajo');document.querySelector('[data-capa=trabajo]').classList.add('on');} render(); };
@@ -2225,14 +2442,26 @@ function inspectorHome(){
       <div style="font-size:12px;color:var(--tx-faint);line-height:1.5">Debajo de la instrucción no hay más zoom: el piso es el <b>arnés de este rol×proceso</b> (M46 · CK-30), ensamblado al roster del puesto. Toca una tarea, un rol o el arnés para seguir el viaje.</div>`;
     wireLinks(inBody); return;
   }
+  else if(state.mod==='territorio'&&state.nivel===3&&state.escala==='z0'){
+    const sc=sinContraKpis();
+    inEye.textContent='Táctico · reunión de resultados'; inTitle.textContent=`${sc.length} sin contramedida · ${DATA.ideas.filter(i=>i.estado==='enviada').length} ideas por evaluar`;
+    inBody.innerHTML=`<div class="dgroup"><div class="gt">La regla de la reunión</div>
+        <div style="font-size:12.5px;line-height:1.5">Indicador fuera de banda <b>exige contramedida comprometida</b> — la anomalía sin respuesta es alerta, no excusa. La contramedida se registra como acción, jamás verbal.</div></div>
+      <div style="font-size:12px;color:var(--tx-faint)">Toca un compromiso, indicador o idea para su ficha y sus acciones. Los compromisos nacen de brechas o ideas — el panel "aquí nacen" las lista.</div>`;
+    return; }
   else{
     const pid=state.lienzo||DATA.flagship.proc, f=lienzoData(pid), p2=byId(DATA.procesos,pid), ks=kpisByProc(pid);
     const gs=DATA.brechas.filter(x=>x.against===pid);
+    const tuDia=state.escala==='z2'?`<div class="dgroup"><div class="gt">Tu día — operativo</div>
+      <button class="loop-it" data-k="k-caj"><span style="color:var(--warn)">◔</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Registrar "rezago caja por obra" — sin dato</span><span class="mono" style="font-size:9px;color:var(--tx-faint)">directa</span></button>
+      <button class="loop-it" data-k="k-vis"><span style="color:var(--warn)">⌛</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">"visitas a caseta" — frescura vencida</span><span class="mono" style="font-size:9px;color:var(--tx-faint)">directa</span></button>
+      <button class="loop-it" data-h="h-cob-ancob"><span style="color:var(--brand-hi)">⛨</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Verificar la muestra del arnés (5 corridas · 20 min)</span><span class="mono" style="font-size:9px;color:var(--tx-faint)">supervisión</span></button>
+      <button class="loop-it" data-acc="enviar-idea"><span>💡</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Enviar una idea — autoría con tu nombre</span><span class="mono" style="font-size:9px;color:var(--tx-faint)">directa</span></button></div>`:'';
     const gapsHTML=gs.length?`<div class="dgroup"><div class="gt">Brecha${gs.length>1?'s':''} activa${gs.length>1?'s':''} sobre este proceso</div>
       ${gs.map(g=>`<button class="loop-it" data-g2="${g.id}"><span style="color:${g.sev==='alta'?'var(--crit)':'var(--warn)'}">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.nm}</span><span class="mono" style="font-size:10px;color:${g.sev==='alta'?'var(--crit)':'var(--warn)'}">${g.costo}</span></button>`).join('')}</div>`:'';
     inEye.textContent='Proceso · lienzo'; inTitle.textContent=p2.nm;
     if(!f){ // lienzo honesto (sin actividades levantadas)
-      inBody.innerHTML=`
+      inBody.innerHTML=`${tuDia}
         ${ks.length?`<div class="dgroup"><div class="gt">KPIs del proceso</div>${ks.map(krowHTML).join('')}</div>`:''}
         <div class="dgroup"><div class="gt">Actividades sin levantar</div>
           <div style="font-size:12px;line-height:1.5">Este lienzo muestra los <b>pasos macro</b> declarados en la ingesta. El detalle (carriles, tiempos VSM, triage, RACI) se construye en el levantamiento <b>M1 · entrevista + observación</b>.</div></div>
@@ -2240,7 +2469,7 @@ function inspectorHome(){
         <div style="font-size:12px;color:var(--tx-faint)">Volver: ‹ Big picture · la ficha del proceso tiene su caracterización SIPOC.</div>`;
     } else {
       const tri=f.acts.filter(a=>a.triage&&a.triage.startsWith('automatizable')).length, elim=f.acts.filter(a=>a.triage==='eliminable').length;
-      inBody.innerHTML=`
+      inBody.innerHTML=`${tuDia}
         ${ks.length?`<div class="dgroup"><div class="gt">KPIs del proceso</div>${ks.map(krowHTML).join('')}</div>`:''}
         <div class="dgroup">
           <div class="drow"><dt>Actividades</dt><dd class="mono">${f.acts.length}</dd></div>
@@ -2403,6 +2632,26 @@ function openKpi(k){ const s=semaforo(k), c=kcur(k), o=k.obj?byId(DATA.objetivos
 /* ============================================================
    FICHAS DEL VIAJE COMPLETO (CK-29) — toda entidad navegable
    ============================================================ */
+/* ===== v14 · APUESTA — la unidad del directorio (⚠ pendiente de schema: ficha D-NN) ===== */
+function openApuesta(a){ const objs=a.objetivos.map(id=>byId(DATA.objetivos,id));
+  const pms=DATA.proyectos.filter(pm=>{ const k=byId(DATA.kpis,pm.mueve); const g=pm.brecha&&byId(DATA.brechas,pm.brecha);
+    return (k&&a.objetivos.includes(k.obj))||(g&&a.objetivos.includes(g.obj)); });
+  openDrawer('Apuesta · directorio', a.nm, `
+    <div class="dgroup">
+      <div class="drow"><dt>Estado</dt><dd>${a.sellada?'<span class="chip teal">sellada</span>':'<span class="chip" style="border-color:var(--warn);color:var(--warn)">por sellar</span>'}</dd></div>
+      <div class="drow"><dt>Riesgo vs apetito</dt><dd><span class="chip" style="border-color:${a.riesgo==='alto'?'var(--crit)':'var(--warn)'};color:${a.riesgo==='alto'?'var(--crit)':'var(--warn)'}">${a.riesgo}</span></dd></div>
+      <div class="drow"><dt>Horizonte</dt><dd style="font-size:12px">3 años · se rinde cuentas por ${state.ciclo==='okr'?'trimestre':'año'}</dd></div></div>
+    <div class="dgroup"><div class="gt">La sostienen — objetivos del ciclo</div>
+      ${objs.map(o=>`<button class="loop-it" data-obj="${o.id}"><span style="width:8px;height:8px;border-radius:50%;background:${health[o.salud]};flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.nm}</span><span class="mono" style="font-size:10px;color:var(--tx-mut)">${o.kr.cur} → ${o.kr.to} ${o.kr.u}</span></button>`).join('')}</div>
+    ${pms.length?`<div class="dgroup"><div class="gt">Proyectos que le aportan</div>
+      ${pms.map(pm=>`<button class="loop-it" data-pm2="${pm.id}"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}</span><span class="mono" style="font-size:10px;color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}</div>`:''}
+    <div class="dgroup"><div class="gt">Acciones (kinética — decide la Dirección)</div>
+      ${a.sellada?'':'<button class="btn" data-acc="sellar-apuesta">Sellar la apuesta › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>'}
+      <button class="btn" data-acc="re-apostar">Re-apostar (cambiar meta o riesgo) › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>
+      <button class="btn" data-acc="retirar-apuesta">Retirar la apuesta › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>
+      <button class="btn" data-acc="convocar-cuentas">Convocar rendición de cuentas › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · directa</span></button></div>
+    <div style="font-size:10px;color:var(--tx-faint)">⚠ apuesta y apetito aún no son entidades del schema — ficha D-NN pendiente (/metodo-aprende). Acá viven ancladas a objetivos reales.</div>`);
+}
 function openObjetivo(o){
   const drivers=DATA.procesos.filter(p=>p.sirve.includes(o.id));
   const gaps=DATA.brechas.filter(g=>g.obj===o.id);
@@ -2419,7 +2668,7 @@ function openObjetivo(o){
     <div class="dgroup"><div class="gt">Acciones (kinética)</div>
       <button class="btn" data-acc="aprobar-version-objetivo">Aprobar nueva versión › <span class="mono" style="font-size:9px;color:var(--tx-faint)">gobernanza · gestión-de-cambios</span></button></div>
     <button class="btn" style="justify-content:center" id="objHilo">Encender su hilo en el mapa ›</button>`);
-  const b=inBody.querySelector('#objHilo'); if(b) b.onclick=()=>{ state.mod='territorio'; state.escala='z0'; setPiel('valor'); state.activeObj=o.id;
+  const b=inBody.querySelector('#objHilo'); if(b) b.onclick=()=>{ state.mod='territorio'; state.nivel=2; state.escala='z0'; setPiel('valor'); state.activeObj=o.id;
     if(!state.capas.has('hilo')){state.capas.add('hilo');document.querySelector('[data-capa=hilo]').classList.add('on');} render(); };
 }
 /* ===== PUESTO — la posición del organigrama (D-19): se contrata, se ocupa, se vacanta, reporta ===== */
@@ -2605,13 +2854,19 @@ function openEmpresa(){ const e=DATA.empresa;
    ============================================================ */
 document.getElementById('back').onclick=()=>{
   if(state.escala==='z3'){ state.escala='z2'; state.insp='home'; render(); return; }   // la escalera se sube de a un peldaño
-  state.escala='z0'; state.foco=null; state.insp='home'; render(); };
+  state.nivel=2; state.escala='z0'; state.foco=null; state.insp='home'; render(); };
 document.querySelectorAll('#modulos .esc').forEach(b=>b.onclick=()=>{ state.mod=b.dataset.mod;
   if(state.mod!=='territorio'){ state.escala='z0'; state.foco=null; } state.insp='home'; render(); });
 document.getElementById('itAsis').onclick=()=>{ state.corrida=false; idmenu.classList.remove('open'); state.insp='home'; render(); };
 document.getElementById('itCorrida').onclick=()=>{ state.corrida=true; state.mod='territorio'; idmenu.classList.remove('open'); state.insp='home'; render(); };
 document.getElementById('corridaExit').onclick=()=>{ state.corrida=false; state.insp='home'; render(); };
 document.getElementById('corridaGate').onclick=()=>{ state.mod='cambios'; state.insp='home'; render(); }; // el diff pasa por la cola de aprobación
+/* v14: elevador de niveles + gobierno (ciclo · ver-como) */
+document.querySelectorAll('#niveles .esc').forEach(b=>b.onclick=()=>gotoNivel(+b.dataset.nivel));
+document.getElementById('cicloSel').onchange=e=>{ state.ciclo=e.target.value; render();
+  toast(state.ciclo==='okr'?'Modo trimestral: compensación separada de las metas.':'Modo anual (práctica LATAM/BR): el despliegue baja en cascada y ciertas metas pagan bono ★.'); };
+document.getElementById('verComoSel').onchange=e=>{ state.verComo=e.target.value; render();
+  if(state.verComo!=='')toast('Tu autoridad fija qué acciones puedes ejecutar — las demás se ven, deshabilitadas.'); };
 document.querySelectorAll('.piel-toggle button').forEach(b=>b.onclick=()=>{ setPiel(b.dataset.piel); state.activeObj=null; render(); });
 document.querySelectorAll('.capa').forEach(b=>b.onclick=()=>{ const c=b.dataset.capa;
   if(state.capas.has(c)){ state.capas.delete(c); b.classList.remove('on'); } else { state.capas.add(c); b.classList.add('on'); } render(); });
