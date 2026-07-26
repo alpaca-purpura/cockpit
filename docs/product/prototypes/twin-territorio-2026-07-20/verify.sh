@@ -29,9 +29,9 @@ function whenReady(cb){ const flush=stage.clientWidth; /* leerlo fuerza layout b
   const o=document.querySelector('.obj-node');
   if(o){ const r=o.getBoundingClientRect();
     if(r.width>4 && document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)){ cb(); return; } }
-  if(++wrTries%3===0 && flush>0){ try{ render(); fit(false); }catch(e){} }
+  if((++wrTries%3===0||wrTries>6) && flush>0){ try{ render(); fit(false); applyView(false); }catch(e){} }
   document.title='WARMUP::'+wrTries+' stage='+flush;   /* escribir el título bombea layout bajo virtual-time (Chrome ≥138) */
-  setTimeout(()=>whenReady(cb),250); }
+  setTimeout(()=>whenReady(cb),wrTries>6?400:250); }
 window.addEventListener('load',()=>{whenReady(()=>{
   const R=[]; const t=(n,f)=>{try{f();R.push('OK '+n);}catch(e){R.push('FAIL '+n+' :: '+e.message);}};
   const A=(c,m)=>{if(!c)throw new Error(m)}; const eye=()=>document.getElementById('inEye').textContent;

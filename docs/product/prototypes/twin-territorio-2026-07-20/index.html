@@ -1505,12 +1505,12 @@ function renderOrganigrama(){
       const mi=procs.filter(p=>p.digital==='manual').length, me=procs.filter(p=>p.digital==='externo').length, ma=procs.filter(p=>p.digital==='integrado').length;
       heat=`<div class="heatwrap"><i style="flex:${ma+.01};background:var(--ok)"></i><i style="flex:${me+.01};background:var(--warn)"></i><i style="flex:${mi+.01};background:var(--crit)"></i></div>`;
     }
-    const hs=state.capas.has('trabajo')?arnesesArea(a.id):null;
     const setD=new Set(folded?descendants(a.id):[a.id]);
     const pusAll=PUESTOS.filter(p=>setD.has(p.area));
+    const hs=state.capas.has('trabajo')?DATA.arneses.filter(h=>{const q=puestoByNm(h.deriva_de.puesto);return q&&setD.has(q.area);}):null;
     const hChip=hs?`<span class="cnt" style="color:${hs.some(h=>arnesEstado(h)==='desactualizado')?'var(--warn)':(hs.length?'var(--brand-hi)':'var(--tx-faint)')}" title="arneses compilados en el subtree / puestos del área">⛨ ${hs.length}/${pusAll.length}${hs.some(h=>arnesEstado(h)==='desactualizado')?' ⚠':''}</span>`:'';
     const pus=state.lod>=4?pusAll:[];
-    n.innerHTML=`<div class="area-node">
+    n.innerHTML=`<div class="area-node"${state.lod>=4?' style="width:190px"':''}>
       <div class="hd"><div><div class="nm">${tbadge('area','área · Business Actor organizacional (M13 ArchiMate)')}${a.nm}</div><div class="lider plnk" title="ficha de la persona">${a.lider.split(' · ')[0]}</div>${a.vacante?'<span class="vac">rol vacante</span>':''}</div>
         <span class="health-dot" style="background:${dotColor}"></span></div>
       <div class="stat">${heat}<span class="cnt">${procs.length}</span>${hChip}${folded?`<span class="cnt fold">+${hidden} áreas</span>`:(subVis?`<span class="cnt">+${subVis}</span>`:'')}</div>
@@ -1532,7 +1532,8 @@ function renderOrganigrama(){
       (byArea[area.id]=byArea[area.id]||[]).push(g); });
     Object.keys(byArea).forEach(aid=>{ const area=byId(DATA.areas,aid), gs=byArea[aid].sort((x,y)=>rank[y.sev]-rank[x.sev]), g=gs[0];
       const pin=el('div','pin '+(g.sev==='alta'?'':g.sev==='media'?'med':'low'));
-      pin.style.left=(area.x+52)+'px'; pin.style.top=(area.y-40)+'px';
+      const lift=state.lod>=4?40+Math.round(PUESTOS.filter(q=>q.area===aid).length*8.5):40;   // lod4: el nodo crece hacia arriba también — el pin no pisa el título
+      pin.style.left=(area.x+52)+'px'; pin.style.top=(area.y-lift)+'px';
       pin.innerHTML=`<div class="body" style="white-space:nowrap">▲ ${g.sev}${gs.length>1?` +${gs.length-1}`:''} · ${g.costo}</div><div class="stem"></div><div class="head"></div>`;
       pin.title=gs.map(x=>x.nm).join('  ·  ');
       pin.onclick=()=>openBrecha(g); $pins.appendChild(pin);
@@ -2231,7 +2232,7 @@ function inspectorHome(){
       <div class="dgroup"><div class="gt">Acciones (kinética)</div>
         <button class="btn" data-acc="corregir-instruccion">Proponer corrección de instrucción › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · gestión-de-cambios → recompila arnés</span></button>
         <button class="btn" data-acc="enviar-idea">Proponer mejora al funil › <span class="mono" style="font-size:9px;color:var(--tx-faint)">operativo · directa · autoría reconocida</span></button></div>
-      <div style="font-size:12px;color:var(--tx-faint);line-height:1.5">Debajo de la instrucción no hay más zoom: el piso es el <b>arnés del puesto</b> (CK-29). Toca una tarea, un rol o el arnés para seguir el viaje.</div>`;
+      <div style="font-size:12px;color:var(--tx-faint);line-height:1.5">Debajo de la instrucción no hay más zoom: el piso es el <b>arnés de este rol×proceso</b> (M46 · CK-30), ensamblado al roster del puesto. Toca una tarea, un rol o el arnés para seguir el viaje.</div>`;
     wireLinks(inBody); return;
   }
   else{
@@ -2533,8 +2534,8 @@ function openArnes(h){ if(!h)return;
      <div class="drow"><dt>Uso (telemetría N3)</dt><dd class="mono" style="font-size:10px">${h.uso}</dd></div></div>
    <div class="dgroup"><div class="gt">Acciones (kinética · D-20)</div>
      ${est==='desactualizado'?`<button class="btn" data-acc="recompilar-arnes" style="justify-content:center">Recompilar del twin › <span class="mono" style="font-size:9px;color:var(--tx-faint)">Arnesia N15 · táctico · revisión-dueño</span></button>`:''}
-     <button class="btn" data-acc="suspender-arnes" style="justify-content:center">Suspender (kill-switch) › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · directa</span></button>
-     <button class="btn" data-acc="ratificar-autonomia-arnes" style="justify-content:center">Ratificar autonomía › <span class="mono" style="font-size:9px;color:var(--tx-faint)">gobernanza · gestión-de-cambios</span></button></div>
+     <button class="btn" data-acc="suspender-arnes" style="justify-content:center">Suspender (kill-switch)&nbsp;› <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · directa</span></button>
+     <button class="btn" data-acc="ratificar-autonomia-arnes" style="justify-content:center">Ratificar autonomía&nbsp;› <span class="mono" style="font-size:9px;color:var(--tx-faint)">gobernanza · gestión-de-cambios</span></button></div>
    <div style="font-size:11.5px;color:var(--tx-faint);line-height:1.5">El twin guarda el <b style="color:var(--tx-mut)">REGISTRO</b> (procedencia · versión · drift · autonomía · supervisión); el <b style="color:var(--tx-mut)">CONTENIDO</b> (skills · hooks · permisos · sandbox) lo compila Arnesia (N15) contra <span class="mono" style="font-size:10px">arnes.l0.json</span>. Se recompila, jamás se edita a mano (D-20).</div>`);
 }
 /* ===== ÁREA — la 12ª navegable (cierra A3): unidad organizacional con su hilo completo ===== */
