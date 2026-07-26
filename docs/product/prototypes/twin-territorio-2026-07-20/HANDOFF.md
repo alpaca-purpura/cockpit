@@ -1,6 +1,19 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-26 → siguiente)
 
-> **RUMBO NUEVO (2026-07-26, post-v13 — leer PRIMERO):** el operador firmó navegar por **4 niveles
+> **★ v14 EJECUTADA (2026-07-26, commit `16a8af5` — leer PRIMERO):** la FUSIÓN firmada ya vive en
+> `index.html` (Artifact 🗺️, republicado): el twin es la base, el sandbox aportó estructura y QUEDA
+> RETIRADO (no iterar más el 🛗). v14 = elevador de 4 niveles en el rail (1 Directorio=tablero nuevo
+> `renderDirectorio` · 2 Estratégico=territorio v13 INTACTO · 3 Táctico=`renderTactico` · 4 Operativo=
+> z2/z3 + tu-día) + capa de acción (catálogo `ACC` con autoridad+aprobación · ver-como deshabilita
+> fuera de nivel · toda acción → `DATA.historial` visible en módulo Cambios + toast) + ciclo OKR/GPD
+> (★ bono) + `DATA.apuestas/apetito` (⚠ schema pendiente D-NN) + ficha `openApuesta`. verify.sh
+> **26/26** (2 tests nuevos: nivel1-directorio · nivel3-tactico) + pasada visual con ojos propios
+> (niveles 1/3/4, gating Analista, GPD, historial con acción registrada). Anchors nuevos:
+> `v14 · capa de ACCIÓN` · `renderDirectorio` · `renderTactico` · `gotoNivel` · `openApuesta`.
+> Pendientes de dato que v14 re-confirma: apuesta/apetito como entidad + acciones · catchball ·
+> metas de trimestre 1ª clase (A2). Próximo: comentarios del operador SOBRE v14 en el 🗺️.
+
+> **RUMBO NUEVO (2026-07-26, post-v13 — contexto de cómo se llegó):** el operador firmó navegar por **4 niveles
 > de gestión** (1 Directorio · 2 Estratégico · 3 Táctico · 4 Operativo): bajar = traducción (cambia
 > la pregunta y la unidad), grafo no árbol (subir≠atrás, selector al subir), niveles con
 > desalineaciones visibles, trazado vertical, "ver como" con siluetas. Se valida en
