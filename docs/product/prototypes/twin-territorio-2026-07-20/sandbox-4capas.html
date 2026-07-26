@@ -13,6 +13,9 @@
        colapsadas con contador, expansión lateral. O jamás entero.
    Se mantiene v1: subir≠atrás + selector de padres · elevador con
    fracturas · hilo · fog of war · burbujeo · transición ritual.
+   v2.2 (doctrina operador 2026-07-26): CERO jerga visible — todo se
+   nombra por su término común del rubro (nivel, meta, alerta, trazar,
+   filtro, incidencia crítica, suelto). La jerga solo vive en el código.
    ============================================================ */
 :root{
   --teal:#00b7aa; --teal-hi:#1fc6b8; --teal-700:#007f76;
@@ -124,9 +127,9 @@ path{fill:none}
   <span class="ttl">Sandbox · gestos 4 capas · v2</span>
   <button id="back" disabled>‹ Atrás</button>
   <button id="up" title="¿A qué contribuye lo que miro? (semántico — no es historia)">▲ Subir</button>
-  <button id="hilo" title="Cadena vertical del nodo seleccionado a través de las 4 capas">⛓ Hilo</button>
+  <button id="hilo" title="Traza la cadena completa del elemento seleccionado a través de los 4 niveles">⛓ Trazar</button>
   <span id="crumb"></span>
-  <span id="scopechip"><span>⌖ <span id="scopetxt"></span></span><span class="x" title="quitar el recorte — ver el piso completo (O: nunca entero, por área)">✕</span></span>
+  <span id="scopechip"><span>⌖ <span id="scopetxt"></span></span><span class="x" title="quitar el filtro — ver el nivel completo (el operativo siempre por área)">✕</span></span>
   <span id="lente">
     <label style="font-family:var(--mono);font-size:9px;color:var(--tx-faint)">VER COMO </label>
     <select id="who">
@@ -146,21 +149,21 @@ path{fill:none}
     <div id="toast"></div>
   </div>
   <div id="elev">
-    <div class="et">Elevador</div>
-    <div class="piso" data-c="D"><span class="pl">D · directorio</span><div class="dots"></div></div>
-    <div class="piso" data-c="E"><span class="pl">E · estratégico</span><div class="dots"></div></div>
-    <div class="piso" data-c="T"><span class="pl">T · táctico</span><div class="dots"></div></div>
-    <div class="piso" data-c="O"><span class="pl">O · operativo</span><div class="dots"></div></div>
-    <div class="leg"><i style="color:var(--crit)">●</i> fractura / fuego<br><i style="color:var(--teal)">●</i> hilo<br><i style="color:#fff">●</i> tú</div>
+    <div class="et">Niveles</div>
+    <div class="piso" data-c="D"><span class="pl">1 · Directorio</span><div class="dots"></div></div>
+    <div class="piso" data-c="E"><span class="pl">2 · Estratégico</span><div class="dots"></div></div>
+    <div class="piso" data-c="T"><span class="pl">3 · Táctico</span><div class="dots"></div></div>
+    <div class="piso" data-c="O"><span class="pl">4 · Operativo</span><div class="dots"></div></div>
+    <div class="leg"><i style="color:var(--crit)">●</i> alerta<br><i style="color:var(--teal)">●</i> cadena trazada<br><i style="color:#fff">●</i> estás aquí</div>
   </div>
 </div>
 
 <div id="hint">
-  <span><b>dblclick</b> = descender acotado (el chip ⌖ es el recorte; ✕ lo quita)</span>
-  <span><b>click</b> = seleccionar</span>
-  <span><b>▲ Subir</b> = ¿a qué contribuyo?</span>
+  <span><b>doble clic</b> = bajar un nivel (⌖ = filtro de dónde vienes; ✕ lo quita)</span>
+  <span><b>clic</b> = seleccionar</span>
+  <span><b>▲ Subir</b> = ¿a qué aporta?</span>
   <span><b>‹ Atrás</b> = historia</span>
-  <span><b>área plegada ▸</b> = expandir lateral</span>
+  <span><b>área plegada ▸</b> = abrirla</span>
 </div>
 
 <script>
@@ -169,6 +172,8 @@ function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a
 const rnd=mulberry32(42);
 const CAPAS=['D','E','T','O'];
 const CAPNM={D:'Directorio — la apuesta y el riesgo',E:'Estratégico — el objetivo y la capacidad',T:'Táctico — el compromiso entre áreas',O:'Operativo — el caso y la excepción'};
+const NIV={D:'Nivel 1 · Directorio',E:'Nivel 2 · Estratégico',T:'Nivel 3 · Táctico',O:'Nivel 4 · Operativo'};
+const NIVC={D:'Directorio',E:'Estratégico',T:'Táctico',O:'Operativo'};
 const AREAS=['Área Comercial','Área Finanzas','Área Operaciones','Área GH'];
 const nodes=[]; const byId={};
 function mk(capa,i,extra){const id=capa+(i+1);
@@ -176,8 +181,8 @@ function mk(capa,i,extra){const id=capa+(i+1);
   nodes.push(n);byId[id]=n;return n}
 /* D: 5 apuestas con kr-estado + riesgo (tablero del directorio) */
 const DLB=['Liderazgo en vivienda media','Caja sana en proyectos','Expansión provincia','Marca empleadora','Digitalizar la cobranza'];
-const DKR=[['margen →18%','a'],['DSO 91→60d','r'],['2 proyectos nuevos','g'],['rotación −20%','a'],['cobro digital 60%','a']];
-const DRG=['media','alta','alta','baja','media'];
+const DKR=[['margen →18%','a'],['cobranza: 91→60 días','r'],['2 proyectos nuevos','g'],['rotación −20%','a'],['cobro digital 60%','a']];
+const DRG=['medio','alto','alto','bajo','medio'];
 for(let i=0;i<5;i++)mk('D',i,{label:DLB[i],kr:DKR[i][0],krst:DKR[i][1],riesgo:DRG[i]});
 /* E: 10 capacidades con área + madurez (navegables) — el resto del tablero E es contexto */
 const ELB=['Comercializar','Cobrar','Diseñar producto','Ejecutar obra','Postventa','Financiar','Abastecer','Atraer talento','Analítica','Cumplimiento'];
@@ -232,12 +237,12 @@ function ndEl(n,w,h,extraHtml,hiloSet,inScope){
   if(hiloSet&&!hiloSet.has(n.id))d.classList.add('dimh');
   if(n.orphan)d.classList.add('orf'); if(n.childless)d.classList.add('childless'); if(n.fire)d.classList.add('fire');
   if(st.sel===n.id)d.classList.add('sel');
-  if(fireAnc.has(n.id)&&!n.fire){const b=el('span','bub','▲ 1');b.title='1 excepción ardiendo abajo — burbujea desde O47';d.appendChild(b)}
+  if(fireAnc.has(n.id)&&!n.fire){const b=el('span','bub','▲ 1');b.title='1 incidencia crítica abajo (O47) — escaló hasta aquí';d.appendChild(b)}
   if(vis!=='sil'){
     d.onclick=e=>{e.stopPropagation();st.sel=st.sel===n.id?null:n.id;render(false)};
     d.ondblclick=e=>{e.stopPropagation();descend(n)};
   } else d.onclick=e=>{e.stopPropagation();toast('Sin acceso — el terreno existe, el detalle no es tuyo.')};
-  d.title=n.label+(n.parents.length?' — contribuye a: '+n.parents.join(', '):'');
+  d.title=n.label+(n.parents.length?' — aporta a: '+n.parents.join(', '):'');
   return d}
 function scopeKids(){ if(!st.scope||!st.scope.nodo)return null; return new Set(kidsOf(st.scope.nodo).map(k=>k.id)) }
 /* scopeAreaSet (áreas del recorte, para plegar el resto) definida junto a los gestos */
@@ -245,10 +250,9 @@ function scopeKids(){ if(!st.scope||!st.scope.nodo)return null; return new Set(k
 /* ============ TABLEROS por capa (v2 — heterogéneos) ============ */
 function renderD(hiloSet){
   const W=1660,H=760;
-  place(el('div','caplab',`capa <b>D</b> · ${CAPNM.D}`),36,30);
-  /* pulso de KRs + apetito (contexto de sala) */
+  place(el('div','caplab',`<b>${NIV.D}</b> — la apuesta y el riesgo`),36,30);
   const ap=place(el('div','pane'),120,86,760,64);
-  ap.innerHTML=`<div class="pt">Apetito de riesgo (tira — dato simulado)</div>
+  ap.innerHTML=`<div class="pt">Apetito de riesgo (dato simulado)</div>
    <span class="mt" style="font-family:var(--mono);font-size:10px;color:var(--tx-mut)">liquidez <b style="color:var(--warn)">media</b> · reputación <b style="color:var(--ok)">baja</b> · expansión <b style="color:var(--crit)">alta</b></span>`;
   /* v2.1: sin jerga ("pulso"/"en banda" no se explican solas) — la pregunta del directorio, literal,
      y el conteo DERIVADO del dato (antes era texto hardcodeado que contradecía los puntos) */
@@ -260,55 +264,55 @@ function renderD(hiloSet){
     <div>${dd.map(n=>`<span class="dot ${n.krst}" title="${n.label}: ${n.kr}"></span>`).join('')}
     <span class="mt">${nG} en meta · ${nA} cerca · ${nR} fuera</span></div>`;
   /* excepciones que SUBIERON (burbujeo agregado) */
-  const ex=place(el('div','pane'),1340,86,220,150);
-  ex.innerHTML=`<div class="pt">Subió del piso</div>
-    <div class="mt" style="line-height:1.7"><span style="color:var(--crit)">▲</span> 1 excepción ardiendo (O47 · ${AREAS[fireArea??0]})<br><span style="color:var(--crit)">▲</span> 2 compromisos sin objetivo<br><span style="color:var(--warn)">▲</span> 1 objetivo sin compromisos</div>`;
-  /* las 5 APUESTAS — tarjetas ricas (kr + riesgo + dueño) */
-  place(el('div','bandlab','Las apuestas del trimestre — dblclick = ¿qué las sostiene?'),120,196);
+  const ex=place(el('div','pane'),1340,86,220,170);
+  ex.innerHTML=`<div class="pt">Alertas que escalaron</div>
+    <div class="mt" style="line-height:1.7"><span style="color:var(--crit)">▲</span> 1 incidencia crítica (O47 · ${AREAS[fireArea??0]})<br><span style="color:var(--crit)">▲</span> 2 compromisos sin objetivo<br><span style="color:var(--warn)">▲</span> 1 objetivo sin compromisos</div>`;
+  /* las 5 APUESTAS — tarjetas ricas (meta + riesgo + responsable) */
+  place(el('div','bandlab','Las apuestas del trimestre — doble clic = ¿qué las sostiene?'),120,196);
   nodes.filter(n=>n.capa==='D').forEach((n,i)=>{
     const d=ndEl(n,272,150,`<span class="un">apuesta</span><span class="lb">${n.label}</span>
-      <span class="mt"><span class="dot ${n.krst}"></span>KR: ${n.kr}</span>
-      <span class="mt">riesgo <b style="color:${n.riesgo==='alta'?'var(--crit)':n.riesgo==='media'?'var(--warn)':'var(--ok)'}">${n.riesgo}</b> · dueño: gris</span>`,hiloSet,null);
+      <span class="mt"><span class="dot ${n.krst}"></span>Meta: ${n.kr}</span>
+      <span class="mt">riesgo <b style="color:${n.riesgo==='alto'?'var(--crit)':n.riesgo==='medio'?'var(--warn)':'var(--ok)'}">${n.riesgo}</b> · responsable: —</span>`,hiloSet,null);
     place(d,120+i*300,226); n._x=120+i*300+136;n._y=300; PTS.push({x:n._x,y:n._y});
   });
   /* proyectos del portafolio (contexto gris) */
   const po=place(el('div','pane'),120,430,1440,120);
-  po.innerHTML=`<div class="pt">Portafolio en vuelo (contexto — en el twin real: proyectos de mejora con ROI)</div>
+  po.innerHTML=`<div class="pt">Proyectos en curso — el portafolio (retorno estimado)</div>
    <div style="display:flex;gap:14px">${['Recuperación Marina 2.4×','Cobranza digital 1.8×','Cierre exprés 3.1×'].map(p=>`<span class="mt" style="border:1px solid var(--border);border-radius:8px;padding:8px 14px">${p}</span>`).join('')}
-   <span class="mt" style="opacity:.5;align-self:center">· tablero heterogéneo: la capa es una SALA, no una grilla</span></div>`;
+   <span class="mt" style="opacity:.5;align-self:center">· cada nivel es un tablero propio, no una lista de cajas</span></div>`;
   return{W,H}
 }
 function renderE(hiloSet){
   const W=1660,H=860; const ks=scopeKids();
-  place(el('div','caplab',`capa <b>E</b> · ${CAPNM.E}`),36,30);
-  /* banda 1: objetivos (contexto twin) */
-  place(el('div','bandlab','Objetivos · KR — en el twin real: banda Estrategia v13'),120,96);
+  place(el('div','caplab',`<b>${NIV.E}</b> — el objetivo y la capacidad`),36,30);
+  /* banda 1: objetivos (contexto — en el producto: la banda Estrategia ya construida) */
+  place(el('div','bandlab','Objetivos de la empresa · su meta del trimestre (contexto)'),120,96);
   place(el('div','bandline'),120,110,1240);['O1 margen','O2 caja','O3 calidad','O4 venta','O5 cobranza','O6 marca','O7 equipo'].forEach((o,i)=>{
     place(el('div','nd ctx',`<span class="mt">${o}</span>`),120+i*180,124,160,40)});
   /* banda 2: cadena de valor (contexto twin) */
-  place(el('div','bandlab','Cadena de valor — en el twin real: los 9 misionales v13'),120,214);
+  place(el('div','bandlab','Cadena de valor — los procesos del negocio, de punta a punta (contexto)'),120,214);
   place(el('div','bandline'),120,228,1240);
   ['Marketing','Venta','Diseño','Ejecución','Valorización','Facturación','Cobranza','Postventa'].forEach((c,i)=>{
     place(el('div','chev',c),120+i*128,242)});
   /* banda 3: CAPACIDADES (navegables — heatmap) */
-  place(el('div','bandlab','Capacidades — heatmap de madurez · dblclick = ¿qué compromisos la construyen?'),120,330);
+  place(el('div','bandlab','Capacidades — qué tan desarrollada está cada una · doble clic = ¿qué compromisos la construyen?'),120,330);
   place(el('div','bandline'),120,344,1240);
   nodes.filter(n=>n.capa==='E').forEach((n,i)=>{
     const inS=ks?(ks.has(n.id)?'kids':'ctx'):null;
     const d=ndEl(n,224,86,`<span class="un">capacidad · ${AREAS[n.area].replace('Área ','')}</span><span class="lb">${n.label}</span>
-      <span class="mt"><span class="dot ${n.mad}"></span>madurez ${({g:'4',a:'3',r:'1'})[n.mad]} / deseada 4</span>`,hiloSet,inS);
+      <span class="mt"><span class="dot ${n.mad}"></span>nivel ${({g:'4',a:'3',r:'1'})[n.mad]} · deseado 4</span>`,hiloSet,inS);
     const x=120+(i%5)*252,y=358+Math.floor(i/5)*118;
     place(d,x,y); n._x=x+112;n._y=y+43; if(!ks||ks.has(n.id))PTS.push({x:n._x,y:n._y});
   });
   /* nota de tablero */
-  place(el('div','pane',`<div class="pt">v2 — la capa E ES el mapa de valor del twin (v13) + capacidades; aquí gris, allá vivo</div>`),120,640,760,50);
+  place(el('div','pane',`<div class="pt">este nivel = el mapa de valor + las capacidades (aquí en gris; en el producto, vivo)</div>`),120,640,760,50);
   return{W,H}
 }
 function renderT(hiloSet){
   const ks=scopeKids(); const areasIn=scopeAreaSet();
   const colW=330,colGap=24; let x=120; const W=120+4*(colW+colGap)+140,H=860;
-  place(el('div','caplab',`capa <b>T</b> · ${CAPNM.T}`),36,30);
-  place(el('div','bandlab','KRs a los que anclan (contexto)'),120,88);
+  place(el('div','caplab',`<b>${NIV.T}</b> — el compromiso entre áreas`),36,30);
+  place(el('div','bandlab','Metas del trimestre a las que aportan (contexto)'),120,88);
   ['margen →18%','DSO 91→60d','NPS 42→31','rotación −20%'].forEach((k,i)=>place(el('div','nd ctx',`<span class="mt">${k}</span>`),120+i*220,102,200,36));
   AREAS.forEach((a,ai)=>{
     const inScope=!areasIn||areasIn.has(ai);
@@ -323,7 +327,7 @@ function renderT(hiloSet){
     place(col,x,170,colW,54+rows*84);
     members.forEach((n,mi)=>{
       const inS=ks?(ks.has(n.id)?'kids':'ctx'):null;
-      const d=ndEl(n,146,66,`<span class="un">compromiso</span><span class="lb" style="font-size:10.5px">${n.label}</span><span class="mt">fecha · recurso gris</span>`,hiloSet,inS);
+      const d=ndEl(n,146,66,`<span class="un">compromiso</span><span class="lb" style="font-size:10.5px">${n.label}</span><span class="mt">fecha · recursos: —</span>`,hiloSet,inS);
       const nx=x+10+(mi%2)*158, ny=224+Math.floor(mi/2)*84;
       place(d,nx,ny); n._x=nx+73;n._y=ny+33; if(!ks||ks.has(n.id))PTS.push({x:n._x,y:n._y});
     });
@@ -331,7 +335,7 @@ function renderT(hiloSet){
   });
   /* huérfanos (fractura) fuera de columna */
   const orph=nodes.filter(n=>n.capa==='T'&&n.orphan);
-  if(!areasIn){ place(el('div','bandlab','Sin ancla — la fractura vive fuera de toda columna'),120,760);
+  if(!areasIn){ place(el('div','bandlab','Sueltos — no aportan a ningún objetivo'),120,760);
     orph.forEach((n,i)=>{const d=ndEl(n,146,60,`<span class="un">compromiso</span><span class="lb" style="font-size:10.5px">${n.label}</span>`,hiloSet,null);
       place(d,120+i*170,780); n._x=120+i*170+73;n._y=810;}) }
   return{W,H:areasIn?620:H}
@@ -339,18 +343,18 @@ function renderT(hiloSet){
 function renderO(hiloSet){
   /* O JAMÁS entero: solo el/las áreas del recorte; el resto = plegado con contador */
   const ks=scopeKids(); let areasIn=scopeAreaSet();
-  if(!areasIn){ areasIn=new Set([0]); toast('El piso operativo nunca se dibuja entero — entraste por '+AREAS[0]+'; expande otras áreas si las necesitas.'); }
+  if(!areasIn){ areasIn=new Set([0]); toast('El nivel operativo nunca se muestra completo — entraste por '+AREAS[0]+'; abre otras áreas si las necesitas.'); }
   const W=1660,H=820; let x=120;
-  place(el('div','caplab',`capa <b>O</b> · ${CAPNM.O}`),36,30);
+  place(el('div','caplab',`<b>${NIV.O}</b> — el caso y la excepción`),36,30);
   AREAS.forEach((a,ai)=>{
     const members=nodes.filter(n=>n.capa==='O'&&n.area===ai);
     if(!areasIn.has(ai)){
       const f=el('div','areafold'+(ai===fireArea?' hasfire':''));
-      f.innerHTML=`<span class="an">${a}</span><span class="ac">${members.length} tareas en cola${ai===fireArea?' · <span style="color:var(--crit)">▲ arde</span>':''}</span><span class="ax">expandir ▸</span>`;
+      f.innerHTML=`<span class="an">${a}</span><span class="ac">${members.length} tareas pendientes${ai===fireArea?' · <span style="color:var(--crit)">▲ 1 crítica</span>':''}</span><span class="ax">abrir ▸</span>`;
       f.onclick=e=>{e.stopPropagation();expandArea(ai)};
       place(f,x,120,240,90); x+=264; return }
     /* área expandida: carriles de equipo */
-    const col=el('div','areacol');col.innerHTML=`<div class="ah">${a} — colas por equipo (unidad: caso/tarea · horizonte: hoy)</div>`;
+    const col=el('div','areacol');col.innerHTML=`<div class="ah">${a} — pendientes de hoy, por equipo</div>`;
     const rows=Math.ceil(members.length/6);
     place(col,x,120,6*128+30,60+rows*58);
     members.forEach((n,mi)=>{
@@ -361,7 +365,7 @@ function renderO(hiloSet){
     });
     x+=6*128+60;
   });
-  place(el('div','pane',`<div class="pt">debajo de este piso no hay más twin — hay trabajo (arnés)</div>`),120,700,560,46);
+  place(el('div','pane',`<div class="pt">debajo de este nivel ya no hay mapa — hay trabajo ejecutándose</div>`),120,700,560,46);
   return{W:Math.max(W,x+120),H}
 }
 
@@ -376,13 +380,13 @@ function render(anim){
   fitPts(PTS.length&&(st.scope)?PTS:null,160,dim.W,dim.H); applyV();
 }
 function crumb(){const path=[];let f=st.scope&&st.scope.nodo;while(f){path.unshift(byId[f].label);f=byId[f].parents[0]||null;if(path.length>3)break}
-  document.getElementById('crumb').innerHTML=(path.length?path.join(' <span style="opacity:.4">›</span> ')+' <span style="opacity:.4">›</span> ':'')+`<b>capa ${st.capa}</b>`}
+  document.getElementById('crumb').innerHTML=(path.length?path.join(' <span style="opacity:.4">›</span> ')+' <span style="opacity:.4">›</span> ':'')+`<b>${NIVC[st.capa]}</b>`}
 function chip(){const c=document.getElementById('scopechip');
   if(st.scope&&st.scope.nodo){c.style.display='inline-flex';document.getElementById('scopetxt').textContent='viendo: lo que sostiene '+byId[st.scope.nodo].label}
   else if(st.scope&&st.scope.area!=null){c.style.display='inline-flex';document.getElementById('scopetxt').textContent='viendo: '+AREAS[st.scope.area]}
   else c.style.display='none'}
 document.querySelector('#scopechip .x').onclick=e=>{e.stopPropagation();
-  if(st.capa==='O'){st.scope={area:(st.scope&&st.scope.area)??(scopeAreaSet()?[...scopeAreaSet()][0]:0)};toast('El piso O nunca se muestra entero — el recorte baja a "por área".');}
+  if(st.capa==='O'){st.scope={area:(st.scope&&st.scope.area)??(scopeAreaSet()?[...scopeAreaSet()][0]:0)};toast('El nivel operativo nunca se muestra completo — el filtro pasa a "por área".');}
   else st.scope=null;
   render(false)};
 function btns(){document.getElementById('back').disabled=!st.hist.length;
@@ -406,24 +410,24 @@ function elevador(hiloSet){document.querySelectorAll('.piso').forEach(p=>{
 /* ============ gestos ============ */
 function push(){st.hist.push({capa:st.capa,scope:st.scope&&{...st.scope},sel:st.sel})}
 function descend(n){
-  const ci=CAPAS.indexOf(n.capa);if(ci>=3){toast('Piso operativo — debajo no hay más twin: hay trabajo.');return}
+  const ci=CAPAS.indexOf(n.capa);if(ci>=3){toast('Nivel operativo — debajo ya no hay mapa: hay trabajo.');return}
   const ks=kidsOf(n.id);
-  if(!ks.length){toast(`${n.label} no tiene nada debajo — FRACTURA: ${n.capa==='E'?'objetivo sin compromisos':'sin evidencia un nivel abajo'}.`);return}
+  if(!ks.length){toast(`${n.label} no tiene nada debajo — ${n.capa==='E'?'objetivo sin compromisos que lo cumplan':'sin respaldo un nivel abajo'}.`);return}
   push();st.capa=CAPAS[ci+1];st.scope={nodo:n.id};st.sel=null;
   render('descend')}
 function expandArea(ai){push();
   /* expandir lateral: el recorte nodo→área(s); suma, no reemplaza */
   const s=scopeAreaSet()||new Set();s.add(ai);
-  st.scope={area:ai,extra:s};render(false);toast('Expandiste '+AREAS[ai]+' — el recorte ahora es por área (chip).')}
+  st.scope={area:ai,extra:s};render(false);toast('Abriste '+AREAS[ai]+' — el filtro ahora es por área.')}
 function ascend(){
   const base=st.sel?byId[st.sel]:st.scope&&st.scope.nodo?byId[st.scope.nodo]:null;
-  if(!base){toast('Selecciona un nodo — subir pregunta "¿a qué contribuye ESTO?"');return}
+  if(!base){toast('Selecciona un elemento — subir pregunta "¿a qué aporta ESTO?"');return}
   const cands=[...new Set(base.parents)];
-  if(!cands.length){toast(`${base.label} no contribuye a nada — FRACTURA: operación sin objetivo.`);return}
+  if(!cands.length){toast(`${base.label} no aporta a ningún objetivo — está suelto.`);return}
   if(cands.length===1)return subirA(cands[0]);
   const pop=document.getElementById('padres');
-  pop.innerHTML=`<div class="pt">${base.label} contribuye a ${cands.length} — ¿por cuál subes?</div>`+
-    cands.map(p=>`<button data-p="${p}">${byId[p].label} <span style="opacity:.5;font-family:var(--mono);font-size:9px">capa ${byId[p].capa}</span></button>`).join('');
+  pop.innerHTML=`<div class="pt">${base.label} aporta a ${cands.length} — ¿por cuál subes?</div>`+
+    cands.map(p=>`<button data-p="${p}">${byId[p].label} <span style="opacity:.5;font-family:var(--mono);font-size:9px">${NIVC[byId[p].capa]}</span></button>`).join('');
   pop.style.display='block';pop.style.left='50%';pop.style.top='90px';pop.style.transform='translateX(-50%)';
   pop.querySelectorAll('button').forEach(b=>b.onclick=e=>{e.stopPropagation();pop.style.display='none';subirA(b.dataset.p)})}
 function subirA(pid){push();const p=byId[pid];
@@ -437,10 +441,10 @@ function scopeAreaSet(){const ks=scopeKids();
 document.getElementById('up').onclick=ascend;
 document.getElementById('back').onclick=()=>{const s=st.hist.pop();if(!s)return;
   st.capa=s.capa;st.scope=s.scope;st.sel=s.sel;render(false)};
-document.getElementById('hilo').onclick=()=>{if(!st.sel&&!st.hilo){toast('Selecciona un nodo primero — el hilo es SU cadena vertical.');return}
+document.getElementById('hilo').onclick=()=>{if(!st.sel&&!st.hilo){toast('Selecciona un elemento primero — se traza SU cadena completa.');return}
   st.hilo=!st.hilo;render(false)};
 document.getElementById('who').onchange=e=>{st.lente=e.target.value;render(false);
-  if(st.lente!=='')toast('Fog of war: mismo terreno, tu porción iluminada — lo ajeno es silueta, no vacío.')};
+  if(st.lente!=='')toast('Mismo mapa para todos: tú ves tu parte con detalle; lo demás existe pero sin acceso.')};
 function viajar(c){if(c===st.capa)return;push();
   const dir=CAPAS.indexOf(c)>CAPAS.indexOf(st.capa)?'descend':'ascend';
   st.capa=c;
