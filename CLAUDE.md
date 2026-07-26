@@ -2,7 +2,9 @@
 
 Producto standalone (graduado del monorepo `prenter-harness`, 2026-07-06 — ficha de graduación CK-09).
 Norte = [`VISION.md`](./VISION.md) · registro de decisiones = [`LEDGER.md`](./LEDGER.md) — fichas `CK-NN`
-(continúa la numeración de la célula original; arranca en CK-10 aquí).
+(continúa la numeración de la célula original; arranca en CK-10 aquí). **Vocabulario =
+[`GLOSARIO.md`](./GLOSARIO.md)** — cero jerga en mockups y en specs/documentos de construcción
+(doctrina del operador 2026-07-26); consultarlo ANTES de escribir texto visible o nombrar conceptos.
 
 **Qué es:** **Organization as Code → Organization Twin** (CK-21): la organización entera
 (procesos/roles/objetivos/personas-puestos) como dato versionado en git, con buenas prácticas ISO como

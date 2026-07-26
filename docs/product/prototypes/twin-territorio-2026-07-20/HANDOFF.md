@@ -1,5 +1,18 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-26 → siguiente)
 
+> **RUMBO NUEVO (2026-07-26, post-v13 — leer PRIMERO):** el operador firmó navegar por **4 niveles
+> de gestión** (1 Directorio · 2 Estratégico · 3 Táctico · 4 Operativo): bajar = traducción (cambia
+> la pregunta y la unidad), grafo no árbol (subir≠atrás, selector al subir), niveles con
+> desalineaciones visibles, trazado vertical, "ver como" con siluetas. Se valida en
+> **`sandbox-4capas.html`** (mismo dir, gray-box DESECHABLE, Artifact 🛗
+> `claude.ai/code/artifact/e6eef1d5-a56f-471e-83eb-36260c628764`, v2.2 commit `16aed28`).
+> **Al operador el twin v13 le gusta MÁS visualmente; el sandbox trae la lógica que quiere afinar.**
+> Meta: iterar el sandbox con sus comentarios → portar lo firmado al twin (v14: nivel Directorio
+> nuevo, partir el mapa actual en niveles 2/3, z2/z3 = nivel 4; prerequisitos de schema: A2/KR +
+> ficha apuesta/riesgo). **Doctrina cero jerga:** `/GLOSARIO.md` (§1 visible firmado · §1b renombres
+> de producto PENDIENTES de firma — el barrido del twin espera esa firma). Memorias:
+> `twin-mockup-estado` · `no-jerga-nombres-comunes`.
+
 > **Para la sesión que continúa.** ARRANCAR por el **dossier consolidado**:
 > `docs/product/stories/cockpit/twin-territorio-mapa-zoomable/dossier/README.md` (visión, mockup
 > elemento-por-elemento, decisiones+porqués, datos, construcción real, pendientes) + el tablero de
