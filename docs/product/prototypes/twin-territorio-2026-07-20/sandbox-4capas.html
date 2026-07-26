@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<title>Sandbox · 4 capas — gestos (DESECHABLE)</title>
+<style>
+/* ============================================================
+   SANDBOX DE GESTOS — 4 capas de gestión (D·E·T·O) — GRAY-BOX
+   DESECHABLE: valida MECÁNICA de navegación, no datos ni fichas.
+   Firmado 2026-07-26: descenso=traducción · subir≠atrás ·
+   elevador+fracturas · hilo=trace-id · ver-como=fog-of-war ·
+   burbujeo · transición ritual 300ms.
+   Lo que sobreviva se PORTA a index.html (v14). Lo demás muere.
+   ============================================================ */
+:root{
+  --teal:#00b7aa; --teal-hi:#1fc6b8; --teal-700:#007f76;
+  --bg:#000; --panel:#0c1110; --raised:#141a19; --border:#1f2826;
+  --tx:rgba(255,255,255,.92); --tx-mut:rgba(255,255,255,.55); --tx-faint:rgba(255,255,255,.32);
+  --warn:#e0ad4e; --crit:#e2766b; --ok:#5cc99a;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:system-ui,sans-serif;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+/* ---------- toolbar ---------- */
+#bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--panel);z-index:30}
+#bar .ttl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--tx-faint);text-transform:uppercase}
+button{background:var(--raised);border:1px solid var(--border);color:var(--tx);border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer}
+button:hover{border-color:var(--teal-700)}
+button:disabled{opacity:.35;cursor:default}
+button.on{border-color:var(--teal);color:var(--teal-hi)}
+#crumb{font-family:var(--mono);font-size:11px;color:var(--tx-mut);margin-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#crumb b{color:var(--tx)}
+#lente{margin-left:auto}
+select{background:var(--raised);border:1px solid var(--border);color:var(--tx);border-radius:8px;padding:7px 10px;font-size:12px}
+/* ---------- layout ---------- */
+#main{flex:1;display:flex;min-height:0}
+#stage{flex:1;position:relative;overflow:hidden;cursor:grab}
+#stage.drag{cursor:grabbing}
+#world{position:absolute;left:0;top:0;transform-origin:0 0}
+/* transición ritual: ÚNICA, 300ms, direccional — jamás vuelo libre */
+#world.ritual{transition:transform .3s cubic-bezier(.22,.61,.36,1)}
+#stage.descend #world{animation:desc .3s cubic-bezier(.22,.61,.36,1)}
+#stage.ascend  #world{animation:asc  .3s cubic-bezier(.22,.61,.36,1)}
+@keyframes desc{from{opacity:0;transform:var(--tgt) scale(1.18)}to{opacity:1;transform:var(--tgt) scale(1)}}
+@keyframes asc {from{opacity:0;transform:var(--tgt) scale(.85)}to{opacity:1;transform:var(--tgt) scale(1)}}
+/* ---------- nodos gray-box ---------- */
+.nd{position:absolute;background:var(--raised);border:1px solid var(--border);border-radius:9px;
+    display:flex;flex-direction:column;justify-content:center;gap:3px;padding:8px 10px;cursor:pointer;user-select:none}
+.nd:hover{border-color:#33443f}
+.nd .lb{font-size:12px;font-weight:600;line-height:1.15}
+.nd .un{font-family:var(--mono);font-size:8.5px;color:var(--tx-faint);letter-spacing:.08em;text-transform:uppercase}
+.nd.D{width:220px;height:110px;border-radius:12px}.nd.D .lb{font-size:14px}
+.nd.E{width:170px;height:84px}
+.nd.T{width:150px;height:64px}.nd.T .lb{font-size:11px}
+.nd.O{width:112px;height:44px;padding:5px 8px}.nd.O .lb{font-size:9.5px;font-weight:500}.nd.O .un{display:none}
+.nd.sel{border-color:var(--teal);box-shadow:0 0 0 1.5px var(--teal-700),0 0 16px rgba(0,183,170,.3)}
+.nd.kids{border-color:var(--teal-700);background:rgba(0,183,170,.06)}
+.nd.ghost{opacity:.16;pointer-events:auto}
+.nd.dimh{opacity:.14}
+/* fog of war: silueta honesta — la forma existe, el contenido no */
+.nd.sil{background:repeating-linear-gradient(45deg,#0d1211,#0d1211 6px,#101615 6px,#101615 12px);border-style:dashed;border-color:#22302d;cursor:not-allowed}
+.nd.sil .lb,.nd.sil .un{visibility:hidden}
+.nd.sil::after{content:'sin acceso';position:absolute;inset:auto 6px 4px auto;font-family:var(--mono);font-size:7.5px;color:var(--tx-faint)}
+/* fracturas + fuego */
+.nd.orf{border-color:rgba(226,118,107,.55)}
+.nd.orf::before{content:'▲ sin objetivo arriba';position:absolute;top:-16px;left:0;font-family:var(--mono);font-size:8px;color:var(--crit)}
+.nd.childless::before{content:'▲ sin compromisos abajo';position:absolute;top:-16px;left:0;font-family:var(--mono);font-size:8px;color:var(--crit)}
+.nd.childless{border-color:rgba(226,118,107,.55)}
+.nd.fire{border-color:var(--crit);animation:fire 1.6s infinite}
+@keyframes fire{0%,100%{box-shadow:0 0 0 0 rgba(226,118,107,.0)}50%{box-shadow:0 0 10px 1px rgba(226,118,107,.45)}}
+.bub{position:absolute;top:-8px;right:-8px;background:#2a1512;border:1px solid var(--crit);color:var(--crit);
+     font-family:var(--mono);font-size:9px;border-radius:20px;padding:1px 7px}
+/* apetito (solo capa D) */
+#apetito{position:absolute;font-family:var(--mono);font-size:10px;color:var(--tx-mut);border:1px dashed var(--border);border-radius:8px;padding:8px 14px}
+#apetito b{color:var(--warn)}
+/* edges svg */
+svg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+path{fill:none}
+/* etiqueta de capa (grande, ambiente) */
+.caplab{position:absolute;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--tx-faint);text-transform:uppercase}
+.caplab b{color:var(--tx-mut)}
+/* ---------- elevador ---------- */
+#elev{width:118px;border-left:1px solid var(--border);background:var(--panel);display:flex;flex-direction:column;padding:10px 8px;gap:6px}
+#elev .et{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--tx-faint);text-transform:uppercase;text-align:center;margin-bottom:2px}
+.piso{flex:1;border:1px solid var(--border);border-radius:8px;position:relative;cursor:pointer;background:var(--raised);overflow:hidden}
+.piso:hover{border-color:var(--teal-700)}
+.piso.cur{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal-700)}
+.piso .pl{position:absolute;top:3px;left:6px;font-family:var(--mono);font-size:8px;color:var(--tx-mut)}
+.piso .dots{position:absolute;inset:14px 5px 4px}
+.pd{position:absolute;width:4px;height:4px;border-radius:1.5px;background:#2e3b38}
+.pd.hil{background:var(--teal);box-shadow:0 0 4px var(--teal)}
+.pd.me{background:#fff;box-shadow:0 0 5px #fff;width:5px;height:5px}
+.pd.frx{background:var(--crit);border-radius:50%}
+.pd.fr2{background:var(--warn);border-radius:50%}
+.pd.ff{background:var(--crit);animation:fire 1.6s infinite;border-radius:50%}
+#hiloline{position:absolute;left:50%;top:0;width:2px;height:100%;background:linear-gradient(var(--teal),var(--teal));opacity:0;pointer-events:none}
+#elev .leg{font-family:var(--mono);font-size:7.5px;color:var(--tx-faint);line-height:1.6;padding-top:4px}
+#elev .leg i{font-style:normal}
+/* ---------- selector de padres ---------- */
+#padres{position:absolute;z-index:40;background:var(--panel);border:1px solid var(--teal-700);border-radius:10px;padding:12px;display:none;max-width:300px}
+#padres .pt{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--tx-mut);text-transform:uppercase;margin-bottom:8px}
+#padres button{display:block;width:100%;text-align:left;margin-bottom:6px;font-size:12px}
+/* ---------- hint ---------- */
+#hint{padding:7px 14px;border-top:1px solid var(--border);background:var(--panel);font-family:var(--mono);font-size:9.5px;color:var(--tx-faint);display:flex;gap:18px;white-space:nowrap;overflow:hidden}
+#hint b{color:var(--tx-mut);font-weight:600}
+#toast{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);background:var(--panel);border:1px solid var(--border);
+  border-radius:8px;padding:8px 16px;font-size:11.5px;color:var(--tx-mut);opacity:0;transition:opacity .25s;pointer-events:none;z-index:50}
+</style></head><body>
+
+<div id="bar">
+  <span class="ttl">Sandbox · gestos 4 capas</span>
+  <button id="back" disabled>‹ Atrás</button>
+  <button id="up" title="¿A qué contribuye lo que miro? (semántico — no es historia)">▲ Subir</button>
+  <button id="hilo" title="Ilumina la cadena vertical completa del nodo seleccionado (identidad a través de las 4 capas)">⛓ Hilo</button>
+  <span id="crumb"></span>
+  <span id="lente">
+    <label style="font-family:var(--mono);font-size:9px;color:var(--tx-faint)">VER COMO </label>
+    <select id="who">
+      <option value="">— todos (sin lente)</option>
+      <option value="0">Director (D·E enteras)</option>
+      <option value="1">Gerente comercial</option>
+      <option value="2">Jefe de operación</option>
+      <option value="3">Analista</option>
+    </select>
+  </span>
+</div>
+
+<div id="main">
+  <div id="stage">
+    <div id="world"><svg id="edges"></svg><div id="nodes"></div></div>
+    <div id="padres"></div>
+    <div id="toast"></div>
+  </div>
+  <div id="elev">
+    <div class="et">Elevador</div>
+    <div class="piso" data-c="D"><span class="pl">D · directorio</span><div class="dots"></div></div>
+    <div class="piso" data-c="E"><span class="pl">E · estratégico</span><div class="dots"></div></div>
+    <div class="piso" data-c="T"><span class="pl">T · táctico</span><div class="dots"></div></div>
+    <div class="piso" data-c="O"><span class="pl">O · operativo</span><div class="dots"></div></div>
+    <div class="leg"><i style="color:var(--crit)">●</i> fractura / fuego<br><i style="color:var(--teal)">●</i> hilo<br><i style="color:#fff">●</i> tú</div>
+  </div>
+</div>
+
+<div id="hint">
+  <span><b>dblclick</b> caja = descender (traducción: solo sus hijos-evidencia)</span>
+  <span><b>click</b> = seleccionar</span>
+  <span><b>▲ Subir</b> = ¿a qué contribuyo? (elige padre si hay varios)</span>
+  <span><b>‹ Atrás</b> = historia</span>
+  <span><b>rueda</b> = zoom · <b>arrastrar</b> = pan</span>
+</div>
+
+<script>
+/* ============ grafo gris DETERMINISTA (seed fija — sin Math.random de runtime) ============ */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const rnd=mulberry32(42);
+const CAPAS=['D','E','T','O'];
+const CAPNM={D:'Directorio — la apuesta y el riesgo',E:'Estratégico — el objetivo y la capacidad',T:'Táctico — el compromiso entre áreas',O:'Operativo — el caso y la excepción'};
+const UNIT={D:'apuesta',E:'capacidad · objetivo',T:'compromiso',O:'caso / tarea'};
+const N={D:5,E:10,T:22,O:72};
+const nodes=[]; const byId={};
+function mk(capa,i){
+  const id=capa+(i+1);
+  const n={id,capa,i,label:{D:'Apuesta',E:'Capacidad',T:'Compromiso',O:'Tarea'}[capa]+' '+id,
+    parents:[],owner:Math.floor(rnd()*3)+1, fire:false};
+  nodes.push(n); byId[id]=n; return n;
+}
+CAPAS.forEach(c=>{for(let i=0;i<N[c];i++)mk(c,i)});
+/* padres: grafo dirigido, algunos con 2 padres (para el selector al subir) */
+nodes.filter(n=>n.capa==='E').forEach((n,i)=>{ n.parents=['D'+(i%5+1)]; if(i===3)n.parents.push('D'+((i+2)%5+1)); });
+nodes.filter(n=>n.capa==='T').forEach((n,i)=>{
+  if(i===20||i===21){ n.orphan=true; return; }                     // FRACTURA: operación sin objetivo arriba
+  n.parents=['E'+(i%10+1)]; if(i%5===0)n.parents.push('E'+((i+4)%10+1));   // multi-padre
+});
+nodes.filter(n=>n.capa==='O').forEach((n,i)=>{ n.parents=['T'+(i%20+1)]; });
+byId['E9'].childless=true; nodes.filter(n=>n.capa==='T'&&n.parents.includes('E9')).forEach(n=>n.parents=n.parents.filter(p=>p!=='E9'));  // FRACTURA: objetivo sin compromisos
+byId['O47'].fire=true;                                              // FUEGO: burbujea D←E←T←O47
+byId['D1'].owner=0;                                                 // dueños para el fog: 0=director…
+const kidsOf=id=>nodes.filter(n=>n.parents.includes(id));
+const ancestors=id=>{const out=new Set();const q=[id];while(q.length){const n=byId[q.pop()];n.parents.forEach(p=>{if(!out.has(p)){out.add(p);q.push(p)}})}return out;};
+const descendants=id=>{const out=new Set();const q=[id];while(q.length){kidsOf(q.pop()).forEach(k=>{if(!out.has(k.id)){out.add(k.id);q.push(k.id)}})}return out;};
+const fireAnc=ancestors('O47');
+/* posiciones ESTABLES por capa (memoria espacial: la posición es significado) */
+const GEOM={D:{w:220,h:110,cols:5,gx:290,gy:0,x0:140,y0:220},E:{w:170,h:84,cols:5,gx:240,gy:170,x0:150,y0:150},
+            T:{w:150,h:64,cols:6,gx:215,gy:135,x0:120,y0:120},O:{w:112,h:44,cols:12,gx:135,gy:86,x0:80,y0:100}};
+nodes.forEach(n=>{const g=GEOM[n.capa];
+  n.x=g.x0+(n.i%g.cols)*g.gx+(rnd()*18-9); n.y=g.y0+Math.floor(n.i/g.cols)*(g.gy||150)+(rnd()*14-7);});
+const CANVAS={D:{w:1650,h:560},E:{w:1420,h:520},T:{w:1440,h:640},O:{w:1750,h:660}};
+
+/* ============ estado + cámara ============ */
+const st={capa:'D',foco:null,sel:null,hilo:false,lente:'',hist:[]};
+const view={x:0,y:0,z:1};
+const stage=document.getElementById('stage'),world=document.getElementById('world'),
+      $n=document.getElementById('nodes'),$e=document.getElementById('edges');
+function applyV(anim){ if(anim)world.classList.add('ritual'); else world.classList.remove('ritual');
+  world.style.transform=`translate(${view.x}px,${view.y}px) scale(${view.z})`;
+  world.style.setProperty('--tgt',`translate(${view.x}px,${view.y}px)`); }
+function fitPts(pts,pad=170){ const vw=stage.clientWidth,vh=stage.clientHeight;
+  if(!pts.length){view.z=Math.min(vw/CANVAS[st.capa].w,vh/CANVAS[st.capa].h,1);view.x=(vw-CANVAS[st.capa].w*view.z)/2;view.y=(vh-CANVAS[st.capa].h*view.z)/2;return}
+  const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y);
+  const x0=Math.min(...xs)-pad,x1=Math.max(...xs)+pad+150,y0=Math.min(...ys)-pad,y1=Math.max(...ys)+pad;
+  const z=Math.max(.4,Math.min(vw/(x1-x0),vh/(y1-y0),1.05));
+  view.z=z;view.x=(vw-(x0+x1)*z)/2;view.y=(vh-(y0+y1)*z)/2; }
+
+/* ============ fog of war (ver como) ============ */
+/* director(0): D+E completas, T/O silueta salvo su hilo · gerente/jefe/analista: sus nodos + ancestros; resto silueta */
+function visible(n){ if(st.lente==='')return 'full';
+  const L=+st.lente;
+  if(L===0) return (n.capa==='D'||n.capa==='E')?'full':(n.owner===0||fireAnc.has(n.id)||n.id==='O47')?'full':'sil';
+  const mine=n.owner===L;
+  const anc=[...ancestors(n.id)].some(a=>byId[a].owner===L);
+  const desc=[...descendants(n.id)].some(d=>byId[d].owner===L);
+  return (mine||anc||desc)?'full':'sil'; }
+
+/* ============ render ============ */
+function render(anim){
+  $n.innerHTML='';$e.innerHTML='';
+  const C=CANVAS[st.capa]; world.style.width=C.w+'px';world.style.height=C.h+'px';
+  const cap=document.createElement('div');cap.className='caplab';cap.style.left='36px';cap.style.top='34px';
+  cap.innerHTML=`capa <b>${st.capa}</b> · ${CAPNM[st.capa]} — unidad: <b>${UNIT[st.capa]}</b>`;$n.appendChild(cap);
+  if(st.capa==='D'){const a=document.createElement('div');a.id='apetito';a.style.left='140px';a.style.top='120px';
+    a.innerHTML='APETITO DE RIESGO — liquidez <b>media</b> · reputación <b>baja</b> · expansión <b>alta</b> <span style="opacity:.5">(tira gris — dato simulado)</span>';$n.appendChild(a);}
+  const focoKids=st.foco?new Set(kidsOf(st.foco).map(k=>k.id)):null;
+  const hiloSet=st.hilo&&st.sel?new Set([st.sel,...ancestors(st.sel),...descendants(st.sel)]):null;
+  const here=nodes.filter(n=>n.capa===st.capa);
+  here.forEach(n=>{
+    const d=document.createElement('div');
+    d.className='nd '+n.capa; d.style.left=n.x+'px';d.style.top=n.y+'px';
+    d.innerHTML=`<span class="un">${UNIT[n.capa]}</span><span class="lb">${n.label}</span>`;
+    const vis=visible(n);
+    if(vis==='sil')d.classList.add('sil');
+    if(focoKids){ d.classList.add(focoKids.has(n.id)?'kids':'ghost'); }
+    if(hiloSet&&!hiloSet.has(n.id))d.classList.add('dimh');
+    if(n.orphan)d.classList.add('orf');
+    if(n.childless)d.classList.add('childless');
+    if(n.fire)d.classList.add('fire');
+    if(st.sel===n.id)d.classList.add('sel');
+    if(fireAnc.has(n.id)&&!n.fire){const b=document.createElement('span');b.className='bub';b.textContent='▲ 1';b.title='1 excepción ardiendo abajo (burbujea desde O47)';d.appendChild(b);}
+    if(vis!=='sil'){
+      d.onclick=e=>{e.stopPropagation();st.sel=st.sel===n.id?null:n.id;render(false);};
+      d.ondblclick=e=>{e.stopPropagation();descend(n);};
+    } else d.onclick=e=>{e.stopPropagation();toast('Sin acceso — el terreno existe, el detalle no es tuyo. Pídelo al dueño.');};
+    d.title=vis==='sil'?'':n.label+(n.parents.length?' — contribuye a: '+n.parents.join(', '):' — sin padre (fractura)');
+    $n.appendChild(d);
+  });
+  /* edges: SOLO hijos-evidencia del foco (contrato de traducción) + hilo si activo */
+  if(focoKids){ /* nada que dibujar entre capas distintas — el contrato se ve en el encendido */ }
+  if(hiloSet){ here.filter(n=>hiloSet.has(n.id)).forEach(n=>{
+    n.parents.filter(p=>hiloSet.has(p)).forEach(()=>{}); }); }
+  crumb(); elevador(hiloSet); btns();
+  if(anim){stage.classList.remove('descend','ascend');void stage.offsetWidth;stage.classList.add(anim);}
+  applyV(false);
+}
+function crumb(){
+  const path=[];let f=st.foco;while(f){path.unshift(byId[f].label);f=byId[f].parents[0]||null;if(path.length>4)break}
+  document.getElementById('crumb').innerHTML=(path.length?path.join(' <span style="opacity:.4">›</span> ')+' <span style="opacity:.4">›</span> ':'')+`<b>capa ${st.capa}</b>`;
+}
+function btns(){ document.getElementById('back').disabled=!st.hist.length;
+  document.getElementById('up').disabled=st.capa==='D'&&!st.sel;
+  document.getElementById('hilo').classList.toggle('on',st.hilo); }
+
+/* ============ elevador ============ */
+function elevador(hiloSet){
+  document.querySelectorAll('.piso').forEach(p=>{
+    const c=p.dataset.c; p.classList.toggle('cur',c===st.capa);
+    const box=p.querySelector('.dots');box.innerHTML='';
+    const w=box.clientWidth||96,h=box.clientHeight||70;
+    nodes.filter(n=>n.capa===c).forEach(n=>{
+      const d=document.createElement('span');d.className='pd';
+      d.style.left=(n.x/CANVAS[c].w*w)+'px';d.style.top=(n.y/CANVAS[c].h*h)+'px';
+      if(n.orphan||n.childless)d.classList.add(n.orphan?'frx':'fr2');
+      if(n.fire)d.classList.add('ff');
+      if(hiloSet&&hiloSet.has(n.id))d.classList.add('hil');
+      if(st.sel===n.id||st.foco===n.id&&c!==st.capa)d.classList.add('me');
+      box.appendChild(d);
+    });
+    p.onclick=()=>viajar(c);
+  });
+}
+function viajar(c){ if(c===st.capa)return;
+  push(); const dir=CAPAS.indexOf(c)>CAPAS.indexOf(st.capa)?'descend':'ascend';
+  st.capa=c; st.foco=null;
+  const hiloSet=st.hilo&&st.sel?new Set([st.sel,...ancestors(st.sel),...descendants(st.sel)]):null;
+  const tgt=hiloSet?nodes.filter(n=>n.capa===c&&hiloSet.has(n.id)):[];
+  st.sel=tgt.length===1?tgt[0].id:st.sel&&byId[st.sel].capa===c?st.sel:null;
+  render(dir); fitPts(tgt.length?tgt:[]); applyV(true); }
+
+/* ============ gestos ============ */
+function push(){ st.hist.push({capa:st.capa,foco:st.foco,sel:st.sel,v:{...view}}); }
+function descend(n){
+  const ci=CAPAS.indexOf(n.capa); if(ci>=3){toast('Piso operativo — debajo no hay más twin: hay trabajo.');return}
+  const ks=kidsOf(n.id);
+  if(!ks.length){toast(`${n.label} no tiene nada debajo — FRACTURA: ${n.capa==='E'?'objetivo sin compromisos':'sin evidencia un nivel abajo'}.`);return}
+  push();
+  st.capa=CAPAS[ci+1]; st.foco=n.id; st.sel=null;
+  render('descend'); fitPts(ks.map(k=>({x:k.x,y:k.y}))); applyV(true);
+}
+function ascend(){
+  const base=st.sel?byId[st.sel]:st.foco?byId[st.foco]:null;
+  let cands;
+  if(base) cands=[...new Set(base.parents)];
+  else { const ci=CAPAS.indexOf(st.capa); if(!ci)return; toast('Selecciona un nodo — subir pregunta "¿a qué contribuye ESTO?"'); return; }
+  if(!cands.length){toast(`${base.label} no contribuye a nada — FRACTURA: operación sin objetivo.`);return}
+  if(cands.length===1) return subirA(cands[0]);
+  /* selector de padres: la relación es 1→N — elegir es el insight, no fricción */
+  const pop=document.getElementById('padres');
+  pop.innerHTML=`<div class="pt">${base.label} contribuye a ${cands.length} — ¿por cuál subes?</div>`+
+    cands.map(p=>`<button data-p="${p}">${byId[p].label} <span style="opacity:.5;font-family:var(--mono);font-size:9px">capa ${byId[p].capa}</span></button>`).join('');
+  pop.style.display='block'; pop.style.left='50%';pop.style.top='90px';pop.style.transform='translateX(-50%)';
+  pop.querySelectorAll('button').forEach(b=>b.onclick=e=>{e.stopPropagation();pop.style.display='none';subirA(b.dataset.p);});
+}
+function subirA(pid){ push();
+  const p=byId[pid]; st.capa=p.capa; st.foco=p.parents[0]||null; st.sel=pid;
+  render('ascend'); fitPts([{x:p.x,y:p.y}],260); applyV(true); }
+document.getElementById('up').onclick=ascend;
+document.getElementById('back').onclick=()=>{ const s=st.hist.pop(); if(!s)return;
+  st.capa=s.capa;st.foco=s.foco;st.sel=s.sel; render(false); Object.assign(view,s.v); applyV(true); };
+document.getElementById('hilo').onclick=()=>{ if(!st.sel&&!st.hilo){toast('Selecciona un nodo primero — el hilo es SU cadena vertical.');return}
+  st.hilo=!st.hilo; render(false); };
+document.getElementById('who').onchange=e=>{ st.lente=e.target.value; render(false);
+  if(st.lente!=='')toast('Fog of war: mismo terreno, tu porción iluminada — lo ajeno es silueta, no vacío.'); };
+stage.onclick=()=>{ if(st.sel){st.sel=null;render(false);} document.getElementById('padres').style.display='none'; };
+/* pan + zoom básicos */
+let drag=null;
+stage.addEventListener('mousedown',e=>{if(e.target.closest('.nd,#padres'))return;drag={x:e.clientX,y:e.clientY,ox:view.x,oy:view.y};stage.classList.add('drag')});
+window.addEventListener('mousemove',e=>{if(!drag)return;view.x=drag.ox+e.clientX-drag.x;view.y=drag.oy+e.clientY-drag.y;applyV(false)});
+window.addEventListener('mouseup',()=>{drag=null;stage.classList.remove('drag')});
+stage.addEventListener('wheel',e=>{e.preventDefault();const f=e.deltaY<0?1.1:0.9;const nz=Math.max(.3,Math.min(2,view.z*f));
+  const r=stage.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;
+  view.x=mx-(mx-view.x)*(nz/view.z);view.y=my-(my-view.y)*(nz/view.z);view.z=nz;applyV(false)},{passive:false});
+let tT=null; function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.opacity=1;clearTimeout(tT);tT=setTimeout(()=>t.style.opacity=0,2600)}
+/* go */
+render(false); fitPts([]); applyV(false);
+</script>
+</body></html>
