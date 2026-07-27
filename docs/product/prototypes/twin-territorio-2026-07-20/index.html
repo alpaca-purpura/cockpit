@@ -587,6 +587,30 @@
   .apcard .un{ font-family:var(--font-mono); font-size:8.5px; letter-spacing:.1em; color:var(--tx-faint); text-transform:uppercase; }
   .apcard .nm{ font-size:13px; font-weight:600; line-height:1.2; }
   .apcard .mt{ font-family:var(--font-mono); font-size:10px; color:var(--tx-mut); }
+  /* v15 · las varas del directorio — rumbo · mezcla de ambición · pares · escalera (cero jerga en superficie) */
+  .rumbo{ border:1px solid var(--border); border-left:3px solid var(--teal-700); border-radius:10px; padding:9px 12px; margin:0 0 14px; }
+  .rumbo .pt{ font-family:var(--font-mono); font-size:8.5px; letter-spacing:.12em; color:var(--tx-faint); text-transform:uppercase; margin-bottom:7px; }
+  .rumbo .cad{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; font-size:12.5px; }
+  .rumbo .cad .k{ font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--tx-faint); margin-right:6px; }
+  .rumbo .sep{ color:var(--tx-faint); }
+  .rumbo .foot{ font-family:var(--font-mono); font-size:10.5px; color:var(--tx-mut); margin-top:7px; display:flex; gap:8px; flex-wrap:wrap; align-items:baseline; }
+  .rumbo .ciega{ background:none; border:none; padding:0; font-family:var(--font-mono); font-size:10.5px; color:var(--warn); cursor:pointer; text-align:left; }
+  .rumbo .ciega:hover{ text-decoration:underline; }
+  .mixwrap{ margin-top:8px; }
+  .mixbar{ position:relative; display:flex; height:13px; margin:15px 0 4px; }
+  .mixbar .seg{ height:100%; border-right:1px solid rgba(0,0,0,.55); }
+  .mixbar .seg.s-op{ background:rgba(0,183,170,.5); border-radius:4px 0 0 4px; }
+  .mixbar .seg.s-ex{ background:rgba(0,183,170,.26); }
+  .mixbar .seg.s-tr{ background:rgba(0,183,170,.12); border-radius:0 4px 4px 0; border-right:none; }
+  .mixmark{ position:absolute; top:-4px; bottom:-4px; width:0; border-left:1px dashed var(--tx-mut); }
+  .mixmark i{ position:absolute; top:-10px; left:-7px; font-style:normal; font-size:8px; color:var(--tx-faint); font-family:var(--font-mono); }
+  .peer{ font-family:var(--font-mono); font-size:9px; color:var(--tx-mut); border:1px solid var(--border); border-radius:999px; padding:1px 7px; white-space:nowrap; cursor:help; flex:none; }
+  .madrow{ display:flex; align-items:center; gap:8px; font-size:11.5px; padding:2px 0; }
+  .madrow .lbl{ flex:1; color:var(--tx-mut); }
+  .madrow .dots{ font-family:var(--font-mono); font-size:11px; letter-spacing:2px; color:var(--brand-hi); }
+  .madrow .dots .want{ color:var(--tx-mut); }
+  .madrow .dots .off{ color:var(--tx-faint); opacity:.45; }
+  .madrow .lv{ font-family:var(--font-mono); font-size:9.5px; color:var(--tx-faint); }
   .tcols{ display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; margin-top:12px; }
   .tcol{ flex:1; min-width:216px; border:1px solid var(--border); border-radius:12px; padding:10px; background:rgba(20,26,25,.35); }
   .tcol .th{ font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; color:var(--tx-mut); text-transform:uppercase; margin-bottom:8px; cursor:pointer; }
@@ -854,9 +878,9 @@ const DATA = {
 
   // cinética — proyectos_mejora (ilustrativos del loop O7) · pm-cie = loop CERRADO con veredicto (KPI movido)
   proyectos:[
-    {id:'pm-mar', nm:'Recuperación de avance Marina', estado:'en-ejecución', pdca:'DO',   brecha:'g-avc', mueve:'k-avc', area:'a-ope', roi:'2.4×', delta:'−8pp → −2pp'},
-    {id:'pm-cob', nm:'Cobranza digital · fase 1',     estado:'en-evaluación',pdca:'PLAN', brecha:'g-dso', mueve:'k-cob', area:'a-tes', roi:'1.8×', delta:'15% → 40%', idea:'i-wsp'},
-    {id:'pm-cie', nm:'Cierre contable exprés',        estado:'cerrado',      pdca:'ACT',  brecha:null,    mueve:'k-cie', area:'a-con', roi:'3.1×', delta:'9 → 4.5 días', recompila:'h-cierre-cont',
+    {id:'pm-mar', nm:'Recuperación de avance Marina', estado:'en-ejecución', pdca:'DO',   brecha:'g-avc', mueve:'k-avc', area:'a-ope', roi:'2.4×', delta:'−8pp → −2pp', ambicion:'operar'},
+    {id:'pm-cob', nm:'Cobranza digital · fase 1',     estado:'en-evaluación',pdca:'PLAN', brecha:'g-dso', mueve:'k-cob', area:'a-tes', roi:'1.8×', delta:'15% → 40%', idea:'i-wsp', ambicion:'operar'},
+    {id:'pm-cie', nm:'Cierre contable exprés',        estado:'cerrado',      pdca:'ACT',  brecha:null,    mueve:'k-cie', area:'a-con', roi:'3.1×', delta:'9 → 4.5 días', recompila:'h-cierre-cont', ambicion:'operar',
       resultado:{delta_observado:'9 → 4.5 días', veredicto:'movió', nota:'ACT documentado: checklist pre-cierre estandarizado (M16 PDCA) → recompilado al arnés del puesto'} },
   ],
 
@@ -1006,10 +1030,10 @@ const DATA = {
     'p-post':  {n:'1 guía',             d:'catálogo de garantías por partida (borrador)'},
   },
   ideas:[  // funil kaizen (M44) — separación idea ↔ proyecto · autoría reconocida (RN-16)
-    {id:'i-wsp',    nm:'Plantillas de WhatsApp para recordatorios de pago', prop:'Julio Paredes · Analista de Cobranza', estado:'promovida', a:'pm-cob', nota:'reconocida — origen del alcance de Cobranza digital fase 1'},
-    {id:'i-agente', nm:'Agente que prepara el contacto de morosos (act. 03)', prop:'triage M36 → Jefe de Cobranza', estado:'en-evaluacion', origen:'triage', nota:'RTLX 71 + veredicto automatizable-agente → candidato a skill del arnés del puesto (Arnesia)'},
-    {id:'i-caja',   nm:'Foto diaria de caja desde Banca Empresas', prop:'Carmen Rojas · Analista de Tesorería', estado:'enviada', nota:'ataca la ceguera de caja (g-cvis) sin esperar proyecto formal'},
-    {id:'i-mun',    nm:'Bitácora por municipio: registrar el porqué de cada observación', prop:'Milton Cruz Ayala · Asistente de Permisos', estado:'enviada', nota:'ataca g-doc/g-dep — convierte el conocimiento de cabeza en corpus'},
+    {id:'i-wsp',    nm:'Plantillas de WhatsApp para recordatorios de pago', prop:'Julio Paredes · Analista de Cobranza', estado:'promovida', a:'pm-cob', ambicion:'operar', nota:'reconocida — origen del alcance de Cobranza digital fase 1'},
+    {id:'i-agente', nm:'Agente que prepara el contacto de morosos (act. 03)', prop:'triage M36 → Jefe de Cobranza', estado:'en-evaluacion', origen:'triage', ambicion:'transformar', nota:'RTLX 71 + veredicto automatizable-agente → candidato a skill del arnés del puesto (Arnesia)'},
+    {id:'i-caja',   nm:'Foto diaria de caja desde Banca Empresas', prop:'Carmen Rojas · Analista de Tesorería', estado:'enviada', ambicion:'operar', nota:'ataca la ceguera de caja (g-cvis) sin esperar proyecto formal'},
+    {id:'i-mun',    nm:'Bitácora por municipio: registrar el porqué de cada observación', prop:'Milton Cruz Ayala · Asistente de Permisos', estado:'enviada', ambicion:'operar', nota:'ataca g-doc/g-dep — convierte el conocimiento de cabeza en corpus'},
   ],
 
   bscEdges:[ ['o-eq','o-cob'],['o-eq','o-vis'],['o-cob','o-caja'],['o-vis','o-mar'],['o-mar','o-lid'],['o-hog','o-lid'],['o-lid','o-caja'] ],
@@ -1325,12 +1349,37 @@ const DATA = {
 /* ---- v14 · NIVEL 1 — apuestas + apetito (⚠ aún NO son entidades del schema — ficha D-NN
    pendiente vía /metodo-aprende; acá viven como dato del mockup, ancladas a objetivos reales) ---- */
 DATA.apuestas=[
-  {id:'ap-lid', nm:'Liderazgo en vivienda media', objetivos:['o-lid','o-hog'], riesgo:'medio', sellada:true},
-  {id:'ap-caja',nm:'Caja sana en todos los proyectos', objetivos:['o-caja','o-cob'], riesgo:'alto', sellada:true},
-  {id:'ap-mar', nm:'Reactivar Marina', objetivos:['o-mar','o-vis'], riesgo:'alto', sellada:true},
-  {id:'ap-cob', nm:'Digitalizar la cobranza', objetivos:['o-cob'], riesgo:'medio', sellada:false},
+  {id:'ap-lid', nm:'Liderazgo en vivienda media', objetivos:['o-lid','o-hog'], riesgo:'medio', riesgo_cat:'expansion', ambicion:'expandir', sellada:true},
+  {id:'ap-caja',nm:'Caja sana en todos los proyectos', objetivos:['o-caja','o-cob'], riesgo:'alto', riesgo_cat:'liquidez', ambicion:'operar', sellada:true},
+  {id:'ap-mar', nm:'Reactivar Marina', objetivos:['o-mar','o-vis'], riesgo:'alto', riesgo_cat:'reputacion', ambicion:'operar', sellada:true},
+  {id:'ap-cob', nm:'Digitalizar la cobranza', objetivos:['o-cob'], riesgo:'medio', riesgo_cat:'liquidez', ambicion:'operar', sellada:false},
 ];
 DATA.apetito={ liquidez:'media', reputacion:'baja', expansion:'alta — sin definir por el directorio' };
+/* ---- v15 · «Las varas del directorio» — rumbo (plan 3 años) · mezcla de ambición · escalera de
+   madurez · rangos de pares. ⚠ dato simulado — misma ficha D-NN pendiente que apuestas/apetito
+   (el campo `ambicion` SÍ es esquema real, D-22). Los derivados (mezcla real, contraste
+   riesgo↔apetito, estado de apuesta) se computan AL LEER — jamás se guardan. ---- */
+DATA.rumbo={
+  vision:{h:'2029', t:'Líder en vivienda media del Perú'},
+  anio:['Caja sana en todos los proyectos','Marina reactivada y vendiendo'],
+  bajada:{acordadas:3, de:4, pendiente:'Comercial'},   // acuerdo ida-y-vuelta al bajar cada meta
+};
+DATA.mezclaObjetivo={ operar:70, expandir:20, transformar:10, fijada:false };  // default industria — POR FIJAR
+DATA.madurez={ dims:[   // escalera 1-5 del sistema de gestión — actual vs deseado (derivado de evidencia)
+  {d:'liderazgo',  actual:3, deseado:4}, {d:'estrategia', actual:3, deseado:3},
+  {d:'recursos',   actual:2, deseado:3}, {d:'procesos',   actual:2, deseado:4, frena:true},
+  {d:'mejora',     actual:2, deseado:3} ]};
+DATA.peers={  // rangos externos con fuente+segmento+vigencia — sin fuente seria, el rango NO se afirma
+  'g-dso':      {r:'pares 45–60 d', src:'Benchmark abierto de procesos (APQC) · cobranza · constructoras LATAM · 2025'},
+  'g-post':     {r:'pares 50+',     src:'Benchmark sectorial de satisfacción de propietarios · desarrolladores residenciales · 2024'},
+  'meta-margen':{r:'pares 15–22%',  src:'Benchmark de márgenes · vivienda media Perú/LATAM · 2025'} };
+const AMBICION={operar:'operar el hoy', expandir:'expandir', transformar:'apostar al futuro'};
+function mezclaReal(){  // rollup al leer: apuestas + proyectos + ideas etiquetadas — jamás persistido
+  const pool=[...DATA.apuestas,...DATA.proyectos,...DATA.ideas].filter(x=>x.ambicion);
+  const n={operar:0,expandir:0,transformar:0}; pool.forEach(x=>n[x.ambicion]++);
+  const t=pool.length||1;
+  return {operar:Math.round(n.operar*100/t), expandir:Math.round(n.expandir*100/t),
+          transformar:Math.round(n.transformar*100/t), n:t}; }
 DATA.objetivos.find(o=>o.id==='o-lid').bono=true;    // ★ solo pinta en modo GPD/mixto (RN-14)
 DATA.objetivos.find(o=>o.id==='o-caja').bono=true;
 /* historial de la organización — toda acción, versionada (semilla = las ya aplicadas de la cola) */
@@ -1442,6 +1491,7 @@ const ACC={
   'retirar-apuesta':[4,'gestión-de-cambios','retiró la apuesta'],
   'convocar-cuentas':[4,'directa','convocó rendición de cuentas'],
   'fijar-apetito':[4,'gestión-de-cambios','fijó el apetito de riesgo'],
+  'fijar-mezcla':[4,'gestión-de-cambios','fijó la mezcla de ambición del año'],
 };
 const RANGO={'':99, dir:4, ger:3, jefe:2, ana:1};
 const NIVAUT={4:'Dirección',3:'Estratégico',2:'Táctico',1:'Operativo'};
@@ -1460,19 +1510,32 @@ function ejecutarAccion(b){ const a=ACC[b.dataset.acc];
    sus fuentes igual que todo lo demás. SSoT real = sistema/metodo/methodologies.yaml (46 cartas).
    En superficie: nombre común de la fuente (cero jerga). El código M-NN = procedencia, SOLO en la ficha. */
 const RESPALDO={
-  'dir-apetito':{ cita:'Shape Up', t:'Apetito de riesgo', items:[
+  'dir-varas':{ cita:'apetito · ambición', t:'Las varas del directorio', items:[
+    {f:'Apetito de riesgo por categoría (ISO 31000 / COSO)', uso:'la gobernanza fija cuánto riesgo se acepta por categoría (liquidez · reputación · expansión); cada apuesta se contrasta contra esa vara — "excede" no es una opinión. Sin definir se MUESTRA sin definir, jamás se inventa.', m:'M52'},
+    {f:'Portafolio de ambición (70/20/10)', uso:'todo esfuerzo se clasifica por novedad en tres bolsas — operar el hoy · expandir · apostar al futuro. La mezcla real se deriva al leer y se contrasta con la mezcla objetivo que este directorio firma; la mezcla ES el apetito hecho asignación. El ratio no es dogma: se ajusta por industria.', m:'M54'},
     {f:'Shape Up — el apetito de la apuesta', uso:'cuánto estamos dispuestos a gastar se fija ANTES de apostar: tiempo fijo, alcance variable, con "hasta aquí no" explícitos.', m:'M04'} ],
-    gap:'El apetito EMPRESARIAL por categoría (liquidez · reputación · expansión) se apoya en ISO 31000 / COSO — declarados horizonte del método, aún sin carta propia. La ficha de dato (D-NN) sigue pendiente.' },
+    gap:'Apetito por categoría y mezcla objetivo aún sin ficha de dato (D-NN pendiente); la activación plena del marco de riesgo es horizonte gateado por demanda. El campo ambición SÍ es esquema real (D-22).' },
   'dir-pulso':{ cita:'OKR · Hoshin', t:'¿Avanzan las apuestas?', items:[
     {f:'OKR — objetivos con meta del trimestre', uso:'una apuesta avanza solo si sus objetivos del ciclo se mueven hacia la meta; el punto de color resume el peor de ellos.', m:'M21'},
     {f:'Hoshin Kanri — despliegue de la estrategia', uso:'pocas apuestas del directorio bajan en cascada: plan a 3 años → año → trimestre.', m:'M26'},
     {f:'GPD (Falconi) — gestión por directrices', uso:'en modo anual o mixto el despliegue baja por niveles y ciertas metas pagan bono ★.', m:'M41'} ]},
-  'dir-alertas':{ cita:'GPD · ISO 9001', t:'Alertas que escalaron', items:[
+  'dir-alertas':{ cita:'GPD · pares', t:'Alertas que escalaron', items:[
     {f:'GPD (Falconi) — tratamiento de anomalías', uso:'al directorio solo sube lo que quedó fuera de banda sin contramedida — la excepción, jamás el detalle.', m:'M41'},
-    {f:'ISO 9001 — seguimiento y medición', uso:'qué es "fuera" lo decide la banda definida de cada indicador, no una opinión.', m:'M16'} ]},
+    {f:'ISO 9001 — seguimiento y medición', uso:'qué es "fuera" lo decide la banda definida de cada indicador, no una opinión.', m:'M16'},
+    {f:'Pares del sector (benchmark APQC · Hackett)', uso:'¿mi número es malo… comparado con quién? — el chip de pares dimensiona la alerta contra el rango externo, con fuente, segmento y vigencia (pasa el cursor).', m:'M48'},
+    {f:'Procedencia del dato', uso:'sin fuente seria el rango de pares no se afirma — alerta sin benchmark serio va sin chip, jamás con uno inventado.', m:'M23'} ]},
   'dir-apuestas':{ cita:'Shape Up · FinOps', t:'Las apuestas', items:[
     {f:'Shape Up — apostar, no planear en exceso', uso:'pocas apuestas selladas, con riesgo y apetito explícitos; sellar es un acto con firma (paso 5 · etapa 0 del método).', m:'M04'},
     {f:'FinOps — valor cuantificado', uso:'cada apuesta declara el valor que persigue en dinero, no en adjetivos.', m:'M22'} ]},
+  'dir-rumbo':{ cita:'plan de 3 años', t:'El rumbo', items:[
+    {f:'Hoshin Kanri — despliegue de la estrategia', uso:'visión a 3-5 años → prioridades del año → metas del trimestre: una sola cascada. Cada meta baja con acuerdo ida-y-vuelta (quien la recibe la negocia — jamás imposición).', m:'M26'},
+    {f:'Balanced Scorecard — perspectivas', uso:'chequeo de completitud: que ninguna dimensión estratégica quede sin meta que la mida — la línea "dimensión ciega" sale de ahí. Es una lista de control, no un marco a implantar.', m:'M30'},
+    {f:'GPD (Falconi)', uso:'en modo anual o mixto, el despliegue del año manda y ciertas metas pagan bono ★.', m:'M41'} ],
+    gap:'El campo "acuerdo de bajada" (ida-y-vuelta por nivel) aún no existe en el esquema — pendiente declarado en la misma ficha de dato que apuestas/apetito (D-NN).' },
+  'dir-madurez':{ cita:'escalera 1–5', t:'¿El sistema aguanta?', items:[
+    {f:'Madurez del sistema de gestión (ISO 9004)', uso:'autoevaluación 1-5 por dimensión (liderazgo · estrategia · recursos · procesos · mejora): dónde estás vs dónde quieres estar. El nivel se DERIVA de evidencia con su confianza — jamás se declara a mano.', m:'M47'},
+    {f:'COBIT — arbitraje de escaleras', uso:'el mapa por nodo se pinta con la escalera de gobierno/TI; esta gradúa el sistema de gestión completo (finanzas y personas incluidas) — dos varas, cada una en su cancha.', m:'M15'},
+    {f:'Frontera persona ↔ twin', uso:'la madurez de "personas" se agrega por rol y área — jamás evaluación de una persona nombrada.', m:'M40'} ]},
   'bandeja':{ cita:'ISO 9001', t:'Espera tu decisión', items:[
     {f:'ISO 9001 — gestión de cambios', uso:'toda decisión que cambia la organización pasa por su aprobación y queda registrada en el historial.', m:'M16'},
     {f:'Matriz de responsabilidades (RACI) — autoridad', uso:'quién firma cada decisión está declarado por nivel: nada espera a la persona equivocada.', m:'M25'} ]},
@@ -1487,7 +1550,8 @@ const RESPALDO={
     {f:'Impact Mapping — trazar del objetivo al trabajo', uso:'tocar un objetivo enciende su cadena completa: objetivo → meta → indicador → proceso.', m:'M06'} ]},
   'sala-jugada':{ cita:'WSJF', t:'La apuesta · próximo paso', items:[
     {f:'WSJF — costo de esperar', uso:'la próxima jugada es la brecha que más cuesta por mes de espera — por eso es la ①.', m:'M28'},
-    {f:'FinOps — valor cuantificado', uso:'la jugada declara cuánto cuesta y qué meta mueve.', m:'M22'} ]},
+    {f:'FinOps — valor cuantificado', uso:'la jugada declara cuánto cuesta y qué meta mueve.', m:'M22'},
+    {f:'Pares del sector — la meta contra pares', uso:'la meta se valida contra lo que logran pares comparables: alcanzable no es un deseo. El benchmark jamás fija la meta solo — la firma el ciclo.', m:'M48'} ]},
   'sala-loop':{ cita:'PDCA', t:'Estado del loop', items:[
     {f:'Ciclo PDCA (ISO 9001 — mejora)', uso:'brecha → proyecto → indicador movido: el ciclo completo vive dentro del twin.', m:'M16'},
     {f:'COBIT — brecha de madurez', uso:'la distancia entre cómo estás y el objetivo se mide y se cierra por proyectos.', m:'M15'} ]},
@@ -2319,40 +2383,72 @@ function renderDirectorio(){
   const stAp=a=>{ const ss=a.objetivos.map(id=>objOf(id).salud); return ss.includes('rojo')?'rojo':ss.includes('ambar')?'ambar':'verde'; };
   const sts=DATA.apuestas.map(stAp), nG=sts.filter(s=>s==='verde').length, nA=sts.filter(s=>s==='ambar').length, nR=sts.filter(s=>s==='rojo').length;
   const ciclo=state.ciclo==='okr'?'este trimestre':state.ciclo==='gpd'?'este año':'trimestre + año';
+  /* v15 · las varas: mezcla real (rollup al leer) + contraste riesgo↔apetito por categoría (derivado) */
+  const mx=mezclaReal(), mo=DATA.mezclaObjetivo, rb=DATA.rumbo;
+  const CATNM={liquidez:'liquidez', reputacion:'reputación', expansion:'expansión'};
+  const NIVR={baja:0,bajo:0,media:1,medio:1,alta:2,alto:2};
+  const contraste=a=>{ const raw=DATA.apetito[a.riesgo_cat]||'';
+    if(/sin definir/.test(raw)||!(raw.split(' ')[0] in NIVR)) return {t:`apetito de ${CATNM[a.riesgo_cat]} sin definir — fíjalo ⚠`, c:'var(--warn)'};
+    const ap=raw.split(' ')[0], d=NIVR[a.riesgo]-NIVR[ap];
+    return d>0? {t:`excede tu apetito de ${CATNM[a.riesgo_cat]} (${ap})`, c:'var(--crit)'}
+         : d===0? {t:`al límite del apetito de ${CATNM[a.riesgo_cat]} (${ap})`, c:'var(--warn)'}
+         : {t:`dentro del apetito de ${CATNM[a.riesgo_cat]} (${ap})`, c:'var(--tx-mut)'}; };
   const bandeja=[
     {t:'Sellar la apuesta "Digitalizar la cobranza"', d:'apuesta nueva — su objetivo va en rojo', apr:'gestión-de-cambios', go:'data-ap="ap-cob"'},
     {t:'Aprobar el acta de "Cobranza digital · fase 1"', d:'doble firma: patrocinador ✓ · finanzas pendiente', apr:'gestión-de-cambios', go:'data-pm="pm-cob" data-pm2="pm-cob"'},
     {t:'Fijar el apetito de riesgo de expansión (sin definir)', apr:'gestión-de-cambios', go:'data-acc="fijar-apetito"'},
+    {t:'Fijar la mezcla de ambición del año', d:`hoy corre el default de industria ${mo.operar}/${mo.expandir}/${mo.transformar} — la mezcla es apetito hecho asignación`, apr:'gestión-de-cambios', go:'data-acc="fijar-mezcla"'},
   ];
   if(state.ciclo!=='okr') bandeja.push({t:'Decidir qué metas pagan bono este año ★', d:'acople compensación — solo en modo anual/mixto (RN-14)', apr:'gestión-de-cambios', go:'data-acc="convocar-cuentas"'});
   const pv=pageView(`
     <div class="pv-hd"><span class="eyebrow">Nivel 1 · Directorio — la apuesta y el riesgo · sesión mensual</span>
       <h2>Sala del directorio</h2>
       <div class="sub">Pocas apuestas, el riesgo contra el apetito y solo las excepciones que escalaron. El directorio no navega el detalle: decide — y cada decisión queda en el historial de la organización.</div></div>
+    <div class="rumbo"><div class="pt">El rumbo — lo que este directorio prometió${respBadge('dir-rumbo')}</div>
+      <div class="cad">
+        <span><span class="k">Visión ${rb.vision.h}</span>«${rb.vision.t}»</span><span class="sep">▸</span>
+        <span><span class="k">Este año</span>${rb.anio.join(' · ')}</span><span class="sep">▸</span>
+        <span><span class="k">Este trimestre</span>${DATA.apuestas.length} apuestas · ${DATA.objetivos.length} metas</span></div>
+      <div class="foot"><span>bajada acordada ida-y-vuelta con ${rb.bajada.acordadas}/${rb.bajada.de} gerencias (${rb.bajada.pendiente} pendiente)</span><span class="sep">·</span>
+        <span>perspectivas con meta 4/4 ✓</span><span class="sep">·</span>
+        <button class="ciega" data-g="g-post" data-g2="g-post">dimensión ciega: la satisfacción de propietarios cae y nada la mide ⚠</button></div></div>
     <div class="dirgrid">
-      <div class="dpane"><div class="pt">Apetito de riesgo (dato simulado — ficha D-NN pendiente)${respBadge('dir-apetito')}</div>
-        <span style="font-family:var(--font-mono);font-size:11px;color:var(--tx-mut)">liquidez <b style="color:var(--warn)">${DATA.apetito.liquidez}</b> · reputación <b style="color:var(--ok)">${DATA.apetito.reputacion}</b> · expansión <b style="color:var(--crit)">${DATA.apetito.expansion}</b></span></div>
+      <div class="dpane"><div class="pt">Las varas del directorio — riesgo que toleras · futuro que compras (simulado · ficha D-NN pendiente)${respBadge('dir-varas')}</div>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--tx-mut)">apetito: liquidez <b style="color:var(--warn)">${DATA.apetito.liquidez}</b> · reputación <b style="color:var(--ok)">${DATA.apetito.reputacion}</b> · expansión <b style="color:var(--crit)">${DATA.apetito.expansion}</b></span>
+        <div class="mixwrap">
+          <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx-faint)">Ambición del portafolio — apuestas + proyectos + ideas (${mx.n})</span>
+          <div class="mixbar">
+            <div class="seg s-op" style="width:${mx.operar}%" title="operar el hoy — ${mx.operar}% real"></div>
+            <div class="seg s-ex" style="width:${mx.expandir}%" title="expandir — ${mx.expandir}% real"></div>
+            <div class="seg s-tr" style="width:${mx.transformar}%" title="apostar al futuro — ${mx.transformar}% real"></div>
+            <div class="mixmark" style="left:${mo.operar}%" title="mezcla objetivo: hasta aquí operar el hoy (${mo.operar})"><i>▽${mo.operar}</i></div>
+            <div class="mixmark" style="left:${mo.operar+mo.expandir}%" title="mezcla objetivo: hasta aquí expandir (+${mo.expandir})"><i>▽${mo.operar+mo.expandir}</i></div>
+          </div>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--tx-mut)"><b style="color:var(--brand-hi)">${mx.operar}</b> operar el hoy · <b>${mx.expandir}</b> expandir · <b>${mx.transformar}</b> apostar al futuro — objetivo ${mo.operar}/${mo.expandir}/${mo.transformar} <b style="color:var(--warn)">por fijar</b></span>
+        </div></div>
       <div class="dpane" title="Cada punto = una apuesta: ¿sus objetivos del ciclo avanzan hacia la meta?"><div class="pt">¿Avanzan las apuestas? (${ciclo})${respBadge('dir-pulso')}</div>
         <div class="pulso-dots">${DATA.apuestas.map((a,i)=>`<i style="background:${health[sts[i]]}" title="${a.nm}"></i>`).join('')}</div>
         <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--tx-mut)">${nG} en meta · ${nA} cerca · ${nR} fuera</span></div>
       <div class="dpane"><div class="pt">Alertas que escalaron — solo lo que subió solo${respBadge('dir-alertas')}</div>
         <button class="cambio-row" data-g="g-avc" data-g2="g-avc"><span class="sc">▲</span><div><div class="tt">Avance de Marina: 87% real vs 95% declarado</div></div><span class="ap" style="color:var(--crit)">S/ 35k/mes</span></button>
-        <button class="cambio-row" data-g="g-dso" data-g2="g-dso"><span class="sc">▲</span><div><div class="tt">Cobranza de Marina: 91 días bloquea la caja</div></div><span class="ap" style="color:var(--crit)">S/ 180k/año</span></button>
-        <button class="cambio-row" data-g="g-post" data-g2="g-post"><span class="sc">▲</span><div><div class="tt">La postventa se deteriora y ninguna meta la mide</div></div><span class="ap" style="color:var(--warn)">42 → 31</span></button>
+        <button class="cambio-row" data-g="g-dso" data-g2="g-dso"><span class="sc">▲</span><div><div class="tt">Cobranza de Marina: 91 días bloquea la caja</div></div><span class="peer" title="${DATA.peers['g-dso'].src}">${DATA.peers['g-dso'].r}</span><span class="ap" style="color:var(--crit)">S/ 180k/año</span></button>
+        <button class="cambio-row" data-g="g-post" data-g2="g-post"><span class="sc">▲</span><div><div class="tt">La postventa se deteriora y ninguna meta la mide</div></div><span class="peer" title="${DATA.peers['g-post'].src}">${DATA.peers['g-post'].r}</span><span class="ap" style="color:var(--warn)">42 → 31</span></button>
         <button class="cambio-row" data-area="a-tes"><span class="sc">▲</span><div><div class="tt">Jefatura de Tesorería vacante hace 5 meses</div></div><span class="ap" style="color:var(--warn)">sin persona</span></button></div>
     </div>
     <span class="eyebrow">Las apuestas — clic = ficha y acciones · lo que las sostiene vive en el nivel 2${respBadge('dir-apuestas')}</span>
-    <div class="apcards" style="margin-top:8px">${DATA.apuestas.map((a,i)=>{ const objs=a.objetivos.map(objOf);
-      return `<button class="apcard" data-ap="${a.id}"><span class="un">apuesta ${a.sellada?'· sellada':'· <b style="color:var(--warn)">por sellar</b>'}</span>
+    <div class="apcards" style="margin-top:8px">${DATA.apuestas.map((a,i)=>{ const objs=a.objetivos.map(objOf), ct=contraste(a);
+      return `<button class="apcard" data-ap="${a.id}"><span class="un">apuesta ${a.sellada?'· sellada':'· <b style="color:var(--warn)">por sellar</b>'} · ${AMBICION[a.ambicion]}</span>
         <span class="nm">${a.nm}</span>
         <span class="mt"><span class="health-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${health[sts[i]]};margin-right:5px"></span>${objs.map(o=>o.kr.m).join(' · ')}</span>
-        <span class="mt">riesgo <b style="color:${a.riesgo==='alto'?'var(--crit)':'var(--warn)'}">${a.riesgo}</b> · sostiene ${objs.length} objetivo${objs.length>1?'s':''}</span></button>`; }).join('')}</div>
+        <span class="mt">riesgo <b style="color:${a.riesgo==='alto'?'var(--crit)':'var(--warn)'}">${a.riesgo}</b> · sostiene ${objs.length} objetivo${objs.length>1?'s':''}</span>
+        <span class="mt" style="color:${ct.c}">${ct.t}</span></button>`; }).join('')}</div>
     <div class="dirgrid">
       <div class="dpane solid"><div class="pt">Espera tu decisión · ${bandeja.length}${respBadge('bandeja')}</div>${bandejaRows(bandeja)}</div>
       <div class="dpane"><div class="pt">Qué cambió desde la última sesión (hace 30 días)${respBadge('dir-cambio30')}</div>
         <div style="font-size:12px;color:var(--tx-mut);line-height:1.8">· cobranza Marina: 90 → 91 días (se degrada)<br>· "Cierre exprés" CERRÓ con veredicto: <b style="color:var(--ok)">movió</b> (9 → 4.5 días)<br>· satisfacción de propietarios 35 → 31 — sigue sin meta que la mida<br>· ${bandeja.length} decisiones esperan tu firma</div></div>
       <div class="dpane"><div class="pt">Proyectos en curso — el portafolio${respBadge('dir-portafolio')}</div>
-        ${DATA.proyectos.map(pm=>`<button class="cambio-row" data-pm="${pm.id}" data-pm2="${pm.id}"><span class="sc">${pm.pdca}</span><div><div class="tt">${pm.nm}</div><div class="ap">${pm.estado} · ${pm.delta}</div></div><span class="ap" style="color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}</div>
+        ${DATA.proyectos.map(pm=>`<button class="cambio-row" data-pm="${pm.id}" data-pm2="${pm.id}"><span class="sc">${pm.pdca}</span><div><div class="tt">${pm.nm}</div><div class="ap">${pm.estado} · ${pm.delta} · ${AMBICION[pm.ambicion]}</div></div><span class="ap" style="color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}
+        <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--tx-faint);margin-top:6px;border-top:1px solid var(--border);padding-top:5px">mezcla real ${mx.operar}/${mx.expandir}/${mx.transformar} — la vara, arriba ↑ · la prioridad se ordena DENTRO de cada bolsa, jamás entre bolsas</div></div>
     </div>`);
   wireLinks(pv);
   counter(`${DATA.apuestas.length} apuestas · ${nR} fuera de meta · ${bandeja.length} decisiones esperan firma`);
@@ -2594,6 +2690,7 @@ function inspectorHome(){
           <div><span class="k">Mueve KR</span><span class="v kr">margen →18%</span></div>
           <div><span class="k">Prio</span><span class="v">WSJF ①</span></div>
         </div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--tx-mut);margin-top:5px;cursor:help" title="${DATA.peers['meta-margen'].src}">vara externa: ${DATA.peers['meta-margen'].r} — la meta 18% es alcanzable</div>
         <button class="btn go" id="apuestaGo">Ver el hilo que mueve ›</button>
       </div>
       <div class="dgroup"><div class="gt">Estado del loop — brecha → proyecto → KPI${respBadge('sala-loop')}</div>
@@ -2601,11 +2698,19 @@ function inspectorHome(){
         <div style="font-size:11px;color:var(--tx-faint)">2 proyectos en vuelo · prende la capa Cinética para verlos sobre el mapa</div></div>
       <div class="dgroup"><div class="gt">El twin compila trabajo — se compila por rol×proceso · se ensambla por puesto (CK-30)${respBadge('sala-trabajo')}</div>
         <div style="font-size:12.5px;line-height:1.5"><b class="mono" style="color:var(--brand-hi)">${new Set(DATA.arneses.map(h=>h.deriva_de.puesto)).size}/${DATA.puestosTotal}</b> puestos con arnés en su roster · <b class="mono">${DATA.arneses.length}</b> arneses compilados · <span style="color:var(--warn)">${DATA.arneses.filter(h=>arnesEstado(h)==='desactualizado').length} desactualizado</span> (el twin cambió → recompilar). El resto opera a mano: el gap de la era agéntica, visible.</div>
-        <button class="btn" id="verTrabajo" style="justify-content:center">Prender la capa Trabajo ›</button></div>`;
+        <button class="btn" id="verTrabajo" style="justify-content:center">Prender la capa Trabajo ›</button></div>
+      ${state.nivel===1?`<div class="dgroup"><div class="gt">¿El sistema aguanta la ambición? — autoevaluación asistida, simulada${respBadge('dir-madurez')}</div>
+        ${DATA.madurez.dims.map(m=>{ let s=''; for(let i=1;i<=5;i++) s+= i<=m.actual?'<b>●</b>' : (i<=m.deseado?'<span class="want">○</span>':'<span class="off">·</span>');
+          return `<div class="madrow"><span class="lbl">${m.d}${m.frena?' <b style="color:var(--warn)">⚠ frena</b>':''}</span><span class="dots">${s}</span><span class="lv">${m.actual}→${m.deseado}</span></div>`; }).join('')}
+        <div style="font-size:11px;color:var(--tx-faint);margin-top:4px">hoy <b class="mono" style="color:var(--brand-hi)">${(DATA.madurez.dims.reduce((s,m)=>s+m.actual,0)/DATA.madurez.dims.length).toFixed(1)}</b> de 5 · deseado <b class="mono">${(DATA.madurez.dims.reduce((s,m)=>s+m.deseado,0)/DATA.madurez.dims.length).toFixed(1)}</b> — ● hoy · ○ a dónde vamos. El nivel se deriva de evidencia, jamás se pinta a mano.</div>
+        <button class="btn" id="verMadurez" style="justify-content:center">Ver el mapa por madurez ›</button></div>`:''}`;
     inBody.querySelector('#apuestaGo').onclick=()=>{ state.nivel=2; setPiel('valor');
       if(!state.capas.has('hilo')){state.capas.add('hilo');document.querySelector('[data-capa=hilo]').classList.add('on');}
       state.activeObj='o-lid'; render(); };
     inBody.querySelector('#verTrabajo').onclick=()=>{ if(!state.capas.has('trabajo')){state.capas.add('trabajo');document.querySelector('[data-capa=trabajo]').classList.add('on');} render(); };
+    const vm=inBody.querySelector('#verMadurez'); if(vm) vm.onclick=()=>{ gotoNivel(2);
+      if(!state.capas.has('salud')){ const cs=document.querySelector('[data-capa=salud]'); if(cs) cs.click(); }
+      const st=document.querySelector('.sub-t[data-sub=madurez]'); if(st) st.click(); };
     inBody.querySelectorAll('.loop-it').forEach(b=>b.onclick=()=>openProyecto(byId(DATA.proyectos,b.dataset.pm)));
     inBody.querySelectorAll('[data-resp]').forEach(b=>b.onclick=()=>openRespaldo(b.dataset.resp));
   }

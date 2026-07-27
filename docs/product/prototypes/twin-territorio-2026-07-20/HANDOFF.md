@@ -1,5 +1,33 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-26 → siguiente)
 
+> **★ v15 EJECUTADA (2026-07-27 — «Las varas del directorio», propuesta FIRMADA COMPLETA por el
+> operador):** los 6 huecos del método en nivel 1 cerrados como VARAS al lado de lo existente (cero
+> panel-sopa): **(1)** banda `.rumbo` bajo el header — visión 3-5a ▸ año ▸ trimestre (M26) + "bajada
+> acordada ida-y-vuelta 3/4" + línea "dimensión ciega" M30 clickable → ficha g-post · **(2)** pane
+> Apetito crece a **"Las varas"** (`dir-varas`): apetito M52 + **barra de mezcla de ambición**
+> (`.mixbar` 3 segs un-solo-teal-por-alpha + `.mixmark` ▽70/▽90 objetivo) — real 82/9/9 DERIVADA por
+> `mezclaReal()` (rollup apuestas+proyectos+ideas con campo `ambicion`, D-22 esquema real) ·
+> **(3)** chips `.peer` (pares 45–60 d · pares 50+) en alertas con `title=` fuente+segmento+vigencia
+> (M48/M23 — alerta sin benchmark serio va SIN chip) + línea "vara externa" en LA Apuesta del rail ·
+> **(4)** contraste riesgo↔apetito por categoría en cada apcard (fn `contraste`: excede/al límite/
+> dentro/sin definir — `riesgo_cat` nuevo en apuestas) · **(5)** bandeja +1 firma "Fijar la mezcla de
+> ambición del año" (`fijar-mezcla` en ACC, gemela de fijar-apetito) + portafolio con bolsa por
+> proyecto y pie "prioridad DENTRO de cada bolsa, jamás entre bolsas" (anti-patrón M54) · **(6)** rail
+> sala de mando (SOLO nivel 1): bloque **"¿El sistema aguanta la ambición?"** — escalera `.madrow`
+> ×5 dims ●actual/○deseado (M47, 2.4→3.4, procesos ⚠ frena) + botón "Ver el mapa por madurez" →
+> gotoNivel(2)+capa salud+lente madurez (reusa el lente COBIT existente; arbitraje M47/M15 declarado
+> en la ficha). RESPALDO: `dir-apetito`→**`dir-varas`** (M52+M54+M04, gap actualizado: M52 ya tiene
+> carta) + `dir-rumbo` + `dir-madurez` nuevos + M48/M23 sumados a `dir-alertas` y `sala-jugada` =
+> catálogo 49 entradas. Datos v15 (⚠ misma ficha D-NN pendiente): `DATA.rumbo/mezclaObjetivo/
+> madurez/peers` + `ambicion` en apuestas/proyectos/ideas + `AMBICION` labels (cero jerga: operar el
+> hoy · expandir · apostar al futuro). verify.sh **28/28** (+`nivel1-varas`: rumbo/ciega/segs/marks/
+> peers-con-fuente/excede/sin-definir/firma-mezcla/madrow×5/anti-jerga M-NN). Verificado con ojos
+> propios: nivel 1 completo, ficha dir-varas, clic ciega→Brecha, firma mezcla→toast+historial,
+> botón madurez→nivel 2 con lente activo. Fix visual de la sesión: `.mixbar` margin-top 15px (las
+> marcas ▽ chocaban con el label — medido con getBoundingClientRect). Pendiente que abre: bolsa
+> `transformar` solo tiene 1 item (i-agente) — ¿sembrar 1 idea transformacional más? decisión del
+> operador; mezcla_objetivo/apetito/rumbo/madurez a ficha D-NN vía /metodo-aprende cuando se firme.
+
 > **★ v14.5 EJECUTADA (2026-07-26 — respaldo DENTRO de las fichas; cierra el eje "Respaldo del
 > método"):** pie automático "Respaldo del método § cita" en **TODA ficha de entidad** vía UNA
 > costura en `openDrawer` (deriva el tipo del eyebrow — mismo lookup del ícono TICO — y anexa

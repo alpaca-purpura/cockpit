@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Suite de verificación del mockup — clicks con HIT-TESTING REAL (elementFromPoint), no element.click().
-# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (27/27 esperado — v14.3: +capa Respaldo del método)
+# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (28/28 esperado — v15: +nivel1-varas)
 set -euo pipefail
 cd "$(dirname "$0")"
 TMP=$(mktemp -d)
@@ -106,6 +106,23 @@ window.addEventListener('load',()=>{whenReady(()=>{
   t('nivel1-directorio',()=>{ gotoNivel(1); A(document.body.textContent.includes('Sala del directorio'),'sin sala');
     A(document.querySelectorAll('.apcard').length>=4,'apuestas='+document.querySelectorAll('.apcard').length);
     A(document.body.textContent.includes('Espera tu decisión'),'sin bandeja'); });
+  t('nivel1-varas',()=>{ /* v15: las varas del directorio — rumbo · mezcla de ambición · pares · contraste apetito · escalera */
+    gotoNivel(1);
+    A(document.querySelector('.rumbo'),'sin banda rumbo');
+    A(document.querySelector('.rumbo').textContent.includes('bajada acordada'),'rumbo sin acuerdo de bajada');
+    A(document.querySelector('.rumbo .ciega'),'rumbo sin dimensión ciega clickable');
+    A(document.querySelectorAll('.mixbar .seg').length===3,'segs='+document.querySelectorAll('.mixbar .seg').length);
+    A(document.querySelectorAll('.mixmark').length>=2,'sin marcas de mezcla objetivo');
+    const peers=[...document.querySelectorAll('.peer')]; A(peers.length>=2,'chips pares='+peers.length);
+    A(peers.every(p=>p.title.length>20),'chip de pares sin fuente+vigencia');
+    const apx=document.querySelector('.apcards').textContent;
+    A(/excede tu apetito/.test(apx),'sin contraste riesgo↔apetito en apuestas');
+    A(/sin definir — fíjalo/.test(apx),'apetito sin definir no se muestra en la apuesta');
+    A(/mezcla de ambición/i.test(document.body.textContent),'sin firma de mezcla en bandeja');
+    const rail=document.getElementById('inBody');
+    A(/aguanta la ambición/i.test(rail.textContent),'rail sin escalera de madurez');
+    A(rail.querySelectorAll('.madrow').length===5,'madrow='+rail.querySelectorAll('.madrow').length);
+    A(![...document.querySelectorAll('.rumbo,.dpane,.apcard')].some(e=>/\bM\d{2}\b/.test(e.textContent)),'token M-NN visible en nivel 1'); });
   t('nivel3-tactico',()=>{ gotoNivel(3); A(document.querySelectorAll('.tcol').length>=4,'cols='+document.querySelectorAll('.tcol').length);
     A(document.body.textContent.includes('contramedida'),'sin regla de contramedida');
     A(document.body.textContent.includes('Embudo de ideas'),'sin embudo'); gotoNivel(2); });
