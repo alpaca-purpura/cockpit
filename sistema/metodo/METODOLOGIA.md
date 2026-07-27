@@ -33,9 +33,9 @@
 - **A · Descubrimiento & Producto:** [Dual Track Agile](#m01) · [Continuous Discovery](#m02) · [Product Operating Model](#m03) · [Shape Up](#m04) · [Jobs-to-be-Done](#m05) · [Impact Mapping](#m06)
 - **B · Dominio & Proceso:** [Event Storming](#m07) · [Domain-Driven Design](#m08) · [Value Stream Mapping](#m09) · [Service Blueprint](#m10) · [BPMN](#m11) · [APQC Process Classification Framework](#m12) · [Process / Task Mining](#m29)
 - **C · Arquitectura & Sistemas:** [ArchiMate](#m13) · [SYSTEM-MAP + document-project](#m14) · [Business Capability Modeling](#m31)
-- **D · Gobierno, Calidad & Madurez:** [COBIT 2019](#m15) · [ISO 9001](#m16) · [ITIL 4](#m17) · [RACI](#m25) · [ISO 10013](#m38) · [DMAIC](#m42) · [MASP](#m43) · [Funil de ideas](#m44) · [ISO 56002](#m45)
+- **D · Gobierno, Calidad & Madurez:** [COBIT 2019](#m15) · [ISO 9001](#m16) · [ITIL 4](#m17) · [RACI](#m25) · [ISO 10013](#m38) · [DMAIC](#m42) · [MASP](#m43) · [Funil de ideas](#m44) · [ISO 56002](#m45) · [ISO 9004 (madurez)](#m47) · [EFQM RADAR](#m49) · [P3M3](#m50)
 - **E · Especificación & Construcción:** [Spec-Driven Development](#m18) · [EARS](#m19) · [Specification by Example](#m20)
-- **F · Valor, Costo & Alineación:** [OKR](#m21) · [FinOps — Quantify Business Value](#m22) · [Hoshin Kanri](#m26) · [Wardley Mapping](#m27) · [WSJF](#m28) · [Balanced Scorecard](#m30) · [GPD (Falconi)](#m41)
+- **F · Valor, Costo & Alineación:** [OKR](#m21) · [FinOps — Quantify Business Value](#m22) · [Hoshin Kanri](#m26) · [Wardley Mapping](#m27) · [WSJF](#m28) · [Balanced Scorecard](#m30) · [GPD (Falconi)](#m41) · [Benchmarks APQC/Hackett](#m48)
 - **G · IA: Grounding & Anti-alucinación:** [Grounding](#m23)
 - **H · Diseño de Servicio & Experiencia:** [This Is Service Design Doing](#m24)
 - **I · Twin & automatización del trabajo:** [Ontología Palantir](#m32) · [DEMO](#m33) · [BPSim](#m34) · [ECRS](#m35) · [Criterios RPA + agente](#m36) · [Taxonomía de verbos](#m37) · [NASA-TLX](#m39) · [Métricas de persona](#m40) · [Arnés por rol×proceso](#m46)
@@ -233,7 +233,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O3 Proceso
 - **Aporte único:** la TAXONOMÍA universal — el esqueleto para no perderse en el 1GB + cobertura
 - **Cuándo:** AS-IS de procesos — clasificar cada proceso hallado
-- **Combina:** M07 (esqueleto donde cuelgan los eventos) · M10 (clasifica los procesos del blueprint)
+- **Combina:** M07 (esqueleto donde cuelgan los eventos) · M10 (clasifica los procesos del blueprint) · M48 (el ID PCF es la clave de join del benchmark externo — la taxonomía abre la comparación sin metamodelo nuevo)
 - **Principios:** P4
 
 <a id="m29"></a>**M29 · Process / Task Mining**
@@ -284,7 +284,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O6 Gap & Madurez · sec: O2
 - **Aporte único:** el GOALS CASCADE + niveles de madurez (el semáforo del gap)
 - **Cuándo:** Hilo de Oro + Gap Analysis (madurez digital). Modo lite, sin certificación
-- **Combina:** M21 (cascade + OKR = el hilo hacia arriba) · M06 (comparten la cadena objetivo→valor)
+- **Combina:** M21 (cascade + OKR = el hilo hacia arriba) · M06 (comparten la cadena objetivo→valor) · M47 (dos escaleras con arbitraje: COBIT 0-5 = gobierno/IT + semáforo del heatmap de capacidades; 9004 1-5 = sistema de gestión y funciones de negocio)
 - **Principios:** P2, P3
 
 <a id="m16"></a>**M16 · ISO 9001**
@@ -293,7 +293,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** T3 Gobierno / Loop · sec: O4
 - **Aporte único:** la ONTOLOGÍA de contexto (cl.4) + el ciclo PDCA — robamos ontología, rechazamos aparato
 - **Cuándo:** capa de contexto (vocabulario) y M2/M3 (mejora continua)
-- **Combina:** M21 (objetivos cl.6.2 se expresan como OKR) · M25 (roles/autoridad cl.5.3 = RACI) · M38 (cl.7.5 información documentada = pirámide ISO 10013)
+- **Combina:** M21 (objetivos cl.6.2 se expresan como OKR) · M25 (roles/autoridad cl.5.3 = RACI) · M38 (cl.7.5 información documentada = pirámide ISO 10013) · M47 (9004 GRADÚA (1-5) lo que 9001 releva (conformidad binaria) — la escalera de madurez sin certificación que la doctrina permite)
 - **Principios:** P4, P7
 
 <a id="m17"></a>**M17 · ITIL 4**
@@ -359,6 +359,33 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Combina:** M44 (el funil de ideas ES el corazón operativo que 56002 formaliza) · M16 (misma gramática de sistema de gestión ISO (HLS))
 - **Principios:** P7
 
+<a id="m47"></a>**M47 · ISO 9004:2018 — madurez del sistema de gestión (autoevaluación)**
+- **Qué:** autoevaluación de madurez 1-5 por elemento del sistema de gestión (contexto, liderazgo, estrategia, recursos incl. finanzas y personas, procesos, mejora) — guía NO certificable, mismo HLS que ISO 9001
+- **Fuente:** ISO/TC 176 — ISO 9004:2018 — Quality of an organization: guidance to achieve sustained success (Anexo A: autoevaluación de madurez 1-5). [https://www.iso.org/standard/70397.html](https://www.iso.org/standard/70397.html)
+- **Objeto:** O6 Gap & Madurez · sec: T3, O4
+- **Aporte único:** la ESCALERA de madurez organizacional cross-función que 9001 no trae (conformidad binaria → grados 1-5): gradúa el PDCA, los roles, la documentación y las funciones de negocio (finanzas incluida), no solo IT
+- **Cuándo:** diagnóstico M1 y mantenimiento M2 — nivel actual vs deseado por dimensión del sistema de gestión que M16 releva; descriptores por nivel para capacidades no-IT del heatmap
+- **Combina:** M16 (hermana HLS: 9001 releva el QMS (conformidad), 9004 lo GRADÚA (madurez 1-5) — sin aparato de certificación, alineado a VISION §ISO) · M15 (arbitraje de escaleras: COBIT 0-5 manda en gobierno/IT y como semáforo del heatmap; 9004 1-5 manda en sistema de gestión y funciones de negocio) · M31 (presta descriptores por nivel a capacidades no-IT del heatmap — el nivel sigue siendo DERIVADO de evidencia, jamás pintado a mano) · M38 (gradúa cobertura/vigencia del corpus documental (pirámide 10013) — madurez de la información documentada) · M40 (la madurez de 'personas' se agrega por rol/área — jamás evaluación de persona nombrada (CK-24))
+- **Principios:** P3, P4
+
+<a id="m49"></a>**M49 · EFQM 2025 — excelencia organizacional (RADAR)**
+- **Qué:** modelo de excelencia con scoring RADAR: gradúa enfoque, DESPLIEGUE, evaluación y refinamiento por criterio, con peso fuerte en resultados percibidos (cliente y personas)
+- **Fuente:** EFQM — EFQM Model (RADAR: Results · Approaches · Deploy · Assess & Refine). [https://efqm.org/the-efqm-model/](https://efqm.org/the-efqm-model/)
+- **Objeto:** O6 Gap & Madurez · sec: T2, T3
+- **Aporte único:** gradúa el DESPLIEGUE (¿la práctica llega a toda la organización o quedó en el papel?) y los resultados de percepción — lo que la autoevaluación 9004 toca menos
+- **Cuándo:** situacional — cliente orientado a reconocimiento/premio EFQM, o que exige graduar la experiencia de cliente (T2) con escala formal
+- **Combina:** M47 (misma pregunta (madurez organizacional) — arbitraje: 9004 es el default (familia ISO, sin premio); EFQM cuando el cliente pide RADAR/reconocimiento o resultados de percepción graduados) · M10 (pone escala al 'dónde duele' del blueprint — resultados de percepción de cliente) · M26 (RADAR-Deploy gradúa la calidad del despliegue Hoshin (¿el catchball llegó a todos los niveles?))
+- **Principios:** P3
+
+<a id="m50"></a>**M50 · P3M3 — madurez de portafolio, programas y proyectos**
+- **Qué:** gradúa 1-5 la CAPACIDAD organizacional de gestionar proyectos, programas y portafolio (perspectivas: gobernanza, control, beneficios, riesgo, stakeholders, finanzas, recursos)
+- **Fuente:** Axelos / PeopleCert — Portfolio, Programme and Project Management Maturity Model (5 niveles × 3 dominios × 7 perspectivas). [https://www.axelos.com/certifications/p3m3](https://www.axelos.com/certifications/p3m3)
+- **Objeto:** O7 Contrato & Código · sec: O6
+- **Aporte único:** mide la capacidad de PROYECTIZAR de la organización, no el proyecto individual — M42/M43 miden y disciplinan el proyecto; P3M3 dice si la org puede sostener un PORTAFOLIO de mejoras
+- **Cuándo:** horizonte gateado por demanda (patrón M45): cliente con portafolio de proyectos de mejora grande o PMO formal que pida graduar su gestión
+- **Combina:** M42 (DMAIC mide el proyecto; P3M3 la capacidad org de ejecutar muchos — la perspectiva 'benefits' empalma con verificar-beneficios del ciclo) · M43 (ídem MASP — el loop-back disciplinado (en-verificacion → en-ejecucion) es señal de nivel P3M3 alto) · M47 (escalera hermana especializada: 9004 gradúa el sistema de gestión entero; P3M3 solo la función proyectos/portafolio)
+- **Principios:** P3, P7
+
 ### Familia E · Especificación & Construcción
 
 
@@ -407,7 +434,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O2 Objetivo & Valor · sec: T3
 - **Aporte único:** el UNIT ECONOMICS — costo real + ahorro contrafactual (vs devs) + aporte por capability
 - **Cuándo:** loop de valor (aceptación, paso 11)
-- **Combina:** M21 (el aporte sube al KR) · M06 (atribución por capability)
+- **Combina:** M21 (el aporte sube al KR) · M06 (atribución por capability) · M48 (el unit economics interno gana su vara externa: ¿mi costo/desempeño es bueno vs pares?)
 - **Principios:** P1, P2
 
 <a id="m26"></a>**M26 · Hoshin Kanri (Strategy Deployment)**
@@ -454,6 +481,15 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Cuándo:** cliente brasileño / config_estrategia.modo = gpd-anual o mixto (research 00-research-latam-br de la historia schema-v2)
 - **Combina:** M26 (GPD ES hoshin adaptado — el mapa 3-5a→anual es el mismo) · M21 (convive con cadencia OKR en áreas digitales (modo mixto — el patrón corporativo BR real)) · M16 (el giro PDCA por nivel es el motor del desdobramento)
 - **Principios:** P1, P2
+
+<a id="m48"></a>**M48 · Benchmarking externo de procesos y funciones (APQC Open Standards · Hackett DWC)**
+- **Qué:** contrasta el desempeño de cada proceso/función contra pares externos (costo, productividad, tiempo de ciclo, calidad); la clave de join es el ID del PCF (M12) que el twin ya usa para clasificar
+- **Fuente:** APQC (Open Standards Benchmarking) · The Hackett Group (Digital World Class) — Métricas de costo/productividad/ciclo/calidad por proceso PCF + benchmark top-quartile de funciones (finanzas y soporte). [https://www.apqc.org/resource-library/resource-collection/finance-organization-key-benchmarks](https://www.apqc.org/resource-library/resource-collection/finance-organization-key-benchmarks)
+- **Objeto:** O6 Gap & Madurez · sec: O3, O2
+- **Aporte único:** el AFUERA como vara — responde '¿mi número es bueno?' (¿78 días de cobranza es mucho?); sostiene la provenance conf:benchmark-sectorial que los nichos ya citan sin card que la respalde; Hackett DWC = fuente propietaria alternativa para finanzas (misma tesis, no card aparte)
+- **Cuándo:** dimensionar brechas (¿cuánto peor que el peer?) y validar metas de KPI (¿el to-be es alcanzable?) — diagnóstico M1 y seguimiento M2
+- **Combina:** M12 (la taxonomía PCF ya adoptada ES la clave del benchmark — acople de datos, no de metamodelo) · M22 (FinOps cuantifica el valor interno; el benchmark le pone el contraste externo) · M09 (los tiempos {toque, espera} del VSM se contrastan contra el ciclo del peer) · M28 (la distancia al peer alimenta el costo de retraso (CoD) de la priorización) · M23 (todo rango externo entra como dato con fuente+conf+frescura — sin fuente seria no se afirma (doctrina de nichos))
+- **Principios:** P1, P3
 
 ### Familia G · IA: Grounding & Anti-alucinación
 
@@ -629,6 +665,10 @@ YAML, regenerar con `gen_metodo.py` (gate anti-drift en pre-commit).
 | Funil de ideas (M44) |  | ○ | ○ | ○ |
 | ISO 56002 (M45) |  |  | ○ |  |
 | Arnés por rol×proceso (M46) |  | ● | ● | ● |
+| ISO 9004 (madurez) (M47) | ● | ● |  | ● |
+| Benchmarks APQC/Hackett (M48) | ● | ● |  | ● |
+| EFQM RADAR (M49) | ○ |  |  |  |
+| P3M3 (M50) |  |  |  |  |
 <!-- /GEN:tabla -->
 
 ---

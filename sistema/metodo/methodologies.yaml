@@ -13,7 +13,7 @@
 
 _meta:
   fuente_humana: "sistema/metodo/METODOLOGIA.md §4 (compendio narrativo)"
-  total: 46
+  total: 50
   backbone: "objeto (capa de contexto / Hilo de Oro)"
   # Etiquetas de familias y del backbone — SSoT de los rótulos que el generador imprime en §4.
   familias:
@@ -299,6 +299,7 @@ M12:
   combina_con:
     - { m: M07, como: "esqueleto donde cuelgan los eventos" }
     - { m: M10, como: "clasifica los procesos del blueprint" }
+    - { m: M48, como: "el ID PCF es la clave de join del benchmark externo — la taxonomía abre la comparación sin metamodelo nuevo" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -419,6 +420,7 @@ M15:
   combina_con:
     - { m: M21, como: "cascade + OKR = el hilo hacia arriba" }
     - { m: M06, como: "comparten la cadena objetivo→valor" }
+    - { m: M47, como: "dos escaleras con arbitraje: COBIT 0-5 = gobierno/IT + semáforo del heatmap de capacidades; 9004 1-5 = sistema de gestión y funciones de negocio" }
   donde: { modulos: [m1], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -442,6 +444,7 @@ M16:
     - { m: M21, como: "objetivos cl.6.2 se expresan como OKR" }
     - { m: M25, como: "roles/autoridad cl.5.3 = RACI" }
     - { m: M38, como: "cl.7.5 información documentada = pirámide ISO 10013" }
+    - { m: M47, como: "9004 GRADÚA (1-5) lo que 9001 releva (conformidad binaria) — la escalera de madurez sin certificación que la doctrina permite" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -627,6 +630,7 @@ M22:
   combina_con:
     - { m: M21, como: "el aporte sube al KR" }
     - { m: M06, como: "atribución por capability" }
+    - { m: M48, como: "el unit economics interno gana su vara externa: ¿mi costo/desempeño es bueno vs pares?" }
   donde: { modulos: [m2, m3], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -1126,3 +1130,111 @@ M46:
     dimensiones: [trabajo-compilado, organizacion, triage-automatizacion]
     cuando_si: "el twin declara el REGISTRO del arnés (deriva_de · version · hash_fuente · estado/drift · autonomia L0-L5 derivada del riesgo del puesto · supervisor · verificacion_humana · indicadores) y la fábrica compila el CONTENIDO; guardrail sin mecanismo (hook/permiso/sandbox) NO es guardrail — la regla la hace cumplir el runtime, no el prompt"
     cuando_no: "el arnés NO se edita a mano (se recompila) · NO se compila por persona (dos ocupantes del mismo puesto reciben lo mismo) · NO arranca sobre L2 sin ratificación (la evidencia dice que los agentes multi-paso fallan: 30% TheAgentCompany, caída pass^1→pass^8) · identidad por impersonación PROHIBIDA (el agente tiene identidad propia y actúa en nombre de la persona)"
+
+# ── M47-M50 · modelos de madurez y benchmark (ingesta /metodo-aprende 2026-07-27) ──
+# Origen: barrido de madurez sobre las 46 cards — una sola escalera (COBIT 0-5, M15) para todo
+# el catálogo; huecos en T3 (loop binario), O3 (proceso sin desempeño comparado), O4, O7, T2.
+# Doctrina de entrada: nivel/rango SIEMPRE derivado de evidencia con provenance (M23), jamás
+# pintado a mano (M31) ni atribuido a persona nombrada (M40/CK-24). CMMI evaluado y NO ingresado:
+# su ADN ya está en los niveles COBIT (ISACA alineó ambos); su aparato de appraisal contradice
+# VISION §ISO (sin certificación).
+
+M47:
+  nombre: "ISO 9004:2018 — madurez del sistema de gestión (autoevaluación)"
+  nombre_corto: "ISO 9004 (madurez)"
+  familia: D
+  fuente: { autor: "ISO/TC 176", obra: "ISO 9004:2018 — Quality of an organization: guidance to achieve sustained success (Anexo A: autoevaluación de madurez 1-5)", url: "https://www.iso.org/standard/70397.html" }
+  que: "autoevaluación de madurez 1-5 por elemento del sistema de gestión (contexto, liderazgo, estrategia, recursos incl. finanzas y personas, procesos, mejora) — guía NO certificable, mismo HLS que ISO 9001"
+  aporte_unico: "la ESCALERA de madurez organizacional cross-función que 9001 no trae (conformidad binaria → grados 1-5): gradúa el PDCA, los roles, la documentación y las funciones de negocio (finanzas incluida), no solo IT"
+  cuando_usar: "diagnóstico M1 y mantenimiento M2 — nivel actual vs deseado por dimensión del sistema de gestión que M16 releva; descriptores por nivel para capacidades no-IT del heatmap"
+  objeto_primario: O6
+  objetos_secundarios: [T3, O4]
+  principios: [P3, P4]
+  combina_con:
+    - { m: M16, como: "hermana HLS: 9001 releva el QMS (conformidad), 9004 lo GRADÚA (madurez 1-5) — sin aparato de certificación, alineado a VISION §ISO" }
+    - { m: M15, como: "arbitraje de escaleras: COBIT 0-5 manda en gobierno/IT y como semáforo del heatmap; 9004 1-5 manda en sistema de gestión y funciones de negocio" }
+    - { m: M31, como: "presta descriptores por nivel a capacidades no-IT del heatmap — el nivel sigue siendo DERIVADO de evidencia, jamás pintado a mano" }
+    - { m: M38, como: "gradúa cobertura/vigencia del corpus documental (pirámide 10013) — madurez de la información documentada" }
+    - { m: M40, como: "la madurez de 'personas' se agrega por rol/área — jamás evaluación de persona nombrada (CK-24)" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [madurez-brecha, calidad-loop, organizacion]
+    cuando_si: "nivel 1-5 por dimensión del sistema de gestión con evidencia+conf (M23); autoevaluación asistida por el consultor; actual vs deseado alimenta brechas del twin"
+    cuando_no: "NO se busca sello (es guía, no certificable — coherente con VISION §ISO); jamás nivel por persona nombrada; el nivel no se declara — se deriva de evidencia con provenance"
+
+M48:
+  nombre: "Benchmarking externo de procesos y funciones (APQC Open Standards · Hackett DWC)"
+  nombre_corto: "Benchmarks APQC/Hackett"
+  familia: F
+  fuente: { autor: "APQC (Open Standards Benchmarking) · The Hackett Group (Digital World Class)", obra: "Métricas de costo/productividad/ciclo/calidad por proceso PCF + benchmark top-quartile de funciones (finanzas y soporte)", url: "https://www.apqc.org/resource-library/resource-collection/finance-organization-key-benchmarks" }
+  que: "contrasta el desempeño de cada proceso/función contra pares externos (costo, productividad, tiempo de ciclo, calidad); la clave de join es el ID del PCF (M12) que el twin ya usa para clasificar"
+  aporte_unico: "el AFUERA como vara — responde '¿mi número es bueno?' (¿78 días de cobranza es mucho?); sostiene la provenance conf:benchmark-sectorial que los nichos ya citan sin card que la respalde; Hackett DWC = fuente propietaria alternativa para finanzas (misma tesis, no card aparte)"
+  cuando_usar: "dimensionar brechas (¿cuánto peor que el peer?) y validar metas de KPI (¿el to-be es alcanzable?) — diagnóstico M1 y seguimiento M2"
+  objeto_primario: O6
+  objetos_secundarios: [O3, O2]
+  principios: [P1, P3]
+  combina_con:
+    - { m: M12, como: "la taxonomía PCF ya adoptada ES la clave del benchmark — acople de datos, no de metamodelo" }
+    - { m: M22, como: "FinOps cuantifica el valor interno; el benchmark le pone el contraste externo" }
+    - { m: M09, como: "los tiempos {toque, espera} del VSM se contrastan contra el ciclo del peer" }
+    - { m: M28, como: "la distancia al peer alimenta el costo de retraso (CoD) de la priorización" }
+    - { m: M23, como: "todo rango externo entra como dato con fuente+conf+frescura — sin fuente seria no se afirma (doctrina de nichos)" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [madurez-brecha]
+    cuando_si: "rango externo con fuente+vigencia+unidad comparable declarada (industria, tamaño, región); dimensiona la brecha y valida el to-be"
+    cuando_no: "el benchmark NO reemplaza el levantamiento: la línea base y el rango se LEVANTAN por cliente (doctrina nichos anti-alucinación); no fija la meta solo (la firma el ciclo M21/M41); jamás ranking de personas (CK-24)"
+
+M49:
+  nombre: "EFQM 2025 — excelencia organizacional (RADAR)"
+  nombre_corto: "EFQM RADAR"
+  familia: D
+  fuente: { autor: "EFQM", obra: "EFQM Model (RADAR: Results · Approaches · Deploy · Assess & Refine)", url: "https://efqm.org/the-efqm-model/" }
+  que: "modelo de excelencia con scoring RADAR: gradúa enfoque, DESPLIEGUE, evaluación y refinamiento por criterio, con peso fuerte en resultados percibidos (cliente y personas)"
+  aporte_unico: "gradúa el DESPLIEGUE (¿la práctica llega a toda la organización o quedó en el papel?) y los resultados de percepción — lo que la autoevaluación 9004 toca menos"
+  cuando_usar: "situacional — cliente orientado a reconocimiento/premio EFQM, o que exige graduar la experiencia de cliente (T2) con escala formal"
+  objeto_primario: O6
+  objetos_secundarios: [T2, T3]
+  principios: [P3]
+  combina_con:
+    - { m: M47, como: "misma pregunta (madurez organizacional) — arbitraje: 9004 es el default (familia ISO, sin premio); EFQM cuando el cliente pide RADAR/reconocimiento o resultados de percepción graduados" }
+    - { m: M10, como: "pone escala al 'dónde duele' del blueprint — resultados de percepción de cliente" }
+    - { m: M26, como: "RADAR-Deploy gradúa la calidad del despliegue Hoshin (¿el catchball llegó a todos los niveles?)" }
+  donde: { modulos: [m1], etapas: [], capa_contexto: false }
+  modo: situacional
+  twin:
+    rol_ancla: horizonte
+    proyecciones: []
+    dimensiones: [madurez-brecha]
+    cuando_si: "gateado por demanda (patrón M45): cliente que pide premio/reconocimiento o graduar percepción de cliente — entonces RADAR complementa a 9004"
+    cuando_no: "NO es el default de madurez organizacional (ese rol es de M47); orientación a premios/assessor externo = aparato que el MVP no carga"
+
+M50:
+  nombre: "P3M3 — madurez de portafolio, programas y proyectos"
+  nombre_corto: "P3M3"
+  familia: D
+  fuente: { autor: "Axelos / PeopleCert", obra: "Portfolio, Programme and Project Management Maturity Model (5 niveles × 3 dominios × 7 perspectivas)", url: "https://www.axelos.com/certifications/p3m3" }
+  que: "gradúa 1-5 la CAPACIDAD organizacional de gestionar proyectos, programas y portafolio (perspectivas: gobernanza, control, beneficios, riesgo, stakeholders, finanzas, recursos)"
+  aporte_unico: "mide la capacidad de PROYECTIZAR de la organización, no el proyecto individual — M42/M43 miden y disciplinan el proyecto; P3M3 dice si la org puede sostener un PORTAFOLIO de mejoras"
+  cuando_usar: "horizonte gateado por demanda (patrón M45): cliente con portafolio de proyectos de mejora grande o PMO formal que pida graduar su gestión"
+  objeto_primario: O7
+  objetos_secundarios: [O6]
+  principios: [P3, P7]
+  combina_con:
+    - { m: M42, como: "DMAIC mide el proyecto; P3M3 la capacidad org de ejecutar muchos — la perspectiva 'benefits' empalma con verificar-beneficios del ciclo" }
+    - { m: M43, como: "ídem MASP — el loop-back disciplinado (en-verificacion → en-ejecucion) es señal de nivel P3M3 alto" }
+    - { m: M47, como: "escalera hermana especializada: 9004 gradúa el sistema de gestión entero; P3M3 solo la función proyectos/portafolio" }
+  donde: { modulos: [], etapas: [], capa_contexto: false }
+  modo: situacional
+  twin:
+    rol_ancla: horizonte
+    proyecciones: []
+    dimensiones: [mejora-proyectos, madurez-brecha]
+    cuando_si: "cuando el volumen de proyecto_mejora del cliente justifique graduar la capacidad de portafolio (V2+ / demanda — precedente D9/CK-10)"
+    cuando_no: "NO en el MVP — el ciclo del proyecto individual (charter/tollgates/beneficios) ya lo gobiernan M42/M43/M44 bajo ISO 9001 cl.10"

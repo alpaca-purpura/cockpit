@@ -2,7 +2,7 @@
 # GRAFO — índice-grafo del cerebro metodológico (GENERADO)
 
 Mapa de acceso de bajo costo al método del producto. Protocolo (skill `metodo`):
-**(1)** leé este archivo (es el mapa completo, ~78 líneas de datos) →
+**(1)** leé este archivo (es el mapa completo, ~82 líneas de datos) →
 **(2)** elegí los nodos por `usar:`/objeto/twin → **(3)** cargá SOLO esos nodos con grep+Read dirigido.
 Jamás cargues `methodologies.yaml` o `METODOLOGIA.md` enteros.
 
@@ -14,7 +14,7 @@ Recetas (desde la raíz del repo):
 - Narrativas largas (solo si hace falta prosa): `M1-LEVANTAMIENTO.md` · `M3-ESPINAZO.md` · `PROCESS-AS-DATA.md`
 - Agregar/reemplazar conocimiento: skill `metodo-aprende` (protocolo anti-contradicción)
 
-Totales: **46 M-cards** (_meta.total) · **12 pasos** poblados / **8 etapas stub** · **17 unidades** de nicho en **3 verticales**.
+Totales: **50 M-cards** (_meta.total) · **12 pasos** poblados / **8 etapas stub** · **17 unidades** de nicho en **3 verticales**.
 Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensiones] · ⇄combina_con · usar:`
 
 ## §1 M-cards por familia
@@ -33,7 +33,7 @@ Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensio
 - **M09** Value Stream Mapping (VSM) · O3+O6 · columna·m1,m2·ctx · ancla[procesos-flujo,triage-automatizacion] · ⇄M10,M07,M35 · usar: AS-IS de procesos y modelado de future-state (etapa 3)
 - **M10** Service Blueprint · O3+T2 · columna·m1·ctx · ancla[procesos-flujo] · ⇄M09,M24 · usar: AS-IS de procesos (paso 4)
 - **M11** BPMN · O3 · columna·m1,m2·ctx · ancla[procesos-flujo] · ⇄M07,M09 · usar: documentación de procesos (M1/M2); opcional sobre Event Storming/VSM
-- **M12** APQC Process Classification Framework (PCF) · O3 · columna·m1,m2·ctx · ancla[procesos-clasificacion] · ⇄M07,M10 · usar: AS-IS de procesos — clasificar cada proceso hallado
+- **M12** APQC Process Classification Framework (PCF) · O3 · columna·m1,m2·ctx · ancla[procesos-clasificacion] · ⇄M07,M10,M48 · usar: AS-IS de procesos — clasificar cada proceso hallado
 - **M29** Process / Task Mining · T1+O3,O6 · columna·m1,m2,m3·ctx · ancla[procesos-flujo,triage-automatizacion] · ⇄M12,M09,M14,M23,M36 · usar: etapa 1 (mapeo automático del AS-IS) + etapa 3 (detectar puestos/tareas automatizables con IA)
 
 ### C · Arquitectura & Sistemas
@@ -42,8 +42,8 @@ Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensio
 - **M31** Business Capability Modeling · O5+O3,O6 · columna·m1·ctx · ancla[vocabulario-arquitectura,madurez-brecha] · ⇄M13,M12,M27,M15 · usar: etapa 1 — el mapa de la organización + heatmap de gaps alineado a los objetivos
 
 ### D · Gobierno, Calidad & Madurez
-- **M15** COBIT 2019 · O6+O2 · columna·m1·ctx · ancla[estrategia,madurez-brecha] · ⇄M21,M06 · usar: Hilo de Oro + Gap Analysis (madurez digital). Modo lite, sin certificación
-- **M16** ISO 9001 · T3+O4 · columna·m1,m2,m3·ctx · ancla[calidad-loop,riesgo-controles,procesos-clasificacion,organizacion,documentacion-qms,mejora-proyectos] · ⇄M21,M25,M38 · usar: capa de contexto (vocabulario) y M2/M3 (mejora continua)
+- **M15** COBIT 2019 · O6+O2 · columna·m1·ctx · ancla[estrategia,madurez-brecha] · ⇄M21,M06,M47 · usar: Hilo de Oro + Gap Analysis (madurez digital). Modo lite, sin certificación
+- **M16** ISO 9001 · T3+O4 · columna·m1,m2,m3·ctx · ancla[calidad-loop,riesgo-controles,procesos-clasificacion,organizacion,documentacion-qms,mejora-proyectos] · ⇄M21,M25,M38,M47 · usar: capa de contexto (vocabulario) y M2/M3 (mejora continua)
 - **M17** ITIL 4 · T3 · situacional·m1,m2 · fuera-del-twin · ⇄M16 · usar: situacional — solo si el cliente opera servicios IT. NO es la columna
 - **M25** RACI (Responsibility Assignment Matrix) · O4+T3 · columna·m1,m2,m3·ctx · ancla[organizacion,triage-automatizacion] · ⇄M16,M15,M24,M36,M46 · usar: encuadre (autoridad) y en cada gate (quién ratifica/apuesta/acepta)
 - **M38** ISO 10013:2021 — pirámide documental (QMS) · T3+O3 · columna·m1,m2·ctx · ancla[documentacion-qms] · ⇄M16,M12,M46 · usar: clasificar manuales/procedimientos/instrucciones/registros del cliente en el levantamiento y su mantenimiento
@@ -51,6 +51,9 @@ Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensio
 - **M43** MASP — Método de Análise e Solução de Problemas (QC Story) · O7+O6 · situacional·m3·ctx · ancla[mejora-proyectos] · ⇄M42,M16,M41 · usar: proyecto_mejora en cliente brasileño / cultura Falconi (metodologia: masp)
 - **M44** Gestión de ideas (kaizen teian / funil de ideias) · O7+O4 · situacional·m2,m3·ctx · ancla[mejora-proyectos] · ⇄M42,M40,M35 · usar: entidad idea del objeto — programas de participación del personal (los CCQ migrados a plataforma: AEVO 400+ e…
 - **M45** ISO 56002 / 56001 — gestión de la innovación · O7 · situacional·m3 · horizonte[mejora-proyectos] · ⇄M44,M16 · usar: cliente que exija certificación de innovación o quiera formalizar el funil como sistema de gestión (gateado p…
+- **M47** ISO 9004:2018 — madurez del sistema de gestión (autoevaluación) · O6+T3,O4 · columna·m1,m2·ctx · ancla[madurez-brecha,calidad-loop,organizacion] · ⇄M16,M15,M31,M38,M40 · usar: diagnóstico M1 y mantenimiento M2 — nivel actual vs deseado por dimensión del sistema de gestión que M16 rele…
+- **M49** EFQM 2025 — excelencia organizacional (RADAR) · O6+T2,T3 · situacional·m1 · horizonte[madurez-brecha] · ⇄M47,M10,M26 · usar: situacional — cliente orientado a reconocimiento/premio EFQM, o que exige graduar la experiencia de cliente (…
+- **M50** P3M3 — madurez de portafolio, programas y proyectos · O7+O6 · situacional·— · horizonte[mejora-proyectos,madurez-brecha] · ⇄M42,M43,M47 · usar: horizonte gateado por demanda (patrón M45): cliente con portafolio de proyectos de mejora grande o PMO formal…
 
 ### E · Especificación & Construcción
 - **M18** Spec-Driven Development (SDD) · O7+O2 · columna·m3 · fuera-del-twin · ⇄M19,M20 · usar: etapas 4–5 (contrato → construcción); núcleo del harness
@@ -59,12 +62,13 @@ Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensio
 
 ### F · Valor, Costo & Alineación
 - **M21** OKR (Objectives & Key Results) · O2 · columna·m1,m2,m3·ctx · ancla[estrategia] · ⇄M15,M22,M06 · usar: encuadre (paso 1) + Hilo de Oro
-- **M22** FinOps — Quantify Business Value · O2+T3 · columna·m2,m3·ctx · ancla[madurez-brecha] · ⇄M21,M06 · usar: loop de valor (aceptación, paso 11)
+- **M22** FinOps — Quantify Business Value · O2+T3 · columna·m2,m3·ctx · ancla[madurez-brecha] · ⇄M21,M06,M48 · usar: loop de valor (aceptación, paso 11)
 - **M26** Hoshin Kanri (Strategy Deployment) · O2+O4,T3 · columna·m1·ctx · ancla[estrategia] · ⇄M21,M15,M30 · usar: etapa 1 — alinear el TO-BE a los objetivos del directorio; plan a 3 años → slice anual → OKR trimestral
 - **M27** Wardley Mapping · O5+O2,O6 · columna·m1,m2·ctx · ancla[estrategia] · ⇄M31,M13,M15 · usar: etapa 1 — el plan a 3 años; cómo la 'maquinaria' (procesos·sistemas) evoluciona según los objetivos
 - **M28** WSJF / Cost of Delay · O6+O1,O2 · columna·m3 · ancla[madurez-brecha] · ⇄M22,M04,M06 · usar: etapa 2 — priorizar los gaps detectados antes de pasarlos a discovery/delivery
 - **M30** Balanced Scorecard · O2+T3 · columna·m1,m2·ctx · ancla[estrategia] · ⇄M26,M21,M06 · usar: etapa 1 — traducir la estrategia del directorio a KPIs por perspectiva; complementa OKR/Hoshin
 - **M41** GPD — Gerenciamento pelas Diretrizes (Falconi) · O2+O4 · situacional·m1,m2·ctx · ancla[estrategia] · ⇄M26,M21,M16 · usar: cliente brasileño / config_estrategia.modo = gpd-anual o mixto (research 00-research-latam-br de la historia…
+- **M48** Benchmarking externo de procesos y funciones (APQC Open Standards · Hackett DWC) · O6+O3,O2 · columna·m1,m2·ctx · ancla[madurez-brecha] · ⇄M12,M22,M09,M28,M23 · usar: dimensionar brechas (¿cuánto peor que el peer?) y validar metas de KPI (¿el to-be es alcanzable?) — diagnósti…
 
 ### G · IA: Grounding & Anti-alucinación
 - **M23** Grounding / RAG + Provenance · T1 · columna·m1,m2,m3·ctx · ancla[provenance,madurez-brecha] · ⇄M14,M40 · usar: todo el AS-IS (paso 2) y como regla transversal
@@ -96,7 +100,7 @@ Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensio
 - M22 (FinOps — Quantify Business Value) ← pasos: m3.e0.p1, m3.e0.p2, m3.e0.p5
 - M23 (Grounding) ← pasos: m1.b1.p2, m1.b1.p3, m1.b1.p5, m1.b1.p6
 
-Sin operacionalizar aún (36 — ningún paso/nicho las cita; brecha esperable con proceso/ a medio poblar, BL-05): M01, M03, M05, M07, M08, M09, M10, M11, M15, M17, M18, M19, M20, M24, M25, M26, M27, M28, M29, M30, M31, M32, M33, M34, M35, M36, M37, M38, M39, M40, M41, M42, M43, M44, M45, M46
+Sin operacionalizar aún (40 — ningún paso/nicho las cita; brecha esperable con proceso/ a medio poblar, BL-05): M01, M03, M05, M07, M08, M09, M10, M11, M15, M17, M18, M19, M20, M24, M25, M26, M27, M28, M29, M30, M31, M32, M33, M34, M35, M36, M37, M38, M39, M40, M41, M42, M43, M44, M45, M46, M47, M48, M49, M50
 
 ## §3 Proceso (Definición) — pasos poblados
 
@@ -147,8 +151,8 @@ Etapas SIN pasos (8 stubs — historia `sistema/poblar-metodo-m1-m3`): m1.b2, m1
 - **O3** Proceso: M07, M09, M10, M11, M12, M33, M34, M35, M36, M37
 - **O4** Personas & Autoridad: M25, M39, M40, M46
 - **O5** Sistema & Capabilities: M08, M13, M14, M27, M31
-- **O6** Gap & Madurez: M15, M28
-- **O7** Contrato & Código: M18, M19, M20, M32, M42, M43, M44, M45
+- **O6** Gap & Madurez: M15, M28, M47, M48, M49
+- **O7** Contrato & Código: M18, M19, M20, M32, M42, M43, M44, M45, M50
 - **T1** Dato / Grounding: M23, M29
 - **T2** Experiencia / Servicio: M24
 - **T3** Gobierno / Loop: M03, M16, M17, M38
