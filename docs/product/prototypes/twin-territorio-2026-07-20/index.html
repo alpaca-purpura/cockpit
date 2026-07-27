@@ -574,6 +574,8 @@
     padding:1px 5px; margin-left:8px; cursor:pointer; vertical-align:1px; white-space:nowrap; }
   .resp:hover{ border-style:solid; background:rgba(0,183,170,.07); }
   .pt .resp, .gt .resp{ float:right; margin-left:8px; }
+  .resp-foot{ margin-top:12px; border-top:1px solid var(--border); padding-top:8px;
+    font-family:var(--font-mono); font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--tx-faint); }
   .dpane .cambio-row, .tcol .cambio-row{ display:flex; align-items:center; gap:8px; width:100%; padding:7px 8px; }
   .dpane .cambio-row .tt, .tcol .cambio-row .tt{ font-size:11.5px; line-height:1.3; white-space:normal; }
   .dpane .cambio-row .ap, .tcol .cambio-row .ap{ white-space:nowrap; flex:none; }
@@ -1577,7 +1579,52 @@ const RESPALDO={
   'cam-historial':{ cita:'registros ISO', t:'Historial de la organización', items:[
     {f:'ISO 9001 — registros', uso:'toda acción queda como evidencia: quién, qué, con qué aprobación.', m:'M16'},
     {f:'Procedencia del dato', uso:'el historial es la traza que hace auditable cada cambio del twin.', m:'M23'} ]},
+  /* — v14.5: respaldo DENTRO de las fichas de entidad (pie automático en openDrawer, por tipo) */
+  'ent-empresa':{ cita:'ontología del twin', t:'Empresa — el twin completo', items:[
+    {f:'Ontología del twin — semántica + acción', uso:'las 12 entidades y sus relaciones son una gramática declarada; cada cosa que ves es una instancia con su ficha.', m:'M32'},
+    {f:'ISO 9001 — la organización y su contexto', uso:'la empresa como sistema: procesos, roles, objetivos y su mejora, bajo un mismo vocabulario.', m:'M16'} ]},
+  'ent-objetivo':{ cita:'OKR · BSC', t:'Objetivo', items:[
+    {f:'OKR — objetivos con meta del trimestre', uso:'el objetivo carga su meta del ciclo (de → a); el semáforo se lee contra esa banda.', m:'M21'},
+    {f:'Balanced Scorecard — perspectivas', uso:'su perspectiva (financiera · cliente · procesos · aprendizaje) y las flechas causa → efecto entre objetivos.', m:'M30'},
+    {f:'Impact Mapping — trazar del objetivo al trabajo', uso:'del objetivo se enciende el camino completo: meta → indicador → proceso que lo mueve.', m:'M06'} ]},
+  'ent-kpi':{ cita:'ISO 9001 · procedencia', t:'Indicador', items:[
+    {f:'ISO 9001 — seguimiento y medición', uso:'indicador con banda definida y responsable; fuera de banda exige contramedida comprometida.', m:'M16'},
+    {f:'Procedencia del dato', uso:'cada medición lleva fuente, confianza y frescura — sin dato NO es rojo: es gris.', m:'M23'} ]},
+  'ent-proceso':{ cita:'APQC · ISO 9001', t:'Proceso', items:[
+    {f:'Clasificación de procesos (APQC)', uso:'clasificado contra el catálogo estándar — del negocio o de apoyo, con su código.', m:'M12'},
+    {f:'ISO 9001 — caracterización', uso:'propósito, cuándo inicia y termina, criterios de control: la ficha 4.4 del proceso.', m:'M16'},
+    {f:'Mapa de flujo de valor (VSM)', uso:'sus pasos y sus tiempos de toque y espera salen del mapa, no de memoria.', m:'M09'} ]},
+  'ent-actividad':{ cita:'APQC · verbos', t:'Actividad', items:[
+    {f:'Clasificación APQC — nivel de actividad', uso:'paso clave dentro del proceso; sus tareas son el último peldaño del catálogo.', m:'M12'},
+    {f:'Taxonomía de verbos', uso:'cada actividad y tarea empieza con un verbo controlado — así el triage puede leerla.', m:'M37'},
+    {f:'ECRS + criterios de automatizabilidad', uso:'la clasificación (eliminable · automatizable · humana) sale del triage con inputs visibles.', m:'M36'} ]},
+  'ent-area':{ cita:'TOGAF', t:'Área', items:[
+    {f:'Arquitectura de la empresa (ArchiMate/TOGAF) — unidades', uso:'unidad organizativa; un proceso puede cruzar varias áreas — la relación es muchos a muchos.', m:'M13'},
+    {f:'Matriz de responsabilidades (RACI)', uso:'el área tiene líder; cada proceso tiene dueño — son responsabilidades distintas.', m:'M25'} ]},
+  'ent-puesto':{ cita:'RACI · arnés', t:'Puesto', items:[
+    {f:'Matriz de responsabilidades (RACI)', uso:'el puesto agrega roles; la autoridad vive en el rol, la posición en el puesto.', m:'M25'},
+    {f:'Frontera persona ↔ twin', uso:'la persona ocupa el puesto — se mide el puesto y el rol, jamás la persona.', m:'M40'},
+    {f:'Arnés por rol×proceso', uso:'su roster de arneses se ensambla de los pares rol×proceso que el puesto agrega.', m:'M46'} ]},
+  'ent-rol':{ cita:'RACI · BPMN', t:'Rol', items:[
+    {f:'Matriz de responsabilidades (RACI)', uso:'conjunto estable de responsabilidades: posee procesos (responde) o los ejecuta (carril).', m:'M25'},
+    {f:'BPMN — carriles', uso:'en el flujograma, el rol es el carril donde viven sus actividades.', m:'M11'},
+    {f:'Arnés por rol×proceso', uso:'el arnés se compila por rol×proceso — el rol es la unidad de compilación.', m:'M46'} ]},
+  'ent-persona':{ cita:'frontera persona', t:'Persona', items:[
+    {f:'Frontera persona ↔ twin', uso:'la persona es ocupante: ningún indicador, score o medición se le atribuye a ella.', m:'M40'},
+    {f:'Arquitectura de la empresa (ArchiMate) — actor', uso:'individuo concreto que ocupa un puesto del organigrama.', m:'M13'} ]},
+  'ent-brecha':{ cita:'costo de no actuar', t:'Brecha', items:[
+    {f:'COBIT — brecha de madurez', uso:'distancia entre cómo estás y lo que el objetivo exige — se mide como madurez, no como opinión.', m:'M15'},
+    {f:'WSJF — costo de esperar', uso:'cada brecha lleva cuánto cuesta por mes no actuar — ese número la ordena.', m:'M28'},
+    {f:'FinOps — valor cuantificado', uso:'el costo se declara en dinero, con supuestos visibles.', m:'M22'} ]},
+  'ent-capability':{ cita:'mapa de capacidades', t:'Capacidad', items:[
+    {f:'Mapa de capacidades del negocio', uso:'QUÉ sabe hacer la empresa (estable) — distinto del proceso (CÓMO); el semáforo es madurez contra lo que los objetivos exigen.', m:'M31'},
+    {f:'Mapa de evolución (Wardley)', uso:'cómo evoluciona cada capacidad (a medida → producto → commodity) informa el plan a 3 años.', m:'M27'} ]},
 };
+/* v14.5: tipo de ficha (primer término del eyebrow, sin acentos) → entrada de respaldo */
+const RESP_TIPO={ empresa:'ent-empresa', objetivo:'ent-objetivo', kpi:'ent-kpi', proceso:'ent-proceso',
+  actividad:'ent-actividad', area:'ent-area', puesto:'ent-puesto', rol:'ent-rol', persona:'ent-persona',
+  sistema:'z0-sistemas', brecha:'ent-brecha', capability:'ent-capability', proyecto:'mej-proyectos',
+  idea:'ideas', apuesta:'dir-apuestas', arnes:'sala-trabajo' };
 /* v14.4: aplica en TODO el twin; onclick inline = funciona también en el lienzo ($nodes) sin wireLinks */
 function respBadge(id){ const r=RESPALDO[id]; if(!r||!state.capas.has('respaldo')) return '';
   return `<button class="resp" data-resp="${id}" onclick="event.stopPropagation();openRespaldo('${id}')" title="Respaldo del método: ${r.items.map(i=>i.f).join(' · ')} — clic = la ficha">§ ${r.cita}</button>`; }
@@ -2483,9 +2530,12 @@ document.getElementById('minimap').addEventListener('click',e=>{
 const inEye=document.getElementById('inEye'), inTitle=document.getElementById('inTitle'),
       inBody=document.getElementById('inBody'), inClose=document.getElementById('inClose');
 function openDrawer(eye,title,body){ state.insp='sel'; inEye.textContent=eye;
-  const ic=TICO[eye.split(' ')[0].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')];   // ícono de tipo desde el eyebrow (decisión 23; sin acentos: Área→area, Arnés→arnes)
+  const tipo=eye.split(' ')[0].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');   // tipo desde el eyebrow (decisión 23; sin acentos: Área→area, Arnés→arnes)
+  const ic=TICO[tipo];
   inTitle.innerHTML=(ic?`<span class="dico" title="${eye}">${ic}</span>`:'')+title;
-  inBody.innerHTML=body; inClose.style.display=''; inBody.scrollTop=0;
+  const rb=RESP_TIPO[tipo]?respBadge(RESP_TIPO[tipo]):'';   // v14.5: TODA ficha de entidad cita su respaldo (una costura, cero ediciones por ficha)
+  inBody.innerHTML=body+(rb?`<div class="resp-foot">Respaldo del método ${rb}</div>`:'');
+  inClose.style.display=''; inBody.scrollTop=0;
   wireLinks(inBody); }
 inClose.onclick=()=>{ state.insp='home'; inspectorHome(); };
 

@@ -1,6 +1,18 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-26 → siguiente)
 
-> **★ v14.4 EJECUTADA (2026-07-26 — respaldo en TODOS los niveles, pedido del operador):** la capa
+> **★ v14.5 EJECUTADA (2026-07-26 — respaldo DENTRO de las fichas; cierra el eje "Respaldo del
+> método"):** pie automático "Respaldo del método § cita" en **TODA ficha de entidad** vía UNA
+> costura en `openDrawer` (deriva el tipo del eyebrow — mismo lookup del ícono TICO — y anexa
+> `.resp-foot` si `RESP_TIPO[tipo]` existe y la capa está ON; cero ediciones por ficha). +11
+> entradas `ent-*` (empresa/objetivo/kpi/proceso/actividad/area/puesto/rol/persona/brecha/
+> capability) + reusos (sistema→z0-sistemas · proyecto→mej-proyectos · idea→ideas · apuesta→
+> dir-apuestas · arnés→sala-trabajo) = catálogo 47 entradas, 16 tipos mapeados. La ficha de
+> respaldo NO se auto-cita. verify.sh **27/27** (test ampliado: pie en kpi/objetivo · puesto con
+> pie+roster ≥2 · apagado limpio re-abriendo la ficha ANTES del assert — el drawer viejo retiene
+> la cita). OJO Edit-tool: `openDrawer` lleva el rango unicode escapado (backslash-u0300 a 036f)
+> literal en el regex — parchear esa función con python heredoc; el swap de escapes del Edit no matchea. **El eje respaldo queda CERRADO en el
+> mockup**; siguiente iteración = nuevo comentario del operador. Fuera de alcance (decisión, no
+> deuda): carta ISO 31000/COSO (declarada horizonte — VISION §ISO) · barrido §1b (espera firma). (2026-07-26 — respaldo en TODOS los niveles, pedido del operador):** la capa
 > deja de ser solo-tableros: `respBadge` ahora lleva **onclick inline** (funciona en el lienzo
 > `$nodes` sin wireLinks) y la capa **nunca se atenúa** (`respAplica` murió). +18 entradas al
 > catálogo `RESPALDO` (36 total): **nivel 2** = las 5 bandas del mapa de valor (estrategia BSC/OKR/

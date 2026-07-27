@@ -125,7 +125,13 @@ window.addEventListener('load',()=>{whenReady(()=>{
     state.mod='metodo'; state.insp='home'; render(); A(document.querySelectorAll('[data-resp]').length>=3,'Método sin citas');
     state.mod='cambios'; render(); A(document.querySelectorAll('[data-resp]').length>=3,'Cambios sin citas');
     state.mod='territorio'; state.escala='z0'; state.act=null; render();
+    /* v14.5: pie de respaldo automático en TODA ficha de entidad (costura openDrawer) */
+    openKpi(DATA.kpis[0]); A(document.querySelector('#inBody .resp-foot [data-resp]'),'ficha kpi sin pie de respaldo');
+    openObjetivo(DATA.objetivos[0]); A(document.querySelector('#inBody .resp-foot [data-resp]'),'ficha objetivo sin pie');
+    openPuesto('Contador General'); A(document.getElementById('inBody').querySelectorAll('[data-resp]').length>=2,'puesto: pie + roster esperados');
     mclick(document.querySelector('[data-capa=respaldo]'));
+    openKpi(DATA.kpis[0]); A(!document.querySelector('#inBody [data-resp]'),'ficha apagada sigue citando');
+    state.insp='home'; render();
     A(!document.querySelector('[data-resp]'),'apagada sigue pintando'); gotoNivel(2); });
   R.push('ERRS='+JSON.stringify(window.__ERRS||[]));
   document.title='V8SUITE :: '+R.join(' | ');
