@@ -35,7 +35,7 @@
 - **C · Arquitectura & Sistemas:** [ArchiMate](#m13) · [SYSTEM-MAP + document-project](#m14) · [Business Capability Modeling](#m31)
 - **D · Gobierno, Calidad & Madurez:** [COBIT 2019](#m15) · [ISO 9001](#m16) · [ITIL 4](#m17) · [RACI](#m25) · [ISO 10013](#m38) · [DMAIC](#m42) · [MASP](#m43) · [Funil de ideas](#m44) · [ISO 56002](#m45) · [ISO 9004 (madurez)](#m47) · [EFQM RADAR](#m49) · [P3M3](#m50) · [ISO 10015 (competencia)](#m51) · [ISO 31000 (apetito)](#m52) · [ISO 8000-61 (datos)](#m53)
 - **E · Especificación & Construcción:** [Spec-Driven Development](#m18) · [EARS](#m19) · [Specification by Example](#m20)
-- **F · Valor, Costo & Alineación:** [OKR](#m21) · [FinOps — Quantify Business Value](#m22) · [Hoshin Kanri](#m26) · [Wardley Mapping](#m27) · [WSJF](#m28) · [Balanced Scorecard](#m30) · [GPD (Falconi)](#m41) · [Benchmarks APQC/Hackett](#m48)
+- **F · Valor, Costo & Alineación:** [OKR](#m21) · [FinOps — Quantify Business Value](#m22) · [Hoshin Kanri](#m26) · [Wardley Mapping](#m27) · [WSJF](#m28) · [Balanced Scorecard](#m30) · [GPD (Falconi)](#m41) · [Benchmarks APQC/Hackett](#m48) · [Ambición 70/20/10](#m54)
 - **G · IA: Grounding & Anti-alucinación:** [Grounding](#m23)
 - **H · Diseño de Servicio & Experiencia:** [This Is Service Design Doing](#m24)
 - **I · Twin & automatización del trabajo:** [Ontología Palantir](#m32) · [DEMO](#m33) · [BPSim](#m34) · [ECRS](#m35) · [Criterios RPA + agente](#m36) · [Taxonomía de verbos](#m37) · [NASA-TLX](#m39) · [Métricas de persona](#m40) · [Arnés por rol×proceso](#m46)
@@ -347,7 +347,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O7 Contrato & Código · sec: O4
 - **Aporte único:** la SEPARACIÓN idea↔proyecto como entidades enlazadas (la práctica real: cientos de ideas por campaña, evaluación ligera; el charter/beneficios viven en el proyecto) + reconocimiento al proponente (kaizen teian: casi todo proponente recibe respuesta)
 - **Cuándo:** entidad idea del objeto — programas de participación del personal (los CCQ migrados a plataforma: AEVO 400+ empresas, Ambev 450+ ideas en 2 semanas)
-- **Combina:** M42 (la idea promovida recibe charter DMAIC (promovida_a_ref)) · M40 (participación se agrega por área/rol — autoría ≠ medición (CK-24)) · M35 (muchas ideas son un 'eliminar' de ECRS resuelto just-do-it)
+- **Combina:** M42 (la idea promovida recibe charter DMAIC (promovida_a_ref)) · M40 (participación se agrega por área/rol — autoría ≠ medición (CK-24)) · M35 (muchas ideas son un 'eliminar' de ECRS resuelto just-do-it) · M54 (el comité etiqueta la ambición de cada idea en el triaje — el funil alimenta y protege las tres bolsas)
 - **Principios:** P1, P7
 
 <a id="m45"></a>**M45 · ISO 56002 / 56001 — gestión de la innovación**
@@ -356,7 +356,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O7 Contrato & Código
 - **Aporte único:** Brasil = hotspot mundial temprano de la ISO de innovación (Grupo Boticário, Atento; PALAS primera certificada 56001) — el marco al que el funil de ideas escala si un cliente exige certificación
 - **Cuándo:** cliente que exija certificación de innovación o quiera formalizar el funil como sistema de gestión (gateado por demanda)
-- **Combina:** M44 (el funil de ideas ES el corazón operativo que 56002 formaliza) · M16 (misma gramática de sistema de gestión ISO (HLS))
+- **Combina:** M44 (el funil de ideas ES el corazón operativo que 56002 formaliza) · M16 (misma gramática de sistema de gestión ISO (HLS)) · M54 (el balance de portafolio que 56002 exige se instrumenta con la mezcla de ambición (ya activa en el MVP, sin esperar la certificación))
 - **Principios:** P7
 
 <a id="m47"></a>**M47 · ISO 9004:2018 — madurez del sistema de gestión (autoevaluación)**
@@ -401,7 +401,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O1 Oportunidad / Apuesta · sec: O2, T3
 - **Aporte único:** el APETITO DE RIESGO como dato del directorio — la vara contra la que se gradúa el riesgo de cada apuesta/objetivo (el panel 'riesgo vs apetito' del twin deja de ser cualitativo suelto); primera ancla de O1 en el twin
 - **Cuándo:** horizonte gateado por demanda (promovida del cuando_no de M16): directorio que formaliza apetito por categoría (liquidez, reputación, expansión) o cliente regulado
-- **Combina:** M16 (cl.6.1 risk-based thinking es el gancho MVP (riesgos[] tipados por proceso); 31000 lo eleva a apetito del directorio cuando se activa) · M04 (arbitraje: appetite de Shape Up = tiempo/alcance que se apuesta; apetito de riesgo = exposición que el directorio tolera — dos varas distintas de la misma apuesta) · M15 (el semáforo de madurez no reemplaza el apetito: el gap dice dónde duele, el apetito dice cuánto dolor se acepta) · M28 (el apetito FILTRA por exposición antes de que el CoD ORDENE por economía)
+- **Combina:** M16 (cl.6.1 risk-based thinking es el gancho MVP (riesgos[] tipados por proceso); 31000 lo eleva a apetito del directorio cuando se activa) · M04 (arbitraje: appetite de Shape Up = tiempo/alcance que se apuesta; apetito de riesgo = exposición que el directorio tolera — dos varas distintas de la misma apuesta) · M15 (el semáforo de madurez no reemplaza el apetito: el gap dice dónde duele, el apetito dice cuánto dolor se acepta) · M28 (el apetito FILTRA por exposición antes de que el CoD ORDENE por economía) · M54 (la mezcla de ambición es el apetito hecho asignación: el % en transformar = riesgo que el directorio acepta explícito)
 - **Principios:** P3, P7
 
 <a id="m53"></a>**M53 · ISO 8000-61 — madurez de la gestión de calidad de datos**
@@ -452,7 +452,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O2 Objetivo & Valor
 - **Aporte único:** el KR TRIMESTRAL — el indicador a mover, target de etapa 0 y destino del roll-up
 - **Cuándo:** encuadre (paso 1) + Hilo de Oro
-- **Combina:** M15 (el KR baja del goals cascade) · M22 (el roll-up sube el aporte real al KR) · M06 (impact conecta KR ↔ deliverable)
+- **Combina:** M15 (el KR baja del goals cascade) · M22 (el roll-up sube el aporte real al KR) · M06 (impact conecta KR ↔ deliverable) · M54 (el KR declara `ambicion` (operar|expandir|transformar) — colorea la cascada sin ceremonia nueva)
 - **Principios:** P1, P2
 
 <a id="m22"></a>**M22 · FinOps — Quantify Business Value**
@@ -470,7 +470,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O2 Objetivo & Valor · sec: O4, T3
 - **Aporte único:** la CASCADA estrategia→toda-la-org — baja las metas del directorio hasta el último peldaño, con acuerdo bidireccional (catchball)
 - **Cuándo:** etapa 1 — alinear el TO-BE a los objetivos del directorio; plan a 3 años → slice anual → OKR trimestral
-- **Combina:** M21 (Hoshin da la dirección multi-año; OKR ejecuta el trimestre dentro de ella) · M15 (comparte el goals cascade (empresa→IT)) · M30 (BSC traduce cada nivel a KPIs por perspectiva)
+- **Combina:** M21 (Hoshin da la dirección multi-año; OKR ejecuta el trimestre dentro de ella) · M15 (comparte el goals cascade (empresa→IT)) · M30 (BSC traduce cada nivel a KPIs por perspectiva) · M54 (el plan 3a→anual fija la mezcla_objetivo (70/20/10 por industria); el catchball la negocia por nivel)
 - **Principios:** P1, P2
 
 <a id="m27"></a>**M27 · Wardley Mapping**
@@ -488,7 +488,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O6 Gap & Madurez · sec: O1, O2
 - **Aporte único:** la PRIORIZACIÓN económica de los gaps — qué atacar primero por retorno/urgencia ÷ esfuerzo (vs orden por capricho)
 - **Cuándo:** etapa 2 — priorizar los gaps detectados antes de pasarlos a discovery/delivery
-- **Combina:** M22 (FinOps cuantifica el valor/ahorro que entra al CoD) · M04 (el appetite de Shape Up acota el tamaño del trabajo) · M06 (Impact Mapping da el valor de negocio del numerador)
+- **Combina:** M22 (FinOps cuantifica el valor/ahorro que entra al CoD) · M04 (el appetite de Shape Up acota el tamaño del trabajo) · M06 (Impact Mapping da el valor de negocio del numerador) · M54 (WSJF ordena DENTRO de cada bolsa de ambición, jamás entre bolsas (si compiten en una sola cola, operar devora a transformar))
 - **Principios:** P1
 
 <a id="m30"></a>**M30 · Balanced Scorecard**
@@ -517,6 +517,15 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Cuándo:** dimensionar brechas (¿cuánto peor que el peer?) y validar metas de KPI (¿el to-be es alcanzable?) — diagnóstico M1 y seguimiento M2
 - **Combina:** M12 (la taxonomía PCF ya adoptada ES la clave del benchmark — acople de datos, no de metamodelo) · M22 (FinOps cuantifica el valor interno; el benchmark le pone el contraste externo) · M09 (los tiempos {toque, espera} del VSM se contrastan contra el ciclo del peer) · M28 (la distancia al peer alimenta el costo de retraso (CoD) de la priorización) · M23 (todo rango externo entra como dato con fuente+conf+frescura — sin fuente seria no se afirma (doctrina de nichos))
 - **Principios:** P1, P3
+
+<a id="m54"></a>**M54 · Portafolio de ambición 70/20/10 (matriz de ambición de innovación)**
+- **Qué:** clasifica TODO esfuerzo (idea · proyecto_mejora · KR) en tres bolsas por NOVEDAD (mercado × oferta), jamás por plazo (Blank 2019): operar el hoy (core, ~70) · expandir a lo vecino (adyacente, ~20) · apostar al futuro (transformacional, ~10); mezcla real vs mezcla objetivo, visible por rol/área/unidad/empresa
+- **Fuente:** Bansi Nagji & Geoff Tuff (Monitor/Deloitte); antecedentes: Baghai/Coley/White Tres Horizontes 1999 · March explore/exploit 1991 · Google (Schmidt) 2005; corrección: Blank 2019 — Managing Your Innovation Portfolio (HBR, mayo 2012) — Innovation Ambition Matrix. [https://hbr.org/2012/05/managing-your-innovation-portfolio](https://hbr.org/2012/05/managing-your-innovation-portfolio)
+- **Objeto:** O2 Objetivo & Valor · sec: O7, O1
+- **Aporte único:** el COLOR del esfuerzo — campo `ambicion` transversal que el twin agrega al leer (rollup vs `mezcla_objetivo` de config_estrategia). El ratio NO es dogma: HBR lo midió por industria (industrial ≈70/20/10 · consumo masivo ≈80/18/2 · tech media ≈45/40/15) y el retorno es INVERSO (≈10/20/70 — el 10 transformacional genera ~70% del valor nuevo); ajustar por industria/etapa/posición competitiva
+- **Cuándo:** al crear/triageár idea, proyecto_mejora o KR (m1: clasificar el portafolio hallado en el diagnóstico · m2/m3: mantener la mezcla visible y balanceada)
+- **Combina:** M21 (cada KR declara su ambición — la cascada canónica se colorea sin ceremonia nueva) · M26 (el plan 3a→anual fija la mezcla_objetivo; el catchball la negocia por nivel) · M28 (WSJF prioriza DENTRO de cada bolsa, jamás entre bolsas (ambidestreza O'Reilly/Tushman: exploit devora a explore si comparten cola)) · M44 (cada idea del funil se etiqueta en el triaje del comité — protege el flujo transformacional de morir contra lo urgente) · M45 (es el instrumento concreto del balance de portafolio que ISO 56002 exige en abstracto) · M52 (la mezcla ES apetito de riesgo materializado: transformar = riesgo aceptado explícito del directorio)
+- **Principios:** P1, P2
 
 ### Familia G · IA: Grounding & Anti-alucinación
 
@@ -699,6 +708,7 @@ YAML, regenerar con `gen_metodo.py` (gate anti-drift en pre-commit).
 | ISO 10015 (competencia) (M51) | ● | ● |  | ● |
 | ISO 31000 (apetito) (M52) | ○ |  |  |  |
 | ISO 8000-61 (datos) (M53) | ○ |  |  |  |
+| Ambición 70/20/10 (M54) | ● | ● | ● | ● |
 <!-- /GEN:tabla -->
 
 ---

@@ -68,6 +68,7 @@ enums:
   horizonte:   [proposito, 3a, anual, trimestre]                           # met: capas 0-5 objetivos.md §6 (Hoshin/EOS)
   estado_objetivo: [vigente, deprecado]                                    # met: gobernanza del cascade (insumo 3)
   perspectiva_bsc: [financiera, cliente, procesos, aprendizaje]            # met: BSC (M30) — SOLO checklist/clasificación; habilita strategy-map como proyección
+  ambicion:    [operar, expandir, transformar]                             # met: M54 matriz de ambición (Nagji & Tuff, HBR 2012) — bolsa por NOVEDAD mercado×oferta, jamás por plazo (Blank 2019); mezcla real = DERIVADA al leer vs mezcla_objetivo
   # --- kpi ---
   tipologia_kpi: [kpi, dpi, kri]                                           # met: demo SOMA — indicador de desempeño / diagnóstico / riesgo
   tipo_kpi:    [lead, lag]                                                 # met: BSC/OKR — indicador adelantado vs de resultado
@@ -117,7 +118,7 @@ nodos:
       mision:       { tipo: str, requerido: false, met: "propósito — por qué existe (ISO 9001 cl.4.1). Capa 0 del sistema de objetivos (objetivos.md §6)" }
       vision:       { tipo: str, requerido: false, met: "dirección estratégica (ISO 9001 cl.5.1). Tope del cascade (objetivos.md §6-8)" }
       rubro_ref:    { tipo: ref, a: "nichos (slug, I-39)", requerido: false, met: "cross-context por contrato" }
-      config_estrategia: { tipo: obj, requerido: false, met: "research A/B — GPD y OKR = mismo grafo, distinta cadencia/acople (RN-14)", forma: "{ modo: enum modo_estrategia (default okr-trimestral) }" }
+      config_estrategia: { tipo: obj, requerido: false, met: "research A/B — GPD y OKR = mismo grafo, distinta cadencia/acople (RN-14) · mezcla_objetivo = M54 (D-22)", forma: "{ modo: enum modo_estrategia (default okr-trimestral), mezcla_objetivo: { operar: num, expandir: num, transformar: num } (default 70/20/10 — M54; suma 100; varía por industria: industrial ≈70/20/10 · consumo masivo ≈80/18/2 · tech ≈45/40/15) }" }
       unidades:     { tipo: list, requerido: false, met: "D-07 — unidad de ejecución (proceso definido UNA vez, medido POR unidad)", subesquema: unidad }
       entidades_legales: { tipo: list, requerido: false, met: "D-07 — el SPV legal = atributo, no partición del twin", subesquema: entidad_legal }
       fuente:       { tipo: enum, enum: fuente, requerido: false, met: M23 }
@@ -294,6 +295,7 @@ nodos:
         kpi_ref:     { tipo: ref, a: kpi, requerido: false, met: "research A (frontera permeable): el KR = contrato de CAMBIO sobre la serie de un KPI existente (misma serie, distinto contrato). Acciones kinéticas: promover-kpi-a-kr / decantar-kr-a-kpi" }
         accountable_ref: { tipo: ref, a: rol, requerido: false, met: "KR ownership (objetivos.md §8 · research A: HBR/Spotify) — el ROL accountable; JAMÁS OKR individual" }
         acople_compensacion: { tipo: bool, requerido: false, met: "RN-14 (research A/B): true SOLO con modo gpd-anual|mixto (PLR — estándar BR). En modo okr-trimestral = ERROR (sandbagging — Bock: 'totally divorced')" }
+        ambicion:    { tipo: enum, enum: ambicion, requerido: false, met: "M54 (D-22) — colorea la cascada: mezcla real por rol/área/empresa vs mezcla_objetivo (config_estrategia); el rollup se COMPUTA al leer, jamás se persiste" }
         driver_refs: { tipo: list, requerido: false, a: "proceso|capability", met: "M06 Impact Mapping — qué mueve la aguja" }
 
   # ---------- O2 · kpi (Outcome/Metric, Motivation) — NUEVO v2 · identidad ≠ observación ----------
@@ -346,6 +348,7 @@ nodos:
       metodologia: { tipo: enum, enum: metodologia_mejora, requerido: false, met: "dialecto de render/reporte (research C) — UN solo ciclo" }
       caso_negocio: { tipo: obj, requerido: false, met: "charter + financial benefits Six Sigma (research C) — numéricos", forma: "{ tipo_beneficio: enum tipo_beneficio, beneficio_anualizado: num?, inversion: num?, payback_meses: num?, roi: num?, formula_beneficio?, periodo_realizacion_meses: num (default 12), supuestos? }" }
       prio:        { tipo: enum, enum: prio, requerido: false, met: "M28 WSJF" }
+      ambicion:    { tipo: enum, enum: ambicion, requerido: false, met: "M54 (D-22) — hereda de la idea promovida o se etiqueta en el charter; WSJF (prio) ordena DENTRO de la bolsa, jamás entre bolsas" }
       mueve_refs:  { tipo: list, requerido: false, met: "el COMPROMISO de medición (qué KPI/KR mueve)", item: "{ ref: ref→kpi|key_result, delta_esperado? }" }
       estado:      { tipo: enum, enum: estado_proyecto, requerido: true, met: "máquina de estados (ver acciones.transiciones_proyecto) — transiciones SOLO por acción kinética (RN-12); en-verificacion→en-ejecucion = loop-back válido (MASP)" }
       firmas:      { tipo: obj, requerido: false, met: "doble firma (research C): sponsor + FINANZAS pre y post. hard-saving sin fecha_post NO cierra (RN-15)", forma: "{ sponsor: { por_ref: ref→rol, fecha }?, finanzas: { por_ref: ref→rol, fecha_pre?, fecha_post? }? }" }
@@ -372,6 +375,7 @@ nodos:
       proponente_refs: { tipo: list, requerido: true, a: persona, met: "AUTORÍA (≥1, individual o conjunta) — reconocimiento al proponente (kaizen teian). Autoría ≠ medición (RN-16/CK-24): participación se agrega por área/rol" }
       sobre_refs:  { tipo: list, requerido: false, a: "proceso|sistema|area", met: "dónde duele" }
       estado:      { tipo: enum, enum: estado_idea, requerido: true, met: "funil barato (research C: AEVO/kaizen teian) — la mayoría muere o es just-do-it; un subconjunto se PROMUEVE" }
+      ambicion:    { tipo: enum, enum: ambicion, requerido: false, met: "M54 (D-22) — el comité la etiqueta en el triaje (funil M44); protege el flujo transformar de morir contra lo urgente" }
       evaluacion:  { tipo: obj, requerido: false, met: "comité (research C)", forma: "{ comite_ref: ref→rol|area?, criterios: { viabilidad?, impacto?, alineacion? }, feedback?, fecha? }" }
       reconocimiento: { tipo: obj, requerido: false, met: "kaizen teian — casi todo proponente recibe reconocimiento", forma: "{ tipo, fecha }" }
       promovida_a_ref: { tipo: ref, a: proyecto_mejora, requerido: false, met: "el enlace funil→proyecto (estado=promovida ⇒ presente)" }

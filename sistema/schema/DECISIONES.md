@@ -302,6 +302,29 @@ Mientras el dato de una tarea no exista, el triage **declara honestamente** que 
 
 ---
 
+## D-22 · `ambicion` — el color del esfuerzo (portafolio 70/20/10) — `clavada` (ratificada operador 2026-07-27 · M54)
+El twin ya tiene TODAS las entidades del esfuerzo (idea · proyecto_mejora · key_result) pero ninguna
+dice **de qué tipo de apuesta es**: imposible responder "¿cuánto de nuestro esfuerzo opera el hoy vs
+asegura el futuro?" — la pregunta del operador que motivó la ingesta M54 (matriz de ambición, Nagji &
+Tuff HBR 2012).
+
+Se agrega: **enum compartido `ambicion: [operar, expandir, transformar]`** (bolsa por NOVEDAD
+mercado×oferta — jamás por plazo, corrección Blank 2019) + campo **opcional** en `idea` (el comité
+etiqueta en el triaje), `proyecto_mejora` (hereda de la idea promovida o se etiqueta en el charter) y
+`key_result` (colorea la cascada canónica). En `empresa.config_estrategia` entra
+**`mezcla_objetivo: {operar, expandir, transformar}`** (default 70/20/10; suma 100; varía por
+industria — HBR: industrial ≈70/20/10 · consumo masivo ≈80/18/2 · tech media ≈45/40/15).
+
+**Doctrina que esta ficha fija:** (1) la **mezcla real es DERIVADA** — el motor la computa al leer
+(rollup por rol/área/unidad/empresa vs mezcla_objetivo), jamás se persiste (misma regla que
+`divergente`/RN-9); (2) **sin cuota por persona** — la mezcla se agrega por rol/área (CK-24: la
+persona no es eslabón de medición; la evidencia de ambidestreza dice que explore se concentra y se
+protege, no se reparte parejo); (3) **WSJF ordena DENTRO de la bolsa, jamás entre bolsas** (si
+operar y transformar compiten en una sola cola, operar devora siempre); (4) campo **opcional** —
+portafolio sin etiquetar se MUESTRA "sin clasificar", no se inventa (anti-alucinación M23).
+
+---
+
 ## Micro-opens bancados (no frenan; se resuelven al construir)
 - **actividad:** ✅ RESUELTO (D-08) → embebida inline en el proceso, id estable; archivo solo si se comparte/automatiza.
 - **función:** ✅ RESUELTO (D-09) → se **DISUELVE** (no entidad): = RACI derivado del wiring; lo no-procesal → campo en `rol`.

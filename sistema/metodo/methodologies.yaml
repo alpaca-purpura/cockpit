@@ -13,7 +13,7 @@
 
 _meta:
   fuente_humana: "sistema/metodo/METODOLOGIA.md §4 (compendio narrativo)"
-  total: 53
+  total: 54
   backbone: "objeto (capa de contexto / Hilo de Oro)"
   # Etiquetas de familias y del backbone — SSoT de los rótulos que el generador imprime en §4.
   familias:
@@ -609,6 +609,7 @@ M21:
     - { m: M15, como: "el KR baja del goals cascade" }
     - { m: M22, como: "el roll-up sube el aporte real al KR" }
     - { m: M06, como: "impact conecta KR ↔ deliverable" }
+    - { m: M54, como: "el KR declara `ambicion` (operar|expandir|transformar) — colorea la cascada sin ceremonia nueva" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -655,6 +656,7 @@ M26:
     - { m: M21, como: "Hoshin da la dirección multi-año; OKR ejecuta el trimestre dentro de ella" }
     - { m: M15, como: "comparte el goals cascade (empresa→IT)" }
     - { m: M30, como: "BSC traduce cada nivel a KPIs por perspectiva" }
+    - { m: M54, como: "el plan 3a→anual fija la mezcla_objetivo (70/20/10 por industria); el catchball la negocia por nivel" }
   donde: { modulos: [m1], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -701,6 +703,7 @@ M28:
     - { m: M22, como: "FinOps cuantifica el valor/ahorro que entra al CoD" }
     - { m: M04, como: "el appetite de Shape Up acota el tamaño del trabajo" }
     - { m: M06, como: "Impact Mapping da el valor de negocio del numerador" }
+    - { m: M54, como: "WSJF ordena DENTRO de cada bolsa de ambición, jamás entre bolsas (si compiten en una sola cola, operar devora a transformar)" }
   donde: { modulos: [m3], etapas: [], capa_contexto: false }
   modo: columna
   twin:
@@ -1072,6 +1075,7 @@ M44:
     - { m: M42, como: "la idea promovida recibe charter DMAIC (promovida_a_ref)" }
     - { m: M40, como: "participación se agrega por área/rol — autoría ≠ medición (CK-24)" }
     - { m: M35, como: "muchas ideas son un 'eliminar' de ECRS resuelto just-do-it" }
+    - { m: M54, como: "el comité etiqueta la ambición de cada idea en el triaje — el funil alimenta y protege las tres bolsas" }
   donde: { modulos: [m2, m3], etapas: [], capa_contexto: true }
   modo: situacional
   twin:
@@ -1095,6 +1099,7 @@ M45:
   combina_con:
     - { m: M44, como: "el funil de ideas ES el corazón operativo que 56002 formaliza" }
     - { m: M16, como: "misma gramática de sistema de gestión ISO (HLS)" }
+    - { m: M54, como: "el balance de portafolio que 56002 exige se instrumenta con la mezcla de ambición (ya activa en el MVP, sin esperar la certificación)" }
   donde: { modulos: [m3], etapas: [], capa_contexto: false }
   modo: situacional
   twin:
@@ -1290,6 +1295,7 @@ M52:
     - { m: M04, como: "arbitraje: appetite de Shape Up = tiempo/alcance que se apuesta; apetito de riesgo = exposición que el directorio tolera — dos varas distintas de la misma apuesta" }
     - { m: M15, como: "el semáforo de madurez no reemplaza el apetito: el gap dice dónde duele, el apetito dice cuánto dolor se acepta" }
     - { m: M28, como: "el apetito FILTRA por exposición antes de que el CoD ORDENE por economía" }
+    - { m: M54, como: "la mezcla de ambición es el apetito hecho asignación: el % en transformar = riesgo que el directorio acepta explícito" }
   donde: { modulos: [m1], etapas: [], capa_contexto: false }
   modo: situacional
   twin:
@@ -1322,3 +1328,32 @@ M53:
     dimensiones: [provenance, madurez-brecha]
     cuando_si: "cliente con el dato como brecha estructural — nivel de madurez de gestión de datos con evidencia, alimenta la brecha y su proyecto de mejora"
     cuando_no: "NO default del MVP (M23 + M31 bastan); DMBOK 3.0 en desarrollo — re-evaluar al consolidar (operativa hoy = 2.0 rev-2024); DCAM comercial finserv, fuera del ICP"
+
+# ── M54 · portafolio de ambición (ingesta /metodo-aprende, ratificada operador 2026-07-27) ──
+
+M54:
+  nombre: "Portafolio de ambición 70/20/10 (matriz de ambición de innovación)"
+  nombre_corto: "Ambición 70/20/10"
+  familia: F
+  fuente: { autor: "Bansi Nagji & Geoff Tuff (Monitor/Deloitte); antecedentes: Baghai/Coley/White Tres Horizontes 1999 · March explore/exploit 1991 · Google (Schmidt) 2005; corrección: Blank 2019", obra: "Managing Your Innovation Portfolio (HBR, mayo 2012) — Innovation Ambition Matrix", url: "https://hbr.org/2012/05/managing-your-innovation-portfolio" }
+  que: "clasifica TODO esfuerzo (idea · proyecto_mejora · KR) en tres bolsas por NOVEDAD (mercado × oferta), jamás por plazo (Blank 2019): operar el hoy (core, ~70) · expandir a lo vecino (adyacente, ~20) · apostar al futuro (transformacional, ~10); mezcla real vs mezcla objetivo, visible por rol/área/unidad/empresa"
+  aporte_unico: "el COLOR del esfuerzo — campo `ambicion` transversal que el twin agrega al leer (rollup vs `mezcla_objetivo` de config_estrategia). El ratio NO es dogma: HBR lo midió por industria (industrial ≈70/20/10 · consumo masivo ≈80/18/2 · tech media ≈45/40/15) y el retorno es INVERSO (≈10/20/70 — el 10 transformacional genera ~70% del valor nuevo); ajustar por industria/etapa/posición competitiva"
+  cuando_usar: "al crear/triageár idea, proyecto_mejora o KR (m1: clasificar el portafolio hallado en el diagnóstico · m2/m3: mantener la mezcla visible y balanceada)"
+  objeto_primario: O2
+  objetos_secundarios: [O7, O1]
+  principios: [P1, P2]
+  combina_con:
+    - { m: M21, como: "cada KR declara su ambición — la cascada canónica se colorea sin ceremonia nueva" }
+    - { m: M26, como: "el plan 3a→anual fija la mezcla_objetivo; el catchball la negocia por nivel" }
+    - { m: M28, como: "WSJF prioriza DENTRO de cada bolsa, jamás entre bolsas (ambidestreza O'Reilly/Tushman: exploit devora a explore si comparten cola)" }
+    - { m: M44, como: "cada idea del funil se etiqueta en el triaje del comité — protege el flujo transformacional de morir contra lo urgente" }
+    - { m: M45, como: "es el instrumento concreto del balance de portafolio que ISO 56002 exige en abstracto" }
+    - { m: M52, como: "la mezcla ES apetito de riesgo materializado: transformar = riesgo aceptado explícito del directorio" }
+  donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: [mezcla-ambicion]
+    dimensiones: [estrategia, mejora-proyectos]
+    cuando_si: "toda idea/proyecto_mejora/KR lleva `ambicion` (operar|expandir|transformar); el twin computa mezcla real vs mezcla_objetivo al leer (rollup por rol/área/unidad/empresa) — el derivado jamás se persiste"
+    cuando_no: "NO cuota rígida por persona (explore se concentra en pocos y se protege — el '20% time' universal murió); NO clasificar por plazo sino por novedad; NO priorizar cross-bolsa con WSJF; el 70/20/10 NO es prescripción universal — default configurable por industria"
