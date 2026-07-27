@@ -33,7 +33,7 @@
 - **A · Descubrimiento & Producto:** [Dual Track Agile](#m01) · [Continuous Discovery](#m02) · [Product Operating Model](#m03) · [Shape Up](#m04) · [Jobs-to-be-Done](#m05) · [Impact Mapping](#m06)
 - **B · Dominio & Proceso:** [Event Storming](#m07) · [Domain-Driven Design](#m08) · [Value Stream Mapping](#m09) · [Service Blueprint](#m10) · [BPMN](#m11) · [APQC Process Classification Framework](#m12) · [Process / Task Mining](#m29)
 - **C · Arquitectura & Sistemas:** [ArchiMate](#m13) · [SYSTEM-MAP + document-project](#m14) · [Business Capability Modeling](#m31)
-- **D · Gobierno, Calidad & Madurez:** [COBIT 2019](#m15) · [ISO 9001](#m16) · [ITIL 4](#m17) · [RACI](#m25) · [ISO 10013](#m38) · [DMAIC](#m42) · [MASP](#m43) · [Funil de ideas](#m44) · [ISO 56002](#m45) · [ISO 9004 (madurez)](#m47) · [EFQM RADAR](#m49) · [P3M3](#m50)
+- **D · Gobierno, Calidad & Madurez:** [COBIT 2019](#m15) · [ISO 9001](#m16) · [ITIL 4](#m17) · [RACI](#m25) · [ISO 10013](#m38) · [DMAIC](#m42) · [MASP](#m43) · [Funil de ideas](#m44) · [ISO 56002](#m45) · [ISO 9004 (madurez)](#m47) · [EFQM RADAR](#m49) · [P3M3](#m50) · [ISO 10015 (competencia)](#m51) · [ISO 31000 (apetito)](#m52) · [ISO 8000-61 (datos)](#m53)
 - **E · Especificación & Construcción:** [Spec-Driven Development](#m18) · [EARS](#m19) · [Specification by Example](#m20)
 - **F · Valor, Costo & Alineación:** [OKR](#m21) · [FinOps — Quantify Business Value](#m22) · [Hoshin Kanri](#m26) · [Wardley Mapping](#m27) · [WSJF](#m28) · [Balanced Scorecard](#m30) · [GPD (Falconi)](#m41) · [Benchmarks APQC/Hackett](#m48)
 - **G · IA: Grounding & Anti-alucinación:** [Grounding](#m23)
@@ -288,12 +288,12 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Principios:** P2, P3
 
 <a id="m16"></a>**M16 · ISO 9001**
-- **Qué:** gestión de calidad; enfoque a procesos; PDCA (cl.10); contexto (cl.4); objetivos (cl.6.2); autoridad (cl.5.3)
+- **Qué:** gestión de calidad; enfoque a procesos; PDCA (cl.10); contexto (cl.4); objetivos (cl.6.2); autoridad (cl.5.3); competencia (cl.7.2)
 - **Fuente:** ISO — ISO 9001:2015. [https://www.iso.org/iso-9001-quality-management.html](https://www.iso.org/iso-9001-quality-management.html)
 - **Objeto:** T3 Gobierno / Loop · sec: O4
 - **Aporte único:** la ONTOLOGÍA de contexto (cl.4) + el ciclo PDCA — robamos ontología, rechazamos aparato
 - **Cuándo:** capa de contexto (vocabulario) y M2/M3 (mejora continua)
-- **Combina:** M21 (objetivos cl.6.2 se expresan como OKR) · M25 (roles/autoridad cl.5.3 = RACI) · M38 (cl.7.5 información documentada = pirámide ISO 10013) · M47 (9004 GRADÚA (1-5) lo que 9001 releva (conformidad binaria) — la escalera de madurez sin certificación que la doctrina permite)
+- **Combina:** M21 (objetivos cl.6.2 se expresan como OKR) · M25 (roles/autoridad cl.5.3 = RACI) · M38 (cl.7.5 información documentada = pirámide ISO 10013) · M47 (9004 GRADÚA (1-5) lo que 9001 releva (conformidad binaria) — la escalera de madurez sin certificación que la doctrina permite) · M51 (cl.7.2 competencia: 10015 la gradúa (requerida vs actual por rol) y cierra la brecha — el seam ya existe en el schema)
 - **Principios:** P4, P7
 
 <a id="m17"></a>**M17 · ITIL 4**
@@ -385,6 +385,33 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Cuándo:** horizonte gateado por demanda (patrón M45): cliente con portafolio de proyectos de mejora grande o PMO formal que pida graduar su gestión
 - **Combina:** M42 (DMAIC mide el proyecto; P3M3 la capacidad org de ejecutar muchos — la perspectiva 'benefits' empalma con verificar-beneficios del ciclo) · M43 (ídem MASP — el loop-back disciplinado (en-verificacion → en-ejecucion) es señal de nivel P3M3 alto) · M47 (escalera hermana especializada: 9004 gradúa el sistema de gestión entero; P3M3 solo la función proyectos/portafolio)
 - **Principios:** P3, P7
+
+<a id="m51"></a>**M51 · ISO 10015:2019 — gestión de competencias y desarrollo de personas**
+- **Qué:** guía para establecer y mantener la gestión de competencias: competencia requerida por rol vs actual del ocupante, cierre de brechas (formación/incorporación/rediseño) y evaluación de eficacia — mismo linaje 9001 (operacionaliza cl.7.2)
+- **Fuente:** ISO/TC 176/SC 3 — ISO 10015:2019 — Quality management: guidelines for competence management and people development (guía, no certificable). [https://www.iso.org/standard/69459.html](https://www.iso.org/standard/69459.html)
+- **Objeto:** O4 Personas & Autoridad · sec: O6, T3
+- **Aporte único:** GRADÚA la competencia: la brecha requerido-vs-actual por rol como dato derivado del twin (el seam ya existe: rol.competencias_req · persona.competencias); práctica operativa = matriz de habilidades (ILUO); para roles digitales presta la escala SFIA 9 (niveles 1-7) sin adoptar el marco entero
+- **Cuándo:** levantamiento M1 (quién puede qué, insumo del AS-IS de roles) y mantenimiento M2 (cierre de brechas de competencia); insumo del arnés M46 (quién puede supervisar qué)
+- **Combina:** M16 (operacionaliza cl.7.2: el paraguas releva la competencia, 10015 la gradúa y cierra la brecha) · M38 (hermanas de la familia de apoyo 9001: 10013 gradúa la documentación, 10015 la competencia) · M25 (la A del RACI exige competencia demostrada — el gate humano lo ocupa alguien competente para ese gate) · M46 (el arnés eleva el piso de ejecución; la competencia del supervisor es el techo — insumo de verificacion_humana y de la autonomía sugerida) · M40 (la matriz por persona es dato individual: opt-in Gobernanza + consentimiento; el twin ve % de cobertura por rol/área)
+- **Principios:** P3, P7
+
+<a id="m52"></a>**M52 · ISO 31000:2018 — apetito de riesgo (con COSO ERM como marco alterno)**
+- **Qué:** gestión de riesgos (principios + marco + proceso): la gobernanza fija CRITERIOS de riesgo — cuánto y qué tipo de riesgo se acepta por categoría; COSO ERM aporta la declaración formal de apetito cuando el cliente la exige
+- **Fuente:** ISO/TC 262 · COSO — ISO 31000:2018 — Risk management: guidelines (criterios de riesgo) · COSO ERM 2017 (risk appetite statement formal, alineado a estrategia). [https://www.iso.org/iso-31000-risk-management.html](https://www.iso.org/iso-31000-risk-management.html)
+- **Objeto:** O1 Oportunidad / Apuesta · sec: O2, T3
+- **Aporte único:** el APETITO DE RIESGO como dato del directorio — la vara contra la que se gradúa el riesgo de cada apuesta/objetivo (el panel 'riesgo vs apetito' del twin deja de ser cualitativo suelto); primera ancla de O1 en el twin
+- **Cuándo:** horizonte gateado por demanda (promovida del cuando_no de M16): directorio que formaliza apetito por categoría (liquidez, reputación, expansión) o cliente regulado
+- **Combina:** M16 (cl.6.1 risk-based thinking es el gancho MVP (riesgos[] tipados por proceso); 31000 lo eleva a apetito del directorio cuando se activa) · M04 (arbitraje: appetite de Shape Up = tiempo/alcance que se apuesta; apetito de riesgo = exposición que el directorio tolera — dos varas distintas de la misma apuesta) · M15 (el semáforo de madurez no reemplaza el apetito: el gap dice dónde duele, el apetito dice cuánto dolor se acepta) · M28 (el apetito FILTRA por exposición antes de que el CoD ORDENE por economía)
+- **Principios:** P3, P7
+
+<a id="m53"></a>**M53 · ISO 8000-61 — madurez de la gestión de calidad de datos**
+- **Qué:** modelo de referencia de procesos de la gestión de calidad de datos (implementación, aseguramiento, mejora, soporte) — base para graduar qué tan madura es la GESTIÓN de datos del cliente
+- **Fuente:** ISO/TC 184/SC 4 — ISO 8000-61:2016 — Data quality, part 61: data quality management process reference model (serie ISO de calidad de datos). [https://www.iso.org/standard/63086.html](https://www.iso.org/standard/63086.html)
+- **Objeto:** T1 Dato / Grounding · sec: O6, O5
+- **Aporte único:** gradúa el SISTEMA que produce los datos (M23 gradúa cada dato: fuente+conf+frescura — ésta gradúa la fábrica): descriptores para la capability de datos/analítica del heatmap cuando el dato es la brecha estructural
+- **Cuándo:** horizonte gateado por demanda: cliente cuyo diagnóstico revela el dato como brecha estructural (papel, silos, sin dueño de dato) — típico 'datos de obra en papel'
+- **Combina:** M23 (división del trabajo: M23 gradúa cada dato AS-IS; 8000-61 gradúa el sistema de gestión que los produce) · M31 (presta descriptores de nivel a la capability de datos/analítica del heatmap) · M47 (9004 gradúa el sistema de gestión entero; 8000-61 profundiza solo el dominio datos)
+- **Principios:** P3
 
 ### Familia E · Especificación & Construcción
 
@@ -669,6 +696,9 @@ YAML, regenerar con `gen_metodo.py` (gate anti-drift en pre-commit).
 | Benchmarks APQC/Hackett (M48) | ● | ● |  | ● |
 | EFQM RADAR (M49) | ○ |  |  |  |
 | P3M3 (M50) |  |  |  |  |
+| ISO 10015 (competencia) (M51) | ● | ● |  | ● |
+| ISO 31000 (apetito) (M52) | ○ |  |  |  |
+| ISO 8000-61 (datos) (M53) | ○ |  |  |  |
 <!-- /GEN:tabla -->
 
 ---
