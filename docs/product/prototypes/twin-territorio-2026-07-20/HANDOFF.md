@@ -1,5 +1,23 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-26 → siguiente)
 
+> **★ v15.2 EJECUTADA (2026-07-27 — D-23 vía /metodo-aprende: la apuesta FORMALIZADA + vocabularios
+> en módulo Método; pedido del operador "¿cuáles son todos los valores posibles? ¿los tenemos en el
+> método?"):** la deuda ⚠ D-NN de apuestas/apetito quedó CERRADA como **D-23** (`sistema/schema/
+> DECISIONES.md`): entidad `apuesta` (13º nodo, O1 Course of Action, `apuestas/ap-*.yaml`) + enums
+> `estado_apuesta: [por-sellar, sellada, cumplida, retirada]` (re-apostar = ACCIÓN que re-versiona,
+> NO estado) y `nivel_riesgo: [bajo, medio, alto]` + `config_estrategia.apetito_riesgo[{categoria,
+> nivel}]` (M52). **M04 EXTENDIDA** (contradicción resuelta con arbitraje): `fuera-del-twin →
+> ancla[estrategia]` — el betting del ENGAGEMENT sigue fuera; al twin entra la apuesta del CLIENTE
+> sellada (m3.e0.p5) · recíprocas M04⇄M22/M52/M54. Gates: gen_metodo OK (54 cards, GRAFO regenerado)
+> · gen_schema OK (NODOS_ESPERADOS +apuesta → **13 nodos**) · `go test -count=1` OK (paridad).
+> Barrido "12 entidades"→13: M32 card · CLAUDE.md · cockpit-stack.md · mockup ×2. **Mockup:**
+> `DATA.apuestas[].sellada:bool → estado:enum` (3 usos migrados; ficha muestra el ciclo completo +
+> botón sellar solo en por-sellar) · módulo **Método** gana 2 paneles "Vocabulario" (ciclo de la
+> apuesta valor-por-valor + las tres bolsas de ambición con regla de NOVEDAD) + respaldo `met-vocab`
+> (M04/M54/M52, cita D-23) · conteos sync 45→**54 M-cards** (×4) y 46→54 cartas. verify.sh **30/30**
+> (+`metodo-vocabularios`: 8 valores presentes + doctrina re-versión + NOVEDAD + conteos). Pasada
+> visual con ojos propios (módulo Método + ficha apuesta por-sellar + respaldo met-vocab con D-23).
+
 > **★ v15.1 EJECUTADA (2026-07-27 — auditoría DEL OPERADOR: "el respaldo promete plata que las
 > apuestas no muestran" → opción A firmada, cumplir la promesa):** hallazgos A1-A4 cerrados:
 > **(A1)** `DATA.apuestas[].valor{s,supuesto}` — tarjeta gana línea teal "persigue S/…"

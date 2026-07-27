@@ -1349,13 +1349,13 @@ const DATA = {
 /* ---- v14 · NIVEL 1 — apuestas + apetito (⚠ aún NO son entidades del schema — ficha D-NN
    pendiente vía /metodo-aprende; acá viven como dato del mockup, ancladas a objetivos reales) ---- */
 DATA.apuestas=[  // valor = FinOps (dinero + supuesto visible) · apuesta_de = apetito Shape Up (tiempo fijo · tope) — v15.1
-  {id:'ap-lid', nm:'Liderazgo en vivienda media', objetivos:['o-lid','o-hog'], riesgo:'medio', riesgo_cat:'expansion', ambicion:'expandir', sellada:true,
+  {id:'ap-lid', nm:'Liderazgo en vivienda media', objetivos:['o-lid','o-hog'], riesgo:'medio', riesgo_cat:'expansion', ambicion:'expandir', estado:'sellada',
     valor:{s:'+S/ 3.1M/año de margen', supuesto:'margen 14→18% sobre venta de ~S/ 78M/año'}, apuesta_de:{t:'4 trimestres', tope:'S/ 250k'}},
-  {id:'ap-caja',nm:'Caja sana en todos los proyectos', objetivos:['o-caja','o-cob'], riesgo:'alto', riesgo_cat:'liquidez', ambicion:'operar', sellada:true,
+  {id:'ap-caja',nm:'Caja sana en todos los proyectos', objetivos:['o-caja','o-cob'], riesgo:'alto', riesgo_cat:'liquidez', ambicion:'operar', estado:'sellada',
     valor:{s:'~S/ 6.0M de caja liberada', supuesto:'DSO 88→60 días sobre venta de ~S/ 78M/año (una vez) + S/ 180k/año de mora evitada'}, apuesta_de:{t:'2 trimestres', tope:'S/ 150k'}},
-  {id:'ap-mar', nm:'Reactivar Marina', objetivos:['o-mar','o-vis'], riesgo:'alto', riesgo_cat:'reputacion', ambicion:'operar', sellada:true,
+  {id:'ap-mar', nm:'Reactivar Marina', objetivos:['o-mar','o-vis'], riesgo:'alto', riesgo_cat:'reputacion', ambicion:'operar', estado:'sellada',
     valor:{s:'S/ 8.4M de stock que vuelve a rotar', supuesto:'24 unidades paradas × ticket ~S/ 350k'}, apuesta_de:{t:'2 trimestres', tope:'S/ 420k (obra + comercial)'}},
-  {id:'ap-cob', nm:'Digitalizar la cobranza', objetivos:['o-cob'], riesgo:'medio', riesgo_cat:'liquidez', ambicion:'operar', sellada:false,
+  {id:'ap-cob', nm:'Digitalizar la cobranza', objetivos:['o-cob'], riesgo:'medio', riesgo_cat:'liquidez', ambicion:'operar', estado:'por-sellar',
     valor:{s:'S/ 180k/año de mora evitada', supuesto:'la mora de Marina (alerta) cae al llevar el 60% de la cobranza a canal digital'}, apuesta_de:{t:'1 trimestre · fase 1', tope:'S/ 60k'}},
 ];
 DATA.apetito={ liquidez:'media', reputacion:'baja', expansion:'alta — sin definir por el directorio' };
@@ -1524,7 +1524,7 @@ function ejecutarAccion(b){ const a=ACC[b.dataset.acc];
 }
 /* ===== v14.3 · capa RESPALDO DEL MÉTODO — cada panel cita la metodología que lo sostiene =====
    Espejo del `met:` que ya llevan el schema (222 campos) y los pasos del proceso: el panel declara
-   sus fuentes igual que todo lo demás. SSoT real = sistema/metodo/methodologies.yaml (46 cartas).
+   sus fuentes igual que todo lo demás. SSoT real = sistema/metodo/methodologies.yaml (54 cartas).
    En superficie: nombre común de la fuente (cero jerga). El código M-NN = procedencia, SOLO en la ficha. */
 const RESPALDO={
   'dir-varas':{ cita:'apetito · ambición', t:'Las varas del directorio', items:[
@@ -1641,6 +1641,10 @@ const RESPALDO={
     {f:'Arnés por rol×proceso', uso:'lo que te llega ya viene compilado del twin para tu puesto; tu parte incluye supervisar al agente y queda registrada.', m:'M46'},
     {f:'Frontera persona ↔ twin', uso:'tus pendientes salen del rol y del puesto — la medición jamás es sobre ti como persona.', m:'M40'} ]},
   /* — v14.4: módulos Método y Cambios */
+  'met-vocab':{ cita:'ciclo · bolsas', t:'Los vocabularios — de dónde salen', items:[
+    {f:'Shape Up — el ciclo de la apuesta', uso:'por sellar → sellada → cumplida | retirada; el sello es un gate humano de quien responde por la meta (paso 5 · etapa 0 del método); re-apostar re-versiona, jamás edita. Formalizado como entidad del twin (ficha D-23).', m:'M04'},
+    {f:'Portafolio de ambición (70/20/10)', uso:'tres bolsas por novedad (mercado × oferta): operar el hoy · expandir · apostar al futuro. El ratio es objetivo configurable por industria; la mezcla real se deriva al leer, jamás se guarda.', m:'M54'},
+    {f:'Apetito de riesgo por categoría', uso:'bajo · medio · alto por categoría (liquidez, reputación, expansión…); el contraste de cada apuesta contra la vara se deriva — categoría sin registro se muestra "sin definir".', m:'M52'} ]},
   'met-m1':{ cita:'procedencia · OKR', t:'M1 · Levantamiento', items:[
     {f:'Procedencia del dato', uso:'todo lo ingerido lleva fuente y confianza; el semáforo de provenance es exactamente eso.', m:'M23'},
     {f:'OKR — encuadre', uso:'el levantamiento arranca fijando objetivos y metas con el directorio.', m:'M21'},
@@ -1662,7 +1666,7 @@ const RESPALDO={
     {f:'Procedencia del dato', uso:'el historial es la traza que hace auditable cada cambio del twin.', m:'M23'} ]},
   /* — v14.5: respaldo DENTRO de las fichas de entidad (pie automático en openDrawer, por tipo) */
   'ent-empresa':{ cita:'ontología del twin', t:'Empresa — el twin completo', items:[
-    {f:'Ontología del twin — semántica + acción', uso:'las 12 entidades y sus relaciones son una gramática declarada; cada cosa que ves es una instancia con su ficha.', m:'M32'},
+    {f:'Ontología del twin — semántica + acción', uso:'las 13 entidades y sus relaciones son una gramática declarada; cada cosa que ves es una instancia con su ficha.', m:'M32'},
     {f:'ISO 9001 — la organización y su contexto', uso:'la empresa como sistema: procesos, roles, objetivos y su mejora, bajo un mismo vocabulario.', m:'M16'} ]},
   'ent-objetivo':{ cita:'OKR · BSC', t:'Objetivo', items:[
     {f:'OKR — objetivos con meta del trimestre', uso:'el objetivo carga su meta del ciclo (de → a); el semáforo se lee contra esa banda.', m:'M21'},
@@ -1715,7 +1719,7 @@ function openRespaldo(id){ const r=RESPALDO[id]; if(!r) return;
     + r.items.map(i=>`<div class="dgroup"><div class="gt">${i.f}<span class="mono" style="float:right;font-weight:400;font-size:9px;color:var(--tx-faint)">${i.m}</span></div>
         <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">${i.uso}</div></div>`).join('')
     + (r.gap?`<div class="dgroup"><div class="gt" style="color:var(--warn)">Donde el respaldo aún es horizonte</div><div style="font-size:12px;color:var(--tx-mut);line-height:1.5">${r.gap}</div></div>`:'')
-    + `<div style="font-size:11px;color:var(--tx-faint);border-top:1px solid var(--border);padding-top:8px;margin-top:4px">El método es dato versionado (46 cartas) — la misma fuente que respalda cada campo del twin y cada paso del engagement. <span class="plnk" onclick="state.mod='metodo';state.insp='home';render()">Ver la trazabilidad completa — módulo Método ›</span></div>`); }
+    + `<div style="font-size:11px;color:var(--tx-faint);border-top:1px solid var(--border);padding-top:8px;margin-top:4px">El método es dato versionado (54 cartas) — la misma fuente que respalda cada campo del twin y cada paso del engagement. <span class="plnk" onclick="state.mod='metodo';state.insp='home';render()">Ver la trazabilidad completa — módulo Método ›</span></div>`); }
 /* ancestro de primer nivel (columna del tablero táctico) */
 function topArea(id){ let a=byId(DATA.areas,id); while(a&&a.parent&&a.parent!=='a-ger') a=byId(DATA.areas,a.parent); return a; }
 /* regla de la reunión de resultados (Falconi): rojo sin proyecto que lo mueva NI brecha con respuesta = sin contramedida */
@@ -2446,7 +2450,7 @@ function renderDirectorio(){
     </div>
     <span class="eyebrow">Las apuestas — clic = ficha y acciones · lo que las sostiene vive en el nivel 2${respBadge('dir-apuestas')}</span>
     <div class="apcards" style="margin-top:8px">${DATA.apuestas.map((a,i)=>{ const objs=a.objetivos.map(objOf), ct=contraste(a);
-      return `<button class="apcard" data-ap="${a.id}"><span class="un">apuesta ${a.sellada?'· sellada':'· <b style="color:var(--warn)">por sellar</b>'} · ${AMBICION[a.ambicion]}</span>
+      return `<button class="apcard" data-ap="${a.id}"><span class="un">apuesta ${a.estado==='por-sellar'?'· <b style="color:var(--warn)">por sellar</b>':'· '+a.estado} · ${AMBICION[a.ambicion]}</span>
         <span class="nm">${a.nm}</span>
         <span class="mt" style="color:var(--brand-hi)" title="Supuesto: ${a.valor.supuesto}">persigue ${a.valor.s}</span>
         <span class="mt"><span class="health-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${health[sts[i]]};margin-right:5px"></span>${objs.map(o=>o.kr.m).join(' · ')}</span>
@@ -2549,11 +2553,11 @@ function renderMetodo(){
   const pv=pageView(`
     <div class="pv-hd"><span class="eyebrow">Método · el engagement del consultor — plantilla versionada, instancia por cliente (N6)</span>
       <h2>M1 Levantamiento · M3 Espinazo · M2 Mantenimiento</h2>
-      <div class="sub">El método es <b>dato, no prosa</b>: 45 M-cards versionadas en git (methodologies.yaml) — cada capa del twin cae de una M-card. Los gates conectan el engagement con el ciclo de mejora.</div></div>
+      <div class="sub">El método es <b>dato, no prosa</b>: 54 M-cards versionadas en git (methodologies.yaml) — cada capa del twin cae de una M-card. Los gates conectan el engagement con el ciclo de mejora.</div></div>
     <div class="fcols">
       <div class="fcol"><span class="eyebrow">M1 · Levantamiento — construir el As-Is${respBadge('met-m1')}</span>
         <div class="fitem"><span class="t">Ingesta multi-fuente</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>ERP · CRM · 14 entrevistas</span></span></div>
-        <div class="fitem"><span class="t">Mapa As-Is (objeto normalizado, 12 entidades)</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>14 áreas · 17 procesos · 100 personas</span></span>
+        <div class="fitem"><span class="t">Mapa As-Is (objeto normalizado, 13 entidades)</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>14 áreas · 17 procesos · 100 personas</span></span>
           <div class="stage-row"><span class="mono" style="font-size:9px;color:var(--tx-faint)">provenance</span><span class="prog"><i style="flex:52;background:var(--ok)"></i><i style="flex:30;background:var(--warn)"></i><i style="flex:18;background:var(--crit)"></i></span><span class="mono" style="font-size:9px;color:var(--tx-faint)">52·30·18</span></div></div>
         <div class="fitem"><span class="t">Hilo de oro medido</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>7 objetivos · 9 KPIs con banda</span></span></div>
         <div class="fitem"><span class="t">Validación con dueños (acuses)</span><span class="m"><span class="gate-pill pend">◐ 12/17</span><span>gate G1 → habilita el Espinazo</span></span></div></div>
@@ -2573,8 +2577,21 @@ function renderMetodo(){
         <span class="chip">M09 VSM → tiempos toque/espera z2</span><span class="chip">M15 COBIT → capa madurez</span>
         <span class="chip">M23 provenance → confianza 🟢🟡🔴</span><span class="chip">M16 PDCA → cinética + loop-back</span>
         <span class="chip">SOMA C7 → semáforo digitalización</span><span class="chip">ECRS+RTLX → triage automatización</span>
-        <span class="chip">M36·M37 → triage → skill de arnés (Arnesia)</span><span class="chip">M44 → funil de ideas</span></div></div>`);
-  counter('M1 ✓ · M3 en curso · M2 activo · 45 M-cards');
+        <span class="chip">M36·M37 → triage → skill de arnés (Arnesia)</span><span class="chip">M44 → funil de ideas</span></div></div>
+    <div class="fcols" style="margin-top:10px">
+      <div class="fcol"><span class="eyebrow">Vocabulario · el ciclo de la apuesta — valores posibles${respBadge('met-vocab')}</span>
+        <div class="fitem"><span class="t"><b class="mono" style="color:var(--warn)">por sellar</b> — propuesta: valor y riesgo declarados; falta la firma de quien responde por la meta</span></div>
+        <div class="fitem"><span class="t"><b class="mono" style="color:var(--brand-hi)">sellada</b> — firmada con gesto de peso; quién · cuándo · qué meta quedan registrados, inmutables</span></div>
+        <div class="fitem"><span class="t"><b class="mono">cumplida</b> — sus objetivos alcanzaron la meta; cierra con veredicto contra el dato, no con un acta</span></div>
+        <div class="fitem"><span class="t"><b class="mono">retirada</b> — el directorio la retira; queda en el historial, jamás se borra</span></div>
+        <div class="fitem"><span class="t" style="color:var(--tx-mut)"><b class="mono">re-apostar</b> no es un estado: es una acción — cambia meta o riesgo re-versionando la apuesta sellada, jamás edita en silencio</span></div></div>
+      <div class="fcol"><span class="eyebrow">Vocabulario · la ambición — las tres bolsas (ideas · proyectos · metas · apuestas)</span>
+        <div class="fitem"><span class="t"><b class="mono" style="color:var(--brand-hi)">operar el hoy</b> — mejora lo que ya haces, para el mercado que ya sirves (≈70 del esfuerzo)</span></div>
+        <div class="fitem"><span class="t"><b class="mono">expandir</b> — lleva lo que sabes hacer a mercados u ofertas vecinas (≈20)</span></div>
+        <div class="fitem"><span class="t"><b class="mono">apostar al futuro</b> — lo nuevo de verdad: mercado y oferta que hoy no tienes (≈10 — suele generar ~70% del valor nuevo)</span></div>
+        <div class="fitem"><span class="t" style="color:var(--tx-mut)">se clasifica por NOVEDAD, jamás por plazo · la mezcla objetivo la firma el directorio (varía por industria) · la mezcla real se deriva sola al leer</span></div></div>
+    </div>`);
+  counter('M1 ✓ · M3 en curso · M2 activo · 54 M-cards');
 }
 
 /* ---------- módulo Cambios: gestión de cambios ISO — git invisible ---------- */
@@ -2657,7 +2674,7 @@ function inspectorHome(){
   if(state.mod==='metodo'){
     inEye.textContent='Método · engagement'; inTitle.textContent='M1 ✓ · M3 en curso · M2 activo';
     inBody.innerHTML=`<div class="dgroup"><div class="gt">Plantilla vs instancia</div>
-      <div style="font-size:12.5px;line-height:1.5">La <b>Definición</b> (M1·M2·M3, 45 M-cards) es IP versionada del fabricante; la <b>Instancia</b> (este engagement, sus gates y acuses) vive en el repo del cliente (N6). Los gates conectan el método con el ciclo de mejora.</div></div>
+      <div style="font-size:12.5px;line-height:1.5">La <b>Definición</b> (M1·M2·M3, 54 M-cards) es IP versionada del fabricante; la <b>Instancia</b> (este engagement, sus gates y acuses) vive en el repo del cliente (N6). Los gates conectan el método con el ciclo de mejora.</div></div>
       <div style="font-size:12px;color:var(--tx-faint)">Todo lo que el twin pinta es trazable a una M-card — el método es dato, no opinión.</div>`;
     return; }
   if(state.mod==='cambios'){
@@ -2959,7 +2976,7 @@ function openApuesta(a){ const objs=a.objetivos.map(id=>byId(DATA.objetivos,id))
   const ct=contraste(a);
   openDrawer('Apuesta · directorio', a.nm, `
     <div class="dgroup">
-      <div class="drow"><dt>Estado</dt><dd>${a.sellada?'<span class="chip teal">sellada</span>':'<span class="chip" style="border-color:var(--warn);color:var(--warn)">por sellar</span>'}</dd></div>
+      <div class="drow"><dt>Estado</dt><dd>${a.estado==='sellada'?'<span class="chip teal">sellada</span>':a.estado==='por-sellar'?'<span class="chip" style="border-color:var(--warn);color:var(--warn)">por sellar</span>':`<span class="chip">${a.estado}</span>`} <span style="font-size:10px;color:var(--tx-faint)">ciclo: por sellar → sellada → cumplida | retirada · re-apostar re-versiona</span></dd></div>
       <div class="drow"><dt>Riesgo vs apetito</dt><dd><span class="chip" style="border-color:${a.riesgo==='alto'?'var(--crit)':'var(--warn)'};color:${a.riesgo==='alto'?'var(--crit)':'var(--warn)'}">${a.riesgo}</span> <span style="font-size:11px;color:${ct.c}">${ct.t}</span></dd></div>
       <div class="drow"><dt>Apostamos</dt><dd style="font-size:12px">${a.apuesta_de.t} · tope ${a.apuesta_de.tope} <span style="color:var(--tx-faint)">— tiempo fijo, alcance variable</span></dd></div>
       <div class="drow"><dt>Horizonte</dt><dd style="font-size:12px">3 años · se rinde cuentas por ${state.ciclo==='okr'?'trimestre':'año'}</dd></div></div>
@@ -2971,7 +2988,7 @@ function openApuesta(a){ const objs=a.objetivos.map(id=>byId(DATA.objetivos,id))
     ${pms.length?`<div class="dgroup"><div class="gt">Proyectos que le aportan</div>
       ${pms.map(pm=>`<button class="loop-it" data-pm2="${pm.id}"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}</span><span class="mono" style="font-size:10px;color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}</div>`:''}
     <div class="dgroup"><div class="gt">Acciones (kinética — decide la Dirección)</div>
-      ${a.sellada?'':'<button class="btn" data-acc="sellar-apuesta">Sellar la apuesta › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>'}
+      ${a.estado!=='por-sellar'?'':'<button class="btn" data-acc="sellar-apuesta">Sellar la apuesta › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>'}
       <button class="btn" data-acc="re-apostar">Re-apostar (cambiar meta o riesgo) › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>
       <button class="btn" data-acc="retirar-apuesta">Retirar la apuesta › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>
       <button class="btn" data-acc="convocar-cuentas">Convocar rendición de cuentas › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · directa</span></button></div>

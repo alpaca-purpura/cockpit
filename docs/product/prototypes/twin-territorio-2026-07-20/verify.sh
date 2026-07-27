@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Suite de verificación del mockup — clicks con HIT-TESTING REAL (elementFromPoint), no element.click().
-# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (29/29 esperado — v15.1: +nivel1-apuesta-plata)
+# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (30/30 esperado — v15.2: +metodo-vocabularios)
 set -euo pipefail
 cd "$(dirname "$0")"
 TMP=$(mktemp -d)
@@ -138,6 +138,16 @@ window.addEventListener('load',()=>{whenReady(()=>{
     A(/esperar: S\//.test(rows[0].textContent),'portafolio sin costo de esperar');
     A(rows[0].textContent.includes('Marina')&&rows[2].textContent.includes('exprés'),'portafolio no ordenado por costo de esperar (cerrado al final)');
     state.insp='home'; inspectorHome(); });
+  t('metodo-vocabularios',()=>{ /* v15.2 (D-23): el módulo Método explica los valores posibles y su significado */
+    state.mod='metodo'; state.insp='home'; render();
+    const tx=document.body.textContent;
+    ['por sellar','sellada','cumplida','retirada','re-apostar','operar el hoy','expandir','apostar al futuro']
+      .forEach(v=>A(tx.includes(v),'vocabulario sin valor: '+v));
+    A(tx.includes('re-versionando')||tx.includes('re-versiona'),'re-apostar sin doctrina de re-versión');
+    A(tx.includes('NOVEDAD'),'bolsas sin regla de clasificación por novedad');
+    A(tx.includes('54 M-cards'),'conteo de cartas desincronizado del catálogo');
+    A(tx.includes('13 entidades'),'conteo de entidades sin D-23');
+    state.mod='territorio'; render(); });
   t('nivel3-tactico',()=>{ gotoNivel(3); A(document.querySelectorAll('.tcol').length>=4,'cols='+document.querySelectorAll('.tcol').length);
     A(document.body.textContent.includes('contramedida'),'sin regla de contramedida');
     A(document.body.textContent.includes('Embudo de ideas'),'sin embudo'); gotoNivel(2); });

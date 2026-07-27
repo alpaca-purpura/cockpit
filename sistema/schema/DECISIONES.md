@@ -325,6 +325,39 @@ portafolio sin etiquetar se MUESTRA "sin clasificar", no se inventa (anti-alucin
 
 ---
 
+## D-23 · `apuesta` — la apuesta del directorio como entidad (ciclo de vida + varas) — `clavada` (ratificada operador 2026-07-27 · M04/M22/M52/M54)
+El nivel 1 del twin (mockup v14→v15.1, firmado por el operador) muestra las apuestas del directorio
+como dato de mockup con ⚠ declarado; la auditoría del operador (2026-07-27) cerró valor/apetito/
+contraste en superficie y dejó UNA deuda: el **ciclo de vida formal**. Esta ficha lo clava.
+
+Se agrega: **entidad `apuesta`** (aggregate root, `apuestas/ap-*.yaml`, ArchiMate Course of Action,
+materialización de O1 "Oportunidad / Apuesta") + **enum `estado_apuesta: [por-sellar, sellada,
+cumplida, retirada]`** + **enum `nivel_riesgo: [bajo, medio, alto]`** + en
+`empresa.config_estrategia` entra **`apetito_riesgo: [{categoria, nivel}]`** (M52 — la vara del
+directorio, por categoría abierta por cliente).
+
+Campos: `estado` · `objetivos_ref[]` (≥1 — la apuesta se sostiene en objetivos del ciclo) ·
+`valor{monto, supuesto}` (M22 — dinero, no adjetivos; sin supuesto no se afirma) · `apetito{tiempo,
+tope}` (M04 appetite — se fija ANTES de apostar) · `riesgo{nivel, categoria}` (M52) · `ambicion`
+(M54/D-22) · `sello{por_ref, autoridad_ref, fecha}` (m3.e0.p5 — gate humano-irreducible, registro
+inmutable) · `resultado{veredicto, nota, fecha}` (cierre con evidencia).
+
+**Doctrina que esta ficha fija:** (1) **re-apostar NO es estado** — es acción kinética que
+RE-VERSIONA la apuesta sellada (git la versiona, mismo patrón que el arnés D-20); cambiar meta o
+riesgo jamás edita en silencio. (2) **cumplida/retirada cierran con evidencia** (veredicto contra
+sus objetivos — mismo patrón `proyecto_mejora.resultado`); nada se borra: retirada queda en el
+historial. (3) **Todo lo contrastable es DERIVADO al leer** — avance/salud (de sus objetivos),
+contraste riesgo↔apetito (dentro | al límite | excede | sin vara) y mezcla real de ambición: el twin
+los pinta, jamás los persiste. (4) **Apetito sin registro se MUESTRA "sin definir"** — nunca se
+inventa (anti-alucinación M23); fijarlo es firma del directorio (gestión-de-cambios). (5) **El sello
+es humano-irreducible**: solo el accountable, con gesto de peso, y queda quién/cuándo/qué (m3.e0.p5).
+
+**M04 extendida** (mismo commit): `rol_ancla: fuera-del-twin → ancla[estrategia]` con arbitraje
+explícito — el betting del ENGAGEMENT (cómo apostamos nosotros) sigue fuera del twin; al twin entra
+la apuesta del CLIENTE sellada por su directorio. Recíprocas M04⇄M52/M22/M54 cableadas.
+
+---
+
 ## Micro-opens bancados (no frenan; se resuelven al construir)
 - **actividad:** ✅ RESUELTO (D-08) → embebida inline en el proceso, id estable; archivo solo si se comparte/automatiza.
 - **función:** ✅ RESUELTO (D-09) → se **DISUELVE** (no entidad): = RACI derivado del wiring; lo no-procesal → campo en `rol`.

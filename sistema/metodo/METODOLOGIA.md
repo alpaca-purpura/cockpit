@@ -158,7 +158,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O1 Oportunidad / Apuesta · sec: O6
 - **Aporte único:** el APPETITE — tiempo fijo / alcance variable, y los no-gos de la apuesta
 - **Cuándo:** etapa 0/3 — apostar y dar forma al pitch
-- **Combina:** M02 (la oportunidad a apostar sale del OST) · M21 (el appetite se ata a mover un KR)
+- **Combina:** M02 (la oportunidad a apostar sale del OST) · M21 (el appetite se ata a mover un KR) · M22 (al sellar, la apuesta declara el valor que persigue en dinero con supuesto visible (D-23)) · M52 (arbitraje (recíproca en M52): appetite = tiempo/alcance que se apuesta; apetito de riesgo = exposición que el directorio tolera — dos varas distintas de la misma apuesta) · M54 (la apuesta lleva su bolsa de ambición y entra al rollup de mezcla real (D-22/D-23))
 - **Principios:** P1, P7
 
 <a id="m05"></a>**M05 · Jobs-to-be-Done (JTBD)**
@@ -559,7 +559,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Fuente:** Palantir — Foundry Ontology — best practices (adoptada CK-21). [https://www.palantir.com/docs/foundry/ontology/](https://www.palantir.com/docs/foundry/ontology/)
 - **Objeto:** O7 Contrato & Código · sec: T1
 - **Aporte único:** el METAMODELO PROPIO as-code en git — entidad-primero (no notation-first), con provenance y extensión por cliente como propiedades de la gramática
-- **Cuándo:** siempre — es la gramática de las 12 entidades del twin (CK-26; +`puesto`/`arnes` al materializar D-19/D-20 · CK-30); toda evolución del schema la respeta
+- **Cuándo:** siempre — es la gramática de las 13 entidades del twin (CK-26 + `apuesta` D-23; +`puesto`/`arnes` al materializar D-19/D-20 · CK-30); toda evolución del schema la respeta
 - **Combina:** M23 (los provenance structs (fuente+conf) son parte de la gramática) · M13 (ArchiMate presta tipos como vocabulario DENTRO del metamodelo propio) · M46 (el arnés entra a la gramática como entidad REGISTRO (procedencia+versión+drift), jamás como contenido)
 - **Principios:** P4, P5
 
@@ -658,7 +658,7 @@ YAML, regenerar con `gen_metodo.py` (gate anti-drift en pre-commit).
 | Dual Track Agile (M01) |  |  | ● |  |
 | Continuous Discovery (M02) | ● |  | ● |  |
 | Product Operating Model (M03) |  |  | ● |  |
-| Shape Up (M04) |  |  | ● |  |
+| Shape Up (M04) |  | ● | ● |  |
 | Jobs-to-be-Done (M05) | ● |  | ● |  |
 | Impact Mapping (M06) | ● |  | ● | ● |
 | Event Storming (M07) | ● |  | ● | ● |

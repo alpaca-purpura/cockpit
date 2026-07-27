@@ -2,7 +2,7 @@
 """gen_schema.py — gate anti-drift del objeto.schema.yaml v2 + verbos.yaml (D-A2 · historia schema-v2).
 
 Valida (sin vista generada — solo coherencia interna del contrato):
-  1. objeto.schema.yaml: version 2 · 12 nodos esperados · toda ref `enum:` resuelve en `enums:`
+  1. objeto.schema.yaml: version 2 · 13 nodos esperados (D-23 suma `apuesta`) · toda ref `enum:` resuelve en `enums:`
      (campos + subesquemas) · relaciones apuntan a entidades/weak-entities conocidas.
   2. acciones (capa kinética): entidad existe · nivel_min/aprobacion en sus enums · id verbo-objeto
      (jamás "set-…") · ≤ 10 acciones por entidad (anti Action-Sprawl).
@@ -32,6 +32,7 @@ ERRORES: list[str] = []
 NODOS_ESPERADOS = {
     "empresa", "persona", "rol", "area", "proceso", "sistema",
     "objetivo", "kpi", "proyecto_mejora", "idea", "capability", "brecha",
+    "apuesta",  # D-23 — la apuesta del directorio (O1 materializada)
 }
 # weak-entities / pseudo-destinos válidos en refs y relaciones (además de los nodos)
 DESTINOS_EXTRA = {"key_result", "actividad", "medicion", "unidad", "hito",

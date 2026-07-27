@@ -23,7 +23,7 @@ Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensio
 - **M01** Dual Track Agile · O1+O7 · columna·m3 · fuera-del-twin · ⇄M02,M18 · usar: decidir el límite entre exploración y construcción
 - **M02** Continuous Discovery / Opportunity Solution Tree (OST) · O1+O2 · columna·m1,m3 · fuera-del-twin · ⇄M05,M06 · usar: etapa 1 — exploración de valor; artefacto central del cockpit
 - **M03** Product Operating Model · T3+O1 · paraguas·m3 · fuera-del-twin · ⇄M02,M04 · usar: encuadre del modus operandi de M3
-- **M04** Shape Up · O1+O6 · columna·m3 · fuera-del-twin · ⇄M02,M21 · usar: etapa 0/3 — apostar y dar forma al pitch
+- **M04** Shape Up · O1+O6 · columna·m2,m3 · ancla[estrategia] · ⇄M02,M21,M22,M52,M54 · usar: etapa 0/3 — apostar y dar forma al pitch
 - **M05** Jobs-to-be-Done (JTBD) · O1+T2,O2 · columna·m1,m3 · fuera-del-twin · ⇄M02,M24 · usar: etapa 1, junto al OST, para anclar la oportunidad
 - **M06** Impact Mapping · O2+O1 · columna·m1,m3·ctx · fuera-del-twin · ⇄M21,M15,M22 · usar: Hilo de Oro; etapa 1; loop de valor
 
@@ -81,7 +81,7 @@ Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensio
 - **M24** This Is Service Design Doing (TiSDD) · T2+O3,O4 · columna·m1,m3 · fuera-del-twin · ⇄M10,M05,M25 · usar: productizar cada etapa (interfaces frontend + actores + experiencia del sponsor)
 
 ### I · Twin & automatización del trabajo
-- **M32** Doctrina de ontología Palantir (semántica + kinética) · O7+T1 · paraguas·m1,m2,m3·ctx · metamodelo-propio[metamodelo,contrato-entidad] · ⇄M23,M13,M46 · usar: siempre — es la gramática de las 12 entidades del twin (CK-26; +`puesto`/`arnes` al materializar D-19/D-20 ·…
+- **M32** Doctrina de ontología Palantir (semántica + kinética) · O7+T1 · paraguas·m1,m2,m3·ctx · metamodelo-propio[metamodelo,contrato-entidad] · ⇄M23,M13,M46 · usar: siempre — es la gramática de las 13 entidades del twin (CK-26 + `apuesta` D-23; +`puesto`/`arnes` al material…
 - **M33** DEMO / Enterprise Ontology (Dietz) · O3+O4 · situacional·— · horizonte[simulacion] · ⇄M07,M34 · usar: todavía no — horizonte D9; se activa solo con la decisión de formalizar transacciones
 - **M34** BPSim (Business Process Simulation) · O3+O6 · situacional·— · horizonte[simulacion] · ⇄M11,M29 · usar: todavía no — horizonte D9; requiere twin base + datos de operación + demanda real
 - **M35** ECRS (Eliminar · Combinar · Reordenar · Simplificar) · O3+O6 · columna·m1,m3·ctx · ancla[triage-automatizacion] · ⇄M09,M36,M29 · usar: triage de actividades (diagnóstico M1 y mejora M3), antes de correr los scores

@@ -119,14 +119,17 @@ M04:
   combina_con:
     - { m: M02, como: "la oportunidad a apostar sale del OST" }
     - { m: M21, como: "el appetite se ata a mover un KR" }
-  donde: { modulos: [m3], etapas: [e0, e3], capa_contexto: false }
+    - { m: M22, como: "al sellar, la apuesta declara el valor que persigue en dinero con supuesto visible (D-23)" }
+    - { m: M52, como: "arbitraje (recíproca en M52): appetite = tiempo/alcance que se apuesta; apetito de riesgo = exposición que el directorio tolera — dos varas distintas de la misma apuesta" }
+    - { m: M54, como: "la apuesta lleva su bolsa de ambición y entra al rollup de mezcla real (D-22/D-23)" }
+  donde: { modulos: [m2, m3], etapas: [e0, e3], capa_contexto: false }
   modo: columna
   twin:
-    rol_ancla: fuera-del-twin
+    rol_ancla: ancla
     proyecciones: []
-    dimensiones: []
-    cuando_si: "apostar con appetite/no-gos en las etapas 0/3 de NUESTRO engagement"
-    cuando_no: "método del ENGAGEMENT — cómo apostamos nosotros; no es dimensión del twin del cliente"
+    dimensiones: [estrategia]
+    cuando_si: "la apuesta SELLADA del directorio como entidad del twin (D-23): ciclo por-sellar → sellada → cumplida | retirada — re-apostar RE-VERSIONA, jamás edita; con valor en dinero (M22), apetito {tiempo, tope}, riesgo contrastado contra el apetito por categoría (M52) y bolsa de ambición (M54); el sello es gate humano del accountable (m3.e0.p5)"
+    cuando_no: "el betting del ENGAGEMENT (shaping del pitch, ciclos, cool-down — cómo apostamos NOSOTROS en m3) sigue fuera del twin; al twin entra solo la apuesta del CLIENTE sellada por su directorio"
 
 M05:
   nombre: "Jobs-to-be-Done (JTBD)"
@@ -802,7 +805,7 @@ M32:
   fuente: { autor: "Palantir", obra: "Foundry Ontology — best practices (adoptada CK-21)", url: "https://www.palantir.com/docs/foundry/ontology/" }
   que: "la GRAMÁTICA del objeto.schema: semántica (entidades + relaciones) + kinética (acciones/cambio) + provenance structs + principio open/closed (extensible sin fork)"
   aporte_unico: "el METAMODELO PROPIO as-code en git — entidad-primero (no notation-first), con provenance y extensión por cliente como propiedades de la gramática"
-  cuando_usar: "siempre — es la gramática de las 12 entidades del twin (CK-26; +`puesto`/`arnes` al materializar D-19/D-20 · CK-30); toda evolución del schema la respeta"
+  cuando_usar: "siempre — es la gramática de las 13 entidades del twin (CK-26 + `apuesta` D-23; +`puesto`/`arnes` al materializar D-19/D-20 · CK-30); toda evolución del schema la respeta"
   objeto_primario: O7
   objetos_secundarios: [T1]
   principios: [P4, P5]
