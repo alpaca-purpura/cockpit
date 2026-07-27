@@ -1,5 +1,21 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-26 → siguiente)
 
+> **★ v14.4 EJECUTADA (2026-07-26 — respaldo en TODOS los niveles, pedido del operador):** la capa
+> deja de ser solo-tableros: `respBadge` ahora lleva **onclick inline** (funciona en el lienzo
+> `$nodes` sin wireLinks) y la capa **nunca se atenúa** (`respAplica` murió). +18 entradas al
+> catálogo `RESPALDO` (36 total): **nivel 2** = las 5 bandas del mapa de valor (estrategia BSC/OKR/
+> Hoshin · cadena VSM/APQC/eventos · apoyo · gente RACI/persona/arnés · sistemas ArchiMate) +
+> header nuevo del Organigrama (solo si capa ON) — z1 hereda solo (mismas bandas) · **nivel 4** =
+> headers z2 (ISO 10013 n2 · BPMN · VSM) y z3 (ISO 10013 n3 · APQC · verbos) + tarjetas z3
+> (scores ECRS/criterios · autoridad RACI/TLX · procedencia) + piso (reusa `sala-trabajo`) +
+> tu-día · **módulos** = Método (M1/M2/M3) y Cambios (cola/versiones/historial). Tokens visibles
+> ABSORBIDOS: "(M36 · WS5)" · "(RACI · M25)" · "(RTLX · M39)" · "(M23)" · "(M46)" · "(CK-24)" ·
+> "(M46 · CK-30)"×2 (inspector z3 + roster de openPuesto). verify.sh **27/27** (test `respaldo-capa`
+> ampliado: bandas n2 · org · z2 · z3 sin jerga · Método · Cambios; OJO assert anti-jerga contra
+> `.z3card .gt`, NO contra `document.body` — el body incluye el texto del propio script del arnés
+> y se auto-matchea). Pendiente restante del eje: respaldo DENTRO de las fichas de entidad
+> (objetivo/proceso/kpi…) — hoy solo openPuesto§roster lo tiene.
+
 > **★ v14.3 EJECUTADA (2026-07-26 — capa "Respaldo del método"):** pedido del operador ("referencia
 > elegante de la metodología en cada punto del Directorio") → propuesta A firmada: **capa nueva en el
 > rail** (`data-capa="respaldo"`, oc N2) — apagada cero ruido; encendida, cada panel pinta cita mono

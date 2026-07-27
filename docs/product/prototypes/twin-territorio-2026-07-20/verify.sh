@@ -109,13 +109,22 @@ window.addEventListener('load',()=>{whenReady(()=>{
   t('nivel3-tactico',()=>{ gotoNivel(3); A(document.querySelectorAll('.tcol').length>=4,'cols='+document.querySelectorAll('.tcol').length);
     A(document.body.textContent.includes('contramedida'),'sin regla de contramedida');
     A(document.body.textContent.includes('Embudo de ideas'),'sin embudo'); gotoNivel(2); });
-  t('respaldo-capa',()=>{ /* v14.3: capa Respaldo del método — cita en cabecera + ficha con procedencia */
+  t('respaldo-capa',()=>{ /* v14.3/.4: capa Respaldo del método — cita en cabecera + ficha, en TODOS los niveles */
     gotoNivel(1); mclick(document.querySelector('[data-capa=respaldo]'));
-    const bs=document.querySelectorAll('[data-resp]'); A(bs.length>=9,'citas='+bs.length);
+    const bs=document.querySelectorAll('[data-resp]'); A(bs.length>=9,'citas n1='+bs.length);
     openRespaldo('dir-cambio30'); A(eye().includes('Respaldo'),eye());
     A(document.getElementById('inBody').textContent.includes('revisión por la dirección'),'ficha sin fuente común');
     A(document.getElementById('inBody').innerHTML.includes('M16'),'ficha sin código de procedencia');
     gotoNivel(3); A(document.querySelectorAll('[data-resp]').length>=5,'nivel 3 sin citas');
+    gotoNivel(2); A(document.querySelectorAll('[data-resp]').length>=5,'bandas nivel 2 sin citas');
+    setPiel('org'); render(); A(document.querySelector('[data-resp="org-estructura"]'),'organigrama sin cita'); setPiel('valor');
+    state.lienzo='p-cob'; state.escala='z2'; render(); A(document.querySelector('[data-resp="z2-flujograma"]'),'z2 sin cita');
+    state.act={pid:'p-cob',ord:3}; state.escala='z3'; render();
+    A(document.querySelectorAll('[data-resp]').length>=4,'z3 sin citas');
+    A([...document.querySelectorAll('.z3card .gt,.piso-arnes')].every(c=>!/M2[35]|M39|M46/.test(c.textContent)),'token M-NN sigue visible en z3');
+    state.mod='metodo'; state.insp='home'; render(); A(document.querySelectorAll('[data-resp]').length>=3,'Método sin citas');
+    state.mod='cambios'; render(); A(document.querySelectorAll('[data-resp]').length>=3,'Cambios sin citas');
+    state.mod='territorio'; state.escala='z0'; state.act=null; render();
     mclick(document.querySelector('[data-capa=respaldo]'));
     A(!document.querySelector('[data-resp]'),'apagada sigue pintando'); gotoNivel(2); });
   R.push('ERRS='+JSON.stringify(window.__ERRS||[]));
