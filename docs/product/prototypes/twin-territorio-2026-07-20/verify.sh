@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Suite de verificación del mockup — clicks con HIT-TESTING REAL (elementFromPoint), no element.click().
-# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (28/28 esperado — v15: +nivel1-varas)
+# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (29/29 esperado — v15.1: +nivel1-apuesta-plata)
 set -euo pipefail
 cd "$(dirname "$0")"
 TMP=$(mktemp -d)
@@ -123,6 +123,21 @@ window.addEventListener('load',()=>{whenReady(()=>{
     A(/aguanta la ambición/i.test(rail.textContent),'rail sin escalera de madurez');
     A(rail.querySelectorAll('.madrow').length===5,'madrow='+rail.querySelectorAll('.madrow').length);
     A(![...document.querySelectorAll('.rumbo,.dpane,.apcard')].some(e=>/\bM\d{2}\b/.test(e.textContent)),'token M-NN visible en nivel 1'); });
+  t('nivel1-apuesta-plata',()=>{ /* v15.1 (auditoría del operador): la promesa FinOps del respaldo se CUMPLE en superficie */
+    gotoNivel(1);
+    A(/persigue .*S\//.test(document.querySelector('.apcards').textContent),'apuestas sin plata en tarjeta');
+    openApuesta(DATA.apuestas[1]);
+    const fb=document.getElementById('inBody').textContent;
+    A(fb.includes('Valor que persigue'),'ficha sin valor en dinero');
+    A(fb.includes('Supuesto visible'),'valor sin supuesto');
+    A(/excede|al límite|dentro del apetito|sin definir/.test(fb),'ficha sin contraste riesgo↔apetito');
+    A(fb.includes('Apostamos'),'ficha sin apetito de apuesta (tiempo·tope)');
+    const pane=[...document.querySelectorAll('.dpane')].find(d=>d.textContent.includes('Proyectos en curso'));
+    const rows=[...pane.querySelectorAll('.cambio-row')];
+    A(rows.length===3,'portafolio filas='+rows.length);
+    A(/esperar: S\//.test(rows[0].textContent),'portafolio sin costo de esperar');
+    A(rows[0].textContent.includes('Marina')&&rows[2].textContent.includes('exprés'),'portafolio no ordenado por costo de esperar (cerrado al final)');
+    state.insp='home'; inspectorHome(); });
   t('nivel3-tactico',()=>{ gotoNivel(3); A(document.querySelectorAll('.tcol').length>=4,'cols='+document.querySelectorAll('.tcol').length);
     A(document.body.textContent.includes('contramedida'),'sin regla de contramedida');
     A(document.body.textContent.includes('Embudo de ideas'),'sin embudo'); gotoNivel(2); });

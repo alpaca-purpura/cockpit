@@ -1,5 +1,22 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-26 → siguiente)
 
+> **★ v15.1 EJECUTADA (2026-07-27 — auditoría DEL OPERADOR: "el respaldo promete plata que las
+> apuestas no muestran" → opción A firmada, cumplir la promesa):** hallazgos A1-A4 cerrados:
+> **(A1)** `DATA.apuestas[].valor{s,supuesto}` — tarjeta gana línea teal "persigue S/…"
+> (`title`=supuesto) y la ficha el grupo "Valor que persigue — en dinero, no en adjetivos" con
+> supuesto visible (M22 ahora VERDAD en superficie) · **(A2)** el renglón "Riesgo vs apetito" de
+> `openApuesta` ahora contrasta de verdad (chip + `contraste()`) · **(A3)** apetito Shape Up por
+> apuesta: `apuesta_de{t,tope}` → renglón "Apostamos: 2 trimestres · tope S/ 420k — tiempo fijo,
+> alcance variable" · **(A4)** portafolio del directorio ordenado por costo-de-esperar heredado de
+> la brecha (`codMes()` parsea `S/ Nk/mes|año`; cerrado al final) + "esperar: S/ 35k/mes" en crit
+> por fila. `contraste`/`CATNM`/`NIVR` LIFTED a global (los usa tarjeta Y ficha — ya no viven en
+> renderDirectorio). Respaldo `dir-apuestas`/`dir-portafolio` re-redactados a lo que SE VE.
+> verify.sh **29/29** (+`nivel1-apuesta-plata`; OJO selector: buscar pane por 'Proyectos en curso',
+> NO por 'el portafolio' — "Ambición d-EL PORTAFOLIO" del pane varas matchea primero). Fix visual
+> medido: subtitle del row portafolio con `white-space:normal` inline (la regla `.dpane .cambio-row
+> .ap{nowrap}` lo hacía SOLAPAR el ROI — getBoundingClientRect confirmó y verificó). Pasada visual
+> con ojos propios: 4 tarjetas con plata, ficha Marina completa, portafolio ordenado sin solape.
+
 > **★ v15 EJECUTADA (2026-07-27 — «Las varas del directorio», propuesta FIRMADA COMPLETA por el
 > operador):** los 6 huecos del método en nivel 1 cerrados como VARAS al lado de lo existente (cero
 > panel-sopa): **(1)** banda `.rumbo` bajo el header — visión 3-5a ▸ año ▸ trimestre (M26) + "bajada
