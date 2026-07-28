@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Suite de verificación del mockup — clicks con HIT-TESTING REAL (elementFromPoint), no element.click().
-# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (30/30 esperado — v15.2: +metodo-vocabularios)
+# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (31/31 esperado — v17: +v17-auditoria-director)
 set -euo pipefail
 cd "$(dirname "$0")"
 TMP=$(mktemp -d)
@@ -106,11 +106,16 @@ window.addEventListener('load',()=>{whenReady(()=>{
   t('nivel1-directorio',()=>{ gotoNivel(1); A(document.body.textContent.includes('Sala del directorio'),'sin sala');
     A(document.querySelectorAll('.apcard').length>=4,'apuestas='+document.querySelectorAll('.apcard').length);
     A(document.body.textContent.includes('Espera tu decisión'),'sin bandeja'); });
-  t('nivel1-varas',()=>{ /* v15: las varas del directorio — rumbo · mezcla de ambición · pares · contraste apetito · escalera */
+  t('nivel1-varas',()=>{ /* v15: las varas del directorio — rumbo · mezcla de ambición · pares · contraste apetito · escalera
+      · v16: rumbo = north-star de 3 renglones (NACD/exception-based reporting) — catchball migra a bandeja,
+      dimensión ciega queda SOLO en Alertas (cero repetición del mismo hecho en 2 lugares) */
     gotoNivel(1);
     A(document.querySelector('.rumbo'),'sin banda rumbo');
-    A(document.querySelector('.rumbo').textContent.includes('bajada acordada'),'rumbo sin acuerdo de bajada');
-    A(document.querySelector('.rumbo .ciega'),'rumbo sin dimensión ciega clickable');
+    A(document.querySelectorAll('.rumbo .brk').length===2,'rumbo sin 2 breakthroughs (meter)');
+    A(document.querySelectorAll('.rumbo .brk svg').length===2,'breakthroughs sin gráfico de progreso (meter SVG)');
+    A(!document.querySelector('.rumbo').textContent.includes('bajada acordada'),'catchball no debería re-narrarse en rumbo (vive en bandeja)');
+    A(document.body.textContent.includes('Cerrar la bajada acordada con Comercial'),'bajada pendiente sin acción en bandeja');
+    A(document.body.textContent.includes('ninguna meta la mide'),'dimensión ciega desapareció (debe seguir en Alertas)');
     A(document.querySelectorAll('.mixbar .seg').length===3,'segs='+document.querySelectorAll('.mixbar .seg').length);
     A(document.querySelectorAll('.mixmark').length>=2,'sin marcas de mezcla objetivo');
     const peers=[...document.querySelectorAll('.peer')]; A(peers.length>=2,'chips pares='+peers.length);
@@ -175,6 +180,34 @@ window.addEventListener('load',()=>{whenReady(()=>{
     openKpi(DATA.kpis[0]); A(!document.querySelector('#inBody [data-resp]'),'ficha apagada sigue citando');
     state.insp='home'; render();
     A(!document.querySelector('[data-resp]'),'apagada sigue pintando'); gotoNivel(2); });
+  t('v17-auditoria-director',()=>{ /* v17: mejoras de la auditoría con ojos de director — jerga fuera de superficie,
+      acciones que explican su destino, diff de corrida EN el lienzo, pulso clickeable, selector nivel 4 */
+    state.mod='mejora'; state.insp='home'; render();
+    const pv=document.querySelector('.pageview');
+    ['funil','money shot','rankeadas','in-tool','en vuelo','tollgate'].forEach(w=>A(!pv.textContent.toLowerCase().includes(w),'jerga viva en Mejora: '+w));
+    openProyecto(byId(DATA.proyectos,'pm-mar'));
+    const fb=document.getElementById('inBody').textContent;
+    A(!/tollgate|MASP/i.test(fb),'jerga viva en ficha proyecto');
+    A(fb.includes('Avanzar de fase'),'sin acción avanzar de fase');
+    A(fb.includes('ROI'),'ROI sin etiqueta en ficha');
+    const n0=SOLICITUDES.length;
+    ejecutarAccion({dataset:{acc:'avanzar-tollgate'},classList:{}});
+    A(SOLICITUDES.length===n0+1,'la acción no creó solicitud');
+    A(document.getElementById('toast').textContent.includes('responsable del proceso'),'toast genérica sin destino');
+    A(document.querySelector('#toast .tlink'),'toast sin link a la cola de Cambios');
+    state.mod='cambios'; state.insp='home'; render();
+    A(document.body.textContent.includes('EN COLA · recién enviada'),'la solicitud no aparece en la cola de Cambios');
+    state.mod='territorio'; state.nivel=2; state.escala='z0'; state.insp='home'; render();
+    const dot=document.querySelector('.pulso-dots i[data-obj]'); A(dot,'pulso sin punto clickeable');
+    A(dot.title.length>25&&dot.title.includes('meta'),'punto del pulso sin meta/valor en el title');
+    state.corrida=true; drillLienzo('p-cob');
+    A(document.querySelector('.act.ghost'),'corrida sin actividad fantasma en el lienzo');
+    state.corrida=false;
+    gotoNivel(4); A(document.getElementById('procSel'),'nivel 4 sin selector de proceso');
+    gotoNivel(2);
+    A(document.getElementById('back').title.length>10,'Big picture deshabilitado sin explicación');
+    gotoNivel(1); A(document.querySelector('.search').title.length>10,'búsqueda deshabilitada sin explicación');
+    gotoNivel(2); });
   R.push('ERRS='+JSON.stringify(window.__ERRS||[]));
   document.title='V8SUITE :: '+R.join(' | ');
 });});

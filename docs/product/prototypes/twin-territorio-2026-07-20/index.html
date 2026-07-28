@@ -269,7 +269,7 @@
   /* brecha pin */
   .pin { position:absolute; transform:translate(-50%,-108%); display:flex; flex-direction:column; align-items:center; cursor:pointer; z-index:6; }
   .pin .body { background:var(--crit-dim); border:1px solid var(--crit); color:var(--crit); border-radius:14px; padding:6px 9px; max-width:206px;
-    font-size:11px; line-height:1.25; box-shadow:0 12px 30px -16px rgba(226,118,107,.5); backdrop-filter:blur(3px); }
+    font-size:11px; line-height:1.25; box-shadow:0 12px 30px -16px rgba(226,118,107,.5); }
   .pin.med .body { background:var(--warn-dim); border-color:var(--warn); color:var(--warn); }
   .pin.low .body { background:rgba(255,255,255,.05); border-color:var(--border); color:var(--tx-mut); }
   .pin .body .cost { font-family:var(--font-mono); font-size:9.5px; opacity:.85; margin-top:3px; display:block; }
@@ -286,7 +286,7 @@
 
   /* cinética token */
   .kin { position:absolute; transform:translate(-50%,-50%); z-index:7; cursor:pointer; background:rgba(0,183,170,.1); border:1px dashed var(--brand);
-    color:var(--brand-hi); border-radius:20px; padding:5px 11px 5px 8px; font-size:11px; display:flex; align-items:center; gap:7px; backdrop-filter:blur(3px); }
+    color:var(--brand-hi); border-radius:20px; padding:5px 11px 5px 8px; font-size:11px; display:flex; align-items:center; gap:7px; }
   .kin .pdca { font-family:var(--font-mono); font-size:8.5px; background:var(--teal-900); color:var(--brand-hi); border-radius:4px; padding:1px 5px; }
   .kin .spark { width:7px; height:7px; border-radius:50%; background:var(--brand); box-shadow:0 0 10px var(--brand); animation:pulse 1.8s infinite; }
   @keyframes pulse { 0%,100%{opacity:.4;transform:scale(.8)} 50%{opacity:1;transform:scale(1.25)} }
@@ -398,7 +398,8 @@
 
   /* sala de mando (estado sin selección del inspector) */
   .pulso-dots { display:flex; gap:4px; flex-wrap:wrap; }
-  .pulso-dots i { width:12px; height:12px; border-radius:3px; }
+  .pulso-dots i { width:12px; height:12px; border-radius:3px; cursor:pointer; transition:transform .1s; }
+  .pulso-dots i:hover { transform:scale(1.3); outline:1px solid var(--border); }
   .apuesta-card { border:1px solid var(--teal-800); background:linear-gradient(180deg, rgba(20,26,25,.9), rgba(12,17,16,.9));
     border-radius:11px; padding:13px; display:flex; flex-direction:column; gap:0; box-shadow:0 0 0 1px rgba(0,183,170,.06); }
   .apuesta-card .hd { display:flex; align-items:center; gap:8px; }
@@ -435,6 +436,9 @@
   .corrida-banner .btn { padding:4px 10px; font-size:11.5px; }
   .main.corrida .corrida-banner { display:flex; }
   .main.corrida .topbar { top:36px; }
+  /* v17 · el diff de la corrida se PINTA sobre el lienzo: actividad propuesta = fantasma punteado */
+  .act.ghost { border:1px dashed var(--warn); background:rgba(224,173,78,.06); }
+  .act.ghost .ord { color:var(--warn); }
   .main.corrida::after { content:""; position:absolute; inset:0; pointer-events:none; z-index:24;
     box-shadow:inset 0 0 0 2px rgba(224,173,78,.35); }
   .node.diff .area-node, .node.diff .proc-node { border-color:var(--warn); box-shadow:0 0 0 1px rgba(224,173,78,.45); }
@@ -588,14 +592,17 @@
   .apcard .nm{ font-size:13px; font-weight:600; line-height:1.2; }
   .apcard .mt{ font-family:var(--font-mono); font-size:10px; color:var(--tx-mut); }
   /* v15 · las varas del directorio — rumbo · mezcla de ambición · pares · escalera (cero jerga en superficie) */
+  /* v16 · rumbo re-diseñado (board-dashboard best practice: NACD single-glance + exception-based reporting +
+     dataviz skill "meter" para ratio-contra-límite) — 3 renglones únicos, cero repetición con Alertas/Bandeja */
   .rumbo{ border:1px solid var(--border); border-left:3px solid var(--teal-700); border-radius:10px; padding:9px 12px; margin:0 0 14px; }
   .rumbo .pt{ font-family:var(--font-mono); font-size:8.5px; letter-spacing:.12em; color:var(--tx-faint); text-transform:uppercase; margin-bottom:7px; }
-  .rumbo .cad{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; font-size:12.5px; }
-  .rumbo .cad .k{ font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--tx-faint); margin-right:6px; }
-  .rumbo .sep{ color:var(--tx-faint); }
-  .rumbo .foot{ font-family:var(--font-mono); font-size:10.5px; color:var(--tx-mut); margin-top:7px; display:flex; gap:8px; flex-wrap:wrap; align-items:baseline; }
-  .rumbo .ciega{ background:none; border:none; padding:0; font-family:var(--font-mono); font-size:10.5px; color:var(--warn); cursor:pointer; text-align:left; }
-  .rumbo .ciega:hover{ text-decoration:underline; }
+  .rumbo .rrow{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:12.5px; margin-top:6px; }
+  .rumbo .rrow .k{ font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--tx-faint); margin-right:2px; }
+  .rumbo .brks{ gap:22px; }
+  .rumbo .brk{ display:flex; align-items:center; gap:7px; background:none; border:none; padding:0; margin:0; font:inherit; cursor:pointer; text-align:left; }
+  .rumbo .brk:hover .brknm{ text-decoration:underline; }
+  .rumbo .brknm{ font-size:12px; color:var(--tx); white-space:nowrap; }
+  .rumbo .mtrlab{ font-family:var(--font-mono); font-size:9.5px; color:var(--tx-faint); white-space:nowrap; }
   .mixwrap{ margin-top:8px; }
   .mixbar{ position:relative; display:flex; height:13px; margin:15px 0 4px; }
   .mixbar .seg{ height:100%; border-right:1px solid rgba(0,0,0,.55); }
@@ -617,6 +624,7 @@
   .tcol .th:hover{ color:var(--brand-hi); }
   .ncm{ font-size:10.5px; color:var(--crit); padding:1px 0 6px 4px; }
   #toast{ position:absolute; bottom:56px; left:50%; transform:translateX(-50%); background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:8px 16px; font-size:12px; color:var(--tx-mut); opacity:0; transition:opacity .25s; pointer-events:none; z-index:60; max-width:72%; }
+  #toast .tlink{ pointer-events:auto; color:var(--brand-hi); cursor:pointer; text-decoration:underline; text-underline-offset:2px; margin-left:6px; white-space:nowrap; }
   [data-acc].na2{ opacity:.38; cursor:not-allowed; }
 </style>
 
@@ -674,9 +682,9 @@
           <button class="capa on" data-capa="brechas"><span class="sw"></span><span class="lab"><b>Brechas</b><span>pin sobre lo que ataca</span></span><span class="oc">O6</span></button>
           <div class="capa-leg">▲ color = severidad · etiqueta = costo de no hacer</div>
           <button class="capa" data-capa="cinetica"><span class="sw"></span><span class="lab"><b>Cinética</b><span>brecha → proyecto → KPI</span></span><span class="oc">O7</span></button>
-          <div class="capa-leg">● proyecto en vuelo · etiqueta = fase PDCA</div>
+          <div class="capa-leg">● proyecto en curso · etiqueta = fase PDCA</div>
           <button class="capa" data-capa="trabajo"><span class="sw"></span><span class="lab"><b>Trabajo</b><span>arneses por puesto</span></span><span class="oc">N15·17</span></button>
-          <div class="capa-leg">el twin COMPILA el trabajo (CK-29): ⛨ arnés vigente · ⚠ desactualizado (el twin cambió) · gris = puesto sin arnés (el gap)</div>
+          <div class="capa-leg">el twin COMPILA el trabajo: ⛨ arnés vigente · ⚠ desactualizado (el twin cambió) · gris = puesto sin arnés (el gap)</div>
           <button class="capa" data-capa="respaldo"><span class="sw"></span><span class="lab"><b>Respaldo del método</b><span>cada panel cita su fuente</span></span><span class="oc">N2</span></button>
           <div class="capa-leg">§ = la metodología detrás de lo que ves · clic en la cita = su ficha · nada de lo que se pinta es opinión</div>
         </div>
@@ -686,9 +694,9 @@
 
   <main class="main" id="mainEl">
     <div class="corrida-banner" id="corridabanner">
-      <span class="cb-dot"></span><b>Corrida · Cobranza digital fase 2</b>&nbsp;— borrador what-if · rama sobre el repo oficial · el As-Is NO se toca
+      <span class="cb-dot"></span><b>Corrida · Cobranza digital fase 2</b>&nbsp;— borrador de simulación · rama aparte sobre el repo oficial · el As-Is NO se toca
       <span style="flex:1"></span>
-      <button class="btn" id="corridaGate" title="Gate explícito: el diff pasa por aprobación (PR a N6)">Enviar a aprobación ›</button>
+      <button class="btn" id="corridaGate" title="Los cambios propuestos pasan por la cola de Cambios — nada se aplica solo">Enviar a aprobación ›</button>
       <button class="btn" id="corridaExit">‹ Volver al As-Is</button>
     </div>
     <div class="topbar">
@@ -696,7 +704,7 @@
         <button class="idpill" id="idpill"><span class="st"></span>As-Is · Terranova<span class="car">▾</span></button>
         <div class="idmenu" id="idmenu">
           <button class="it" id="itAsis"><span class="chk">✓</span><span><b>As-Is · rama principal</b><small>estado real observado — solo lectura</small></span></button>
-          <button class="it" id="itCorrida"><span class="chk"></span><span><b>Corrida · Cobranza digital fase 2</b><small>what-if en borrador — rama sobre N6, no toca el As-Is</small></span></button>
+          <button class="it" id="itCorrida"><span class="chk"></span><span><b>Corrida · Cobranza digital fase 2</b><small>simulación en borrador — rama aparte, no toca el As-Is</small></span></button>
           <div class="sep"></div>
           <button class="it dis"><span class="chk"></span><span>＋ Nueva corrida<small>escenario con nombre, diffs y deltas</small></span></button>
         </div>
@@ -725,11 +733,11 @@
 
     <div class="viewctl">
       <div class="zoomctl"><button id="zout" title="Alejar">−</button><span class="zlevel" id="zlevel">100%</span><button id="zin" title="Acercar">+</button><button id="zfit" title="Encajar">⤢</button></div>
-      <div class="lodctl" id="lodctl"><span class="lab">Niveles</span><button data-lod="1">1</button><button data-lod="2">2</button><button class="on" data-lod="3">3</button><button data-lod="4" title="puestos — la nómina completa sobre la estructura (D-19)">4</button></div>
+      <div class="lodctl" id="lodctl"><span class="lab">Niveles</span><button data-lod="1">1</button><button data-lod="2">2</button><button class="on" data-lod="3">3</button><button data-lod="4" title="puestos — la nómina completa sobre la estructura">4</button></div>
     </div>
     <div class="minimap" id="minimap"><div id="mmdots"></div><div class="vw" id="mmview"></div></div>
 
-    <div class="hint" id="hint">El mapa de valor = el plano de los <b>roles</b>: quién opera qué proceso · toca un objetivo y su hilo cruza las bandas · doble-click un proceso abre su lienzo · piel <b>Organigrama</b> = el plano de los <b>puestos</b> (D-19): quién ocupa, quién reporta, quién supervisa agentes</div>
+    <div class="hint" id="hint">El mapa de valor = el plano de los <b>roles</b>: quién opera qué proceso · toca un objetivo y su hilo cruza las bandas · doble-click un proceso abre su lienzo · piel <b>Organigrama</b> = el plano de los <b>puestos</b>: quién ocupa, quién reporta, quién supervisa agentes</div>
   </main>
 
   <aside class="inspector" id="inspector">
@@ -968,7 +976,7 @@ const DATA = {
   arneses:[
     {id:'h-cob-ancob', deriva_de:{puesto:'Analista de Cobranza', rol:'Analista de Cobranza', proceso:'p-cob'},
      v:'v3', canal:'estable', hash_fuente:'tw:b21e77',
-     autonomia:'L2', autonomia_razon:'act.06 con mandato preventivo (compliance) → techo L2 sin ratificación (CK-30 §9)',
+     autonomia:'L2', autonomia_razon:'act.06 con mandato preventivo (cumplimiento) → techo L2 sin ratificación del directorio',
      supervisor:'Jefe de Cobranza',
      verificacion_humana:{que:['compromisos registrados vs convenios del ERP','tono de los recordatorios enviados'], evidencia:'muestra de 5 corridas/sem + log completo', tiempo:'20 min/sem'},
      supervision:{corridas_sem:34, anulaciones_sem:3, ultima:'hace 2 días'},
@@ -978,7 +986,7 @@ const DATA = {
        {g:'sin acceso a nómina ni datos de RRHH', mecanismo:'sandbox'}],
      compilado:'2026-07-18 · desde: mapa Cobranza v1 + verbos + conocimiento/cobranza + hilo (k-dso · k-cob)',
      skills:['monitorear-cartera','clasificar-morosidad','preparar-recordatorios','registrar-compromisos'],
-     uso:'34 corridas/sem · agregado por rol (CK-24)', acts:[1,2,3,6,7], mueve:['k-dso','k-cob'], fuente:'Arnesia N15', conf:'alta'},
+     uso:'34 corridas/sem · agregado por rol, jamás por persona', acts:[1,2,3,6,7], mueve:['k-dso','k-cob'], fuente:'Arnesia N15', conf:'alta'},
     {id:'h-cob-jef', deriva_de:{puesto:'Jefe de Cobranza', rol:'Jefe de Cobranza', proceso:'p-cob'},
      v:'v1', canal:'estable', hash_fuente:'tw:7c41d9',
      autonomia:'L1', autonomia_razon:'negociación humano-por-diseño (act.04): el agente solo prepara, jamás negocia',
@@ -1222,18 +1230,18 @@ const DATA = {
         {ord:2, lane:0, verbo:'diagnosticar', ttl:'Diagnosticar si procede por garantía', tipo:'humana', toque:'1h', espera:'2d', sist:['Portal clientes'], triage:'aumentable', conf:'media', fte:'Entrevista', note:'criterio técnico por partida — el catálogo (borrador) lo asistiría'},
         {ord:3, lane:1, verbo:'atender', ttl:'Atender la reparación en la unidad', tipo:'humana', toque:'4h', espera:'7d', sist:['—'], triage:'humano-por-diseño', conf:'alta', fte:'Observación', note:'espera = agenda del propietario + cuadrilla disponible'},
         {ord:4, lane:0, verbo:'cerrar', ttl:'Cerrar con conformidad firmada del propietario', tipo:'humana', toque:'30m', espera:'—', sist:['Portal clientes'], mandato:'preventivo', conf:'alta', fte:'Portal clientes (leído)', note:'sin conformidad no hay cierre — control protegido'},
-        {ord:5, lane:0, verbo:'medir', ttl:'Medir NPS y consolidar causas raíz', tipo:'humana', toque:'2h/mes', espera:'—', sist:['Portal clientes'], triage:'automatizable-rpa', conf:'media', fte:'Encuesta postventa', note:'las causas raíz NO llegan a Diseño ni Obra — loop abierto'},
+        {ord:5, lane:0, verbo:'medir', ttl:'Medir NPS y consolidar causas raíz', tipo:'humana', toque:'2h/mes', espera:'—', sist:['Portal clientes'], triage:'automatizable-rpa', conf:'media', fte:'Encuesta postventa', note:'las causas raíz NO llegan a Diseño ni Obra — el ciclo queda abierto'},
       ],
       seq:[ {f:1,t:2},{f:2,t:3,c:'procede garantía'},{f:2,t:4,c:'no procede — informar',alt:true},{f:3,t:4},{f:4,t:5} ]
     },
     'p-cierre':{ proc:'p-cierre', nm:'Cierre contable mensual',
-      sub:'AS-IS · de 9 a 4.5 días tras pm-cie (loop CERRADO con veredicto) · dueño Contador General. Disparador: día 1 del mes.',
+      sub:'AS-IS · de 9 a 4.5 días tras pm-cie (ciclo CERRADO con veredicto) · dueño Contador General. Disparador: día 1 del mes.',
       lanes:[ {role:'Analista Contable',k:'carril'}, {role:'Contador General',k:'carril'}, {role:'Analista Financiero',k:'carril'} ],
       vsm:{toque:'4.5d', espera:'—'},
       acts:[
         {ord:1, lane:0, verbo:'conciliar', ttl:'Conciliar bancos, caja de obra y módulos del ERP', tipo:'humana', toque:'1.5d', espera:'—', sist:['Nubecont ERP','Banca Empresas'], triage:'automatizable-rpa', conf:'alta', fte:'Nubecont ERP (leído)', note:'insumo: conciliación bancaria + rendiciones de caja'},
         {ord:2, lane:0, verbo:'provisionar', ttl:'Provisionar gastos y devengar por proyecto', tipo:'humana', toque:'1d', espera:'—', sist:['Nubecont ERP'], triage:'aumentable', conf:'alta', fte:'Nubecont ERP (leído)', note:''},
-        {ord:3, lane:1, verbo:'cerrar', ttl:'Correr el checklist pre-cierre y cerrar el período', tipo:'humana', toque:'1d', espera:'—', sist:['Nubecont ERP'], mandato:'preventivo', conf:'alta', fte:'Checklist (arnés ⛨ h-cierre-cont)', note:'el checklist nació del proyecto pm-cie y se recompiló al arnés — el loop llegó al edge'},
+        {ord:3, lane:1, verbo:'cerrar', ttl:'Correr el checklist pre-cierre y cerrar el período', tipo:'humana', toque:'1d', espera:'—', sist:['Nubecont ERP'], mandato:'preventivo', conf:'alta', fte:'Checklist (arnés ⛨ h-cierre-cont)', note:'el checklist nació del proyecto pm-cie y se recompiló al arnés — el ciclo llegó hasta el puesto'},
         {ord:4, lane:2, verbo:'analizar', ttl:'Analizar márgenes por proyecto contra presupuesto', tipo:'humana', toque:'0.5d', espera:'—', sist:['Nubecont ERP'], triage:'aumentable', conf:'media', fte:'Modelo en Excel', note:'candidato: el twin ya tiene el hilo margen→objetivo'},
         {ord:5, lane:1, verbo:'reportar', ttl:'Reportar EEFF a Directorio y banco', tipo:'humana', toque:'0.5d', espera:'—', sist:['Nubecont ERP'], conf:'alta', fte:'Entrevista', note:''},
       ],
@@ -1284,7 +1292,7 @@ const DATA = {
     'p-cob:3':{ ins:['cartera clasificada','playbook de llamadas','política de refinanciamiento'], out:'compromisos de pago + derivaciones (mora dura · campo)',
       tareas:[{v:'preparar',t:'Preparar el contexto de cada cuenta (historial + última promesa)'},{v:'contactar',t:'Llamar / escribir según el guion del tramo'},{v:'negociar',t:'Ofrecer fecha de pago dentro de política'},{v:'registrar',t:'Registrar el compromiso y la próxima acción'},{v:'derivar',t:'Derivar: mora dura → Jefe · sin respuesta ×3 → campo'}],
       m36:{volumen:'~60 contactos/día', exc:'25%', datos:'semi-estructurados', reglas:'con criterio', promptable:true, tolerancia:'media', riesgo:'medio', rpa:34, agente:72},
-      nota:'RTLX 71 (agregado por rol) — carga emocional alta. El agente PREPARA y REDACTA; la conversación difícil queda humana. Candidato a skill del arnés (idea i-agente en el funil).' },
+      nota:'RTLX 71 (agregado por rol) — carga emocional alta. El agente PREPARA y REDACTA; la conversación difícil queda humana. Candidato a skill del arnés (idea i-agente en el embudo).' },
     'p-cob:4':{ ins:['casos de mora dura','política de refinanciamiento'], out:'convenio firmado o escalamiento al CFO',
       tareas:[{v:'evaluar',t:'Evaluar capacidad de pago y garantías del caso'},{v:'proponer',t:'Armar propuesta dentro de política (plazo × tasa)'},{v:'negociar',t:'Negociar con el comprador (40 convenios/mes)'},{v:'escalar',t:'Fuera de política → escalar al CFO con sustento'}],
       m36:{volumen:'40/mes', exc:'40%', datos:'no estructurados', reglas:'criterio experto', promptable:false, tolerancia:'baja', riesgo:'alto', rpa:8, agente:22},
@@ -1346,7 +1354,7 @@ const DATA = {
   },
 };
 
-/* ---- v14 · NIVEL 1 — apuestas + apetito (⚠ aún NO son entidades del schema — ficha D-NN
+/* ---- v14 · NIVEL 1 — apuestas + apetito (D-23: entidad `apuesta` = 13º nodo + apetito en config_estrategia
    pendiente vía /metodo-aprende; acá viven como dato del mockup, ancladas a objetivos reales) ---- */
 DATA.apuestas=[  // valor = FinOps (dinero + supuesto visible) · apuesta_de = apetito Shape Up (tiempo fijo · tope) — v15.1
   {id:'ap-lid', nm:'Liderazgo en vivienda media', objetivos:['o-lid','o-hog'], riesgo:'medio', riesgo_cat:'expansion', ambicion:'expandir', estado:'sellada',
@@ -1360,12 +1368,12 @@ DATA.apuestas=[  // valor = FinOps (dinero + supuesto visible) · apuesta_de = a
 ];
 DATA.apetito={ liquidez:'media', reputacion:'baja', expansion:'alta — sin definir por el directorio' };
 /* ---- v15 · «Las varas del directorio» — rumbo (plan 3 años) · mezcla de ambición · escalera de
-   madurez · rangos de pares. ⚠ dato simulado — misma ficha D-NN pendiente que apuestas/apetito
+   madurez · rangos de pares. ⚠ dato simulado — rumbo/madurez/peers aún sin ficha (apuestas/apetito ya son D-23)
    (el campo `ambicion` SÍ es esquema real, D-22). Los derivados (mezcla real, contraste
    riesgo↔apetito, estado de apuesta) se computan AL LEER — jamás se guardan. ---- */
 DATA.rumbo={
   vision:{h:'2029', t:'Líder en vivienda media del Perú'},
-  anio:['Caja sana en todos los proyectos','Marina reactivada y vendiendo'],
+  anio:['o-caja','o-mar'],   // refs → DATA.objetivos (v16: id real, no string duplicado — cero drift si el objetivo cambia de nombre)
   bajada:{acordadas:3, de:4, pendiente:'Comercial'},   // acuerdo ida-y-vuelta al bajar cada meta
 };
 DATA.mezclaObjetivo={ operar:70, expandir:20, transformar:10, fijada:false };  // default industria — POR FIJAR
@@ -1387,6 +1395,10 @@ function contraste(a){ const raw=DATA.apetito[a.riesgo_cat]||'';
   return d>0? {t:`excede tu apetito de ${CATNM[a.riesgo_cat]} (${ap})`, c:'var(--crit)'}
        : d===0? {t:`al límite del apetito de ${CATNM[a.riesgo_cat]} (${ap})`, c:'var(--warn)'}
        : {t:`dentro del apetito de ${CATNM[a.riesgo_cat]} (${ap})`, c:'var(--tx-mut)'}; }
+/* progreso de un KR hacia su meta (0-1, clamp) — domain [from,to], funciona en ambas direcciones
+   (meta mayor o menor que el origen); usado por el meter del rumbo (dataviz skill: "ratio contra límite") */
+function krProg(o){ const {from,to,cur}=o.kr, span=to-from; if(!span) return 0;
+  return Math.max(0,Math.min(1,(cur-from)/span)); }
 /* costo de esperar de un proyecto — heredado de la brecha que ataca, normalizado a S/ k/mes */
 function codMes(pm){ const g=pm.brecha&&byId(DATA.brechas,pm.brecha); if(!g||!g.costo) return null;
   const m=g.costo.match(/S\/\s*([\d.]+)k\/(mes|año)/); if(!m) return null;
@@ -1513,14 +1525,22 @@ const ACC={
 const RANGO={'':99, dir:4, ger:3, jefe:2, ana:1};
 const NIVAUT={4:'Dirección',3:'Estratégico',2:'Táctico',1:'Operativo'};
 let _toastT=null;
-function toast(m){ const t=document.getElementById('toast'); if(!t)return; t.textContent=m; t.style.opacity=1;
-  clearTimeout(_toastT); _toastT=setTimeout(()=>t.style.opacity=0,3400); }
+function toast(m,conLink){ const t=document.getElementById('toast'); if(!t)return;
+  t.innerHTML=m+(conLink?'<span class="tlink" onclick="accion()">Ver la cola de Cambios ›</span>':'');
+  t.style.opacity=1;
+  clearTimeout(_toastT); _toastT=setTimeout(()=>t.style.opacity=0,conLink?6000:3400); }
+/* v17 · solicitudes que nacen de acciones de ESTA sesión — se ven en la cola del módulo Cambios */
+let SOLICITUDES=[], _scN=14;
 function ejecutarAccion(b){ const a=ACC[b.dataset.acc];
   if(!a){ state.mod='cambios'; state.insp='home'; render(); return; }   // acción fuera de catálogo → cola
   const quien={dir:'Dirección',ger:'Gerencia',jefe:'Jefatura',ana:'Analista'}[state.verComo]||'tú (sin lente)';
   if(RANGO[state.verComo]<a[0]){ toast('Fuera de tu autoridad — esta acción la decide el nivel '+NIVAUT[a[0]]+'.'); return; }
   DATA.historial.unshift(`ahora · <b>${quien}</b> · ${a[2]} · ${a[1]}`);
-  toast('Registrado en el historial · aprobación: '+a[1]+(a[1]==='directa'?' (queda trazada)':' — entra a la cola de Cambios.'));
+  if(a[1]!=='directa') SOLICITUDES.unshift({sc:'SC-'+(++_scN), tt:a[2].charAt(0).toUpperCase()+a[2].slice(1), ap:'acción: '+b.dataset.acc+' · solicita: '+quien, apr:a[1]});
+  /* la toast dice QUÉ pasa con lo que ves — no un "registrado" genérico */
+  if(a[1]==='directa') toast(`Hecho: ${a[2]} — quedó trazado en el historial.`,true);
+  else if(a[1]==='revisión-dueño') toast(`Solicitud enviada: ${a[2]}. El responsable del proceso debe acusar — hasta entonces lo que ves no cambia.`,true);
+  else toast(`Solicitud enviada al comité de cambios: ${a[2]}. Lo que ves sigue vigente hasta que se apruebe.`,true);
 }
 /* ===== v14.3 · capa RESPALDO DEL MÉTODO — cada panel cita la metodología que lo sostiene =====
    Espejo del `met:` que ya llevan el schema (222 campos) y los pasos del proceso: el panel declara
@@ -1531,7 +1551,7 @@ const RESPALDO={
     {f:'Apetito de riesgo por categoría (ISO 31000 / COSO)', uso:'la gobernanza fija cuánto riesgo se acepta por categoría (liquidez · reputación · expansión); cada apuesta se contrasta contra esa vara — "excede" no es una opinión. Sin definir se MUESTRA sin definir, jamás se inventa.', m:'M52'},
     {f:'Portafolio de ambición (70/20/10)', uso:'todo esfuerzo se clasifica por novedad en tres bolsas — operar el hoy · expandir · apostar al futuro. La mezcla real se deriva al leer y se contrasta con la mezcla objetivo que este directorio firma; la mezcla ES el apetito hecho asignación. El ratio no es dogma: se ajusta por industria.', m:'M54'},
     {f:'Shape Up — el apetito de la apuesta', uso:'cuánto estamos dispuestos a gastar se fija ANTES de apostar: tiempo fijo, alcance variable, con "hasta aquí no" explícitos.', m:'M04'} ],
-    gap:'Apetito por categoría y mezcla objetivo aún sin ficha de dato (D-NN pendiente); la activación plena del marco de riesgo es horizonte gateado por demanda. El campo ambición SÍ es esquema real (D-22).' },
+    gap:'Apetito por categoría ya es esquema real (D-23 · config_estrategia); la mezcla objetivo aún no tiene ficha de dato. La activación plena del marco de riesgo es horizonte gateado por demanda. El campo ambición también es esquema real (D-22).' },
   'dir-pulso':{ cita:'OKR · Hoshin', t:'¿Avanzan las apuestas?', items:[
     {f:'OKR — objetivos con meta del trimestre', uso:'una apuesta avanza solo si sus objetivos del ciclo se mueven hacia la meta; el punto de color resume el peor de ellos.', m:'M21'},
     {f:'Hoshin Kanri — despliegue de la estrategia', uso:'pocas apuestas del directorio bajan en cascada: plan a 3 años → año → trimestre.', m:'M26'},
@@ -1545,10 +1565,10 @@ const RESPALDO={
     {f:'Shape Up — apostar, no planear en exceso', uso:'pocas apuestas selladas, con riesgo y apetito explícitos: la ficha declara cuánto se apuesta (tiempo fijo · tope de gasto — "Apostamos"). Sellar es un acto con firma (paso 5 · etapa 0 del método).', m:'M04'},
     {f:'FinOps — valor cuantificado', uso:'cada apuesta declara el valor que persigue en dinero, no en adjetivos — la línea "persigue S/…" de la tarjeta, con el supuesto visible en la ficha.', m:'M22'} ]},
   'dir-rumbo':{ cita:'plan de 3 años', t:'El rumbo', items:[
-    {f:'Hoshin Kanri — despliegue de la estrategia', uso:'visión a 3-5 años → prioridades del año → metas del trimestre: una sola cascada. Cada meta baja con acuerdo ida-y-vuelta (quien la recibe la negocia — jamás imposición).', m:'M26'},
-    {f:'Balanced Scorecard — perspectivas', uso:'chequeo de completitud: que ninguna dimensión estratégica quede sin meta que la mida — la línea "dimensión ciega" sale de ahí. Es una lista de control, no un marco a implantar.', m:'M30'},
+    {f:'Hoshin Kanri — despliegue de la estrategia', uso:'visión a 3-5 años → breakthroughs del año → metas del trimestre: una sola cascada, 3 renglones. Cada meta baja con acuerdo ida-y-vuelta — la negociación pendiente vive como decisión en la bandeja, no aquí (management-by-exception: el header no carga detalle de gestión).', m:'M26'},
+    {f:'Balanced Scorecard — perspectivas', uso:'chequeo de completitud silencioso: las 4 perspectivas se derivan de los objetivos vigentes cada vez que se lee. Si alguna queda sin meta, la brecha sube como alerta — no se re-narra aquí (una sola vez, un solo lugar). Es una lista de control, no un marco a implantar.', m:'M30'},
     {f:'GPD (Falconi)', uso:'en modo anual o mixto, el despliegue del año manda y ciertas metas pagan bono ★.', m:'M41'} ],
-    gap:'El campo "acuerdo de bajada" (ida-y-vuelta por nivel) aún no existe en el esquema — pendiente declarado en la misma ficha de dato que apuestas/apetito (D-NN).' },
+    gap:'El campo "acuerdo de bajada" (ida-y-vuelta por nivel) aún no existe en el esquema — la acción de cerrarlo ya vive en la bandeja del directorio, pero sigue siendo dato simulado (la apuesta y el apetito ya son D-23; este campo espera su ficha).' },
   'dir-madurez':{ cita:'escalera 1–5', t:'¿El sistema aguanta?', items:[
     {f:'Madurez del sistema de gestión (ISO 9004)', uso:'autoevaluación 1-5 por dimensión (liderazgo · estrategia · recursos · procesos · mejora): dónde estás vs dónde quieres estar. El nivel se DERIVA de evidencia con su confianza — jamás se declara a mano.', m:'M47'},
     {f:'COBIT — arbitraje de escaleras', uso:'el mapa por nodo se pinta con la escalera de gobierno/TI; esta gradúa el sistema de gestión completo (finanzas y personas incluidas) — dos varas, cada una en su cancha.', m:'M15'},
@@ -1558,14 +1578,14 @@ const RESPALDO={
     {f:'Matriz de responsabilidades (RACI) — autoridad', uso:'quién firma cada decisión está declarado por nivel: nada espera a la persona equivocada.', m:'M25'} ]},
   'dir-cambio30':{ cita:'ISO 9001 §9.3', t:'Qué cambió desde la última sesión', items:[
     {f:'ISO 9001 — revisión por la dirección (§9.3)', uso:'la sesión compara contra la anterior: qué se degradó, qué cerró con veredicto, qué espera firma.', m:'M16'} ]},
-  'dir-portafolio':{ cita:'PDCA · WSJF', t:'Proyectos en curso', items:[
+  'dir-portafolio':{ cita:'PDCA · costo de esperar', t:'Proyectos en curso', items:[
     {f:'Ciclo PDCA (ISO 9001 — mejora)', uso:'cada proyecto declara su fase y cierra con el cambio observado en el indicador, no con un acta.', m:'M16'},
     {f:'WSJF — costo de esperar', uso:'el orden del portafolio sale de cuánto cuesta NO hacer cada cosa por mes — el "esperar: S/…" de cada fila, heredado de la brecha que ataca; cerrado va al final.', m:'M28'},
     {f:'FinOps — valor cuantificado', uso:'el retorno esperado acompaña a cada proyecto; el real se escribe al cierre.', m:'M22'} ]},
   'sala-pulso':{ cita:'OKR', t:'Pulso del directorio', items:[
     {f:'OKR — objetivos con meta del trimestre', uso:'verde = la meta avanza dentro de su banda.', m:'M21'},
     {f:'Impact Mapping — trazar del objetivo al trabajo', uso:'tocar un objetivo enciende su cadena completa: objetivo → meta → indicador → proceso.', m:'M06'} ]},
-  'sala-jugada':{ cita:'WSJF', t:'La apuesta · próximo paso', items:[
+  'sala-jugada':{ cita:'costo de esperar', t:'La apuesta · próximo paso', items:[
     {f:'WSJF — costo de esperar', uso:'la próxima jugada es la brecha que más cuesta por mes de espera — por eso es la ①.', m:'M28'},
     {f:'FinOps — valor cuantificado', uso:'la jugada declara cuánto cuesta y qué meta mueve.', m:'M22'},
     {f:'Pares del sector — la meta contra pares', uso:'la meta se valida contra lo que logran pares comparables: alcanzable no es un deseo. El benchmark jamás fija la meta solo — la firma el ciclo.', m:'M48'} ]},
@@ -1590,7 +1610,7 @@ const RESPALDO={
   'mej-brechas':{ cita:'costo/ROI', t:'Brechas — el ranking', items:[
     {f:'WSJF — costo de esperar', uso:'las brechas se ordenan por costo de no hacer y retorno esperado.', m:'M28'},
     {f:'FinOps — valor cuantificado', uso:'toda brecha lleva su costo en dinero.', m:'M22'} ]},
-  'mej-proyectos':{ cita:'PDCA', t:'Proyectos en vuelo', items:[
+  'mej-proyectos':{ cita:'PDCA', t:'Proyectos en curso', items:[
     {f:'Ciclo PDCA (ISO 9001 — mejora)', uso:'fases con vuelta atrás permitida — mejora real, no cascada.', m:'M16'},
     {f:'DMAIC / MASP — proyectos con caso formal', uso:'cuando el proyecto exige caso de negocio formal o cultura Falconi, el método trae las variantes.', m:'M42'} ]},
   'mej-kpimovido':{ cita:'dato real', t:'KPI movido — el veredicto', items:[
@@ -1802,6 +1822,13 @@ function fitFlujo(anim=true){ const vw=stage.clientWidth, vh=stage.clientHeight;
   view.x = state.cw*z<=vw-56 ? (vw-state.cw*z)/2 : 28;
   view.y = state.ch*z<=vh-90 ? (vh-state.ch*z)/2 : 24;
   applyView(anim); }
+/* v17 · primera carga: encuadre LEGIBLE sobre estrategia + cadena (lo que un director lee primero);
+   el resto del mapa se alcanza con rueda/pan/minimapa o el botón Encajar ⤢ */
+let firstLoad=true;
+function fitEncuadre(){ const vw=stage.clientWidth, vh=stage.clientHeight;
+  const y0=26, y1=650;   // bandas Estrategia (obj+KR) y Cadena (con sus KPIs/pins)
+  const z=Math.min((vw-56)/state.cw,(vh-70)/(y1-y0),1.02);
+  view.z=z; view.x=(vw-state.cw*z)/2; view.y=-y0*z+16; applyView(false); }
 const refit=(anim=true)=>(state.escala==='z2'||state.escala==='z3')?fitFlujo(anim):fit(anim);
 document.getElementById('zin').onclick =()=>{view.z=Math.min(2,view.z+0.12); applyView();};
 document.getElementById('zout').onclick=()=>{view.z=Math.max(0.3,view.z-0.12); applyView();};
@@ -1841,12 +1868,19 @@ function render(){
   const NB={1:3+(state.ciclo!=='okr'?1:0), 2:DATA.brechas.filter(g=>g.estado==='accionable').length,
     3:sinContraKpis().length+DATA.ideas.filter(i=>i.estado==='enviada').length, 4:2};
   document.querySelectorAll('.nivb').forEach(s=>{ const n=NB[+s.dataset.nb]; s.textContent=n?('▲ '+n):''; });
-  document.getElementById('back').disabled = !terr || tablero || state.escala==='z0';
+  const backB=document.getElementById('back');
+  backB.disabled = !terr || tablero || state.escala==='z0';
+  /* v17 · lo deshabilitado explica su porqué — jamás un botón muerto sin razón */
+  backB.title = backB.disabled
+    ? (terr&&!tablero ? 'Ya ves el mapa completo — se enciende al entrar a un proceso o instrucción'
+                      : 'Vuelve al mapa completo — vive en el nivel 2 · Estratégico')
+    : 'Volver al mapa completo (sube un nivel de zoom)';
   document.getElementById('pieltoggle').classList.toggle('hide', !terr || state.nivel!==2 || state.escala!=='z0');
   document.getElementById('lodctl').classList.toggle('hide', !(terr&&state.nivel===2&&state.escala==='z0'&&state.piel==='org'));
   document.getElementById('minimap').classList.toggle('hide', !terr||tablero);
   document.getElementById('search').disabled=!terr||tablero;
   document.querySelector('.search').style.opacity=(terr&&!tablero)?'':'.4';
+  document.querySelector('.search').title=(!terr||tablero)?'La búsqueda actúa sobre el mapa — disponible en el nivel 2 (Estratégico) y dentro de un proceso':'';
   const hintEl=document.getElementById('hint'); if(hintEl) hintEl.style.display=tablero?'none':'';
 
   // corrida (what-if): señales redundantes — banner + tinte + identidad del header
@@ -1865,7 +1899,7 @@ function render(){
     const na=isR?false:!apl.includes(b.dataset.capa);   // v14.4: el respaldo aplica en TODOS los niveles y módulos
     b.classList.toggle('na',na); b.title=na?(terr?'Sin efecto en esta escala — no hay dato de esta capa aquí':'Las capas pintan sobre el Territorio'):''; });
 
-  const MODNM={mejora:'Mejora — el loop brecha → proyecto → KPI', metodo:'Método — engagement M1·M2·M3', cambios:'Cambios — gestión ISO, git invisible'};
+  const MODNM={mejora:'Mejora — el ciclo brecha → proyecto → KPI', metodo:'Método — engagement M1·M2·M3', cambios:'Cambios — solicitudes, versiones y aprobaciones'};
   let crumb=terr?'<b>Territorio</b>':`<b>${MODNM[state.mod]}</b>`;
   if(terr&&state.nivel===1) crumb='<b>Nivel 1 · Directorio</b> — la apuesta y el riesgo';
   if(terr&&state.nivel===3) crumb='<b>Nivel 3 · Táctico</b> — el compromiso entre áreas';
@@ -1944,7 +1978,7 @@ function renderOrganigrama(){
         <span class="health-dot" style="background:${dotColor}"></span></div>
       <div class="stat">${heat}<span class="cnt">${procs.length}</span>${hChip}${folded?`<span class="cnt fold">+${hidden} áreas</span>`:(subVis?`<span class="cnt">+${subVis}</span>`:'')}</div>
       ${pus.length?`<div class="prows">${pus.map(p=>{ const occ=puestoOcupantes(p.nm).length;
-        return `<button class="prow" data-pu="${p.nm}" title="puesto — ${occ||'sin'} ocupante${occ===1?'':'s'} (D-19)"><span class="pnm">${p.nm}</span><span class="pocc ${p.vac?'vc':''}">${p.vac?'vac':(occ||'—')}</span>${state.capas.has('trabajo')?rosterBadge(p.nm):''}</button>`; }).join('')}</div>`:''}
+        return `<button class="prow" data-pu="${p.nm}" title="puesto — ${occ||'sin'} ocupante${occ===1?'':'s'}"><span class="pnm">${p.nm}</span><span class="pocc ${p.vac?'vc':''}">${p.vac?'vac':(occ||'—')}</span>${state.capas.has('trabajo')?rosterBadge(p.nm):''}</button>`; }).join('')}</div>`:''}
     </div>`;
     n.querySelector('.area-node').onclick=()=>openArea(a);
     n.querySelector('.area-node').ondblclick=()=>drillArea(a.id);
@@ -2070,6 +2104,8 @@ function renderValor(){
       ${state.capas.has('trabajo')?`<div style="margin-top:6px">${harnBadge(arnesDe(p.dueno,p.id))}</div>`:''}
     </div>`;
     const card=n.querySelector('.chev');
+    if(state.corrida && pid==='p-cob'){ n.classList.add('diff');   // v17: el diff de la corrida se ve EN el mapa, no solo en el panel
+      card.insertAdjacentHTML('beforeend','<span class="dtag" title="La simulación propone +1 actividad (portal de pagos) — doble-click y la ves punteada en el lienzo">Δ +1 actividad</span>'); }
     card.onclick=()=>openProceso(p);
     card.ondblclick=()=>drillLienzo(p.id);
     n.querySelectorAll('.krow').forEach(b=>b.onclick=e=>{ e.stopPropagation(); openKpi(byId(DATA.kpis,b.dataset.k)); });
@@ -2101,7 +2137,7 @@ function renderValor(){
   /* — banda 4 · GENTE & ARNESES — PUESTOS que operan la cadena (D-19; la nómina completa vive en el Organigrama) — */
   const cadenaPuestos=PUESTOS.filter(p=>p.pares.length);
   bandLab(Y.gen+row*58,'Gente & arneses — quién opera la cadena'+respBadge('z0-gente'),
-    `puesto = posición (se ocupa, reporta — D-19) · agrega N roles (carriles) · ⛨ = roster compilado del twin (capa Trabajo) · métricas por puesto/rol, jamás por persona (CK-24) · <span class="plnk" onclick="setPiel('org');render()" title="la estructura completa — el plano de los puestos">los ${PUESTOS.length} puestos de la nómina → Organigrama ›</span>`);
+    `puesto = posición (se ocupa, reporta) · agrega N roles (carriles) · ⛨ = roster compilado del twin (capa Trabajo) · métricas por puesto/rol, jamás por persona · <span class="plnk" onclick="setPiel('org');render()" title="la estructura completa — el plano de los puestos">los ${PUESTOS.length} puestos de la nómina → Organigrama ›</span>`);
   const gy=Y.gen+row*58+6;
   const rPos={}; let rx=120, ry=gy;
   cadenaPuestos.forEach(pu=>{ const r=pu.nm;
@@ -2178,7 +2214,7 @@ function renderValor(){
     fitPts(focoPts);
   } else {
     counter(`${DATA.cadena.length} misionales · ${apoyo.length} apoyo · ${cadenaPuestos.length}/${PUESTOS.length} puestos · ${DATA.sistemas.length} sistemas`);
-    fit();
+    if(firstLoad){ firstLoad=false; fitEncuadre(); } else fit();
   }
 }
 
@@ -2234,7 +2270,7 @@ function renderLienzo(){
   f.lanes.forEach((ln,li)=>{
     const band=el('div','laneband');
     band.style.top=(headH+li*laneH)+'px'; band.style.height=laneH+'px';
-    band.innerHTML=`<div class="lhd"><span class="role-k">carril ${li+1}${ln.k!=='carril'?' · '+ln.k:''}</span><span class="role plnk" data-rol="${ln.role}" title="ficha del ROL — el papel en este proceso (D-19)">${ln.role}</span>${state.capas.has('trabajo')?harnBadge(arnesDe(ln.role,f.proc)):''}</div>`;
+    band.innerHTML=`<div class="lhd"><span class="role-k">carril ${li+1}${ln.k!=='carril'?' · '+ln.k:''}</span><span class="role plnk" data-rol="${ln.role}" title="ficha del ROL — el papel en este proceso">${ln.role}</span>${state.capas.has('trabajo')?harnBadge(arnesDe(ln.role,f.proc)):''}</div>`;
     wireLinks(band);
     $nodes.appendChild(band);
   });
@@ -2261,6 +2297,24 @@ function renderLienzo(){
     wireLinks(n);
     $nodes.appendChild(n);
   });
+
+  /* v17 · corrida: la actividad PROPUESTA se pinta punteada EN el flujo (celda libre col-5 · carril 1),
+     con sus flujos tentativos desde "contactar" (03) y hacia "verificar" (06) — el diff deja de vivir solo en el panel */
+  if(state.corrida && pid==='p-cob' && !stub){
+    const gx=x0+(5-1)*colW+100, gy=headH+0*laneH+laneH/2;
+    const gn=el('button','node'); gn.style.left=gx+'px'; gn.style.top=gy+'px';
+    gn.innerHTML=`<div class="act ghost" style="width:200px" title="Actividad propuesta por la simulación — no existe en el As-Is; se aplica solo si el cambio se aprueba">
+      <span class="typ" style="background:var(--warn)" title="propuesta"></span>
+      <span class="ord">Δ · cobrar</span>
+      <div class="ttl">Cobrar por el portal de pagos en línea (propuesto)</div>
+      <div class="tv"><span class="t">◔ 10m</span><span>Portal de pagos</span></div>
+      <span class="tri" style="color:var(--warn);border-color:var(--warn)">Δ corrida — no existe aún</span>
+    </div>`;
+    gn.querySelector('.act').onclick=()=>{ state.insp='home'; inspectorHome(); };
+    $nodes.appendChild(gn); MM_PTS.push({x:gx,y:gy});
+    if(pos[3]) pathEl(curve(pos[3].cx+102,pos[3].cy,gx-102,gy),'var(--warn)',1.3,.55,'5 4');
+    if(pos[6]) pathEl(curve(gx+102,gy,pos[6].cx-102,pos[6].cy),'var(--warn)',1.3,.55,'5 4');
+  }
 
   // puertos SIPOC — la caracterización como GEOGRAFÍA: S·I a la izquierda del flujo, O·C a la derecha
   if(sp){
@@ -2349,7 +2403,7 @@ function renderInstruccion(){
   } else {
     const hb=el('div','node'); hb.style.left='560px'; hb.style.top=tY+'px';
     hb.innerHTML=`<div class="dia-card" style="width:560px;border-color:rgba(224,173,78,.5)"><b style="color:var(--warn)">Instrucción SIN LEVANTAR.</b>
-      El "cómo" de esta actividad vive en la cabeza del ocupante — todavía no es corpus. Se construye en el levantamiento (M1 · entrevista + observación) o con la bitácora del funil de ideas.${a.note?`<br><span style="color:var(--tx-faint);font-size:11.5px">Nota del AS-IS: ${a.note}</span>`:''}</div>`;
+      El "cómo" de esta actividad vive en la cabeza del ocupante — todavía no es corpus. Se construye en el levantamiento (M1 · entrevista + observación) o con la bitácora del embudo de ideas.${a.note?`<br><span style="color:var(--tx-faint);font-size:11.5px">Nota del AS-IS: ${a.note}</span>`:''}</div>`;
     $nodes.appendChild(hb);
   }
 
@@ -2412,21 +2466,39 @@ function renderDirectorio(){
     {t:'Fijar el apetito de riesgo de expansión (sin definir)', apr:'gestión-de-cambios', go:'data-acc="fijar-apetito"'},
     {t:'Fijar la mezcla de ambición del año', d:`hoy corre el default de industria ${mo.operar}/${mo.expandir}/${mo.transformar} — la mezcla es apetito hecho asignación`, apr:'gestión-de-cambios', go:'data-acc="fijar-mezcla"'},
   ];
+  if(rb.bajada.pendiente){ const ga=DATA.areas.find(x=>x.nm===rb.bajada.pendiente);
+    bandeja.push({t:`Cerrar la bajada acordada con ${rb.bajada.pendiente}`, d:`acuerdo ida-y-vuelta cerrado con ${rb.bajada.acordadas}/${rb.bajada.de} gerencias — falta negociar factibilidad con esta`, apr:'gestión-de-cambios', go:ga?`data-area="${ga.id}"`:''}); }
   if(state.ciclo!=='okr') bandeja.push({t:'Decidir qué metas pagan bono este año ★', d:'acople compensación — solo en modo anual/mixto (RN-14)', apr:'gestión-de-cambios', go:'data-acc="convocar-cuentas"'});
+  /* v16 · rumbo: cada breakthrough = meter (dataviz skill, "ratio contra límite") coloreado por salud + contraste
+     riesgo↔apetito en el title (progressive disclosure, no ruido en superficie) — cero dato nuevo, todo derivado */
+  const brkHTML=rb.anio.map(oid=>{ const o=objOf(oid), ap=DATA.apuestas.find(a=>a.objetivos.includes(oid)),
+      ct=ap?contraste(ap):null, p=krProg(o);
+    return `<button class="brk" data-obj="${oid}"${ct?` title="${ct.t.replace(/"/g,'&quot;')}"`:''}>
+      <span class="brknm">${o.nm}${o.bono?' <b style="color:var(--warn)">★</b>':''}</span>
+      <svg width="88" height="8" viewBox="0 0 88 8" aria-hidden="true">
+        <rect x="0" y="2" width="88" height="4" rx="2" fill="var(--border)"/>
+        <rect x="0" y="2" width="${(p*88).toFixed(1)}" height="4" rx="2" fill="${health[o.salud]}"/>
+      </svg>
+      <span class="mtrlab">${o.kr.cur}${o.kr.u} <span style="color:var(--tx-faint)">/</span> ${o.kr.to}${o.kr.u}</span></button>`; }).join('');
   const pv=pageView(`
     <div class="pv-hd"><span class="eyebrow">Nivel 1 · Directorio — la apuesta y el riesgo · sesión mensual</span>
       <h2>Sala del directorio</h2>
       <div class="sub">Pocas apuestas, el riesgo contra el apetito y solo las excepciones que escalaron. El directorio no navega el detalle: decide — y cada decisión queda en el historial de la organización.</div></div>
     <div class="rumbo"><div class="pt">El rumbo — lo que este directorio prometió${respBadge('dir-rumbo')}</div>
-      <div class="cad">
-        <span><span class="k">Visión ${rb.vision.h}</span>«${rb.vision.t}»</span><span class="sep">▸</span>
-        <span><span class="k">Este año</span>${rb.anio.join(' · ')}</span><span class="sep">▸</span>
-        <span><span class="k">Este trimestre</span>${DATA.apuestas.length} apuestas · ${DATA.objetivos.length} metas</span></div>
-      <div class="foot"><span>bajada acordada ida-y-vuelta con ${rb.bajada.acordadas}/${rb.bajada.de} gerencias (${rb.bajada.pendiente} pendiente)</span><span class="sep">·</span>
-        <span>perspectivas con meta 4/4 ✓</span><span class="sep">·</span>
-        <button class="ciega" data-g="g-post" data-g2="g-post">dimensión ciega: la satisfacción de propietarios cae y nada la mide ⚠</button></div></div>
+      <div class="rrow"><span class="k">Visión ${rb.vision.h}</span>«${rb.vision.t}»</div>
+      <div class="rrow brks"><span class="k">Este año</span>${brkHTML}</div>
+      <div class="rrow"><span class="k">Este trimestre</span>${DATA.apuestas.length} apuestas · ${DATA.objetivos.length} metas</div>
+    </div>
+    <span class="eyebrow">Las apuestas — clic = ficha y acciones · lo que las sostiene vive en el nivel 2${respBadge('dir-apuestas')}</span>
+    <div class="apcards" style="margin-top:8px">${DATA.apuestas.map((a,i)=>{ const objs=a.objetivos.map(objOf), ct=contraste(a);
+      return `<button class="apcard" data-ap="${a.id}"><span class="un">apuesta ${a.estado==='por-sellar'?'· <b style="color:var(--warn)">por sellar</b>':'· '+a.estado} · ${AMBICION[a.ambicion]}</span>
+        <span class="nm">${a.nm}</span>
+        <span class="mt" style="color:var(--brand-hi)" title="Supuesto: ${a.valor.supuesto}">persigue ${a.valor.s}</span>
+        <span class="mt"><span class="health-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${health[sts[i]]};margin-right:5px"></span>${objs.map(o=>o.kr.m).join(' · ')}</span>
+        <span class="mt">riesgo <b style="color:${a.riesgo==='alto'?'var(--crit)':'var(--warn)'}">${a.riesgo}</b> · sostiene ${objs.length} objetivo${objs.length>1?'s':''}</span>
+        <span class="mt" style="color:${ct.c}">${ct.t}</span></button>`; }).join('')}</div>
     <div class="dirgrid">
-      <div class="dpane"><div class="pt">Las varas del directorio — riesgo que toleras · futuro que compras (simulado · ficha D-NN pendiente)${respBadge('dir-varas')}</div>
+      <div class="dpane"><div class="pt">Las varas del directorio — riesgo que toleras · futuro que compras${respBadge('dir-varas')}</div>
         <span style="font-family:var(--font-mono);font-size:11px;color:var(--tx-mut)">apetito: liquidez <b style="color:var(--warn)">${DATA.apetito.liquidez}</b> · reputación <b style="color:var(--ok)">${DATA.apetito.reputacion}</b> · expansión <b style="color:var(--crit)">${DATA.apetito.expansion}</b></span>
         <div class="mixwrap">
           <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx-faint)">Ambición del portafolio — apuestas + proyectos + ideas (${mx.n})</span>
@@ -2440,7 +2512,8 @@ function renderDirectorio(){
           <span style="font-family:var(--font-mono);font-size:10px;color:var(--tx-mut)"><b style="color:var(--brand-hi)">${mx.operar}</b> operar el hoy · <b>${mx.expandir}</b> expandir · <b>${mx.transformar}</b> apostar al futuro — objetivo ${mo.operar}/${mo.expandir}/${mo.transformar} <b style="color:var(--warn)">por fijar</b></span>
         </div></div>
       <div class="dpane" title="Cada punto = una apuesta: ¿sus objetivos del ciclo avanzan hacia la meta?"><div class="pt">¿Avanzan las apuestas? (${ciclo})${respBadge('dir-pulso')}</div>
-        <div class="pulso-dots">${DATA.apuestas.map((a,i)=>`<i style="background:${health[sts[i]]}" title="${a.nm}"></i>`).join('')}</div>
+        <div class="pulso-dots">${DATA.apuestas.map((a,i)=>{ const lbl={verde:'en meta',ambar:'cerca',rojo:'fuera de meta'}[sts[i]];
+          return `<i data-ap="${a.id}" style="background:${health[sts[i]]}" title="${a.nm} — ${lbl} · clic = ficha de la apuesta"></i>`; }).join('')}</div>
         <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--tx-mut)">${nG} en meta · ${nA} cerca · ${nR} fuera</span></div>
       <div class="dpane"><div class="pt">Alertas que escalaron — solo lo que subió solo${respBadge('dir-alertas')}</div>
         <button class="cambio-row" data-g="g-avc" data-g2="g-avc"><span class="sc">▲</span><div><div class="tt">Avance de Marina: 87% real vs 95% declarado</div></div><span class="ap" style="color:var(--crit)">S/ 35k/mes</span></button>
@@ -2448,21 +2521,13 @@ function renderDirectorio(){
         <button class="cambio-row" data-g="g-post" data-g2="g-post"><span class="sc">▲</span><div><div class="tt">La postventa se deteriora y ninguna meta la mide</div></div><span class="peer" title="${DATA.peers['g-post'].src}">${DATA.peers['g-post'].r}</span><span class="ap" style="color:var(--warn)">42 → 31</span></button>
         <button class="cambio-row" data-area="a-tes"><span class="sc">▲</span><div><div class="tt">Jefatura de Tesorería vacante hace 5 meses</div></div><span class="ap" style="color:var(--warn)">sin persona</span></button></div>
     </div>
-    <span class="eyebrow">Las apuestas — clic = ficha y acciones · lo que las sostiene vive en el nivel 2${respBadge('dir-apuestas')}</span>
-    <div class="apcards" style="margin-top:8px">${DATA.apuestas.map((a,i)=>{ const objs=a.objetivos.map(objOf), ct=contraste(a);
-      return `<button class="apcard" data-ap="${a.id}"><span class="un">apuesta ${a.estado==='por-sellar'?'· <b style="color:var(--warn)">por sellar</b>':'· '+a.estado} · ${AMBICION[a.ambicion]}</span>
-        <span class="nm">${a.nm}</span>
-        <span class="mt" style="color:var(--brand-hi)" title="Supuesto: ${a.valor.supuesto}">persigue ${a.valor.s}</span>
-        <span class="mt"><span class="health-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${health[sts[i]]};margin-right:5px"></span>${objs.map(o=>o.kr.m).join(' · ')}</span>
-        <span class="mt">riesgo <b style="color:${a.riesgo==='alto'?'var(--crit)':'var(--warn)'}">${a.riesgo}</b> · sostiene ${objs.length} objetivo${objs.length>1?'s':''}</span>
-        <span class="mt" style="color:${ct.c}">${ct.t}</span></button>`; }).join('')}</div>
     <div class="dirgrid">
       <div class="dpane solid"><div class="pt">Espera tu decisión · ${bandeja.length}${respBadge('bandeja')}</div>${bandejaRows(bandeja)}</div>
       <div class="dpane"><div class="pt">Qué cambió desde la última sesión (hace 30 días)${respBadge('dir-cambio30')}</div>
         <div style="font-size:12px;color:var(--tx-mut);line-height:1.8">· cobranza Marina: 90 → 91 días (se degrada)<br>· "Cierre exprés" CERRÓ con veredicto: <b style="color:var(--ok)">movió</b> (9 → 4.5 días)<br>· satisfacción de propietarios 35 → 31 — sigue sin meta que la mida<br>· ${bandeja.length} decisiones esperan tu firma</div></div>
       <div class="dpane"><div class="pt">Proyectos en curso — el portafolio · orden: lo que más cuesta esperar${respBadge('dir-portafolio')}</div>
         ${[...DATA.proyectos].sort((x,y)=>((codMes(y)||{mes:-1}).mes)-((codMes(x)||{mes:-1}).mes)).map(pm=>{ const cod=codMes(pm);
-          return `<button class="cambio-row" data-pm="${pm.id}" data-pm2="${pm.id}"><span class="sc">${pm.pdca}</span><div><div class="tt">${pm.nm}</div><div class="ap" style="white-space:normal">${pm.estado} · ${pm.delta} · ${AMBICION[pm.ambicion]}${cod?` · <b style="color:var(--crit)">esperar: ${cod.raw}</b>`:''}</div></div><span class="ap" style="color:var(--brand-hi)">${pm.roi}</span></button>`; }).join('')}
+          return `<button class="cambio-row" data-pm="${pm.id}" data-pm2="${pm.id}"><span class="sc">${pm.pdca}</span><div><div class="tt">${pm.nm}</div><div class="ap" style="white-space:normal">${pm.estado} · ${pm.delta} · ${AMBICION[pm.ambicion]}${cod?` · <b style="color:var(--crit)">esperar: ${cod.raw}</b>`:''}</div></div><span class="ap" style="color:var(--brand-hi)" title="retorno del caso: lo que devuelve sobre lo que cuesta">ROI ${pm.roi}</span></button>`; }).join('')}
         <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--tx-faint);margin-top:6px;border-top:1px solid var(--border);padding-top:5px">mezcla real ${mx.operar}/${mx.expandir}/${mx.transformar} — la vara, arriba ↑ · la prioridad se ordena DENTRO de cada bolsa, jamás entre bolsas</div></div>
     </div>`);
   wireLinks(pv);
@@ -2497,7 +2562,7 @@ function renderTactico(){
         const ks=DATA.kpis.filter(k=>kTop(k)===a.id);
         if(!pms.length&&!ks.length) return '';
         return `<div class="tcol"><div class="th" data-area="${a.id}">${a.nm} ›</div>
-          ${pms.map(pm=>`<button class="cambio-row" data-pm="${pm.id}" data-pm2="${pm.id}"><span class="sc">${pm.pdca}</span><div><div class="tt">${pm.nm}</div><div class="ap">${pm.estado} · mueve ${byId(DATA.kpis,pm.mueve).nm}</div></div><span class="ap" style="color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}
+          ${pms.map(pm=>`<button class="cambio-row" data-pm="${pm.id}" data-pm2="${pm.id}"><span class="sc">${pm.pdca}</span><div><div class="tt">${pm.nm}</div><div class="ap">${pm.estado} · mueve ${byId(DATA.kpis,pm.mueve).nm}</div></div><span class="ap" style="color:var(--brand-hi)" title="retorno del caso: lo que devuelve sobre lo que cuesta">ROI ${pm.roi}</span></button>`).join('')}
           ${ks.map(k=>krowHTML(k)+(sinContra(k)?`<div class="ncm">▲ sin contramedida comprometida · <span class="plnk" data-acc="comprometer-contramedida">comprometer ›</span></div>`:'')).join('')}
         </div>`; }).join('')}
       <div class="tcol"><div class="th">Embudo de ideas — participación del personal${respBadge('ideas')}</div>
@@ -2513,27 +2578,27 @@ function renderMejora(){
   const sevC={alta:'var(--crit)',media:'var(--warn)',baja:'var(--tx-faint)'};
   const vuelo=DATA.proyectos.filter(p=>p.estado!=='cerrado'), done=DATA.proyectos.filter(p=>p.estado==='cerrado');
   const pv=pageView(`
-    <div class="pv-hd"><span class="eyebrow">Mejora · funil de ideas + O6 → O7 · el loop vive DENTRO del twin — ningún vendor lo cierra in-tool</span>
+    <div class="pv-hd"><span class="eyebrow">Mejora · embudo de ideas → brecha → proyecto · el ciclo completo vive DENTRO del twin, de la idea al indicador movido</span>
       <h2>Idea → brecha → proyecto → KPI movido</h2>
-      <div class="sub">El personal propone (embudo kaizen) y el triage detecta candidatos; cada brecha lleva costo de no hacer; de ahí nacen los proyectos (PDCA con loop-back permitido); el cierre se declara con el <b>delta observado en el KPI</b> — y la mejora se <b>compila al arnés del puesto</b>.</div></div>
+      <div class="sub">El personal propone (embudo de mejora continua) y el triage detecta candidatos; cada brecha lleva costo de no hacer; de ahí nacen los proyectos (PDCA, con vuelta atrás permitida); el cierre se declara con el <b>delta observado en el KPI</b> — y la mejora se <b>compila al arnés del puesto</b>.</div></div>
     <div class="fcols" style="grid-template-columns:repeat(4,1fr)">
-      <div class="fcol"><span class="eyebrow">0 · Ideas — funil del personal (kaizen)${respBadge('ideas')}</span>
+      <div class="fcol"><span class="eyebrow">0 · Ideas — embudo del personal (mejora continua)${respBadge('ideas')}</span>
         ${DATA.ideas.map(i=>`<button class="fitem" data-idea="${i.id}">
           <span class="t">${iico('idea','idea · Driver (M13 ArchiMate, Motivation)')}${i.nm.length>58?i.nm.slice(0,56)+'…':i.nm}</span>
           <span class="m"><span class="gate-pill ${i.estado==='promovida'?'':'pend'}">${i.estado}</span><span>${i.prop.split(' · ')[0]}</span>${i.origen==='triage'?'<span style="color:var(--brand-hi)">← triage</span>':''}</span>
         </button>`).join('')}
         <div style="font-size:10.5px;color:var(--tx-faint)">idea y proyecto viven separados · autoría reconocida, jamás medición de la persona</div></div>
-      <div class="fcol"><span class="eyebrow">1 · Brechas — rankeadas por costo/ROI${respBadge('mej-brechas')}</span>
+      <div class="fcol"><span class="eyebrow">1 · Brechas — ordenadas por costo/ROI${respBadge('mej-brechas')}</span>
         ${gs.map(g=>`<button class="fitem ${g.estado==='off-thread'?'dim2':''}" data-g="${g.id}">
           <span class="t">${iico('brecha','brecha · Assessment (M13 ArchiMate, Motivation)')}${g.nm.length>64?g.nm.slice(0,62)+'…':g.nm}</span>
-          <span class="m"><span style="color:${sevC[g.sev]}">▲ ${g.sev}</span><span>${g.costo}</span><span>${g.estado}</span>${g.apuesta?'<span style="color:var(--brand-hi)">WSJF ①</span>':''}</span>
+          <span class="m"><span style="color:${sevC[g.sev]}">▲ ${g.sev}</span><span>${g.costo}</span><span>${g.estado}</span>${g.apuesta?'<span style="color:var(--brand-hi)" title="la primera de la fila: lo que más cuesta por mes de espera frente a lo que cuesta atacarlo">prioridad ①</span>':''}</span>
         </button>`).join('')}</div>
-      <div class="fcol"><span class="eyebrow">2 · Proyectos en vuelo — PDCA${respBadge('mej-proyectos')}</span>
+      <div class="fcol"><span class="eyebrow">2 · Proyectos en curso — PDCA${respBadge('mej-proyectos')}</span>
         ${vuelo.map(p=>`<button class="fitem" data-pm="${p.id}">
           <span class="t">${iico('proyecto','proyecto de mejora · Work Package (M13 ArchiMate)')}${p.nm}</span>
           <span class="m"><span class="gate-pill">${p.pdca}</span><span>${p.estado}</span><span>ROI ${p.roi}</span><span style="color:var(--brand-hi)">${p.delta}</span></span>
         </button>`).join('')}
-        <div style="font-size:10.5px;color:var(--tx-faint)">máquina de 12 estados · loop-back en-verificación → en-ejecución permitido (PDCA real, no waterfall)</div></div>
+        <div style="font-size:10.5px;color:var(--tx-faint)">12 estados posibles · se permite volver de verificación a ejecución si la evidencia lo pide (ciclo PDCA real, no lineal)</div></div>
       <div class="fcol"><span class="eyebrow">3 · KPI movido — veredicto con dato real${respBadge('mej-kpimovido')}</span>
         ${done.map(p=>`<button class="fitem" data-pm="${p.id}" style="border-color:var(--teal-800)">
           <span class="t">${iico('proyecto','proyecto de mejora · Work Package (M13 ArchiMate)')}${p.nm}</span>
@@ -2545,7 +2610,7 @@ function renderMejora(){
   pv.querySelectorAll('[data-pm]').forEach(b=>b.onclick=()=>openProyecto(byId(DATA.proyectos,b.dataset.pm)));
   pv.querySelectorAll('[data-idea]').forEach(b=>b.onclick=()=>openIdea(byId(DATA.ideas,b.dataset.idea)));
   pv.querySelectorAll('[data-resp]').forEach(b=>b.onclick=()=>openRespaldo(b.dataset.resp));
-  counter(`${DATA.ideas.length} ideas · ${gs.length} brechas · ${vuelo.length} en vuelo · ${done.length} cerrado`);
+  counter(`${DATA.ideas.length} ideas · ${gs.length} brechas · ${vuelo.length} en curso · ${done.length} cerrado`);
 }
 
 /* ---------- módulo Método: engagement M1·M2·M3 + metodología as-code ---------- */
@@ -2564,7 +2629,7 @@ function renderMetodo(){
       <div class="fcol"><span class="eyebrow">M3 · Espinazo — del diagnóstico a LA Apuesta${respBadge('met-m3')}</span>
         <div class="fitem"><span class="t">Etapa 0 · Diagnóstico anclado a plata</span><span class="m"><span class="gate-pill">✓ G2</span><span>6 brechas costeadas</span></span></div>
         <div class="fitem"><span class="t">LA Apuesta — UN próximo paso, no 50</span><span class="m"><span class="gate-pill">✓ RATIFICADA</span><span style="color:var(--brand-hi)">Marina 87→95% · mueve margen →18%</span></span></div>
-        <div class="fitem"><span class="t">Etapa 1 · Proyectos de mejora en vuelo</span><span class="m"><span class="gate-pill pend">◐ EN CURSO</span><span>2 en vuelo · 1 cerrado (KPI movido)</span></span></div></div>
+        <div class="fitem"><span class="t">Etapa 1 · Proyectos de mejora en curso</span><span class="m"><span class="gate-pill pend">◐ EN CURSO</span><span>2 en curso · 1 cerrado (KPI movido)</span></span></div></div>
       <div class="fcol"><span class="eyebrow">M2 · Mantenimiento — el twin no se pudre${respBadge('met-m2')}</span>
         <div class="fitem"><span class="t">Frescura de indicadores</span><span class="m"><span style="color:var(--warn)">⌛ 1 KPI vencido</span><span>visitas a caseta (Declarado, 40d)</span></span></div>
         <div class="fitem"><span class="t">Revisiones periódicas</span><span class="m"><span class="gate-pill pend">PRÓX</span><span>Cobranza de cuotas v2 · 15 ago</span></span></div>
@@ -2577,7 +2642,7 @@ function renderMetodo(){
         <span class="chip">M09 VSM → tiempos toque/espera z2</span><span class="chip">M15 COBIT → capa madurez</span>
         <span class="chip">M23 provenance → confianza 🟢🟡🔴</span><span class="chip">M16 PDCA → cinética + loop-back</span>
         <span class="chip">SOMA C7 → semáforo digitalización</span><span class="chip">ECRS+RTLX → triage automatización</span>
-        <span class="chip">M36·M37 → triage → skill de arnés (Arnesia)</span><span class="chip">M44 → funil de ideas</span></div></div>
+        <span class="chip">M36·M37 → triage → skill de arnés (Arnesia)</span><span class="chip">M44 → embudo de ideas</span></div></div>
     <div class="fcols" style="margin-top:10px">
       <div class="fcol"><span class="eyebrow">Vocabulario · el ciclo de la apuesta — valores posibles${respBadge('met-vocab')}</span>
         <div class="fitem"><span class="t"><b class="mono" style="color:var(--warn)">por sellar</b> — propuesta: valor y riesgo declarados; falta la firma de quien responde por la meta</span></div>
@@ -2594,25 +2659,26 @@ function renderMetodo(){
   counter('M1 ✓ · M3 en curso · M2 activo · 54 M-cards');
 }
 
-/* ---------- módulo Cambios: gestión de cambios ISO — git invisible ---------- */
+/* ---------- módulo Cambios: gestión de cambios ISO — el motor versiona por debajo, el usuario jamás lo ve ---------- */
 function renderCambios(){
   const pv=pageView(`
-    <div class="pv-hd"><span class="eyebrow">Gestión de cambios · ISO — solicitudes, versiones, aprobaciones y acuses · el motor versiona en git (N6), el usuario JAMÁS lo ve</span>
+    <div class="pv-hd"><span class="eyebrow">Gestión de cambios · ISO — solicitudes, versiones, aprobaciones y acuses · el motor guarda cada versión por debajo; el usuario JAMÁS ve la tubería</span>
       <h2>Cambios sobre el twin ${respBadge('cam-cola')}</h2>
-      <div class="sub">Cada acción cinética declara su tipo de aprobación: <b>directa</b> (se aplica y queda trazada) · <b>revisión-dueño</b> · <b>gestión-de-cambios</b> (comité). Toda versión: borrador → vigente → obsoleto, con entornos dev → UAT → prod.</div></div>
+      <div class="sub">Cada acción cinética declara su tipo de aprobación: <b>directa</b> (se aplica y queda trazada) · <b>revisión-dueño</b> · <b>gestión-de-cambios</b> (comité). Toda versión: borrador → vigente → obsoleto, con entornos desarrollo → pruebas → producción.</div></div>
+    ${SOLICITUDES.map(s=>`<button class="cambio-row"><span class="sc">${s.sc}</span><div><div class="tt">${s.tt}</div><div class="ap">${s.ap}</div></div><span class="ap">${s.apr==='gestión-de-cambios'?'⛔':'👁'} ${s.apr}</span><span class="gate-pill pend">EN COLA · recién enviada</span></button>`).join('')}
     <button class="cambio-row"><span class="sc">SC-14</span><div><div class="tt">Recompilar arnés "Jefe de Cobranza" v1 → v2</div><div class="ap">acción: recompilar-arnes · origen: drift twin→arnés (SC-11 verbo + SC-12 mapa v2) · Arnesia N15 → Colab Studio N17</div></div><span class="ap">👁 revisión-dueño</span><span class="gate-pill pend">EN COLA</span></button>
     <button class="cambio-row"><span class="sc">SC-13</span><div><div class="tt">Ajustar banda de "cobranza digital" 60% → 50%</div><div class="ap">acción: ajustar-banda-kpi · solicita: Jefe de Cobranza</div></div><span class="ap">⛔ gestión-de-cambios</span><span class="gate-pill pend">PENDIENTE COMITÉ</span></button>
     <button class="cambio-row"><span class="sc">SC-12</span><div><div class="tt">Publicar mapa de proceso "Cobranza de cuotas" v2</div><div class="ap">acción: publicar-mapa-proceso · borrador en dev</div></div><span class="ap">👁 revisión-dueño</span><span class="gate-pill pend">EN REVISIÓN</span></button>
     <button class="cambio-row"><span class="sc">SC-11</span><div><div class="tt">Corregir verbo actividad 05: "transportar" → "visitar"</div><div class="ap">acción: corregir-verbo-actividad · evidencia: auditoría en campo</div></div><span class="ap">✓ directa</span><span class="gate-pill">APLICADA + ACUSE</span></button>
     <button class="cambio-row"><span class="sc">SC-10</span><div><div class="tt">Registrar medición k-dso · julio (91 días)</div><div class="ap">acción: registrar-medicion-kpi · fuente: Nubecont ERP</div></div><span class="ap">✓ directa</span><span class="gate-pill">APLICADA</span></button>
     <div class="fcol"><span class="eyebrow">Versiones vigentes (por entorno)${respBadge('cam-versiones')}</span>
-      <div class="fitem"><span class="t">Cobranza de cuotas — mapa de proceso</span><span class="m"><span class="gate-pill">v1 VIGENTE · prod</span><span class="gate-pill pend">v2 borrador · dev</span><span>revisión periódica: 15 ago</span></span></div>
+      <div class="fitem"><span class="t">Cobranza de cuotas — mapa de proceso</span><span class="m"><span class="gate-pill">v1 VIGENTE · producción</span><span class="gate-pill pend">v2 borrador · desarrollo</span><span>revisión periódica: 15 ago</span></span></div>
       <div class="fitem"><span class="t">Arnés · Analista de Cobranza (Colab Studio)</span><span class="m"><span class="gate-pill">v3 VIGENTE</span><span>compilado del twin · 2026-07-18</span><span>uso 34/sem (rol)</span></span></div>
-      <div class="fitem"><span class="t">Corrida · Cobranza digital fase 2 (what-if)</span><span class="m"><span class="gate-pill pend">RAMA ABIERTA</span><span>merge = pasa por ESTA cola de aprobación</span></span></div></div>
+      <div class="fitem"><span class="t">Corrida · Cobranza digital fase 2 (simulación)</span><span class="m"><span class="gate-pill pend">RAMA ABIERTA</span><span>aplicarla = pasa por ESTA cola de aprobación</span></span></div></div>
     <div class="fcol"><span class="eyebrow">Historial de la organización — toda acción, versionada (quién · qué · aprobación)${respBadge('cam-historial')}</span>
       ${DATA.historial.map(h=>`<div class="fitem"><span class="t" style="font-size:12px">${h}</span></div>`).join('')}
-      <div style="font-size:10px;color:var(--tx-faint);font-family:var(--font-mono)">la organización tiene historial, como el código — debajo: git real en N6</div></div>`);
-  counter(`3 pendientes · 2 aplicadas · historial: ${DATA.historial.length} acciones`);
+      <div style="font-size:10px;color:var(--tx-faint);font-family:var(--font-mono)">la organización tiene historial, como el código — cada acción queda versionada por debajo</div></div>`);
+  counter(`${3+SOLICITUDES.length} pendientes · 2 aplicadas · historial: ${DATA.historial.length} acciones`);
 }
 
 /* ---------- topbar: chips de filtro + contador de subset ---------- */
@@ -2666,9 +2732,9 @@ inClose.onclick=()=>{ state.insp='home'; inspectorHome(); };
 function inspectorHome(){
   inClose.style.display='none';
   if(state.mod==='mejora'){
-    inEye.textContent='Mejora · el loop'; inTitle.textContent='6 brechas → 2 en vuelo → 1 movido';
-    inBody.innerHTML=`<div class="dgroup"><div class="gt">El money shot del director</div>
-      <div style="font-size:12.5px;line-height:1.5">El ciclo <b>brecha → proyecto → KPI movido</b> vive dentro del twin con dato real de cierre. El veredicto se escribe contra la serie del KPI — no contra un checklist.</div></div>
+    inEye.textContent='Mejora · el ciclo'; inTitle.textContent='6 brechas → 2 en curso → 1 movido';
+    inBody.innerHTML=`<div class="dgroup"><div class="gt">La prueba que le importa al directorio</div>
+      <div style="font-size:12.5px;line-height:1.5">El ciclo <b>brecha → proyecto → KPI movido</b> vive dentro del twin con dato real de cierre. El veredicto se escribe contra la serie del KPI — no contra una lista de tareas.</div></div>
       <div style="font-size:12px;color:var(--tx-faint)">Toca una brecha o proyecto para su ficha. El proyecto cerrado muestra el delta observado y su veredicto.</div>`;
     return; }
   if(state.mod==='metodo'){
@@ -2678,27 +2744,27 @@ function inspectorHome(){
       <div style="font-size:12px;color:var(--tx-faint)">Todo lo que el twin pinta es trazable a una M-card — el método es dato, no opinión.</div>`;
     return; }
   if(state.mod==='cambios'){
-    inEye.textContent='Cambios · ISO'; inTitle.textContent='2 pendientes de aprobación';
+    inEye.textContent='Cambios · ISO'; inTitle.textContent=`${3+SOLICITUDES.length} pendientes de aprobación`;
     inBody.innerHTML=`<div class="dgroup"><div class="gt">Niveles de aprobación</div>
       <div style="font-size:12.5px;line-height:1.6"><b>directa</b> — se aplica y queda trazada<br><b>revisión-dueño</b> — el dueño del proceso acusa<br><b>gestión-de-cambios</b> — comité (banda de KPI, mapa de proceso)</div></div>
-      <div style="font-size:12px;color:var(--tx-faint)">Debajo: git real en N6 (dev → UAT → prod). El usuario ve solicitudes y versiones; el hash jamás.</div>`;
+      <div style="font-size:12px;color:var(--tx-faint)">Debajo hay control de versiones real, con entornos desarrollo → pruebas → producción. El usuario ve solicitudes y versiones; la tubería técnica, jamás.</div>`;
     return; }
   if(state.corrida){
     inEye.textContent='Corrida · impactos en vivo'; inTitle.textContent='Cobranza digital fase 2';
     inBody.innerHTML=`
       <div class="dgroup"><div class="gt">Cambios propuestos (diff)</div>
         <div class="drow"><dt>Tesorería y Cobranza</dt><dd><span class="dtag">Δ editado</span></dd></div>
-        <div class="drow"><dt>Cobranza de cuotas</dt><dd style="font-size:12px">+1 actividad · portal de pagos</dd></div>
+        <div class="drow"><dt><span class="plnk" onclick="drillLienzo('p-cob')">Cobranza de cuotas ›</span></dt><dd style="font-size:12px">+1 actividad · portal de pagos — <span class="plnk" onclick="drillLienzo('p-cob')">se ve punteada en el lienzo</span></dd></div>
         <div class="drow"><dt>Rol nuevo</dt><dd style="font-size:12px">Analista de cobranza digital (propuesto)</dd></div></div>
-      <div class="dgroup"><div class="gt">Impacto proyectado — previous → new</div>
+      <div class="dgroup"><div class="gt">Impacto proyectado — hoy → propuesto</div>
         <div class="medlist">
-          <div class="r"><span>DSO Marina</span><span>91 → <b style="color:var(--brand-hi)">75 días</b></span></div>
+          <div class="r"><span>Cobranza (días)</span><span>91 → <b style="color:var(--brand-hi)">75 días</b></span></div>
           <div class="r"><span>cobranza digital</span><span>15% → <b style="color:var(--brand-hi)">40%</b></span></div>
-          <div class="r"><span>costo one-time</span><span style="color:var(--crit)">S/ 60k</span></div>
-          <div class="r"><span>headcount</span><span>+1 rol</span></div></div>
-        <div style="border-top:1px solid var(--border);margin-top:4px;padding-top:8px;font-family:var(--font-mono);font-size:11px">neto · payback 5 meses · ROI 1.8×</div></div>
-      <div class="dgroup"><div class="gt">Salida de la corrida — gate explícito</div>
-        <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">Aplicar = PR a la rama principal (N6) por la cola de <b>Cambios</b>. Nada se mergea implícito.</div>
+          <div class="r"><span>costo por única vez</span><span style="color:var(--crit)">S/ 60k</span></div>
+          <div class="r"><span>personal</span><span>+1 rol</span></div></div>
+        <div style="border-top:1px solid var(--border);margin-top:4px;padding-top:8px;font-family:var(--font-mono);font-size:11px" title="retorno del caso: lo que devuelve sobre lo que cuesta">neto · se recupera en 5 meses · ROI 1.8×</div></div>
+      <div class="dgroup"><div class="gt">Salida de la corrida — aprobación explícita</div>
+        <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">Aplicar = solicitud a la cola de <b>Cambios</b> sobre la rama principal. Nada se aplica solo.</div>
         <button class="btn" style="justify-content:center" onclick="document.getElementById('corridaGate').click()">Enviar a aprobación ›</button></div>`;
     return; }
   if(state.escala==='z0'&&!(state.mod==='territorio'&&state.nivel===3)){
@@ -2708,23 +2774,24 @@ function inspectorHome(){
     const g=DATA.brechas.find(b=>b.apuesta), o=byId(DATA.objetivos,g.obj);
     inBody.innerHTML=`
       <div class="dgroup"><div class="gt">Pulso del directorio — KRs en banda${respBadge('sala-pulso')}</div>
-        <div class="pulso-dots">${DATA.objetivos.map(x=>`<i style="background:${health[x.salud]}" title="${x.nm}"></i>`).join('')}</div>
-        <div style="font-size:11px;color:var(--tx-faint)">verde = KR dentro de banda · toca un objetivo en el mapa para encender su hilo</div></div>
+        <div class="pulso-dots">${DATA.objetivos.map(x=>{ const lbl={verde:'dentro de meta',ambar:'cerca',rojo:'fuera de meta'}[x.salud];
+          return `<i data-obj="${x.id}" style="background:${health[x.salud]}" title="${x.nm} — ${x.kr.m}: ${x.kr.cur}${x.kr.u} (meta ${x.kr.to}${x.kr.u}) · ${lbl} · clic = su ficha, y desde ahí su hilo"></i>`; }).join('')}</div>
+        <div style="font-size:11px;color:var(--tx-faint)">verde = KR dentro de banda · toca un punto para su ficha (y su hilo) — o un objetivo directo en el mapa</div></div>
       <div class="apuesta-card">
         <div class="hd"><span class="live"></span><h3 class="eyebrow" style="margin:0;color:var(--tx-mut);letter-spacing:.1em">La apuesta · próximo paso${respBadge('sala-jugada')}</h3></div>
         <div class="body">Cerrar <b>Marina 87→95% de avance</b> — la brecha ALTA atada a <b>${o.nm}</b>.</div>
         <div class="biz">
           <div><span class="k">Cuesta</span><span class="v cost">${g.costo}</span></div>
           <div><span class="k">Mueve KR</span><span class="v kr">margen →18%</span></div>
-          <div><span class="k">Prio</span><span class="v">WSJF ①</span></div>
+          <div title="① = la brecha que más cuesta por mes de espera, frente a lo que cuesta atacarla"><span class="k">Prioridad</span><span class="v">①</span></div>
         </div>
         <div style="font-family:var(--font-mono);font-size:10px;color:var(--tx-mut);margin-top:5px;cursor:help" title="${DATA.peers['meta-margen'].src}">vara externa: ${DATA.peers['meta-margen'].r} — la meta 18% es alcanzable</div>
         <button class="btn go" id="apuestaGo">Ver el hilo que mueve ›</button>
       </div>
-      <div class="dgroup"><div class="gt">Estado del loop — brecha → proyecto → KPI${respBadge('sala-loop')}</div>
-        ${DATA.proyectos.map(pm=>`<button class="loop-it" data-pm="${pm.id}"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}</span><span class="mono" style="font-size:10px;color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}
-        <div style="font-size:11px;color:var(--tx-faint)">2 proyectos en vuelo · prende la capa Cinética para verlos sobre el mapa</div></div>
-      <div class="dgroup"><div class="gt">El twin compila trabajo — se compila por rol×proceso · se ensambla por puesto (CK-30)${respBadge('sala-trabajo')}</div>
+      <div class="dgroup"><div class="gt">El ciclo de mejora — brecha → proyecto → KPI${respBadge('sala-loop')}</div>
+        ${DATA.proyectos.map(pm=>`<button class="loop-it" data-pm="${pm.id}"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}${pm.estado==='cerrado'?' <span style="color:var(--ok);font-size:9px">✓ cerrado</span>':''}</span><span class="mono" style="font-size:10px;color:var(--brand-hi)" title="retorno del caso: lo que devuelve sobre lo que cuesta">ROI ${pm.roi}</span></button>`).join('')}
+        <div style="font-size:11px;color:var(--tx-faint)">${DATA.proyectos.filter(p=>p.estado!=='cerrado').length} proyectos en curso · ${DATA.proyectos.filter(p=>p.estado==='cerrado').length} cerrado con indicador movido · prende la capa Cinética para verlos sobre el mapa</div></div>
+      <div class="dgroup"><div class="gt">El twin compila trabajo — se compila por rol×proceso · se ensambla por puesto${respBadge('sala-trabajo')}</div>
         <div style="font-size:12.5px;line-height:1.5"><b class="mono" style="color:var(--brand-hi)">${new Set(DATA.arneses.map(h=>h.deriva_de.puesto)).size}/${DATA.puestosTotal}</b> puestos con arnés en su roster · <b class="mono">${DATA.arneses.length}</b> arneses compilados · <span style="color:var(--warn)">${DATA.arneses.filter(h=>arnesEstado(h)==='desactualizado').length} desactualizado</span> (el twin cambió → recompilar). El resto opera a mano: el gap de la era agéntica, visible.</div>
         <button class="btn" id="verTrabajo" style="justify-content:center">Prender la capa Trabajo ›</button></div>
       ${state.nivel===1?`<div class="dgroup"><div class="gt">¿El sistema aguanta la ambición? — autoevaluación asistida, simulada${respBadge('dir-madurez')}</div>
@@ -2740,6 +2807,8 @@ function inspectorHome(){
       if(!state.capas.has('salud')){ const cs=document.querySelector('[data-capa=salud]'); if(cs) cs.click(); }
       const st=document.querySelector('.sub-t[data-sub=madurez]'); if(st) st.click(); };
     inBody.querySelectorAll('.loop-it').forEach(b=>b.onclick=()=>openProyecto(byId(DATA.proyectos,b.dataset.pm)));
+    /* v17: los puntos del pulso llevan data-obj — wireLinks (al final de inspectorHome) los cablea a la ficha
+       del objetivo, que ya trae "Encender su hilo en el mapa ›" */
     inBody.querySelectorAll('[data-resp]').forEach(b=>b.onclick=()=>openRespaldo(b.dataset.resp));
   }
   else if(state.escala==='z1'){
@@ -2763,7 +2832,7 @@ function inspectorHome(){
       <div class="dgroup"><div class="gt">Puestos del área — quién los ocupa · con qué roster</div>
         ${pusZ1.map(nm=>{ const o=puestoOcupante(nm);
           return `<div class="rolrow"><span class="plnk" data-pu="${nm}">${nm}</span> ${rosterBadge(nm)}<span class="who ${o.vac?'vac':''}" ${(!o.vac&&o.quien)?`data-per="${o.quien}" style="cursor:pointer"`:''}>${o.vac?'sin persona asignada':(o.quien||'equipo')}</span></div>`; }).join('')}
-        <div style="font-size:10px;color:var(--tx-faint)">métricas por PUESTO/ROL, jamás por persona nombrada (frontera CK-24) · ⛨ = roster compilado del twin (D-20)</div></div>
+        <div style="font-size:10px;color:var(--tx-faint)">métricas por PUESTO/ROL, jamás por persona nombrada · ⛨ = roster compilado del twin</div></div>
       <div style="font-size:12px;color:var(--tx-faint)">El área es un LENTE sobre el mapa de valor: sus procesos encendidos en su lugar, los vecinos de cadena a media luz = sus fronteras (qué la alimenta · a quién alimenta). Toca un proceso para su ficha (SIPOC) · doble-click abre su lienzo (flujograma).</div>`;
   }
   else if(state.escala==='z3'&&state.act){
@@ -2775,7 +2844,7 @@ function inspectorHome(){
         <div style="font-size:12.5px;line-height:1.5">${aa.triage?`<b>${aa.triage}</b> — `:''}RPA <b class="mono">${dd.m36.rpa}</b> · Agente <b class="mono">${dd.m36.agente}</b>. ${dd.m36.rpa<35&&dd.m36.agente<35?'Queda humana: criterio, negociación o relación.':dd.m36.agente>dd.m36.rpa?'El agente del arnés puede prepararla/asistirla.':'Automatizable con reglas (RPA).'}</div></div>`:''}
       <div class="dgroup"><div class="gt">Acciones (kinética)</div>
         <button class="btn" data-acc="corregir-instruccion">Proponer corrección de instrucción › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · gestión-de-cambios → recompila arnés</span></button>
-        <button class="btn" data-acc="enviar-idea">Proponer mejora al funil › <span class="mono" style="font-size:9px;color:var(--tx-faint)">operativo · directa · autoría reconocida</span></button></div>
+        <button class="btn" data-acc="enviar-idea">Proponer mejora al embudo › <span class="mono" style="font-size:9px;color:var(--tx-faint)">operativo · directa · autoría reconocida</span></button></div>
       <div style="font-size:12px;color:var(--tx-faint);line-height:1.5">Debajo de la instrucción no hay más zoom: el piso es el <b>arnés de este rol×proceso</b>, ensamblado al roster del puesto. Toca una tarea, un rol o el arnés para seguir el viaje.</div>`;
     wireLinks(inBody); return;
   }
@@ -2789,6 +2858,13 @@ function inspectorHome(){
   else{
     const pid=state.lienzo||DATA.flagship.proc, f=lienzoData(pid), p2=byId(DATA.procesos,pid), ks=kpisByProc(pid);
     const gs=DATA.brechas.filter(x=>x.against===pid);
+    /* v17 · nivel 4 no aterriza a ciegas: el proceso en foco se declara y se puede CAMBIAR desde aquí */
+    const selProc=state.escala==='z2'?`<div class="dgroup"><div class="gt">Proceso en foco — nivel operativo</div>
+      <select id="procSel" style="width:100%;background:var(--raised);color:var(--tx);border:1px solid var(--border);border-radius:8px;padding:6px 8px;font:inherit;font-size:12px">
+        <optgroup label="Cadena de valor (misionales)">${DATA.cadena.map(id=>{const x=byId(DATA.procesos,id);return `<option value="${x.id}"${x.id===pid?' selected':''}>${x.nm} — ${coreNm(x.dueno)}</option>`;}).join('')}</optgroup>
+        <optgroup label="Apoyo">${DATA.procesos.filter(x=>!DATA.cadena.includes(x.id)).map(x=>`<option value="${x.id}"${x.id===pid?' selected':''}>${x.nm} — ${coreNm(x.dueno)}</option>`).join('')}</optgroup>
+      </select>
+      <div style="font-size:10.5px;color:var(--tx-faint)">elige otro proceso para abrir su flujo — o vuelve al mapa con ‹ Big picture</div></div>`:'';
     const tuDia=state.escala==='z2'?`<div class="dgroup"><div class="gt">Tu día — operativo${respBadge('z4-tudia')}</div>
       <button class="loop-it" data-k="k-caj"><span style="color:var(--warn)">◔</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Registrar "rezago caja por obra" — sin dato</span><span class="mono" style="font-size:9px;color:var(--tx-faint)">directa</span></button>
       <button class="loop-it" data-k="k-vis"><span style="color:var(--warn)">⌛</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">"visitas a caseta" — frescura vencida</span><span class="mono" style="font-size:9px;color:var(--tx-faint)">directa</span></button>
@@ -2798,7 +2874,7 @@ function inspectorHome(){
       ${gs.map(g=>`<button class="loop-it" data-g2="${g.id}"><span style="color:${g.sev==='alta'?'var(--crit)':'var(--warn)'}">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.nm}</span><span class="mono" style="font-size:10px;color:${g.sev==='alta'?'var(--crit)':'var(--warn)'}">${g.costo}</span></button>`).join('')}</div>`:'';
     inEye.textContent='Proceso · lienzo'; inTitle.textContent=p2.nm;
     if(!f){ // lienzo honesto (sin actividades levantadas)
-      inBody.innerHTML=`${tuDia}
+      inBody.innerHTML=`${selProc}${tuDia}
         ${ks.length?`<div class="dgroup"><div class="gt">KPIs del proceso</div>${ks.map(krowHTML).join('')}</div>`:''}
         <div class="dgroup"><div class="gt">Actividades sin levantar</div>
           <div style="font-size:12px;line-height:1.5">Este lienzo muestra los <b>pasos macro</b> declarados en la ingesta. El detalle (carriles, tiempos VSM, triage, RACI) se construye en el levantamiento <b>M1 · entrevista + observación</b>.</div></div>
@@ -2806,7 +2882,7 @@ function inspectorHome(){
         <div style="font-size:12px;color:var(--tx-faint)">Volver: ‹ Big picture · la ficha del proceso tiene su caracterización SIPOC.</div>`;
     } else {
       const tri=f.acts.filter(a=>a.triage&&a.triage.startsWith('automatizable')).length, elim=f.acts.filter(a=>a.triage==='eliminable').length;
-      inBody.innerHTML=`${tuDia}
+      inBody.innerHTML=`${selProc}${tuDia}
         ${ks.length?`<div class="dgroup"><div class="gt">KPIs del proceso</div>${ks.map(krowHTML).join('')}</div>`:''}
         <div class="dgroup">
           <div class="drow"><dt>Actividades</dt><dd class="mono">${f.acts.length}</dd></div>
@@ -2817,6 +2893,7 @@ function inspectorHome(){
         ${gapsHTML}
         <div style="font-size:12px;color:var(--tx-faint)">Toca una actividad para su detalle (VSM, triage, RACI, procedencia).</div>`;
     }
+    const ps=inBody.querySelector('#procSel'); if(ps) ps.onchange=e=>drillLienzo(e.target.value);
   }
   wireLinks(inBody);
 }
@@ -2864,7 +2941,7 @@ function openProceso(p){ const objs=p.sirve.map(id=>byId(DATA.objetivos,id));
      ${conocimientoHTML(p.id)}
      ${prov(p.conf==='alta'?'Sistema leído':'Entrevista',p.conf)}
      <div class="dgroup"><div class="gt">Acciones (kinética)</div>
-      <button class="btn" data-acc="publicar-mapa-proceso">Publicar versión del mapa › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · gestión-de-cambios · dev→UAT→prod</span></button></div>
+      <button class="btn" data-acc="publicar-mapa-proceso">Publicar versión del mapa › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · gestión-de-cambios · desarrollo→pruebas→producción</span></button></div>
      <button class="btn" style="justify-content:center" onclick="drillLienzo('${p.id}')">Abrir lienzo del proceso (flujograma) ›</button>`);
 }
 function openBrecha(g){ const o=g.obj?byId(DATA.objetivos,g.obj):null; const proc=byId(DATA.procesos,g.against);
@@ -2879,7 +2956,7 @@ function openBrecha(g){ const o=g.obj?byId(DATA.objetivos,g.obj):null; const pro
       <div class="drow"><dt>Costo de no hacer</dt><dd style="color:${sc};font-family:var(--font-mono)">${g.costo}</dd></div>
       <div class="drow"><dt>Severidad · prio</dt><dd><span class="chip" style="border-color:${sc};color:${sc}">${g.sev} · ${g.prio}</span></dd></div>
       <div class="drow"><dt>Estado</dt><dd><span class="chip">${est}</span></dd></div></div>
-     <div class="dgroup"><div class="gt">Cierra el loop (O7 cinética)</div>
+     <div class="dgroup"><div class="gt">Cierra el ciclo (capa Cinética)</div>
       ${DATA.proyectos.filter(pm=>pm.brecha===g.id).map(pm=>`<button class="loop-it" data-pm2="${pm.id}"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}</span><span class="mono" style="font-size:10px;color:var(--brand-hi)">${pm.roi}</span></button>`).join('')
         || '<span style="font-size:12px;color:var(--tx-faint)">Sin proyecto de mejora aún — candidata a la Apuesta.</span>'}</div>
      <div class="dgroup"><div class="gt">Acciones (kinética)</div>
@@ -2895,15 +2972,15 @@ function openProyecto(pm){ const g=byId(DATA.brechas,pm.brecha), k=byId(DATA.kpi
       <div class="drow"><dt>KPI que mueve</dt><dd>${k?krowHTML(k):'—'}</dd></div>
       <div class="drow"><dt>Compromiso</dt><dd class="mono" style="color:var(--brand-hi)">${pm.delta}</dd></div>
       <div class="drow"><dt>ROI del caso</dt><dd class="mono">${pm.roi}</dd></div></div>
-     ${pm.resultado?`<div class="dgroup"><div class="gt">Resultado — KPI movido (cierre del loop)</div>
+     ${pm.resultado?`<div class="dgroup"><div class="gt">Resultado — KPI movido (el ciclo cerró)</div>
       <div class="drow"><dt>Delta observado</dt><dd class="mono" style="color:var(--ok)">${pm.resultado.delta_observado}</dd></div>
       <div class="drow"><dt>Veredicto</dt><dd><span class="chip" style="border-color:var(--ok);color:var(--ok)">✓ ${pm.resultado.veredicto}</span></dd></div>
       ${pm.recompila?`<div class="drow"><dt>Arnés recompilado</dt><dd>${harnBadge(byId(DATA.arneses,pm.recompila))}</dd></div>
-      <div style="font-size:10px;color:var(--brand-hi)">↑ el cambio llegó hasta el puesto: la mejora se estandarizó COMPILÁNDOLA al arnés (CK-29)</div>`:''}
+      <div style="font-size:10px;color:var(--brand-hi)">↑ el cambio llegó hasta el puesto: la mejora se estandarizó COMPILÁNDOLA al arnés</div>`:''}
       <div style="font-size:11.5px;color:var(--tx-faint)">${pm.resultado.nota}</div></div>`:`
-     <div class="dgroup"><div class="gt">Acciones (kinética — tollgates)</div>
-      <button class="btn" data-acc="avanzar-tollgate">Avanzar tollgate › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · revisión-dueño · loop-back MASP permitido</span></button></div>`}
-     <div style="font-size:12px;color:var(--tx-faint)">El loop <b style="color:var(--tx-mut)">brecha → proyecto → KPI movido</b> vive dentro del twin, con dato real de cierre. Ningún vendor lo cierra in-tool.</div>`);
+     <div class="dgroup"><div class="gt">Acciones (kinética — revisiones de fase)</div>
+      <button class="btn" data-acc="avanzar-tollgate">Avanzar de fase › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · revisión-dueño · se puede volver atrás con evidencia</span></button></div>`}
+     <div style="font-size:12px;color:var(--tx-faint)">El ciclo <b style="color:var(--tx-mut)">brecha → proyecto → KPI movido</b> vive dentro del twin, con dato real de cierre — de punta a punta en la misma herramienta.</div>`);
 }
 function openActividad(a){ const hAct=DATA.arneses.find(h=>h.deriva_de.proceso===(state.lienzo||DATA.flagship.proc)&&h.acts.includes(a.ord));
   const candidato=a.triage&&(a.triage.startsWith('automatizable')||a.triage==='aumentable');
@@ -2920,12 +2997,12 @@ function openActividad(a){ const hAct=DATA.arneses.find(h=>h.deriva_de.proceso==
     ${a.rtlx?`<div class="drow"><dt>Carga (NASA-RTLX)</dt><dd class="mono" style="color:var(--warn)">${a.rtlx} <span style="font-size:9px;color:var(--tx-faint)">agregado por rol</span></dd></div>`:''}
     ${hAct?`<div class="drow"><dt>Operada con</dt><dd>${harnBadge(hAct)}</dd></div>`:''}</div>
    ${candidato?`<div class="dgroup"><div class="gt">El triage NO es una etiqueta — alimenta la fábrica</div>
-    <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">Veredicto <b>${a.triage}</b> → candidato a <b>skill del arnés del puesto</b>: la cadena es triage (M36) → funil de ideas (M44) → Arnesia (N15) compila → Colab Studio (N17) lo corre.</div>
-    ${a.ord===3?'<button class="btn" style="justify-content:center" id="actIdea">Ver su idea en el funil › <span class="mono" style="font-size:9px;color:var(--tx-faint)">M36 → M44 → Arnesia</span></button>':'<button class="btn" data-acc="enviar-idea" style="justify-content:center">Proponer al funil › <span class="mono" style="font-size:9px;color:var(--tx-faint)">operativo · directa · autoría reconocida</span></button>'}</div>`:''}
+    <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">Veredicto <b>${a.triage}</b> → candidato a <b>skill del arnés del puesto</b>: la cadena es triage → embudo de ideas → Arnesia compila → Colab Studio lo corre.</div>
+    ${a.ord===3?'<button class="btn" style="justify-content:center" id="actIdea">Ver su idea en el embudo › <span class="mono" style="font-size:9px;color:var(--tx-faint)">triage → embudo → Arnesia</span></button>':'<button class="btn" data-acc="enviar-idea" style="justify-content:center">Proponer al embudo › <span class="mono" style="font-size:9px;color:var(--tx-faint)">operativo · directa · autoría reconocida</span></button>'}</div>`:''}
    ${conocimientoHTML(state.lienzo||'p-cob')}
    ${prov(a.fte||'Entrevista',a.conf||'media')}
    <div style="font-size:12px;color:var(--tx-faint)">${a.note}</div>
-   <button class="btn" style="justify-content:center" onclick="drillActividad('${state.lienzo||DATA.flagship.proc}',${a.ord})">Abrir la instrucción de trabajo (z3) › <span class="mono" style="font-size:9px;color:var(--tx-faint)">el cómo · tareas · scores M36</span></button>`);
+   <button class="btn" style="justify-content:center" onclick="drillActividad('${state.lienzo||DATA.flagship.proc}',${a.ord})">Abrir la instrucción de trabajo (z3) › <span class="mono" style="font-size:9px;color:var(--tx-faint)">el cómo · tareas · puntajes de automatización</span></button>`);
   const ai=inBody.querySelector('#actIdea'); if(ai) ai.onclick=()=>openIdea(byId(DATA.ideas,'i-agente')); }
 
 /* ---------- drawer KPI: semáforo grande + sparkline + cadena kpi→KR→objetivo ---------- */
@@ -2969,7 +3046,7 @@ function openKpi(k){ const s=semaforo(k), c=kcur(k), o=k.obj?byId(DATA.objetivos
 /* ============================================================
    FICHAS DEL VIAJE COMPLETO (CK-29) — toda entidad navegable
    ============================================================ */
-/* ===== v14 · APUESTA — la unidad del directorio (⚠ pendiente de schema: ficha D-NN) ===== */
+/* ===== v14 · APUESTA — la unidad del directorio (entidad real desde D-23: 13º nodo del schema) ===== */
 function openApuesta(a){ const objs=a.objetivos.map(id=>byId(DATA.objetivos,id));
   const pms=DATA.proyectos.filter(pm=>{ const k=byId(DATA.kpis,pm.mueve); const g=pm.brecha&&byId(DATA.brechas,pm.brecha);
     return (k&&a.objetivos.includes(k.obj))||(g&&a.objetivos.includes(g.obj)); });
@@ -2991,8 +3068,7 @@ function openApuesta(a){ const objs=a.objetivos.map(id=>byId(DATA.objetivos,id))
       ${a.estado!=='por-sellar'?'':'<button class="btn" data-acc="sellar-apuesta">Sellar la apuesta › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>'}
       <button class="btn" data-acc="re-apostar">Re-apostar (cambiar meta o riesgo) › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>
       <button class="btn" data-acc="retirar-apuesta">Retirar la apuesta › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>
-      <button class="btn" data-acc="convocar-cuentas">Convocar rendición de cuentas › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · directa</span></button></div>
-    <div style="font-size:10px;color:var(--tx-faint)">⚠ apuesta y apetito aún no son entidades del schema — ficha D-NN pendiente (/metodo-aprende); incluye valor-que-persigue y lo-que-apostamos (tiempo · tope). Acá viven anclados a objetivos reales.</div>`);
+      <button class="btn" data-acc="convocar-cuentas">Convocar rendición de cuentas › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · directa</span></button></div>`);
 }
 function openObjetivo(o){
   const drivers=DATA.procesos.filter(p=>p.sirve.includes(o.id));
@@ -3028,14 +3104,14 @@ function openPuesto(nm){ const pu=puestoByNm(nm); if(!pu)return openRol(nm);
      ${occs.length?`<div class="chips" style="justify-content:flex-end">${occs.slice(0,8).map(q=>`<span class="chip lk" data-per="${q}">${q}</span>`).join('')}${occs.length>8?`<span class="chip">+${occs.length-8} más</span>`:''}</div>`
        :'<div style="text-align:right"><span class="chip" style="border-color:var(--warn);color:var(--warn)">SIN PERSONA ASIGNADA</span></div>'}
      <div class="drow"><dt>Fuente · conf</dt><dd class="mono" style="font-size:10px">nómina + wiring de procesos · alta</dd></div></div>
-   <div class="dgroup"><div class="gt">Roles que agrega — el papel en cada proceso (D-19)</div>
+   <div class="dgroup"><div class="gt">Roles que agrega — el papel en cada proceso</div>
      ${roles.map(r=>`<div class="drow"><dt><span class="plnk" data-rol="${r}">${r}</span></dt><dd><div class="chips" style="justify-content:flex-end">${pares.filter(x=>x.rol===r).map(x=>`<span class="chip lk" data-proc="${x.proc}">${byId(DATA.procesos,x.proc).nm}${x.via==='posee'?' · posee':''}</span>`).join('')}</div></dd></div>`).join('')||'<div style="font-size:12px;color:var(--tx-faint)">Sin proceso mapeado — sin carril declarado en el AS-IS.</div>'}</div>
    <div class="dgroup"><div class="gt">Roster de arneses — se ENSAMBLA por puesto${respBadge('sala-trabajo')}</div>
      ${pares.length?pares.map(x=>{ const h=arnesDe(x.rol,x.proc);
        return `<div class="drow"><dt style="font-size:10.5px">${byId(DATA.procesos,x.proc).nm}</dt><dd>${harnBadge(h)}</dd></div>`; }).join(''):'<div style="font-size:12px;color:var(--tx-faint)">Sin pares rol×proceso — nada que compilar aún.</div>'}
      <div style="font-size:10px;color:var(--tx-faint)">se COMPILA por rol×proceso (Arnesia N15) · se ensambla por puesto (roster) · se CORRE por persona (N17, BYO licencia)</div></div>
-   ${ks.length?`<div class="dgroup"><div class="gt">KPIs de sus roles — por rol, jamás por persona (CK-24)</div>${ks.map(krowHTML).join('')}</div>`:''}
-   ${hVig?`<div class="dia-card"><b>El día del ocupante — supervisar, no ejecutar (CK-30).</b><br>Su agente (Claude Code + arnés ${hVig.v}) ejecuta ${pu.nm==='Analista de Cobranza'?'el monitoreo de cartera, la clasificación de mora y los recordatorios':'los flujos del puesto'}; ${occs[0]?occs[0].split(' ')[0]:'el ocupante'} <b>supervisa con contrato</b>: verifica ${hVig.verificacion_humana.que[0]} (${hVig.verificacion_humana.evidencia}) en ${hVig.verificacion_humana.tiempo}, aprueba excepciones, mejora su arnés y propone ideas al funil. La supervisión se especifica y se MIDE — no se declara.</div>`:''}
+   ${ks.length?`<div class="dgroup"><div class="gt">KPIs de sus roles — por rol, jamás por persona</div>${ks.map(krowHTML).join('')}</div>`:''}
+   ${hVig?`<div class="dia-card"><b>El día del ocupante — supervisar, no ejecutar.</b><br>Su agente (Claude Code + arnés ${hVig.v}) ejecuta ${pu.nm==='Analista de Cobranza'?'el monitoreo de cartera, la clasificación de mora y los recordatorios':'los flujos del puesto'}; ${occs[0]?occs[0].split(' ')[0]:'el ocupante'} <b>supervisa con contrato</b>: verifica ${hVig.verificacion_humana.que[0]} (${hVig.verificacion_humana.evidencia}) en ${hVig.verificacion_humana.tiempo}, aprueba excepciones, mejora su arnés y propone ideas al embudo. La supervisión se especifica y se MIDE — no se declara.</div>`:''}
    ${conocimientoHTML(pares[0]?pares[0].proc:null)}
    <button class="btn" style="justify-content:center" onclick="setPiel('org');state.escala='z0';render()">Ver en el organigrama ›</button>`);
 }
@@ -3055,10 +3131,10 @@ function openRol(nm){ const core=coreNm(nm);
      <div class="drow"><dt>Lo agregan</dt><dd><div class="chips" style="justify-content:flex-end">${pus.map(p=>`<span class="chip lk" data-pu="${p.nm}">${tbadge('puesto','puesto')}${p.nm}</span>`).join('')||'—'}</div></dd></div></div>
    ${racis.length?`<div class="dgroup"><div class="gt">RACI — dónde es R / A</div>
      ${racis.slice(0,6).map(x=>`<div class="drow"><dt style="font-size:10.5px">${x.a.raci.R===core?'R':'A'} · ${String(x.a.ord).padStart(2,'0')} ${x.a.verbo}</dt><dd><span class="plnk" data-proc="${x.l.proc}" style="font-size:11px">${x.l.nm}</span></dd></div>`).join('')}</div>`:''}
-   ${ks.length?`<div class="dgroup"><div class="gt">KPIs de los que es dueño — por rol, jamás por persona (CK-24)</div>${ks.map(krowHTML).join('')}</div>`:''}
-   ${hs.length?`<div class="dgroup"><div class="gt">Arneses compilados de este rol — uno por proceso (M46)</div>
+   ${ks.length?`<div class="dgroup"><div class="gt">KPIs de los que es dueño — por rol, jamás por persona</div>${ks.map(krowHTML).join('')}</div>`:''}
+   ${hs.length?`<div class="dgroup"><div class="gt">Arneses compilados de este rol — uno por proceso</div>
      ${hs.map(h=>`<div class="drow"><dt style="font-size:10.5px">${byId(DATA.procesos,h.deriva_de.proceso).nm}</dt><dd>${harnBadge(h)}</dd></div>`).join('')}</div>`:''}
-   <div style="font-size:11px;color:var(--tx-faint);line-height:1.5">"Los procesos de un rol" = <b>posee</b> (dueño) ∪ <b>ejecuta</b> (carril / RACI R). Consulta (C/I) = contexto de lectura — <b>no genera skills</b> (D-19). El rol es el carril; la contratación vive en el <b>puesto</b>.</div>`);
+   <div style="font-size:11px;color:var(--tx-faint);line-height:1.5">"Los procesos de un rol" = <b>posee</b> (dueño) ∪ <b>ejecuta</b> (carril / RACI R). Consulta (C/I) = contexto de lectura — <b>no genera skills</b>. El rol es el carril; la contratación vive en el <b>puesto</b>.</div>`);
 }
 function openPersona(nm){
   const lid=DATA.areas.find(a=>a.lider.startsWith(nm)); const extra=DATA.personasExtra.find(p=>p.nm===nm);
@@ -3071,24 +3147,24 @@ function openPersona(nm){
       <div class="drow"><dt>Área</dt><dd>${area?`<span class="plnk" data-area="${area.id}">${area.nm}</span>`:'—'}</dd></div>
       <div class="drow"><dt>Vínculo</dt><dd>${extra&&extra.vinculo?extra.vinculo:'empleado'}</dd></div>
       <div class="drow"><dt>Roster del puesto</dt><dd>${pue?rosterBadge(pue):'—'}</dd></div></div>
-    <div class="dgroup"><div class="gt">Ideas propuestas — autoría reconocida (funil M44)</div>
+    <div class="dgroup"><div class="gt">Ideas propuestas — autoría reconocida, en el embudo de ideas</div>
       ${ideas.length?ideas.map(i=>`<button class="loop-it" data-idea="${i.id}"><span class="pdca">${i.estado}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.nm}</span></button>`).join(''):'<span style="font-size:12px;color:var(--tx-faint)">— todavía ninguna</span>'}</div>
-    <div class="dgroup"><div class="gt">Frontera CK-24</div>
-      <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">El twin mide <b>puestos / roles / procesos / áreas</b> — la persona <b>ocupa</b> el puesto, <b>supervisa</b> a sus agentes (CK-30) y es <b>autora</b> de ideas, jamás eslabón de medición. Vista de desempeño individual: solo opt-in Gobernanza + consentimiento.</div></div>`);
+    <div class="dgroup"><div class="gt">Lo que se mide — y lo que jamás</div>
+      <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">El twin mide <b>puestos / roles / procesos / áreas</b> — la persona <b>ocupa</b> el puesto, <b>supervisa</b> a sus agentes y es <b>autora</b> de ideas, jamás eslabón de medición. Vista de desempeño individual: solo opt-in Gobernanza + consentimiento.</div></div>`);
 }
 /* ===== ARNÉS — el REGISTRO del twin (D-20): deriva_de + hash + autonomía + supervisión medida ===== */
 function openArnes(h){ if(!h)return;
   const d=h.deriva_de, proc=byId(DATA.procesos,d.proceso), est=arnesEstado(h);
   const sup=h.supervision||{}, sinAnular=sup.semanas_sin_anular>=8;
   const allPrompt=h.guardrails&&h.guardrails.length&&h.guardrails.every(g=>g.mecanismo==='prompt');
-  openDrawer('Arnés · registro del twin (D-20)', `${d.rol} × ${proc.nm} · ${h.v}`, `
+  openDrawer('Arnés · registro del twin', `${d.rol} × ${proc.nm} · ${h.v}`, `
    <div class="dgroup"><div class="gt">deriva_de — el ancla que ningún registro del mercado tiene</div>
      <div class="drow"><dt>Puesto</dt><dd><span class="plnk" data-pu="${d.puesto}">${d.puesto}</span></dd></div>
      <div class="drow"><dt>Rol</dt><dd><span class="plnk" data-rol="${d.rol}">${d.rol}</span></dd></div>
      <div class="drow"><dt>Proceso</dt><dd><span class="plnk" data-proc="${d.proceso}">${proc.nm}</span></dd></div>
      <div class="drow"><dt>Versión · canal</dt><dd class="mono" style="font-size:11px">${h.v} · ${h.canal}</dd></div>
      <div class="drow"><dt>Compilado</dt><dd style="font-size:11px">${h.compilado}</dd></div></div>
-   <div class="dgroup"><div class="gt">Estado — DERIVADO del hash, jamás guardado</div>
+   <div class="dgroup"><div class="gt">Estado — DERIVADO de la versión del twin, jamás guardado</div>
      <div class="drow"><dt>hash_fuente</dt><dd class="mono" style="font-size:10.5px">${h.hash_fuente}</dd></div>
      <div class="drow"><dt>twin actual</dt><dd class="mono" style="font-size:10.5px">${TWIN_HASH}</dd></div>
      <div class="drow"><dt>⇒ estado</dt><dd>${est==='vigente'?'<span class="chip" style="border-color:var(--ok);color:var(--ok)">vigente</span>':`<span class="chip" style="border-color:var(--warn);color:var(--warn)">⚠ ${est}</span>`}</dd></div>
@@ -3097,16 +3173,16 @@ function openArnes(h){ if(!h)return;
      <div class="drow"><dt>Nivel</dt><dd><span class="chip" style="border-color:var(--teal-700);color:var(--brand-hi)">${h.autonomia}</span></dd></div>
      <div style="font-size:11px;color:var(--tx-mut);line-height:1.45">${h.autonomia_razon}</div>
      <div style="font-size:10px;color:var(--tx-faint)">se sube por evidencia de evaluación, no por optimismo · &gt; L2 requiere ratificación (gestión de cambios)</div></div>
-   <div class="dgroup"><div class="gt">Supervisión — se especifica y se MIDE (CK-30 §2)</div>
+   <div class="dgroup"><div class="gt">Supervisión — se especifica y se MIDE</div>
      <div class="drow"><dt>Supervisor</dt><dd><span class="plnk" data-pu="${h.supervisor}">${h.supervisor}</span></dd></div>
      <div class="drow"><dt>Qué verifica</dt><dd style="font-size:11px;text-align:right">${h.verificacion_humana.que.join('<br>')}</dd></div>
      <div class="drow"><dt>Evidencia</dt><dd style="font-size:11px">${h.verificacion_humana.evidencia}</dd></div>
      <div class="drow"><dt>Tiempo</dt><dd class="mono" style="font-size:10.5px">${h.verificacion_humana.tiempo}</dd></div>
      <div class="drow"><dt>Medición</dt><dd class="mono" style="font-size:10.5px">${sup.corridas_sem} corridas/sem · ${sup.anulaciones_sem} anulaciones/sem · última ${sup.ultima}</dd></div>
      ${sinAnular?`<div style="font-size:11.5px;color:var(--warn);line-height:1.45">⚠ ${sup.semanas_sin_anular} semanas sin una sola anulación — supervisión no ejercida = <b>candidata a brecha</b> (la supervisión declarada que nadie ejerce es la "moral crumple zone" de Elish/Green).</div>`:''}</div>
-   <div class="dgroup"><div class="gt">Guardrails — sin mecanismo declarado NO es guardrail (CK-30 §8)</div>
+   <div class="dgroup"><div class="gt">Guardrails — sin mecanismo declarado NO es guardrail</div>
      ${(h.guardrails||[]).map(g=>`<div class="grchip ${g.mecanismo==='prompt'?'prompt':''}" title="${g.mecanismo==='prompt'?'declarativo — el prompt orienta al modelo, pero NO lo hace cumplir el runtime':'lo hace cumplir el runtime (Claude Code), no el modelo'}">${g.g}<span class="mec">${g.mecanismo}</span></div>`).join('')}
-     ${allPrompt?`<div style="font-size:11px;color:var(--warn)">⚠ todos los guardrails son \`prompt\` — con autonomía ≥ L3 el gate RECHAZA este arnés (D-20)</div>`:`<div style="font-size:10px;color:var(--tx-faint)">punteado = \`prompt\` (declarativo, débil) · sólido = hook / permiso / sandbox (lo hace cumplir el runtime)</div>`}</div>
+     ${allPrompt?`<div style="font-size:11px;color:var(--warn)">⚠ todos los guardrails son \`prompt\` — con autonomía ≥ L3 el gate RECHAZA este arnés</div>`:`<div style="font-size:10px;color:var(--tx-faint)">punteado = \`prompt\` (declarativo, débil) · sólido = hook / permiso / sandbox (lo hace cumplir el runtime)</div>`}</div>
    <div class="dgroup"><div class="gt">Skills + hilo de oro</div>
      <div class="chips">${h.skills.map(s=>`<span class="chip">${s}</span>`).join('')}</div>
      ${h.mueve&&h.mueve.length?`<div style="margin-top:4px">${h.mueve.map(k=>krowHTML(byId(DATA.kpis,k))).join('')}</div><div style="font-size:10px;color:var(--tx-faint)">↑ el hilo llega hasta el arnés: este rol×proceso apunta a estos KPIs</div>`:''}</div>
@@ -3117,7 +3193,7 @@ function openArnes(h){ if(!h)return;
      ${est==='desactualizado'?`<button class="btn" data-acc="recompilar-arnes" style="justify-content:center">Recompilar del twin › <span class="mono" style="font-size:9px;color:var(--tx-faint)">Arnesia N15 · táctico · revisión-dueño</span></button>`:''}
      <button class="btn" data-acc="suspender-arnes" style="justify-content:center">Suspender (kill-switch)&nbsp;› <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · directa</span></button>
      <button class="btn" data-acc="ratificar-autonomia-arnes" style="justify-content:center">Ratificar autonomía&nbsp;› <span class="mono" style="font-size:9px;color:var(--tx-faint)">gobernanza · gestión-de-cambios</span></button></div>
-   <div style="font-size:11.5px;color:var(--tx-faint);line-height:1.5">El twin guarda el <b style="color:var(--tx-mut)">REGISTRO</b> (procedencia · versión · drift · autonomía · supervisión); el <b style="color:var(--tx-mut)">CONTENIDO</b> (skills · hooks · permisos · sandbox) lo compila Arnesia (N15) contra <span class="mono" style="font-size:10px">arnes.l0.json</span>. Se recompila, jamás se edita a mano (D-20).</div>`);
+   <div style="font-size:11.5px;color:var(--tx-faint);line-height:1.5">El twin guarda el <b style="color:var(--tx-mut)">REGISTRO</b> (procedencia · versión · drift · autonomía · supervisión); el <b style="color:var(--tx-mut)">CONTENIDO</b> (skills · hooks · permisos · sandbox) lo compila Arnesia (N15) contra <span class="mono" style="font-size:10px">arnes.l0.json</span>. Se recompila, jamás se edita a mano.</div>`);
 }
 /* ===== ÁREA — la 12ª navegable (cierra A3): unidad organizacional con su hilo completo ===== */
 function openArea(a){ if(!a)return;
@@ -3134,7 +3210,7 @@ function openArea(a){ if(!a)return;
      ${subs.length?`<div class="drow"><dt>Sub-áreas</dt><dd><div class="chips" style="justify-content:flex-end">${subs.map(s=>`<span class="chip lk" data-area="${s.id}">${s.nm}</span>`).join('')}</div></dd></div>`:''}
      ${a.vacante?`<div style="text-align:right"><span class="chip" style="border-color:var(--warn);color:var(--warn)">⚠ ${a.vacante}</span></div>`:''}
      <div class="drow"><dt>Fuente · conf</dt><dd class="mono" style="font-size:10px">levantamiento M1 · ${a.conf}</dd></div></div>
-   <div class="dgroup"><div class="gt">Puestos del área — quién la compone (D-19)</div>
+   <div class="dgroup"><div class="gt">Puestos del área — quién la compone</div>
      ${pus.length?pus.map(p=>{ const occ=puestoOcupantes(p.nm).length;
        return `<div class="rolrow"><span class="plnk" data-pu="${p.nm}">${p.nm}</span> ${rosterBadge(p.nm)}<span class="who ${p.vac?'vac':''}">${p.vac?'vacante':(occ+' pers.')}</span></div>`; }).join(''):'<span style="font-size:12px;color:var(--tx-faint)">— sin puestos directos (ver sub-áreas)</span>'}</div>
    <div class="dgroup"><div class="gt">Procesos del subtree</div>
@@ -3159,7 +3235,7 @@ function openSistema(s){ if(!s)return;
    <div style="font-size:11px;color:var(--tx-faint)">${s.digital==='manual'?'Manual/Excel: el pulso de este dato NO llega solo al lakehouse — candidato a conector o a captura con acuse.':'El lakehouse (N16) observa el SER; el repo (N6) declara el DEBER-SER — el twin compara ambos.'}</div>`);
 }
 function openIdea(i){ if(!i)return; const pm=i.a?byId(DATA.proyectos,i.a):null;
-  openDrawer('Idea · funil (kaizen teian)', i.nm, `
+  openDrawer('Idea · embudo de ideas', i.nm, `
    <div class="dgroup">
      <div class="drow"><dt>Proponente</dt><dd style="font-size:12px">${i.prop} <div style="font-size:9px;color:var(--tx-faint)">autoría reconocida — jamás medición (RN-16 · CK-24)</div></dd></div>
      <div class="drow"><dt>Estado</dt><dd><span class="chip teal">${i.estado}</span></dd></div>
@@ -3182,13 +3258,13 @@ function openCapability(c){ if(!c)return; const gap=c.gap?byId(DATA.brechas,c.ga
 function openEmpresa(){ const e=DATA.empresa;
   openDrawer('Empresa · el twin completo', e.razon, `
    <div class="dgroup"><div class="gt">Misión</div><div style="font-size:12.5px;line-height:1.5">${e.mision}</div></div>
-   <div class="dgroup"><div class="gt">El cerebro — tres cuerpos (CK-29)</div>
+   <div class="dgroup"><div class="gt">El cerebro — tres cuerpos</div>
      <div class="drow"><dt>Estructura</dt><dd class="mono" style="font-size:10.5px">${DATA.areas.length} áreas · ${DATA.procesos.length} procesos · ${DATA.areas.length+DATA.personasExtra.length} personas · ${DATA.puestosTotal} puestos · ${DATA.kpis.length} KPIs</dd></div>
      <div class="drow"><dt>Conocimiento</dt><dd class="mono" style="font-size:10.5px">9 guías · 30 casos · 2 procesos sin capturar (g-doc)</dd></div>
      <div class="drow"><dt>Pulso</dt><dd class="mono" style="font-size:10.5px">lakehouse N16 · 3 conectores · sync 06:00</dd></div>
      <div class="drow"><dt>Compila</dt><dd class="mono" style="font-size:10.5px;color:var(--brand-hi)">${DATA.arneses.length} arneses (rol×proceso) · ${new Set(DATA.arneses.map(h=>h.deriva_de.puesto)).size}/${DATA.puestosTotal} puestos</dd></div></div>
    <div class="dgroup"><div class="gt">Modo de estrategia</div><div style="font-size:12px">OKR trimestral · configurable por región: GPD-anual (Falconi) · mixto</div></div>
-   <div style="font-size:11.5px;color:var(--tx-faint);line-height:1.5">De este cerebro Arnesia (N15) compila los arneses por rol×proceso y los ensambla por puesto; Colab Studio (N17) los corre por persona. <b style="color:var(--tx-mut)">La persona supervisa; el agente ejecuta</b> (CK-30). Cockpit es la cabina.</div>`);
+   <div style="font-size:11.5px;color:var(--tx-faint);line-height:1.5">De este cerebro Arnesia (N15) compila los arneses por rol×proceso y los ensambla por puesto; Colab Studio (N17) los corre por persona. <b style="color:var(--tx-mut)">La persona supervisa; el agente ejecuta</b>. Cockpit es la cabina.</div>`);
 }
 
 /* ============================================================
@@ -3198,7 +3274,10 @@ document.getElementById('back').onclick=()=>{
   if(state.escala==='z3'){ state.escala='z2'; state.insp='home'; render(); return; }   // la escalera se sube de a un peldaño
   state.nivel=2; state.escala='z0'; state.foco=null; state.insp='home'; render(); };
 document.querySelectorAll('#modulos .esc').forEach(b=>b.onclick=()=>{ state.mod=b.dataset.mod;
-  if(state.mod!=='territorio'){ state.escala='z0'; state.foco=null; } state.insp='home'; render(); });
+  /* v17: Territorio = HOME del mapa — desde cualquier profundidad (lienzo/instrucción/foco) vuelve al mapa */
+  if(state.mod==='territorio'){ state.nivel=2; state.escala='z0'; state.foco=null; state.act=null; }
+  else { state.escala='z0'; state.foco=null; }
+  state.insp='home'; render(); });
 document.getElementById('itAsis').onclick=()=>{ state.corrida=false; idmenu.classList.remove('open'); state.insp='home'; render(); };
 document.getElementById('itCorrida').onclick=()=>{ state.corrida=true; state.mod='territorio'; idmenu.classList.remove('open'); state.insp='home'; render(); };
 document.getElementById('corridaExit').onclick=()=>{ state.corrida=false; state.insp='home'; render(); };
@@ -3209,7 +3288,9 @@ document.getElementById('cicloSel').onchange=e=>{ state.ciclo=e.target.value; re
   toast(state.ciclo==='okr'?'Modo trimestral: compensación separada de las metas.':'Modo anual (práctica LATAM/BR): el despliegue baja en cascada y ciertas metas pagan bono ★.'); };
 document.getElementById('verComoSel').onchange=e=>{ state.verComo=e.target.value; render();
   if(state.verComo!=='')toast('Tu autoridad fija qué acciones puedes ejecutar — las demás se ven, deshabilitadas.'); };
-document.querySelectorAll('.piel-toggle button').forEach(b=>b.onclick=()=>{ setPiel(b.dataset.piel); state.activeObj=null; render(); });
+document.querySelectorAll('.piel-toggle button').forEach(b=>b.onclick=()=>{ setPiel(b.dataset.piel); state.activeObj=null;
+  state.insp='home';   /* v17: cambiar de piel cierra la ficha abierta — no queda un panel de la piel anterior tapando la sala de mando */
+  render(); });
 document.querySelectorAll('.capa').forEach(b=>b.onclick=()=>{ const c=b.dataset.capa;
   if(state.capas.has(c)){ state.capas.delete(c); b.classList.remove('on'); } else { state.capas.add(c); b.classList.add('on'); } render(); });
 document.querySelectorAll('.sub-t').forEach(b=>b.onclick=()=>{ document.querySelectorAll('.sub-t').forEach(x=>x.classList.remove('on')); b.classList.add('on'); state.sub=b.dataset.sub; render(); });

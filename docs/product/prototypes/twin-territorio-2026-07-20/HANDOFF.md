@@ -1,5 +1,82 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-26 → siguiente)
 
+> **★ v17 EJECUTADA (2026-07-28 — auditoría CON OJOS DE DIRECTOR aplicada completa; el operador pidió
+> "implementa todas las mejoras analizando una a una"):** una sesión previa recorrió el tablero click
+> por click actuando como director y dejó 11 mejoras; esta pasada las implementó TODAS. **(1) Barrido
+> de jerga** (GLOSARIO §1 ganó 14 filas nuevas, aplicadas): money shot ELIMINADO · funil→embudo (×12,
+> consistente con nivel 3) · tollgate→revisión/avanzar de fase · catchball→bajada acordada (bandeja) ·
+> WSJF→"prioridad ①"/"costo de esperar" (el token queda como fuente en respaldo M28) · MASP/loop-back→
+> "vuelta atrás con evidencia" · vendor/in-tool→"de punta a punta en la misma herramienta" · rankeadas→
+> ordenadas · headcount→personal · one-time/payback→"costo por única vez"/"se recupera en N meses" ·
+> dev→UAT→prod→desarrollo→pruebas→producción · git/hash/PR/N6→"la tubería técnica, jamás" · what-if→
+> simulación · kaizen→mejora continua · "en vuelo"→"en curso" (fila ya firmada) · tokens CK-24/CK-29/
+> CK-30/D-19/D-20/M38/M44/M46 FUERA de superficie (viven en respaldo). **OJO §1b intacto**: twin/arnés/
+> hilo/Pulso/corrida/lienzo/triage NO se tocaron (renombres de producto esperan firma fila por fila).
+> **(2) Toasts con destino** (`ejecutarAccion`): mensaje por tipo de aprobación (directa/revisión-dueño/
+> comité) + "lo que ves sigue vigente hasta aprobarse" + link "Ver la cola de Cambios ›" (toast ahora
+> innerHTML + `.tlink` con pointer-events) — y cada acción no-directa CREA una solicitud `SOLICITUDES`
+> (SC-15+) que aparece EN COLA en el módulo Cambios con contador derivado (cerró además el desfase
+> "2 pendientes" vs "3 pendientes"). **(3) Pulso clickeable**: puntos (sala + nivel 1) llevan
+> `data-obj`/`data-ap` + title con métrica/valor/meta/estado — wireLinks los cablea a la ficha (que ya
+> trae "Encender su hilo"); CSS hover. **(4) Deshabilitado explica su porqué**: Big picture y búsqueda
+> con `title` dinámico en render(). **(5) El diff de la corrida SE PINTA**: actividad fantasma punteada
+> ámbar "Δ · cobrar — portal de pagos (propuesto)" en el lienzo p-cob (celda libre col5·carril1, flujos
+> tentativos 03→Δ→06, CSS `.act.ghost`) + chip "Δ +1 actividad" en la card Cobranza del mapa de valor +
+> panel corrida linkea "se ve punteada en el lienzo". **(6) ROI etiquetado** ("ROI 2.4×" + title en
+> sala/portafolio/táctico/fichas) y "2 en curso · 1 cerrado con indicador movido" DERIVADO de
+> DATA.proyectos. **(7) Navegación**: módulo Territorio = HOME (desde z2/z3/foco vuelve al mapa) ·
+> cambiar de piel cierra la ficha abierta (`state.insp='home'`). **(8) Primera carga legible**:
+> `fitEncuadre()` una sola vez (flag `firstLoad`) encuadra Estrategia+Cadena (~71% vs 58%; KRs legibles
+> al entrar); Encajar ⤢ sigue mostrando todo. **(9) Nivel 4 no aterriza a ciegas**: dgroup "Proceso en
+> foco" con `<select id="procSel">` (optgroups Cadena/Apoyo, dueño por opción) → `drillLienzo` onchange.
+> **(10) Notas D-NN obsoletas actualizadas a D-23** (footnote de openApuesta ELIMINADO — el respaldo ya
+> cita; gaps de dir-varas/dir-rumbo re-redactados: apetito YA es esquema, mezcla objetivo no).
+> **(11) Pintado**: backdrop-filter FUERA de `.pin`/`.kin` (elementos dentro del layer escalado — eran
+> blur por frame durante pan/pulso); los stalls de captureScreenshot del CDP siguen siendo el issue
+> ambiental conocido (~30s, reintentar). verify.sh **31/31** (+`v17-auditoria-director`: anti-jerga por
+> contenedor — NO contra body, se auto-matchea el script — · solicitud en cola · toast con link · ghost
+> en corrida · procSel · titles de disabled; test `nivel1-varas` actualizado: "Cerrar la bajada acordada
+> con Comercial"). Verificado con ojos propios: encuadre inicial · punto del pulso→ficha objetivo
+> (wireLinks GANA a un onclick manual sobre [data-obj] — cablear después o dejar que wireLinks lo haga) ·
+> sellar apuesta→toast+link→SC-15 EN COLA · corrida→fantasma+flujos+Δ chip · Volver al As-Is limpia ·
+> procSel cambia a p-vta · Territorio-home desde z2 · Mejora sin money-shot/funil. **Pendiente que
+> abre:** methodologies.yaml M44 aún dice "funil" en prosa interna (specs también son superficie
+> sin-jerga — barrido del YAML es cambio de método, correrlo con /metodo-aprende + gate) · las 14 filas
+> nuevas de GLOSARIO §1 son aplicación de la doctrina firmada, ratificarlas en la próxima sesión ·
+> §1b sigue esperando firma fila por fila.
+
+> **★ v16 EJECUTADA (2026-07-27 — "El rumbo" re-diseñado con doctrina real de board-reporting, validada
+> con research + skill `dataviz`, no solo criterio propio):** auditoría del operador sobre la banda
+> "El rumbo — lo que este directorio prometió" (nivel 1) detectó 6 hallazgos (golden thread sin
+> `parent_ref`, "perspectivas 4/4" hardcodeado, catchball sin acción, "Este año" duplicando texto de
+> `objetivo.nm`, bono ★ invisible, sin señal de próxima revisión) — 3 propuestas de rediseño (A mínima
+> cableada · B cascada en capas · C north-star + redistribuir) validadas contra research REAL (NACD
+> single-page <60s · Stephen Few dashboard strategic-type · *exception-based reporting*/*management by
+> exception* como el patrón textbook para mover señal fuera del header). **Ganó C** (menos ruido =
+> práctica establecida, no gusto). Segunda vuelta: pedido de gráfico → research de chart-type (bullet
+> graph de Few vs meter vs gauge) + skill `dataviz` → a 88-140px el bullet se degrada (bandas
+> cualitativas ilegibles), gauge es anti-patrón de consenso — **meter simple gana** (fill=severidad por
+> salud, track=mismo ramp más claro, cero eje/tick nuevo — el fin de la barra YA es la meta porque el
+> domain es `[from,to]`). **Ejecutado:** rumbo = 3 renglones únicos (Visión · Este año con 2 meters SVG
+> por breakthrough · Este trimestre) — cero repetición con el resto de la página. Cada breakthrough:
+> `data-obj` clickeable (abre ficha real, ya no texto suelto — `DATA.rumbo.anio` pasó de strings a ids),
+> ★ bono visible inline, contraste riesgo↔apetito en el `title` (disclosure progresiva, no ruido —
+> reusa `contraste()` ya existente, cero dato nuevo). Catchball pendiente → **migró a la bandeja**
+> "Espera tu decisión" (mismo molde que apetito/mezcla, abre `openArea` de la gerencia que falta).
+> Dimensión ciega → **se borró del rumbo** (vivía duplicada 3 veces: rumbo+Alertas+Cambios; ahora solo
+> en Alertas, que ya la cuenta mejor con chip de pares). Perspectivas 4/4 → dejó de ser hardcode
+> silencioso-si-OK (sin línea propia; si algún día se rompe, es un follow-up aparte, no se construyó
+> una superficie nueva para un caso que hoy no ocurre — YAGNI). Helper nuevo: `krProg(o)` (progreso 0-1
+> de un KR contra su meta, domain `[from,to]`, funciona en ambas direcciones). verify.sh **30/30**
+> (`nivel1-varas` reescrito: 2 `.brk` con SVG · catchball en bandeja · ciega solo en Alertas · cero
+> `bajada acordada` en `.rumbo`). Verificado con ojos propios (localhost + claude-in-chrome): meters
+> pintan color de salud correcto (verde=lleno o-caja, rojo=18% o-mar), ★ solo en o-caja, título hover
+> con contraste real, click abre ficha del objetivo. **Pendiente que abre** (fuera de esta pasada,
+> señalado por la propia research): dueño nombrado por breakthrough (dato nuevo, `dueño_ref` — decisión
+> D-NN aparte, no wiring) · tendencia sesión-a-sesión por breakthrough (evaluar costo) · bowling chart
+> mensual (necesita serie temporal que el mockup no tiene, hoy es snapshot único) · auditoría de volumen
+> total de la página nivel-1 (NACD cuestiona 8+ paneles, fuera de alcance de este pedido).
+
 > **★ v15.2 EJECUTADA (2026-07-27 — D-23 vía /metodo-aprende: la apuesta FORMALIZADA + vocabularios
 > en módulo Método; pedido del operador "¿cuáles son todos los valores posibles? ¿los tenemos en el
 > método?"):** la deuda ⚠ D-NN de apuestas/apetito quedó CERRADA como **D-23** (`sistema/schema/

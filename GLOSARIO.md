@@ -52,6 +52,19 @@ operador firma y pasa a `firmado`. Nada se usa en pantalla estando `propuesto`.
 | clasificación (automatizable o no) | triage | pendiente aplicar en twin |
 | procesos del negocio / procesos clave | misionales (en UI) | "misional" queda en specs ISO |
 | respaldo del método · cita "§ fuente" | tokens M-NN sueltos en pantalla, met:, method-as-code | capa v14.3 (firmada 2026-07-26 al aprobar la propuesta); el código M-NN vive SOLO dentro de la ficha de respaldo, como procedencia |
+| embudo de ideas | funil (pt), funil de ideas | barrido twin v17 (2026-07-28); "embudo" ya vivía firmado en nivel 3 — un concepto, un nombre |
+| revisión de fase · avanzar de fase | tollgate | barrido twin v17 |
+| bajada acordada (ida y vuelta) | catchball | ya se usaba en el rumbo v15; v17 la lleva a la bandeja |
+| costo de esperar · prioridad ① | WSJF | el nombre técnico queda como fuente en la ficha de respaldo (M28) |
+| en curso (proyectos) | en vuelo | aplica la fila "proyectos en curso" ya firmada — barrido v17 |
+| ciclo (de mejora) | loop, loop-back | "vuelta atrás permitida" para el loop-back PDCA |
+| desarrollo → pruebas → producción | dev → UAT → prod | entornos, en pantalla siempre en español |
+| personal (+N rol) | headcount | |
+| costo por única vez · se recupera en N meses | one-time · payback | |
+| la tubería técnica (no se ve) | git, hash, PR, merge, N6 en pantalla | el motor versiona por debajo; el usuario ve solicitudes y versiones |
+| simulación en borrador | what-if | complementa la fila "corrida" (§1b, renombre pendiente de firma) |
+| puntajes de automatización | scores M36 | |
+| mejora continua | kaizen (como etiqueta suelta) | "kaizen teian" puede citarse como fuente en la ficha de respaldo |
 
 **Términos del rubro que SÍ se usan tal cual** (no son jerga — son el nombre común): apetito de
 riesgo · cadena de valor · compromiso · apuesta · madurez · brecha · capacidad · organigrama ·
