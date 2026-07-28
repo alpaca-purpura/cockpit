@@ -40,10 +40,12 @@
 > (wireLinks GANA a un onclick manual sobre [data-obj] — cablear después o dejar que wireLinks lo haga) ·
 > sellar apuesta→toast+link→SC-15 EN COLA · corrida→fantasma+flujos+Δ chip · Volver al As-Is limpia ·
 > procSel cambia a p-vta · Territorio-home desde z2 · Mejora sin money-shot/funil. **Pendiente que
-> abre:** methodologies.yaml M44 aún dice "funil" en prosa interna (specs también son superficie
-> sin-jerga — barrido del YAML es cambio de método, correrlo con /metodo-aprende + gate) · las 14 filas
-> nuevas de GLOSARIO §1 son aplicación de la doctrina firmada, ratificarlas en la próxima sesión ·
-> §1b sigue esperando firma fila por fila.
+> abre — CERRADO el mismo día (pedido del operador "ejecuta ambos"):** (a) barrido del método vía
+> /metodo-aprende: M44 renombrada **"Gestión de ideas (embudo de ideas)"** + prosa de M42/M45/M54 y
+> `met:`/`efecto` del schema a "embudo" — la obra "funil de ideias" (AEVO/kaizen teian) queda SOLO
+> como fuente/procedencia; gates gen_metodo + gen_schema + paridad Go verdes (54 cards · 13 nodos) ·
+> (b) las 14 filas de GLOSARIO §1 **RATIFICADAS** (nota de firma 2026-07-28 en el propio GLOSARIO).
+> **Sigue abierto:** §1b (renombres de producto) espera firma fila por fila.
 
 > **★ v16 EJECUTADA (2026-07-27 — "El rumbo" re-diseñado con doctrina real de board-reporting, validada
 > con research + skill `dataviz`, no solo criterio propio):** auditoría del operador sobre la banda

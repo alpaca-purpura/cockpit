@@ -28,6 +28,12 @@ operador firma y pasa a `firmado`. Nada se usa en pantalla estando `propuesto`.
 
 ## §1 · Lenguaje VISIBLE — traducciones firmadas
 
+> **Ratificación 2026-07-28 (operador):** las 14 filas del barrido twin v17 (desde "embudo de ideas"
+> hasta "mejora continua") quedan **firmadas** — dejaron de ser aplicación provisional. El mismo día
+> el barrido llegó al método: M44 se renombró "Gestión de ideas (embudo de ideas)" en
+> `methodologies.yaml` y los `met:` del schema dicen "embudo" (la obra brasileña "funil de ideias"
+> se conserva solo como fuente/procedencia).
+
 | En pantalla / documentos se dice | Jamás se dice (jerga) | Nota |
 |---|---|---|
 | nivel (1 Directorio · 2 Estratégico · 3 Táctico · 4 Operativo) | capa D/E/T/O, piso | |

@@ -82,7 +82,7 @@ enums:
   estado_proyecto: [propuesto, triaje, en-evaluacion, aprobado, en-ejecucion, en-verificacion,
                     estandarizado, beneficios-en-auditoria, cerrado, rechazado, suspendido, cancelado]
                     # met: funil AEVO + tollgates DMAIC + MASP (estandarización y auditoría de beneficios = estados propios)
-  estado_idea: [enviada, en-evaluacion, aprobada, rechazada, promovida]    # met: kaizen teian / funil de ideas
+  estado_idea: [enviada, en-evaluacion, aprobada, rechazada, promovida]    # met: kaizen teian / embudo de ideas (M44)
   veredicto_resultado: [movio, parcial, no-movio]                          # met: cierre del loop brecha→proyecto→KPI movido
   # --- triage automatización (refichado WS5 — ALM×MGI, dos scores DERIVADOS) ---
   veredicto_triage: [eliminable, automatizable-rpa, automatizable-agente, aumentable, humano-por-diseño]
@@ -367,7 +367,7 @@ nodos:
       dueño_ref:   { tipo: ref, a: rol, requerido: false, met: "líder del proyecto (belt/responsable)" }
       sponsor_ref: { tipo: ref, a: rol, requerido: false, met: "charter DMAIC — sponsor/champion" }
       origen_brecha_refs: { tipo: list, requerido: false, a: brecha, met: "el diferenciador: proyectos que NACEN de brechas del twin" }
-      origen_idea_refs:   { tipo: list, requerido: false, a: idea, met: "funil (research C): ideas promovidas. Ambos orígenes vacíos = warning proyecto-sin-diagnóstico" }
+      origen_idea_refs:   { tipo: list, requerido: false, a: idea, met: "embudo de ideas (research C): ideas promovidas. Ambos orígenes vacíos = warning proyecto-sin-diagnóstico" }
       metodologia: { tipo: enum, enum: metodologia_mejora, requerido: false, met: "dialecto de render/reporte (research C) — UN solo ciclo" }
       caso_negocio: { tipo: obj, requerido: false, met: "charter + financial benefits Six Sigma (research C) — numéricos", forma: "{ tipo_beneficio: enum tipo_beneficio, beneficio_anualizado: num?, inversion: num?, payback_meses: num?, roi: num?, formula_beneficio?, periodo_realizacion_meses: num (default 12), supuestos? }" }
       prio:        { tipo: enum, enum: prio, requerido: false, met: "M28 WSJF" }
@@ -386,7 +386,7 @@ nodos:
         fecha:  { tipo: str, requerido: false }
         estado: { tipo: str, requerido: false }
 
-  # ---------- O7 · idea (Driver propio, Motivation-adyacente) — NUEVO v2 · funil kaizen teian ----------
+  # ---------- O7 · idea (Driver propio, Motivation-adyacente) — NUEVO v2 · embudo de ideas (kaizen teian) ----------
   idea:
     o_code: O7
     archimate: "Driver (Motivation) — propio: germen de proyecto de mejora"
@@ -397,11 +397,11 @@ nodos:
       descripcion: { tipo: str, requerido: false }
       proponente_refs: { tipo: list, requerido: true, a: persona, met: "AUTORÍA (≥1, individual o conjunta) — reconocimiento al proponente (kaizen teian). Autoría ≠ medición (RN-16/CK-24): participación se agrega por área/rol" }
       sobre_refs:  { tipo: list, requerido: false, a: "proceso|sistema|area", met: "dónde duele" }
-      estado:      { tipo: enum, enum: estado_idea, requerido: true, met: "funil barato (research C: AEVO/kaizen teian) — la mayoría muere o es just-do-it; un subconjunto se PROMUEVE" }
-      ambicion:    { tipo: enum, enum: ambicion, requerido: false, met: "M54 (D-22) — el comité la etiqueta en el triaje (funil M44); protege el flujo transformar de morir contra lo urgente" }
+      estado:      { tipo: enum, enum: estado_idea, requerido: true, met: "embudo barato (research C: AEVO/kaizen teian) — la mayoría muere o es just-do-it; un subconjunto se PROMUEVE" }
+      ambicion:    { tipo: enum, enum: ambicion, requerido: false, met: "M54 (D-22) — el comité la etiqueta en el triaje (embudo M44); protege el flujo transformar de morir contra lo urgente" }
       evaluacion:  { tipo: obj, requerido: false, met: "comité (research C)", forma: "{ comite_ref: ref→rol|area?, criterios: { viabilidad?, impacto?, alineacion? }, feedback?, fecha? }" }
       reconocimiento: { tipo: obj, requerido: false, met: "kaizen teian — casi todo proponente recibe reconocimiento", forma: "{ tipo, fecha }" }
-      promovida_a_ref: { tipo: ref, a: proyecto_mejora, requerido: false, met: "el enlace funil→proyecto (estado=promovida ⇒ presente)" }
+      promovida_a_ref: { tipo: ref, a: proyecto_mejora, requerido: false, met: "el enlace embudo→proyecto (estado=promovida ⇒ presente)" }
       fuente:      { tipo: enum, enum: fuente, requerido: false, met: M23 }
       conf:        { tipo: enum, enum: conf, requerido: false, met: M23 }
 
@@ -460,8 +460,8 @@ acciones:
     - { id: decantar-kr-a-kpi,         entidad: objetivo,        nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "KR logrado vuelve a KPI monitoreado (fin de ciclo)" }
     # --- objetivo / cascada ---
     - { id: aprobar-version-objetivo,  entidad: objetivo,        nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "publica/deprecia una versión del objetivo (estado + superseded_by)" }
-    # --- funil de ideas (research C) ---
-    - { id: enviar-idea,               entidad: idea,            nivel_min: operativo,   aprobacion: directa,          efecto: "alta de idea en el funil (autoría reconocida)" }
+    # --- embudo de ideas (research C) ---
+    - { id: enviar-idea,               entidad: idea,            nivel_min: operativo,   aprobacion: directa,          efecto: "alta de idea en el embudo (autoría reconocida)" }
     - { id: evaluar-idea,              entidad: idea,            nivel_min: tactico,     aprobacion: revision-dueño,   efecto: "comité evalúa (criterios + feedback al proponente)" }
     - { id: promover-idea-a-proyecto,  entidad: idea,            nivel_min: estrategico, aprobacion: gestion-cambios,  efecto: "idea aprobada se vuelve proyecto_mejora (promovida_a_ref)", validaciones: [idea-aprobada] }
     # --- ciclo del proyecto de mejora (charter + tollgates + auditoría — research C) ---
@@ -513,10 +513,10 @@ relaciones:
   - { de: actividad, a: kpi,        tipo: influence,   dueño: actividad.alimenta_kpi_refs, met: "atribución actividad→KPI N:M vía rol (insumo 2 · CK-24)" }
   - { de: medicion,  a: "empresa#uN", tipo: association, dueño: medicion.unidad_ref,     met: "corte por unidad de ejecución (D-07)" }
   - { de: proyecto_mejora, a: brecha, tipo: association, dueño: proyecto_mejora.origen_brecha_refs, met: "el proyecto nace de brechas del twin (diferenciador)" }
-  - { de: proyecto_mejora, a: idea,   tipo: association, dueño: proyecto_mejora.origen_idea_refs,   met: "o de ideas promovidas del funil (research C)" }
+  - { de: proyecto_mejora, a: idea,   tipo: association, dueño: proyecto_mejora.origen_idea_refs,   met: "o de ideas promovidas del embudo (research C)" }
   - { de: proyecto_mejora, a: "kpi|key_result", tipo: influence, dueño: proyecto_mejora.mueve_refs, met: "el compromiso de medición (qué mueve)" }
   - { de: idea,      a: persona,    tipo: association, dueño: idea.proponente_refs,      met: "AUTORÍA (reconocimiento) — no medición (RN-16 · CK-24)" }
-  - { de: idea,      a: proyecto_mejora, tipo: association, dueño: idea.promovida_a_ref, met: "promoción funil→proyecto" }
+  - { de: idea,      a: proyecto_mejora, tipo: association, dueño: idea.promovida_a_ref, met: "promoción embudo→proyecto" }
 
 # ====================== invariantes (enforce al leer en /api/objeto) ======================
 # v2 distingue: ERROR (bloquea el objeto — campo errors[] de la respuesta) vs WARNING (como v1).

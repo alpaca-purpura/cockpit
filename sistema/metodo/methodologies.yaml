@@ -1037,7 +1037,7 @@ M42:
     proyecciones: []
     dimensiones: [mejora-proyectos]
     cuando_si: "proyecto con charter + doble firma (sponsor + finanzas pre/post) + tollgates + auditoría de beneficios (~12 meses) — los campos caso_negocio/firmas/hitos del schema"
-    cuando_no: "no para mejoras just-do-it del funil (eso es M44/kaizen); el ciclo de DATOS es UNO — dmaic es dialecto de render del enum metodologia_mejora"
+    cuando_no: "no para mejoras just-do-it del embudo (eso es M44 — mejora continua); el ciclo de DATOS es UNO — dmaic es dialecto de render del enum metodologia_mejora"
 
 M43:
   nombre: "MASP — Método de Análise e Solução de Problemas (QC Story)"
@@ -1064,11 +1064,11 @@ M43:
     cuando_no: "mismo ciclo de datos que DMAIC/kaizen — jamás un ciclo de vida distinto por metodología (enum metodologia_mejora = render)"
 
 M44:
-  nombre: "Gestión de ideas (kaizen teian / funil de ideias)"
-  nombre_corto: "Funil de ideas"
+  nombre: "Gestión de ideas (embudo de ideas)"
+  nombre_corto: "Embudo de ideas"
   familia: D
   fuente: { autor: "kaizen teian (JHRA) · plataformas LATAM (AEVO)", obra: "programa de sugerencias → funil digital de ideas (triaje por comité, feedback, reconocimiento, promoción a proyecto)", url: "https://blog.aevo.com.br/funil-de-ideias/" }
-  que: "el funil masivo y BARATO de propuestas del personal (individual o conjunta): enviada → evaluación por comité (viabilidad/impacto/alineación) → feedback + reconocimiento → un subconjunto se PROMUEVE a proyecto"
+  que: "el embudo masivo y BARATO de propuestas del personal (individual o conjunta): enviada → evaluación por comité (viabilidad/impacto/alineación) → feedback + reconocimiento → un subconjunto se PROMUEVE a proyecto"
   aporte_unico: "la SEPARACIÓN idea↔proyecto como entidades enlazadas (la práctica real: cientos de ideas por campaña, evaluación ligera; el charter/beneficios viven en el proyecto) + reconocimiento al proponente (kaizen teian: casi todo proponente recibe respuesta)"
   cuando_usar: "entidad idea del objeto — programas de participación del personal (los CCQ migrados a plataforma: AEVO 400+ empresas, Ambev 450+ ideas en 2 semanas)"
   objeto_primario: O7
@@ -1078,14 +1078,14 @@ M44:
     - { m: M42, como: "la idea promovida recibe charter DMAIC (promovida_a_ref)" }
     - { m: M40, como: "participación se agrega por área/rol — autoría ≠ medición (CK-24)" }
     - { m: M35, como: "muchas ideas son un 'eliminar' de ECRS resuelto just-do-it" }
-    - { m: M54, como: "el comité etiqueta la ambición de cada idea en el triaje — el funil alimenta y protege las tres bolsas" }
+    - { m: M54, como: "el comité etiqueta la ambición de cada idea en el triaje — el embudo alimenta y protege las tres bolsas" }
   donde: { modulos: [m2, m3], etapas: [], capa_contexto: true }
   modo: situacional
   twin:
     rol_ancla: ancla
     proyecciones: []
     dimensiones: [mejora-proyectos]
-    cuando_si: "el funil de la entidad idea: estados enviada→en-evaluacion→aprobada|rechazada→promovida, con reconocimiento al proponente"
+    cuando_si: "el embudo de la entidad idea: estados enviada→en-evaluacion→aprobada|rechazada→promovida, con reconocimiento al proponente"
     cuando_no: "la idea NO es el proyecto (charter/beneficios = proyecto_mejora); la participación JAMÁS es KPI de persona (CK-24 — se agrega por área/rol)"
 
 M45:
@@ -1093,14 +1093,14 @@ M45:
   nombre_corto: "ISO 56002"
   familia: D
   fuente: { autor: "ISO TC 279", obra: "ISO 56002:2019 (guía) · ISO 56001:2024 (certificable) — sistema de gestión de innovación", url: "https://www.iso.org/standard/68221.html" }
-  que: "el marco ISO del funil idea→innovación como sistema de gestión (liderazgo, cultura, portafolio de iniciativas, realización de valor)"
-  aporte_unico: "Brasil = hotspot mundial temprano de la ISO de innovación (Grupo Boticário, Atento; PALAS primera certificada 56001) — el marco al que el funil de ideas escala si un cliente exige certificación"
-  cuando_usar: "cliente que exija certificación de innovación o quiera formalizar el funil como sistema de gestión (gateado por demanda)"
+  que: "el marco ISO del embudo idea→innovación como sistema de gestión (liderazgo, cultura, portafolio de iniciativas, realización de valor)"
+  aporte_unico: "Brasil = hotspot mundial temprano de la ISO de innovación (Grupo Boticário, Atento; PALAS primera certificada 56001) — el marco al que el embudo de ideas escala si un cliente exige certificación"
+  cuando_usar: "cliente que exija certificación de innovación o quiera formalizar el embudo como sistema de gestión (gateado por demanda)"
   objeto_primario: O7
   objetos_secundarios: []
   principios: [P7]
   combina_con:
-    - { m: M44, como: "el funil de ideas ES el corazón operativo que 56002 formaliza" }
+    - { m: M44, como: "el embudo de ideas ES el corazón operativo que 56002 formaliza" }
     - { m: M16, como: "misma gramática de sistema de gestión ISO (HLS)" }
     - { m: M54, como: "el balance de portafolio que 56002 exige se instrumenta con la mezcla de ambición (ya activa en el MVP, sin esperar la certificación)" }
   donde: { modulos: [m3], etapas: [], capa_contexto: false }
@@ -1349,7 +1349,7 @@ M54:
     - { m: M21, como: "cada KR declara su ambición — la cascada canónica se colorea sin ceremonia nueva" }
     - { m: M26, como: "el plan 3a→anual fija la mezcla_objetivo; el catchball la negocia por nivel" }
     - { m: M28, como: "WSJF prioriza DENTRO de cada bolsa, jamás entre bolsas (ambidestreza O'Reilly/Tushman: exploit devora a explore si comparten cola)" }
-    - { m: M44, como: "cada idea del funil se etiqueta en el triaje del comité — protege el flujo transformacional de morir contra lo urgente" }
+    - { m: M44, como: "cada idea del embudo se etiqueta en el triaje del comité — protege el flujo transformacional de morir contra lo urgente" }
     - { m: M45, como: "es el instrumento concreto del balance de portafolio que ISO 56002 exige en abstracto" }
     - { m: M52, como: "la mezcla ES apetito de riesgo materializado: transformar = riesgo aceptado explícito del directorio" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }

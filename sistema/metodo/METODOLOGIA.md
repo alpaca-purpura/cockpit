@@ -33,7 +33,7 @@
 - **A · Descubrimiento & Producto:** [Dual Track Agile](#m01) · [Continuous Discovery](#m02) · [Product Operating Model](#m03) · [Shape Up](#m04) · [Jobs-to-be-Done](#m05) · [Impact Mapping](#m06)
 - **B · Dominio & Proceso:** [Event Storming](#m07) · [Domain-Driven Design](#m08) · [Value Stream Mapping](#m09) · [Service Blueprint](#m10) · [BPMN](#m11) · [APQC Process Classification Framework](#m12) · [Process / Task Mining](#m29)
 - **C · Arquitectura & Sistemas:** [ArchiMate](#m13) · [SYSTEM-MAP + document-project](#m14) · [Business Capability Modeling](#m31)
-- **D · Gobierno, Calidad & Madurez:** [COBIT 2019](#m15) · [ISO 9001](#m16) · [ITIL 4](#m17) · [RACI](#m25) · [ISO 10013](#m38) · [DMAIC](#m42) · [MASP](#m43) · [Funil de ideas](#m44) · [ISO 56002](#m45) · [ISO 9004 (madurez)](#m47) · [EFQM RADAR](#m49) · [P3M3](#m50) · [ISO 10015 (competencia)](#m51) · [ISO 31000 (apetito)](#m52) · [ISO 8000-61 (datos)](#m53)
+- **D · Gobierno, Calidad & Madurez:** [COBIT 2019](#m15) · [ISO 9001](#m16) · [ITIL 4](#m17) · [RACI](#m25) · [ISO 10013](#m38) · [DMAIC](#m42) · [MASP](#m43) · [Embudo de ideas](#m44) · [ISO 56002](#m45) · [ISO 9004 (madurez)](#m47) · [EFQM RADAR](#m49) · [P3M3](#m50) · [ISO 10015 (competencia)](#m51) · [ISO 31000 (apetito)](#m52) · [ISO 8000-61 (datos)](#m53)
 - **E · Especificación & Construcción:** [Spec-Driven Development](#m18) · [EARS](#m19) · [Specification by Example](#m20)
 - **F · Valor, Costo & Alineación:** [OKR](#m21) · [FinOps — Quantify Business Value](#m22) · [Hoshin Kanri](#m26) · [Wardley Mapping](#m27) · [WSJF](#m28) · [Balanced Scorecard](#m30) · [GPD (Falconi)](#m41) · [Benchmarks APQC/Hackett](#m48) · [Ambición 70/20/10](#m54)
 - **G · IA: Grounding & Anti-alucinación:** [Grounding](#m23)
@@ -341,22 +341,22 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Combina:** M42 (mismo ciclo de datos, dialecto distinto (MASP = QC Story; DMAIC = Six Sigma)) · M16 (vive bajo cl.10.2 (NC/acción correctiva) como motor formal) · M41 (los proyectos MASP sirven las metas desdobradas del GPD)
 - **Principios:** P1, P3
 
-<a id="m44"></a>**M44 · Gestión de ideas (kaizen teian / funil de ideias)**
-- **Qué:** el funil masivo y BARATO de propuestas del personal (individual o conjunta): enviada → evaluación por comité (viabilidad/impacto/alineación) → feedback + reconocimiento → un subconjunto se PROMUEVE a proyecto
+<a id="m44"></a>**M44 · Gestión de ideas (embudo de ideas)**
+- **Qué:** el embudo masivo y BARATO de propuestas del personal (individual o conjunta): enviada → evaluación por comité (viabilidad/impacto/alineación) → feedback + reconocimiento → un subconjunto se PROMUEVE a proyecto
 - **Fuente:** kaizen teian (JHRA) · plataformas LATAM (AEVO) — programa de sugerencias → funil digital de ideas (triaje por comité, feedback, reconocimiento, promoción a proyecto). [https://blog.aevo.com.br/funil-de-ideias/](https://blog.aevo.com.br/funil-de-ideias/)
 - **Objeto:** O7 Contrato & Código · sec: O4
 - **Aporte único:** la SEPARACIÓN idea↔proyecto como entidades enlazadas (la práctica real: cientos de ideas por campaña, evaluación ligera; el charter/beneficios viven en el proyecto) + reconocimiento al proponente (kaizen teian: casi todo proponente recibe respuesta)
 - **Cuándo:** entidad idea del objeto — programas de participación del personal (los CCQ migrados a plataforma: AEVO 400+ empresas, Ambev 450+ ideas en 2 semanas)
-- **Combina:** M42 (la idea promovida recibe charter DMAIC (promovida_a_ref)) · M40 (participación se agrega por área/rol — autoría ≠ medición (CK-24)) · M35 (muchas ideas son un 'eliminar' de ECRS resuelto just-do-it) · M54 (el comité etiqueta la ambición de cada idea en el triaje — el funil alimenta y protege las tres bolsas)
+- **Combina:** M42 (la idea promovida recibe charter DMAIC (promovida_a_ref)) · M40 (participación se agrega por área/rol — autoría ≠ medición (CK-24)) · M35 (muchas ideas son un 'eliminar' de ECRS resuelto just-do-it) · M54 (el comité etiqueta la ambición de cada idea en el triaje — el embudo alimenta y protege las tres bolsas)
 - **Principios:** P1, P7
 
 <a id="m45"></a>**M45 · ISO 56002 / 56001 — gestión de la innovación**
-- **Qué:** el marco ISO del funil idea→innovación como sistema de gestión (liderazgo, cultura, portafolio de iniciativas, realización de valor)
+- **Qué:** el marco ISO del embudo idea→innovación como sistema de gestión (liderazgo, cultura, portafolio de iniciativas, realización de valor)
 - **Fuente:** ISO TC 279 — ISO 56002:2019 (guía) · ISO 56001:2024 (certificable) — sistema de gestión de innovación. [https://www.iso.org/standard/68221.html](https://www.iso.org/standard/68221.html)
 - **Objeto:** O7 Contrato & Código
-- **Aporte único:** Brasil = hotspot mundial temprano de la ISO de innovación (Grupo Boticário, Atento; PALAS primera certificada 56001) — el marco al que el funil de ideas escala si un cliente exige certificación
-- **Cuándo:** cliente que exija certificación de innovación o quiera formalizar el funil como sistema de gestión (gateado por demanda)
-- **Combina:** M44 (el funil de ideas ES el corazón operativo que 56002 formaliza) · M16 (misma gramática de sistema de gestión ISO (HLS)) · M54 (el balance de portafolio que 56002 exige se instrumenta con la mezcla de ambición (ya activa en el MVP, sin esperar la certificación))
+- **Aporte único:** Brasil = hotspot mundial temprano de la ISO de innovación (Grupo Boticário, Atento; PALAS primera certificada 56001) — el marco al que el embudo de ideas escala si un cliente exige certificación
+- **Cuándo:** cliente que exija certificación de innovación o quiera formalizar el embudo como sistema de gestión (gateado por demanda)
+- **Combina:** M44 (el embudo de ideas ES el corazón operativo que 56002 formaliza) · M16 (misma gramática de sistema de gestión ISO (HLS)) · M54 (el balance de portafolio que 56002 exige se instrumenta con la mezcla de ambición (ya activa en el MVP, sin esperar la certificación))
 - **Principios:** P7
 
 <a id="m47"></a>**M47 · ISO 9004:2018 — madurez del sistema de gestión (autoevaluación)**
@@ -524,7 +524,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O2 Objetivo & Valor · sec: O7, O1
 - **Aporte único:** el COLOR del esfuerzo — campo `ambicion` transversal que el twin agrega al leer (rollup vs `mezcla_objetivo` de config_estrategia). El ratio NO es dogma: HBR lo midió por industria (industrial ≈70/20/10 · consumo masivo ≈80/18/2 · tech media ≈45/40/15) y el retorno es INVERSO (≈10/20/70 — el 10 transformacional genera ~70% del valor nuevo); ajustar por industria/etapa/posición competitiva
 - **Cuándo:** al crear/triageár idea, proyecto_mejora o KR (m1: clasificar el portafolio hallado en el diagnóstico · m2/m3: mantener la mezcla visible y balanceada)
-- **Combina:** M21 (cada KR declara su ambición — la cascada canónica se colorea sin ceremonia nueva) · M26 (el plan 3a→anual fija la mezcla_objetivo; el catchball la negocia por nivel) · M28 (WSJF prioriza DENTRO de cada bolsa, jamás entre bolsas (ambidestreza O'Reilly/Tushman: exploit devora a explore si comparten cola)) · M44 (cada idea del funil se etiqueta en el triaje del comité — protege el flujo transformacional de morir contra lo urgente) · M45 (es el instrumento concreto del balance de portafolio que ISO 56002 exige en abstracto) · M52 (la mezcla ES apetito de riesgo materializado: transformar = riesgo aceptado explícito del directorio)
+- **Combina:** M21 (cada KR declara su ambición — la cascada canónica se colorea sin ceremonia nueva) · M26 (el plan 3a→anual fija la mezcla_objetivo; el catchball la negocia por nivel) · M28 (WSJF prioriza DENTRO de cada bolsa, jamás entre bolsas (ambidestreza O'Reilly/Tushman: exploit devora a explore si comparten cola)) · M44 (cada idea del embudo se etiqueta en el triaje del comité — protege el flujo transformacional de morir contra lo urgente) · M45 (es el instrumento concreto del balance de portafolio que ISO 56002 exige en abstracto) · M52 (la mezcla ES apetito de riesgo materializado: transformar = riesgo aceptado explícito del directorio)
 - **Principios:** P1, P2
 
 ### Familia G · IA: Grounding & Anti-alucinación
@@ -698,7 +698,7 @@ YAML, regenerar con `gen_metodo.py` (gate anti-drift en pre-commit).
 | GPD (Falconi) (M41) | ○ | ○ |  | ○ |
 | DMAIC (M42) |  |  | ○ | ○ |
 | MASP (M43) |  |  | ○ | ○ |
-| Funil de ideas (M44) |  | ○ | ○ | ○ |
+| Embudo de ideas (M44) |  | ○ | ○ | ○ |
 | ISO 56002 (M45) |  |  | ○ |  |
 | Arnés por rol×proceso (M46) |  | ● | ● | ● |
 | ISO 9004 (madurez) (M47) | ● | ● |  | ● |
