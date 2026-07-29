@@ -153,8 +153,8 @@ window.addEventListener('load',()=>{whenReady(()=>{
       .forEach(v=>A(tx.includes(v),'vocabulario sin valor: '+v));
     A(tx.includes('re-versionando')||tx.includes('re-versiona'),'re-apostar sin doctrina de re-versión');
     A(tx.includes('NOVEDAD'),'bolsas sin regla de clasificación por novedad');
-    A(tx.includes('54 M-cards'),'conteo de cartas desincronizado del catálogo');
-    A(tx.includes('13 entidades'),'conteo de entidades sin D-23');
+    A(tx.includes('59 M-cards'),'conteo de cartas desincronizado del catálogo');
+    A(tx.includes('20 entidades'),'conteo de entidades sin D-23 ni D-24..D-29');
     state.mod='territorio'; render(); });
   t('a4-a6-salud-prov',()=>{ /* v17.2: salud del objetivo DERIVADA (A4.1) + provenance en TODAS las fichas (A6 a+b) */
     A(DATA.objetivos.every(o=>o.kr.esperado!=null),'KR sin esperado');

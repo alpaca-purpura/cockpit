@@ -19,9 +19,9 @@ vista GENERADA → **gate anti-drift** en cada commit.
 
 | Rol | Archivo | Autoría |
 |---|---|---|
-| SSoT · catálogo de 31 metodologías (M-cards) | `sistema/metodo/methodologies.yaml` | a mano |
+| SSoT · catálogo de 59 metodologías (M-cards) | `sistema/metodo/methodologies.yaml` | a mano |
 | SSoT · Definición del engagement (plantilla) | `sistema/metodo/proceso/**` (`_modulo.md`·`_etapa.md`·`<paso>.md`, front-matter) | a mano |
-| SSoT · objeto de negocio normalizado (12 entidades) | `sistema/schema/objeto.schema.yaml` | a mano |
+| SSoT · objeto de negocio normalizado (20 entidades) | `sistema/schema/objeto.schema.yaml` | a mano |
 | SSoT · verticales (nichos) | `sistema/metodo/nichos/*.yaml` (conforman `nicho.schema.yaml`) | a mano |
 | Contrato (la forma) | `sistema/metodo/methodology.schema.yaml` | a mano |
 | Vista · §4 catálogo | `sistema/metodo/METODOLOGIA.md` (bloques `GEN:indice`/`GEN:cards`/`GEN:tabla`) | **GENERADO** (NO editar) |

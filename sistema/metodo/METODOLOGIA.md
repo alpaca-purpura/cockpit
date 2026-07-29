@@ -33,9 +33,9 @@
 - **A · Descubrimiento & Producto:** [Dual Track Agile](#m01) · [Continuous Discovery](#m02) · [Product Operating Model](#m03) · [Shape Up](#m04) · [Jobs-to-be-Done](#m05) · [Impact Mapping](#m06)
 - **B · Dominio & Proceso:** [Event Storming](#m07) · [Domain-Driven Design](#m08) · [Value Stream Mapping](#m09) · [Service Blueprint](#m10) · [BPMN](#m11) · [APQC Process Classification Framework](#m12) · [Process / Task Mining](#m29)
 - **C · Arquitectura & Sistemas:** [ArchiMate](#m13) · [SYSTEM-MAP + document-project](#m14) · [Business Capability Modeling](#m31)
-- **D · Gobierno, Calidad & Madurez:** [COBIT 2019](#m15) · [ISO 9001](#m16) · [ITIL 4](#m17) · [RACI](#m25) · [ISO 10013](#m38) · [DMAIC](#m42) · [MASP](#m43) · [Embudo de ideas](#m44) · [ISO 56002](#m45) · [ISO 9004 (madurez)](#m47) · [EFQM RADAR](#m49) · [P3M3](#m50) · [ISO 10015 (competencia)](#m51) · [ISO 31000 (apetito)](#m52) · [ISO 8000-61 (datos)](#m53)
+- **D · Gobierno, Calidad & Madurez:** [COBIT 2019](#m15) · [ISO 9001](#m16) · [ITIL 4](#m17) · [RACI](#m25) · [ISO 10013](#m38) · [DMAIC](#m42) · [MASP](#m43) · [Embudo de ideas](#m44) · [ISO 56002](#m45) · [ISO 9004 (madurez)](#m47) · [EFQM RADAR](#m49) · [P3M3](#m50) · [ISO 10015 (competencia)](#m51) · [ISO 31000 (apetito)](#m52) · [ISO 8000-61 (datos)](#m53) · [Sesión de directorio (acuerdos y acta)](#m58)
 - **E · Especificación & Construcción:** [Spec-Driven Development](#m18) · [EARS](#m19) · [Specification by Example](#m20)
-- **F · Valor, Costo & Alineación:** [OKR](#m21) · [FinOps — Quantify Business Value](#m22) · [Hoshin Kanri](#m26) · [Wardley Mapping](#m27) · [WSJF](#m28) · [Balanced Scorecard](#m30) · [GPD (Falconi)](#m41) · [Benchmarks APQC/Hackett](#m48) · [Ambición 70/20/10](#m54)
+- **F · Valor, Costo & Alineación:** [OKR](#m21) · [FinOps — Quantify Business Value](#m22) · [Hoshin Kanri](#m26) · [Wardley Mapping](#m27) · [WSJF](#m28) · [Balanced Scorecard](#m30) · [GPD (Falconi)](#m41) · [Benchmarks APQC/Hackett](#m48) · [Ambición 70/20/10](#m54) · [Reporte financiero (fuente)](#m55) · [Liquidez (caja 13 semanas)](#m56) · [Presupuesto (asignado vs comprometido)](#m57) · [Valor ganado (inversiones)](#m59)
 - **G · IA: Grounding & Anti-alucinación:** [Grounding](#m23)
 - **H · Diseño de Servicio & Experiencia:** [This Is Service Design Doing](#m24)
 - **I · Twin & automatización del trabajo:** [Ontología Palantir](#m32) · [DEMO](#m33) · [BPSim](#m34) · [ECRS](#m35) · [Criterios RPA + agente](#m36) · [Taxonomía de verbos](#m37) · [NASA-TLX](#m39) · [Métricas de persona](#m40) · [Arnés por rol×proceso](#m46)
@@ -288,12 +288,12 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Principios:** P2, P3
 
 <a id="m16"></a>**M16 · ISO 9001**
-- **Qué:** gestión de calidad; enfoque a procesos; PDCA (cl.10); contexto (cl.4); objetivos (cl.6.2); autoridad (cl.5.3); competencia (cl.7.2)
+- **Qué:** gestión de calidad; enfoque a procesos; PDCA (cl.10); contexto (cl.4); objetivos (cl.6.2); autoridad (cl.5.3); competencia (cl.7.2); revisión por la dirección (cl.9.3 — entradas obligatorias: desempeño del periodo, seguimiento de lo acordado antes, riesgos; salidas: decisiones y acciones)
 - **Fuente:** ISO — ISO 9001:2015. [https://www.iso.org/iso-9001-quality-management.html](https://www.iso.org/iso-9001-quality-management.html)
 - **Objeto:** T3 Gobierno / Loop · sec: O4
-- **Aporte único:** la ONTOLOGÍA de contexto (cl.4) + el ciclo PDCA — robamos ontología, rechazamos aparato
+- **Aporte único:** la ONTOLOGÍA de contexto (cl.4) + el ciclo PDCA — robamos ontología, rechazamos aparato. cl.9.3 aporta además el ESQUELETO de la sesión de revisión (qué entra, qué sale), que M58 materializa como entidades del twin
 - **Cuándo:** capa de contexto (vocabulario) y M2/M3 (mejora continua)
-- **Combina:** M21 (objetivos cl.6.2 se expresan como OKR) · M25 (roles/autoridad cl.5.3 = RACI) · M38 (cl.7.5 información documentada = pirámide ISO 10013) · M47 (9004 GRADÚA (1-5) lo que 9001 releva (conformidad binaria) — la escalera de madurez sin certificación que la doctrina permite) · M51 (cl.7.2 competencia: 10015 la gradúa (requerida vs actual por rol) y cierra la brecha — el seam ya existe en el schema)
+- **Combina:** M21 (objetivos cl.6.2 se expresan como OKR) · M25 (roles/autoridad cl.5.3 = RACI) · M38 (cl.7.5 información documentada = pirámide ISO 10013) · M47 (9004 GRADÚA (1-5) lo que 9001 releva (conformidad binaria) — la escalera de madurez sin certificación que la doctrina permite) · M51 (cl.7.2 competencia: 10015 la gradúa (requerida vs actual por rol) y cierra la brecha — el seam ya existe en el schema) · M58 (cl.9.3 revisión por la dirección se materializa como entidades del twin (sesión · acuerdo con responsable y plazo · acta generada); 9001 dice QUÉ entra y sale, M58 agrega lo que no cubre: facultades por monto y el acta versionada)
 - **Principios:** P4, P7
 
 <a id="m17"></a>**M17 · ITIL 4**
@@ -311,7 +311,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O4 Personas & Autoridad · sec: T3
 - **Aporte único:** la AUTORIDAD explícita — quién es Accountable habilita y ejecuta cada gate humano
 - **Cuándo:** encuadre (autoridad) y en cada gate (quién ratifica/apuesta/acepta)
-- **Combina:** M16 (formaliza roles/autoridad ISO cl.5.3) · M15 (el Accountable del KR ejecuta el gate) · M24 (alimenta el stakeholder map) · M36 (humano-por-diseño ancla a la A (accountability, firma, responsabilidad legal)) · M46 (la A define quién supervisa el arnés y qué gates humanos lleva adentro; C/I = contexto de lectura, no generan skills)
+- **Combina:** M16 (formaliza roles/autoridad ISO cl.5.3) · M15 (el Accountable del KR ejecuta el gate) · M24 (alimenta el stakeholder map) · M36 (humano-por-diseño ancla a la A (accountability, firma, responsabilidad legal)) · M46 (la A define quién supervisa el arnés y qué gates humanos lleva adentro; C/I = contexto de lectura, no generan skills) · M58 (la autoridad también se declara arriba: el umbral por monto dice qué decisión firma el directorio y cuál la gerencia — RACI a nivel de gobierno)
 - **Principios:** P7, P2
 
 <a id="m38"></a>**M38 · ISO 10013:2021 — pirámide documental (QMS)**
@@ -329,7 +329,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O7 Contrato & Código · sec: O6, O2
 - **Aporte único:** el FORMATO corporativo del proyecto con caso de negocio auditado — doble firma sponsor+finanzas, beneficios contados ~12 meses (vigente: mercado de servicios LSS crece, no declinó)
 - **Cuándo:** proyecto_mejora con caso de negocio formal (metodologia: dmaic)
-- **Combina:** M35 (ECRS primero: no se automatiza (ni proyectiza) el desperdicio) · M22 (la cuantificación del beneficio (hard/soft/cost-avoidance) es FinOps) · M28 (WSJF prioriza qué brecha se vuelve proyecto)
+- **Combina:** M35 (ECRS primero: no se automatiza (ni proyectiza) el desperdicio) · M22 (la cuantificación del beneficio (hard/soft/cost-avoidance) es FinOps) · M28 (WSJF prioriza qué brecha se vuelve proyecto) · M59 (distinción cardinal: el proyecto de MEJORA cierra con un indicador movido; la INVERSIÓN de capital cierra con un activo entregado y su margen — dos ciclos, dos varas)
 - **Principios:** P1, P3
 
 <a id="m43"></a>**M43 · MASP — Método de Análise e Solução de Problemas (QC Story)**
@@ -383,7 +383,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O7 Contrato & Código · sec: O6
 - **Aporte único:** mide la capacidad de PROYECTIZAR de la organización, no el proyecto individual — M42/M43 miden y disciplinan el proyecto; P3M3 dice si la org puede sostener un PORTAFOLIO de mejoras
 - **Cuándo:** horizonte gateado por demanda (patrón M45): cliente con portafolio de proyectos de mejora grande o PMO formal que pida graduar su gestión
-- **Combina:** M42 (DMAIC mide el proyecto; P3M3 la capacidad org de ejecutar muchos — la perspectiva 'benefits' empalma con verificar-beneficios del ciclo) · M43 (ídem MASP — el loop-back disciplinado (en-verificacion → en-ejecucion) es señal de nivel P3M3 alto) · M47 (escalera hermana especializada: 9004 gradúa el sistema de gestión entero; P3M3 solo la función proyectos/portafolio)
+- **Combina:** M42 (DMAIC mide el proyecto; P3M3 la capacidad org de ejecutar muchos — la perspectiva 'benefits' empalma con verificar-beneficios del ciclo) · M43 (ídem MASP — el loop-back disciplinado (en-verificacion → en-ejecucion) es señal de nivel P3M3 alto) · M47 (escalera hermana especializada: 9004 gradúa el sistema de gestión entero; P3M3 solo la función proyectos/portafolio) · M59 (P3M3 gradúa la capacidad de sostener el portafolio; el valor ganado mide el desempeño de las inversiones concretas que lo componen)
 - **Principios:** P3, P7
 
 <a id="m51"></a>**M51 · ISO 10015:2019 — gestión de competencias y desarrollo de personas**
@@ -396,12 +396,12 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Principios:** P3, P7
 
 <a id="m52"></a>**M52 · ISO 31000:2018 — apetito de riesgo (con COSO ERM como marco alterno)**
-- **Qué:** gestión de riesgos (principios + marco + proceso): la gobernanza fija CRITERIOS de riesgo — cuánto y qué tipo de riesgo se acepta por categoría; COSO ERM aporta la declaración formal de apetito cuando el cliente la exige
+- **Qué:** gestión de riesgos (principios + marco + proceso): la gobernanza fija CRITERIOS de riesgo — cuánto y qué tipo de riesgo se acepta por categoría (el APETITO); y el proceso (identificar → analizar → evaluar → tratar → seguir) produce el REGISTRO: cada riesgo con probabilidad, impacto, responsable, mitigación comprometida y tendencia. COSO ERM aporta la declaración formal de apetito cuando el cliente la exige
 - **Fuente:** ISO/TC 262 · COSO — ISO 31000:2018 — Risk management: guidelines (criterios de riesgo) · COSO ERM 2017 (risk appetite statement formal, alineado a estrategia). [https://www.iso.org/iso-31000-risk-management.html](https://www.iso.org/iso-31000-risk-management.html)
 - **Objeto:** O1 Oportunidad / Apuesta · sec: O2, T3
-- **Aporte único:** el APETITO DE RIESGO como dato del directorio — la vara contra la que se gradúa el riesgo de cada apuesta/objetivo (el panel 'riesgo vs apetito' del twin deja de ser cualitativo suelto); primera ancla de O1 en el twin
+- **Aporte único:** las DOS mitades, que sólo sirven juntas: el APETITO como dato del directorio (la vara contra la que se gradúa cada apuesta/objetivo — el panel 'riesgo vs apetito' deja de ser cualitativo suelto) y el REGISTRO como su contraparte (sin registro, el apetito es una declaración sin nada que medir; sin apetito, el registro es una lista sin veredicto). El nivel se DERIVA de probabilidad × impacto y el veredicto —dentro / al límite / por encima del apetito— se deriva contra la vara de SU categoría: ninguno de los dos se declara a mano. Primera ancla de O1 en el twin
 - **Cuándo:** horizonte gateado por demanda (promovida del cuando_no de M16): directorio que formaliza apetito por categoría (liquidez, reputación, expansión) o cliente regulado
-- **Combina:** M16 (cl.6.1 risk-based thinking es el gancho MVP (riesgos[] tipados por proceso); 31000 lo eleva a apetito del directorio cuando se activa) · M04 (arbitraje: appetite de Shape Up = tiempo/alcance que se apuesta; apetito de riesgo = exposición que el directorio tolera — dos varas distintas de la misma apuesta) · M15 (el semáforo de madurez no reemplaza el apetito: el gap dice dónde duele, el apetito dice cuánto dolor se acepta) · M28 (el apetito FILTRA por exposición antes de que el CoD ORDENE por economía) · M54 (la mezcla de ambición es el apetito hecho asignación: el % en transformar = riesgo que el directorio acepta explícito)
+- **Combina:** M16 (cl.6.1 risk-based thinking es el gancho MVP (riesgos[] tipados por proceso); 31000 lo eleva a apetito del directorio cuando se activa) · M04 (arbitraje: appetite de Shape Up = tiempo/alcance que se apuesta; apetito de riesgo = exposición que el directorio tolera — dos varas distintas de la misma apuesta) · M15 (el semáforo de madurez no reemplaza el apetito: el gap dice dónde duele, el apetito dice cuánto dolor se acepta) · M28 (el apetito FILTRA por exposición antes de que el CoD ORDENE por economía) · M54 (la mezcla de ambición es el apetito hecho asignación: el % en transformar = riesgo que el directorio acepta explícito) · M56 (el piso de caja es apetito de liquidez hecho número — misma mecánica de vara, expresada en dinero y con fecha) · M58 (el registro y su contraste contra el apetito son entrada de la sesión; el riesgo que excede la vara sale como acuerdo con responsable y plazo)
 - **Principios:** P3, P7
 
 <a id="m53"></a>**M53 · ISO 8000-61 — madurez de la gestión de calidad de datos**
@@ -412,6 +412,15 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Cuándo:** horizonte gateado por demanda: cliente cuyo diagnóstico revela el dato como brecha estructural (papel, silos, sin dueño de dato) — típico 'datos de obra en papel'
 - **Combina:** M23 (división del trabajo: M23 gradúa cada dato AS-IS; 8000-61 gradúa el sistema de gestión que los produce) · M31 (presta descriptores de nivel a la capability de datos/analítica del heatmap) · M47 (9004 gradúa el sistema de gestión entero; 8000-61 profundiza solo el dominio datos)
 - **Principios:** P3
+
+<a id="m58"></a>**M58 · Gobierno de la sesión de directorio — acuerdos, acta y facultades**
+- **Qué:** la sesión como entidad: agenda ordenada, entradas obligatorias (desempeño del periodo, seguimiento de lo acordado, riesgos y cambios), acuerdos con responsable y plazo, acta versionada, y umbrales de facultad que dicen qué decisión sube al directorio y cuál queda en la gerencia
+- **Fuente:** ISO (cl.9.3 revisión por la dirección) + práctica de gobierno corporativo (OCDE — Principios de Gobierno Corporativo G20/OCDE 2023) — ISO 9001:2015 cl.9.3 (entradas/salidas de la revisión) · delegación de facultades y registro de acuerdos del órgano de gobierno. [https://www.oecd.org/corporate/principles-corporate-governance/](https://www.oecd.org/corporate/principles-corporate-governance/)
+- **Objeto:** T3 Gobierno / Loop · sec: O4, O2
+- **Aporte único:** el punto que abre TODA sesión — qué se acordó la vez pasada y quién respondió — como dato, no como recuerdo; y el mecanismo que hace que la bandeja de decisiones no se vacíe nunca: el UMBRAL POR MONTO O MATERIA. Sin él, un tablero de directorio termina pidiendo decisiones sobre su propia configuración. Un acuerdo sin responsable y sin plazo no es un acuerdo: es una conversación
+- **Cuándo:** encuadre del nivel directorio (m1) y cada sesión de revisión (m2); al cerrar la sesión, para generar el acta
+- **Combina:** M16 (cl.9.3: la revisión por la dirección ya exige entradas (desempeño, seguimiento de acciones previas, riesgos) y salidas (decisiones y acciones) — esta card las materializa como entidades y agrega lo que 9001 no cubre: facultades y acta de gobierno) · M25 (el acuerdo lleva responsable declarado; la facultad por monto es autoridad declarada — RACI a nivel de gobierno) · M55 (el desempeño del periodo es la primera entrada de la sesión) · M52 (los riesgos y su contraste contra el apetito son entrada de la sesión y, cuando exceden la vara, salida como acuerdo) · M41 (la rendición de cuentas por nivel (GPD) es la misma disciplina un piso abajo: acuerdo con responsable, plazo y verificación)
+- **Principios:** P7, P4
 
 ### Familia E · Especificación & Construcción
 
@@ -456,12 +465,12 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Principios:** P1, P2
 
 <a id="m22"></a>**M22 · FinOps — Quantify Business Value**
-- **Qué:** empareja gasto tecnológico con valor de negocio; unit economics; atribución
+- **Qué:** empareja gasto tecnológico con valor de negocio; unit economics; atribución. Y el otro lado de la misma moneda: la REALIZACIÓN — lo prometido se sigue hasta lo efectivamente cobrado, con fecha y con verificador
 - **Fuente:** FinOps Foundation — Quantify Business Value. [https://www.finops.org/framework/domains/quantify-business-value/](https://www.finops.org/framework/domains/quantify-business-value/)
 - **Objeto:** O2 Objetivo & Valor · sec: T3
-- **Aporte único:** el UNIT ECONOMICS — costo real + ahorro contrafactual (vs devs) + aporte por capability
-- **Cuándo:** loop de valor (aceptación, paso 11)
-- **Combina:** M21 (el aporte sube al KR) · M06 (atribución por capability) · M48 (el unit economics interno gana su vara externa: ¿mi costo/desempeño es bueno vs pares?)
+- **Aporte único:** el UNIT ECONOMICS — costo real + ahorro contrafactual (vs devs) + aporte por capability. Corolario cardinal (twin v18): toda promesa de valor lleva su contraparte COBRADA — una apuesta o un proyecto que declara beneficio y nunca lo rinde es exactamente el 'indicador sin ancla de valor' cometido en el nivel más alto. Lo cobrado lo escribe la fuente contable y lo verifica finanzas, JAMÁS quien prometió
+- **Cuándo:** loop de valor (aceptación, paso 11) y cada sesión de revisión: prometido vs cobrado por apuesta y por proyecto cerrado
+- **Combina:** M21 (el aporte sube al KR) · M06 (atribución por capability) · M48 (el unit economics interno gana su vara externa: ¿mi costo/desempeño es bueno vs pares?) · M04 (la apuesta declara el valor que persigue Y lo que lleva cobrado a la fecha: el ciclo por-sellar→sellada→cumplida sólo cierra en 'cumplida' con valor cobrado verificado) · M55 (el valor cobrado se escribe contra la fuente contable (cierre del periodo), no contra una planilla del área que prometió) · M42 (la auditoría de beneficios ~12 meses del proyecto formal es esta misma disciplina un nivel abajo — doble firma sponsor + finanzas)
 - **Principios:** P1, P2
 
 <a id="m26"></a>**M26 · Hoshin Kanri (Strategy Deployment)**
@@ -497,7 +506,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O2 Objetivo & Valor · sec: T3
 - **Aporte único:** el STRATEGY MAP — liga aprendizaje→procesos→cliente→finanzas y cascada a unidades/personas (el 'por qué' detrás de cada KPI)
 - **Cuándo:** etapa 1 — traducir la estrategia del directorio a KPIs por perspectiva; complementa OKR/Hoshin
-- **Combina:** M26 (Hoshin despliega la estrategia; BSC la mide por perspectiva) · M21 (los KR se anclan a los objetivos del scorecard) · M06 (Impact conecta objetivo→entregable)
+- **Combina:** M26 (Hoshin despliega la estrategia; BSC la mide por perspectiva) · M21 (los KR se anclan a los objetivos del scorecard) · M06 (Impact conecta objetivo→entregable) · M55 (la perspectiva financiera deja de ser un rótulo: sus objetivos se contrastan contra el resultado real y cerrado del periodo)
 - **Principios:** P1, P2
 
 <a id="m41"></a>**M41 · GPD — Gerenciamento pelas Diretrizes (Falconi)**
@@ -524,8 +533,44 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Objeto:** O2 Objetivo & Valor · sec: O7, O1
 - **Aporte único:** el COLOR del esfuerzo — campo `ambicion` transversal que el twin agrega al leer (rollup vs `mezcla_objetivo` de config_estrategia). El ratio NO es dogma: HBR lo midió por industria (industrial ≈70/20/10 · consumo masivo ≈80/18/2 · tech media ≈45/40/15) y el retorno es INVERSO (≈10/20/70 — el 10 transformacional genera ~70% del valor nuevo); ajustar por industria/etapa/posición competitiva
 - **Cuándo:** al crear/triageár idea, proyecto_mejora o KR (m1: clasificar el portafolio hallado en el diagnóstico · m2/m3: mantener la mezcla visible y balanceada)
-- **Combina:** M21 (cada KR declara su ambición — la cascada canónica se colorea sin ceremonia nueva) · M26 (el plan 3a→anual fija la mezcla_objetivo; el catchball la negocia por nivel) · M28 (WSJF prioriza DENTRO de cada bolsa, jamás entre bolsas (ambidestreza O'Reilly/Tushman: exploit devora a explore si comparten cola)) · M44 (cada idea del embudo se etiqueta en el triaje del comité — protege el flujo transformacional de morir contra lo urgente) · M45 (es el instrumento concreto del balance de portafolio que ISO 56002 exige en abstracto) · M52 (la mezcla ES apetito de riesgo materializado: transformar = riesgo aceptado explícito del directorio)
+- **Combina:** M21 (cada KR declara su ambición — la cascada canónica se colorea sin ceremonia nueva) · M26 (el plan 3a→anual fija la mezcla_objetivo; el catchball la negocia por nivel) · M28 (WSJF prioriza DENTRO de cada bolsa, jamás entre bolsas (ambidestreza O'Reilly/Tushman: exploit devora a explore si comparten cola)) · M44 (cada idea del embudo se etiqueta en el triaje del comité — protege el flujo transformacional de morir contra lo urgente) · M45 (es el instrumento concreto del balance de portafolio que ISO 56002 exige en abstracto) · M52 (la mezcla ES apetito de riesgo materializado: transformar = riesgo aceptado explícito del directorio) · M57 (la mezcla en porcentaje es la intención; el presupuesto por bolsa es la misma decisión con plata y con saldo)
 - **Principios:** P1, P2
+
+<a id="m55"></a>**M55 · Reporte financiero como fuente — marco contable (NIIF / NIIF para PYMES) leído, jamás reexpresado**
+- **Qué:** el marco de reporte que la empresa declara (NIIF plenas o NIIF para PYMES) fija QUÉ significan sus cifras, su ciclo de cierre (preliminar → cerrado → auditado) y qué se revela; el twin consume un puñado de esas cifras como dato con procedencia, con su estado de cierre a la vista
+- **Fuente:** IASB (IFRS Foundation) — Marco Conceptual + NIIF/IFRS y NIIF para las PYMES — estados financieros, ciclo de cierre y revelaciones. [https://www.ifrs.org/issued-standards/list-of-standards/](https://www.ifrs.org/issued-standards/list-of-standards/)
+- **Objeto:** O2 Objetivo & Valor · sec: T1, T3
+- **Aporte único:** el PUENTE libro↔operación: cada cifra del reporte se ancla al proceso, área u objetivo que la produce, y las decisiones contables que dependen de la operación (reconocimiento de ingreso · deterioro de cobranza · valorización de lo que está a medio construir · contingencias · arrendamientos · partes relacionadas) quedan navegables al twin. Ningún sistema contable puede hacerlo: no conoce el proceso. Corolario duro: un avance de obra DECLARADO por encima del real infla lo construido en el libro — la brecha operativa ES un hallazgo de reporte
+- **Cuándo:** encuadre del nivel directorio (m1) y cada sesión de revisión (m2): leer el resultado del periodo contra plan y contra el año anterior, con el estado de cierre declarado
+- **Combina:** M22 (FinOps cuantifica el valor de UNA brecha o apuesta; el reporte financiero es el marcador consolidado contra el que ese valor se cobra — sin él, el beneficio queda declarado y nunca verificado) · M23 (el estado de cierre ES procedencia: una cifra preliminar se muestra preliminar y jamás se pinta como cerrada (misma regla que fuente/conf del AS-IS)) · M16 (cl.9.3 revisión por la dirección exige el desempeño del periodo como entrada — este es el dato que la alimenta) · M30 (la perspectiva financiera del strategy map deja de ser un rótulo: sus objetivos se contrastan contra el resultado real del periodo) · M59 (el valor ganado explica una parte del resultado antes de que el resultado la muestre — y el desvío avance-real vs declarado es el input de la valorización de la obra en curso)
+- **Principios:** P1, P2
+
+<a id="m56"></a>**M56 · Liquidez del directorio — proyección de caja a 13 semanas y límites del financiamiento**
+- **Qué:** la proyección corta y rodante de entradas y salidas (13 semanas), contra un PISO de caja que la gobernanza firma, más los límites que impone quien presta (resguardos financieros / covenants) y la línea disponible
+- **Fuente:** Práctica de tesorería corporativa y reestructuración (13-week cash flow) · ACT/AFP treasury guidance — Rolling 13-week cash flow forecast + covenant headroom monitoring. [https://www.treasurers.org/hub/treasurer-magazine/13-week-cash-flow-forecasting-basics](https://www.treasurers.org/hub/treasurer-magazine/13-week-cash-flow-forecasting-basics)
+- **Objeto:** O2 Objetivo & Valor · sec: O6, T3
+- **Aporte único:** separa SOLVENCIA de RESULTADO: una empresa con margen puede quedarse sin caja, y el directorio lo ve semanas antes si mira la proyección y no el estado de resultados. El piso de caja es una vara del mismo tipo que el apetito de riesgo (la firma la gobernanza, no la gerencia), y romper un resguardo puede obligar a pagar la deuda por adelantado — por eso se mira ANTES de aprobar más inversión o más deuda
+- **Cuándo:** encuadre del nivel directorio (m1) y cada sesión (m2); obligatorio cuando el diagnóstico revela tensión de cobranza, obra en curso o deuda con resguardos
+- **Combina:** M55 (la caja al cierre es una cifra del reporte; la proyección es lo que el reporte NO dice — hacia adelante, semana a semana) · M52 (el piso de caja es apetito de riesgo de liquidez hecho número: misma mecánica (la gobernanza fija la vara, el dato se contrasta contra ella)) · M23 (la proyección declara QUIÉN la firma; si el puesto que la firmaría está vacante, la confianza baja y se muestra — jamás se maquilla) · M28 (cruzar el piso es un costo de esperar con fecha: ordena qué se ataca primero cuando el dinero es la restricción)
+- **Principios:** P1, P3
+
+<a id="m57"></a>**M57 · Presupuesto y control presupuestario — la mezcla de ambición hecha plata**
+- **Qué:** el reparto anual del dinero en bolsas, el seguimiento de lo COMPROMETIDO contra lo ASIGNADO, y la variación contra plan como lente primaria de la revisión (no el valor absoluto)
+- **Fuente:** Práctica de planeamiento y control de gestión (budgeting & control) · CIMA/IMA management accounting — Presupuesto anual, compromiso y ejecución; análisis de variación contra plan. [https://www.cimaglobal.com/Research--Insight/Budgeting-and-forecasting/](https://www.cimaglobal.com/Research--Insight/Budgeting-and-forecasting/)
+- **Objeto:** O2 Objetivo & Valor · sec: O7, T3
+- **Aporte único:** vuelve EXIGIBLE la mezcla de ambición: 70/20/10 en porcentaje es una intención; con presupuesto por bolsa es una decisión con firma y con saldo. Y separa asignado de comprometido — el futuro se compra cuando el dinero se compromete, no cuando se declara la intención
+- **Cuándo:** encuadre anual del directorio (m1) y su seguimiento en cada sesión (m2); al aprobar cualquier apuesta o proyecto que consuma bolsa
+- **Combina:** M54 (la mezcla de ambición dice el reparto en porcentaje; el presupuesto lo dice en dinero — misma bolsa, dos unidades. La prioridad se ordena DENTRO de la bolsa, jamás entre bolsas) · M04 (el tope de la apuesta (appetite Shape Up) consume bolsa: sellar una apuesta sin bolsa disponible es una decisión, no un trámite) · M22 (el caso de valor de cada brecha se paga contra una bolsa; el retorno prometido se coteja contra lo efectivamente comprometido) · M58 (el presupuesto se APRUEBA en la sesión de directorio y las facultades por monto dicen qué gasto vuelve a subir a ese nivel) · M55 (la ejecución real del presupuesto se cierra contra el gasto del reporte financiero, no contra una planilla paralela)
+- **Principios:** P1, P2
+
+<a id="m59"></a>**M59 · Valor ganado (EVM) — el portafolio de inversiones**
+- **Qué:** compara el avance REAL de una inversión con lo GASTADO y con lo comprometido, en una sola fila comparable entre inversiones: avance real (no el declarado) · gastado contra presupuesto · ya comprometido contra la meta · fecha de entrega proyectada contra la comprometida · margen proyectado contra plan
+- **Fuente:** PMI · ANSI/EIA-748 — Earned Value Management — valor planificado, valor ganado y costo real; índices de desempeño de costo y cronograma. [https://www.pmi.org/learning/library/earned-value-management-systems-analysis-8026](https://www.pmi.org/learning/library/earned-value-management-systems-analysis-8026)
+- **Objeto:** O2 Objetivo & Valor · sec: O6, O3
+- **Aporte único:** hace visible el sobrecosto ANTES de que aparezca en el resultado, porque compara gasto contra avance FÍSICO y no contra calendario. El desvío entre avance declarado y avance real es el dato de mayor consecuencia del twin: gobierna la entrega, el margen del proyecto y la valorización de lo que está a medio construir en el libro contable. La inversión de capital NO es un proyecto de mejora: se gobierna como portafolio propio
+- **Cuándo:** cliente con inversiones grandes en curso (m1 para levantarlas, m2 para seguirlas en cada sesión)
+- **Combina:** M55 (el desvío avance real vs declarado es el input de cómo se valoriza lo construido en curso — la brecha operativa se vuelve hallazgo de reporte) · M57 (cada inversión consume presupuesto: el pedido de más presupuesto sube al directorio por umbral de facultad) · M50 (P3M3 gradúa la CAPACIDAD de sostener un portafolio; el valor ganado mide el desempeño de las inversiones concretas de ese portafolio) · M42 (distinción cardinal: el proyecto de MEJORA cierra con un indicador movido (DMAIC/PDCA); la INVERSIÓN cierra con un activo entregado y su margen — dos ciclos, dos varas) · M23 (avance declarado y avance real se guardan SEPARADOS, cada uno con su fuente: fundirlos borra exactamente el hallazgo)
+- **Principios:** P1, P3
 
 ### Familia G · IA: Grounding & Anti-alucinación
 
@@ -559,7 +604,7 @@ Modelo vigente CK-18/CK-21 (arquitectura: [`sistema/arquitectura/NODOS.md`](../a
 - **Fuente:** Palantir — Foundry Ontology — best practices (adoptada CK-21). [https://www.palantir.com/docs/foundry/ontology/](https://www.palantir.com/docs/foundry/ontology/)
 - **Objeto:** O7 Contrato & Código · sec: T1
 - **Aporte único:** el METAMODELO PROPIO as-code en git — entidad-primero (no notation-first), con provenance y extensión por cliente como propiedades de la gramática
-- **Cuándo:** siempre — es la gramática de las 13 entidades del twin (CK-26 + `apuesta` D-23; +`puesto`/`arnes` al materializar D-19/D-20 · CK-30); toda evolución del schema la respeta
+- **Cuándo:** siempre — es la gramática de las 20 entidades del twin (CK-26 + `apuesta` D-23 + el gobierno del directorio D-24..D-29: riesgo · sesion · acuerdo · periodo · proyeccion_caja · presupuesto · inversion; +`puesto`/`arnes` al materializar D-19/D-20 · CK-30); toda evolución del schema la respeta
 - **Combina:** M23 (los provenance structs (fuente+conf) son parte de la gramática) · M13 (ArchiMate presta tipos como vocabulario DENTRO del metamodelo propio) · M46 (el arnés entra a la gramática como entidad REGISTRO (procedencia+versión+drift), jamás como contenido)
 - **Principios:** P4, P5
 
@@ -706,9 +751,14 @@ YAML, regenerar con `gen_metodo.py` (gate anti-drift en pre-commit).
 | EFQM RADAR (M49) | ○ |  |  |  |
 | P3M3 (M50) |  |  |  |  |
 | ISO 10015 (competencia) (M51) | ● | ● |  | ● |
-| ISO 31000 (apetito) (M52) | ○ |  |  |  |
+| ISO 31000 (apetito) (M52) | ○ | ○ |  |  |
 | ISO 8000-61 (datos) (M53) | ○ |  |  |  |
 | Ambición 70/20/10 (M54) | ● | ● | ● | ● |
+| Reporte financiero (fuente) (M55) | ● | ● |  | ● |
+| Liquidez (caja 13 semanas) (M56) | ● | ● |  | ● |
+| Presupuesto (asignado vs comprometido) (M57) | ● | ● |  | ● |
+| Sesión de directorio (acuerdos y acta) (M58) | ● | ● |  | ● |
+| Valor ganado (inversiones) (M59) | ○ | ○ |  |  |
 <!-- /GEN:tabla -->
 
 ---

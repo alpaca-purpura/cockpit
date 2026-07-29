@@ -24,7 +24,20 @@ del código: `02-mockup-guia-completa.md § 0.1`.
 - **Notación ratificada** — el operador iteró en vivo (materiales "me gusta V2" explícito · notación
   inline DENTRO · 3 tipos nuevos · aire entre bandas) y construyó SOBRE ella. Se trata como aceptada.
 
-## ➡ La deuda MEDIDA vive en `07-auditoria-hallazgos.md` (2026-07-25)
+## ✓ Cerrado en la sesión 2026-07-29 (v18 · la agenda del directorio)
+
+La idea que este doc listaba como "bandeja de decisiones" dejó de ser idea: es el **movimiento 4** del
+nivel 1, con decisiones que llegan **por umbral de facultades** (no por configuración del modelo), los
+acuerdos de la sesión anterior y el acta generada. Con ella entraron resultado, caja, presupuesto,
+riesgos e inversiones. Método (M55-M59), esquema (D-24…D-30) y contrato de build (`08`) cerrados.
+
+**Lo que la v18 ABRIÓ y sigue siendo insumo, no decisión:**
+- **Promoción de M52** `horizonte → ancla` — decisión de dogma, espera ficha CK + firma.
+- **Exposición cambiaria** (H10) · **aterrizaje proyectado** por meta (H7) · **cumplimiento como
+  superficie propia** (H11) · **personas a nivel directorio** (H12) — hallazgos abiertos del tablero.
+- **Conectores reales** (contable · banca · control de obra) — hoy todo el nivel 1 es dato canned.
+
+## ➡ La deuda MEDIDA vive en `07-auditoria-hallazgos.md` (2026-07-25 · 2026-07-29)
 
 Este doc (06) sigue siendo la **bandeja de ideas e insumos no ratificados**. La deuda **verificable**
 (hallazgos con `file:line`, medidos contra el mockup vivo + schema + método) se movió al tablero

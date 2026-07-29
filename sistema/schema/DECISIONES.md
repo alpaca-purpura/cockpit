@@ -374,3 +374,134 @@ la apuesta del CLIENTE sellada por su directorio. Recíprocas M04⇄M52/M22/M54 
 ## Futuros bancados (dichos de pasada, guardados)
 - **Analytics de producto** (adopción/uso de usuarios) = tercera medida futura sobre la lente `producto`.
 - Vitalia/Comunify automatizan **solo venta+pagos** internamente (registro·cobranza·facturación) → insumo para "base mínima".
+
+## D-24 · `riesgo` — el registro, la contraparte del apetito — `clavada` (v18 · M52 enriquecida)
+El schema ya tenía la VARA (`empresa.config_estrategia.apetito_riesgo`, D-23) y no tenía **contra qué
+contrastarla**: sin registro, el apetito es una declaración sin nada que medir; sin apetito, el registro
+es una lista sin veredicto. ISO 31000 trae las dos mitades y sólo sirven juntas.
+
+Se agrega: **entidad `riesgo`** (`riesgos/rg-*.yaml`, ArchiMate Assessment, O1) + enum
+**`tendencia_riesgo: [sube, estable, baja]`**. Campos: `categoria` (MISMO vocabulario que la vara —
+si la categoría no tiene vara, el contraste dice "apetito sin definir" y jamás inventa un nivel) ·
+`probabilidad`/`impacto` (enums `prob`/`impacto` que ya existían de ISO 9001 cl.6.1) · `tendencia` ·
+`responsable_ref` (**rol|area — jamás persona**, misma regla que `kpi.dueño_ref`) · `mitigacion` +
+`mitiga_refs[]` (→apuesta|proyecto_mejora: el hilo riesgo→trabajo) · `against_ref` (dónde VIVE en la
+organización: proceso|area|brecha|objetivo|inversion).
+
+**Doctrina:** (1) el **nivel** (probabilidad × impacto) y el **veredicto** contra el apetito se
+DERIVAN al leer — ninguno se declara a mano. (2) El riesgo **no es un anexo suelto**: se ancla al
+twin y se navega. (3) Riesgo sin responsable ni mitigación = *preocupación*, no riesgo gestionado
+(warning). (4) Tendencia con una sola observación no se afirma (warning).
+**Tensión declarada:** M52 sigue con `rol_ancla: horizonte` ("cl.6.1 de M16 basta en el MVP") mientras
+el nivel 1 del twin ya lo materializa como superficie de primera clase — la promoción horizonte→ancla
+es decisión de dogma y **espera firma del operador** (ficha CK).
+
+## D-25 · `sesion` + `acuerdo` — la reunión de gobierno y sus compromisos — `clavada` (v18 · M58)
+El punto que abre TODA sesión de directorio —*qué se acordó la vez pasada y quién respondió*— no
+existía como dato: vivía como prosa en un historial. ISO 9001 cl.9.3 ya exige el seguimiento de las
+acciones previas como **entrada obligatoria** de la revisión; lo que 9001 no cubre (facultades, acta
+de gobierno) lo agrega M58.
+
+Se agrega: **entidad `sesion`** (`sesiones/ses-*.yaml`, Business Event) con `tipo` · `periodo_ref` ·
+`asistentes_ref[]` · `acta{generada, version, resumen, ruta}`; **entidad `acuerdo`**
+(`acuerdos/ac-*.yaml`) con `sesion_ref` · `responsable_ref` (rol|area) · `plazo` · `estado` ·
+`sobre_ref` (a qué parte del twin obliga); enums **`tipo_sesion`** y **`estado_acuerdo`**; y en
+`empresa` el bloque **`config_gobierno`** (cadencia, órgano y **facultades**: qué materia/monto obliga
+a que decida el órgano de gobierno — enum `materia_facultad`).
+
+**Doctrina:** (1) los acuerdos **no se embeben** en la sesión: son aggregate propio porque sobreviven
+a la sesión (se listan por scan de `sesion_ref`). (2) **Un acuerdo sin responsable y sin plazo no es
+un acuerdo: es una conversación** (ERROR). (3) El **acta se GENERA** de lo decidido y queda versionada
+— el twin no reemplaza la formalidad societaria de cada país (firmas, legalización, registro). (4) Las
+**facultades por monto** son el mecanismo que hace que la bandeja de decisiones no se vacíe nunca: sin
+umbral, un tablero de directorio termina pidiendo decisiones sobre su propia configuración. (5) La
+asistencia es un HECHO de la sesión, jamás una medición de la persona (CK-24).
+
+## D-26 · `periodo` — el resultado LEÍDO del sistema contable — `clavada` (v18 · M55)
+Faltaba la primera pregunta de cualquier directorio: *¿cómo nos fue?*. La decisión de fondo no es
+"agregar cifras" sino **hasta dónde llega Cockpit**: el twin **NO reexpresa** los estados financieros
+— los lee con su estado de cierre y su procedencia, y **baja cada cifra al proceso/área que la
+produce**. Reproducir los estados completos lo volvería un tablero contable más, perdería la pelea de
+calidad del dato contra el sistema contable y crearía riesgo real (los estados tienen ciclo de cierre,
+dictamen y reexpresiones).
+
+Se agrega: **entidad `periodo`** (`periodos/per-*.yaml`) con `marco_contable` (lo DECLARA la empresa,
+jamás se supone) · `moneda` · `estado_cierre` · `dictamen{ejercicio, opinion, hallazgos_refs→brecha}`
+· **subesquema `cifra`** (valor · plan · anterior · acumulado · `direccion` · **`ancla_ref`** ·
+`kpi_ref` · `nota`); enums **`marco_contable`**, **`estado_cierre`**, **`direccion_cifra`**.
+
+**Doctrina:** (1) **el estado de cierre es parte del dato** y viaja con la cifra a toda superficie —
+un preliminar se muestra preliminar (M23). (2) **`ancla_ref` es EL aporte**: la cifra del libro baja a
+lo que la produce; ningún tablero contable puede hacerlo porque no conoce el proceso. (3)
+**Anti-duplicación:** si la organización ya sigue esa cifra como indicador, la `cifra` **referencia**
+el `kpi` — no se crea un gemelo. (4) `direccion` es obligatoria: sin ella un +7% de gasto se pintaría
+como mejora (ERROR). (5) `auditado` sin dictamen citado es una afirmación sin respaldo (ERROR). (6) El
+**puente** libro↔operación (reconocimiento de ingreso · deterioro de cobranza · valorización de lo
+construido en curso · contingencias · arrendamientos · partes relacionadas) es doctrina de M55 y vive
+en superficie **sin códigos de norma**: el código vive dentro de la ficha, como procedencia — misma
+regla que los códigos M-NN.
+
+## D-27 · `proyeccion_caja` — liquidez: 13 semanas contra el piso — `clavada` (v18 · M56)
+Solvencia ≠ resultado: una empresa con margen puede quedarse sin caja, y el directorio lo ve semanas
+antes sólo si mira hacia adelante. La caja al cierre es una `cifra` del periodo; la **proyección** es
+lo que el reporte NO dice.
+
+Se agrega: **entidad `proyeccion_caja`** (`caja/caja-*.yaml`) con `fecha_corte` (la proyección es
+RODANTE: se re-corta, no se edita) · `saldo` · **`piso`** + `piso_fijado_en_ref`→sesion · subesquema
+**`semana_caja`** (13) · `lineas{disponible, usado}` · subesquema **`resguardo`** (los límites que
+impone quien presta) · **`firmada_por_ref`**; enum **`holgura`**.
+
+**Doctrina:** (1) el **piso de caja es una vara del mismo tipo que el apetito de riesgo** — la firma la
+gobernanza en sesión, no la gerencia; sin firmar se muestra "sin firmar" y jamás se inventa. (2) Las
+semanas bajo el piso y el punto mínimo son DERIVADOS. (3) **`firmada_por_ref` es el hallazgo de
+diseño**: si el puesto que firmaría está vacante, `conf` DEBE ser baja y mostrarse — el twin conecta
+un hueco del organigrama con la confianza de un número de directorio. (4) Romper un resguardo puede
+obligar a pagar la deuda por adelantado: por eso se mira ANTES de aprobar más inversión o más deuda.
+
+## D-28 · `presupuesto` — la mezcla de ambición hecha plata — `clavada` (v18 · M57)
+`mezcla_objetivo` (D-22/M54) declaraba el reparto en **porcentaje**: una intención. Sin plata detrás no
+es gobernable, y sin presupuesto el directorio no tiene contra qué medir la variación.
+
+Se agrega: **entidad `presupuesto`** (`presupuestos/pre-*.yaml`) con `anio` · `moneda` · `estado` ·
+`aprobado_en_ref`→sesion · subesquema **`bolsa`** (`ambicion` — el MISMO enum que clasifica
+idea/proyecto/KR — `asignado`, `comprometido`); enum **`estado_presupuesto`**.
+
+**Doctrina:** (1) **un vocabulario, dos unidades**: la bolsa se expresa en % (M54) y en importe (M57);
+jamás dos taxonomías. (2) **Asignado ≠ comprometido**: el futuro se compra cuando el dinero se
+compromete, no cuando se declara la intención. (3) La prioridad se ordena **DENTRO** de la bolsa,
+jamás entre bolsas (ambidestreza — M54/M28). (4) Presupuesto sin aprobar se MUESTRA sin aprobar; si
+está aprobado, tiene sesión y traza (ERROR sin `aprobado_en_ref`).
+
+## D-29 · `inversion` — el portafolio de capital, distinto del de mejoras — `clavada` (v18 · M59)
+El `proyecto_mejora` cierra con **un indicador movido**; la inversión de capital cierra con **un activo
+entregado y su margen**. Son dos ciclos y dos varas: modelarlos con la misma entidad rompía el ciclo
+brecha→proyecto→KPI que es el diferenciador.
+
+Se agrega: **entidad `inversion`** (`inversiones/iv-*.yaml`, Work Package) con `tipo` (enum
+**`tipo_inversion`**: obra · planta · local · contrato · linea-producto · sistema) · `unidad_ref` ·
+`responsable_ref` · **`avance_real`** y **`avance_declarado` guardados APARTE** · `gasto` ·
+`presupuesto_asignado` · `comprometido` · `meta_ingreso` · `entrega_proyectada` vs
+`entrega_comprometida` · `margen_proyectado` vs `margen_plan` · `brechas_refs[]`.
+
+**Doctrina:** (1) **avance real y declarado NO se funden** — fundirlos borra exactamente el hallazgo.
+Su diferencia gobierna la entrega, el margen y **cómo el libro valoriza lo construido en curso**
+(puente con D-26/M55): una brecha operativa se vuelve hallazgo de reporte. (2) Comparar gasto contra
+**avance físico** (no contra calendario) hace visible el sobrecosto antes de que llegue al resultado.
+(3) `tipo_inversion` es el único campo que cambia entre industrias: **la fila es la misma** para obras,
+planta, tiendas, contratos plurianuales o líneas de producto. (4) Cliente sin inversiones grandes: la
+banda no se dibuja (disable honesto), jamás se rellena.
+
+## D-30 · `apuesta.valor.cobrado` — la promesa se cobra o se dice que no — `clavada` (v18 · M22 enriquecida)
+La apuesta declaraba `valor{monto, supuesto}` — **lo prometido** — y no tenía dónde registrar **lo
+realizado**. El producto acusa a otros de "indicador sin ancla de valor" (`sin-ancla-de-valor`) y
+cometía exactamente eso en su nivel más alto.
+
+Se agrega a `apuesta.valor`: **`cobrado{monto, a_fecha, verificado_por_ref→rol, fuente, conf, nota}`**
++ acción **`verificar-valor-cobrado`**.
+
+**Doctrina:** (1) lo cobrado se escribe **contra la fuente contable** (D-26/M55), no contra una
+planilla del área que prometió. (2) **Lo verifica finanzas, jamás quien apostó** (ERROR sin
+`verificado_por_ref`). (3) Una apuesta **no sellada no cobra nada** — se dice, no se rellena con un
+cero engañoso (ERROR si hay `cobrado` con estado `por-sellar`). (4) El ciclo sólo cierra en `cumplida`
+con valor cobrado verificado. Misma disciplina que la auditoría de beneficios del proyecto formal
+(M42, doble firma sponsor+finanzas) un nivel arriba.

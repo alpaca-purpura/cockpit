@@ -2,7 +2,7 @@
 """gen_schema.py — gate anti-drift del objeto.schema.yaml v2 + verbos.yaml (D-A2 · historia schema-v2).
 
 Valida (sin vista generada — solo coherencia interna del contrato):
-  1. objeto.schema.yaml: version 2 · 13 nodos esperados (D-23 suma `apuesta`) · toda ref `enum:` resuelve en `enums:`
+  1. objeto.schema.yaml: version 2 · 20 nodos esperados (D-23 suma `apuesta`; D-24..D-29 el gobierno del directorio) · toda ref `enum:` resuelve en `enums:`
      (campos + subesquemas) · relaciones apuntan a entidades/weak-entities conocidas.
   2. acciones (capa kinética): entidad existe · nivel_min/aprobacion en sus enums · id verbo-objeto
      (jamás "set-…") · ≤ 10 acciones por entidad (anti Action-Sprawl).
@@ -33,9 +33,17 @@ NODOS_ESPERADOS = {
     "empresa", "persona", "rol", "area", "proceso", "sistema",
     "objetivo", "kpi", "proyecto_mejora", "idea", "capability", "brecha",
     "apuesta",  # D-23 — la apuesta del directorio (O1 materializada)
+    # D-24..D-29 (v18) — el gobierno del directorio: lo que el nivel 1 necesita para existir como dato
+    "riesgo",           # D-24 — el registro, contraparte del apetito que M52 ya declaraba
+    "sesion", "acuerdo",# D-25 — la reunión de gobierno y sus compromisos (ISO 9001 cl.9.3 + M58)
+    "periodo",          # D-26 — el resultado LEÍDO del sistema contable (M55), con estado de cierre
+    "proyeccion_caja",  # D-27 — liquidez: 13 semanas contra el piso y los límites del financiamiento (M56)
+    "presupuesto",      # D-28 — la mezcla de ambición hecha plata (M57)
+    "inversion",        # D-29 — el portafolio de capital, distinto del de mejoras (M59)
 }
 # weak-entities / pseudo-destinos válidos en refs y relaciones (además de los nodos)
 DESTINOS_EXTRA = {"key_result", "actividad", "medicion", "unidad", "hito",
+                  "cifra", "semana_caja", "resguardo", "bolsa",   # weak-entities v18 (D-26..D-28)
                   "empresa#uN", "empresa#elN", "*", "nichos (slug, I-39)",
                   "empresa#uN (local)", "empresa#elN (local)", "pr-x#aN (local)"}
 CAP_ACCIONES_POR_ENTIDAD = 10

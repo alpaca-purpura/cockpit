@@ -45,6 +45,8 @@
 | **H11** | Cero cumplimiento: hallazgos de auditoría, litigios, licencias, seguridad | 🟡 | **◐ parcial v18** — el dictamen y sus 2 hallazgos viven en la ficha de alcance; riesgos de cumplimiento en el registro; falta la superficie propia | operador |
 | **H12** | Personas a nivel directorio sólo como una vacante | 🟡 | abierto — sucesión, rotación, planilla sobre ingresos, contingencia laboral (respetando CK-24) | operador |
 | **H13** | `fit()` encajaba una página en ancho **y** alto → cada panel nuevo encogía la letra de todos | 🟠 | **✅ v18** — `fitPagina` (encaje al ancho, anclado arriba) + la rueda recorre; aplica también a Mejora/Método/Cambios | — |
+| **H14** | La deuda de método y esquema que abrió H1-H13 | 🔴 fondo | **✅ 2026-07-29** — M55-M59 + M52/M22/M16 enriquecidas (catálogo 59) · D-24…D-30 (schema 20 nodos) · contrato de build `08`. Ambos gates verdes | — |
+| **H15** | M52 declarada `horizonte` mientras el nivel 1 la materializa | 🟠 | abierto — promoción `horizonte → ancla` = decisión de dogma (ficha CK) | **operador** |
 
 > **Sync del tracker 2026-07-28 (v17.2):** filas A3/B5/D1/D2 estaban resueltas por v12/v15.2 y el
 > tablero seguía diciéndolas abiertas (el sync esperaba la firma visual del operador sobre v12 —
@@ -463,17 +465,33 @@ mismo trato que los códigos de carta del método; hay gate en la suite (`cero /
 sistema contable puede detectarlo, porque no conoce el proceso. Es la demostración más limpia de por qué
 el twin y el libro son cosas distintas que se necesitan.
 
-## Deuda que abre esta auditoría
+## Deuda que abrió esta auditoría — ✅ CERRADA el mismo día (2026-07-29)
 
-- **Esquema:** `riesgo`, `acuerdo` (+ `sesion`/`acta`), `inversion`, `presupuesto`, `periodo`/`cifra` y
-  `apuesta.valor.cobrado` **no existen en `objeto.schema.yaml`** — hoy son dato del mockup. El más barato
-  y universal es `acuerdo`: no necesita integrar ningún sistema externo. Requiere fichas D-NN con firma.
-- **Método:** faltan cartas para marco de reporte contable, proyección de caja y resguardos, presupuesto y
-  control presupuestario, gobierno corporativo (acuerdo/acta/facultades) y registro de riesgos con dueño y
-  tendencia. Declaradas en `gap:` de las 6 entradas nuevas de Respaldo. **No se tocó `methodologies.yaml`** —
-  se proponen vía `/metodo-aprende` con firma del operador.
-- **Abiertos del tablero:** H7 (aterrizaje proyectado), H10 (moneda), H11 (cumplimiento como superficie),
-  H12 (personas a nivel directorio).
+- **Método → CERRADO.** `/metodo-aprende` corrido con el protocolo completo (prior-art scan → clasificar →
+  barrido de contradicciones → gate): **5 cartas nuevas** — **M55** reporte financiero como fuente ·
+  **M56** liquidez (caja 13 semanas y límites del financiamiento) · **M57** presupuesto y control
+  presupuestario · **M58** gobierno de la sesión (acuerdos, acta, facultades) · **M59** valor ganado
+  (portafolio de inversiones) — y **3 enriquecidas**: **M52** gana el REGISTRO (la contraparte del
+  apetito que ya declaraba), **M22** gana la REALIZACIÓN (prometido vs cobrado, verificado por
+  finanzas), **M16** nombra cl.9.3 explícitamente. Recíprocas cableadas (M16⇄M58 · M22⇄M04/M55/M42 ·
+  M25⇄M58 · M30⇄M55 · M42⇄M59 · M50⇄M59 · M52⇄M56/M58 · M54⇄M57). Catálogo **54 → 59**, gate verde.
+  *Nota de disciplina:* el registro de riesgos NO entró como carta nueva — es la otra mitad de ISO
+  31000; una carta espejo habría sido exactamente la duplicación que el protocolo prohíbe.
+- **Esquema → CERRADO.** Fichas **D-24** `riesgo` · **D-25** `sesion`+`acuerdo` (+`empresa.config_gobierno`
+  con las facultades) · **D-26** `periodo` (+subesquema `cifra`) · **D-27** `proyeccion_caja` ·
+  **D-28** `presupuesto` · **D-29** `inversion` · **D-30** `apuesta.valor.cobrado`. El schema pasa de
+  **13 a 20 nodos** (41 relaciones · 32 acciones · 15 invariantes nuevos); `gen_schema.py` verde,
+  `go test ./...` verde (los enums nuevos no entran en la paridad Go actual — si alguno se lleva a Go,
+  va al test en el mismo commit).
+- **Contrato de build → ESCRITO.** `08-nivel-1-contrato-de-construccion.md`: frontera, entidades,
+  panel↔dato, estados vacíos honestos, derivados, acciones, 12 escenarios de aceptación, casuística
+  obligatoria del fixture y trazabilidad panel→carta→ficha.
+
+**Sigue abierto (espera al operador):** promoción de **M52** `horizonte → ancla` (decisión de dogma —
+el nivel 1 ya lo materializa mientras la carta dice "no en el MVP"; declarado como tensión dentro de la
+propia carta) · **H7** aterrizaje proyectado · **H10** moneda/exposición · **H11** cumplimiento como
+superficie propia · **H12** personas a nivel directorio · **conectores reales** (todo el nivel 1 es
+dato canned hoy).
 
 ---
 

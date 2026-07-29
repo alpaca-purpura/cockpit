@@ -26,6 +26,11 @@ links:
 > 18-26). **Próximo paso (nueva sesión):** el operador entra a **más detalle por elemento** — el cómo se
 > muestra y qué se muestra de cada entidad. Ver el prompt de continuación al pie de esta nota / en el chat.
 >
+> **🏗 PARA CONSTRUIR EL NIVEL 1 (Directorio):** [`dossier/08-nivel-1-contrato-de-construccion.md`](./dossier/08-nivel-1-contrato-de-construccion.md)
+> — es el ÚNICO documento que hace falta leer entero para eso. El nivel 1 ya no necesita refinamiento
+> previo: su método (M55-M59 + M52/M22/M16 enriquecidas, catálogo 59), su esquema (D-24…D-30, 20 nodos)
+> y sus 12 escenarios de aceptación están cerrados y con gate verde.
+>
 > **📁 DOSSIER COMPLETO (2026-07-24): [`dossier/README.md`](./dossier/README.md)** — TODO el avance
 > consolidado en 7 docs (visión/doctrina · mockup elemento-por-elemento · decisiones+porqués ·
 > datos+casuística · construcción real · pendientes+ideas minadas del transcript · **auditoría
@@ -394,6 +399,12 @@ Esta historia es el **frame espacial** (paradigma de visualización de N13). NO 
 - El **lakehouse** (dato de operación real, N16) — F1.4; el twin lee el golden-fixture (CK-23).
 - **Auth/niveles de acceso** que gobiernan qué capa ve cada nivel — `auth-niveles-acceso-policy-as-data`.
 - Los **proyectos_mejora** del mockup son ILUSTRATIVOS (el fixture no los tiene aún).
+- **Los estados financieros completos** (juego completo, notas, cierre contable, opinión de auditoría)
+  — decisión de frontera firmada en v18: Cockpit **lee** un puñado de cifras con su estado de cierre y
+  las **baja al proceso que las produce**; no reexpresa nada. Detalle: `dossier/08 § 0`.
+- **Exposición cambiaria**, **aterrizaje proyectado a fin de año**, **cumplimiento como superficie
+  propia** y **personas a nivel directorio** — hallazgos H7/H10/H11/H12 del tablero `dossier/07`,
+  fuera del alcance de v18 por decisión, no por olvido.
 
 ## Riesgos / Asunciones
 
@@ -407,7 +418,19 @@ Esta historia es el **frame espacial** (paradigma de visualización de N13). NO 
 
 ## Próximo paso
 
-**Continuar con los comentarios visuales del operador en una conversación nueva**, iterando sobre el
+**Dos caminos, ya desacoplados:**
+
+- **Construir el nivel 1** — no espera nada: `dossier/08` es el contrato (entidades · panel↔dato ·
+  acciones · escenarios · casuística del fixture). Camino corto: poblar el golden fixture → extender
+  `go/objeto.go` con las 7 carpetas nuevas → los 4 movimientos contra el banco PRENTER → live-verify
+  ejerciendo acciones reales.
+- **Seguir iterando el mockup** con los comentarios del operador, sobre
+  `docs/product/prototypes/twin-territorio-2026-07-20/src/` (nunca `index.html`) → re-publicar al artifact URL.
+
+**Espera firma del operador:** la promoción de M52 (`horizonte → ancla`) — el nivel 1 ya materializa
+apetito + registro de riesgos mientras la carta sigue diciendo "no en el MVP". Es decisión de dogma.
+
+*(histórico)* Continuar con los comentarios visuales del operador iterando sobre el
 prototipo (`docs/product/prototypes/twin-territorio-2026-07-20/index.html` → re-publicar al artifact URL).
 Cuando el concepto visual cierre → refinar (`/po-ux` a mano: `01-spec.md` con § Mapa funcional + §
 Pantallas + scenarios) y decidir el scope vs. `cruce-estructura-operacion-indicadores` y el arreglo de
@@ -526,3 +549,16 @@ tabs actual. Ratificación del operador + (si es decisión de fondo) ficha CK-NN
   (`fitPagina` + rueda que recorre) — sin eso, cada panel nuevo encogía la letra de todos.
   7 líneas de equivalencia entre industrias. Partes nuevas: `36-data-gobierno.js`,
   `19b-directorio.css`, `74-fichas-gobierno.js`. Suite **34/34**, 0 errores JS.
+- v18.1 2026-07-29 — **el nivel 1 pasa de mockup a contrato construible**: `/metodo-aprende` con el
+  protocolo completo → **5 cartas nuevas** (M55 reporte financiero como fuente · M56 liquidez ·
+  M57 presupuesto · M58 gobierno de la sesión · M59 valor ganado) + **3 enriquecidas** (M52 gana el
+  registro de riesgos, M22 la realización prometido↔cobrado, M16 nombra cl.9.3), catálogo 54→**59**
+  con recíprocas cableadas y gate verde; **7 entidades nuevas + 2 extensiones** en el esquema
+  (**D-24** riesgo · **D-25** sesion+acuerdo+facultades · **D-26** periodo+cifra · **D-27**
+  proyeccion_caja · **D-28** presupuesto · **D-29** inversion · **D-30** apuesta.valor.cobrado),
+  13→**20 nodos**, 41 relaciones, 32 acciones, 15 invariantes nuevos, `gen_schema.py` y
+  `go test ./...` verdes; **`dossier/08-nivel-1-contrato-de-construccion.md`** (frontera · panel↔dato ·
+  estados vacíos honestos · derivados · 17 acciones · 12 escenarios · casuística del fixture ·
+  trazabilidad). Barrido de conteos stale (12/13 entidades · 31/54 cartas) en CLAUDE.md, las 2 reglas,
+  el seam, VISION, M32, el mockup y su suite. Suite **34/34**. Abierto y con firma pendiente: la
+  promoción de M52 `horizonte → ancla`.

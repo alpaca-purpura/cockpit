@@ -1895,7 +1895,7 @@ function ejecutarAccion(b){ const a=ACC[b.dataset.acc];
 }
 /* ===== v14.3 · capa RESPALDO DEL MÉTODO — cada panel cita la metodología que lo sostiene =====
    Espejo del `met:` que ya llevan el schema (222 campos) y los pasos del proceso: el panel declara
-   sus fuentes igual que todo lo demás. SSoT real = sistema/metodo/methodologies.yaml (54 cartas).
+   sus fuentes igual que todo lo demás. SSoT real = sistema/metodo/methodologies.yaml (59 cartas).
    En superficie: nombre común de la fuente (cero jerga). El código M-NN = procedencia, SOLO en la ficha. */
 const RESPALDO={
   'dir-varas':{ cita:'apetito · ambición', t:'Las varas del directorio', items:[
@@ -1930,32 +1930,37 @@ const RESPALDO={
   'dir-resultado':{ cita:'revisión por la dirección · valor', t:'El resultado del periodo', items:[
     {f:'ISO 9001 — revisión por la dirección (§9.3)', uso:'la sesión arranca por el desempeño del periodo contra lo planificado: es una entrada obligatoria de la revisión, no un anexo.', m:'M16'},
     {f:'FinOps — valor cuantificado', uso:'las cifras se leen en dinero y contra una referencia (plan y año anterior); una cifra sin referencia no gobierna nada.', m:'M22'},
-    {f:'Procedencia del dato', uso:'toda cifra declara su fuente, su confianza y su ESTADO DE CIERRE (preliminar · cerrado · auditado). Un número preliminar se muestra preliminar — jamás se pinta como cerrado.', m:'M23'} ],
-    gap:'Cockpit NO reexpresa los estados financieros: los lee del sistema contable y los baja al twin. El marco de reporte (NIIF plenas · NIIF para PYMES), el ciclo de cierre y el dictamen del auditor todavía no tienen carta propia en el catálogo — hoy viven como configuración de la empresa y como puente hacia la operación, no como metodología.' },
+    {f:'Procedencia del dato', uso:'toda cifra declara su fuente, su confianza y su ESTADO DE CIERRE (preliminar · cerrado · auditado). Un número preliminar se muestra preliminar — jamás se pinta como cerrado.', m:'M23'},
+    {f:'Reporte financiero como fuente — el marco contable', uso:'el marco que la empresa DECLARA fija qué significan sus cifras y su ciclo de cierre; Cockpit las LEE y las baja al proceso que las produce. No arma los estados financieros, no corre el cierre, no emite opinión: enlaza y cita.', m:'M55'} ],
+    gap:'La carta ya existe (ingesta 2026-07-29). Lo que falta es la CONEXIÓN: hoy las cifras son dato canned del mockup; en la app entran por lectura del sistema contable con su estado de cierre (entidad `periodo`, ficha D-26).' },
   'dir-caja':{ cita:'liquidez · valor', t:'La caja', items:[
     {f:'FinOps — valor cuantificado', uso:'la caja es el único número que no admite adjetivos: saldo, proyección, líneas disponibles y deuda, en dinero.', m:'M22'},
-    {f:'Procedencia del dato', uso:'la proyección declara quién la firma; acá NADIE la firma (jefatura vacante) y por eso su confianza es baja — la ausencia se muestra, no se maquilla.', m:'M23'} ],
-    gap:'La proyección de caja a 13 semanas y los resguardos con el banco (los límites que el financiamiento impone) todavía no tienen carta en el catálogo. El piso de caja SÍ es una vara del mismo tipo que el apetito de riesgo — candidato natural a extender la carta de apetito.' },
+    {f:'Procedencia del dato', uso:'la proyección declara quién la firma; acá NADIE la firma (jefatura vacante) y por eso su confianza es baja — la ausencia se muestra, no se maquilla.', m:'M23'},
+    {f:'Liquidez — proyección de caja y límites del financiamiento', uso:'solvencia no es lo mismo que resultado: una empresa con margen puede quedarse sin caja, y se ve semanas antes mirando hacia adelante. El piso lo firma la gobernanza; romper un límite del banco puede obligar a pagar la deuda por adelantado.', m:'M56'} ],
+    gap:'La carta ya existe (ingesta 2026-07-29) y la entidad también (ficha D-27). Falta el conector real al banco y al sistema contable: hoy la serie es dato canned.' },
   'dir-presupuesto':{ cita:'bolsas · valor', t:'El presupuesto y las facultades', items:[
     {f:'Portafolio de ambición (70/20/10)', uso:'la mezcla deja de ser un porcentaje abstracto: cada bolsa lleva plata asignada y plata comprometida. La mezcla ES el apetito hecho asignación — acá se ve en dinero.', m:'M54'},
     {f:'FinOps — valor cuantificado', uso:'lo comprometido contra lo asignado, por bolsa: se ve dónde se está gastando el futuro que se prometió comprar.', m:'M22'},
-    {f:'Matriz de responsabilidades (RACI) — autoridad', uso:'los umbrales de facultades declaran qué monto obliga a que decida el directorio y qué queda en la gerencia.', m:'M25'} ],
-    gap:'El presupuesto anual y su control (asignado · comprometido · ejecutado) aún no tienen carta ni entidad de esquema. La delegación de facultades por monto tampoco: hoy vive como dato del mockup y como umbral en la bandeja.' },
+    {f:'Matriz de responsabilidades (RACI) — autoridad', uso:'los umbrales de facultades declaran qué monto obliga a que decida el directorio y qué queda en la gerencia.', m:'M25'},
+    {f:'Presupuesto y control presupuestario', uso:'la mezcla en porcentaje es una intención; con plata asignada y comprometida por bolsa es una decisión con firma y con saldo. El futuro se compra cuando el dinero se compromete.', m:'M57'} ],
+    gap:'Carta y entidades ya existen (fichas D-28 presupuesto · D-25 facultades en config_gobierno). Falta que el compromiso se descuente de verdad al sellar una apuesta o aprobar un proyecto — hoy los importes son canned.' },
   'dir-riesgos':{ cita:'ISO 31000', t:'Los riesgos', items:[
     {f:'Apetito de riesgo por categoría (ISO 31000 / COSO)', uso:'el apetito ya era la vara; el registro es la contraparte que faltaba: cada riesgo se contrasta contra el apetito de SU categoría — "por encima del apetito" es una derivación, no una opinión.', m:'M52'},
     {f:'ISO 9001 — riesgos y oportunidades (§6.1)', uso:'el riesgo vive pegado al proceso, la brecha o el área que lo produce: se navega al twin, no a un anexo suelto.', m:'M16'},
     {f:'Procedencia del dato', uso:'cada riesgo declara de dónde sale su evidencia y con qué confianza.', m:'M23'} ],
-    gap:'El registro con responsable, mitigación y tendencia extiende la carta de apetito; el nivel se deriva de probabilidad × impacto (matriz clásica). Falta ficha de esquema para `riesgo` — hoy es dato del mockup.' },
+    gap:'La carta de apetito ya incorpora el REGISTRO (ingesta 2026-07-29) y la entidad `riesgo` existe (ficha D-24). Tensión abierta: el rol declarado de la carta sigue siendo "horizonte" (fuera del MVP) mientras el nivel 1 ya lo muestra como superficie de primera clase — la promoción espera firma del operador.' },
   'dir-acuerdos':{ cita:'ISO 9001 §9.3 · RACI', t:'Los acuerdos de la sesión anterior', items:[
     {f:'ISO 9001 — revisión por la dirección (§9.3)', uso:'el seguimiento de lo acordado en la revisión anterior es entrada obligatoria de la siguiente: es el punto que abre toda sesión.', m:'M16'},
     {f:'Matriz de responsabilidades (RACI)', uso:'un acuerdo sin responsable y sin plazo no es un acuerdo: es una conversación.', m:'M25'},
-    {f:'ISO 9001 — registros', uso:'la sesión cierra generando el acta, y el acta queda versionada como cualquier otro dato del twin.', m:'M16'} ],
-    gap:'`acuerdo` y `sesión de directorio` (con acta versionada y firma) todavía no son entidades del esquema. Es el candidato más barato y más universal: no necesita integrar ningún sistema externo.' },
+    {f:'ISO 9001 — registros', uso:'la sesión cierra generando el acta, y el acta queda versionada como cualquier otro dato del twin.', m:'M16'},
+    {f:'Gobierno de la sesión — acuerdos, acta y facultades', uso:'la sesión es una entidad con entradas y salidas; el acuerdo lleva responsable y plazo; el acta se genera de lo decidido. Y el umbral por monto es lo que hace que la bandeja de decisiones no se vacíe nunca.', m:'M58'} ],
+    gap:'Carta y entidades ya existen (`sesion` + `acuerdo`, ficha D-25). Lo que el twin NO hace ni hará: reemplazar la formalidad societaria de cada país (firmas, legalización, registro) — genera el acta de gestión y su traza.' },
   'dir-inversiones':{ cita:'portafolio · valor', t:'Las inversiones en curso', items:[
     {f:'P3M3 — madurez de portafolio, programas y proyectos', uso:'la inversión grande se gobierna como portafolio: avance, gasto contra presupuesto y compromiso, en una sola fila comparable entre inversiones.', m:'M50'},
     {f:'FinOps — valor cuantificado', uso:'las tres varas van en dinero (gasto · comprometido · margen proyectado contra plan), no en semáforos de sensación.', m:'M22'},
-    {f:'Procedencia del dato', uso:'el avance DECLARADO y el avance REAL se muestran por separado: la diferencia entre ambos es exactamente lo que hace que lo construido quede mal valorizado en el libro.', m:'M23'} ],
-    gap:'`inversión` (o proyecto de inversión, distinto del proyecto de mejora) no es entidad del esquema todavía. Es el eje donde más se nota el paralelismo entre industrias — obras, planta, tiendas, contratos o líneas de producto son la misma fila.' },
+    {f:'Procedencia del dato', uso:'el avance DECLARADO y el avance REAL se muestran por separado: la diferencia entre ambos es exactamente lo que hace que lo construido quede mal valorizado en el libro.', m:'M23'},
+    {f:'Valor ganado — el portafolio de inversiones', uso:'comparar el gasto contra el avance FÍSICO (no contra el calendario) muestra el sobrecosto antes de que llegue al resultado. La inversión de capital no es un proyecto de mejora: cierra con un activo entregado y su margen, no con un indicador movido.', m:'M59'} ],
+    gap:'Carta y entidad ya existen (ficha D-29). En el MVP se guardan las cinco varas comparables, no los índices completos de valor ganado; cliente sin inversiones grandes: la banda no se dibuja.' },
   'bandeja':{ cita:'ISO 9001', t:'Espera tu decisión', items:[
     {f:'ISO 9001 — gestión de cambios', uso:'toda decisión que cambia la organización pasa por su aprobación y queda registrada en el historial.', m:'M16'},
     {f:'Matriz de responsabilidades (RACI) — autoridad', uso:'quién firma cada decisión está declarado por nivel: nada espera a la persona equivocada.', m:'M25'} ]},
@@ -2069,7 +2074,7 @@ const RESPALDO={
     {f:'Procedencia del dato', uso:'el historial es la traza que hace auditable cada cambio del twin.', m:'M23'} ]},
   /* — v14.5: respaldo DENTRO de las fichas de entidad (pie automático en openDrawer, por tipo) */
   'ent-empresa':{ cita:'ontología del twin', t:'Empresa — el twin completo', items:[
-    {f:'Ontología del twin — semántica + acción', uso:'las 13 entidades y sus relaciones son una gramática declarada; cada cosa que ves es una instancia con su ficha.', m:'M32'},
+    {f:'Ontología del twin — semántica + acción', uso:'las 20 entidades y sus relaciones son una gramática declarada; cada cosa que ves es una instancia con su ficha.', m:'M32'},
     {f:'ISO 9001 — la organización y su contexto', uso:'la empresa como sistema: procesos, roles, objetivos y su mejora, bajo un mismo vocabulario.', m:'M16'} ]},
   'ent-objetivo':{ cita:'OKR · BSC', t:'Objetivo', items:[
     {f:'OKR — objetivos con meta del trimestre', uso:'el objetivo carga su meta del ciclo (de → a); el semáforo se lee contra esa banda.', m:'M21'},
@@ -2125,7 +2130,7 @@ function openRespaldo(id){ const r=RESPALDO[id]; if(!r) return;
     + r.items.map(i=>`<div class="dgroup"><div class="gt">${i.f}<span class="mono" style="float:right;font-weight:400;font-size:9px;color:var(--tx-faint)">${i.m}</span></div>
         <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">${i.uso}</div></div>`).join('')
     + (r.gap?`<div class="dgroup"><div class="gt" style="color:var(--warn)">Donde el respaldo aún es horizonte</div><div style="font-size:12px;color:var(--tx-mut);line-height:1.5">${r.gap}</div></div>`:'')
-    + `<div style="font-size:11px;color:var(--tx-faint);border-top:1px solid var(--border);padding-top:8px;margin-top:4px">El método es dato versionado (54 cartas) — la misma fuente que respalda cada campo del twin y cada paso del engagement. <span class="plnk" onclick="state.mod='metodo';state.insp='home';render()">Ver la trazabilidad completa — módulo Método ›</span></div>`); }
+    + `<div style="font-size:11px;color:var(--tx-faint);border-top:1px solid var(--border);padding-top:8px;margin-top:4px">El método es dato versionado (59 cartas) — la misma fuente que respalda cada campo del twin y cada paso del engagement. <span class="plnk" onclick="state.mod='metodo';state.insp='home';render()">Ver la trazabilidad completa — módulo Método ›</span></div>`); }
 /* ancestro de primer nivel (columna del tablero táctico) */
 function topArea(id){ let a=byId(DATA.areas,id); while(a&&a.parent&&a.parent!=='a-ger') a=byId(DATA.areas,a.parent); return a; }
 /* regla de la reunión de resultados (Falconi): rojo sin proyecto que lo mueva NI brecha con respuesta = sin contramedida */
@@ -3176,11 +3181,11 @@ function renderMetodo(){
   const pv=pageView(`
     <div class="pv-hd"><span class="eyebrow">Método · el engagement del consultor — plantilla versionada, instancia por cliente (N6)</span>
       <h2>M1 Levantamiento · M3 Espinazo · M2 Mantenimiento</h2>
-      <div class="sub">El método es <b>dato, no prosa</b>: 54 M-cards versionadas en git (methodologies.yaml) — cada capa del twin cae de una M-card. Los gates conectan el engagement con el ciclo de mejora.</div></div>
+      <div class="sub">El método es <b>dato, no prosa</b>: 59 M-cards versionadas en git (methodologies.yaml) — cada capa del twin cae de una M-card. Los gates conectan el engagement con el ciclo de mejora.</div></div>
     <div class="fcols">
       <div class="fcol"><span class="eyebrow">M1 · Levantamiento — construir el As-Is${respBadge('met-m1')}</span>
         <div class="fitem"><span class="t">Ingesta multi-fuente</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>ERP · CRM · 14 entrevistas</span></span></div>
-        <div class="fitem"><span class="t">Mapa As-Is (objeto normalizado, 13 entidades)</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>14 áreas · 17 procesos · 100 personas</span></span>
+        <div class="fitem"><span class="t">Mapa As-Is (objeto normalizado, 20 entidades)</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>14 áreas · 17 procesos · 100 personas</span></span>
           <div class="stage-row"><span class="mono" style="font-size:9px;color:var(--tx-faint)">provenance</span><span class="prog"><i style="flex:52;background:var(--ok)"></i><i style="flex:30;background:var(--warn)"></i><i style="flex:18;background:var(--crit)"></i></span><span class="mono" style="font-size:9px;color:var(--tx-faint)">52·30·18</span></div></div>
         <div class="fitem"><span class="t">Hilo de oro medido</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>7 objetivos · 9 KPIs con banda</span></span></div>
         <div class="fitem"><span class="t">Validación con dueños (acuses)</span><span class="m"><span class="gate-pill pend">◐ 12/17</span><span>gate G1 → habilita el Espinazo</span></span></div></div>
@@ -3214,7 +3219,7 @@ function renderMetodo(){
         <div class="fitem"><span class="t"><b class="mono">apostar al futuro</b> — lo nuevo de verdad: mercado y oferta que hoy no tienes (≈10 — suele generar ~70% del valor nuevo)</span></div>
         <div class="fitem"><span class="t" style="color:var(--tx-mut)">se clasifica por NOVEDAD, jamás por plazo · la mezcla objetivo la firma el directorio (varía por industria) · la mezcla real se deriva sola al leer</span></div></div>
     </div>`);
-  counter('M1 ✓ · M3 en curso · M2 activo · 54 M-cards');
+  counter('M1 ✓ · M3 en curso · M2 activo · 59 M-cards');
 }
 
 /* ---------- módulo Cambios: gestión de cambios ISO — el motor versiona por debajo, el usuario jamás lo ve ---------- */
@@ -3298,7 +3303,7 @@ function inspectorHome(){
   if(state.mod==='metodo'){
     inEye.textContent='Método · engagement'; inTitle.textContent='M1 ✓ · M3 en curso · M2 activo';
     inBody.innerHTML=`<div class="dgroup"><div class="gt">Plantilla vs instancia</div>
-      <div style="font-size:12.5px;line-height:1.5">La <b>Definición</b> (M1·M2·M3, 54 M-cards) es IP versionada del fabricante; la <b>Instancia</b> (este engagement, sus gates y acuses) vive en el repo del cliente (N6). Los gates conectan el método con el ciclo de mejora.</div></div>
+      <div style="font-size:12.5px;line-height:1.5">La <b>Definición</b> (M1·M2·M3, 59 M-cards) es IP versionada del fabricante; la <b>Instancia</b> (este engagement, sus gates y acuses) vive en el repo del cliente (N6). Los gates conectan el método con el ciclo de mejora.</div></div>
       <div style="font-size:12px;color:var(--tx-faint)">Todo lo que el twin pinta es trazable a una M-card — el método es dato, no opinión.</div>`;
     return; }
   if(state.mod==='cambios'){

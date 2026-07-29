@@ -24,7 +24,7 @@ function inspectorHome(){
   if(state.mod==='metodo'){
     inEye.textContent='Método · engagement'; inTitle.textContent='M1 ✓ · M3 en curso · M2 activo';
     inBody.innerHTML=`<div class="dgroup"><div class="gt">Plantilla vs instancia</div>
-      <div style="font-size:12.5px;line-height:1.5">La <b>Definición</b> (M1·M2·M3, 54 M-cards) es IP versionada del fabricante; la <b>Instancia</b> (este engagement, sus gates y acuses) vive en el repo del cliente (N6). Los gates conectan el método con el ciclo de mejora.</div></div>
+      <div style="font-size:12.5px;line-height:1.5">La <b>Definición</b> (M1·M2·M3, 59 M-cards) es IP versionada del fabricante; la <b>Instancia</b> (este engagement, sus gates y acuses) vive en el repo del cliente (N6). Los gates conectan el método con el ciclo de mejora.</div></div>
       <div style="font-size:12px;color:var(--tx-faint)">Todo lo que el twin pinta es trazable a una M-card — el método es dato, no opinión.</div>`;
     return; }
   if(state.mod==='cambios'){

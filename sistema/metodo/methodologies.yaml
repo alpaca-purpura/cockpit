@@ -13,7 +13,7 @@
 
 _meta:
   fuente_humana: "sistema/metodo/METODOLOGIA.md §4 (compendio narrativo)"
-  total: 54
+  total: 59
   backbone: "objeto (capa de contexto / Hilo de Oro)"
   # Etiquetas de familias y del backbone — SSoT de los rótulos que el generador imprime en §4.
   familias:
@@ -437,8 +437,8 @@ M16:
   nombre: "ISO 9001"
   familia: D
   fuente: { autor: "ISO", obra: "ISO 9001:2015", url: "https://www.iso.org/iso-9001-quality-management.html" }
-  que: "gestión de calidad; enfoque a procesos; PDCA (cl.10); contexto (cl.4); objetivos (cl.6.2); autoridad (cl.5.3); competencia (cl.7.2)"
-  aporte_unico: "la ONTOLOGÍA de contexto (cl.4) + el ciclo PDCA — robamos ontología, rechazamos aparato"
+  que: "gestión de calidad; enfoque a procesos; PDCA (cl.10); contexto (cl.4); objetivos (cl.6.2); autoridad (cl.5.3); competencia (cl.7.2); revisión por la dirección (cl.9.3 — entradas obligatorias: desempeño del periodo, seguimiento de lo acordado antes, riesgos; salidas: decisiones y acciones)"
+  aporte_unico: "la ONTOLOGÍA de contexto (cl.4) + el ciclo PDCA — robamos ontología, rechazamos aparato. cl.9.3 aporta además el ESQUELETO de la sesión de revisión (qué entra, qué sale), que M58 materializa como entidades del twin"
   cuando_usar: "capa de contexto (vocabulario) y M2/M3 (mejora continua)"
   objeto_primario: T3
   objetos_secundarios: [O4]
@@ -449,6 +449,7 @@ M16:
     - { m: M38, como: "cl.7.5 información documentada = pirámide ISO 10013" }
     - { m: M47, como: "9004 GRADÚA (1-5) lo que 9001 releva (conformidad binaria) — la escalera de madurez sin certificación que la doctrina permite" }
     - { m: M51, como: "cl.7.2 competencia: 10015 la gradúa (requerida vs actual por rol) y cierra la brecha — el seam ya existe en el schema" }
+    - { m: M58, como: "cl.9.3 revisión por la dirección se materializa como entidades del twin (sesión · acuerdo con responsable y plazo · acta generada); 9001 dice QUÉ entra y sale, M58 agrega lo que no cubre: facultades por monto y el acta versionada" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -495,6 +496,7 @@ M25:
     - { m: M24, como: "alimenta el stakeholder map" }
     - { m: M36, como: "humano-por-diseño ancla a la A (accountability, firma, responsabilidad legal)" }
     - { m: M46, como: "la A define quién supervisa el arnés y qué gates humanos lleva adentro; C/I = contexto de lectura, no generan skills" }
+    - { m: M58, como: "la autoridad también se declara arriba: el umbral por monto dice qué decisión firma el directorio y cuál la gerencia — RACI a nivel de gobierno" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -626,9 +628,9 @@ M22:
   nombre: "FinOps — Quantify Business Value"
   familia: F
   fuente: { autor: "FinOps Foundation", obra: "Quantify Business Value", url: "https://www.finops.org/framework/domains/quantify-business-value/" }
-  que: "empareja gasto tecnológico con valor de negocio; unit economics; atribución"
-  aporte_unico: "el UNIT ECONOMICS — costo real + ahorro contrafactual (vs devs) + aporte por capability"
-  cuando_usar: "loop de valor (aceptación, paso 11)"
+  que: "empareja gasto tecnológico con valor de negocio; unit economics; atribución. Y el otro lado de la misma moneda: la REALIZACIÓN — lo prometido se sigue hasta lo efectivamente cobrado, con fecha y con verificador"
+  aporte_unico: "el UNIT ECONOMICS — costo real + ahorro contrafactual (vs devs) + aporte por capability. Corolario cardinal (twin v18): toda promesa de valor lleva su contraparte COBRADA — una apuesta o un proyecto que declara beneficio y nunca lo rinde es exactamente el 'indicador sin ancla de valor' cometido en el nivel más alto. Lo cobrado lo escribe la fuente contable y lo verifica finanzas, JAMÁS quien prometió"
+  cuando_usar: "loop de valor (aceptación, paso 11) y cada sesión de revisión: prometido vs cobrado por apuesta y por proyecto cerrado"
   objeto_primario: O2
   objetos_secundarios: [T3]
   principios: [P1, P2]
@@ -636,14 +638,17 @@ M22:
     - { m: M21, como: "el aporte sube al KR" }
     - { m: M06, como: "atribución por capability" }
     - { m: M48, como: "el unit economics interno gana su vara externa: ¿mi costo/desempeño es bueno vs pares?" }
+    - { m: M04, como: "la apuesta declara el valor que persigue Y lo que lleva cobrado a la fecha: el ciclo por-sellar→sellada→cumplida sólo cierra en 'cumplida' con valor cobrado verificado" }
+    - { m: M55, como: "el valor cobrado se escribe contra la fuente contable (cierre del periodo), no contra una planilla del área que prometió" }
+    - { m: M42, como: "la auditoría de beneficios ~12 meses del proyecto formal es esta misma disciplina un nivel abajo — doble firma sponsor + finanzas" }
   donde: { modulos: [m2, m3], etapas: [], capa_contexto: true }
   modo: columna
   twin:
     rol_ancla: ancla
     proyecciones: []
-    dimensiones: [madurez-brecha]
-    cuando_si: "cuantificar costo/ROI de cada brecha (unit economics del ciclo brecha→proyecto→KPI movido)"
-    cuando_no: "no es contabilidad cloud completa — solo el valor/ahorro que prioriza brechas"
+    dimensiones: [madurez-brecha, estrategia]
+    cuando_si: "cuantificar costo/ROI de cada brecha (unit economics del ciclo brecha→proyecto→KPI movido) Y registrar lo cobrado: valor prometido, valor cobrado a la fecha, quién lo verificó y con qué fuente"
+    cuando_no: "no es contabilidad cloud completa — solo el valor/ahorro que prioriza brechas y su realización. Valor cobrado SIN verificador declarado no se pinta como cobrado; apuesta no sellada NO cobra nada (se dice, no se rellena con cero engañoso)"
 
 M26:
   nombre: "Hoshin Kanri (Strategy Deployment)"
@@ -730,6 +735,7 @@ M30:
     - { m: M26, como: "Hoshin despliega la estrategia; BSC la mide por perspectiva" }
     - { m: M21, como: "los KR se anclan a los objetivos del scorecard" }
     - { m: M06, como: "Impact conecta objetivo→entregable" }
+    - { m: M55, como: "la perspectiva financiera deja de ser un rótulo: sus objetivos se contrastan contra el resultado real y cerrado del periodo" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -805,7 +811,7 @@ M32:
   fuente: { autor: "Palantir", obra: "Foundry Ontology — best practices (adoptada CK-21)", url: "https://www.palantir.com/docs/foundry/ontology/" }
   que: "la GRAMÁTICA del objeto.schema: semántica (entidades + relaciones) + kinética (acciones/cambio) + provenance structs + principio open/closed (extensible sin fork)"
   aporte_unico: "el METAMODELO PROPIO as-code en git — entidad-primero (no notation-first), con provenance y extensión por cliente como propiedades de la gramática"
-  cuando_usar: "siempre — es la gramática de las 13 entidades del twin (CK-26 + `apuesta` D-23; +`puesto`/`arnes` al materializar D-19/D-20 · CK-30); toda evolución del schema la respeta"
+  cuando_usar: "siempre — es la gramática de las 20 entidades del twin (CK-26 + `apuesta` D-23 + el gobierno del directorio D-24..D-29: riesgo · sesion · acuerdo · periodo · proyeccion_caja · presupuesto · inversion; +`puesto`/`arnes` al materializar D-19/D-20 · CK-30); toda evolución del schema la respeta"
   objeto_primario: O7
   objetos_secundarios: [T1]
   principios: [P4, P5]
@@ -1030,6 +1036,7 @@ M42:
     - { m: M35, como: "ECRS primero: no se automatiza (ni proyectiza) el desperdicio" }
     - { m: M22, como: "la cuantificación del beneficio (hard/soft/cost-avoidance) es FinOps" }
     - { m: M28, como: "WSJF prioriza qué brecha se vuelve proyecto" }
+    - { m: M59, como: "distinción cardinal: el proyecto de MEJORA cierra con un indicador movido; la INVERSIÓN de capital cierra con un activo entregado y su margen — dos ciclos, dos varas" }
   donde: { modulos: [m3], etapas: [], capa_contexto: true }
   modo: situacional
   twin:
@@ -1239,6 +1246,7 @@ M50:
     - { m: M42, como: "DMAIC mide el proyecto; P3M3 la capacidad org de ejecutar muchos — la perspectiva 'benefits' empalma con verificar-beneficios del ciclo" }
     - { m: M43, como: "ídem MASP — el loop-back disciplinado (en-verificacion → en-ejecucion) es señal de nivel P3M3 alto" }
     - { m: M47, como: "escalera hermana especializada: 9004 gradúa el sistema de gestión entero; P3M3 solo la función proyectos/portafolio" }
+    - { m: M59, como: "P3M3 gradúa la capacidad de sostener el portafolio; el valor ganado mide el desempeño de las inversiones concretas que lo componen" }
   donde: { modulos: [], etapas: [], capa_contexto: false }
   modo: situacional
   twin:
@@ -1287,8 +1295,8 @@ M52:
   nombre_corto: "ISO 31000 (apetito)"
   familia: D
   fuente: { autor: "ISO/TC 262 · COSO", obra: "ISO 31000:2018 — Risk management: guidelines (criterios de riesgo) · COSO ERM 2017 (risk appetite statement formal, alineado a estrategia)", url: "https://www.iso.org/iso-31000-risk-management.html" }
-  que: "gestión de riesgos (principios + marco + proceso): la gobernanza fija CRITERIOS de riesgo — cuánto y qué tipo de riesgo se acepta por categoría; COSO ERM aporta la declaración formal de apetito cuando el cliente la exige"
-  aporte_unico: "el APETITO DE RIESGO como dato del directorio — la vara contra la que se gradúa el riesgo de cada apuesta/objetivo (el panel 'riesgo vs apetito' del twin deja de ser cualitativo suelto); primera ancla de O1 en el twin"
+  que: "gestión de riesgos (principios + marco + proceso): la gobernanza fija CRITERIOS de riesgo — cuánto y qué tipo de riesgo se acepta por categoría (el APETITO); y el proceso (identificar → analizar → evaluar → tratar → seguir) produce el REGISTRO: cada riesgo con probabilidad, impacto, responsable, mitigación comprometida y tendencia. COSO ERM aporta la declaración formal de apetito cuando el cliente la exige"
+  aporte_unico: "las DOS mitades, que sólo sirven juntas: el APETITO como dato del directorio (la vara contra la que se gradúa cada apuesta/objetivo — el panel 'riesgo vs apetito' deja de ser cualitativo suelto) y el REGISTRO como su contraparte (sin registro, el apetito es una declaración sin nada que medir; sin apetito, el registro es una lista sin veredicto). El nivel se DERIVA de probabilidad × impacto y el veredicto —dentro / al límite / por encima del apetito— se deriva contra la vara de SU categoría: ninguno de los dos se declara a mano. Primera ancla de O1 en el twin"
   cuando_usar: "horizonte gateado por demanda (promovida del cuando_no de M16): directorio que formaliza apetito por categoría (liquidez, reputación, expansión) o cliente regulado"
   objeto_primario: O1
   objetos_secundarios: [O2, T3]
@@ -1299,14 +1307,16 @@ M52:
     - { m: M15, como: "el semáforo de madurez no reemplaza el apetito: el gap dice dónde duele, el apetito dice cuánto dolor se acepta" }
     - { m: M28, como: "el apetito FILTRA por exposición antes de que el CoD ORDENE por economía" }
     - { m: M54, como: "la mezcla de ambición es el apetito hecho asignación: el % en transformar = riesgo que el directorio acepta explícito" }
-  donde: { modulos: [m1], etapas: [], capa_contexto: false }
+    - { m: M56, como: "el piso de caja es apetito de liquidez hecho número — misma mecánica de vara, expresada en dinero y con fecha" }
+    - { m: M58, como: "el registro y su contraste contra el apetito son entrada de la sesión; el riesgo que excede la vara sale como acuerdo con responsable y plazo" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: false }
   modo: situacional
   twin:
     rol_ancla: horizonte
     proyecciones: []
     dimensiones: [riesgo-controles, estrategia]
-    cuando_si: "el directorio define apetito por categoría con umbral; cada apuesta/objetivo se contrasta (riesgo declarado vs apetito) con evidencia+conf"
-    cuando_no: "NO en el MVP (cl.6.1 de M16 basta); sin aparato ERM completo ni certificación; apetito sin definir se MUESTRA como 'sin definir' — jamás se inventa (anti-alucinación M23)"
+    cuando_si: "el directorio define apetito por categoría con umbral y mantiene el registro (riesgo · probabilidad · impacto · responsable · mitigación · tendencia), cada uno anclado al proceso, área o brecha que lo produce; nivel y veredicto contra el apetito se DERIVAN al leer, con evidencia+conf"
+    cuando_no: "sin aparato ERM completo ni certificación; apetito sin definir se MUESTRA como 'sin definir' — jamás se inventa (anti-alucinación M23); riesgo sin responsable ni mitigación es una preocupación, no un riesgo gestionado. ⚠ TENSIÓN ABIERTA (twin v18): el rol declarado sigue siendo `horizonte` ('cl.6.1 de M16 basta en el MVP') pero el nivel 1 del twin YA materializa apetito + registro como superficie de primera clase — la promoción horizonte→ancla es decisión de dogma y espera firma del operador (ficha CK)"
 
 M53:
   nombre: "ISO 8000-61 — madurez de la gestión de calidad de datos"
@@ -1352,6 +1362,7 @@ M54:
     - { m: M44, como: "cada idea del embudo se etiqueta en el triaje del comité — protege el flujo transformacional de morir contra lo urgente" }
     - { m: M45, como: "es el instrumento concreto del balance de portafolio que ISO 56002 exige en abstracto" }
     - { m: M52, como: "la mezcla ES apetito de riesgo materializado: transformar = riesgo aceptado explícito del directorio" }
+    - { m: M57, como: "la mezcla en porcentaje es la intención; el presupuesto por bolsa es la misma decisión con plata y con saldo" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -1360,3 +1371,140 @@ M54:
     dimensiones: [estrategia, mejora-proyectos]
     cuando_si: "toda idea/proyecto_mejora/KR lleva `ambicion` (operar|expandir|transformar); el twin computa mezcla real vs mezcla_objetivo al leer (rollup por rol/área/unidad/empresa) — el derivado jamás se persiste"
     cuando_no: "NO cuota rígida por persona (explore se concentra en pocos y se protege — el '20% time' universal murió); NO clasificar por plazo sino por novedad; NO priorizar cross-bolsa con WSJF; el 70/20/10 NO es prescripción universal — default configurable por industria"
+
+# ── M55-M59 · gobierno del directorio (ingesta /metodo-aprende 2026-07-29 · auditoría twin v18) ──
+# Hueco detectado: el catálogo cubría la EJECUCIÓN de la estrategia (M04 apuesta · M21/M26/M30/M41
+# cascada · M52 apetito · M54 mezcla · M28 prioridad · M22 valor por brecha) — la segunda mitad de la
+# agenda de un directorio. Faltaba la primera: el RESULTADO cerrado, la CAJA, el PRESUPUESTO y los
+# ACUERDOS; y, del lado del capital, el portafolio de INVERSIONES (distinto del de mejoras).
+# Regla que las cinco comparten: el twin NO reemplaza al sistema contable — lo LEE con estado de
+# cierre y procedencia, y BAJA cada número al proceso/área que lo produce (esa bajada es el aporte).
+
+M55:
+  nombre: "Reporte financiero como fuente — marco contable (NIIF / NIIF para PYMES) leído, jamás reexpresado"
+  nombre_corto: "Reporte financiero (fuente)"
+  familia: F
+  fuente: { autor: "IASB (IFRS Foundation)", obra: "Marco Conceptual + NIIF/IFRS y NIIF para las PYMES — estados financieros, ciclo de cierre y revelaciones", url: "https://www.ifrs.org/issued-standards/list-of-standards/" }
+  que: "el marco de reporte que la empresa declara (NIIF plenas o NIIF para PYMES) fija QUÉ significan sus cifras, su ciclo de cierre (preliminar → cerrado → auditado) y qué se revela; el twin consume un puñado de esas cifras como dato con procedencia, con su estado de cierre a la vista"
+  aporte_unico: "el PUENTE libro↔operación: cada cifra del reporte se ancla al proceso, área u objetivo que la produce, y las decisiones contables que dependen de la operación (reconocimiento de ingreso · deterioro de cobranza · valorización de lo que está a medio construir · contingencias · arrendamientos · partes relacionadas) quedan navegables al twin. Ningún sistema contable puede hacerlo: no conoce el proceso. Corolario duro: un avance de obra DECLARADO por encima del real infla lo construido en el libro — la brecha operativa ES un hallazgo de reporte"
+  cuando_usar: "encuadre del nivel directorio (m1) y cada sesión de revisión (m2): leer el resultado del periodo contra plan y contra el año anterior, con el estado de cierre declarado"
+  objeto_primario: O2
+  objetos_secundarios: [T1, T3]
+  principios: [P1, P2]
+  combina_con:
+    - { m: M22, como: "FinOps cuantifica el valor de UNA brecha o apuesta; el reporte financiero es el marcador consolidado contra el que ese valor se cobra — sin él, el beneficio queda declarado y nunca verificado" }
+    - { m: M23, como: "el estado de cierre ES procedencia: una cifra preliminar se muestra preliminar y jamás se pinta como cerrada (misma regla que fuente/conf del AS-IS)" }
+    - { m: M16, como: "cl.9.3 revisión por la dirección exige el desempeño del periodo como entrada — este es el dato que la alimenta" }
+    - { m: M30, como: "la perspectiva financiera del strategy map deja de ser un rótulo: sus objetivos se contrastan contra el resultado real del periodo" }
+    - { m: M59, como: "el valor ganado explica una parte del resultado antes de que el resultado la muestre — y el desvío avance-real vs declarado es el input de la valorización de la obra en curso" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: intercambio
+    proyecciones: []
+    dimensiones: [estrategia, provenance]
+    cuando_si: "el twin lee cifras del sistema contable (ingresos · margen · gasto · resultado · caja · deuda) con marco declarado, estado de cierre y fuente, y ancla cada una al proceso/área/objetivo que la produce"
+    cuando_no: "el twin NO arma el juego completo de estados financieros ni sus notas, NO corre el cierre contable, NO reexpresa cifras cerradas y NO emite opinión de auditoría — enlaza y cita, con el estado de cierre siempre visible. El código de la norma vive dentro de la ficha como procedencia, jamás en pantalla (misma regla que los códigos M-NN)"
+
+M56:
+  nombre: "Liquidez del directorio — proyección de caja a 13 semanas y límites del financiamiento"
+  nombre_corto: "Liquidez (caja 13 semanas)"
+  familia: F
+  fuente: { autor: "Práctica de tesorería corporativa y reestructuración (13-week cash flow) · ACT/AFP treasury guidance", obra: "Rolling 13-week cash flow forecast + covenant headroom monitoring", url: "https://www.treasurers.org/hub/treasurer-magazine/13-week-cash-flow-forecasting-basics" }
+  que: "la proyección corta y rodante de entradas y salidas (13 semanas), contra un PISO de caja que la gobernanza firma, más los límites que impone quien presta (resguardos financieros / covenants) y la línea disponible"
+  aporte_unico: "separa SOLVENCIA de RESULTADO: una empresa con margen puede quedarse sin caja, y el directorio lo ve semanas antes si mira la proyección y no el estado de resultados. El piso de caja es una vara del mismo tipo que el apetito de riesgo (la firma la gobernanza, no la gerencia), y romper un resguardo puede obligar a pagar la deuda por adelantado — por eso se mira ANTES de aprobar más inversión o más deuda"
+  cuando_usar: "encuadre del nivel directorio (m1) y cada sesión (m2); obligatorio cuando el diagnóstico revela tensión de cobranza, obra en curso o deuda con resguardos"
+  objeto_primario: O2
+  objetos_secundarios: [O6, T3]
+  principios: [P1, P3]
+  combina_con:
+    - { m: M55, como: "la caja al cierre es una cifra del reporte; la proyección es lo que el reporte NO dice — hacia adelante, semana a semana" }
+    - { m: M52, como: "el piso de caja es apetito de riesgo de liquidez hecho número: misma mecánica (la gobernanza fija la vara, el dato se contrasta contra ella)" }
+    - { m: M23, como: "la proyección declara QUIÉN la firma; si el puesto que la firmaría está vacante, la confianza baja y se muestra — jamás se maquilla" }
+    - { m: M28, como: "cruzar el piso es un costo de esperar con fecha: ordena qué se ataca primero cuando el dinero es la restricción" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [estrategia, riesgo-controles]
+    cuando_si: "el twin guarda saldo, serie proyectada, piso firmado, línea disponible y resguardos con su holgura; deriva al leer las semanas bajo el piso y ancla la causa aguas arriba (cobranza, obra, deuda)"
+    cuando_no: "NO es un sistema de tesorería ni ejecuta pagos; la serie se ingesta o se declara con procedencia. Cliente sin tensión de liquidez: el panel existe con menos peso, jamás se inventa una crisis"
+
+M57:
+  nombre: "Presupuesto y control presupuestario — la mezcla de ambición hecha plata"
+  nombre_corto: "Presupuesto (asignado vs comprometido)"
+  familia: F
+  fuente: { autor: "Práctica de planeamiento y control de gestión (budgeting & control) · CIMA/IMA management accounting", obra: "Presupuesto anual, compromiso y ejecución; análisis de variación contra plan", url: "https://www.cimaglobal.com/Research--Insight/Budgeting-and-forecasting/" }
+  que: "el reparto anual del dinero en bolsas, el seguimiento de lo COMPROMETIDO contra lo ASIGNADO, y la variación contra plan como lente primaria de la revisión (no el valor absoluto)"
+  aporte_unico: "vuelve EXIGIBLE la mezcla de ambición: 70/20/10 en porcentaje es una intención; con presupuesto por bolsa es una decisión con firma y con saldo. Y separa asignado de comprometido — el futuro se compra cuando el dinero se compromete, no cuando se declara la intención"
+  cuando_usar: "encuadre anual del directorio (m1) y su seguimiento en cada sesión (m2); al aprobar cualquier apuesta o proyecto que consuma bolsa"
+  objeto_primario: O2
+  objetos_secundarios: [O7, T3]
+  principios: [P1, P2]
+  combina_con:
+    - { m: M54, como: "la mezcla de ambición dice el reparto en porcentaje; el presupuesto lo dice en dinero — misma bolsa, dos unidades. La prioridad se ordena DENTRO de la bolsa, jamás entre bolsas" }
+    - { m: M04, como: "el tope de la apuesta (appetite Shape Up) consume bolsa: sellar una apuesta sin bolsa disponible es una decisión, no un trámite" }
+    - { m: M22, como: "el caso de valor de cada brecha se paga contra una bolsa; el retorno prometido se coteja contra lo efectivamente comprometido" }
+    - { m: M58, como: "el presupuesto se APRUEBA en la sesión de directorio y las facultades por monto dicen qué gasto vuelve a subir a ese nivel" }
+    - { m: M55, como: "la ejecución real del presupuesto se cierra contra el gasto del reporte financiero, no contra una planilla paralela" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [estrategia, mejora-proyectos]
+    cuando_si: "el twin guarda el presupuesto por bolsa (asignado · comprometido) con su estado de aprobación; deriva el uso al leer y lo contrasta con la mezcla objetivo"
+    cuando_no: "NO es un sistema de presupuestación ni reemplaza al ERP; guarda el reparto y su compromiso, no el asiento. Presupuesto sin aprobar se muestra SIN APROBAR — la intención no se pinta como decisión"
+
+M58:
+  nombre: "Gobierno de la sesión de directorio — acuerdos, acta y facultades"
+  nombre_corto: "Sesión de directorio (acuerdos y acta)"
+  familia: D
+  fuente: { autor: "ISO (cl.9.3 revisión por la dirección) + práctica de gobierno corporativo (OCDE — Principios de Gobierno Corporativo G20/OCDE 2023)", obra: "ISO 9001:2015 cl.9.3 (entradas/salidas de la revisión) · delegación de facultades y registro de acuerdos del órgano de gobierno", url: "https://www.oecd.org/corporate/principles-corporate-governance/" }
+  que: "la sesión como entidad: agenda ordenada, entradas obligatorias (desempeño del periodo, seguimiento de lo acordado, riesgos y cambios), acuerdos con responsable y plazo, acta versionada, y umbrales de facultad que dicen qué decisión sube al directorio y cuál queda en la gerencia"
+  aporte_unico: "el punto que abre TODA sesión — qué se acordó la vez pasada y quién respondió — como dato, no como recuerdo; y el mecanismo que hace que la bandeja de decisiones no se vacíe nunca: el UMBRAL POR MONTO O MATERIA. Sin él, un tablero de directorio termina pidiendo decisiones sobre su propia configuración. Un acuerdo sin responsable y sin plazo no es un acuerdo: es una conversación"
+  cuando_usar: "encuadre del nivel directorio (m1) y cada sesión de revisión (m2); al cerrar la sesión, para generar el acta"
+  objeto_primario: T3
+  objetos_secundarios: [O4, O2]
+  principios: [P7, P4]
+  combina_con:
+    - { m: M16, como: "cl.9.3: la revisión por la dirección ya exige entradas (desempeño, seguimiento de acciones previas, riesgos) y salidas (decisiones y acciones) — esta card las materializa como entidades y agrega lo que 9001 no cubre: facultades y acta de gobierno" }
+    - { m: M25, como: "el acuerdo lleva responsable declarado; la facultad por monto es autoridad declarada — RACI a nivel de gobierno" }
+    - { m: M55, como: "el desempeño del periodo es la primera entrada de la sesión" }
+    - { m: M52, como: "los riesgos y su contraste contra el apetito son entrada de la sesión y, cuando exceden la vara, salida como acuerdo" }
+    - { m: M41, como: "la rendición de cuentas por nivel (GPD) es la misma disciplina un piso abajo: acuerdo con responsable, plazo y verificación" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
+  twin:
+    rol_ancla: ancla
+    proyecciones: [acta-generada]
+    dimensiones: [organizacion, calidad-loop, estrategia]
+    cuando_si: "el twin guarda sesión, acuerdos (responsable · plazo · estado) y umbrales de facultad; el acta se GENERA de lo decidido y queda versionada como cualquier otro dato — la sesión siguiente abre con ella"
+    cuando_no: "NO es un libro de actas legal ni reemplaza la formalidad societaria de cada país (firmas, legalización, registro); genera el acta de gestión y la traza. Los umbrales son configuración del cliente, jamás valores por defecto inventados"
+
+M59:
+  nombre: "Valor ganado (EVM) — el portafolio de inversiones"
+  nombre_corto: "Valor ganado (inversiones)"
+  familia: F
+  fuente: { autor: "PMI · ANSI/EIA-748", obra: "Earned Value Management — valor planificado, valor ganado y costo real; índices de desempeño de costo y cronograma", url: "https://www.pmi.org/learning/library/earned-value-management-systems-analysis-8026" }
+  que: "compara el avance REAL de una inversión con lo GASTADO y con lo comprometido, en una sola fila comparable entre inversiones: avance real (no el declarado) · gastado contra presupuesto · ya comprometido contra la meta · fecha de entrega proyectada contra la comprometida · margen proyectado contra plan"
+  aporte_unico: "hace visible el sobrecosto ANTES de que aparezca en el resultado, porque compara gasto contra avance FÍSICO y no contra calendario. El desvío entre avance declarado y avance real es el dato de mayor consecuencia del twin: gobierna la entrega, el margen del proyecto y la valorización de lo que está a medio construir en el libro contable. La inversión de capital NO es un proyecto de mejora: se gobierna como portafolio propio"
+  cuando_usar: "cliente con inversiones grandes en curso (m1 para levantarlas, m2 para seguirlas en cada sesión)"
+  objeto_primario: O2
+  objetos_secundarios: [O6, O3]
+  principios: [P1, P3]
+  combina_con:
+    - { m: M55, como: "el desvío avance real vs declarado es el input de cómo se valoriza lo construido en curso — la brecha operativa se vuelve hallazgo de reporte" }
+    - { m: M57, como: "cada inversión consume presupuesto: el pedido de más presupuesto sube al directorio por umbral de facultad" }
+    - { m: M50, como: "P3M3 gradúa la CAPACIDAD de sostener un portafolio; el valor ganado mide el desempeño de las inversiones concretas de ese portafolio" }
+    - { m: M42, como: "distinción cardinal: el proyecto de MEJORA cierra con un indicador movido (DMAIC/PDCA); la INVERSIÓN cierra con un activo entregado y su margen — dos ciclos, dos varas" }
+    - { m: M23, como: "avance declarado y avance real se guardan SEPARADOS, cada uno con su fuente: fundirlos borra exactamente el hallazgo" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: false }
+  modo: situacional
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [estrategia, madurez-brecha]
+    cuando_si: "el cliente tiene inversiones de capital en curso (obras · planta · locales · contratos plurianuales · líneas de producto) y el twin guarda por cada una avance real y declarado, gasto contra presupuesto, comprometido, entrega y margen proyectado"
+    cuando_no: "NO reemplaza el sistema de control de obra ni calcula índices EVM completos (CPI/SPI) en el MVP — guarda las cinco varas comparables y su procedencia. Cliente sin inversiones grandes: la banda no se dibuja (disable honesto), jamás se rellena"

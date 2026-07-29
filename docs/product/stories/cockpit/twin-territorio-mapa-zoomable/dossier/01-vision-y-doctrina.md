@@ -7,13 +7,13 @@
 ## La tesis (CK-21 → CK-29)
 
 **Organization as Code → Organization Twin:** la organización entera (procesos/roles/objetivos/
-personas-puestos, 12 entidades) como dato versionado en git. Twin = estado deseado (N6) × estado
+personas-puestos, 20 entidades) como dato versionado en git. Twin = estado deseado (N6) × estado
 real (N16) × brecha continua (N13, Cockpit).
 
 **CK-29 la amplía a cerebro (2026-07-24, cruda del operador):** el twin es **un cerebro que COMPILA
 trabajo** — una sola doctrina a tres escalas:
 
-1. **Estructura** — las 12 entidades del `objeto.schema.yaml` v2.
+1. **Estructura** — las 20 entidades del `objeto.schema.yaml` v2 (13 del twin + las 7 del gobierno del directorio, D-24…D-29).
 2. **Conocimiento** — know-how + data histórica (gateado a F3, files-first, pero CONECTADO desde el
    día uno: los arneses nacen con punteros a dónde buscar).
 3. **Pulso** — el dato de operación real (lakehouse N16).
@@ -30,7 +30,7 @@ eficiencia, modificando sus propios arneses, poniendo proyectos…"*
 ## Qué demuestra el mockup (y qué NO es)
 
 - **ES** la vista espacial de esa tesis: el "producto completo" (decisión 10) — territorio + módulos
-  + corrida + viaje de las 12 entidades — en UN HTML autocontenido con datos canned.
+  + corrida + viaje de las 20 entidades — en UN HTML autocontenido con datos canned.
 - **NO ES** la app real: no wirea Go/Next, los scores del triage son canned, no hay auth. Es el
   contrato visual a ratificar ANTES de construir (la construcción real = refinamiento de esta
   historia; ver `05-construccion-real.md`).

@@ -96,6 +96,17 @@ enums:
   tipo_proveedor: [bpo, outsourcing, proveedor]                            # met: ISO 9001 cl.8.4 (procesos provistos externamente)
   prob:        [alta, media, baja]                                         # met: ISO 9001 cl.6.1 (riesgos tipados)
   impacto:     [alto, medio, bajo]                                         # met: ISO 9001 cl.6.1
+  # --- gobierno del directorio (D-24..D-30 · ingesta v18 · M55-M59) ---
+  marco_contable: [niif-plenas, niif-pymes, gaap-local, otro]              # met: M55 — el marco que la empresa DECLARA; jamás se supone
+  estado_cierre: [preliminar, cerrado, auditado]                           # met: M55 · M23 — una cifra preliminar se muestra preliminar; el estado es parte del dato
+  direccion_cifra: [mas-es-mejor, menos-es-mejor]                          # met: M55 — el signo de la variación lo interpreta el dato, no el lector
+  holgura: [holgada, ajustada, excedida]                                   # met: M56 — distancia al límite del financiamiento; DERIVABLE si hay límite+valor numéricos
+  tendencia_riesgo: [sube, estable, baja]                                  # met: M52 — el registro sin tendencia es una foto; con tendencia es gestión
+  estado_acuerdo: [pendiente, en-curso, cumplido, vencido, anulado]        # met: M58 — `vencido` se DERIVA de plazo vs hoy cuando hay fecha; se guarda solo si el plazo es una sesión
+  tipo_sesion: [directorio, comite-gerencia, revision-direccion]           # met: M58 · ISO 9001 cl.9.3
+  estado_presupuesto: [borrador, aprobado, cerrado]                        # met: M57 — presupuesto sin aprobar se MUESTRA sin aprobar
+  tipo_inversion: [obra, planta, local, contrato, linea-producto, sistema, otro]  # met: M59 — la misma fila en cualquier industria: obra (inmobiliario) · planta (manufactura) · local (retail) · contrato (servicios) · línea de producto (software)
+  materia_facultad: [inversion, endeudamiento, contrato, venta-activo, contratacion-clave, otro]  # met: M58 — qué decisión sube al órgano de gobierno
   # --- kinética (N13 niveles de acceso · BL-24 motor) ---
   nivel_acceso: [gobernanza, estrategico, tactico, operativo]              # met: N13 — auth-niveles los gobierna
   tipo_aprobacion: [directa, revision-dueño, gestion-cambios]              # met: BL-24 = motor que ejecuta
@@ -121,6 +132,7 @@ nodos:
       vision:       { tipo: str, requerido: false, met: "dirección estratégica (ISO 9001 cl.5.1). Tope del cascade (objetivos.md §6-8)" }
       rubro_ref:    { tipo: ref, a: "nichos (slug, I-39)", requerido: false, met: "cross-context por contrato" }
       config_estrategia: { tipo: obj, requerido: false, met: "research A/B — GPD y OKR = mismo grafo, distinta cadencia/acople (RN-14) · mezcla_objetivo = M54 (D-22) · apetito_riesgo = M52 (D-23)", forma: "{ modo: enum modo_estrategia (default okr-trimestral), mezcla_objetivo: { operar: num, expandir: num, transformar: num } (default 70/20/10 — M54; suma 100; varía por industria: industrial ≈70/20/10 · consumo masivo ≈80/18/2 · tech ≈45/40/15), apetito_riesgo: [ { categoria: str (liquidez|reputación|expansión — abierta por cliente), nivel: enum nivel_riesgo } ] (M52 · D-23 — el directorio fija cuánto riesgo acepta por categoría; categoría sin registro se MUESTRA 'sin definir', jamás se inventa) }" }
+      config_gobierno: { tipo: obj, requerido: false, met: "M58 (D-25) — cómo gobierna este cliente: cadencia de la sesión y qué monto/materia obliga a que decida el órgano de gobierno. Sin registro NO hay default inventado: se muestra 'sin definir'", forma: "{ cadencia_sesion: str (mensual|trimestral|…), organo: str (directorio|junta|comité), facultades: [ { materia: enum materia_facultad, umbral: str (monto con moneda, o 'cualquier monto'), nota } ] }" }
       unidades:     { tipo: list, requerido: false, met: "D-07 — unidad de ejecución (proceso definido UNA vez, medido POR unidad)", subesquema: unidad }
       entidades_legales: { tipo: list, requerido: false, met: "D-07 — el SPV legal = atributo, no partición del twin", subesquema: entidad_legal }
       fuente:       { tipo: enum, enum: fuente, requerido: false, met: M23 }
@@ -311,7 +323,7 @@ nodos:
       descripcion: { tipo: str, requerido: false }
       estado:      { tipo: enum, enum: estado_apuesta, requerido: true, met: "M04 (D-23) — por-sellar → sellada → cumplida | retirada; re-apostar = acción kinética que RE-VERSIONA la sellada (jamás edita ni borra)" }
       objetivos_ref: { tipo: list, requerido: true, a: objetivo, met: "la apuesta se SOSTIENE en objetivos del ciclo (≥1) — su avance/salud se DERIVA de ellos al leer, jamás se guarda" }
-      valor:       { tipo: obj, requerido: true, met: "M22 FinOps — el valor que persigue EN DINERO, no en adjetivos; sin supuesto visible no se afirma (M23)", forma: "{ monto: str, supuesto: str }" }
+      valor:       { tipo: obj, requerido: true, met: "M22 FinOps (D-30) — el valor que persigue EN DINERO, no en adjetivos; sin supuesto visible no se afirma (M23). `cobrado` es la CONTRAPARTE obligatoria de la promesa: lo realizado a la fecha, escrito contra la fuente contable (M55) y verificado por finanzas — JAMÁS por quien apostó. Apuesta no sellada NO cobra (se dice, no se rellena con cero engañoso)", forma: "{ monto: str, supuesto: str, cobrado: { monto: str, a_fecha: date, verificado_por_ref: ref→rol, fuente: enum fuente, conf: enum conf, nota } }" }
       apetito:     { tipo: obj, requerido: false, met: "M04 appetite — cuánto se apuesta se fija ANTES de apostar: tiempo fijo, alcance variable", forma: "{ tiempo: str, tope: str }" }
       riesgo:      { tipo: obj, requerido: false, met: "M52 (D-23) — el contraste contra empresa.config_estrategia.apetito_riesgo (dentro | al límite | excede | sin vara) se COMPUTA al leer, jamás se persiste", forma: "{ nivel: enum nivel_riesgo, categoria: str }" }
       ambicion:    { tipo: enum, enum: ambicion, requerido: false, met: "M54 (D-22) — la apuesta también lleva su bolsa; entra al rollup de mezcla real" }
@@ -449,6 +461,177 @@ nodos:
 # El schema DECLARA; la Gestión de Cambios (BL-24) EJECUTA; auth-niveles GOBIERNA los niveles.
 # Gate (gen_schema.py): entidad existe · nivel ∈ nivel_acceso · aprobacion ∈ tipo_aprobacion ·
 # id verbo-objeto no-"set-" · cap por entidad.
+  # ================= GOBIERNO DEL DIRECTORIO (D-24..D-29 · v18 · cartas M52·M55-M59) =================
+  # Doctrina común: el twin NO reemplaza al sistema contable ni al de tesorería — LEE sus cifras con
+  # estado de cierre y procedencia, y las BAJA al proceso/área que las produce. Esa bajada es el aporte.
+  # Generalidad: ninguna de estas entidades es de un rubro — cambia el CONTENIDO de las filas, no la forma.
+
+  # ---------- O1 · riesgo (Assessment/Driver, Motivation) — la contraparte del apetito (D-24) ----------
+  riesgo:
+    o_code: O1
+    archimate: "Assessment (Motivation)"
+    archivo: "riesgos/rg-*.yaml"
+    campos:
+      id:           { tipo: str, requerido: true }
+      nombre:       { tipo: str, requerido: true, met: "M52 — enunciado como CONSECUENCIA temida, no como tema ('la caja no alcanza para el hito de setiembre', no 'liquidez')" }
+      descripcion:  { tipo: str, requerido: false }
+      categoria:    { tipo: str, requerido: true, met: "M52 — MISMO vocabulario que empresa.config_estrategia.apetito_riesgo[].categoria (liquidez|reputación|expansión|operación|cumplimiento|personas — abierta por cliente); si la categoría no tiene vara registrada, el contraste dice 'apetito sin definir', jamás inventa una" }
+      probabilidad: { tipo: enum, enum: prob,    requerido: true, met: "ISO 9001 cl.6.1 · M52" }
+      impacto:      { tipo: enum, enum: impacto, requerido: true, met: "ISO 9001 cl.6.1 · M52" }
+      tendencia:    { tipo: enum, enum: tendencia_riesgo, requerido: false, met: "M52 — contra la sesión anterior; sin dos observaciones NO se afirma" }
+      responsable_ref: { tipo: ref, a: "rol|area", requerido: true, met: "M25 · CK-24 — responde un ROL o un ÁREA, jamás una persona nombrada (misma regla que kpi.dueño_ref)" }
+      mitigacion:   { tipo: str, requerido: false, met: "M52 — la respuesta COMPROMETIDA; riesgo sin mitigación ni responsable es una preocupación, no un riesgo gestionado (invariante warning)" }
+      mitiga_refs:  { tipo: list, requerido: false, a: "apuesta|proyecto_mejora", met: "M52 — qué trabajo en curso lo baja; cierra el hilo riesgo→trabajo" }
+      against_ref:  { tipo: ref, a: "proceso|area|brecha|objetivo|inversion", requerido: false, met: "M52 · ISO 9001 cl.6.1 — dónde VIVE en la organización: el riesgo no es un anexo suelto" }
+      fuente:       { tipo: enum, enum: fuente, requerido: false, met: M23 }
+      conf:         { tipo: enum, enum: conf,   requerido: false, met: M23 }
+    # nivel (probabilidad × impacto) y veredicto contra el apetito son DERIVADOS al leer — jamás se guardan.
+
+  # ---------- T3 · sesion (Business Event) — la reunión de gobierno como entidad (D-25) ----------
+  sesion:
+    o_code: T3
+    archimate: "Business Event"
+    archivo: "sesiones/ses-*.yaml"
+    campos:
+      id:           { tipo: str, requerido: true }
+      tipo:         { tipo: enum, enum: tipo_sesion, requerido: true, met: "M58 · ISO 9001 cl.9.3" }
+      fecha:        { tipo: date, requerido: true }
+      periodo_ref:  { tipo: ref, a: periodo, requerido: false, met: "M55 — qué resultado se revisó (primera entrada de cl.9.3)" }
+      asistentes_ref: { tipo: list, requerido: false, a: persona, met: "CK-24 — asistencia es un HECHO de la sesión, jamás una medición de la persona" }
+      acta:         { tipo: obj, requerido: false, met: "M58 — el acta se GENERA de lo decidido y queda versionada (git); el twin no reemplaza la formalidad societaria de cada país", forma: "{ generada: bool, version: str, resumen: str, ruta: str }" }
+      fuente:       { tipo: enum, enum: fuente, requerido: false, met: M23 }
+      conf:         { tipo: enum, enum: conf,   requerido: false, met: M23 }
+    # los acuerdos NO se embeben: son aggregate propio (sobreviven a la sesión) — se listan por scan de acuerdo.sesion_ref.
+
+  # ---------- T3 · acuerdo (Commitment) — el punto que abre toda sesión (D-25) ----------
+  acuerdo:
+    o_code: T3
+    archimate: "Business Object (commitment)"
+    archivo: "acuerdos/ac-*.yaml"
+    campos:
+      id:            { tipo: str, requerido: true }
+      nombre:        { tipo: str, requerido: true, met: "M58 — enunciado como acción con verbo ('cubrir la jefatura de Tesorería')" }
+      sesion_ref:    { tipo: ref, a: sesion, requerido: true, met: "M58 — en qué sesión se acordó; el seguimiento es entrada obligatoria de la siguiente (cl.9.3)" }
+      responsable_ref: { tipo: ref, a: "rol|area", requerido: true, met: "M25 · CK-24 — un acuerdo sin responsable no es un acuerdo. Responde el ROL (la persona es su ocupante)" }
+      plazo:         { tipo: str, requerido: true, met: "M58 — fecha o sesión objetivo ('sesión de agosto'); sin plazo no es un acuerdo, es una conversación" }
+      estado:        { tipo: enum, enum: estado_acuerdo, requerido: true, met: "M58 — `vencido` se DERIVA cuando el plazo es fecha; se guarda solo cuando el plazo es una sesión" }
+      sobre_ref:     { tipo: ref, a: "objetivo|apuesta|brecha|proyecto_mejora|riesgo|inversion|area|proceso|presupuesto|proyeccion_caja", requerido: false, met: "M58 — a qué parte del twin obliga: el acuerdo navega, no queda suelto en una minuta" }
+      nota:          { tipo: str, requerido: false }
+      fuente:        { tipo: enum, enum: fuente, requerido: false, met: M23 }
+      conf:          { tipo: enum, enum: conf,   requerido: false, met: M23 }
+
+  # ---------- O2 · periodo (el resultado leído del sistema contable) (D-26) ----------
+  periodo:
+    o_code: O2
+    archimate: "Business Object (report)"
+    archivo: "periodos/per-*.yaml"
+    campos:
+      id:            { tipo: str, requerido: true, met: "p.ej. `per-2026-07`" }
+      nombre:        { tipo: str, requerido: true }
+      desde:         { tipo: date, requerido: false }
+      hasta:         { tipo: date, requerido: false }
+      marco_contable: { tipo: enum, enum: marco_contable, requerido: true, met: "M55 — lo DECLARA la empresa (en Perú depende de si la supervisa el regulador); jamás se supone" }
+      moneda:        { tipo: str, requerido: true, met: "M55 — una sola moneda por periodo; la exposición cambiaria es horizonte declarado, no se finge" }
+      estado_cierre: { tipo: enum, enum: estado_cierre, requerido: true, met: "M55 · M23 — preliminar → cerrado → auditado. Un preliminar se MUESTRA preliminar; el estado viaja con la cifra a toda superficie" }
+      dictamen:      { tipo: obj, requerido: false, met: "M55 — la opinión del auditor se CITA, jamás se emite; sus hallazgos entran al twin como brechas", forma: "{ ejercicio: str, opinion: str, hallazgos_refs: [ref→brecha] }" }
+      cifras:        { tipo: list, requerido: true, met: "M55 — el puñado que el directorio lee; la variación contra plan y contra el año anterior se DERIVA al leer", subesquema: cifra }
+      fuente:        { tipo: enum, enum: fuente, requerido: false, met: "M23 — típicamente `Sistema leído` (ERP contable)" }
+      conf:          { tipo: enum, enum: conf,   requerido: false, met: M23 }
+    subesquemas:
+      cifra:                                                # weak-entity inline; id local `per-YYYY-MM#cN`
+        id:         { tipo: str, requerido: true }
+        nombre:     { tipo: str, requerido: true, met: "M55 — nombre común del rubro (ingresos · margen bruto · gasto operativo · resultado · caja · deuda neta)" }
+        valor:      { tipo: num, requerido: true }
+        plan:       { tipo: num, requerido: false, met: "M57 — la referencia primaria del directorio es la VARIACIÓN, no el absoluto" }
+        anterior:   { tipo: num, requerido: false, met: "M55 — mismo periodo del año previo" }
+        acumulado:  { tipo: num, requerido: false, met: "M55 — del año a la fecha" }
+        acumulado_plan: { tipo: num, requerido: false }
+        unidad:     { tipo: str, requerido: true, met: "moneda o `%`" }
+        direccion:  { tipo: enum, enum: direccion_cifra, requerido: true, met: "M55 — sin esto, un +7% de gasto se pintaría verde" }
+        ancla_ref:  { tipo: ref, a: "proceso|objetivo|area|inversion", requerido: false, met: "M55 — EL APORTE: la cifra del libro baja a lo que la produce. Ningún tablero contable lo hace: no conoce el proceso" }
+        kpi_ref:    { tipo: ref, a: kpi, requerido: false, met: "anti-duplicación: si la organización ya sigue esa cifra como indicador, se REFERENCIA — no se crea un gemelo" }
+        nota:       { tipo: str, requerido: false, met: "por qué se movió — el directorio pregunta eso, no el número" }
+
+  # ---------- O2 · proyeccion_caja (liquidez) (D-27) ----------
+  proyeccion_caja:
+    o_code: O2
+    archimate: "Business Object (forecast)"
+    archivo: "caja/caja-*.yaml"
+    campos:
+      id:            { tipo: str, requerido: true }
+      fecha_corte:   { tipo: date, requerido: true, met: "M56 — la proyección es RODANTE: se re-corta, no se edita" }
+      moneda:        { tipo: str, requerido: true }
+      saldo:         { tipo: num, requerido: true, met: "M56 — caja disponible hoy" }
+      piso:          { tipo: num, requerido: false, met: "M56 · M52 — el mínimo que el órgano de gobierno FIRMA; es una vara del mismo tipo que el apetito de riesgo. Sin firmar se muestra 'sin firmar', jamás se inventa" }
+      piso_fijado_en_ref: { tipo: ref, a: sesion, requerido: false, met: "M58 — dónde se firmó la vara" }
+      semanas:       { tipo: list, requerido: true, met: "M56 — 13 semanas rodantes; las que caen bajo el piso se DERIVAN al leer", subesquema: semana_caja }
+      lineas:        { tipo: obj, requerido: false, met: "M56 — financiamiento disponible y usado", forma: "{ disponible: num, usado: num }" }
+      resguardos:    { tipo: list, requerido: false, met: "M56 — los límites que impone quien presta (romper uno puede obligar a pagar la deuda por adelantado)", subesquema: resguardo }
+      firmada_por_ref: { tipo: ref, a: "rol|area", requerido: false, met: "M23 — QUIÉN responde por la proyección; si el puesto está vacante, `conf` baja y se MUESTRA (caso real del golden fixture)" }
+      fuente:        { tipo: enum, enum: fuente, requerido: false, met: M23 }
+      conf:          { tipo: enum, enum: conf,   requerido: false, met: M23 }
+    subesquemas:
+      semana_caja:
+        id:     { tipo: str, requerido: true, met: "local `caja-YYYY-MM#sN`" }
+        n:      { tipo: num, requerido: true, met: "1..13 desde la fecha de corte" }
+        valor:  { tipo: num, requerido: true }
+        nota:   { tipo: str, requerido: false, met: "el hito que la explica (una valorización, un pago grande)" }
+      resguardo:
+        id:      { tipo: str, requerido: true }
+        nombre:  { tipo: str, requerido: true, met: "nombre común: 'deuda sobre patrimonio', 'cobertura de intereses' — el término técnico del contrato vive en la nota" }
+        limite:  { tipo: str, requerido: true, met: "el límite tal como lo escribe el contrato ('no más de 1.8×')" }
+        valor:   { tipo: str, requerido: true }
+        holgura: { tipo: enum, enum: holgura, requerido: false, met: "M56 — DERIVABLE cuando límite y valor son numéricos; se guarda solo si el contrato la expresa cualitativamente" }
+
+  # ---------- O2 · presupuesto (la mezcla de ambición hecha plata) (D-28) ----------
+  presupuesto:
+    o_code: O2
+    archimate: "Business Object (plan)"
+    archivo: "presupuestos/pre-*.yaml"
+    campos:
+      id:            { tipo: str, requerido: true }
+      anio:          { tipo: num, requerido: true }
+      moneda:        { tipo: str, requerido: true }
+      estado:        { tipo: enum, enum: estado_presupuesto, requerido: true, met: "M57 — presupuesto sin aprobar se MUESTRA sin aprobar: la intención no se pinta como decisión" }
+      aprobado_en_ref: { tipo: ref, a: sesion, requerido: false, met: "M58 — el presupuesto lo aprueba el órgano de gobierno, en sesión, con traza" }
+      bolsas:        { tipo: list, requerido: true, met: "M57 · M54 — la mezcla de ambición, en dinero: asignado vs comprometido por bolsa. La prioridad se ordena DENTRO de la bolsa, jamás entre bolsas", subesquema: bolsa }
+      fuente:        { tipo: enum, enum: fuente, requerido: false, met: M23 }
+      conf:          { tipo: enum, enum: conf,   requerido: false, met: M23 }
+    subesquemas:
+      bolsa:
+        id:           { tipo: str, requerido: true }
+        ambicion:     { tipo: enum, enum: ambicion, requerido: true, met: "M54 — la MISMA bolsa que clasifica idea/proyecto/KR: un vocabulario, dos unidades (% e importe)" }
+        asignado:     { tipo: num, requerido: true }
+        comprometido: { tipo: num, requerido: false, met: "M57 — el futuro se compra cuando el dinero se COMPROMETE, no cuando se declara la intención" }
+
+  # ---------- O2/O6 · inversion (el portafolio de capital — distinto del de mejoras) (D-29) ----------
+  inversion:
+    o_code: O2
+    archimate: "Work Package (Implementation)"
+    archivo: "inversiones/iv-*.yaml"
+    campos:
+      id:               { tipo: str, requerido: true }
+      nombre:           { tipo: str, requerido: true }
+      tipo:             { tipo: enum, enum: tipo_inversion, requerido: true, met: "M59 — la misma fila en cualquier industria; el tipo sólo cambia el rótulo" }
+      unidad_ref:       { tipo: ref, a: "empresa#uN", requerido: false, met: "D-07 — la unidad de ejecución que ejecuta la inversión (obra, planta, local)" }
+      responsable_ref:  { tipo: ref, a: "rol|area", requerido: true, met: "M25 · CK-24" }
+      avance_real:      { tipo: num, requerido: true, met: "M59 — avance FÍSICO verificado (%)" }
+      avance_declarado: { tipo: num, requerido: false, met: "M59 · M23 — el avance REPORTADO, guardado APARTE con su propia fuente. Fundirlos borra exactamente el hallazgo: la diferencia gobierna la entrega, el margen y cómo el libro valoriza lo construido en curso (M55)" }
+      gasto:            { tipo: num, requerido: false, met: "M59 — costo real incurrido" }
+      presupuesto_asignado: { tipo: num, requerido: false, met: "M57 — contra el que se compara el gasto; gastar más que lo avanzado es la alerta temprana" }
+      comprometido:     { tipo: num, requerido: false, met: "M59 — ingreso ya comprometido (vendido, contratado, con orden en firme)" }
+      meta_ingreso:     { tipo: num, requerido: false }
+      moneda:           { tipo: str, requerido: false }
+      entrega_proyectada:  { tipo: str, requerido: false, met: "M59 — la fecha que hoy se proyecta" }
+      entrega_comprometida: { tipo: str, requerido: false, met: "M59 — la que se prometió; la diferencia es la exposición (penalidades, reputación)" }
+      margen_proyectado: { tipo: num, requerido: false }
+      margen_plan:       { tipo: num, requerido: false }
+      brechas_refs:      { tipo: list, requerido: false, a: brecha, met: "el desvío de avance y el sobrecosto entran al twin como brechas — mismo ciclo brecha→proyecto→indicador" }
+      fuente:            { tipo: enum, enum: fuente, requerido: false, met: M23 }
+      conf:              { tipo: enum, enum: conf,   requerido: false, met: M23 }
+    # desvío avance (declarado − real), % de presupuesto gastado y atraso de entrega son DERIVADOS al leer.
+
+
 acciones:
   niveles: [gobernanza, estrategico, tactico, operativo]
   aprobacion: [directa, revision-dueño, gestion-cambios]
@@ -473,6 +656,26 @@ acciones:
     - { id: cerrar-brecha,             entidad: brecha,          nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "brecha resuelta (evidencia + proyecto que la cerró)" }
     - { id: publicar-mapa-proceso,     entidad: proceso,         nivel_min: tactico,     aprobacion: gestion-cambios,  efecto: "versión del proceso publicada (dev→UAT→prod, D5/D8)" }
     - { id: corregir-verbo-actividad,  entidad: proceso,         nivel_min: tactico,     aprobacion: revision-dueño,   efecto: "consultor corrige el verbo asignado por el ingest — auditado (provenance, anti-gaming)" }
+    # --- gobierno del directorio (D-24..D-30 · M52·M55-M59) — las decisiones que un órgano de gobierno
+    #     firma de verdad. Sin ellas la bandeja del nivel 1 sólo configura el propio modelo y, en régimen,
+    #     queda vacía. Lo que las hace recurrentes es el UMBRAL: empresa.config_gobierno.facultades.
+    - { id: fijar-apetito-riesgo,      entidad: empresa,         nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "fija/ajusta el apetito por categoría en config_estrategia (la vara contra la que se gradúa todo riesgo)" }
+    - { id: fijar-mezcla-ambicion,     entidad: empresa,         nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "fija la mezcla objetivo del año en config_estrategia (M54)" }
+    - { id: fijar-facultades,          entidad: empresa,         nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "fija qué materia/monto obliga a que decida el órgano de gobierno (config_gobierno.facultades)" }
+    - { id: asignar-riesgo,            entidad: riesgo,          nivel_min: gobernanza,  aprobacion: revision-dueño,   efecto: "asigna o cambia responsable y mitigación comprometida", validaciones: [responsable-no-persona] }
+    - { id: cerrar-riesgo,             entidad: riesgo,          nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "el riesgo deja de estar vigente, con evidencia de por qué" }
+    - { id: comprometer-acuerdo,       entidad: acuerdo,         nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "el responsable asume el acuerdo con plazo (pendiente → en-curso)", validaciones: [responsable-y-plazo-presentes] }
+    - { id: cerrar-acuerdo,            entidad: acuerdo,         nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "acuerdo cumplido con evidencia (o anulado con razón)" }
+    - { id: cerrar-sesion,             entidad: sesion,          nivel_min: gobernanza,  aprobacion: directa,          efecto: "cierra la sesión y GENERA el acta con lo decidido y los acuerdos abiertos; queda versionada (la sesión siguiente abre con ella)" }
+    - { id: aprobar-presupuesto,       entidad: presupuesto,     nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "borrador → aprobado, en sesión y con traza (aprobado_en_ref)", validaciones: [bolsas-suman-total] }
+    - { id: comprometer-bolsa,         entidad: presupuesto,     nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "compromete importe de una bolsa contra una apuesta o proyecto (el futuro se compra al comprometer)" }
+    - { id: fijar-piso-caja,           entidad: proyeccion_caja, nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "fija el mínimo de caja que no se cruza (vara del mismo tipo que el apetito)" }
+    - { id: aprobar-endeudamiento,     entidad: proyeccion_caja, nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "autoriza tomar o ampliar deuda por encima del umbral de facultades", validaciones: [supera-umbral-facultad, resguardos-revisados] }
+    - { id: aprobar-inversion,         entidad: inversion,       nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "autoriza una inversión nueva o presupuesto adicional por encima del umbral", validaciones: [supera-umbral-facultad] }
+    - { id: registrar-avance-inversion, entidad: inversion,      nivel_min: tactico,     aprobacion: directa,          efecto: "registra avance real y/o declarado con su fuente — SEPARADOS, jamás fundidos", validaciones: [fuente-y-conf-presentes] }
+    - { id: registrar-cifras-periodo,  entidad: periodo,         nivel_min: tactico,     aprobacion: directa,          efecto: "ingesta de las cifras del cierre desde el sistema contable, con estado de cierre y fuente", validaciones: [estado-cierre-presente, fuente-y-conf-presentes] }
+    - { id: cerrar-periodo,            entidad: periodo,         nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "preliminar → cerrado (o cerrado → auditado al recibir dictamen); el twin NO recalcula: refleja el estado del libro" }
+    - { id: verificar-valor-cobrado,   entidad: apuesta,         nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "finanzas escribe lo efectivamente cobrado de la apuesta contra la fuente contable (M22 realización)", validaciones: [verificador-no-es-quien-apostó] }
   # Máquina de estados de proyecto_mejora (D-A7) — el Go la transcribe a tabla; gen_schema.py
   # verifica paridad enum↔transiciones. Loop-back MASP: en-verificacion → en-ejecucion.
   transiciones_proyecto:
@@ -517,6 +720,24 @@ relaciones:
   - { de: proyecto_mejora, a: "kpi|key_result", tipo: influence, dueño: proyecto_mejora.mueve_refs, met: "el compromiso de medición (qué mueve)" }
   - { de: idea,      a: persona,    tipo: association, dueño: idea.proponente_refs,      met: "AUTORÍA (reconocimiento) — no medición (RN-16 · CK-24)" }
   - { de: idea,      a: proyecto_mejora, tipo: association, dueño: idea.promovida_a_ref, met: "promoción embudo→proyecto" }
+  # --- v18: el gobierno del directorio (D-24..D-30) ---
+  - { de: riesgo,    a: "rol|area", tipo: assignment,  dueño: riesgo.responsable_ref,    met: "responde un rol/área — jamás una persona (CK-24 · M25)" }
+  - { de: riesgo,    a: "proceso|area|brecha|objetivo|inversion", tipo: association, dueño: riesgo.against_ref, met: "dónde vive el riesgo en la organización (M52 · ISO 9001 cl.6.1)" }
+  - { de: riesgo,    a: "apuesta|proyecto_mejora", tipo: influence, dueño: riesgo.mitiga_refs, met: "qué trabajo en curso lo baja — el hilo riesgo→trabajo" }
+  - { de: acuerdo,   a: sesion,     tipo: association, dueño: acuerdo.sesion_ref,         met: "en qué sesión se acordó (M58 · ISO 9001 cl.9.3)" }
+  - { de: acuerdo,   a: "rol|area", tipo: assignment,  dueño: acuerdo.responsable_ref,    met: "quién responde por el acuerdo (M25)" }
+  - { de: acuerdo,   a: "*",        tipo: association, dueño: acuerdo.sobre_ref,          met: "a qué parte del twin obliga — el acuerdo navega, no queda en una minuta" }
+  - { de: sesion,    a: periodo,    tipo: association, dueño: sesion.periodo_ref,         met: "qué resultado se revisó (primera entrada de cl.9.3)" }
+  - { de: sesion,    a: persona,    tipo: association, dueño: sesion.asistentes_ref,      met: "asistencia = hecho de la sesión, jamás medición de la persona (CK-24)" }
+  - { de: periodo,   a: "proceso|objetivo|area|inversion", tipo: association, dueño: periodo.cifra.ancla_ref, met: "EL APORTE (M55): la cifra del libro baja a lo que la produce" }
+  - { de: periodo,   a: kpi,        tipo: association, dueño: periodo.cifra.kpi_ref,      met: "anti-duplicación: si ya se sigue como indicador, se referencia" }
+  - { de: presupuesto, a: sesion,   tipo: association, dueño: presupuesto.aprobado_en_ref, met: "el presupuesto se aprueba en sesión, con traza (M57 · M58)" }
+  - { de: proyeccion_caja, a: sesion, tipo: association, dueño: proyeccion_caja.piso_fijado_en_ref, met: "el piso de caja es una vara firmada en sesión (M56 · M52)" }
+  - { de: proyeccion_caja, a: "rol|area", tipo: assignment, dueño: proyeccion_caja.firmada_por_ref, met: "quién responde por la proyección; puesto vacante ⇒ confianza baja VISIBLE (M23)" }
+  - { de: inversion, a: "empresa#uN", tipo: association, dueño: inversion.unidad_ref,     met: "la unidad de ejecución que la ejecuta (D-07)" }
+  - { de: inversion, a: "rol|area", tipo: assignment,  dueño: inversion.responsable_ref,  met: "M25 · CK-24" }
+  - { de: inversion, a: brecha,    tipo: association, dueño: inversion.brechas_refs,     met: "desvío de avance y sobrecosto entran al ciclo brecha→proyecto→indicador" }
+  - { de: apuesta,   a: rol,        tipo: association, dueño: apuesta.valor.cobrado.verificado_por_ref, met: "M22 (D-30) — lo cobrado lo verifica finanzas, jamás quien apostó" }
 
 # ====================== invariantes (enforce al leer en /api/objeto) ======================
 # v2 distingue: ERROR (bloquea el objeto — campo errors[] de la respuesta) vs WARNING (como v1).
@@ -538,6 +759,22 @@ invariantes:
   # --- v2: warnings ---
   - "warning objetivo sin key_results = `sin-ancla-de-valor` (RN-4′ — ya NO es error; cliente sin OKR no vacía el diagnóstico)"
   - "warning kpi sin proceso_ref = hilo-incompleto"
+  # --- v18: gobierno del directorio (D-24..D-30) ---
+  - "ERROR riesgo.responsable_ref o acuerdo.responsable_ref o inversion.responsable_ref resuelve a persona (CK-24 — responde el ROL; la persona lo ocupa)"
+  - "ERROR periodo.cifra sin `direccion` (sin ella un +7% de gasto se pintaría como mejora)"
+  - "ERROR periodo con estado_cierre=auditado sin dictamen (auditado sin opinión citada es una afirmación sin respaldo)"
+  - "ERROR apuesta.valor.cobrado presente con estado != sellada|cumplida (una apuesta sin sellar no cobra nada)"
+  - "ERROR apuesta.valor.cobrado sin verificado_por_ref (M22 — lo cobrado lo verifica finanzas, jamás quien apostó)"
+  - "ERROR presupuesto.estado=aprobado sin aprobado_en_ref (se aprueba en sesión, con traza)"
+  - "ERROR acuerdo sin responsable_ref o sin plazo — no es un acuerdo, es una conversación (M58)"
+  - "warning riesgo.categoria sin vara en empresa.config_estrategia.apetito_riesgo ⇒ el contraste se muestra `apetito sin definir`, JAMÁS se inventa un nivel (M23 · M52)"
+  - "warning riesgo sin mitigacion ni mitiga_refs = preocupación, no riesgo gestionado"
+  - "warning riesgo.tendencia declarada con una sola observación (sin serie no se afirma una tendencia)"
+  - "warning proyeccion_caja.piso ausente ⇒ la serie se muestra SIN vara (no se inventa un piso); piso presente sin piso_fijado_en_ref = vara sin firma"
+  - "warning proyeccion_caja.firmada_por_ref apunta a un rol cuyo puesto está vacante ⇒ `conf` DEBE ser baja y mostrarse (caso del golden fixture)"
+  - "warning inversion.avance_declarado > avance_real ⇒ candidato a brecha: gobierna entrega, margen y cómo el libro valoriza lo construido en curso (M55 · M59)"
+  - "warning presupuesto.bolsas[].comprometido > asignado (bolsa sobre-comprometida)"
+  - "warning sesion cerrada sin acta.generada (M58 — la sesión siguiente abre con ella)"
   - "warning actividad.verbo fuera de sistema/schema/verbos.yaml (con sugerencia si matchea sinónimo) · verbo corregido sin fuente/conf/evidencia_ref = warning anti-gaming (RN-13)"
   - "warning medición sin fuente/conf (RN-9) · proyecto sin origen (brecha NI idea) = proyecto-sin-diagnóstico"
   - "bloque ext: se IGNORA-Y-PRESERVA en toda entidad (open/closed — duda 1); jamás valida, jamás rompe"

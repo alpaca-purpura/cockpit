@@ -46,8 +46,8 @@ anti-drift en `.githooks/pre-commit`), gemelos entre sí:
   CORE): SSoT = `sistema/arquitectura/NODOS.md` (16 nodos) + `arquitectura.yaml` → `gen_arquitectura.py`.
   Las historias anclan a un `node: N-NN`.
 - **Metodología** (`.claude/rules/metodologia-as-code.md`, eje **nuevo**): el método del PRODUCTO (lo que
-  Cockpit vende, distinto del proceso de desarrollo) — SSoT = `sistema/metodo/methodologies.yaml` (31 M-cards)
-  + `proceso/**` + `sistema/schema/objeto.schema.yaml` (13 entidades) → `gen_metodo.py`.
+  Cockpit vende, distinto del proceso de desarrollo) — SSoT = `sistema/metodo/methodologies.yaml` (59 M-cards)
+  + `proceso/**` + `sistema/schema/objeto.schema.yaml` (20 entidades) → `gen_metodo.py`.
 - Adaptaciones del stack SaaS→Cockpit: `.claude/rules/cockpit-stack.md`.
 
 ## Arquitectura vigente (CK-18 Fábrica + Organización · CK-21 default comercial hosteado)
@@ -67,7 +67,8 @@ Tres planos — SSoT `sistema/arquitectura/NODOS.md` (16 nodos) + `despliegue.ht
   arneses del método sobre Claude Code pelado, sin app shell**; el clon DevStudio después; construye el
   mapa y lo publica a N6), Colab Studio (N17), DevStudio (N5), N8 motor común, actores N9/N19/N10/N11.
 - **Muertos (CK-18):** N1 (Discovery server-side → arneses), N4 (voz, diferida), N7 (agentes efímeros).
-- El objeto normalizado COMPLETO (13 entidades — CK-26 + apuesta D-23) se lee/valida entero en `/api/objeto` (CK-13, CAP-08;
+- El objeto normalizado COMPLETO (20 entidades — CK-26 + apuesta D-23 + el gobierno del directorio D-24..D-29:
+  `riesgo`·`sesion`·`acuerdo`·`periodo`·`proyeccion_caja`·`presupuesto`·`inversion`) se lee/valida entero en `/api/objeto` (CK-13, CAP-08;
   instancias en `empresa/<tipo>/` — D-15). `negocio.yaml` sigue curado a mano (D-13); voltear a generado =
   historia `sistema/negocio-yaml-proyeccion-generada`.
 

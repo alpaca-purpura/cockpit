@@ -1135,7 +1135,84 @@ completa) · fichas N15/N17/N8 de `NODOS.md` · `docs/research/rediseno-total/07
 `docs/research/organization-as-code/09-sota-dto-2026-fuente-primaria.md` + `10-sota-arnes-as-code.md`
 (el SOTA que fundamenta esta ficha) · M46 (la doctrina, en el catálogo del método).
 
-<!-- Próximas: CK-31, … -->
+### CK-31 · El nivel Directorio es de primera clase — y Cockpit LEE el libro contable, jamás lo reexpresa — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-29):* "revisa la vista del directorio y **enfócate** … ¿a los directores
+les interesa lo que hay allí o también debería verse el estado de resultado y avances u otros
+elementos de las **NIIF**? … revisa a conciencia **sin defender lo ya realizado** y dime qué cosas no
+estamos mostrando que sí son relevantes a un directorio en sus reuniones". Y al ratificar: "ejecuta
+los 3 bloques … reorganizando la información de forma oportuna, entendible y atractiva … que la
+información, si bien es para un rubro, sea **lo más general para cualquier otro**".
+
+*Lo que la auditoría encontró (13 hallazgos, sin defender lo hecho — `dossier/07 § H`).* El nivel 1
+gobernaba la **ejecución de la estrategia** (apuesta · apetito · mezcla · alertas · portafolio de
+mejoras): genuinamente diferenciador, y **la segunda mitad** de una agenda de directorio. Faltaba la
+primera entera. Los tres desvíos de fondo: (1) la bandeja "espera tu decisión" **configuraba el propio
+modelo** (4 de 6 filas eran fijar apetito / fijar mezcla / sellar) — en régimen queda vacía y el
+directorio no firma nada; (2) la apuesta **prometía plata y nunca la cobraba** — el producto acusa a
+otros de "indicador sin ancla de valor" y cometía exactamente eso en su nivel más alto; (3) todo el
+tablero era **interno, auto-reportado y hacia adelante**, sin un solo dato cerrado o validado por
+fuera — que es justo lo que un directorio descuenta.
+
+**Decisión 1 — el nivel Directorio se gobierna como AGENDA, no como tablero.** La página es la sesión
+en cuatro movimientos: ¿cómo nos fue? (resultado del periodo + caja) · ¿a dónde vamos? (rumbo,
+apuestas con lo cobrado, varas y presupuesto) · ¿qué puede impedirlo? (riesgos, alertas, inversiones,
+proyectos) · ¿qué decidimos? (bandeja, acuerdos de la sesión anterior, acta). El orden ES la doctrina:
+un directorio no navega detalle, decide — y decide en ese orden.
+
+**Decisión 2 (la de fondo) — Cockpit no es el libro contable: es el PUENTE entre el libro y la
+organización.** Lee un puñado de cifras con su **estado de cierre** (preliminar → cerrado → auditado)
+y su procedencia, y hace lo que ningún tablero contable puede: **baja cada número al proceso, área o
+rol que lo produce**. Lo que NO hace queda declarado en superficie: no arma el juego completo de
+estados financieros ni sus notas, no corre el cierre, no reexpresa cifras cerradas, no emite opinión
+de auditoría. *Por qué así:* reproducir los estados lo volvería un tablero contable más (commodity),
+perdería la pelea de calidad del dato contra el sistema contable del cliente, y mostrar cifras no
+cerradas en una superficie de directorio es riesgo real (los estados tienen ciclo, dictamen y
+reexpresiones). **El código de la norma vive sólo dentro de la ficha, como procedencia** — misma regla
+que los códigos M-NN, con gate en la suite.
+
+**El corolario que vale el producto entero:** el **puente** nombra las seis decisiones contables que
+dependen de cómo opera la empresa (reconocimiento de ingreso · deterioro de cobranza · valorización de
+lo construido en curso · contingencias · arrendamientos · partes relacionadas), cada una navegable al
+twin. Y el caso testigo: un **avance de obra declarado (95%) por encima del real (87%)** deja de ser
+una brecha de obra — es el input de si **lo construido está bien valorizado en el libro**. Materia de
+directorio y de auditoría, indetectable para cualquier sistema contable, porque no conoce el proceso.
+
+**Decisión 3 — la generalidad se declara, no se supone.** Las cuatro preguntas de la sesión son las
+mismas en cualquier industria; cambia el contenido de las filas. Cada bloque nuevo nombra su
+equivalente (manufactura · retail · servicios · software · banca · salud) y el único campo que codifica
+el rubro es `inversion.tipo`. El renglón de inversiones —avance real · gastado contra presupuesto · ya
+comprometido · entrega · margen— sirve igual para obras, planta, tiendas, contratos o líneas de producto.
+
+**Decisión 4 — lo que hace que la bandeja no se vacíe nunca: el UMBRAL.** Las decisiones llegan al
+órgano de gobierno **por monto o por materia** (`empresa.config_gobierno.facultades`), no por
+configuración del modelo. Sin ese mecanismo, un tablero de directorio termina pidiendo decisiones sobre
+sí mismo.
+
+*Materialización (mismo día, gates verdes).* **Método:** 5 cartas nuevas — **M55** reporte financiero
+como fuente · **M56** liquidez (caja 13 semanas + límites del financiamiento) · **M57** presupuesto y
+control presupuestario · **M58** gobierno de la sesión (acuerdos, acta, facultades) · **M59** valor
+ganado (portafolio de inversiones); y 3 enriquecidas — **M52** gana el REGISTRO (la contraparte del
+apetito que ya declaraba), **M22** la REALIZACIÓN (prometido vs cobrado, verificado por finanzas),
+**M16** nombra cl.9.3. Catálogo 54→**59**. *Disciplina anti-duplicación:* el registro de riesgos NO
+entró como carta nueva — es la otra mitad de ISO 31000; una carta espejo habría sido la duplicación que
+el protocolo prohíbe. **Esquema:** D-24 `riesgo` · D-25 `sesion`+`acuerdo`+`config_gobierno` · D-26
+`periodo`+`cifra` · D-27 `proyeccion_caja` · D-28 `presupuesto` · D-29 `inversion` · D-30
+`apuesta.valor.cobrado` — 13→**20 nodos**. **Producto:** mockup twin v18 (suite 34/34) + contrato de
+build `dossier/08`.
+
+*Deuda que esta ficha deja explícita:* la **promoción de M52** de `horizonte` a `ancla` (el nivel 1 ya
+materializa apetito + registro mientras la carta dice "no en el MVP") es decisión de dogma y **espera
+firma** — declarada como tensión dentro de la propia carta. Y los cuatro hallazgos fuera de alcance por
+decisión, no por olvido: exposición cambiaria · aterrizaje proyectado · cumplimiento como superficie
+propia · personas a nivel directorio.
+
+*Relacionadas:* CK-21 (Organization as Code → Twin) · CK-26 (las entidades) · CK-29 (el twin como
+cerebro) · CK-24 (frontera persona — responde el rol, jamás la persona) · D-22/D-23 (ambición y
+apuesta, que esta ficha completa con presupuesto y valor cobrado) · `dossier/07 § H` (la auditoría) ·
+`dossier/08` (el contrato de build) · `sistema/schema/DECISIONES.md` D-24…D-30 · M52·M55-M59.
+
+<!-- Próximas: CK-32, … -->
 
 ## Log
 
@@ -1162,3 +1239,4 @@ completa) · fichas N15/N17/N8 de `NODOS.md` · `docs/research/rediseno-total/07
 | 2026-07-23 | Refactoring del grafo de conocimiento: `proyecto/` disuelto en `docs/` (research·prototypes·plans·_archive), dedup `docs/process` raíz↔harness, y frontera hexagonal fuente↔lectura en `sistema/` (visión CTO + book del objeto + veredicto ISO → `docs/{architecture,metodo}/`); mapa + 5 reglas de ubicación en `docs/README.md`; auditoría 74 archivos con refs entrantes; gates verdes. | CK-28 |
 | 2026-07-25 | Puesto ≠ rol · el arnés se compila por rol×proceso · las personas SUPERVISAN a los agentes: (1) tesis de inversión (el agente ejecuta, la persona supervisa) + contrapeso obligatorio — la supervisión se especifica y se mide, o es "moral crumple zone" (Elish/Green); (2) se parte el Misnomer M32 `rol`(=cargo) → `puesto` (posición, N personas, N roles) + `rol` (papel en proceso = carril BPMN/RACI) — el modelo del operador ya era la doctrina de N15/N17/harness-studio, el schema era el desfasado; (3) tres unidades del arnés — se COMPILA por rol×proceso, se ENSAMBLA por puesto, se CORRE por persona → la frontera CK-24 cae entre entregar y correr, intacta; (4) `arnes` = entidad REGISTRO en el twin (`deriva_de` = el campo que ningún registro del mercado tiene), contenido en N15 contra el contrato `arnes.l0.json` que ya existe; (5) granularidad = actividad hoy, tarea con D-21; (6) guardrail sin mecanismo declarado no es guardrail; (7) autonomía CSA L0-L5 derivada del riesgo del puesto, default L1-L2; (8) EU AI Act Annex III 4(b) resuelto por el camino agregado (CK-24 ya nos había puesto ahí). SOTA: negativo limpio en ~20 productos + Challenge C1 del *Agentic BPM Manifesto* (Information Systems, 2026). D-19/D-20/D-21 + M46; SOTA archivado en `docs/research/organization-as-code/09` (DTO desde el Market Guide primario + la cita de The Open Group que defiende el sustrato as-code) y `10` (arnés-as-code: anatomía, gobernanza, identidad, autonomía CSA). Barrido de coherencia: "9 entidades" stale corregido a 12 en 7 archivos vivos (CLAUDE.md, 2 reglas, seam, arquitectura.yaml, M32, contrato del método). | CK-30 |
 | 2026-07-24 | El twin es un cerebro que compila trabajo: tesis unificadora (una doctrina, tres escalas — el arnés = vista generada del twin por puesto, compilada por Arnesia, entregada por Colab Studio); twin = estructura (12 entidades) × conocimiento (know-how/data histórica, gateado F3, conectado — los arneses saben dónde buscar) × pulso (N16); fin-estado: el colaborador orquesta agentes, no ejecuta; Cockpit = cabina del cerebro. Aclaración repos: cada app en su repo (consultio existe; colab-studio por crear); en cockpit solo historias. Fix stale 9→12 entidades en VISION. | CK-29 |
+| 2026-07-29 | El nivel Directorio es de primera clase y Cockpit LEE el libro contable, jamás lo reexpresa: (1) auditoría sin defender lo hecho — el nivel 1 gobernaba la ejecución de la estrategia (segunda mitad de la agenda) y no tenía resultado, caja, presupuesto ni acuerdos; la bandeja configuraba el propio modelo y la apuesta prometía plata sin cobrarla nunca (el "sin ancla de valor" cometido arriba); (2) la página pasa a ser la SESIÓN en 4 movimientos (cómo nos fue · a dónde vamos · qué puede impedirlo · qué decidimos); (3) frontera firmada: se leen cifras con estado de cierre y se BAJAN al proceso que las produce — no se arman estados financieros, no se corre el cierre, no se emite opinión; el código de la norma vive sólo en la ficha, como procedencia (gate en la suite); (4) el puente libro↔operación con su caso testigo: avance declarado > real ES el input de la valorización de lo construido — indetectable para un sistema contable; (5) la generalidad se declara (equivalencias por industria; `inversion.tipo` es el único campo del rubro); (6) el UMBRAL de facultades es lo que hace que la bandeja no se vacíe. Materializado el mismo día: M55-M59 + M52/M22/M16 enriquecidas (catálogo 59) · D-24…D-30 (schema 20 nodos) · mockup v18 (34/34) · contrato de build `dossier/08`. Pendiente de firma: promoción de M52 horizonte→ancla. | CK-31 |

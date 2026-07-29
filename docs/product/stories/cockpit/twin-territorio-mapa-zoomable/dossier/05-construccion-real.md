@@ -81,7 +81,26 @@ Motor de indicadores real (otra historia) · ciclo brecha→proyecto (otra histo
 6. Republicar SIEMPRE al mismo artifact (URL en HANDOFF, pasar `url`) + WebFetch al CDN buscando un
    marcador del cambio + avisar Ctrl+Shift+R (el CDN tarda minutos).
 
-## Orden sugerido para la sesión de construcción
+## ★ El nivel 1 (Directorio) YA tiene contrato de construcción (2026-07-29)
+
+A diferencia del resto de la historia, el **nivel 1 no necesita refinamiento previo**: su método, su
+esquema y sus escenarios están cerrados y con gate.
+
+- **Método:** M55 (reporte financiero como fuente) · M56 (liquidez) · M57 (presupuesto) · M58
+  (sesión, acuerdos, acta, facultades) · M59 (valor ganado) + M52/M22/M16 enriquecidas — catálogo en
+  59 cartas, `gen_metodo.py --check` verde.
+- **Esquema:** 7 entidades nuevas + 2 extensiones (D-24…D-30) — `objeto.schema.yaml` en 20 nodos,
+  `gen_schema.py` verde, `go test ./...` verde (paridad intacta).
+- **Contrato de build:** [`08-nivel-1-contrato-de-construccion.md`](./08-nivel-1-contrato-de-construccion.md)
+  — frontera, entidades, qué lee cada panel, estados vacíos honestos, derivados, 17 acciones,
+  12 escenarios de aceptación, casuística del fixture y trazabilidad.
+
+Camino corto para construirlo: **(a)** poblar el golden fixture con la casuística de `08 § 5` ·
+**(b)** extender `go/objeto.go` para leer las 7 carpetas nuevas y devolverlas en `/api/objeto` (los
+derivados se computan al leer, jamás se guardan) · **(c)** construir los 4 movimientos contra el banco
+PRENTER (`[[ui-design-system]]`) · **(d)** live-verify ejerciendo acciones reales, no `GET 200`.
+
+## Orden sugerido para la sesión de construcción (resto de la historia)
 
 1. Ratificar concepto visual final con el operador (¿quedan comentarios sobre v8.2?).
 2. `/po-ux` a mano (el KIT no trae los roles — memoria `arnes-kit-gap-roles-a-mano`): `01-spec.md`
