@@ -3074,11 +3074,17 @@ function openObjetivo(o){
   const drivers=DATA.procesos.filter(p=>p.sirve.includes(o.id));
   const gaps=DATA.brechas.filter(g=>g.obj===o.id);
   const ks=DATA.kpis.filter(k=>k.obj===o.id);
+  /* v17.1: el hilo tampoco se corta hacia ARRIBA — la apuesta del directorio que este objetivo sostiene
+     (inversa de openApuesta § "La sostienen"); sin apuesta = se dice, no se oculta */
+  const aps=DATA.apuestas.filter(a=>a.objetivos.includes(o.id));
+  const apDot={'por-sellar':'var(--warn)','sellada':'var(--brand-hi)','cumplida':'var(--ok)','retirada':'var(--tx-faint)'};
   openDrawer('Objetivo · '+o.persp+' (BSC)', o.nm, `
     <div class="dgroup">
       <div class="drow"><dt>Salud</dt><dd><span class="chip" style="border-color:${health[o.salud]};color:${health[o.salud]}">${o.salud}</span></dd></div>
       <div class="drow"><dt>KR del trimestre</dt><dd class="mono" style="font-size:11px">${o.kr.m}: ${o.kr.from} → <b style="color:var(--brand-hi)">${o.kr.cur}</b> → ${o.kr.to} ${o.kr.u}</dd></div>
       <div class="drow"><dt>Cadencia</dt><dd style="font-size:12px">OKR trimestral (modo_estrategia)</dd></div></div>
+    <div class="dgroup"><div class="gt">Hacia arriba — qué lo sostiene</div>
+      ${aps.length?aps.map(a=>`<button class="loop-it" data-ap="${a.id}"><span style="width:8px;height:8px;border-radius:50%;background:${apDot[a.estado]||'var(--tx-faint)'};flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.nm}</span><span class="mono" style="font-size:10px;color:var(--tx-mut)">apuesta · ${a.estado}</span></button>`).join(''):'<span style="font-size:12px;color:var(--tx-faint)">ninguna apuesta del directorio lo sostiene — se decide en el nivel 1</span>'}</div>
     <div class="dgroup"><div class="gt">Hacia abajo — qué lo mueve</div>
       ${ks.map(krowHTML).join('')}
       <div class="chips">${drivers.map(p=>`<span class="chip lk" data-proc="${p.id}">${p.nm}</span>`).join('')||'<span style="font-size:12px;color:var(--tx-faint)">sin drivers declarados</span>'}</div></div>

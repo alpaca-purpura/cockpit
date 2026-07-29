@@ -1,5 +1,23 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-26 → siguiente)
 
+> **★ v17.1 EJECUTADA (2026-07-28 — el hilo ya no se corta hacia ARRIBA):** análisis del operador
+> ("¿doble-click para bajar del nivel 1 al 2, o que el estratégico traiga lo del directorio?") cerró
+> así: NO dblclick en nivel 1 (tablero decide, no navega — doctrina rumbo 2026-07-26: bajar =
+> traducción con contexto, no gesto espacial; las bajadas nombradas ya existen: "Encender su hilo" /
+> "Ver el hilo que mueve" / "Ver el mapa por madurez") y SÍ re-proyección del ancla (patrón ya
+> establecido: banda Estrategia n2 · chips de metas n3 · KPIs del rol n4 — mismo `DATA.objetivos`,
+> jamás dato duplicado). El hueco real encontrado: `openObjetivo` violaba la gramática de ficha
+> universal ("el viaje nunca se corta") — tenía "Hacia abajo" pero cero link a la apuesta. **Fix:**
+> grupo **"Hacia arriba — qué lo sostiene"** (inversa de `openApuesta` § "La sostienen"): loop-it
+> `data-ap` por apuesta con punto por estado (por-sellar=warn · sellada=teal · cumplida=ok ·
+> retirada=faint); sin apuesta → línea honesta "ninguna apuesta del directorio lo sostiene — se
+> decide en el nivel 1" (caso real: `o-eq`). Cadena apuesta⇄objetivo⇄proceso⇄rol⇄arnés ahora
+> navegable en ambos sentidos desde cualquier nivel. verify.sh **32/32** (+`ficha-objetivo-arriba`:
+> o-cob linkea sus 2 apuestas + clic abre ficha Apuesta + honestidad o-eq). Verificado con ojos
+> propios (ficha o-cob: ambos estados pintan). OJO headless: `index.html` NO tiene tag `</body>` —
+> inyectar scripts con append al EOF, jamás replace de `</body>` (falla silencioso). Deuda A2
+> (hilo ancla a objetivo, no KR) sigue abierta — si un día ancla a KR, este link hereda solo.
+
 > **★ v17 EJECUTADA (2026-07-28 — auditoría CON OJOS DE DIRECTOR aplicada completa; el operador pidió
 > "implementa todas las mejoras analizando una a una"):** una sesión previa recorrió el tablero click
 > por click actuando como director y dejó 11 mejoras; esta pasada las implementó TODAS. **(1) Barrido

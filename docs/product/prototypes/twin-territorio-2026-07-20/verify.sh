@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Suite de verificación del mockup — clicks con HIT-TESTING REAL (elementFromPoint), no element.click().
-# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (31/31 esperado — v17: +v17-auditoria-director)
+# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (32/32 esperado — v17.1: +ficha-objetivo-arriba)
 set -euo pipefail
 cd "$(dirname "$0")"
 TMP=$(mktemp -d)
@@ -153,6 +153,15 @@ window.addEventListener('load',()=>{whenReady(()=>{
     A(tx.includes('54 M-cards'),'conteo de cartas desincronizado del catálogo');
     A(tx.includes('13 entidades'),'conteo de entidades sin D-23');
     state.mod='territorio'; render(); });
+  t('ficha-objetivo-arriba',()=>{ /* v17.1: el hilo no se corta hacia arriba — ficha objetivo linkea su apuesta */
+    openObjetivo(byId(DATA.objetivos,'o-cob'));
+    let b=document.getElementById('inBody');
+    A(b.textContent.includes('Hacia arriba'),'ficha sin grupo hacia arriba');
+    const aplinks=b.querySelectorAll('[data-ap]'); A(aplinks.length===2,'o-cob debe linkear 2 apuestas: '+aplinks.length);
+    mclick(aplinks[0]); A(eye().includes('Apuesta'),eye());
+    openObjetivo(byId(DATA.objetivos,'o-eq'));
+    A(document.getElementById('inBody').textContent.includes('ninguna apuesta'),'objetivo sin apuesta no lo dice (honestidad)');
+    state.insp='home'; inspectorHome(); });
   t('nivel3-tactico',()=>{ gotoNivel(3); A(document.querySelectorAll('.tcol').length>=4,'cols='+document.querySelectorAll('.tcol').length);
     A(document.body.textContent.includes('contramedida'),'sin regla de contramedida');
     A(document.body.textContent.includes('Embudo de ideas'),'sin embudo'); gotoNivel(2); });
