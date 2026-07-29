@@ -20,7 +20,10 @@
 
 ## El mockup mismo
 
-- **Fuente**: `docs/product/prototypes/twin-territorio-2026-07-20/index.html` (v8.2, single-file).
+- **Fuente**: `docs/product/prototypes/twin-territorio-2026-07-20/**src/**` — 37 partes por tema;
+  el mapa de qué archivo gobierna qué está en `src/README.md`. **`index.html` es GENERADO**
+  (`build.py`, gate en pre-commit): no editarlo. Los anchors `file:line` de estos documentos que
+  apuntan a `index.html` son de versiones previas — ubicá por archivo de `src/`, no por línea.
 - **Artifact** (mismo URL siempre): `https://claude.ai/code/artifact/20907d03-3979-42f2-b5c8-b33fa5e383f6`
   — republicar pasando `url`; verificar CDN con WebFetch; avisar Ctrl+Shift+R.
 - **Suite**: `./verify.sh` en ese directorio (19/19 hit-tested; flaky en frío — re-correr un

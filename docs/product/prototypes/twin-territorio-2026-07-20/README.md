@@ -6,16 +6,24 @@ conmutables** que se pintan encima (estructura · hilo de oro · salud · brecha
 
 ## Qué hay
 
-- **`index.html`** — mockup autocontenido (un solo archivo · vanilla JS/SVG · PRENTER dark/teal ·
-  datos canned de terranova). Abrir en el navegador. No wirea Go/Next — es concepto, no la app real.
+- **`src/`** — **la fuente**, partida en 37 archivos por tema. Empezá por
+  [`src/README.md`](./src/README.md): dice qué archivo gobierna qué.
+- **`index.html`** — **GENERADO** (no editar): `build.py` concatena `src/` en un solo archivo
+  autocontenido, que es lo que el Artifact exige (su política de contenido bloquea todo host externo).
+  Vanilla JS/SVG · PRENTER dark/teal · datos canned de Terranova. No wirea Go/Next — es concepto,
+  no la app real.
+- **`build.py`** — `python3 build.py` regenera · `--check` valida sin escribir (lo corre el pre-commit).
+- **`verify.sh`** — 33 pruebas con hit-testing real; reconstruye antes de probar y reintenta solo.
 - **Artifact publicado (privado del operador):**
   https://claude.ai/code/artifact/20907d03-3979-42f2-b5c8-b33fa5e383f6
 
 ## Cómo iterar (conversación nueva)
 
-1. Editar `index.html` (aplicar los comentarios visuales del operador).
-2. Re-publicar con la tool Artifact pasando `url` = el artifact de arriba → mantiene el mismo link.
-3. Verificar en navegador (chrome-devtools): emular tema claro para confirmar dark-only, revisar z0/z1/z2.
+1. Editar la **parte** de `src/` que corresponde (el mapa está en `src/README.md`). Nunca `index.html`.
+2. `./verify.sh` → reconstruye y corre las 33 pruebas. Verde antes de seguir.
+3. Re-publicar con la tool Artifact pasando `file_path` = `index.html` y `url` = el artifact de
+   arriba → mantiene el mismo link.
+4. Verificar en navegador (chrome-devtools): emular tema claro para confirmar dark-only, revisar z0/z1/z2.
 
 ## Contexto
 

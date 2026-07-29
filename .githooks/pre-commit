@@ -12,8 +12,10 @@
 #      deps resuelven) y REGENERA ROADMAP.md § Estado.
 #   4. objeto-schema (historia schema-v2) — gen_schema.py valida objeto.schema.yaml v2
 #      (nodos/enums/relaciones/acciones/transiciones) + verbos.yaml (clase ALM×MGI completa).
-#   5. Si cualquiera falla la validación → bloquea el commit (arregla la fuente).
-#   6. Si un generado cambió → se agrega al commit automáticamente (mismo evento).
+#   5. mockup del twin — build.py concatena prototypes/twin-territorio-2026-07-20/src/ →
+#      index.html (el Artifact exige un archivo self-contained) + node --check del JS.
+#   6. Si cualquiera falla la validación → bloquea el commit (arregla la fuente).
+#   7. Si un generado cambió → se agrega al commit automáticamente (mismo evento).
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
@@ -45,7 +47,15 @@ if ! python3 sistema/schema/gen_schema.py; then
   exit 1
 fi
 
+if ! python3 docs/product/prototypes/twin-territorio-2026-07-20/build.py; then
+  echo ""
+  echo "✖ pre-commit: el mockup del twin no construye — commit bloqueado."
+  echo "  Corrige las partes en prototypes/twin-territorio-2026-07-20/src/ y reintenta."
+  exit 1
+fi
+
 git add \
   sistema/arquitectura/nodos.data.js sistema/arquitectura/arquitectura.html \
   sistema/metodo/METODOLOGIA.md sistema/metodo/NOTACIONES.html sistema/metodo/GRAFO.md \
-  docs/product/ROADMAP.md
+  docs/product/ROADMAP.md \
+  docs/product/prototypes/twin-territorio-2026-07-20/index.html

@@ -196,8 +196,10 @@ mapa org libre-zoomable. z2 puede ser a mano (sin dep).
 
 ## El mockup (prototipo de esta sesión)
 
-- **Fuente en el repo:** `docs/product/prototypes/twin-territorio-2026-07-20/index.html` (un solo HTML
-  autocontenido; datos canned de terranova; vanilla JS/SVG; PRENTER dark/teal).
+- **Fuente en el repo:** `docs/product/prototypes/twin-territorio-2026-07-20/src/` — 37 partes por
+  tema (mapa en `src/README.md`). `index.html` es **GENERADO** por `build.py` (un solo HTML
+  autocontenido, que es lo que exige el Artifact); datos canned de terranova; vanilla JS/SVG;
+  PRENTER dark/teal. Editar `index.html` a mano lo pisa el pre-commit.
 - **Artifact publicado (privado del operador):**
   `https://claude.ai/code/artifact/20907d03-3979-42f2-b5c8-b33fa5e383f6`
 - **Para re-publicar tras editar** (nueva conversación): editar el HTML del repo y volver a llamar

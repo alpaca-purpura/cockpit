@@ -356,7 +356,10 @@ capa-trabajo-valor ahora exige `deriva_de`+guardrails) · pasada visual completa
 
 ## OPERATIVA de sesión (aprendida a golpes — NO regresionar)
 
-- Fuente: `index.html` (este dir, single-file vanilla). **Artifact MISMO URL siempre**:
+- Fuente: **`src/`** (37 partes por tema — el mapa vive en `src/README.md`). `index.html` es
+  **GENERADO** por `build.py`: nunca se edita a mano; el pre-commit lo regenera y lo agrega al commit.
+  Ciclo: editar la parte → `./verify.sh` (reconstruye + 33 pruebas) → commit → republicar.
+  **Artifact MISMO URL siempre**:
   `https://claude.ai/code/artifact/20907d03-3979-42f2-b5c8-b33fa5e383f6`. Si el tool Artifact
   rechaza con "hasn't viewed the latest version" → WebFetch del URL primero, luego publicar con
   `url:` (así se hizo esta sesión). Favicon estable: 🗺️.
@@ -384,7 +387,11 @@ capa-trabajo-valor ahora exige `deriva_de`+guardrails) · pasada visual completa
 - Ciclo: editar → verify.sh → screenshots → ojos propios (¡las fichas por dentro, no solo z0!) →
   commit por pathspec → republicar Artifact → avisar Ctrl+Shift+R (CDN tarda minutos).
 
-## Mapa del código (anchors v12 en index.html, ~2560 líneas)
+## Mapa del código
+
+> **El mapa canónico es [`src/README.md`](./src/README.md)** (qué archivo gobierna qué) — desde la
+> reorganización as-code, ubicar algo es elegir un archivo, no cazar una línea. La tabla de abajo
+> queda como índice de anchors de texto (siguen sirviendo para grep dentro de su parte).
 
 | Qué | Anchor |
 |---|---|

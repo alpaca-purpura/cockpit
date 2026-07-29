@@ -3,6 +3,9 @@
 # Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (33/33 esperado — v17.2: +a4-a6-salud-prov)
 set -euo pipefail
 cd "$(dirname "$0")"
+# index.html es GENERADO desde src/ — se reconstruye antes de probar, así la suite
+# jamás corre contra una versión rancia (ver build.py).
+python3 build.py >/dev/null
 TMP=$(mktemp -d)
 cp index.html "$TMP/t.html"
 cat >> "$TMP/t.html" <<'EOF'
@@ -233,7 +236,16 @@ window.addEventListener('load',()=>{whenReady(()=>{
 });});
 </script>
 EOF
-google-chrome --headless=new --disable-gpu --user-data-dir="$TMP/profile" --window-size=1680,1050 \
-  --virtual-time-budget=40000 --dump-dom "file://$TMP/t.html" 2>/dev/null | grep -o '<title>V8SUITE[^<]*' \
-  || { echo "SIN RESULTADO — revisar errores JS"; exit 1; }
+# Reintento automático: el PRIMER arranque de Chrome con perfil nuevo pierde la carrera
+# contra el primer layout bajo virtual-time (flaky en frío conocido). Antes había que
+# re-correr a mano; ahora la suite lo absorbe — 3 intentos, perfil nuevo cada vez.
+for intento in 1 2 3; do
+  if google-chrome --headless=new --disable-gpu --user-data-dir="$TMP/profile-$intento" \
+       --window-size=1680,1050 --virtual-time-budget=40000 --dump-dom "file://$TMP/t.html" 2>/dev/null \
+       | grep -o '<title>V8SUITE[^<]*'; then
+    rm -rf "$TMP"; exit 0
+  fi
+  [ "$intento" -lt 3 ] && echo "(intento $intento sin resultado — reintentando)" >&2
+done
 rm -rf "$TMP"
+echo "SIN RESULTADO tras 3 intentos — revisar errores JS"; exit 1
