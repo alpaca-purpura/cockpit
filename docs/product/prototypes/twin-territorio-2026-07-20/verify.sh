@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Suite de verificación del mockup — clicks con HIT-TESTING REAL (elementFromPoint), no element.click().
-# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (32/32 esperado — v17.1: +ficha-objetivo-arriba)
+# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (33/33 esperado — v17.2: +a4-a6-salud-prov)
 set -euo pipefail
 cd "$(dirname "$0")"
 TMP=$(mktemp -d)
@@ -153,6 +153,17 @@ window.addEventListener('load',()=>{whenReady(()=>{
     A(tx.includes('54 M-cards'),'conteo de cartas desincronizado del catálogo');
     A(tx.includes('13 entidades'),'conteo de entidades sin D-23');
     state.mod='territorio'; render(); });
+  t('a4-a6-salud-prov',()=>{ /* v17.2: salud del objetivo DERIVADA (A4.1) + provenance en TODAS las fichas (A6 a+b) */
+    A(DATA.objetivos.every(o=>o.kr.esperado!=null),'KR sin esperado');
+    A(DATA.objetivos.every(o=>o.salud===saludKr(o.kr)),'salud no coincide con la derivación');
+    const okN=DATA.objetivos.filter(o=>o.salud==='verde').length; A(okN===1,'narrativa cambió: verdes='+okN);
+    openObjetivo(byId(DATA.objetivos,'o-caja'));
+    A(document.getElementById('inBody').textContent.includes('Esperado a hoy'),'ficha objetivo sin esperado');
+    [()=>openObjetivo(DATA.objetivos[0]),()=>openBrecha(byId(DATA.brechas,'g-dso')),()=>openProyecto(byId(DATA.proyectos,'pm-cie')),
+     ()=>openRol('Jefe de Cobranza'),()=>openPersona('Lucía Cárdenas Vidal'),()=>openSistema(byId(DATA.sistemas,'s-exc')),
+     ()=>openIdea(byId(DATA.ideas,'i-wsp')),()=>openCapability(byId(DATA.capabilities,'c-caja')),()=>openEmpresa()]
+      .forEach((f,i)=>{ f(); A(document.getElementById('inBody').textContent.includes('Procedencia'),'ficha sin procedencia #'+i); });
+    state.insp='home'; inspectorHome(); });
   t('ficha-objetivo-arriba',()=>{ /* v17.1: el hilo no se corta hacia arriba — ficha objetivo linkea su apuesta */
     openObjetivo(byId(DATA.objetivos,'o-cob'));
     let b=document.getElementById('inBody');

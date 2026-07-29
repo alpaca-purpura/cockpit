@@ -270,6 +270,9 @@ comentarios puntuales sobre lo que veía — cierra la deuda #1 de `06-pendiente
     1ª palabra del eyebrow (`eye.split(' ')[0].toLowerCase()` → clave de `TICO`; `Proyecto de mejora`→
     proyecto, `KPI`→kpi; `Actividad`/`Arnés` sin match → sin ícono). **1 cambio, cero tocar los 14
     callers.** CSS `.dico` (17px, `vertical-align:-3px`). Verificado ×6 tipos con `.dico` ✓.
+    *(Alcance real post-v12 — cierra B3 de `07`: `Arnés` y `Puesto` ganaron ícono propio en TICO y
+    `openDrawer` normaliza acentos; la ÚNICA ficha sin ícono hoy es `Actividad` — coherente: es
+    subesquema del proceso, no entidad del schema. "TODA ficha" léase "toda ficha de entidad".)*
 
 25. **El badge del tipo va DENTRO de la tarjeta (inline), no colgando en la esquina.** El operador,
     viéndolo en el Artifact: *"el icono está afuera no dentro."* **Causa raíz:** el markup ya ponía el

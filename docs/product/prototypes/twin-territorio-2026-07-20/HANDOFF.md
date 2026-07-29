@@ -1,5 +1,27 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-26 → siguiente)
 
+> **★ v17.2 EJECUTADA (2026-07-28 — "corrige todos los errores encontrados": barrido del tracker
+> dossier/07, todo lo ejecutable-sin-firma):** **(A4.1)** `objetivo.salud` DEJÓ de ser canned —
+> `saludKr(kr)` la DERIVA de avance real vs `kr.esperado` (campo nuevo en los 7 KRs, calibrado para
+> reproducir la narrativa: 1 verde · 3 ámbar · 3 rojos idénticos a antes); ficha objetivo gana renglón
+> "Esperado a hoy" + title en el chip de salud ("se computa, jamás se guarda" — mismo principio que
+> semaforo()/M36). **(A6 a+b)** provenance COMPLETA: `fuente`/`conf` agregados a los datasets canned
+> que no los tenían (objetivos ×7 · brechas ×8 · proyectos ×3 · sistemas ×11 con conf por
+> digitalización · capabilities ×4 · ideas ×4 · empresa) y `prov()` en las 13 fichas de entidad
+> (objetivo/brecha/proyecto/rol/persona/sistema/idea/capability/empresa nuevas; proceso/actividad/
+> kpi/arnés ya lo tenían; persona/rol = default del ingest declarado en el texto). A6(c) — conf en el
+> mini-chevron del triage — es diseño, espera al operador. **(B2)** copy en `02`/`04`: el SIPOC del
+> mockup es canned, la derivación es doctrina de la app. **(B3)** copy en `03` decisión 24: única
+> ficha sin ícono = Actividad (subesquema). **(tracker 07)** sincronizado: A3/B5/D1/D2 marcadas
+> resueltas (v12/v15.2, estaban stale), A1 materialización parcial (apuesta = 13º nodo), A4/A6
+> parciales con esta versión; los que ESPERAN FIRMA quedan listados en la nota del tablero (A2 ·
+> A4.2-3 · A5 · A6c · B1 · B4 · D3). **(archivo)** `index.html` ahora SÍ cierra con `</body></html>`
+> — el OJO de v17.1 quedó obsoleto: replace de `</body>` vuelve a ser inyección válida. verify.sh
+> **33/33** (+`a4-a6-salud-prov`: esperado ×7 · salud≡derivación · narrativa intacta (1 verde) ·
+> ficha con "Esperado a hoy" · Procedencia en las 9 fichas nuevas). Verificado con ojos propios
+> (ficha o-caja: salud verde derivada + esperado 60 días + procedencia acta/alta; mapa banda 1 con
+> colores idénticos a v17.1).
+
 > **★ v17.1 EJECUTADA (2026-07-28 — el hilo ya no se corta hacia ARRIBA):** análisis del operador
 > ("¿doble-click para bajar del nivel 1 al 2, o que el estratégico traiga lo del directorio?") cerró
 > así: NO dblclick en nivel 1 (tablero decide, no navega — doctrina rumbo 2026-07-26: bajar =
@@ -14,8 +36,8 @@
 > decide en el nivel 1" (caso real: `o-eq`). Cadena apuesta⇄objetivo⇄proceso⇄rol⇄arnés ahora
 > navegable en ambos sentidos desde cualquier nivel. verify.sh **32/32** (+`ficha-objetivo-arriba`:
 > o-cob linkea sus 2 apuestas + clic abre ficha Apuesta + honestidad o-eq). Verificado con ojos
-> propios (ficha o-cob: ambos estados pintan). OJO headless: `index.html` NO tiene tag `</body>` —
-> inyectar scripts con append al EOF, jamás replace de `</body>` (falla silencioso). Deuda A2
+> propios (ficha o-cob: ambos estados pintan). ~~OJO headless: sin `</body>`~~ (obsoleto — v17.2
+> agregó `</body></html>`). Deuda A2
 > (hilo ancla a objetivo, no KR) sigue abierta — si un día ancla a KR, este link hereda solo.
 
 > **★ v17 EJECUTADA (2026-07-28 — auditoría CON OJOS DE DIRECTOR aplicada completa; el operador pidió

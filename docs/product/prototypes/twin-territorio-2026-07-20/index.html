@@ -778,16 +778,16 @@ const confCol=c=>({alta:S.ok,media:S.warn,baja:S.crit}[c]||'var(--tx-faint)');
 const DATA = {
   empresa:{ id:'terranova', razon:'Desarrolladora Terranova S.A.C.',
     mision:'Desarrollar y construir vivienda media en Lima que las familias puedan pagar y habitar con orgullo, integrando promoción, construcción propia y postventa en un solo ciclo.',
-    vision:'Ser al 2030 la desarrolladora de vivienda media de referencia en Lima Metropolitana, reconocida por entregar a tiempo, con calidad verificable y la confianza de bancos y compradores.' },
+    vision:'Ser al 2030 la desarrolladora de vivienda media de referencia en Lima Metropolitana, reconocida por entregar a tiempo, con calidad verificable y la confianza de bancos y compradores.', fuente:'constitución del engagement (M1)', conf:'alta' },
 
   objetivos:[
-    {id:'o-hog', nm:'Hogares de calidad accesibles en Lima',           persp:'cliente',    kr:{m:'viviendas acumuladas', from:480, to:2000, cur:640, u:'viv'},   salud:'ambar'},
-    {id:'o-lid', nm:'Consolidar el liderazgo en vivienda media de Lima',persp:'financiera', kr:{m:'margen bruto / proyecto', from:14, to:18, cur:15.8, u:'%'},    salud:'ambar'},
-    {id:'o-caja',nm:'Caja sana en todos los proyectos',                 persp:'financiera', kr:{m:'DSO consolidado', from:88, to:60, cur:58, u:'días'},          salud:'verde'},
-    {id:'o-mar', nm:'Reactivar la venta y sanear el stock de Marina',   persp:'cliente',    kr:{m:'absorción consolidada', from:2.4, to:3.5, cur:2.6, u:'%/mes'},salud:'rojo'},
-    {id:'o-eq',  nm:'Equipo estable y competente en obra y oficina',    persp:'aprendizaje',kr:{m:'rotación mensual', from:4.8, to:2.5, cur:3.9, u:'%/mes'},      salud:'ambar'},
-    {id:'o-cob', nm:'Digitalizar la cobranza',                          persp:'procesos',   kr:{m:'cobranza por canal digital', from:15, to:60, cur:15, u:'%'},  salud:'rojo'},
-    {id:'o-vis', nm:'Reactivar Marina este trimestre',                  persp:'procesos',   kr:{m:'visitas diarias a caseta', from:12, to:25, cur:14, u:'/día'}, salud:'rojo'},
+    {id:'o-hog', nm:'Hogares de calidad accesibles en Lima',           persp:'cliente',    kr:{m:'viviendas acumuladas', from:480, to:2000, cur:640, esperado:680, u:'viv'}, fuente:'acta de directorio Q3', conf:'alta'},
+    {id:'o-lid', nm:'Consolidar el liderazgo en vivienda media de Lima',persp:'financiera', kr:{m:'margen bruto / proyecto', from:14, to:18, cur:15.8, esperado:16.3, u:'%'}, fuente:'acta de directorio Q3', conf:'alta'},
+    {id:'o-caja',nm:'Caja sana en todos los proyectos',                 persp:'financiera', kr:{m:'DSO consolidado', from:88, to:60, cur:58, esperado:60, u:'días'}, fuente:'acta de directorio Q3', conf:'alta'},
+    {id:'o-mar', nm:'Reactivar la venta y sanear el stock de Marina',   persp:'cliente',    kr:{m:'absorción consolidada', from:2.4, to:3.5, cur:2.6, esperado:3.0, u:'%/mes'}, fuente:'acta de directorio Q3', conf:'alta'},
+    {id:'o-eq',  nm:'Equipo estable y competente en obra y oficina',    persp:'aprendizaje',kr:{m:'rotación mensual', from:4.8, to:2.5, cur:3.9, esperado:3.7, u:'%/mes'}, fuente:'acta de directorio Q3', conf:'alta'},
+    {id:'o-cob', nm:'Digitalizar la cobranza',                          persp:'procesos',   kr:{m:'cobranza por canal digital', from:15, to:60, cur:15, esperado:30, u:'%'}, fuente:'propuesta de apuesta — por sellar', conf:'media'},
+    {id:'o-vis', nm:'Reactivar Marina este trimestre',                  persp:'procesos',   kr:{m:'visitas diarias a caseta', from:12, to:25, cur:14, esperado:20, u:'/día'}, fuente:'acta de directorio Q3', conf:'alta'},
   ],
 
   // áreas — el árbol se auto-calcula de parent (reporta_a real)
@@ -832,28 +832,28 @@ const DATA = {
   brechas:[
     {id:'g-avc', nm:'El avance real de Marina (87%) va detrás del declarado (95%) y compromete la entrega',
       sub:'Ocho puntos de brecha entre corte declarado y valorizable: cada mes de atraso son ~S/35k de gastos generales y una entrega que se corre.',
-      tipo:'Desvío de meta', against:'p-ejec', obj:'o-lid', costo:'S/ 35k/mes', sev:'alta', prio:'alta', estado:'accionable', apuesta:true},
+      tipo:'Desvío de meta', against:'p-ejec', obj:'o-lid', costo:'S/ 35k/mes', sev:'alta', prio:'alta', estado:'accionable', apuesta:true, fuente:'corte de obra vs valorización (ValorizApp)', conf:'alta'},
     {id:'g-dso', nm:'El DSO de Marina (91 días) bloquea la meta de caja',
       sub:'Cada día de DSO en Marina ≈ S/500 de puente; la cola dura no responde a recordatorios y arrastra el consolidado.',
-      tipo:'Desvío de meta', against:'p-cob', obj:'o-caja', costo:'S/ 180k/año', sev:'alta', prio:'alta', estado:'accionable'},
+      tipo:'Desvío de meta', against:'p-cob', obj:'o-caja', costo:'S/ 180k/año', sev:'alta', prio:'alta', estado:'accionable', fuente:'serie DSO del ERP (Nubecont)', conf:'alta'},
     {id:'g-post',nm:'La postventa se deteriora y ningún KR del ciclo la mide',
       sub:'El NPS de propietarios cayó 42→31 en un año; cada punto son referidos que no llegan a caseta. Brecha real, sin ancla de valor que la mida.',
-      tipo:'Hallazgo', against:'p-post', obj:null, costo:'NPS 42→31', sev:'media', prio:'media', estado:'sin-ancla-de-valor'},
+      tipo:'Hallazgo', against:'p-post', obj:null, costo:'NPS 42→31', sev:'media', prio:'media', estado:'sin-ancla-de-valor', fuente:'NPS del portal de clientes', conf:'alta'},
     {id:'g-tes', nm:'La jefatura de Tesorería está vacante y la conciliación depende de una sola persona',
       sub:'Rol vacante hace 5 meses; la conciliación depende de un analista y el CFO aprueba por excepción.',
-      tipo:'Hallazgo', against:'p-conc', obj:null, costo:'rol vacante 5m', sev:'media', prio:'media', estado:'accionable'},
+      tipo:'Hallazgo', against:'p-conc', obj:null, costo:'rol vacante 5m', sev:'media', prio:'media', estado:'accionable', fuente:'organigrama + entrevista al CFO', conf:'alta'},
     {id:'g-cvis',nm:'La posición de caja por obra no es visible ni confiable entre cierres',
       sub:'La caja consolidada se arma a mano con ~5 días de rezago; entre cierres la dirección decide a ciegas.',
-      tipo:'Hallazgo', against:'p-caja', obj:null, costo:'decisión a ciegas', sev:'media', prio:'media', estado:'a-corroborar', conf:'baja'},
+      tipo:'Hallazgo', against:'p-caja', obj:null, costo:'decisión a ciegas', sev:'media', prio:'media', estado:'a-corroborar', fuente:'entrevistas de tesorería + Excel de caja', conf:'baja'},
     {id:'g-mca', nm:'La marca Terranova es débil y el tráfico comercial depende de portales pagados',
       sub:'Sin marca propia que jale tráfico, cada visita a caseta se compra: el costo por lead sube todos los trimestres.',
-      tipo:'Hallazgo', against:'p-camp', obj:null, costo:'costo/lead ↑', sev:'baja', prio:'baja', estado:'off-thread'},
+      tipo:'Hallazgo', against:'p-camp', obj:null, costo:'costo/lead ↑', sev:'baja', prio:'baja', estado:'off-thread', fuente:'costo por lead (Meta Ads) + entrevista comercial', conf:'media'},
     {id:'g-dep', nm:'El conocimiento municipal de permisos vive en UNA sola persona (bus factor 1)',
       sub:'El "cómo" de cada municipio (SM · PL · Surquillo) está en la cabeza de la Jefa de Permisos. Si sale, se va con ella — y un retraso de licencia bloquea el cronograma con banco y compradores de 3 proyectos.',
-      tipo:'Hallazgo', against:'p-perm', obj:'o-lid', costo:'bus factor 1 · 3 proyectos', sev:'alta', prio:'alta', estado:'accionable'},
+      tipo:'Hallazgo', against:'p-perm', obj:'o-lid', costo:'bus factor 1 · 3 proyectos', sev:'alta', prio:'alta', estado:'accionable', fuente:'entrevistas de permisos — bus factor observado', conf:'alta'},
     {id:'g-doc', nm:'No existe procedimiento escrito de permisos y licencias',
       sub:'Cero guías en el corpus: cada expediente se arma de memoria y la tasa de observaciones (60%) no baja porque nadie registra el porqué de cada rechazo por municipio.',
-      tipo:'Hallazgo', against:'p-perm', obj:null, costo:'observaciones 60%', sev:'media', prio:'media', estado:'accionable'},
+      tipo:'Hallazgo', against:'p-perm', obj:null, costo:'observaciones 60%', sev:'media', prio:'media', estado:'accionable', fuente:'barrido del corpus documental — cero guías', conf:'alta'},
   ],
 
   // kpis — banda {target, rojo} (dirección se infiere: target<rojo = menor-es-mejor) · semáforo DERIVADO al leer
@@ -886,9 +886,9 @@ const DATA = {
 
   // cinética — proyectos_mejora (ilustrativos del loop O7) · pm-cie = loop CERRADO con veredicto (KPI movido)
   proyectos:[
-    {id:'pm-mar', nm:'Recuperación de avance Marina', estado:'en-ejecución', pdca:'DO',   brecha:'g-avc', mueve:'k-avc', area:'a-ope', roi:'2.4×', delta:'−8pp → −2pp', ambicion:'operar'},
-    {id:'pm-cob', nm:'Cobranza digital · fase 1',     estado:'en-evaluación',pdca:'PLAN', brecha:'g-dso', mueve:'k-cob', area:'a-tes', roi:'1.8×', delta:'15% → 40%', idea:'i-wsp', ambicion:'operar'},
-    {id:'pm-cie', nm:'Cierre contable exprés',        estado:'cerrado',      pdca:'ACT',  brecha:null,    mueve:'k-cie', area:'a-con', roi:'3.1×', delta:'9 → 4.5 días', recompila:'h-cierre-cont', ambicion:'operar',
+    {id:'pm-mar', nm:'Recuperación de avance Marina', estado:'en-ejecución', pdca:'DO',   brecha:'g-avc', mueve:'k-avc', area:'a-ope', roi:'2.4×', delta:'−8pp → −2pp', ambicion:'operar', fuente:'acta de proyecto + corte quincenal', conf:'alta'},
+    {id:'pm-cob', nm:'Cobranza digital · fase 1',     estado:'en-evaluación',pdca:'PLAN', brecha:'g-dso', mueve:'k-cob', area:'a-tes', roi:'1.8×', delta:'15% → 40%', idea:'i-wsp', ambicion:'operar', fuente:'charter en evaluación + caso ROI', conf:'media'},
+    {id:'pm-cie', nm:'Cierre contable exprés',        estado:'cerrado',      pdca:'ACT',  brecha:null,    mueve:'k-cie', area:'a-con', roi:'3.1×', delta:'9 → 4.5 días', recompila:'h-cierre-cont', ambicion:'operar', fuente:'cierre verificado contra la serie del KPI', conf:'alta',
       resultado:{delta_observado:'9 → 4.5 días', veredicto:'movió', nota:'ACT documentado: checklist pre-cierre estandarizado (M16 PDCA) → recompilado al arnés del puesto'} },
   ],
 
@@ -950,23 +950,23 @@ const DATA = {
     {nm:'Gino Salcedo Ruiz', puesto:'Analista de Soporte TI', area:'a-ti', vinculo:'empleado'},
   ],
   sistemas:[  // pulso: cada sistema declara su conector al lakehouse (N16)
-    {id:'s-nub', nm:'Nubecont ERP',    digital:'integrado', conector:'dlt → lakehouse · sync diaria 06:00 · 14 tablas', caps:['c-cobrar','c-cerrar']},
-    {id:'s-crm', nm:'CRM Vendo',       digital:'integrado', conector:'dlt → lakehouse · sync horaria (leads · visitas)', caps:['c-vender']},
-    {id:'s-exc', nm:'Excel caja obra', digital:'manual',    conector:'SIN conector — captura manual, rezago s/d', caps:['c-caja']},
-    {id:'s-val', nm:'ValorizApp',      digital:'integrado', conector:'dlt → lakehouse · sync semanal (valorizaciones)', caps:[]},
-    {id:'s-ban', nm:'Banca Empresas',  digital:'externo',   conector:'extracto CSV manual · candidato a conector', caps:[]},
-    {id:'s-bim', nm:'BIM',             digital:'integrado', conector:'sin conector (documentos de diseño)', caps:[]},
-    {id:'s-ose', nm:'OSE FacturaLima', digital:'externo',   conector:'API del OSE · CDR por comprobante', caps:[]},
-    {id:'s-meta',nm:'Meta Ads',        digital:'externo',   conector:'export CSV semanal — candidato a conector (CPL)', caps:[]},
-    {id:'s-por', nm:'Portal clientes', digital:'integrado', conector:'dlt → lakehouse · tickets postventa + NPS', caps:[]},
-    {id:'s-mun', nm:'Portal municipal',digital:'externo',   conector:'SIN conector — seguimiento a mano por distrito (SM · PL · Surquillo)', caps:[]},
-    {id:'s-leg', nm:'Estudio legal',   digital:'externo',   conector:'proceso provisto externamente (ISO 8.4) — correo + expediente físico', caps:[]},
+    {id:'s-nub', nm:'Nubecont ERP',    digital:'integrado', conector:'dlt → lakehouse · sync diaria 06:00 · 14 tablas', caps:['c-cobrar','c-cerrar'], fuente:'inventario TI + entrevistas de proceso', conf:'alta'},
+    {id:'s-crm', nm:'CRM Vendo',       digital:'integrado', conector:'dlt → lakehouse · sync horaria (leads · visitas)', caps:['c-vender'], fuente:'inventario TI + entrevistas de proceso', conf:'alta'},
+    {id:'s-exc', nm:'Excel caja obra', digital:'manual',    conector:'SIN conector — captura manual, rezago s/d', caps:['c-caja'], fuente:'inventario TI + entrevistas de proceso', conf:'media'},
+    {id:'s-val', nm:'ValorizApp',      digital:'integrado', conector:'dlt → lakehouse · sync semanal (valorizaciones)', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'alta'},
+    {id:'s-ban', nm:'Banca Empresas',  digital:'externo',   conector:'extracto CSV manual · candidato a conector', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'media'},
+    {id:'s-bim', nm:'BIM',             digital:'integrado', conector:'sin conector (documentos de diseño)', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'alta'},
+    {id:'s-ose', nm:'OSE FacturaLima', digital:'externo',   conector:'API del OSE · CDR por comprobante', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'media'},
+    {id:'s-meta',nm:'Meta Ads',        digital:'externo',   conector:'export CSV semanal — candidato a conector (CPL)', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'media'},
+    {id:'s-por', nm:'Portal clientes', digital:'integrado', conector:'dlt → lakehouse · tickets postventa + NPS', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'alta'},
+    {id:'s-mun', nm:'Portal municipal',digital:'externo',   conector:'SIN conector — seguimiento a mano por distrito (SM · PL · Surquillo)', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'media'},
+    {id:'s-leg', nm:'Estudio legal',   digital:'externo',   conector:'proceso provisto externamente (ISO 8.4) — correo + expediente físico', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'media'},
   ],
   capabilities:[  // qué SABE hacer la empresa (M31) — madurez COBIT
-    {id:'c-cobrar', nm:'Cobrar cuotas',            madurez:3, via:['p-cob','s-nub']},
-    {id:'c-vender', nm:'Vender inmuebles',         madurez:4, via:['p-vta','s-crm']},
-    {id:'c-cerrar', nm:'Cerrar el mes financiero', madurez:4, via:['p-cierre','s-nub']},
-    {id:'c-caja',   nm:'Ver la caja al día',       madurez:1, via:['p-caja','s-exc'], gap:'g-cvis'},
+    {id:'c-cobrar', nm:'Cobrar cuotas',            madurez:3, via:['p-cob','s-nub'], fuente:'autoevaluación asistida (COBIT)', conf:'media'},
+    {id:'c-vender', nm:'Vender inmuebles',         madurez:4, via:['p-vta','s-crm'], fuente:'autoevaluación asistida (COBIT)', conf:'media'},
+    {id:'c-cerrar', nm:'Cerrar el mes financiero', madurez:4, via:['p-cierre','s-nub'], fuente:'autoevaluación asistida (COBIT)', conf:'media'},
+    {id:'c-caja',   nm:'Ver la caja al día',       madurez:1, via:['p-caja','s-exc'], gap:'g-cvis', fuente:'autoevaluación asistida (COBIT)', conf:'media'},
   ],
   // arneses — REGISTROS del twin (D-20 · CK-30): se COMPILA por rol×proceso · se ENSAMBLA por puesto ·
   // se CORRE por persona. deriva_de = el campo que ningún registro del mercado tiene. estado/drift se
@@ -1038,10 +1038,10 @@ const DATA = {
     'p-post':  {n:'1 guía',             d:'catálogo de garantías por partida (borrador)'},
   },
   ideas:[  // funil kaizen (M44) — separación idea ↔ proyecto · autoría reconocida (RN-16)
-    {id:'i-wsp',    nm:'Plantillas de WhatsApp para recordatorios de pago', prop:'Julio Paredes · Analista de Cobranza', estado:'promovida', a:'pm-cob', ambicion:'operar', nota:'reconocida — origen del alcance de Cobranza digital fase 1'},
-    {id:'i-agente', nm:'Agente que prepara el contacto de morosos (act. 03)', prop:'triage M36 → Jefe de Cobranza', estado:'en-evaluacion', origen:'triage', ambicion:'transformar', nota:'RTLX 71 + veredicto automatizable-agente → candidato a skill del arnés del puesto (Arnesia)'},
-    {id:'i-caja',   nm:'Foto diaria de caja desde Banca Empresas', prop:'Carmen Rojas · Analista de Tesorería', estado:'enviada', ambicion:'operar', nota:'ataca la ceguera de caja (g-cvis) sin esperar proyecto formal'},
-    {id:'i-mun',    nm:'Bitácora por municipio: registrar el porqué de cada observación', prop:'Milton Cruz Ayala · Asistente de Permisos', estado:'enviada', ambicion:'operar', nota:'ataca g-doc/g-dep — convierte el conocimiento de cabeza en corpus'},
+    {id:'i-wsp',    nm:'Plantillas de WhatsApp para recordatorios de pago', prop:'Julio Paredes · Analista de Cobranza', estado:'promovida', a:'pm-cob', ambicion:'operar', nota:'reconocida — origen del alcance de Cobranza digital fase 1', fuente:'embudo de ideas — autor reconocido', conf:'alta'},
+    {id:'i-agente', nm:'Agente que prepara el contacto de morosos (act. 03)', prop:'triage M36 → Jefe de Cobranza', estado:'en-evaluacion', origen:'triage', ambicion:'transformar', nota:'RTLX 71 + veredicto automatizable-agente → candidato a skill del arnés del puesto (Arnesia)', fuente:'embudo de ideas — autor reconocido', conf:'alta'},
+    {id:'i-caja',   nm:'Foto diaria de caja desde Banca Empresas', prop:'Carmen Rojas · Analista de Tesorería', estado:'enviada', ambicion:'operar', nota:'ataca la ceguera de caja (g-cvis) sin esperar proyecto formal', fuente:'embudo de ideas — autor reconocido', conf:'alta'},
+    {id:'i-mun',    nm:'Bitácora por municipio: registrar el porqué de cada observación', prop:'Milton Cruz Ayala · Asistente de Permisos', estado:'enviada', ambicion:'operar', nota:'ataca g-doc/g-dep — convierte el conocimiento de cabeza en corpus', fuente:'embudo de ideas — autor reconocido', conf:'alta'},
   ],
 
   bscEdges:[ ['o-eq','o-cob'],['o-eq','o-vis'],['o-cob','o-caja'],['o-vis','o-mar'],['o-mar','o-lid'],['o-hog','o-lid'],['o-lid','o-caja'] ],
@@ -1399,6 +1399,14 @@ function contraste(a){ const raw=DATA.apetito[a.riesgo_cat]||'';
    (meta mayor o menor que el origen); usado por el meter del rumbo (dataviz skill: "ratio contra límite") */
 function krProg(o){ const {from,to,cur}=o.kr, span=to-from; if(!span) return 0;
   return Math.max(0,Math.min(1,(cur-from)/span)); }
+/* v17.2 (A4.1) · salud del objetivo DERIVADA del KR — avance real vs esperado a hoy ("se computa,
+   jamás se guarda", mismo principio que semaforo() para KPI y que los scores M36). En la app el
+   esperado cae del plan de hitos del trimestre; acá es dato canned del KR. */
+function saludKr(kr){ if(kr.esperado==null) return 'gris';
+  const dir=kr.to>=kr.from?1:-1, av=(kr.cur-kr.from)*dir, esp=(kr.esperado-kr.from)*dir;
+  if(esp<=0) return 'gris'; const r=av/esp;
+  return r>=0.95?'verde':r>=0.75?'ambar':'rojo'; }
+DATA.objetivos.forEach(o=>o.salud=saludKr(o.kr));
 /* costo de esperar de un proyecto — heredado de la brecha que ataca, normalizado a S/ k/mes */
 function codMes(pm){ const g=pm.brecha&&byId(DATA.brechas,pm.brecha); if(!g||!g.costo) return null;
   const m=g.costo.match(/S\/\s*([\d.]+)k\/(mes|año)/); if(!m) return null;
@@ -2956,6 +2964,7 @@ function openBrecha(g){ const o=g.obj?byId(DATA.objetivos,g.obj):null; const pro
       <div class="drow"><dt>Costo de no hacer</dt><dd style="color:${sc};font-family:var(--font-mono)">${g.costo}</dd></div>
       <div class="drow"><dt>Severidad · prio</dt><dd><span class="chip" style="border-color:${sc};color:${sc}">${g.sev} · ${g.prio}</span></dd></div>
       <div class="drow"><dt>Estado</dt><dd><span class="chip">${est}</span></dd></div></div>
+     ${prov(g.fuente,g.conf)}
      <div class="dgroup"><div class="gt">Cierra el ciclo (capa Cinética)</div>
       ${DATA.proyectos.filter(pm=>pm.brecha===g.id).map(pm=>`<button class="loop-it" data-pm2="${pm.id}"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}</span><span class="mono" style="font-size:10px;color:var(--brand-hi)">${pm.roi}</span></button>`).join('')
         || '<span style="font-size:12px;color:var(--tx-faint)">Sin proyecto de mejora aún — candidata a la Apuesta.</span>'}</div>
@@ -2980,6 +2989,7 @@ function openProyecto(pm){ const g=byId(DATA.brechas,pm.brecha), k=byId(DATA.kpi
       <div style="font-size:11.5px;color:var(--tx-faint)">${pm.resultado.nota}</div></div>`:`
      <div class="dgroup"><div class="gt">Acciones (kinética — revisiones de fase)</div>
       <button class="btn" data-acc="avanzar-tollgate">Avanzar de fase › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · revisión-dueño · se puede volver atrás con evidencia</span></button></div>`}
+     ${prov(pm.fuente,pm.conf)}
      <div style="font-size:12px;color:var(--tx-faint)">El ciclo <b style="color:var(--tx-mut)">brecha → proyecto → KPI movido</b> vive dentro del twin, con dato real de cierre — de punta a punta en la misma herramienta.</div>`);
 }
 function openActividad(a){ const hAct=DATA.arneses.find(h=>h.deriva_de.proceso===(state.lienzo||DATA.flagship.proc)&&h.acts.includes(a.ord));
@@ -3080,8 +3090,9 @@ function openObjetivo(o){
   const apDot={'por-sellar':'var(--warn)','sellada':'var(--brand-hi)','cumplida':'var(--ok)','retirada':'var(--tx-faint)'};
   openDrawer('Objetivo · '+o.persp+' (BSC)', o.nm, `
     <div class="dgroup">
-      <div class="drow"><dt>Salud</dt><dd><span class="chip" style="border-color:${health[o.salud]};color:${health[o.salud]}">${o.salud}</span></dd></div>
+      <div class="drow"><dt>Salud</dt><dd><span class="chip" style="border-color:${health[o.salud]};color:${health[o.salud]}" title="derivada del KR (avance vs esperado a hoy) — se computa, jamás se guarda">${o.salud}</span></dd></div>
       <div class="drow"><dt>KR del trimestre</dt><dd class="mono" style="font-size:11px">${o.kr.m}: ${o.kr.from} → <b style="color:var(--brand-hi)">${o.kr.cur}</b> → ${o.kr.to} ${o.kr.u}</dd></div>
+      <div class="drow"><dt>Esperado a hoy</dt><dd class="mono" style="font-size:11px">${o.kr.esperado} ${o.kr.u} <span style="font-size:10px;color:var(--tx-faint)">— la salud se deriva de esto, jamás se pinta a mano</span></dd></div>
       <div class="drow"><dt>Cadencia</dt><dd style="font-size:12px">OKR trimestral (modo_estrategia)</dd></div></div>
     <div class="dgroup"><div class="gt">Hacia arriba — qué lo sostiene</div>
       ${aps.length?aps.map(a=>`<button class="loop-it" data-ap="${a.id}"><span style="width:8px;height:8px;border-radius:50%;background:${apDot[a.estado]||'var(--tx-faint)'};flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.nm}</span><span class="mono" style="font-size:10px;color:var(--tx-mut)">apuesta · ${a.estado}</span></button>`).join(''):'<span style="font-size:12px;color:var(--tx-faint)">ninguna apuesta del directorio lo sostiene — se decide en el nivel 1</span>'}</div>
@@ -3089,6 +3100,7 @@ function openObjetivo(o){
       ${ks.map(krowHTML).join('')}
       <div class="chips">${drivers.map(p=>`<span class="chip lk" data-proc="${p.id}">${p.nm}</span>`).join('')||'<span style="font-size:12px;color:var(--tx-faint)">sin drivers declarados</span>'}</div></div>
     ${gaps.length?`<div class="dgroup"><div class="gt">Qué lo bloquea</div>${gaps.map(g=>`<button class="loop-it" data-g2="${g.id}"><span style="color:var(--crit)">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.nm}</span></button>`).join('')}</div>`:''}
+    ${prov(o.fuente,o.conf)}
     <div class="dgroup"><div class="gt">Acciones (kinética)</div>
       <button class="btn" data-acc="aprobar-version-objetivo">Aprobar nueva versión › <span class="mono" style="font-size:9px;color:var(--tx-faint)">gobernanza · gestión-de-cambios</span></button></div>
     <button class="btn" style="justify-content:center" id="objHilo">Encender su hilo en el mapa ›</button>`);
@@ -3140,6 +3152,7 @@ function openRol(nm){ const core=coreNm(nm);
    ${ks.length?`<div class="dgroup"><div class="gt">KPIs de los que es dueño — por rol, jamás por persona</div>${ks.map(krowHTML).join('')}</div>`:''}
    ${hs.length?`<div class="dgroup"><div class="gt">Arneses compilados de este rol — uno por proceso</div>
      ${hs.map(h=>`<div class="drow"><dt style="font-size:10.5px">${byId(DATA.procesos,h.deriva_de.proceso).nm}</dt><dd>${harnBadge(h)}</dd></div>`).join('')}</div>`:''}
+   ${prov('derivado del wiring rol×proceso del AS-IS','alta')}
    <div style="font-size:11px;color:var(--tx-faint);line-height:1.5">"Los procesos de un rol" = <b>posee</b> (dueño) ∪ <b>ejecuta</b> (carril / RACI R). Consulta (C/I) = contexto de lectura — <b>no genera skills</b>. El rol es el carril; la contratación vive en el <b>puesto</b>.</div>`);
 }
 function openPersona(nm){
@@ -3155,6 +3168,7 @@ function openPersona(nm){
       <div class="drow"><dt>Roster del puesto</dt><dd>${pue?rosterBadge(pue):'—'}</dd></div></div>
     <div class="dgroup"><div class="gt">Ideas propuestas — autoría reconocida, en el embudo de ideas</div>
       ${ideas.length?ideas.map(i=>`<button class="loop-it" data-idea="${i.id}"><span class="pdca">${i.estado}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.nm}</span></button>`).join(''):'<span style="font-size:12px;color:var(--tx-faint)">— todavía ninguna</span>'}</div>
+    ${prov('nómina RRHH — ingest completo','alta')}
     <div class="dgroup"><div class="gt">Lo que se mide — y lo que jamás</div>
       <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">El twin mide <b>puestos / roles / procesos / áreas</b> — la persona <b>ocupa</b> el puesto, <b>supervisa</b> a sus agentes y es <b>autora</b> de ideas, jamás eslabón de medición. Vista de desempeño individual: solo opt-in Gobernanza + consentimiento.</div></div>`);
 }
@@ -3238,6 +3252,7 @@ function openSistema(s){ if(!s)return;
      <div class="chips">${procs.map(p=>`<span class="chip lk" data-proc="${p.id}">${p.nm}</span>`).join('')||'—'}</div></div>
    ${s.caps&&s.caps.length?`<div class="dgroup"><div class="gt">Capabilities que realiza</div>
      <div class="chips">${s.caps.map(c=>{const cc=byId(DATA.capabilities,c);return `<span class="chip lk" data-cap="${c}">${iico('capability','capability · Business Capability (M13 ArchiMate, Strategy)')}${cc.nm}</span>`;}).join('')}</div></div>`:''}
+   ${prov(s.fuente,s.conf)}
    <div style="font-size:11px;color:var(--tx-faint)">${s.digital==='manual'?'Manual/Excel: el pulso de este dato NO llega solo al lakehouse — candidato a conector o a captura con acuse.':'El lakehouse (N16) observa el SER; el repo (N6) declara el DEBER-SER — el twin compara ambos.'}</div>`);
 }
 function openIdea(i){ if(!i)return; const pm=i.a?byId(DATA.proyectos,i.a):null;
@@ -3248,6 +3263,7 @@ function openIdea(i){ if(!i)return; const pm=i.a?byId(DATA.proyectos,i.a):null;
      ${i.origen==='triage'?'<div class="drow"><dt>Origen</dt><dd><span class="chip">triage M36 · automatizable-agente</span></dd></div>':''}
      ${pm?`<div class="drow"><dt>Promovida a</dt><dd><button class="loop-it" data-pm2="${pm.id}" style="padding:2px 0"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}</span></button></dd></div>`:''}</div>
    <div style="font-size:12px;color:var(--tx-mut);line-height:1.45">${i.nota}</div>
+   ${prov(i.fuente,i.conf)}
    <div class="dgroup"><div class="gt">Acciones (kinética)</div>
      ${i.estado==='enviada'?'<button class="btn" data-acc="evaluar-idea">Evaluar › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · revisión-dueño</span></button>':''}
      ${i.estado==='en-evaluacion'?'<button class="btn" data-acc="promover-idea-a-proyecto">Promover a proyecto › <span class="mono" style="font-size:9px;color:var(--tx-faint)">estratégico · gestión-de-cambios</span></button>':''}
@@ -3259,7 +3275,8 @@ function openCapability(c){ if(!c)return; const gap=c.gap?byId(DATA.brechas,c.ga
    <div class="dgroup"><div class="drow"><dt>Madurez (COBIT)</dt><dd><span class="chip" style="border-color:${mc};color:${mc}">${c.madurez} / 5</span></dd></div></div>
    <div class="dgroup"><div class="gt">Realizada por (procesos · sistemas)</div>
      <div class="chips">${c.via.map(v=>v.startsWith('p-')?`<span class="chip lk" data-proc="${v}">${byId(DATA.procesos,v).nm}</span>`:`<span class="chip lk" data-sis="${v}">${byId(DATA.sistemas,v).nm}</span>`).join('')}</div></div>
-   ${gap?`<div class="dgroup"><div class="gt">Brecha sobre esta capability</div><button class="loop-it" data-g2="${gap.id}"><span style="color:var(--warn)">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${gap.nm}</span></button></div>`:''}`);
+   ${gap?`<div class="dgroup"><div class="gt">Brecha sobre esta capability</div><button class="loop-it" data-g2="${gap.id}"><span style="color:var(--warn)">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${gap.nm}</span></button></div>`:''}
+   ${prov(c.fuente,c.conf)}`);
 }
 function openEmpresa(){ const e=DATA.empresa;
   openDrawer('Empresa · el twin completo', e.razon, `
@@ -3270,6 +3287,7 @@ function openEmpresa(){ const e=DATA.empresa;
      <div class="drow"><dt>Pulso</dt><dd class="mono" style="font-size:10.5px">lakehouse N16 · 3 conectores · sync 06:00</dd></div>
      <div class="drow"><dt>Compila</dt><dd class="mono" style="font-size:10.5px;color:var(--brand-hi)">${DATA.arneses.length} arneses (rol×proceso) · ${new Set(DATA.arneses.map(h=>h.deriva_de.puesto)).size}/${DATA.puestosTotal} puestos</dd></div></div>
    <div class="dgroup"><div class="gt">Modo de estrategia</div><div style="font-size:12px">OKR trimestral · configurable por región: GPD-anual (Falconi) · mixto</div></div>
+   ${prov(e.fuente,e.conf)}
    <div style="font-size:11.5px;color:var(--tx-faint);line-height:1.5">De este cerebro Arnesia (N15) compila los arneses por rol×proceso y los ensambla por puesto; Colab Studio (N17) los corre por persona. <b style="color:var(--tx-mut)">La persona supervisa; el agente ejecuta</b>. Cockpit es la cabina.</div>`);
 }
 
@@ -3329,3 +3347,4 @@ setTimeout(()=>document.getElementById('hint').classList.add('gone'),9000);
 window.addEventListener('resize',()=>refit(false));
 render();
 </script>
+</body></html>

@@ -270,7 +270,7 @@ sin falsa certeza".
 
 | Ficha | Lo distintivo |
 |---|---|
-| `openProceso` | SIPOC derivado por filas S/I/P/O/C ("se deriva, no se edita" D-08/D-11; sin dato → "candidato M1") · objetivos que sostiene o "Huérfano" · botón lienzo |
+| `openProceso` | SIPOC por filas S/I/P/O/C ("se deriva, no se edita" D-08/D-11 = doctrina de la APP; **en el mockup es tabla canned** — nota B2 en `04` y `07`; sin dato → "candidato M1") · objetivos que sostiene o "Huérfano" · botón lienzo |
 | `openBrecha` | ataca-a · objetivo que bloquea (o "sin objetivo" warn) · costo de no hacer · "Cierra el loop (O7)" o "candidata a la Apuesta" |
 | `openProyecto` | brecha/idea origen · KPI que mueve · si cerrado: delta observado + veredicto + "arnés recompilado — el cambio llegó hasta el puesto (CK-29)" · avanzar-tollgate (loop-back MASP) |
 | `openActividad` | RACI/mandato/triage/RTLX · "El triage NO es una etiqueta — alimenta la fábrica" (cadena M36→M44→N15→N17) · botón z3 |

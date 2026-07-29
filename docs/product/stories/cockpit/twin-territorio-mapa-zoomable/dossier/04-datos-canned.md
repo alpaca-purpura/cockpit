@@ -23,7 +23,7 @@
 | `conocimiento` | 7 procesos | `{n,d}` — teaser F3 (`conocimiento/<proceso>/<rol>/` en N6) |
 | `ideas` | 4 | M44, autoría RN-16 |
 | `cadena` + `pasosMini` | 8 misionales + 17 | orden Porter + verbos macro (fractal Arnesia) |
-| `sipoc` + `sipocC1` | 17 + 17 | bordes derivados + `{prop,fin,apqc}` — "se DERIVA, jamás se edita" |
+| `sipoc` + `sipocC1` | 17 + 17 | bordes + `{prop,fin,apqc}` — **en el MOCKUP son tablas canned paralelas** (no se derivan de `proceso.entradas/salidas`, que el canned no tiene); la doctrina "se DERIVA, jamás se edita" (D-08/D-11) aplica a la APP real (cierra B2 de `07`) |
 | `lienzos` | 11 plenos (+6 stub) | acts `{ord,lane,verbo,ttl,tipo,toque,espera,sist,triage\|mandato,rtlx?,conf,fte,raci?,note}` |
 | `z3` | 14 instrucciones (`'pid:ord'`) | `{ins[],out,tareas[{v,t}],m36{7 inputs + rpa,agente},nota?}` |
 

@@ -16,22 +16,32 @@
 
 | ID | Hallazgo | Sev | Estado | Decide |
 |---|---|---|---|---|
-| **A1** | El arnés es la tesis (CK-29) y **no existe en el schema** | 🔴 fondo | **✅ DECIDIDO 2026-07-25 — CK-30 + D-19/D-20/D-21 + M46.** Pendiente materialización (`objeto.schema.yaml` + Go + fixture + generador = historias) | firmado operador |
+| **A1** | El arnés es la tesis (CK-29) y **no existe en el schema** | 🔴 fondo | **✅ DECIDIDO 2026-07-25 — CK-30 + D-19/D-20/D-21 + M46.** Materialización **parcial**: `apuesta` YA es 13º nodo del schema (D-23, commit `5bde69f`); `puesto`/`arnes` siguen pendientes (historias con gate) | firmado operador |
 | **A2** | El hilo de oro se ancla al **objetivo**, no al **KR** | 🔴 fondo | abierto | operador |
-| **A3** | `area` no abre ficha — "las 12 navegables" son 11 | 🟠 | abierto | ejecutable ya |
-| **A4** | 3 campos visual-only sin lugar en el schema (`objetivo.salud`·`area.madurez`·`sistema.conector`) | 🟠 | abierto | operador (2 de 3) |
+| **A3** | `area` no abre ficha — "las 12 navegables" son 11 | 🟠 | **✅ resuelto v12 2026-07-26 (commit `16a8af5`)** — `openArea` + `data-area` en wireLinks + textos planos → links | — |
+| **A4** | 3 campos visual-only sin lugar en el schema (`objetivo.salud`·`area.madurez`·`sistema.conector`) | 🟠 | **◐ parcial v17.2 2026-07-28** — `objetivo.salud` DERIVADA (`saludKr`: avance vs `kr.esperado`, jamás canned); `area.madurez`·`sistema.conector` siguen abiertos | operador (2 de 3) |
 | **A5** | Las 4 acciones que **cierran el loop** no tienen superficie | 🔴 fondo | abierto | operador |
-| **A6** | Provenance (M23, *columna*) aplicada en 3 de 13 fichas | 🟠 | abierto | ejecutable ya |
+| **A6** | Provenance (M23, *columna*) aplicada en 3 de 13 fichas | 🟠 | **◐ (a)+(b) resueltos v17.2 2026-07-28** — `fuente`/`conf` en los datasets canned + `prov()` en las 13 fichas de entidad (persona = default del ingest de nómina); (c) conf en el mini-chevron del triage = diseño, operador | (c) operador |
 | **B1** | "Gramática de ficha universal" sobre-prometida | 🟡 | abierto | operador (alcance) |
-| **B2** | "SIPOC se DERIVA" — en el mockup es tabla canned paralela | 🟡 | abierto | ejecutable (copy) |
-| **B3** | `.dico` en 12/14 fichas, no en "TODA ficha" | 🟢 | abierto | ejecutable (copy) |
+| **B2** | "SIPOC se DERIVA" — en el mockup es tabla canned paralela | 🟡 | **✅ resuelto v17.2 2026-07-28 (copy)** — declarado en `02 § fichas` y `04 § sipoc`: canned en el mockup, derivado en la app | — |
+| **B3** | `.dico` en 12/14 fichas, no en "TODA ficha" | 🟢 | **✅ resuelto v12 + copy v17.2** — Arnés/Puesto ganaron ícono (TICO 15 claves); única sin ícono = Actividad (subesquema); `03 § decisión 24` acota el alcance | — |
 | **B4** | 3 KPIs sin ancla, 1 sola brecha `sin-ancla-de-valor` | 🟡 | abierto | operador (dato) |
-| **B5** | "4/40 puestos" contra un denominador que el mapa no dibuja (27) | 🟡 | abierto | operador |
+| **B5** | "4/40 puestos" contra un denominador que el mapa no dibuja (27) | 🟡 | **✅ resuelto v12 2026-07-26 (commit `16a8af5`)** — `PUESTOS` se DERIVA de la nómina (46); portada "4/46 · 5 arneses"; los 46 dibujados en Organigrama nivel 4 | — |
 | **C1-C8** | Dossier ≠ mockup — 8 números | 🟢 | **✅ resuelto 2026-07-25** | — |
-| **D1** | M32 dice "las 9 entidades del twin" (schema v2 = 12) | 🟠 | abierto | `/metodo-aprende` |
-| **D2** | `CLAUDE.md` / reglas dicen "9 entidades" | 🟠 | abierto | operador (rule file) |
+| **D1** | M32 dice "las 9 entidades del twin" (schema v2 = 12) | 🟠 | **✅ resuelto v15.2 2026-07-27 (commit `5bde69f`)** — barrido D-23: M32 y conteos a **13** entidades | — |
+| **D2** | `CLAUDE.md` / reglas dicen "9 entidades" | 🟠 | **✅ resuelto v15.2 2026-07-27** — `CLAUDE.md` y `cockpit-stack.md` dicen "13 entidades (CK-26 + apuesta D-23)" | — |
 | **D3** | `state: idea` con 11 versiones y dossier de 7 docs — sin `01-spec` | 🟡 | abierto | operador |
 | **D4** | M40 (frontera persona) y M30 (BSC): **limpios** | ✅ | verificado | — |
+
+> **Sync del tracker 2026-07-28 (v17.2):** filas A3/B5/D1/D2 estaban resueltas por v12/v15.2 y el
+> tablero seguía diciéndolas abiertas (el sync esperaba la firma visual del operador sobre v12 —
+> firmada de facto por las iteraciones v13→v17 con comentarios en vivo). A4.1 + A6(a,b) + B2 + B3
+> se cerraron en v17.2 por pedido del operador ("corrige todos los errores encontrados").
+> **Siguen abiertos y esperan decisión del operador:** A2 (KR primera clase — cambia la geografía
+> de la banda 1) · A4.2-3 (`area.madurez`/`sistema.conector`: derivar vs campo nuevo D-NN) ·
+> A5 (cablear los 4 writes de cierre: ¿gate simulado o teaser?) · A6c (señal de conf en el
+> mini-chevron del triage) · B1 (gramática: ¿ampliar catálogo o degradar promesa a "disable
+> honesto"?) · B4 (¿brecha por cada KPI sin ancla?) · D3 (cuándo se cruza a `01-spec`).
 
 Severidad: 🔴 desvío de la tesis del producto · 🟠 rompe una doctrina declarada · 🟡 sobre-promesa o
 inconsistencia de dato · 🟢 sincronía documental.
