@@ -1,5 +1,39 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-26 → siguiente)
 
+> **★ v18 EJECUTADA (2026-07-29 — "¿le interesa esto a un directorio?" → los 3 bloques + reorganización):**
+> auditoría sin defender lo hecho (13 hallazgos, tablero `dossier/07` § H): lo que había gobernaba la
+> **ejecución de la estrategia** — la segunda mitad de una agenda de directorio; faltaba la primera
+> entera. **La página se reorganiza como la AGENDA de la sesión en 4 movimientos**: ① ¿cómo nos fue?
+> (6 cifras del periodo con plan/año anterior/acumulado + estado de cierre · caja a 13 semanas contra
+> el piso · límites con el banco) · ② ¿a dónde vamos? (rumbo · apuestas ahora con **valor COBRADO**,
+> no sólo prometido · varas · **presupuesto** = la mezcla en plata) · ③ ¿qué puede impedirlo?
+> (**registro de riesgos** contra el apetito · alertas · **inversiones en curso**: avance real vs
+> declarado · gasto vs presupuesto · comprometido · proyectos) · ④ ¿qué decidimos? (bandeja con
+> **decisiones de plata** que llegan por umbral de facultades · **acuerdos de la sesión anterior** ·
+> **cerrar y generar el acta**). **Bloque C (alcance):** Cockpit **no reexpresa** los estados
+> financieros — los lee con estado de cierre y los BAJA al proceso que los produce; ficha
+> `openAlcanceContable` con lo que NO hace + el **puente** de 6 decisiones contables ancladas al twin
+> (la joya: `g-avc` 87 vs 95 = valorización de lo construido). La norma vive SOLO dentro de la ficha,
+> como procedencia — gate en la suite (cero `NIIF|NIC \d` en pantalla). **Se ELIMINÓ** el panel
+> "¿Avanzan las apuestas?" (duplicaba el punto de la tarjeta) y el inspector de nivel 1 dejó de
+> repetir pulso y ciclo de mejora → ahora es el **índice de la sesión** (4 saltos, `irMovimiento`).
+> **Techo roto:** `fit()` encajaba una página en ancho Y alto, así que cada panel nuevo encogía la
+> letra de todos → **`fitPagina`** (encaje al ancho, anclado arriba) + **la rueda RECORRE** (⌘/Ctrl+rueda
+> hace zoom); zoom se mantiene en 78% con página de 2.7k px. **Generalidad entre industrias** (pedido
+> explícito): 7 líneas `.paral` + 1 en ficha nombran el equivalente en manufactura/retail/servicios/
+> software/banca/salud; la cabecera lo declara. **Partes nuevas:** `36-data-gobierno.js` ·
+> `19b-directorio.css` · `74-fichas-gobierno.js` (7 fichas). **7 acciones nuevas** en `ACC` (aprobar
+> presupuesto/inversión/endeudamiento · fijar piso de caja · asignar riesgo · comprometer acuerdo ·
+> cerrar acta). **6 entradas de Respaldo** citando lo que existe (ISO 9001 §9.3 · FinOps · procedencia ·
+> ISO 31000 · 70/20/10 · P3M3 · RACI) y declarando en `gap:` lo que **no tiene carta** (marco contable ·
+> caja 13 semanas · presupuesto · gobierno corporativo · registro de riesgos) — **`methodologies.yaml`
+> NO se tocó**: se propone vía `/metodo-aprende` con firma. verify.sh **34/34**, 0 errores JS
+> (+`v18-directorio-agenda`: 4 movimientos · 6 cifras con referencia y cierre · caja bajo el piso ·
+> cobrado en apuestas · 3 bolsas · 6 riesgos contra apetito · 3 inversiones con desvío · 5 acuerdos con
+> 1 vencido · bandeja con plata · alcance con puente · cero norma en pantalla · rueda que recorre).
+> Verificado con capturas propias (página completa + los 4 movimientos). **PENDIENTE: republicar al
+> Artifact** (el operador decide) + firma de la deuda de esquema/método que abre (`07` § H).
+
 > **★ v17.2 EJECUTADA (2026-07-28 — "corrige todos los errores encontrados": barrido del tracker
 > dossier/07, todo lo ejecutable-sin-firma):** **(A4.1)** `objetivo.salud` DEJÓ de ser canned —
 > `saludKr(kr)` la DERIVA de avance real vs `kr.esperado` (campo nuevo en los 7 KRs, calibrado para

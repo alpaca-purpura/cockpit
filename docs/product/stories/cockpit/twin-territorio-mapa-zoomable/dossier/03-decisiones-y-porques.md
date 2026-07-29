@@ -297,3 +297,79 @@ comentarios puntuales sobre lo que veía — cierra la deuda #1 de `06-pendiente
     más lejos; el operador lo aceptó). **Deuda de fondo:** la raíz (center-anchoring) sigue viva — cajas
     MUY altas podrían volver a rozar; el fix robusto sería top-anchorear los nodos (no hecho: tocaría el
     ruteo de edges/hilo del hilo de oro).
+
+## De la sala del directorio (v18 — "¿le interesa esto a un directorio?")
+
+27. **La sesión del directorio se reorganiza como AGENDA de 4 movimientos, y entran las tres cosas
+    que faltaban: plata, riesgo formal y acuerdos.** Pedido del operador (2026-07-29): *"revisa la
+    vista del directorio a conciencia, sin defender lo ya realizado — ¿les interesa lo que hay, o
+    también debería verse el estado de resultados y otros elementos NIIF? dime qué NO estamos
+    mostrando que sí es relevante"*, y después: *"ejecuta los 3 bloques revisando primero cómo está
+    para reorganizar la información de forma oportuna, entendible y atractiva; que la información,
+    si bien es para un rubro, sea lo más general para cualquier otro"*.
+
+    **Diagnóstico (12 huecos, sin defender lo hecho).** Lo que había gobernaba la EJECUCIÓN de la
+    estrategia (apuestas · apetito · mezcla · alertas · portafolio) — eso es la **segunda mitad** de
+    una agenda de directorio y es genuinamente diferenciador. Faltaba la primera mitad entera:
+    1. la bandeja "espera tu decisión" **configuraba el propio modelo** (fijar apetito, fijar mezcla,
+       sellar) — 4 de 6 filas; en régimen esa bandeja queda vacía y el directorio no firma nada;
+    2. la apuesta **prometía plata y nunca la cobraba** (el producto acusa a otros de "indicador sin
+       ancla de valor" y cometía lo mismo en su nivel más alto);
+    3. todo era interno, auto-reportado y hacia adelante — cero dato cerrado o validado por fuera;
+    4. **no existía presupuesto** (un directorio gobierna CONTRA un presupuesto);
+    5. no existían **acuerdos con responsable y plazo** — el punto que abre toda sesión — ni acta;
+    6. no existía **registro de riesgos** (estaba el apetito, faltaba la contraparte);
+    7. no había **aterrizaje proyectado** ("¿llegamos a diciembre?");
+    8. **cero caja** — para una desarrolladora, EL tema;
+    9. las obras eran una alerta suelta, no un portafolio de inversiones;
+    10. una sola moneda; 11. cero cumplimiento/auditoría; 12. personas sólo como una vacante.
+
+    **Decisión sobre NIIF (bloque C — la frontera).** Sí al resultado, **no** al juego completo de
+    estados financieros. Reproducir los EEFF convierte a Cockpit en un tablero contable más
+    (commodity), pierde la pelea de calidad del dato contra el sistema contable, y mostrar cifras no
+    cerradas en una superficie de directorio es un riesgo real. La posición firmada: **Cockpit no es
+    el libro contable — es el puente entre el libro y la organización.** Lee un puñado de cifras con
+    su **estado de cierre** (preliminar → cerrado → auditado) y su procedencia, y **baja cada una al
+    proceso/área que la produce**. El alcance se declara explícitamente en una ficha propia
+    (`openAlcanceContable`), incluido lo que NO hace. El **puente** (`DATA.puente`) nombra las 6
+    decisiones contables que dependen de cómo opera la empresa — reconocimiento de ingreso ·
+    provisión por cobranza dudosa · valorización de lo construido · contingencias · arrendamientos ·
+    partes relacionadas — cada una navegable al twin. **El código de la norma vive SOLO dentro de la
+    ficha, como procedencia** — mismo trato que los códigos de carta del método (gate en la suite:
+    cero `NIIF|NIC \d` en pantalla).
+
+    **La joya del puente:** `g-avc` (avance real 87% vs declarado 95%) deja de ser sólo una brecha de
+    obra — es el input de si **lo construido está bien valorizado** en el libro. Eso es materia de
+    directorio y de auditoría, y ningún sistema contable puede detectarlo porque no conoce el proceso.
+
+    **La reorganización (el "cómo está" antes del "qué agrego").** La página pasa a ser la **agenda de
+    la sesión, en su orden real**: ① ¿cómo nos fue? (resultado + caja) · ② ¿a dónde vamos? (rumbo,
+    apuestas con lo cobrado, varas y presupuesto) · ③ ¿qué puede impedirlo? (riesgos, alertas,
+    inversiones, proyectos) · ④ ¿qué decidimos? (bandeja, acuerdos, acta). Se **eliminó** el panel
+    "¿Avanzan las apuestas?" (duplicaba el punto de salud de la propia tarjeta) → los puntos viven
+    inline en la cabecera de las apuestas. El **inspector dejó de repetir la página**: en nivel 1 ya
+    no muestra el pulso ni el ciclo de mejora (viven en los movimientos 2 y 3) y pasa a ser el
+    **índice de la sesión** (4 saltos) + la próxima jugada + las dos lecturas de contexto.
+
+    **El techo real que había que romper: `fit()`.** Una vista de módulo se encajaba en ANCHO *y*
+    ALTO, así que cada panel nuevo encogía la letra de todos los demás — con 12 huecos que llenar,
+    la página habría quedado ilegible. Se separó el gesto: una página es un **documento**
+    (`fitPagina` = encaje al ancho + anclado arriba; la rueda **recorre**, `⌘/Ctrl+rueda` hace zoom).
+    Resultado: el zoom se mantiene en 78% (misma legibilidad que v17) con una página de 2.7k px que
+    se recorre — y los 4 movimientos son las paradas. Aplica a Mejora/Método/Cambios también.
+
+    **Generalidad entre industrias (pedido explícito).** Cada bloque nuevo lleva una línea de
+    equivalencias (`.paral`, 7 en la página + 1 en la ficha de inversión) que nombra el equivalente
+    en manufactura, retail, servicios, software, banca o salud. El renglón de **Inversiones en curso**
+    es el caso más claro: *avance real · gastado contra presupuesto · ya comprometido · fecha de
+    entrega · margen proyectado* sirve igual para obras, ampliación de planta, tiendas nuevas,
+    contratos plurianuales o líneas de producto. La cabecera lo dice de frente: **las cuatro
+    preguntas son las mismas en cualquier industria; cambia el contenido de las filas.**
+
+    **Honestidad del respaldo.** 6 entradas nuevas de Respaldo del método citando lo que SÍ existe en
+    el catálogo (ISO 9001 §9.3 · FinOps · procedencia · ISO 31000 · 70/20/10 · P3M3 · RACI · WSJF) y
+    declarando en `gap:` lo que **aún no tiene carta**: marco de reporte contable, proyección de caja
+    a 13 semanas y resguardos, presupuesto y control presupuestario, gobierno corporativo
+    (acuerdo/sesión/acta/facultades), registro de riesgos con dueño y tendencia. **No se tocó
+    `methodologies.yaml`**: las cartas nuevas se proponen vía `/metodo-aprende` con firma del
+    operador, no se inventan desde el mockup.

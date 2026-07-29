@@ -64,11 +64,12 @@ function render(){
   mmDots(); if(state.insp==='home') inspectorHome();
 }
 
-/* vista de módulo = página HTML en el world (hereda pan/zoom/fit) */
+/* vista de módulo = página HTML en el world (hereda pan/zoom) — v18: se encaja al ANCHO y se
+   recorre con la rueda (`fitPagina`), no se comprime hasta entrar entera en el alto. */
 function pageView(html){
   const pv=el('div','pageview',html); $nodes.appendChild(pv);
   setCanvas(1360,900);
-  requestAnimationFrame(()=>{ setCanvas(1360, Math.max(640, pv.offsetHeight+80)); fit(); });
-  fit(); return pv;
+  requestAnimationFrame(()=>{ setCanvas(1360, Math.max(640, pv.offsetHeight+80)); fitPagina(); });
+  fitPagina(); return pv;
 }
 

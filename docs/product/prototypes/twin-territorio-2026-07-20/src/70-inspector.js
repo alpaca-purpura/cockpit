@@ -52,15 +52,23 @@ function inspectorHome(){
         <button class="btn" style="justify-content:center" onclick="document.getElementById('corridaGate').click()">Enviar a aprobación ›</button></div>`;
     return; }
   if(state.escala==='z0'&&!(state.mod==='territorio'&&state.nivel===3)){
-    inEye.textContent='Sala de mando · directorio';
+    /* v18 · en el nivel 1 la página YA es la sesión: el inspector deja de repetir el pulso y el
+       ciclo de mejora (que ahora viven en los movimientos 2 y 3) y pasa a ser lo que la página no
+       puede darte — el índice de la sesión, la próxima jugada y las dos lecturas de contexto. */
+    const n1=state.mod==='territorio'&&state.nivel===1;
+    inEye.textContent=n1?'Sesión · directorio':'Sala de mando · directorio';
     const ok=DATA.objetivos.filter(o=>o.salud==='verde').length;
-    inTitle.textContent=`Pulso · ${ok}/${DATA.objetivos.length} en banda`;
+    inTitle.textContent=n1?`Sesión de ${DATA.periodo.nm}`:`Pulso · ${ok}/${DATA.objetivos.length} en banda`;
     const g=DATA.brechas.find(b=>b.apuesta), o=byId(DATA.objetivos,g.obj);
     inBody.innerHTML=`
-      <div class="dgroup"><div class="gt">Pulso del directorio — KRs en banda${respBadge('sala-pulso')}</div>
+      ${n1?`<div class="dgroup"><div class="gt">La sesión, en orden — clic para saltar</div>
+        ${['¿Cómo nos fue? — resultado y caja','¿A dónde vamos? — rumbo, apuestas y varas','¿Qué puede impedirlo? — riesgos e inversiones','¿Qué decidimos? — bandeja, acuerdos y acta']
+          .map((t,i)=>`<button class="loop-it mov" data-mov="${i}"><span class="pdca">${i+1}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t}</span></button>`).join('')}
+        <div style="font-size:11px;color:var(--tx-faint)">La rueda recorre la sesión; los cuatro movimientos son el orden de la agenda.</div></div>`
+      :`<div class="dgroup"><div class="gt">Pulso del directorio — KRs en banda${respBadge('sala-pulso')}</div>
         <div class="pulso-dots">${DATA.objetivos.map(x=>{ const lbl={verde:'dentro de meta',ambar:'cerca',rojo:'fuera de meta'}[x.salud];
           return `<i data-obj="${x.id}" style="background:${health[x.salud]}" title="${x.nm} — ${x.kr.m}: ${x.kr.cur}${x.kr.u} (meta ${x.kr.to}${x.kr.u}) · ${lbl} · clic = su ficha, y desde ahí su hilo"></i>`; }).join('')}</div>
-        <div style="font-size:11px;color:var(--tx-faint)">verde = KR dentro de banda · toca un punto para su ficha (y su hilo) — o un objetivo directo en el mapa</div></div>
+        <div style="font-size:11px;color:var(--tx-faint)">verde = KR dentro de banda · toca un punto para su ficha (y su hilo) — o un objetivo directo en el mapa</div></div>`}
       <div class="apuesta-card">
         <div class="hd"><span class="live"></span><h3 class="eyebrow" style="margin:0;color:var(--tx-mut);letter-spacing:.1em">La apuesta · próximo paso${respBadge('sala-jugada')}</h3></div>
         <div class="body">Cerrar <b>Marina 87→95% de avance</b> — la brecha ALTA atada a <b>${o.nm}</b>.</div>
@@ -72,9 +80,9 @@ function inspectorHome(){
         <div style="font-family:var(--font-mono);font-size:10px;color:var(--tx-mut);margin-top:5px;cursor:help" title="${DATA.peers['meta-margen'].src}">vara externa: ${DATA.peers['meta-margen'].r} — la meta 18% es alcanzable</div>
         <button class="btn go" id="apuestaGo">Ver el hilo que mueve ›</button>
       </div>
-      <div class="dgroup"><div class="gt">El ciclo de mejora — brecha → proyecto → KPI${respBadge('sala-loop')}</div>
+      ${n1?'':`<div class="dgroup"><div class="gt">El ciclo de mejora — brecha → proyecto → KPI${respBadge('sala-loop')}</div>
         ${DATA.proyectos.map(pm=>`<button class="loop-it" data-pm="${pm.id}"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}${pm.estado==='cerrado'?' <span style="color:var(--ok);font-size:9px">✓ cerrado</span>':''}</span><span class="mono" style="font-size:10px;color:var(--brand-hi)" title="retorno del caso: lo que devuelve sobre lo que cuesta">ROI ${pm.roi}</span></button>`).join('')}
-        <div style="font-size:11px;color:var(--tx-faint)">${DATA.proyectos.filter(p=>p.estado!=='cerrado').length} proyectos en curso · ${DATA.proyectos.filter(p=>p.estado==='cerrado').length} cerrado con indicador movido · prende la capa Cinética para verlos sobre el mapa</div></div>
+        <div style="font-size:11px;color:var(--tx-faint)">${DATA.proyectos.filter(p=>p.estado!=='cerrado').length} proyectos en curso · ${DATA.proyectos.filter(p=>p.estado==='cerrado').length} cerrado con indicador movido · prende la capa Cinética para verlos sobre el mapa</div></div>`}
       <div class="dgroup"><div class="gt">El twin compila trabajo — se compila por rol×proceso · se ensambla por puesto${respBadge('sala-trabajo')}</div>
         <div style="font-size:12.5px;line-height:1.5"><b class="mono" style="color:var(--brand-hi)">${new Set(DATA.arneses.map(h=>h.deriva_de.puesto)).size}/${DATA.puestosTotal}</b> puestos con arnés en su roster · <b class="mono">${DATA.arneses.length}</b> arneses compilados · <span style="color:var(--warn)">${DATA.arneses.filter(h=>arnesEstado(h)==='desactualizado').length} desactualizado</span> (el twin cambió → recompilar). El resto opera a mano: el gap de la era agéntica, visible.</div>
         <button class="btn" id="verTrabajo" style="justify-content:center">Prender la capa Trabajo ›</button></div>
@@ -90,7 +98,8 @@ function inspectorHome(){
     const vm=inBody.querySelector('#verMadurez'); if(vm) vm.onclick=()=>{ gotoNivel(2);
       if(!state.capas.has('salud')){ const cs=document.querySelector('[data-capa=salud]'); if(cs) cs.click(); }
       const st=document.querySelector('.sub-t[data-sub=madurez]'); if(st) st.click(); };
-    inBody.querySelectorAll('.loop-it').forEach(b=>b.onclick=()=>openProyecto(byId(DATA.proyectos,b.dataset.pm)));
+    inBody.querySelectorAll('.loop-it[data-pm]').forEach(b=>b.onclick=()=>openProyecto(byId(DATA.proyectos,b.dataset.pm)));
+    inBody.querySelectorAll('.loop-it.mov').forEach(b=>b.onclick=()=>irMovimiento(+b.dataset.mov));
     /* v17: los puntos del pulso llevan data-obj — wireLinks (al final de inspectorHome) los cablea a la ficha
        del objetivo, que ya trae "Encender su hilo en el mapa ›" */
     inBody.querySelectorAll('[data-resp]').forEach(b=>b.onclick=()=>openRespaldo(b.dataset.resp));

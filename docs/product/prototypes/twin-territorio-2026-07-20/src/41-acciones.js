@@ -21,6 +21,16 @@ const ACC={
   'convocar-cuentas':[4,'directa','convocó rendición de cuentas'],
   'fijar-apetito':[4,'gestión-de-cambios','fijó el apetito de riesgo'],
   'fijar-mezcla':[4,'gestión-de-cambios','fijó la mezcla de ambición del año'],
+  /* v18 · las decisiones REALES de un directorio — plata, riesgo y acuerdos.
+     Antes la bandeja sólo configuraba el propio modelo (apetito, mezcla, sello): en régimen
+     esa bandeja queda vacía y el directorio no tiene nada que firmar. */
+  'aprobar-presupuesto':[4,'gestión-de-cambios','aprobó el presupuesto del año'],
+  'aprobar-inversion':[4,'gestión-de-cambios','aprobó una inversión sobre el umbral'],
+  'aprobar-endeudamiento':[4,'gestión-de-cambios','aprobó tomar deuda sobre el umbral'],
+  'fijar-piso-caja':[4,'gestión-de-cambios','fijó el piso de caja'],
+  'asignar-riesgo':[4,'revisión-dueño','asignó responsable y mitigación a un riesgo'],
+  'comprometer-acuerdo':[3,'revisión-dueño','comprometió un acuerdo del directorio'],
+  'cerrar-acta':[4,'directa','cerró la sesión y generó el acta'],
 };
 const RANGO={'':99, dir:4, ger:3, jefe:2, ana:1};
 const NIVAUT={4:'Dirección',3:'Estratégico',2:'Táctico',1:'Operativo'};

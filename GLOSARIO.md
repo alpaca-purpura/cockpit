@@ -71,10 +71,24 @@ operador firma y pasa a `firmado`. Nada se usa en pantalla estando `propuesto`.
 | simulación en borrador | what-if | complementa la fila "corrida" (§1b, renombre pendiente de firma) |
 | puntajes de automatización | scores M36 | |
 | mejora continua | kaizen (como etiqueta suelta) | "kaizen teian" puede citarse como fuente en la ficha de respaldo |
+| resultado del mes · resultado del periodo | P&L, estado de resultados (en UI) | barrido twin v18 (2026-07-29) — aplicado en el mockup, **espera firma**; el nombre técnico y la norma viven en la ficha de alcance |
+| dato preliminar · cerrado · auditado | estado de cierre contable, hard/soft close | v18 · el estado del dato SIEMPRE visible junto a la cifra |
+| cuánto quedó de cada sol vendido | margen bruto (solo el rótulo queda) | v18 · el rótulo "margen bruto" es común en el rubro; la explicación va en la ficha |
+| límites con el banco · resguardos | covenants | v18 |
+| piso de caja | mínimo de liquidez, cash floor | v18 · es una vara que el directorio firma, como el apetito |
+| ya comprometido | backlog, cartera vendida, pipeline contratado | v18 · sirve igual en obra, planta, tiendas o contratos |
+| inversiones en curso | CAPEX, portafolio de inversión | v18 · el renglón es el mismo en cualquier industria |
+| acuerdo (del directorio) | action item, compromiso de acta | v18 · lleva responsable, plazo y estado |
+| acta de la sesión | minuta, board pack | v18 |
+| lo prometido / lo cobrado (de una apuesta) | benefits realization, valor capturado | v18 · lo cobrado lo verifica finanzas, jamás quien apostó |
+| facultades · sobre este monto decide el directorio | delegation of authority, DOA | v18 |
+| avance real vs avance declarado | avance valorizado vs físico (en UI) | v18 · la diferencia es lo que infla el valor de lo construido |
+| norma contable (NIIF/NIC) | los códigos sueltos en pantalla | v18 · mismo trato que los códigos M-NN: viven SOLO dentro de la ficha, como procedencia |
 
 **Términos del rubro que SÍ se usan tal cual** (no son jerga — son el nombre común): apetito de
 riesgo · cadena de valor · compromiso · apuesta · madurez · brecha · capacidad · organigrama ·
-indicador · objetivo · proceso · área · puesto · rol.
+indicador · objetivo · proceso · área · puesto · rol · **ingresos · margen bruto · gasto operativo ·
+caja · deuda neta · presupuesto · riesgo · acuerdo · acta** (v18 — un directorio los trae de casa).
 
 ## §1b · Renombres de PRODUCTO — pendientes de firma del operador
 

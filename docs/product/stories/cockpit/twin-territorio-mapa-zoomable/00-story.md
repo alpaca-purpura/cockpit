@@ -323,6 +323,31 @@ un sistema interconectado. Sal de la caja y proponme algo mejor."
     externamente. Pendiente de schema: formalizar `tareas[]` bajo actividad (hoy `desc` D-08) —
     ficha D-NN vía `/metodo-aprende` cuando se ratifique.
 
+## v18 · La sala del directorio como AGENDA (2026-07-29) — entran plata, riesgo y acuerdos
+
+18. **La vista del directorio se reorganiza en 4 movimientos y se cierra el hueco de fondo: lo que
+    había gobernaba la EJECUCIÓN de la estrategia (la segunda mitad de una agenda de directorio) y no
+    tenía resultado, caja, presupuesto ni acuerdos.** Auditoría de 13 hallazgos sin defender lo hecho
+    (`dossier/07` § H). Entra: ① resultado del periodo (6 cifras contra plan y año anterior, con
+    **estado de cierre**) + caja a 13 semanas contra el piso + límites con el banco · ② **valor
+    cobrado** por apuesta (antes prometía y nunca rendía — el propio "sin ancla de valor" cometido
+    arriba) + **presupuesto** = la mezcla de ambición en plata + facultades por monto · ③ **registro
+    de riesgos** contra el apetito ya firmado + **inversiones en curso** (avance real vs declarado ·
+    gasto vs presupuesto · comprometido) · ④ bandeja con **decisiones de plata** que llegan por umbral
+    + **acuerdos de la sesión anterior** + **el acta**.
+    **Frontera contable (decisión de alcance):** Cockpit **no reexpresa** los estados financieros —
+    los **lee** con su estado de cierre y los **baja al proceso/área que los produce**; el juego
+    completo, las notas y el dictamen viven en el sistema contable. Se declara explícitamente en una
+    ficha propia, con el **puente** de 6 decisiones contables ancladas al twin (la joya: el avance
+    real 87% vs declarado 95% ES el input de si lo construido está bien valorizado). El código de la
+    norma vive SOLO dentro de la ficha, como procedencia — cero jerga contable en pantalla.
+    **Generalidad entre industrias** (pedido del operador): cada bloque nuevo nombra su equivalente en
+    manufactura, retail, servicios, software, banca o salud; las cuatro preguntas de la sesión son las
+    mismas en cualquier rubro, cambia el contenido de las filas.
+    **Techo técnico roto:** una vista de módulo se encajaba en ancho **y** alto, así que cada panel
+    nuevo encogía la letra de todos — se separó el gesto (una página es un documento: encaje al ancho,
+    anclado arriba, la rueda recorre). Detalle completo: `dossier/03` decisión 27.
+
 ## ⚠ PENDIENTE — ajustes del operador (continuar en conversación nueva)
 
 **El operador sigue iterando el mockup.** Estado tras la sesión 2 (shell v2):
@@ -487,3 +512,17 @@ tabs actual. Ratificación del operador + (si es decisión de fondo) ficha CK-NN
   `g-mar`→`g-dso` · "~15"→27 puestos · "40 roles"→`puestosTotal: 40` (puestos) · canvas 920→1300 ·
   v9/2439→v11/2475 líneas · orden real de módulos · fit 58% = relativo al viewport. **Cero cambio al
   mockup — sólo docs.** Siguiente: **A1**.
+- v18 2026-07-29 — **la sala del directorio como agenda de 4 movimientos** (decisión 18 · dossier/03
+  decisión 27): auditoría de 13 hallazgos pedida por el operador ("¿les interesa lo que hay? ¿debería
+  verse el estado de resultados y otros elementos NIIF?") → entran **resultado del periodo** (6 cifras
+  con plan/año anterior/acumulado y estado de cierre), **caja** (13 semanas contra el piso, límites con
+  el banco, confianza degradada por la jefatura vacante), **presupuesto** (la mezcla en plata) +
+  **facultades**, **valor cobrado** por apuesta, **registro de riesgos** contra el apetito,
+  **inversiones en curso** (avance real vs declarado), **acuerdos** de la sesión anterior y el **acta**;
+  bandeja re-hecha con decisiones de plata que llegan por umbral. **Bloque C:** alcance contable
+  explícito (Cockpit enlaza, jamás reexpresa) + puente de 6 decisiones contables ancladas al twin, con
+  la norma sólo como procedencia dentro de la ficha. Se eliminó el panel duplicado "¿Avanzan las
+  apuestas?" y el inspector de nivel 1 pasó a ser el índice de la sesión. `fit` de página separado
+  (`fitPagina` + rueda que recorre) — sin eso, cada panel nuevo encogía la letra de todos.
+  7 líneas de equivalencia entre industrias. Partes nuevas: `36-data-gobierno.js`,
+  `19b-directorio.css`, `74-fichas-gobierno.js`. Suite **34/34**, 0 errores JS.

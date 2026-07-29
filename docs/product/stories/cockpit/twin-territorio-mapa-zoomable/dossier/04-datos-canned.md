@@ -26,6 +26,15 @@
 | `sipoc` + `sipocC1` | 17 + 17 | bordes + `{prop,fin,apqc}` — **en el MOCKUP son tablas canned paralelas** (no se derivan de `proceso.entradas/salidas`, que el canned no tiene); la doctrina "se DERIVA, jamás se edita" (D-08/D-11) aplica a la APP real (cierra B2 de `07`) |
 | `lienzos` | 11 plenos (+6 stub) | acts `{ord,lane,verbo,ttl,tipo,toque,espera,sist,triage\|mandato,rtlx?,conf,fte,raci?,note}` |
 | `z3` | 14 instrucciones (`'pid:ord'`) | `{ins[],out,tareas[{v,t}],m36{7 inputs + rpa,agente},nota?}` |
+| **`periodo`** (v18) | 1 + 6 cifras | `{nm,cierre,marco,auditor,cifras[{id,nm,v,plan,ant,ytd,ytdPlan,u,dir,que,porque,ref}]}` — la variación se DERIVA |
+| **`caja`** (v18) | 1 | `{saldo,piso,semanas[13],hito,lineas,resguardos[2],conf:'baja'}` |
+| **`presupuesto`** (v18) | 3 bolsas | `{total:6.0,estado:'por aprobar',bolsas[{b,nm,asignado,comprometido}]}` |
+| **`facultades`** (v18) | 4 umbrales | qué monto obliga a que decida el directorio |
+| **`riesgos`** (v18) | 6 | `{id,nm,cat,prob,imp,tend,dueno,mitig,ref,fuente,conf}` — nivel derivado |
+| **`acuerdos`** (v18) | 5 | `{id,nm,quien,sesion,plazo,estado,ref,nota?}` — 2 cumplidos · 1 en curso · 1 pendiente · 1 vencido |
+| **`inversiones`** (v18) | 3 | `{id,nm,avance,avanceDecl,gasto,presu,compro,meta,entrega,entregaComp,margen,margenPlan}` |
+| **`puente`** (v18) | 6 | `{q,op,ref,norma,otras}` — dónde el número del libro toca la operación |
+| **`apuestas[].valor.cobrado`** (v18) | 4 | `{v,u,pct,estado,nota,fuente,conf,verif}` — o `null`/"aún no aplica" |
 
 Lienzos plenos: flagship **p-cob** (7 acts, 3 carriles, 2 flujos alternos "mora dura"/"sin
 respuesta ×3") + p-vta, p-camp, p-dis, p-ejec, p-val, p-fact, p-post, p-cierre, p-pago, **p-perm**
@@ -72,6 +81,26 @@ vacante) · g-cvis `a-corroborar` + conf baja · g-mca `off-thread` (atenuada en
   twin→arnés). **h-cont v2** — "RECOMPILADO al cerrar pm-cie" (la mejora llegó al puesto).
 - **4/40 puestos con arnés** — el gap agéntico como número de portada.
 - p-caja y p-perm con **0 guías** de conocimiento (la brecha de conocimiento ↔ g-doc/g-dep).
+
+### Gobierno del directorio (v18)
+- **`f-caj` caja 2.1 contra 3.4 de plan** y la proyección **cruza el piso en la semana 7** (0.85) —
+  la pregunta #1 de un directorio, que antes no existía en el mockup.
+- **`caja.conf: 'baja'`** — *"la jefatura de Tesorería está vacante hace 5 meses; nadie firma esta
+  proyección"*. La vacante que ya existía (`a-tes`, `g-tes`) ahora **degrada un número del directorio**:
+  el twin conecta un hueco de organigrama con la confianza de una cifra.
+- **`ap-cob.valor.cobrado = "aún no aplica"`** — la apuesta sin sellar no finge un retorno.
+  `ap-mar` cobró **0** ("el stock sigue parado"): prometer sin cobrar se ve.
+- **`iv-mar`: avance real 87 vs declarado 95** — el mismo hecho de `g-avc`, ahora también como
+  **riesgo de valorización** (si el libro registra el declarado, lo construido está inflado) y como
+  **acuerdo abierto con el contador** (`ac-40`). Un hecho, tres superficies, cero duplicación de dato.
+- **`ac-41` vencido hace 2 sesiones** (cubrir Tesorería) — y es exactamente la firma que le falta a
+  la caja. El acuerdo vencido es el punto que abre la sesión.
+- **`r-lic` y `r-dat` en nivel alto** con apetito de cumplimiento `baja` → "**por encima del apetito**".
+  `expansion` sigue *sin definir* (casuística previa) → "fíjalo ⚠".
+- **`iv-cen`**: gastó 79% del presupuesto con 8% de avance y **entrega "sin fecha"** — no arranca hasta
+  que salga la licencia (`p-perm`, ~85 días de espera). El proceso lento del twin, con precio.
+- **`presupuesto.estado: 'por aprobar'`** — sin presupuesto aprobado, la mezcla de ambición
+  (70/20/10) es una intención sin plata detrás. La bandeja lo pide como primera decisión.
 
 ### Sistemas / pulso
 Nubecont (dlt diaria 06:00 · 14 tablas) · CRM (horaria) · **Excel caja "SIN conector"** · Banca

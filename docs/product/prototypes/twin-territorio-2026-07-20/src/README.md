@@ -25,6 +25,7 @@ mover una parte de CSS cambia la cascada. Nada se transforma, sólo se pega.
 | `16-inspector.css` | inspector derecho · SIPOC · sala de mando · drawer de KPI · corrida |
 | `17-modulos.css` | vistas de módulo · mapa de valor · organigrama nivel 4 · guardrails del arnés · capa Trabajo |
 | `18-materiales.css` | las reglas de material por capa ArchiMate (las variables están en `10-tokens`) |
+| `19b-directorio.css` | v18 · sala del directorio: movimientos de la sesión · cifras del resultado · caja · presupuesto · riesgos · acuerdos · inversiones |
 | `19-apendice-v14.css` | **deuda** — apéndice cronológico (todo lo que se agregó de v14 en adelante). Disolverlo en los temáticos exige revisar la cascada de 9 clases que se pintan en ambos bloques: `.ap .cambio-row .gt .k .nm .off .pt .sc .tt` |
 
 ### Markup
@@ -42,6 +43,7 @@ mover una parte de CSS cambia la cascada. Nada se transforma, sólo se pega.
 | `33-data-valor.js` | cadena misional · pasos mini · SIPOC · los lienzos de proceso (z2) |
 | `34-data-instruccion.js` | z3: instrucción de trabajo por actividad + el proceso insignia |
 | `35-data-directorio.js` | apuestas · rumbo · varas del directorio + helpers derivados (`krProg` · `saludKr` · `contraste` · `mezclaReal`) |
+| `36-data-gobierno.js` | v18 · resultado del periodo · caja · presupuesto · facultades · riesgos · acuerdos · inversiones · puente contable + helpers (`varia` · `nivelRiesgo` · `riesgoVsApetito` · `cajaBajoPiso`) |
 
 De `32` en adelante son **asignaciones** `DATA.x = …` sobre el mismo objeto: un archivo por tema,
 un solo `DATA`. Por eso las partes de datos no parsean sueltas — sólo concatenadas (`build.py`
@@ -67,7 +69,7 @@ corre `node --check` sobre el resultado, no sobre cada archivo).
 | `62-valor.js` | z0/z1 · piel Mapa de Valor — 5 bandas + el hilo + foco de área |
 | `63-lienzo.js` | z2 · el lienzo del proceso |
 | `64-instruccion.js` | z3 · la instrucción de trabajo |
-| `65-directorio.js` | nivel 1 · sala del directorio (rumbo · varas · bandeja) |
+| `65-directorio.js` | nivel 1 · sala del directorio — la sesión en **4 movimientos** (resultado y caja · rumbo/apuestas/varas · riesgos e inversiones · decisiones, acuerdos y acta) |
 | `66-tactico.js` | nivel 3 · el compromiso entre áreas |
 | `67-modulos.js` | módulos Mejora · Método · Cambios |
 | `68-topbar-minimapa.js` | chips de filtro · contador de subset · minimapa |
@@ -80,6 +82,7 @@ corre `node --check` sobre el resultado, no sobre cada archivo).
 | `71-fichas-proceso.js` | fichas de proceso · brecha · proyecto · actividad |
 | `72-fichas-kpi.js` | ficha de KPI + sparkline |
 | `73-fichas-entidad.js` | fichas de apuesta · objetivo · puesto · rol · persona · arnés · área · sistema · idea · capability · empresa |
+| `74-fichas-gobierno.js` | v18 · fichas de cifra · caja · presupuesto · riesgo · acuerdo · inversión · **alcance contable** (qué lee Cockpit y qué jamás reexpresa) |
 | `80-eventos.js` | wiring de eventos + arranque |
 
 ## Reglas
@@ -88,7 +91,7 @@ corre `node --check` sobre el resultado, no sobre cada archivo).
 2. **Parte nueva → alta en `MANIFEST`** de `build.py`, en la posición correcta. Un archivo en `src/`
    que `MANIFEST` no nombra hace fallar el build (nadie lo concatena = isla).
 3. **El orden es la cascada.** Reordenar CSS sin revisar qué pisa a qué rompe el pintado en silencio.
-4. **La suite manda:** `./verify.sh` reconstruye y corre 33 pruebas con hit-testing real. Verde antes
+4. **La suite manda:** `./verify.sh` reconstruye y corre 34 pruebas con hit-testing real. Verde antes
    y después de cualquier reorganización.
 5. **Cero color a mano** en una parte nueva — sale de `10-tokens.css`.
 

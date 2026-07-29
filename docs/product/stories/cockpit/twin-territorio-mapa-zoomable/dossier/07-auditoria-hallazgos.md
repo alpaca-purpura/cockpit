@@ -32,6 +32,19 @@
 | **D2** | `CLAUDE.md` / reglas dicen "9 entidades" | 🟠 | **✅ resuelto v15.2 2026-07-27** — `CLAUDE.md` y `cockpit-stack.md` dicen "13 entidades (CK-26 + apuesta D-23)" | — |
 | **D3** | `state: idea` con 11 versiones y dossier de 7 docs — sin `01-spec` | 🟡 | abierto | operador |
 | **D4** | M40 (frontera persona) y M30 (BSC): **limpios** | ✅ | verificado | — |
+| **H1** | La bandeja del directorio configuraba el modelo, no gobernaba la empresa | 🔴 fondo | **✅ v18 2026-07-29** — 4 decisiones de plata primero (presupuesto · línea · inversión · piso de caja), cada una con el umbral que la sube al directorio | — |
+| **H2** | La apuesta prometía plata y **nunca la cobraba** (el propio "sin ancla de valor") | 🔴 fondo | **✅ v18** — `valor.cobrado` en las 4 apuestas (barra + verificado-por; "aún no aplica" si no está sellada) | — |
+| **H3** | Todo el tablero era interno, auto-reportado y hacia adelante — cero dato cerrado | 🔴 fondo | **✅ v18** — 6 cifras del periodo leídas del sistema contable con **estado de cierre** y procedencia | — |
+| **H4** | No existía **presupuesto** (un directorio gobierna contra un presupuesto) | 🔴 fondo | **✅ v18** — `DATA.presupuesto` (la mezcla de ambición en plata) + facultades por monto | — |
+| **H5** | No existían **acuerdos** con responsable y plazo, ni acta — el punto que abre toda sesión | 🔴 fondo | **✅ v18** — 5 acuerdos con estado + acción "cerrar la sesión y generar el acta" | — |
+| **H6** | Estaba el apetito de riesgo, faltaba el **registro de riesgos** | 🟠 | **✅ v18** — 6 riesgos, nivel derivado (probabilidad × impacto), contrastados contra el apetito de su categoría | — |
+| **H7** | Sin **aterrizaje proyectado** ("¿llegamos a diciembre?") | 🟠 | **◐ parcial v18** — hay acumulado del año contra plan por cifra; falta la proyección de cierre del año por meta | operador |
+| **H8** | **Cero caja** — para esta empresa, EL tema del directorio | 🔴 fondo | **✅ v18** — saldo · 13 semanas contra el piso · línea · límites con el banco · confianza baja por la vacante | — |
+| **H9** | Las obras eran una alerta suelta, no un portafolio de inversiones | 🟠 | **✅ v18** — 3 inversiones con avance real vs declarado · gasto vs presupuesto · comprometido · entrega · margen | — |
+| **H10** | Una sola moneda — sin exposición cambiaria | 🟡 | abierto — `periodo.moneda` existe como campo; falta la vista de exposición | operador |
+| **H11** | Cero cumplimiento: hallazgos de auditoría, litigios, licencias, seguridad | 🟡 | **◐ parcial v18** — el dictamen y sus 2 hallazgos viven en la ficha de alcance; riesgos de cumplimiento en el registro; falta la superficie propia | operador |
+| **H12** | Personas a nivel directorio sólo como una vacante | 🟡 | abierto — sucesión, rotación, planilla sobre ingresos, contingencia laboral (respetando CK-24) | operador |
+| **H13** | `fit()` encajaba una página en ancho **y** alto → cada panel nuevo encogía la letra de todos | 🟠 | **✅ v18** — `fitPagina` (encaje al ancho, anclado arriba) + la rueda recorre; aplica también a Mejora/Método/Cambios | — |
 
 > **Sync del tracker 2026-07-28 (v17.2):** filas A3/B5/D1/D2 estaban resueltas por v12/v15.2 y el
 > tablero seguía diciéndolas abiertas (el sync esperaba la firma visual del operador sobre v12 —
@@ -392,6 +405,75 @@ cruza el umbral.
 - **M30** (BSC): la card dice `cuando_si: "SOLO-CHECKLIST de perspectivas"` y
   `cuando_no: "NO framework completo"`. La **decisión 15** (BSC = orden interno de la banda
   Estrategia, no piel propia) cumple la card **mejor** que la decisión 2 original. **Sin hallazgos.**
+
+---
+
+# H · La agenda del directorio (auditoría 2026-07-29 · "¿le interesa esto a un directorio?")
+
+**Qué se pidió.** El operador: *"revisa la vista del directorio a conciencia, sin defender lo ya
+realizado — ¿les interesa lo que hay, o también debería verse el estado de resultados y otros
+elementos NIIF? dime qué cosas NO estamos mostrando que sí son relevantes a un directorio en sus
+reuniones"*.
+
+**Qué se midió.** El `renderDirectorio()` vivo (paneles, filas y acciones reales) contra la agenda
+efectiva de una sesión de directorio y contra `ACC` (el catálogo de acciones). Resultado: lo que había
+cubría la **ejecución de la estrategia** (apuestas · apetito · mezcla · alertas · portafolio) —
+la segunda mitad de la agenda, y genuinamente diferenciadora. Faltaba la primera mitad completa:
+resultado, caja, presupuesto y acuerdos. Los 13 hallazgos están en el tablero (H1-H13).
+
+**Los tres más severos, y por qué.**
+- **H2 — la apuesta promete y no cobra.** El producto acusa a otros de "indicador sin ancla de valor"
+  (`g-post`, la joya del diagnóstico) y cometía exactamente eso en su nivel más alto: `valor.s`
+  ("persigue +S/ 3.1M/año") sin ningún campo que registre lo cobrado. Cerrado en v18 con `valor.cobrado`
+  verificado por finanzas — jamás declarado por quien apostó.
+- **H1 — la bandeja configuraba el modelo.** 4 de 6 filas eran fijar apetito / fijar mezcla / sellar /
+  cerrar bajada: *setup del propio Cockpit*. En la sesión N°4, con el marco ya fijado, esa bandeja queda
+  vacía y el directorio no tiene nada que firmar. Cerrado con decisiones de plata que llegan **por umbral
+  de facultades** — el mecanismo que las hace recurrentes.
+- **H3/H8 — cero dato cerrado, cero caja.** Un directorio descuenta el dato interno hacia adelante.
+  Lo que vuelve creíbles las apuestas es un resultado cerrado al lado, con su estado de cierre.
+
+## La decisión de alcance sobre NIIF (bloque C)
+
+**Sí al resultado, no al juego completo de estados financieros.** Razones, en orden: (1) reproducir los
+EEFF convierte a Cockpit en un tablero contable más — commodity, y pierde el diferenciador; (2) pierde
+la pelea de calidad del dato contra el sistema contable (aquí, Nubecont, ya declarado con carga diaria
+y 14 tablas); (3) mostrar cifras no cerradas en una superficie de directorio es un riesgo real — los
+EEFF tienen ciclo de cierre, dictamen y reexpresiones.
+
+**La posición firmada:** *Cockpit no es el libro contable — es el puente entre el libro y la
+organización.* Lee un puñado de cifras **con estado de cierre y procedencia** y **baja cada una al
+proceso/área que la produce**. Lo que no hace se declara explícitamente en `openAlcanceContable`.
+
+**El puente** (`DATA.puente`, 6 filas) nombra las decisiones contables que dependen de cómo opera la
+empresa, cada una navegable al twin. La norma se cita **sólo dentro de la ficha, como procedencia** —
+mismo trato que los códigos de carta del método; hay gate en la suite (`cero /NIIF|NIC \d/` en pantalla).
+
+| Decisión contable | De qué operación depende | Ancla en el twin |
+|---|---|---|
+| Cuándo se reconoce el ingreso | entregas y avance de obra | `iv-mar` |
+| Cuánto se provisiona por cobranza dudosa | la mora y los días de cobranza | `g-dso` |
+| **Cuánto vale lo que está a medio construir** | **el avance REAL, no el declarado** | **`g-avc`** |
+| Qué contingencias se registran | litigios, penalidades, licencias | `p-perm` |
+| Qué arrendamientos entran al balance | contratos de terreno/oficina/equipo | — |
+| Qué operaciones con vinculadas se revelan | gobierno y partes relacionadas | — |
+
+**La joya.** `g-avc` (87% real vs 95% declarado) deja de ser sólo una brecha de obra: es el input de si
+**lo construido está bien valorizado** en el libro — materia de directorio y de auditoría. Ningún
+sistema contable puede detectarlo, porque no conoce el proceso. Es la demostración más limpia de por qué
+el twin y el libro son cosas distintas que se necesitan.
+
+## Deuda que abre esta auditoría
+
+- **Esquema:** `riesgo`, `acuerdo` (+ `sesion`/`acta`), `inversion`, `presupuesto`, `periodo`/`cifra` y
+  `apuesta.valor.cobrado` **no existen en `objeto.schema.yaml`** — hoy son dato del mockup. El más barato
+  y universal es `acuerdo`: no necesita integrar ningún sistema externo. Requiere fichas D-NN con firma.
+- **Método:** faltan cartas para marco de reporte contable, proyección de caja y resguardos, presupuesto y
+  control presupuestario, gobierno corporativo (acuerdo/acta/facultades) y registro de riesgos con dueño y
+  tendencia. Declaradas en `gap:` de las 6 entradas nuevas de Respaldo. **No se tocó `methodologies.yaml`** —
+  se proponen vía `/metodo-aprende` con firma del operador.
+- **Abiertos del tablero:** H7 (aterrizaje proyectado), H10 (moneda), H11 (cumplimiento como superficie),
+  H12 (personas a nivel directorio).
 
 ---
 

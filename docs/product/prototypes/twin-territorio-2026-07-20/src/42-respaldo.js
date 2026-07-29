@@ -29,6 +29,38 @@ const RESPALDO={
     {f:'Madurez del sistema de gestión (ISO 9004)', uso:'autoevaluación 1-5 por dimensión (liderazgo · estrategia · recursos · procesos · mejora): dónde estás vs dónde quieres estar. El nivel se DERIVA de evidencia con su confianza — jamás se declara a mano.', m:'M47'},
     {f:'COBIT — arbitraje de escaleras', uso:'el mapa por nodo se pinta con la escalera de gobierno/TI; esta gradúa el sistema de gestión completo (finanzas y personas incluidas) — dos varas, cada una en su cancha.', m:'M15'},
     {f:'Frontera persona ↔ twin', uso:'la madurez de "personas" se agrega por rol y área — jamás evaluación de una persona nombrada.', m:'M40'} ]},
+  /* — v18: los panels de gobierno del directorio (resultado · caja · presupuesto · riesgos ·
+       acuerdos · inversiones). Donde el catálogo AÚN no tiene carta, se declara en `gap` — el
+       panel cita lo que puede y confiesa lo que le falta, jamás inventa una fuente. */
+  'dir-resultado':{ cita:'revisión por la dirección · valor', t:'El resultado del periodo', items:[
+    {f:'ISO 9001 — revisión por la dirección (§9.3)', uso:'la sesión arranca por el desempeño del periodo contra lo planificado: es una entrada obligatoria de la revisión, no un anexo.', m:'M16'},
+    {f:'FinOps — valor cuantificado', uso:'las cifras se leen en dinero y contra una referencia (plan y año anterior); una cifra sin referencia no gobierna nada.', m:'M22'},
+    {f:'Procedencia del dato', uso:'toda cifra declara su fuente, su confianza y su ESTADO DE CIERRE (preliminar · cerrado · auditado). Un número preliminar se muestra preliminar — jamás se pinta como cerrado.', m:'M23'} ],
+    gap:'Cockpit NO reexpresa los estados financieros: los lee del sistema contable y los baja al twin. El marco de reporte (NIIF plenas · NIIF para PYMES), el ciclo de cierre y el dictamen del auditor todavía no tienen carta propia en el catálogo — hoy viven como configuración de la empresa y como puente hacia la operación, no como metodología.' },
+  'dir-caja':{ cita:'liquidez · valor', t:'La caja', items:[
+    {f:'FinOps — valor cuantificado', uso:'la caja es el único número que no admite adjetivos: saldo, proyección, líneas disponibles y deuda, en dinero.', m:'M22'},
+    {f:'Procedencia del dato', uso:'la proyección declara quién la firma; acá NADIE la firma (jefatura vacante) y por eso su confianza es baja — la ausencia se muestra, no se maquilla.', m:'M23'} ],
+    gap:'La proyección de caja a 13 semanas y los resguardos con el banco (los límites que el financiamiento impone) todavía no tienen carta en el catálogo. El piso de caja SÍ es una vara del mismo tipo que el apetito de riesgo — candidato natural a extender la carta de apetito.' },
+  'dir-presupuesto':{ cita:'bolsas · valor', t:'El presupuesto y las facultades', items:[
+    {f:'Portafolio de ambición (70/20/10)', uso:'la mezcla deja de ser un porcentaje abstracto: cada bolsa lleva plata asignada y plata comprometida. La mezcla ES el apetito hecho asignación — acá se ve en dinero.', m:'M54'},
+    {f:'FinOps — valor cuantificado', uso:'lo comprometido contra lo asignado, por bolsa: se ve dónde se está gastando el futuro que se prometió comprar.', m:'M22'},
+    {f:'Matriz de responsabilidades (RACI) — autoridad', uso:'los umbrales de facultades declaran qué monto obliga a que decida el directorio y qué queda en la gerencia.', m:'M25'} ],
+    gap:'El presupuesto anual y su control (asignado · comprometido · ejecutado) aún no tienen carta ni entidad de esquema. La delegación de facultades por monto tampoco: hoy vive como dato del mockup y como umbral en la bandeja.' },
+  'dir-riesgos':{ cita:'ISO 31000', t:'Los riesgos', items:[
+    {f:'Apetito de riesgo por categoría (ISO 31000 / COSO)', uso:'el apetito ya era la vara; el registro es la contraparte que faltaba: cada riesgo se contrasta contra el apetito de SU categoría — "por encima del apetito" es una derivación, no una opinión.', m:'M52'},
+    {f:'ISO 9001 — riesgos y oportunidades (§6.1)', uso:'el riesgo vive pegado al proceso, la brecha o el área que lo produce: se navega al twin, no a un anexo suelto.', m:'M16'},
+    {f:'Procedencia del dato', uso:'cada riesgo declara de dónde sale su evidencia y con qué confianza.', m:'M23'} ],
+    gap:'El registro con responsable, mitigación y tendencia extiende la carta de apetito; el nivel se deriva de probabilidad × impacto (matriz clásica). Falta ficha de esquema para `riesgo` — hoy es dato del mockup.' },
+  'dir-acuerdos':{ cita:'ISO 9001 §9.3 · RACI', t:'Los acuerdos de la sesión anterior', items:[
+    {f:'ISO 9001 — revisión por la dirección (§9.3)', uso:'el seguimiento de lo acordado en la revisión anterior es entrada obligatoria de la siguiente: es el punto que abre toda sesión.', m:'M16'},
+    {f:'Matriz de responsabilidades (RACI)', uso:'un acuerdo sin responsable y sin plazo no es un acuerdo: es una conversación.', m:'M25'},
+    {f:'ISO 9001 — registros', uso:'la sesión cierra generando el acta, y el acta queda versionada como cualquier otro dato del twin.', m:'M16'} ],
+    gap:'`acuerdo` y `sesión de directorio` (con acta versionada y firma) todavía no son entidades del esquema. Es el candidato más barato y más universal: no necesita integrar ningún sistema externo.' },
+  'dir-inversiones':{ cita:'portafolio · valor', t:'Las inversiones en curso', items:[
+    {f:'P3M3 — madurez de portafolio, programas y proyectos', uso:'la inversión grande se gobierna como portafolio: avance, gasto contra presupuesto y compromiso, en una sola fila comparable entre inversiones.', m:'M50'},
+    {f:'FinOps — valor cuantificado', uso:'las tres varas van en dinero (gasto · comprometido · margen proyectado contra plan), no en semáforos de sensación.', m:'M22'},
+    {f:'Procedencia del dato', uso:'el avance DECLARADO y el avance REAL se muestran por separado: la diferencia entre ambos es exactamente lo que hace que lo construido quede mal valorizado en el libro.', m:'M23'} ],
+    gap:'`inversión` (o proyecto de inversión, distinto del proyecto de mejora) no es entidad del esquema todavía. Es el eje donde más se nota el paralelismo entre industrias — obras, planta, tiendas, contratos o líneas de producto son la misma fila.' },
   'bandeja':{ cita:'ISO 9001', t:'Espera tu decisión', items:[
     {f:'ISO 9001 — gestión de cambios', uso:'toda decisión que cambia la organización pasa por su aprobación y queda registrada en el historial.', m:'M16'},
     {f:'Matriz de responsabilidades (RACI) — autoridad', uso:'quién firma cada decisión está declarado por nivel: nada espera a la persona equivocada.', m:'M25'} ]},
@@ -185,7 +217,10 @@ const RESPALDO={
 const RESP_TIPO={ empresa:'ent-empresa', objetivo:'ent-objetivo', kpi:'ent-kpi', proceso:'ent-proceso',
   actividad:'ent-actividad', area:'ent-area', puesto:'ent-puesto', rol:'ent-rol', persona:'ent-persona',
   sistema:'z0-sistemas', brecha:'ent-brecha', capability:'ent-capability', proyecto:'mej-proyectos',
-  idea:'ideas', apuesta:'dir-apuestas', arnes:'sala-trabajo' };
+  idea:'ideas', apuesta:'dir-apuestas', arnes:'sala-trabajo',
+  /* v18 · gobierno del directorio */
+  cifra:'dir-resultado', alcance:'dir-resultado', caja:'dir-caja', presupuesto:'dir-presupuesto',
+  riesgo:'dir-riesgos', acuerdo:'dir-acuerdos', inversion:'dir-inversiones' };
 /* v14.4: aplica en TODO el twin; onclick inline = funciona también en el lienzo ($nodes) sin wireLinks */
 function respBadge(id){ const r=RESPALDO[id]; if(!r||!state.capas.has('respaldo')) return '';
   return `<button class="resp" data-resp="${id}" onclick="event.stopPropagation();openRespaldo('${id}')" title="Respaldo del método: ${r.items.map(i=>i.f).join(' · ')} — clic = la ficha">§ ${r.cita}</button>`; }

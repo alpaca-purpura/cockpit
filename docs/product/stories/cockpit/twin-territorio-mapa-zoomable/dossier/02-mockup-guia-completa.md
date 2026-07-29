@@ -248,6 +248,36 @@ Entra por idmenu → banner + tinte + idpill + diff (Tesorería Δ en organigram
 portal de pagos` en z1) + inspector de impactos + gate → cola de Cambios ("el diff pasa por
 aprobación — PR a N6").
 
+### Nivel 1 · Sala del directorio — la sesión en 4 movimientos (decisión 27, `renderDirectorio()`)
+
+La página **es la agenda de la sesión, en su orden real**. Canvas 1360 × ~2.8k px: no entra en una
+pantalla **a propósito** — se recorre con la rueda (`fitPagina`: encaje al ANCHO, anclado arriba;
+`⌘/Ctrl+rueda` hace zoom). Los 4 `.secband` son las paradas, y el inspector es su índice.
+
+| Movimiento | Pregunta | Qué muestra |
+|---|---|---|
+| **1** | ¿Cómo nos fue? | **6 cifras del periodo** (`.ftile`: ingresos · margen bruto · gasto operativo · resultado · caja · deuda neta) con variación contra plan y contra el año pasado + acumulado del año + **estado de cierre** (`preliminar`/`cerrado`/`auditado`) · **la caja a 13 semanas** contra el piso (SVG, punto mínimo marcado, semanas bajo el piso en rojo) · **límites con el banco** y línea disponible |
+| **2** | ¿A dónde vamos? | el **rumbo** (3 renglones, sin cambios) · las **apuestas** con *prometido* Y **cobrado** (barra + verificado-por) y los puntos de salud inline · las **varas** (apetito + mezcla de ambición) · el **presupuesto del año** = la mezcla en plata (asignado vs comprometido por bolsa) |
+| **3** | ¿Qué puede impedirlo? | **registro de riesgos** (6, nivel derivado de probabilidad × impacto, contraste contra el apetito de SU categoría, tendencia, responsable) · **alertas que escalaron** (sin cambios) · **inversiones en curso** (3 barras por fila: avance real con marca del declarado · gastado contra presupuesto con marca del avance · ya comprometido) · **proyectos en curso** (sin cambios) · qué cambió en 30 días |
+| **4** | ¿Qué decidimos? | **bandeja** — ahora con decisiones de PLATA primero (presupuesto del año · ampliar la línea · presupuesto adicional de una obra · fijar el piso de caja), cada una diciendo por qué llega al directorio (umbral de facultades) · **acuerdos de la sesión anterior** (cumplido/en curso/pendiente/vencido, con responsable y plazo) · **cerrar la sesión y generar el acta** |
+
+**Lo que se eliminó por duplicación:** el panel "¿Avanzan las apuestas?" (repetía el punto de salud de
+la propia tarjeta) → los puntos viven inline en la cabecera de las apuestas; y el inspector de nivel 1
+dejó de repetir el pulso y el ciclo de mejora (viven en los movimientos 2 y 3) — ahora es el **índice
+de la sesión** (4 saltos, `irMovimiento`) + la próxima jugada + twin-compila-trabajo + madurez.
+
+**Paralelismo entre industrias (`.paral`, 7 en la página + 1 en la ficha de inversión).** Cada bloque
+nuevo nombra su equivalente en otro rubro. El caso más claro es *Inversiones en curso*: el renglón
+—avance real · gastado contra presupuesto · ya comprometido · entrega · margen proyectado— sirve igual
+para obras (inmobiliario), ampliación de planta (manufactura), tiendas nuevas (retail), contratos
+plurianuales (servicios) o líneas de producto (software). La cabecera lo declara: *las cuatro preguntas
+son las mismas en cualquier industria; cambia el contenido de las filas*.
+
+**La frontera contable (bloque C).** En pantalla, cero códigos de norma (gate en la suite). El alcance
+vive en su ficha: qué lee Cockpit, qué **no hace** (no arma el juego completo de estados financieros,
+no corre el cierre, no emite opinión de auditoría) y el **puente** de 6 decisiones contables que
+dependen de la operación, cada una navegable al twin.
+
 ## 3 · Matriz capas × escala (`CAPAS_APLICAN`)
 
 | Capa | z0-valor | z0-org | z1 | z2 | z3 | módulos |
@@ -282,6 +312,13 @@ sin falsa certeza".
 | `openSistema` | conector al lakehouse (N16) o "SIN conector — candidato" · "el lakehouse observa el SER; el repo N6 declara el DEBER-SER" |
 | `openIdea` | proponente (RN-16) · origen triage · promovida-a · acciones por estado |
 | `openCapability` | madurez COBIT n/5 · realizada-por · brecha |
+| `openCifra` | v18 · una línea del resultado: mes vs plan vs año pasado vs acumulado · **por qué se movió** · **hacia abajo** (el proceso/objetivo/área que la produce) · estado de cierre · botón al alcance |
+| `openCaja` | v18 · saldo · piso · punto más bajo de 13 semanas · línea de crédito · **límites con el banco** con su holgura · ⚠ la confianza es BAJA porque la jefatura que la firmaría está vacante |
+| `openPresupuesto` | v18 · total y comprometido · **la mezcla de ambición en plata** por bolsa · **facultades** (qué monto obliga a que decida el directorio) |
+| `openRiesgo` | v18 · nivel **derivado** de probabilidad × impacto · contraste contra el apetito de su categoría · tendencia · responsable · mitigación · dónde vive en el twin |
+| `openAcuerdo` | v18 · estado/responsable/plazo/sesión · "un acuerdo sin responsable y sin plazo es una conversación" · entra al acta versionada |
+| `openInversion` | v18 · avance real vs **declarado** · gastado vs presupuesto · comprometido · entrega vs prometida · margen proyectado · **por qué no es sólo obra**: el libro valoriza con el avance reportado |
+| `openAlcanceContable` | v18 · **bloque C** — lo que Cockpit lee, lo que **jamás** reexpresa, y el **puente** de 6 decisiones contables ancladas a la operación (la norma, sólo aquí dentro, como procedencia) |
 | `openEmpresa` | "El cerebro — tres cuerpos (CK-29)": Estructura/Conocimiento/Pulso/Compila 4/40 · modo estrategia OKR/GPD · "el colaborador orquesta — no ejecuta. Cockpit es la cabina" |
 
 ## 5 · Motores/helpers clave
@@ -293,9 +330,13 @@ sin falsa certeza".
 - `harnBadge(h)` — ⛨ vigente / ⛨⚠ desactualizado / "sin arnés" gris no-clickeable (el gap).
 - `rolOcupante(s)` — por scan (líderes + nómina); vacante delatada, no inventada.
 - LOD (`depth/isVis/visAncestor`) — plegado declarativo; todo rueda al ancestro visible.
-- `fit` / `fitFlujo` (clamp 0.6 z2/z3) / `refit` (elige por escala) · `treeLayout()` walk ·
-  `pageView()` (módulos como página en el world, heredan pan/zoom).
-- Suite de verificación: `verify.sh` — 19 viajes hit-tested (`elementFromPoint`), 0 errores JS.
+- `fit` / `fitFlujo` (clamp 0.6 z2/z3) / **`fitPagina`** (v18: una página se encaja al ANCHO y se
+  ancla arriba — la rueda RECORRE, no hace zoom; `clampPagina` limita el recorrido) / `refit`
+  (elige por contexto) · `treeLayout()` walk · `pageView()` (módulos y tableros como página en el world).
+- v18 derivados del gobierno: `varia(v,ref,dir)` (variación con el signo interpretado) ·
+  `nivelRiesgo` (probabilidad × impacto) · `riesgoVsApetito` (mismo motor que `contraste` de la
+  apuesta) · `cajaBajoPiso` · `desvioAvance` · `usoBolsa` — todo al leer, nada persistido.
+- Suite de verificación: `verify.sh` — **34** viajes hit-tested (`elementFromPoint`), 0 errores JS.
 
 ## Nota de reconstrucción
 

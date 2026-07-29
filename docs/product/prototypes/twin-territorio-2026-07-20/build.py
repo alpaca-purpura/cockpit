@@ -55,6 +55,7 @@ MANIFEST = [
     #    (.ap .cambio-row .gt .k .nm .off .pt .sc .tt) — es cascada, no cosmética. ──
     lit("<style>"),
     p("19-apendice-v14.css"),
+    p("19b-directorio.css"),  # v18 · sala del directorio: movimientos · cifras · caja · riesgos · acuerdos
     lit("</style>"),
 
     p("20-shell.html"),       # markup estático de la app
@@ -67,6 +68,7 @@ MANIFEST = [
     p("33-data-valor.js"),    # DATA.* — cadena misional · pasos mini · SIPOC · lienzos (z2)
     p("34-data-instruccion.js"),  # DATA.* — z3 instrucción de trabajo + proceso insignia
     p("35-data-directorio.js"),   # apuestas · rumbo · varas + helpers derivados (krProg/saludKr/contraste)
+    p("36-data-gobierno.js"),     # v18 · resultado · caja · presupuesto · riesgos · acuerdos · inversiones · puente contable
     p("40-motores.js"),       # motores derivados: semáforo · PUESTOS (D-19) · arnés (D-20)
     p("41-acciones.js"),      # capa de acción: ACC · autoridad · toast · solicitudes
     p("42-respaldo.js"),      # capa Respaldo del método (cita § fuente por panel)
@@ -85,6 +87,7 @@ MANIFEST = [
     p("71-fichas-proceso.js"),   # fichas: proceso · brecha · proyecto · actividad
     p("72-fichas-kpi.js"),       # ficha KPI + sparkline
     p("73-fichas-entidad.js"),   # fichas: apuesta · objetivo · puesto · rol · persona · arnés · área · sistema · idea · capability · empresa
+    p("74-fichas-gobierno.js"),  # v18 · fichas: cifra · caja · presupuesto · riesgo · acuerdo · inversión · alcance contable
     p("80-eventos.js"),       # wiring de eventos + arranque
     lit("</script>"),
 

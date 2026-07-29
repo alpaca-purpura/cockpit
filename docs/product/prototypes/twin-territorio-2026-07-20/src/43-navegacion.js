@@ -9,6 +9,10 @@ function gotoNivel(n){ state.mod='territorio'; state.nivel=n; state.insp='home';
   render(); }
 /* toda acción kinética con aprobación ≠ directa aterriza en la cola de Cambios */
 function accion(){ state.mod='cambios'; state.insp='home'; render(); }
+/* v18 · saltar a un movimiento de la sesión (la página del directorio es larga a propósito:
+   es una agenda, no un tablero de una pantalla). El índice vive en el inspector. */
+function irMovimiento(i){ const b=document.querySelectorAll('.pageview .secband')[i]; if(!b) return;
+  view.y = -(30 + b.offsetTop - 18)*view.z + 14; clampPagina(); applyView(true); }
 /* wiring universal del viaje: cualquier data-* dentro de un contenedor abre su ficha */
 function wireLinks(c){
   const W={k:b=>openKpi(byId(DATA.kpis,b.dataset.k)), h:b=>openArnes(byId(DATA.arneses,b.dataset.h)),
@@ -19,6 +23,11 @@ function wireLinks(c){
     cap:b=>openCapability(byId(DATA.capabilities,b.dataset.cap)), proc:b=>openProceso(byId(DATA.procesos,b.dataset.proc)),
     pm2:b=>openProyecto(byId(DATA.proyectos,b.dataset.pm2)), g2:b=>openBrecha(byId(DATA.brechas,b.dataset.g2)),
     ap:b=>openApuesta(byId(DATA.apuestas,b.dataset.ap)),
+    /* v18 · gobierno del directorio: cifra · caja · presupuesto · riesgo · acuerdo · inversión · alcance */
+    cif:b=>openCifra(byId(DATA.periodo.cifras,b.dataset.cif)), caja:()=>openCaja(),
+    pres:()=>openPresupuesto(), alc:()=>openAlcanceContable(),
+    rg:b=>openRiesgo(byId(DATA.riesgos,b.dataset.rg)), acu:b=>openAcuerdo(byId(DATA.acuerdos,b.dataset.acu)),
+    inv:b=>openInversion(byId(DATA.inversiones,b.dataset.inv)),
     resp:b=>openRespaldo(b.dataset.resp),
     acc:b=>ejecutarAccion(b) };
   Object.keys(W).forEach(key=>c.querySelectorAll(`[data-${key}]`).forEach(b=>{

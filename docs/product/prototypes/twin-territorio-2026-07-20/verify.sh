@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Suite de verificación del mockup — clicks con HIT-TESTING REAL (elementFromPoint), no element.click().
-# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (33/33 esperado — v17.2: +a4-a6-salud-prov)
+# Uso: ./verify.sh   → imprime V8SUITE :: OK ... | ERRS=[]  (34/34 esperado — v18: +v18-directorio-agenda)
 set -euo pipefail
 cd "$(dirname "$0")"
 # index.html es GENERADO desde src/ — se reconstruye antes de probar, así la suite
@@ -230,6 +230,78 @@ window.addEventListener('load',()=>{whenReady(()=>{
     gotoNivel(2);
     A(document.getElementById('back').title.length>10,'Big picture deshabilitado sin explicación');
     gotoNivel(1); A(document.querySelector('.search').title.length>10,'búsqueda deshabilitada sin explicación');
+    gotoNivel(2); });
+  t('v18-directorio-agenda',()=>{ /* v18: la sesión como agenda de 4 movimientos + los 3 bloques de gobierno
+      (resultado/caja/inversiones · presupuesto/riesgos/acuerdos/valor cobrado · alcance contable) */
+    gotoNivel(1);
+    const pv=document.querySelector('.pageview');
+    A(document.querySelectorAll('.secband').length===4,'movimientos='+document.querySelectorAll('.secband').length);
+    ['¿Cómo nos fue?','¿A dónde vamos?','¿Qué puede impedirlo?','¿Qué decidimos?'].forEach(q=>A(pv.textContent.includes(q),'falta el movimiento: '+q));
+    /* movimiento 1 — el resultado del periodo, con variación contra plan y contra el año pasado */
+    const tiles=[...document.querySelectorAll('.ftile')]; A(tiles.length===6,'cifras='+tiles.length);
+    A(tiles.every(x=>/vs plan/.test(x.textContent)&&/vs año pasado/.test(x.textContent)),'cifra sin referencia (plan/año pasado)');
+    A(tiles.every(x=>/año: /.test(x.textContent)),'cifra sin acumulado del año');
+    A(pv.textContent.includes('dato preliminar'),'las cifras no declaran su estado de cierre');
+    mclick(tiles[0]); A(eye().includes('Cifra'),eye());
+    A(document.getElementById('inBody').textContent.includes('reexpresa'),'la ficha de cifra no declara el alcance');
+    /* la caja: proyección, piso y resguardos — y la confianza degradada por la vacante */
+    A(document.querySelector('.cajasvg svg'),'sin proyección de caja');
+    A(cajaBajoPiso()>0,'la casuística de caja bajo el piso se perdió');
+    A(pv.textContent.includes('Tesorería está vacante'),'la caja no confiesa quién NO la firma');
+    A(/no más de 1\.8|al menos 2\.5/.test(pv.textContent),'sin límites con el banco');
+    /* movimiento 2 — la apuesta ya no sólo promete: rinde */
+    const apx=document.querySelector('.apcards').textContent;
+    A(/cobrado/.test(apx),'apuestas sin valor cobrado (promete y nunca rinde)');
+    A(DATA.apuestas.every(a=>'cobrado' in a.valor),'apuesta sin campo de cobro');
+    A(/aún no aplica/.test(apx),'la apuesta sin sellar no dice honestamente que no cobró nada');
+    A(document.querySelectorAll('.budgrow').length===3,'presupuesto sin las tres bolsas');
+    openPresupuesto(); A(eye().includes('Presupuesto'),eye());
+    A(document.getElementById('inBody').textContent.includes('sobre S/ 500k'),'sin umbrales de facultades');
+    /* movimiento 3 — riesgos contra el apetito · inversiones con avance real vs declarado */
+    const rg=[...document.querySelectorAll('.rgrow')]; A(rg.length===6,'riesgos='+rg.length);
+    A(rg.some(x=>/por encima del apetito/.test(x.textContent)),'ningún riesgo se contrasta contra la vara');
+    openRiesgo(byId(DATA.riesgos,'r-caj'));
+    A(eye().includes('Riesgo'),eye());
+    A(document.getElementById('inBody').textContent.includes('probabilidad × impacto'),'nivel de riesgo sin derivación declarada');
+    const iv=[...document.querySelectorAll('.invrow')]; A(iv.length===3,'inversiones='+iv.length);
+    A(iv[0].textContent.includes('8 pts'),'el desvío avance real vs declarado no se ve');
+    openInversion(byId(DATA.inversiones,'iv-mar'));
+    A(/valoriza|inflado/.test(document.getElementById('inBody').textContent),'la inversión no conecta con la valorización contable');
+    /* movimiento 4 — decisiones de plata (no sólo configurar el modelo) + acuerdos */
+    state.insp='home'; render();
+    const band=[...document.querySelectorAll('.dpane.solid .cambio-row')].map(x=>x.textContent).join(' ');
+    A(/línea de capital de trabajo/.test(band),'la bandeja no tiene decisiones de plata');
+    A(/presupuesto del año/.test(band),'la bandeja no pide aprobar el presupuesto');
+    A(/límite de endeudamiento|límite de inversión/.test(band),'la decisión no dice por qué le llega al directorio');
+    const acu=[...document.querySelectorAll('.acurow')]; A(acu.length===5,'acuerdos='+acu.length);
+    A(acu.some(x=>x.textContent.includes('vencido')),'ningún acuerdo vencido — se pierde el punto que abre la sesión');
+    openAcuerdo(byId(DATA.acuerdos,'ac-41')); A(eye().includes('Acuerdo'),eye());
+    A(document.body.textContent.includes('generar el acta'),'la sesión no cierra en acta');
+    /* bloque C — el alcance: enlazar, jamás reexpresar. La norma vive DENTRO de la ficha, nunca en pantalla */
+    state.insp='home'; render();
+    A(!/NIIF|NIC \d/.test(document.querySelector('.pageview').textContent),'código de norma contable visible en pantalla');
+    openAlcanceContable(); const ab=document.getElementById('inBody').textContent;
+    A(eye().includes('Alcance'),eye());
+    A(/No arma el juego completo/.test(ab),'el alcance no declara lo que NO hace');
+    A(/NIIF 15|NIIF 9/.test(ab),'el puente no cita la norma como procedencia');
+    A(/avance REAL, no el declarado/.test(ab),'el puente no ancla la valorización al twin');
+    /* paralelismo con cualquier industria — visible, no sólo prometido */
+    state.insp='home'; render();
+    const par=[...document.querySelectorAll('.pageview .paral')]; A(par.length>=6,'líneas de equivalencia='+par.length);
+    A(par.filter(x=>/manufactura|retail|banca|servicios|industria/.test(x.textContent)).length>=5,'las equivalencias no nombran otras industrias');
+    /* el inspector deja de repetir la página y pasa a ser el índice de la sesión */
+    A(document.querySelectorAll('#inBody .loop-it.mov').length===4,'inspector sin índice de movimientos');
+    A(!document.getElementById('inBody').textContent.includes('KRs en banda'),'el inspector sigue duplicando el pulso de la página');
+    A(document.getElementById('inBody').textContent.includes('aguanta la ambición'),'se perdió la escalera de madurez');
+    /* la página es un documento: la rueda RECORRE, no hace zoom.
+       (el alto real del canvas lo fija el rAF de pageView — bajo virtual-time se fuerza a mano) */
+    setCanvas(1360, document.querySelector('.pageview').offsetHeight+80); fitPagina(false);
+    A(state.ch>1800,'la sesión dejó de ser una página larga: ch='+state.ch);
+    const z0=view.z, y0=view.y;
+    stage.dispatchEvent(new WheelEvent('wheel',{deltaY:400,bubbles:true,cancelable:true}));
+    A(view.z===z0,'la rueda hizo zoom sobre un documento');
+    A(view.y<y0,'la rueda no recorre la página');
+    irMovimiento(3); A(view.y<0,'el salto a un movimiento no mueve la página');
     gotoNivel(2); });
   R.push('ERRS='+JSON.stringify(window.__ERRS||[]));
   document.title='V8SUITE :: '+R.join(' | ');

@@ -19,6 +19,12 @@ const TICO={
   arnes:'<svg viewBox="0 0 14 14"><path d="M7 1.3 12 3.1v4c0 3-2.1 5-5 5.6-2.9-.6-5-2.6-5-5.6v-4z" fill="none" stroke-width="1.3" stroke-linejoin="round"/><path d="M4.7 7 6.3 8.6 9.3 5.4" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   respaldo:'<svg viewBox="0 0 14 14"><path d="M7 3.2C5.8 2.2 4 2 2.2 2v9.3c1.8 0 3.6.2 4.8 1.2 1.2-1 3-1.2 4.8-1.2V2C10 2 8.2 2.2 7 3.2z" fill="none" stroke-width="1.2" stroke-linejoin="round"/><path d="M7 3.2v9.3" fill="none" stroke-width="1.1"/></svg>',
 };
+/* v18 · tipos del gobierno del directorio. Un pictograma nuevo (el dinero) y el resto REUSA el
+   ícono del tipo con el que comparte semántica — mismo criterio M13: la forma dice el tipo, el
+   color jamás (un acento, PRENTER). Cierra la regla "ícono en el header de TODA ficha" (decisión 24). */
+TICO.dinero='<svg viewBox="0 0 14 14"><rect x="1" y="3.2" width="12" height="7.6" rx="1.4" fill="none" stroke-width="1.3"/><circle class="fl" cx="7" cy="7" r="1.9"/><path d="M3.1 7h.8M10.1 7h.8" stroke-width="1.2" stroke-linecap="round"/></svg>';
+TICO.cifra=TICO.dinero; TICO.caja=TICO.dinero; TICO.presupuesto=TICO.dinero;
+TICO.riesgo=TICO.brecha; TICO.inversion=TICO.proyecto; TICO.acuerdo=TICO.respaldo; TICO.alcance=TICO.respaldo;
 const tbadge=(tipo,title)=>`<span class="tbadge" title="${title}">${TICO[tipo]}</span>`;
 const iico=(tipo,title)=>`<span class="eg-ico" title="${title}">${TICO[tipo]}</span>`;
 const confCol=c=>({alta:S.ok,media:S.warn,baja:S.crit}[c]||'var(--tx-faint)');
