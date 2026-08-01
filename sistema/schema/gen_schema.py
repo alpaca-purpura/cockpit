@@ -40,6 +40,7 @@ NODOS_ESPERADOS = {
     "proyeccion_caja",  # D-27 — liquidez: 13 semanas contra el piso y los límites del financiamiento (M56)
     "presupuesto",      # D-28 — la mezcla de ambición hecha plata (M57)
     "inversion",        # D-29 — el portafolio de capital, distinto del de mejoras (M59)
+    "documento",        # D-38 (v21) — el archivo: pirámide documental + contratos/expedientes (M38); el manual/z3 generados siguen siendo proyección (D-08)
 }
 # weak-entities / pseudo-destinos válidos en refs y relaciones (además de los nodos)
 DESTINOS_EXTRA = {"key_result", "actividad", "medicion", "unidad", "hito",

@@ -23,25 +23,29 @@ DATA.periodo={
   cierra:'el cierre definitivo se firma el día 12',
   auditor:{ estado:'Estados financieros 2025 auditados · opinión sin salvedades',
             hallazgos:2, nota:'2 hallazgos de control interno abiertos — viven como brechas del twin' },
-  /* dir: 1 = más es mejor · -1 = menos es mejor. La variación se DERIVA al leer, jamás se guarda. */
+  /* dir: 1 = más es mejor · -1 = menos es mejor. La variación se DERIVA al leer, jamás se guarda.
+     `ref` = quién PRODUCE la cifra (estructura) · `res` (v19 · D-35) = la meta bajada que la MUEVE
+     esta semana (trabajo). Sin `res` la variación es un reproche sin destinatario — y `f-gas` lo deja
+     a propósito vacío: es el caso que el tablero tiene que saber declarar.
+     `kpi` (D-34) = la serie de la que se LEE el valor, para no tener el mismo número en dos lados. */
   cifras:[
     {id:'f-ing', nm:'Ingresos',          v:5.8,  plan:6.4,  ant:5.1,  ytd:41.2, ytdPlan:44.8, u:'S/ M',  dec:1, dir:1,
-     que:'lo que la empresa facturó en el mes', ref:{proc:'p-vta'},
+     que:'lo que la empresa facturó en el mes', ref:{proc:'p-vta'}, res:'o-vis', fuente:'Nubecont ERP · ventas del mes', conf:'alta',
      porque:'7 unidades entregadas contra 9 del plan — la entrega de Marina se corrió'},
     {id:'f-mar', nm:'Margen bruto',      v:15.8, plan:17.0, ant:14.2, ytd:15.4, ytdPlan:17.0, u:'%',     dec:1, dir:1,
-     que:'cuánto queda de cada sol vendido, antes de gastos', ref:{obj:'o-lid'},
+     que:'cuánto queda de cada sol vendido, antes de gastos', ref:{obj:'o-lid'}, res:'o-avc', kpi:'k-mar', fuente:'Nubecont ERP · cierre contable', conf:'media',
      porque:'el sobrecosto de Marina se come 1.2 puntos'},
     {id:'f-gas', nm:'Gasto operativo',   v:0.62, plan:0.58, ant:0.59, ytd:4.31, ytdPlan:4.06, u:'S/ M',  dec:2, dir:-1,
-     que:'lo que cuesta sostener la operación', ref:{area:'a-ger'},
+     que:'lo que cuesta sostener la operación', ref:{area:'a-ger'}, res:null, fuente:'Nubecont ERP · cierre contable', conf:'media',
      porque:'horas extra en obra y asesoría legal por permisos'},
     {id:'f-res', nm:'Resultado del mes', v:0.30, plan:0.51, ant:0.14, ytd:2.10, ytdPlan:3.42, u:'S/ M',  dec:2, dir:1,
-     que:'lo que quedó, después de todo', ref:{obj:'o-lid'},
+     que:'lo que quedó, después de todo', ref:{obj:'o-lid'}, res:'o-avc', fuente:'Nubecont ERP · cierre contable', conf:'media',
      porque:'menos ingreso y más gasto: la brecha viene de los dos lados'},
     {id:'f-caj', nm:'Caja al cierre',    v:2.1,  plan:3.4,  ant:2.8,  ytd:2.1,  ytdPlan:3.4,  u:'S/ M',  dec:1, dir:1,
-     que:'cuánto dinero disponible quedó', ref:{obj:'o-caja'},
+     que:'cuánto dinero disponible quedó', ref:{obj:'o-caja'}, res:'o-dso', fuente:'posición bancaria conciliada', conf:'alta',
      porque:'la cobranza de Marina (91 días) es la fuga — es la apuesta de caja'},
     {id:'f-deu', nm:'Deuda neta',        v:12.4, plan:11.0, ant:10.2, ytd:12.4, ytdPlan:11.0, u:'S/ M',  dec:1, dir:-1,
-     que:'lo que se debe, menos lo que hay en caja', ref:{},
+     que:'lo que se debe, menos lo que hay en caja', ref:{}, res:'o-dso', fuente:'posición bancaria + contratos de deuda', conf:'alta',
      porque:'se giró más línea para sostener obra mientras la cobranza no entra'},
   ]};
 
@@ -116,7 +120,7 @@ DATA.acuerdos=[
    quien:'Gerente de Gestión Humana', sesion:'mayo', plazo:'sesión de junio', estado:'vencido', ref:{area:'a-tes'},
    nota:'2 sesiones vencido — y es la firma que falta en la proyección de caja'},
   {id:'ac-42', nm:'Fijar el apetito de riesgo de expansión',
-   quien:'Directorio', sesion:'junio', plazo:'sesión de julio', estado:'pendiente', ref:{acc:'fijar-apetito'}},
+   quien:'Directorio', sesion:'junio', plazo:'sesión de julio', estado:'pendiente', ref:{acc:'fijar-apetito-riesgo'}},
 ];
 
 /* ---- 7 · LAS INVERSIONES EN CURSO — avance real × gasto contra presupuesto × ya comprometido ---- */
@@ -184,6 +188,10 @@ DATA.puente=[
 function varia(v,ref,dir){ if(ref==null||!ref) return null;
   const d=(v-ref)/Math.abs(ref)*100, b=d*dir;
   return {pct:d, buena:b>=-2, est:b>=-2?'verde':b>=-10?'ambar':'rojo'}; }
+/* v19 (D-34) · el valor de una cifra que YA se sigue como indicador se LEE de su serie, no se guarda
+   dos veces. Es el mismo principio que el KR con `kpi_ref`: dos copias del mismo número es cómo el
+   tablero del directorio y el del gerente empiezan a decir cosas distintas. */
+function cifraValor(c){ if(c.kpi){ const k=byId(DATA.kpis,c.kpi), v=k&&kcur(k); if(v!=null) return v; } return c.v; }
 const fmtN=(v,dec)=>v==null?'—':v.toFixed(dec==null?1:dec);
 const fmtPct=d=>(d>0?'+':'')+d.toFixed(1)+'%';
 /* nivel del riesgo = probabilidad × impacto (matriz 3×3 clásica, derivada — nunca declarada) */
@@ -205,3 +213,18 @@ function cajaBajoPiso(){ return DATA.caja.semanas.filter(v=>v<DATA.caja.piso).le
 const desvioAvance=iv=>iv.avanceDecl-iv.avance;
 /* cuánto del presupuesto de la bolsa está comprometido (0-1) */
 const usoBolsa=b=>b.asignado?Math.min(1,b.comprometido/b.asignado):0;
+/* v19 · la mezcla que el presupuesto REALMENTE reparte, en plata (M57: «la mezcla hecha plata»).
+   Hasta ahora convivían tres lecturas de lo mismo sin hablarse: la mezcla objetivo (%), el reparto del
+   presupuesto (S/) y la mezcla real por CONTEO de iniciativas. Son tres unidades distintas; mezclarlas
+   sin decirlo era el error. Acá se declara cada una con su unidad y se contrasta la que manda —
+   el dinero — contra la vara. */
+function mezclaPresupuesto(){ const t=DATA.presupuesto.bolsas.reduce((s,b)=>s+b.asignado,0)||1, o=DATA.mezclaObjetivo;
+  const pct=b=>Math.round((DATA.presupuesto.bolsas.find(x=>x.b===b)||{asignado:0}).asignado*100/t);
+  const m={operar:pct('operar'), expandir:pct('expandir'), transformar:pct('transformar')};
+  m.desvia=['operar','expandir','transformar'].filter(k=>Math.abs(m[k]-o[k])>=3);
+  return m; }
+/* v19 · las dos plata NO son la misma y no se suman: el presupuesto gobierna el GASTO del año
+   (operación y mejora); cada inversión de capital se gobierna por proyecto, con su propio
+   financiamiento. Declararlo evita la lectura de que 6.0 «no alcanza» para 33.9 de obra. */
+DATA.presupuesto.alcance='gasto del año — operación y mejora';
+DATA.presupuesto.noIncluye='la inversión de capital de cada proyecto (obra, terreno): se gobierna por proyecto, con preventa y deuda propias — ver Inversiones';

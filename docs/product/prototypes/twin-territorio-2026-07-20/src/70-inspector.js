@@ -24,7 +24,7 @@ function inspectorHome(){
   if(state.mod==='metodo'){
     inEye.textContent='Método · engagement'; inTitle.textContent='M1 ✓ · M3 en curso · M2 activo';
     inBody.innerHTML=`<div class="dgroup"><div class="gt">Plantilla vs instancia</div>
-      <div style="font-size:12.5px;line-height:1.5">La <b>Definición</b> (M1·M2·M3, 59 M-cards) es IP versionada del fabricante; la <b>Instancia</b> (este engagement, sus gates y acuses) vive en el repo del cliente (N6). Los gates conectan el método con el ciclo de mejora.</div></div>
+      <div style="font-size:12.5px;line-height:1.5">La <b>Definición</b> (M1·M2·M3, 61 M-cards) es IP versionada del fabricante; la <b>Instancia</b> (este engagement, sus gates y acuses) vive en el repo del cliente (N6). Los gates conectan el método con el ciclo de mejora.</div></div>
       <div style="font-size:12px;color:var(--tx-faint)">Todo lo que el twin pinta es trazable a una M-card — el método es dato, no opinión.</div>`;
     return; }
   if(state.mod==='cambios'){
@@ -59,16 +59,17 @@ function inspectorHome(){
     inEye.textContent=n1?'Sesión · directorio':'Sala de mando · directorio';
     const ok=DATA.objetivos.filter(o=>o.salud==='verde').length;
     inTitle.textContent=n1?`Sesión de ${DATA.periodo.nm}`:`Pulso · ${ok}/${DATA.objetivos.length} en banda`;
-    const g=DATA.brechas.find(b=>b.apuesta), o=byId(DATA.objetivos,g.obj);
+    const g=DATA.brechas.find(b=>b.apuesta), o=objDeKr(g.kr);
     inBody.innerHTML=`
       ${n1?`<div class="dgroup"><div class="gt">La sesión, en orden — clic para saltar</div>
         ${['¿Cómo nos fue? — resultado y caja','¿A dónde vamos? — rumbo, apuestas y varas','¿Qué puede impedirlo? — riesgos e inversiones','¿Qué decidimos? — bandeja, acuerdos y acta']
           .map((t,i)=>`<button class="loop-it mov" data-mov="${i}"><span class="pdca">${i+1}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t}</span></button>`).join('')}
         <div style="font-size:11px;color:var(--tx-faint)">La rueda recorre la sesión; los cuatro movimientos son el orden de la agenda.</div></div>`
       :`<div class="dgroup"><div class="gt">Pulso del directorio — KRs en banda${respBadge('sala-pulso')}</div>
-        <div class="pulso-dots">${DATA.objetivos.map(x=>{ const lbl={verde:'dentro de meta',ambar:'cerca',rojo:'fuera de meta'}[x.salud];
-          return `<i data-obj="${x.id}" style="background:${health[x.salud]}" title="${x.nm} — ${x.kr.m}: ${x.kr.cur}${x.kr.u} (meta ${x.kr.to}${x.kr.u}) · ${lbl} · clic = su ficha, y desde ahí su hilo"></i>`; }).join('')}</div>
-        <div style="font-size:11px;color:var(--tx-faint)">verde = KR dentro de banda · toca un punto para su ficha (y su hilo) — o un objetivo directo en el mapa</div></div>`}
+        <div class="pulso-dots">${objRaiz().map(x=>{ const lbl={verde:'dentro de meta',ambar:'cerca',rojo:'fuera de meta',gris:'sin dato'}[x.salud];
+          return `<i data-obj="${x.id}" style="background:${health[x.salud]}" title="${x.nm} — ${x.kr.m}: ${krCur(x.kr)==null?'s/d':krCur(x.kr)}${x.kr.u} (meta ${x.kr.to}${x.kr.u}) · ${lbl} · clic = su ficha, y desde ahí su hilo"></i>`; }).join('')}</div>
+        <div style="font-size:11px;color:var(--tx-faint)">verde = todos sus contratos dentro de banda · gris = sin dato, jamás rojo por ausencia · toca un punto para su ficha (y su hilo)</div>
+        ${sinBajar().length?`<div style="font-size:11.5px;color:var(--warn);margin-top:5px">⚠ ${sinBajar().length} de estas metas no están abiertas en ninguna gerencia — el directorio las mira y nadie las trabaja</div>`:''}</div>`}
       <div class="apuesta-card">
         <div class="hd"><span class="live"></span><h3 class="eyebrow" style="margin:0;color:var(--tx-mut);letter-spacing:.1em">La apuesta · próximo paso${respBadge('sala-jugada')}</h3></div>
         <div class="body">Cerrar <b>Marina 87→95% de avance</b> — la brecha ALTA atada a <b>${o.nm}</b>.</div>
@@ -77,7 +78,7 @@ function inspectorHome(){
           <div><span class="k">Mueve KR</span><span class="v kr">margen →18%</span></div>
           <div title="① = la brecha que más cuesta por mes de espera, frente a lo que cuesta atacarla"><span class="k">Prioridad</span><span class="v">①</span></div>
         </div>
-        <div style="font-family:var(--font-mono);font-size:10px;color:var(--tx-mut);margin-top:5px;cursor:help" title="${DATA.peers['meta-margen'].src}">vara externa: ${DATA.peers['meta-margen'].r} — la meta 18% es alcanzable</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--warn);margin-top:5px;cursor:help" title="${DATA.nicho['N-IMM-07'].cond}">vara externa: <b>sin rango comparable de pares</b> — la meta 18% se sostiene contra el histórico propio, no contra el rubro</div>
         <button class="btn go" id="apuestaGo">Ver el hilo que mueve ›</button>
       </div>
       ${n1?'':`<div class="dgroup"><div class="gt">El ciclo de mejora — brecha → proyecto → KPI${respBadge('sala-loop')}</div>
@@ -86,18 +87,19 @@ function inspectorHome(){
       <div class="dgroup"><div class="gt">El twin compila trabajo — se compila por rol×proceso · se ensambla por puesto${respBadge('sala-trabajo')}</div>
         <div style="font-size:12.5px;line-height:1.5"><b class="mono" style="color:var(--brand-hi)">${new Set(DATA.arneses.map(h=>h.deriva_de.puesto)).size}/${DATA.puestosTotal}</b> puestos con arnés en su roster · <b class="mono">${DATA.arneses.length}</b> arneses compilados · <span style="color:var(--warn)">${DATA.arneses.filter(h=>arnesEstado(h)==='desactualizado').length} desactualizado</span> (el twin cambió → recompilar). El resto opera a mano: el gap de la era agéntica, visible.</div>
         <button class="btn" id="verTrabajo" style="justify-content:center">Prender la capa Trabajo ›</button></div>
-      ${state.nivel===1?`<div class="dgroup"><div class="gt">¿El sistema aguanta la ambición? — autoevaluación asistida, simulada${respBadge('dir-madurez')}</div>
-        ${DATA.madurez.dims.map(m=>{ let s=''; for(let i=1;i<=5;i++) s+= i<=m.actual?'<b>●</b>' : (i<=m.deseado?'<span class="want">○</span>':'<span class="off">·</span>');
-          return `<div class="madrow"><span class="lbl">${m.d}${m.frena?' <b style="color:var(--warn)">⚠ frena</b>':''}</span><span class="dots">${s}</span><span class="lv">${m.actual}→${m.deseado}</span></div>`; }).join('')}
-        <div style="font-size:11px;color:var(--tx-faint);margin-top:4px">hoy <b class="mono" style="color:var(--brand-hi)">${(DATA.madurez.dims.reduce((s,m)=>s+m.actual,0)/DATA.madurez.dims.length).toFixed(1)}</b> de 5 · deseado <b class="mono">${(DATA.madurez.dims.reduce((s,m)=>s+m.deseado,0)/DATA.madurez.dims.length).toFixed(1)}</b> — ● hoy · ○ a dónde vamos. El nivel se deriva de evidencia, jamás se pinta a mano.</div>
-        <button class="btn" id="verMadurez" style="justify-content:center">Ver el mapa por madurez ›</button></div>`:''}`;
+      ${state.nivel===1?`<div class="dgroup"><div class="gt">¿El sistema aguanta la ambición? — cómo nos gestionamos${respBadge('dir-madurez')}</div>
+        ${DATA.autoevaluacion.dims.map(m=>
+          `<button class="madrow lk" data-mad="${m.d}" title="${m.porque}"><span class="lbl">${m.d}${m.frena?' <b style="color:var(--warn)">⚠ frena</b>':''}</span><span class="dots">${escDots(m.actual,m.deseado)}</span><span class="lv">${m.actual}→${m.deseado}</span></button>`).join('')}
+        <div style="font-size:11px;color:var(--tx-faint);margin-top:4px">Escalera del <b>sistema de gestión</b> (1-5) — distinta de la que gradúa una capacidad de la empresa: las dos conviven y jamás se promedian. Cada nivel se apoya en <b>${DATA.autoevaluacion.dims.reduce((n,m)=>n+m.evid.length,0)}</b> nodos reales del twin; pasá el cursor por una dimensión para leer en qué. Evaluada en la <b>${sesNm(DATA.autoevaluacion.evaluadaEn)}</b>.</div>
+        <button class="btn" id="verMadurez" style="justify-content:center">Ver el mapa por madurez de capacidades ›</button></div>`:''}`;
     inBody.querySelector('#apuestaGo').onclick=()=>{ state.nivel=2; setPiel('valor');
       if(!state.capas.has('hilo')){state.capas.add('hilo');document.querySelector('[data-capa=hilo]').classList.add('on');}
       state.activeObj='o-lid'; render(); };
     inBody.querySelector('#verTrabajo').onclick=()=>{ if(!state.capas.has('trabajo')){state.capas.add('trabajo');document.querySelector('[data-capa=trabajo]').classList.add('on');} render(); };
-    const vm=inBody.querySelector('#verMadurez'); if(vm) vm.onclick=()=>{ gotoNivel(2);
-      if(!state.capas.has('salud')){ const cs=document.querySelector('[data-capa=salud]'); if(cs) cs.click(); }
-      const st=document.querySelector('.sub-t[data-sub=madurez]'); if(st) st.click(); };
+    /* v20 · aterriza en el mapa de valor CON la banda de Capacidades y la lente encendidas. Antes
+       prometía "el mapa por madurez de capacidades", caía en el mapa de valor y ahí la lente no
+       existía: el director veía digitalización. La promesa y la entrega ahora son la misma. */
+    const vm=inBody.querySelector('#verMadurez'); if(vm) vm.onclick=()=>verMapaPorMadurez();
     inBody.querySelectorAll('.loop-it[data-pm]').forEach(b=>b.onclick=()=>openProyecto(byId(DATA.proyectos,b.dataset.pm)));
     inBody.querySelectorAll('.loop-it.mov').forEach(b=>b.onclick=()=>irMovimiento(+b.dataset.mov));
     /* v17: los puntos del pulso llevan data-obj — wireLinks (al final de inspectorHome) los cablea a la ficha
@@ -142,12 +144,30 @@ function inspectorHome(){
     wireLinks(inBody); return;
   }
   else if(state.mod==='territorio'&&state.nivel===3&&state.escala==='z0'){
+    if(state.area3){ /* v21 · el rail de la sala = LA REUNIÓN del área: acuerdos, riesgos e ideas — filtrados */
+      const A=byId(DATA.areas,state.area3);
+      const rgs=riesgosDeArea(A.id), acus=acuerdosDeArea(A.id).filter(a=>a.estado!=='cumplido'), ideas=ideasDeArea(A.id);
+      const sc=sinContraKpis().filter(k=>{const p=byId(DATA.procesos,k.proc);return p&&p.areas.some(x=>new Set(descendants(A.id)).has(x));});
+      inEye.textContent='Área · la reunión'; inTitle.textContent=A.nm;
+      inBody.innerHTML=`
+        <div class="dgroup"><div class="gt">La regla de la reunión${respBadge('tac-contramedida')}</div>
+          <div style="font-size:12px;line-height:1.5">Indicador fuera de banda <b>exige contramedida comprometida</b> — la anomalía sin respuesta es alerta, no excusa.${sc.length?` <b style="color:var(--warn)">${sc.length} indicador${sc.length>1?'es':''} del área sin contramedida.</b>`:' Hoy el área no debe ninguna.'}</div></div>
+        <div class="dgroup"><div class="gt">Acuerdos del área — abiertos${respBadge('dir-acuerdos')}</div>
+          ${acus.length?acus.map(a=>`<button class="loop-it" data-acu="${a.id}"><span style="color:${ACUC[a.estado]||'var(--tx-mut)'}">·</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.nm}</span><span class="mono" style="font-size:9.5px;color:${ACUC[a.estado]||'var(--tx-mut)'}">${a.estado}</span></button>`).join(''):'<span style="font-size:12px;color:var(--tx-faint)">— ninguno abierto</span>'}</div>
+        <div class="dgroup"><div class="gt">Riesgos que responde${respBadge('dir-riesgos')}</div>
+          ${rgs.length?rgs.map(r=>{const n=nivelRiesgo(r);return `<button class="loop-it" data-rg="${r.id}"><span style="color:${n.c}">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.nm}</span><span class="mono" style="font-size:9.5px;color:${n.c}">${n.t}</span></button>`;}).join(''):'<span style="font-size:12px;color:var(--tx-faint)">— ninguno anclado al área</span>'}</div>
+        <div class="dgroup"><div class="gt">Ideas del personal del área${respBadge('ideas')}</div>
+          ${ideas.length?ideas.map(i=>`<button class="loop-it" data-idea="${i.id}"><span>💡</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.nm}</span><span class="mono" style="font-size:9.5px;color:var(--tx-faint)">${i.estado}</span></button>`).join(''):'<span style="font-size:12px;color:var(--tx-faint)">— todavía ninguna</span>'}</div>
+        <div style="font-size:12px;color:var(--tx-faint)">La sala se lee de arriba a abajo: lo que te toca → el plan → quién → cómo se ejecuta → sobre qué corre → el archivo. La capa <b>Plan del ciclo</b> apaga/prende el CÓMO.</div>
+        <button class="btn" style="justify-content:center" onclick="gotoNivel(3)">‹ Elegir otra área</button>`;
+      wireLinks(inBody); return; }
     const sc=sinContraKpis();
-    inEye.textContent='Táctico · reunión de resultados'; inTitle.textContent=`${sc.length} sin contramedida · ${DATA.ideas.filter(i=>i.estado==='enviada').length} ideas por evaluar`;
-    inBody.innerHTML=`<div class="dgroup"><div class="gt">La regla de la reunión</div>
-        <div style="font-size:12.5px;line-height:1.5">Indicador fuera de banda <b>exige contramedida comprometida</b> — la anomalía sin respuesta es alerta, no excusa. La contramedida se registra como acción, jamás verbal.</div></div>
-      <div style="font-size:12px;color:var(--tx-faint)">Toca un compromiso, indicador o idea para su ficha y sus acciones. Los compromisos nacen de brechas o ideas — el panel "aquí nacen" las lista.</div>`;
-    return; }
+    inEye.textContent='Táctico · la sala de cada área'; inTitle.textContent=`${sc.length} sin contramedida · ${DATA.ideas.filter(i=>i.estado==='enviada').length} ideas por evaluar`;
+    inBody.innerHTML=`<div class="dgroup"><div class="gt">Cómo se entra</div>
+        <div style="font-size:12.5px;line-height:1.5">Cada gerencia y jefatura tiene su <b>sala</b>: la bajada, el plan, la estructura, los procesos, los sistemas y el archivo de esa parte de la empresa. Elige una tarjeta — o entra con doble click desde el organigrama (nivel 2).</div></div>
+      <div class="dgroup"><div class="gt">La regla de la reunión${respBadge('tac-contramedida')}</div>
+        <div style="font-size:12.5px;line-height:1.5">Indicador fuera de banda <b>exige contramedida comprometida</b> — la anomalía sin respuesta es alerta, no excusa. La contramedida se registra como acción, jamás verbal.</div></div>`;
+    wireLinks(inBody); return; }
   else{
     const pid=state.lienzo||DATA.flagship.proc, f=lienzoData(pid), p2=byId(DATA.procesos,pid), ks=kpisByProc(pid);
     const gs=DATA.brechas.filter(x=>x.against===pid);

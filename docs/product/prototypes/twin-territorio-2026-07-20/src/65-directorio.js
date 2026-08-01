@@ -36,6 +36,20 @@ function renderDirectorio(){
   const ciclo=state.ciclo==='okr'?'este trimestre':state.ciclo==='gpd'?'este año':'trimestre + año';
   const mx=mezclaReal(), mo=DATA.mezclaObjetivo, rb=DATA.rumbo;
   const per=DATA.periodo, caja=DATA.caja, pre=DATA.presupuesto, bajo=cajaBajoPiso();
+  const bajGlobal={ hijos:DATA.objetivos.length-objRaiz().length, acordadas:DATA.objetivos.filter(o=>o.parent&&o.acordado).length,
+                    sinAcordar:sinAcordar().length, sinBajar:sinBajar().length };
+  const mezPre=mezclaPresupuesto();
+  /* ── v19 · qué portafolio sube al directorio y cuál se queda en la gerencia. El directorio no
+     administra el portafolio: sigue lo que mueve una meta del AÑO o lo que supera una facultad. El
+     resto lo gobierna el gerente en el nivel táctico — y se dice, para que no parezca un olvido. ── */
+  const metasAnio=new Set(rb.anio);
+  const sube=pm=>{ const k=byId(DATA.kpis,pm.mueve), o=k&&objDeKr(k.kr), r=o&&raizDe(o);
+    if(r&&metasAnio.has(r.id)) return `mueve «${r.nm}», meta del año`;
+    if(pm.estado==='cerrado') return 'cerró con veredicto: la promesa se rinde acá';
+    return null; };
+  const pmDirectorio=[], pmGerencia=[];
+  [...DATA.proyectos].sort((x,y)=>((codMes(y)||{mes:-1}).mes)-((codMes(x)||{mes:-1}).mes))
+    .forEach(pm=>{ const por=sube(pm); por?pmDirectorio.push({pm,por}):pmGerencia.push(pm); });
 
   /* ── la bandeja: primero las decisiones de PLATA (las que un directorio firma de verdad),
      después las que fijan el propio marco. Cada fila dice POR QUÉ le llega al directorio. ── */
@@ -50,12 +64,19 @@ function renderDirectorio(){
     {t:'Fijar el piso de caja', d:'hoy la proyección se compara contra un piso que nadie firmó', apr:'gestión-de-cambios', go:'data-acc="fijar-piso-caja"'},
     {t:'Sellar la apuesta "Digitalizar la cobranza"', d:'apuesta nueva — su objetivo va en rojo', apr:'gestión-de-cambios', go:'data-ap="ap-cob"'},
     {t:'Aprobar el acta de "Cobranza digital · fase 1"', d:'doble firma: patrocinador ✓ · finanzas pendiente', apr:'gestión-de-cambios', go:'data-pm="pm-cob" data-pm2="pm-cob"'},
-    {t:'Fijar el apetito de riesgo de expansión (sin definir)', apr:'gestión-de-cambios', go:'data-acc="fijar-apetito"'},
-    {t:'Fijar la mezcla de ambición del año', d:`hoy corre el default de industria ${mo.operar}/${mo.expandir}/${mo.transformar} — la mezcla es apetito hecho asignación`, apr:'gestión-de-cambios', go:'data-acc="fijar-mezcla"'},
+    {t:'Fijar el apetito de riesgo de expansión (sin definir)', apr:'gestión-de-cambios', go:'data-acc="fijar-apetito-riesgo"'},
+    {t:'Fijar la mezcla de ambición del año', d:`hoy corre el default de industria ${mo.operar}/${mo.expandir}/${mo.transformar} — la mezcla es apetito hecho asignación`, apr:'gestión-de-cambios', go:'data-acc="fijar-mezcla-ambicion"'},
   ];
-  if(rb.bajada.pendiente){ const ga=DATA.areas.find(x=>x.nm===rb.bajada.pendiente);
-    bandeja.push({t:`Cerrar la bajada acordada con ${rb.bajada.pendiente}`, d:`acuerdo ida-y-vuelta cerrado con ${rb.bajada.acordadas}/${rb.bajada.de} gerencias — falta negociar factibilidad con esta`, apr:'gestión-de-cambios', go:ga?`data-area="${ga.id}"`:''}); }
-  if(state.ciclo!=='okr') bandeja.push({t:'Decidir qué metas pagan bono este año ★', d:'acople compensación — solo en modo anual/mixto (RN-14)', apr:'gestión-de-cambios', go:'data-acc="convocar-cuentas"'});
+  /* la bajada ya no es un contador escrito a mano: cada meta sin abrir en una gerencia, y cada
+     bajada asignada sin acordar, LLEGA sola a la bandeja desde el grafo de objetivos (D-35) */
+  sinBajar().forEach(o=>bandeja.push({t:`Bajar «${o.nm}» a una gerencia`,
+    d:'meta del directorio que ninguna gerencia tiene abierta como suya — se mira todos los meses y nadie la trabaja',
+    apr:'gestión-de-cambios', warn:true, go:`data-obj="${o.id}"`}));
+  sinAcordar().forEach(o=>{ const ga=o.area&&byId(DATA.areas,o.area);
+    bandeja.push({t:`Cerrar el acuerdo de bajada con ${ga?ga.nm:'la gerencia'}`,
+      d:`«${o.nm}» está asignada pero nadie registró que la gerencia la aceptara ni que fuera factible`,
+      apr:'revisión-dueño', go:`data-obj="${o.id}"`}); });
+  if(state.ciclo!=='okr') bandeja.push({t:'Decidir qué metas pagan bono este año ★', d:'acople compensación — solo en modo anual/mixto (RN-14)', apr:'gestión-de-cambios', go:'data-acc="convocar-rendicion"'});
 
   /* rumbo: cada meta del año = barra de avance coloreada por salud + contraste riesgo↔apetito en el title */
   const brkHTML=rb.anio.map(oid=>{ const o=objOf(oid), ap=DATA.apuestas.find(a=>a.objetivos.includes(oid)),
@@ -66,21 +87,23 @@ function renderDirectorio(){
         <rect x="0" y="2" width="88" height="4" rx="2" fill="var(--border)"/>
         <rect x="0" y="2" width="${(p*88).toFixed(1)}" height="4" rx="2" fill="${health[o.salud]}"/>
       </svg>
-      <span class="mtrlab">${o.kr.cur}${o.kr.u} <span style="color:var(--tx-faint)">/</span> ${o.kr.to}${o.kr.u}</span></button>`; }).join('');
+      <span class="mtrlab">${krCur(o.kr)==null?'s/d':krCur(o.kr)}${o.kr.u} <span style="color:var(--tx-faint)">/</span> ${o.kr.to}${o.kr.u}</span></button>`; }).join('');
 
   /* las cifras del periodo — la variación contra plan y contra el año pasado se DERIVA al leer */
-  const tilesHTML=per.cifras.map(c=>{ const vp=varia(c.v,c.plan,c.dir), va=varia(c.v,c.ant,c.dir);
-    return `<button class="ftile est-${vp.est}" data-cif="${c.id}" title="${c.que} — clic = la ficha y de dónde sale">
+  const tilesHTML=per.cifras.map(c=>{ const vp=varia(cifraValor(c),c.plan,c.dir), va=varia(cifraValor(c),c.ant,c.dir);
+    const res=c.res&&byId(DATA.objetivos,c.res), ra=res&&res.area&&byId(DATA.areas,res.area);
+    return `<button class="ftile est-${vp.est}" data-cif="${c.id}" title="${c.que} — clic = la ficha, de dónde sale y quién la mueve">
       <span class="flab">${c.nm}</span>
-      <span class="fv">${fmtN(c.v,c.dec)}<small>${c.u}</small></span>
+      <span class="fv">${fmtN(cifraValor(c),c.dec)}<small>${c.u}</small></span>
       <span class="fd"><span style="color:${health[vp.est]}">${fmtPct(vp.pct)} vs plan</span><span class="sep">·</span><span>${fmtPct(va.pct)} vs año pasado</span></span>
-      <span class="fy">año: ${fmtN(c.ytd,c.dec)} de ${fmtN(c.ytdPlan,c.dec)} ${c.u}</span></button>`; }).join('');
+      <span class="fy">año: ${fmtN(c.ytd,c.dec)} de ${fmtN(c.ytdPlan,c.dec)} ${c.u}</span>
+      <span class="fres" style="color:${res?'var(--tx-mut)':'var(--warn)'}">${res?`la mueve ${ra?ra.nm:'—'}`:'sin nadie que la mueva'}</span></button>`; }).join('');
 
   /* riesgos: nivel derivado (probabilidad × impacto) y contraste contra el apetito ya firmado */
   const riesgoHTML=[...DATA.riesgos].sort((a,b)=>NIV[b.prob]*NIV[b.imp]-NIV[a.prob]*NIV[a.imp]).map(r=>{
     const n=nivelRiesgo(r), ct=riesgoVsApetito(r);
     return `<button class="rgrow" data-rg="${r.id}"><span class="lv" style="border-color:${n.c};color:${n.c}">${n.t}</span>
-      <span class="rb"><span class="rt">${r.nm}</span><span class="rm">${CATNM[r.cat]} · ${r.dueno} — <span style="color:${ct.c}">${ct.t}</span></span></span>
+      <span class="rb"><span class="rt">${r.nm}</span><span class="rm">${CATNM[r.cat]} · lo responde <b>${r.dueno}</b> — <span style="color:${ct.c}">${ct.t}</span>${r.mitig&&!/Sin mitigaci/.test(r.mitig)?'':' · <span style="color:var(--crit)">sin mitigación comprometida</span>'}</span></span>
       <span class="tn" style="color:${r.tend==='sube'?'var(--crit)':r.tend==='baja'?'var(--ok)':'var(--tx-faint)'}">${TEND[r.tend]}</span></button>`; }).join('');
 
   /* inversiones: el mismo renglón sirve para obras, planta, tiendas o contratos — la fila es la industria */
@@ -93,9 +116,28 @@ function renderDirectorio(){
       <span class="im"><span class="lab">ya comprometido</span><span class="tr"><i style="width:${Math.min(100,cp)}%"></i></span><span class="vl">${iv.compro} de ${iv.meta} ${iv.u}</span></span>
       <span class="ie" style="color:${tarde?'var(--crit)':'var(--tx-mut)'}">${iv.entrega}${tarde?`<br><span style="color:var(--tx-faint)">prometida ${iv.entregaComp}</span>`:'<br><span style="color:var(--tx-faint)">en fecha</span>'}</span></button>`; }).join('');
 
+  /* ── las alertas se DERIVAN (v19): brechas accionables de severidad alta + indicadores fuera de
+     banda sin contramedida + puestos clave vacantes. Cada una declara DÓNDE se resuelve: la meta
+     bajada que la trabaja y la gerencia que responde. Antes eran cuatro filas escritas a mano —
+     y por eso ninguna decía quién debía moverla. ── */
+  const alertas=[];
+  DATA.brechas.filter(g=>g.sev==='alta'&&g.estado==='accionable').forEach(g=>{
+    const o=objDeKr(g.kr), ar=o&&o.area&&byId(DATA.areas,o.area);
+    alertas.push({t:g.nm, costo:g.costo, crit:true, go:`data-g="${g.id}" data-g2="${g.id}"`,
+      quien:ar?ar.nm:'sin gerencia asignada', meta:o?o.nm:null, metaId:o?o.id:null}); });
+  DATA.kpis.filter(k=>!k.kr&&semaforo(k)==='rojo').forEach(k=>{
+    const g=k.gap&&byId(DATA.brechas,k.gap), p=byId(DATA.procesos,k.proc), ar=p&&byId(DATA.areas,p.areas[0]);
+    alertas.push({t:`${k.nm}: ${kcur(k)}${k.unidad||''} y ninguna meta del ciclo la mide`, costo:'sin ancla de valor',
+      go:`data-k="${k.id}"`, quien:ar?ar.nm:'—', meta:null, nota:g?`la recoge la brecha «${g.nm.slice(0,44)}…»`:'ninguna brecha la recoge todavía'}); });
+  DATA.areas.filter(a=>a.vacante).forEach(a=>alertas.push({t:`${a.vacante} — y es la firma que falta en la proyección de caja`,
+    costo:'sin persona', go:`data-area="${a.id}"`, quien:a.nm, meta:null}));
+  const alertasHTML=alertas.map(al=>`<button class="cambio-row${al.crit?'':' warnrow'}" ${al.go}><span class="sc" style="color:${al.crit?'var(--crit)':'var(--warn)'}">▲</span>
+      <div><div class="tt">${al.t}</div><div class="ap" style="white-space:normal">lo resuelve <b>${al.quien}</b>${al.meta?` · meta bajada: ${al.meta}`:''}${al.nota?` · ${al.nota}`:''}</div></div>
+      <span class="ap" style="color:${al.crit?'var(--crit)':'var(--warn)'}">${al.costo}</span></button>`).join('');
+
   const acuHTML=DATA.acuerdos.map(a=>{ const c=ACUC[a.estado]||'var(--tx-mut)';
     return `<button class="acurow" data-acu="${a.id}"><span class="ae" style="border-color:${c};color:${c}">${a.estado}</span>
-      <span class="ab"><span class="at">${a.nm}</span><span class="aq">${a.quien} · acordado en ${a.sesion} · vence ${a.plazo}</span></span></button>`; }).join('');
+      <span class="ab"><span class="at">${a.nm}</span><span class="aq">${a.quien} · acordado en la ${sesNm(a.sesion)||a.sesion} · vence ${a.plazo}</span></span></button>`; }).join('');
   const acuVenc=DATA.acuerdos.filter(a=>a.estado==='vencido').length,
         acuCumpl=DATA.acuerdos.filter(a=>a.estado==='cumplido').length;
 
@@ -136,9 +178,11 @@ function renderDirectorio(){
       <span class="q">el rumbo, las apuestas y las varas que este directorio firma</span></div>
 
     <div class="rumbo"><div class="pt">El rumbo — lo que este directorio prometió${respBadge('dir-rumbo')}</div>
-      <div class="rrow"><span class="k">Visión ${rb.vision.h}</span>«${rb.vision.t}»</div>
+      <div class="rrow"><span class="k">Visión ${DATA.empresa.visionHoriz}</span>«${DATA.empresa.vision}»</div>
       <div class="rrow brks"><span class="k">Este año</span>${brkHTML}</div>
-      <div class="rrow"><span class="k">Este trimestre</span>${DATA.apuestas.length} apuestas · ${DATA.objetivos.length} metas</div>
+      <div class="rrow"><span class="k">La bajada</span><span style="font-size:12px">${bajGlobal.hijos} metas abiertas en gerencias · <b style="color:${bajGlobal.sinAcordar?'var(--warn)':'var(--ok)'}">${bajGlobal.acordadas} con el acuerdo cerrado</b>${bajGlobal.sinBajar?` · <b style="color:var(--warn)">${bajGlobal.sinBajar} meta${bajGlobal.sinBajar>1?'s':''} del directorio sin bajar</b>`:''}
+        <br><span style="font-size:10.5px;color:var(--tx-faint)">una meta que ninguna gerencia abrió como suya no se ejecuta sola; una asignada sin acuerdo, tampoco</span></span></div>
+      <div class="rrow"><span class="k">Este trimestre</span>${DATA.apuestas.length} apuestas · ${objRaiz().length} metas del directorio · ${DATA.objetivos.length-objRaiz().length} bajadas a gerencias</div>
     </div>
 
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
@@ -160,7 +204,7 @@ function renderDirectorio(){
       <div class="dpane"><div class="pt">Las varas — riesgo que toleras · futuro que compras${respBadge('dir-varas')}</div>
         <span style="font-family:var(--font-mono);font-size:11px;color:var(--tx-mut)">apetito: liquidez <b style="color:var(--warn)">${DATA.apetito.liquidez}</b> · reputación <b style="color:var(--ok)">${DATA.apetito.reputacion}</b> · expansión <b style="color:var(--crit)">${DATA.apetito.expansion}</b></span>
         <div class="mixwrap">
-          <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx-faint)">Ambición del portafolio — apuestas + proyectos + ideas (${mx.n})</span>
+          <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx-faint)">Ambición del portafolio — por CONTEO de iniciativas (${mx.n}); la de plata está abajo</span>
           <div class="mixbar">
             <div class="seg s-op" style="width:${mx.operar}%" title="operar el hoy — ${mx.operar}% real"></div>
             <div class="seg s-ex" style="width:${mx.expandir}%" title="expandir — ${mx.expandir}% real"></div>
@@ -168,15 +212,17 @@ function renderDirectorio(){
             <div class="mixmark" style="left:${mo.operar}%" title="mezcla objetivo: hasta aquí operar el hoy (${mo.operar})"><i>▽${mo.operar}</i></div>
             <div class="mixmark" style="left:${mo.operar+mo.expandir}%" title="mezcla objetivo: hasta aquí expandir (+${mo.expandir})"><i>▽${mo.operar+mo.expandir}</i></div>
           </div>
-          <span style="font-family:var(--font-mono);font-size:10px;color:var(--tx-mut)"><b style="color:var(--brand-hi)">${mx.operar}</b> operar el hoy · <b>${mx.expandir}</b> expandir · <b>${mx.transformar}</b> apostar al futuro — objetivo ${mo.operar}/${mo.expandir}/${mo.transformar} <b style="color:var(--warn)">por fijar</b></span>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--tx-mut)"><b style="color:var(--brand-hi)">${mx.operar}</b> operar el hoy · <b>${mx.expandir}</b> expandir · <b>${mx.transformar}</b> apostar al futuro — objetivo ${mo.operar}/${mo.expandir}/${mo.transformar} <b style="color:var(--warn)">por fijar</b>
+            <br><span style="font-size:9px;color:var(--tx-faint)">tres lecturas de lo mismo, en tres unidades: la VARA (%) · el PRESUPUESTO (plata, panel de al lado) · esta barra (conteo). La que compra futuro es la plata.</span></span>
         </div></div>
 
       <div class="dpane"><div class="pt">El presupuesto del año — la mezcla, en plata${respBadge('dir-presupuesto')}</div>
         <div class="budg">${pre.bolsas.map(b=>`<div class="budgrow"><span class="bn">${b.nm}</span>
           <span class="bt"><i style="width:${(usoBolsa(b)*100).toFixed(0)}%"></i></span>
           <span class="bv">${b.comprometido.toFixed(2)} / ${b.asignado.toFixed(1)} ${pre.u}</span></div>`).join('')}</div>
+        <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--tx-mut);margin-top:2px">reparte <b style="color:${mezPre.desvia.length?'var(--warn)':'var(--ok)'}">${mezPre.operar}/${mezPre.expandir}/${mezPre.transformar}</b> contra la vara ${mo.operar}/${mo.expandir}/${mo.transformar}${mezPre.desvia.length?` — <span style="color:var(--warn)">no coincide en ${mezPre.desvia.join(' y ')}</span>`:' — coincide'}</div>
         <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--warn);margin-top:2px">${pre.total.toFixed(1)} ${pre.u} · ${pre.estado} — <span class="plnk" data-pres="1" style="color:var(--brand-hi)">ver el presupuesto y las facultades ›</span></div>
-        <div class="paral"><b>La misma vara en toda industria:</b> cuánta plata sostiene el hoy y cuánta compra futuro. Sin presupuesto aprobado, la mezcla de ambición es una intención; con presupuesto, es una decisión con firma.</div></div>
+        <div class="paral"><b>La misma vara en toda industria:</b> cuánta plata sostiene el hoy y cuánta compra futuro. Sin presupuesto aprobado, la mezcla de ambición es una intención; con presupuesto, es una decisión con firma. <b>Alcance:</b> este presupuesto es el ${pre.alcance}; NO incluye ${pre.noIncluye} — son dos plata distintas y no se suman.</div></div>
     </div>
 
     <div class="secband"><span class="n">Movimiento 3</span><h3>¿Qué puede impedirlo?</h3>
@@ -187,11 +233,9 @@ function renderDirectorio(){
         ${riesgoHTML}
         <div class="paral"><b>El registro es el mismo en toda industria;</b> cambian las categorías que pesan: en banca la liquidez, en salud y construcción el cumplimiento y la seguridad, en tecnología la dependencia de personas clave.</div></div>
 
-      <div class="dpane"><div class="pt">Alertas que escalaron — solo lo que subió solo${respBadge('dir-alertas')}</div>
-        <button class="cambio-row" data-g="g-avc" data-g2="g-avc"><span class="sc">▲</span><div><div class="tt">Avance de Marina: 87% real vs 95% declarado</div></div><span class="ap" style="color:var(--crit)">S/ 35k/mes</span></button>
-        <button class="cambio-row" data-g="g-dso" data-g2="g-dso"><span class="sc">▲</span><div><div class="tt">Cobranza de Marina: 91 días bloquea la caja</div></div><span class="peer" title="${DATA.peers['g-dso'].src}">${DATA.peers['g-dso'].r}</span><span class="ap" style="color:var(--crit)">S/ 180k/año</span></button>
-        <button class="cambio-row" data-g="g-post" data-g2="g-post"><span class="sc">▲</span><div><div class="tt">La postventa se deteriora y ninguna meta la mide</div></div><span class="peer" title="${DATA.peers['g-post'].src}">${DATA.peers['g-post'].r}</span><span class="ap" style="color:var(--warn)">42 → 31</span></button>
-        <button class="cambio-row" data-area="a-tes"><span class="sc">▲</span><div><div class="tt">Jefatura de Tesorería vacante hace 5 meses</div></div><span class="ap" style="color:var(--warn)">sin persona</span></button></div>
+      <div class="dpane"><div class="pt">Alertas que escalaron — y quién las resuelve${respBadge('dir-alertas')}</div>
+        ${alertasHTML}
+        <div class="paral"><b>Sube lo que nadie resolvió abajo, no todo lo que está mal.</b> Cada alerta dice de qué gerencia es y qué meta bajada la trabaja: el directorio no arregla la alerta — pregunta por ella al que la tiene. Sin destinatario, una alerta es un reproche mensual.</div></div>
     </div>
 
     <div class="dirgrid">
@@ -201,10 +245,12 @@ function renderDirectorio(){
     </div>
 
     <div class="dirgrid">
-      <div class="dpane"><div class="pt">Proyectos en curso — el portafolio · orden: lo que más cuesta esperar${respBadge('dir-portafolio')}</div>
-        ${[...DATA.proyectos].sort((x,y)=>((codMes(y)||{mes:-1}).mes)-((codMes(x)||{mes:-1}).mes)).map(pm=>{ const cod=codMes(pm);
-          return `<button class="cambio-row" data-pm="${pm.id}" data-pm2="${pm.id}"><span class="sc">${pm.pdca}</span><div><div class="tt">${pm.nm}</div><div class="ap" style="white-space:normal">${pm.estado} · ${pm.delta} · ${AMBICION[pm.ambicion]}${cod?` · <b style="color:var(--crit)">esperar: ${cod.raw}</b>`:''}</div></div><span class="ap" style="color:var(--brand-hi)" title="retorno del caso: lo que devuelve sobre lo que cuesta">ROI ${pm.roi}</span></button>`; }).join('')}
-        <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--tx-faint);margin-top:6px;border-top:1px solid var(--border);padding-top:5px">mezcla real ${mx.operar}/${mx.expandir}/${mx.transformar} — la vara, arriba ↑ · la prioridad se ordena DENTRO de cada bolsa, jamás entre bolsas</div></div>
+      <div class="dpane"><div class="pt">Proyectos que el directorio sigue — los que mueven una meta del año${respBadge('dir-portafolio')}</div>
+        ${pmDirectorio.map(({pm,por})=>{ const cod=codMes(pm);
+          return `<button class="cambio-row" data-pm="${pm.id}" data-pm2="${pm.id}"><span class="sc">${pm.pdca}</span><div><div class="tt">${pm.nm}</div><div class="ap" style="white-space:normal">${pm.estado} · ${pm.delta} · ${AMBICION[pm.ambicion]}${cod?` · <b style="color:var(--crit)">esperar: ${cod.raw}</b>`:''}<br><span style="color:var(--tx-faint)">sube porque ${por}</span></div></div><span class="ap" style="color:var(--brand-hi)" title="retorno del caso: lo que devuelve sobre lo que cuesta">ROI ${pm.roi}</span></button>`; }).join('')}
+        ${pmGerencia.length?`<div style="font-size:11px;color:var(--tx-faint);margin-top:6px;border-top:1px solid var(--border);padding-top:5px">
+          Otros <b>${pmGerencia.length}</b> los sigue la gerencia y no suben acá: ninguno mueve una meta del año ni supera una facultad. <span class="plnk" id="verPortafolio" style="color:var(--brand-hi)">verlos en el nivel táctico ›</span></div>`:''}
+        <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--tx-faint);margin-top:6px">la prioridad se ordena DENTRO de cada bolsa, jamás entre bolsas</div></div>
 
       <div class="dpane"><div class="pt">Qué cambió desde la última sesión (hace 30 días)${respBadge('dir-cambio30')}</div>
         <div style="font-size:12px;color:var(--tx-mut);line-height:1.8">· resultado del mes: <b style="color:var(--crit)">0.30 contra 0.51 de plan</b> — la brecha viene de menos ingreso y más gasto<br>· caja: 2.8 → <b style="color:var(--crit)">2.1 ${caja.u}</b>, y la proyección cruza el piso en la semana ${caja.hito.sem}<br>· cobranza Marina: 90 → 91 días (se degrada)<br>· "Cierre exprés" CERRÓ con veredicto: <b style="color:var(--ok)">movió</b> (9 → 4.5 días)<br>· satisfacción de propietarios 35 → 31 — sigue sin meta que la mida<br>· ${bandeja.length} decisiones esperan tu firma</div></div>
@@ -224,8 +270,9 @@ function renderDirectorio(){
 
     <div class="actabar">
       <div class="at2"><b>Cerrar la sesión genera el acta.</b> El acta se arma sola con lo que se decidió hoy y los acuerdos que quedan abiertos — con responsable y plazo — y queda versionada como cualquier otro dato de la organización. La próxima sesión abre con ella.</div>
-      <button class="btn" data-acc="cerrar-acta">Cerrar la sesión y generar el acta › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · directa</span></button></div>
+      <button class="btn" data-acc="cerrar-sesion">Cerrar la ${sesVigente().nm} y generar el acta › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · directa</span></button></div>
     <div class="scrollhint">rueda para recorrer la sesión · los cuatro movimientos, en orden</div>`);
   wireLinks(pv);
+  const vp=pv.querySelector('#verPortafolio'); if(vp) vp.onclick=()=>gotoNivel(3);
   counter(`${per.nm} · resultado ${fmtN(per.cifras[3].v,2)} ${per.cifras[3].u} (plan ${fmtN(per.cifras[3].plan,2)}) · ${bandeja.length} decisiones esperan firma · ${acuVenc} acuerdo vencido`);
 }

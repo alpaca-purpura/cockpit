@@ -1,5 +1,74 @@
 # HANDOFF — continuar el mockup del twin (sesión 2026-07-26 → siguiente)
 
+> **★ v21 EJECUTADA (2026-08-01 — "toca táctica": la sala del área + abrir-por-rama + el archivo;
+> firmas A-E del operador sobre la propuesta escrita):** el nivel 3 dejó de ser un tablero
+> transversal de resultados y pasó a ser DOS cosas: **portada-selector** (tarjetas-organigrama por
+> gerencia con jefaturas anidadas — resumen TWIN primero: puestos·vacantes·procesos·docs·⛨; plan
+> después — + la cinta transversal: bajadas con salto a su sala, acuerdos, riesgos) y **LA SALA DEL
+> ÁREA** (`renderSalaArea`, gerencia O jefatura, mismo molde): documento vertical de 6 bandas que se
+> lee como frase — ① lo que nos toca (bajadas + «te toca y nadie la bajó») · ② el plan (ruta
+> meta→capacidad→proceso→compromiso→indicador + «la reunión va a preguntar») · ③ quién (mini-organigrama
+> del subtree con nómina y vacantes) · ④ cómo se ejecuta (mapa por tipo; **⊕ abrir despliega el
+> proceso EN SU LugAR** a roles×actividades y EMPUJA a los vecinos — `state.procAmp`, scroll
+> conservado) · ⑤ sobre qué corre · ⑥ **el archivo** (pirámide documental + CONTRATOS con
+> **vencimiento DERIVADO** contra `DATA.periodo` + el hueco «ningún procedimiento lo rige» dibujado).
+> **Doctrina twin-primero:** capa nueva **Plan del ciclo** (rail, ON) — apagada, la sala muestra solo
+> la organización. **Organigrama: murió el LOD global** → expansión POR RAMA (`state.expandidas` +
+> `state.puestosOpen`, ⊕/⊖ por nodo, `treeLayout` con filas de alto computado — abrir empuja, jamás
+> tapa; botones 1-4 = presets `presetNiveles`). **Doble click en un área = su sala** (firma D; el foco
+> z1 quedó como botón de ficha). **Riesgos/acuerdos/ideas del área se DERIVAN de sus refs**
+> (`areaDeRef`/`cargoArea` — cero campo duplicado). **D-38 clavada** (`sistema/schema/DECISIONES.md`):
+> entidad `documento` (21º nodo — tipo·relacion rige/produce/sustenta·estado·vence·contraparte;
+> `vencido` JAMÁS estado, se computa; D-08 intacta: manual/z3 = proyección) + 2 acciones kinéticas +
+> 3 invariantes; gen_schema 21 nodos OK; barrido «20 entidades»→21 (CLAUDE/VISION/reglas/M32/mockup).
+> GLOSARIO §1 +4 filas firmadas (sala del área · el archivo · abrir⊕/plegar⊖ · papeles/evidencia/
+> contrato). Partes nuevas: `37-data-archivo.js` (14 docs + helpers docVence/docsDeArea/
+> procsSinDocRige) · `19c-sala-area.css`. Fichas: `openDocumento` nueva · openProceso gana grupo
+> «El archivo» · openArea gana «Entrar a la sala». Respaldo: +5 entradas (tac-selector · sala-twin ·
+> sala-plan · sala-procesos · sala-archivo). verify.sh **47/47** (v21-organigrama-abrir-rama con
+> empuje MEDIDO por offsets · v21-nivel3-selector · v21-sala-del-area; org-dblclick-drill reescrito;
+> nivel3-tactico → selector). **Encontrado MIRANDO** (regla 5): contrato vencido mostraba «vigente» y
+> «vencido hace 5 meses» a la vez → cuando el derivado dice vencido, MANDA y el estado guardado no se
+> pinta. Verificado con ojos propios (portada · sala Finanzas completa · Cobranza abierta en su lugar
+> con carriles y vecinos empujados · archivo con OSE vencido y 5 huecos · organigrama con Finanzas
+> plegada + nómina de Comercial abierta). **OJO:** este commit aterriza TAMBIÉN v19+v20 (estaban
+> ejecutadas y documentadas acá, pero sin commitear). Pendiente que abre: conector real al corpus
+> (F3) · ¿`proyecto.hitos[]`? (decisión aparte) · el Artifact se republicó (misma URL 🗺️).
+
+> **★ v20 EJECUTADA (2026-07-30 — "¿sirve en una junta de gerentes?" → el mapa completa el mapa):**
+> el nivel 2 pasa de **5 a 7 bandas** y se lee de arriba a abajo como UNA frase: *a dónde vamos ·
+> **cómo nos gobernamos** · **qué sabemos hacer** · cómo lo hacemos · qué nos sostiene · quién lo opera ·
+> sobre qué corre*. Dos bandas nuevas cierran dos huecos que hacían que el producto se leyera como dos
+> cosas pegadas. **① Dirección** (`tipo:'direccion'` — 6 procesos: planeamiento · revisión por la
+> dirección · presupuesto · riesgos · mejora · cambios). Ninguno es invención: los seis ya se ejercían
+> en el nivel 1 y en los módulos, **sin casilla, sin dueño, sin madurez** — el nivel 1 se producía FUERA
+> del mapa. Cada uno declara qué `produce` y salta a su `tablero` (`irTablero`). Quedan **fuera del hilo
+> de oro a propósito** (la dirección no mueve un indicador: produce la meta que otros mueven) y por eso
+> tampoco se apagan al encender una meta. **② Capacidades** (13, agrupadas por familia, `DATA.capCats`):
+> el eslabón que faltaba entre la meta y el proceso — sin él la junta salta de "no llego" a "arreglá el
+> proceso". **El hilo ahora PASA por la capacidad** (meta → capacidad → proceso, con dedupe; el directo
+> sólo cuando no hay capacidad declarada). **③ La lente Madurez existe por fin en el mapa de valor**:
+> `procColor()` es una sola definición para las tres bandas de procesos, y el botón del directorio
+> ("ver el mapa por madurez de capacidades") **cumplía la promesa en el organigrama y NO en el mapa de
+> valor** — ahí `state.sub==='madurez'` no estaba implementado y caía en silencio a digitalización.
+> **④ La madurez mide la BRECHA, no el peldaño** (D-c): rollup por peor distancia, y sin nivel deseado
+> **no se tiñe a nadie** (cuarto estado "sin meta fijada"; `c-permisos` hundía a Desarrollo en rojo por
+> una meta inexistente). **⑤ La banda Estrategia pasa a DOS FILAS** (arriba la meta del directorio,
+> abajo la bajada con gerencia · rol que responde · si fue acordada; cascada **punteada** cuando no hay
+> acuerdo — M26). Antes: 10 metas en una fila, la décima fuera del lienzo y nada distinguía la meta de
+> la empresa de la de un gerente. **Método:** ingesta por `/metodo-aprende` → **D-37** en el contrato
+> del objeto (`proceso.tipo`, enum `tipo_proceso`) + arista **M12↔M16** en las dos direcciones (las dos
+> anclaban `procesos-clasificacion` y **no tenían arbitraje**: APQC clasifica para COMPARAR, el mapa ISO
+> para LEER; el tipo NO se deriva del id APQC). **Respaldo:** `z0-direccion` + `z0-capacidades` nuevas,
+> `z0-cadena`/`z0-apoyo`/`ent-proceso`/`ent-capability` reescritas. **Suite 44/44.**
+> **Encontrado MIRANDO, no por las pruebas** (ver `src/README.md` regla 5): banda Dirección envuelta
+> tapando el rótulo de Capacidades · rótulo de la fila de bajadas tapado por los nodos de arriba · pin
+> de brecha apilado invadiendo la banda superior · y un **falso negativo** en "qué metas se apoyan en
+> esta capacidad" (*ver la caja al día*, la peor brecha del mapa, decía "ninguna" porque su proceso no
+> declara driver mientras su brecha bloquea un contrato del directorio → ahora se deriva por **dos
+> caminos**). **Cobertura declarada:** 7 procesos sin capacidad quedan fuera de la lectura por madurez y
+> el hueco se DIBUJA (`.caphueco` → `openCobertura`), no se calla.
+
 > **★ v18 EJECUTADA (2026-07-29 — "¿le interesa esto a un directorio?" → los 3 bloques + reorganización):**
 > auditoría sin defender lo hecho (13 hallazgos, tablero `dossier/07` § H): lo que había gobernaba la
 > **ejecución de la estrategia** — la segunda mitad de una agenda de directorio; faltaba la primera

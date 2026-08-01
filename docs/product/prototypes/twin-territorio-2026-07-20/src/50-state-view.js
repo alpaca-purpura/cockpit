@@ -1,21 +1,45 @@
 let state={ mod:'territorio', nivel:2, ciclo:'okr', verComo:'', corrida:false, escala:'z0', foco:null, piel:'valor', lienzo:'p-cob', activeObj:null,
-  capas:new Set(['estructura','hilo','salud','brechas']), sub:'digital',
-  lod:3, search:'', insp:'home', cw:1440, ch:900 };
+  capas:new Set(['estructura','hilo','salud','brechas','plan']), sub:'digital',
+  /* v21 · la visibilidad del organigrama deja de ser un LOD global (todo-o-nada por profundidad) y
+     pasa a EXPANSIÓN POR RAMA: `expandidas` = áreas cuyas hijas se dibujan · `puestosOpen` = áreas
+     con su nómina abierta EN el nodo. `lod` sobrevive solo como preset (los botones 1-4 = "abrir
+     todo hasta N"). Abrir una rama EMPUJA a sus hermanas — el layout es un flujo, no coordenadas. */
+  lod:3, expandidas:new Set(), puestosOpen:new Set(),
+  /* v21 · nivel 3: `area3` = la sala del área elegida (null = portada-selector) · `procAmp` = el
+     proceso abierto EN SU LUGAR dentro de la sala (uno a la vez — abrir otro pliega el anterior) */
+  area3:null, procAmp:null,
+  search:'', insp:'home', cw:1440, ch:900 };
 let view={x:0,y:0,z:1};
 let MM_PTS=[]; // puntos del minimapa (se llenan en cada render)
 
-/* tree layout desde parent (reporta_a) — solo áreas visibles según LOD */
+/* arranque: el default equivale al viejo nivel 3 (raíz + gerencias abiertas → 3 filas visibles) */
+state.expandidas.add('a-ger'); kids('a-ger').forEach(a=>{ if(kids(a.id).length) state.expandidas.add(a.id); });
+
+/* tree layout desde parent (reporta_a) — v21: visibilidad por RAMA (state.expandidas), no por LOD.
+   El alto de cada fila se COMPUTA de lo que hay en ella: un nodo con la nómina abierta agranda SU
+   fila y empuja las de abajo — jamás se solapa ni encoge al resto (doctrina abrir-y-empujar). */
 function treeLayout(){
-  const rowH=state.lod>=4?318:192, topY=150, slotW=state.lod>=4?208:178, x0=120;   // nivel 4: aire para el stack de puestos
+  const topY=150, x0=120;
+  const vis=DATA.areas.filter(isVis);
+  const slotW=vis.some(a=>state.puestosOpen.has(a.id))?208:178;
+  /* aire extra por fila = el stack de puestos más alto ABIERTO en esa profundidad */
+  const extra={};
+  vis.forEach(a=>{ if(!state.puestosOpen.has(a.id))return; const d=depth(a);
+    const n=PUESTOS.filter(p=>p.area===a.id).length;
+    extra[d]=Math.max(extra[d]||0, n*17+22); });
+  /* el nodo está CENTRADO en su (x,y): un stack abierto crece mitad arriba, mitad abajo — el hueco
+     entre filas suma la mitad de lo abierto en cada una para que nada se pise */
+  const maxD=Math.max(...vis.map(depth));
+  const rowY=[topY+(extra[0]||0)/2];
+  for(let d=1;d<=maxD;d++) rowY[d]=rowY[d-1]+192+(extra[d-1]||0)/2+(extra[d]||0)/2;
   let slot=0;
   (function walk(a,d){
     const ch=kids(a.id).filter(isVis);
     if(!ch.length){ a.x=x0+slot*slotW; slot++; }
     else { ch.forEach(c=>walk(c,d+1)); a.x=(ch[0].x+ch[ch.length-1].x)/2; }
-    a.y=topY+d*rowH;
+    a.y=rowY[d];
   })(DATA.areas.find(a=>!a.parent),0);
-  const depths=DATA.areas.filter(isVis).map(depth), maxD=Math.max(...depths);
-  return { w:x0+Math.max(slot-1,1)*slotW+150, h:topY+maxD*rowH+160 };
+  return { w:x0+Math.max(slot-1,1)*slotW+150, h:rowY[maxD]+(extra[maxD]||0)/2+160 };
 }
 
 function setCanvas(w,h){ state.cw=w; state.ch=h; world.style.width=w+'px'; world.style.height=h+'px';
@@ -42,11 +66,14 @@ function fitFlujo(anim=true){ const vw=stage.clientWidth, vh=stage.clientHeight;
   view.x = state.cw*z<=vw-56 ? (vw-state.cw*z)/2 : 28;
   view.y = state.ch*z<=vh-90 ? (vh-state.ch*z)/2 : 24;
   applyView(anim); }
-/* v17 · primera carga: encuadre LEGIBLE sobre estrategia + cadena (lo que un director lee primero);
-   el resto del mapa se alcanza con rueda/pan/minimapa o el botón Encajar ⤢ */
+/* v17 · primera carga: encuadre LEGIBLE de lo que un director lee primero; el resto del mapa se
+   alcanza con rueda/pan/minimapa o el botón Encajar ⤢.
+   v20 · ese "primero" son ahora las TRES bandas de la lectura estratégica — a dónde vamos (metas) ·
+   cómo nos gobernamos (dirección) · qué sabemos hacer (capacidades). La cadena queda a un scroll:
+   es la respuesta al "cómo", y en una junta de gerentes esa pregunta viene después, no antes. */
 let firstLoad=true;
 function fitEncuadre(){ const vw=stage.clientWidth, vh=stage.clientHeight;
-  const y0=26, y1=650;   // bandas Estrategia (obj+KR) y Cadena (con sus KPIs/pins)
+  const y0=26, y1=930;   // bandas Estrategia (2 filas) · Dirección · Capacidades
   const z=Math.min((vw-56)/state.cw,(vh-70)/(y1-y0),1.02);
   view.z=z; view.x=(vw-state.cw*z)/2; view.y=-y0*z+16; applyView(false); }
 /* v18 · una vista de módulo/tablero es un DOCUMENTO, no un mapa: se encaja al ANCHO y se ancla
@@ -68,7 +95,7 @@ document.getElementById('zout').onclick=()=>{view.z=Math.max(0.3,view.z-0.12); a
 document.getElementById('zfit').onclick=()=>refit();
 
 let drag=null;
-stage.addEventListener('mousedown',e=>{ if(e.target.closest('.area-node,.obj-node,.proc-node,.pin,.kin,.act,.btn,.chev,.soporte,.rolchip,.sysplat'))return;
+stage.addEventListener('mousedown',e=>{ if(e.target.closest('.area-node,.obj-node,.proc-node,.pin,.kin,.act,.btn,.chev,.soporte,.rolchip,.sysplat,.dirchip,.capchip,.caphueco'))return;
   drag={sx:e.clientX,sy:e.clientY,ox:view.x,oy:view.y}; stage.classList.add('drag'); });
 window.addEventListener('mousemove',e=>{ if(!drag)return; view.x=drag.ox+(e.clientX-drag.sx); view.y=drag.oy+(e.clientY-drag.sy); applyView(false); });
 window.addEventListener('mouseup',()=>{ drag=null; stage.classList.remove('drag'); });

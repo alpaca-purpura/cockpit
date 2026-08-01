@@ -14,7 +14,7 @@
           <button class="esc" data-nivel="3"><span class="z">3</span><span>Táctico</span><span class="crumb nivb" data-nb="3"></span></button>
           <button class="esc" data-nivel="4"><span class="z">4</span><span>Operativo</span><span class="crumb nivb" data-nb="4"></span></button>
         </div>
-        <div class="capa-leg">bajar = cambia la pregunta y la unidad · subir ≠ atrás · el nivel 2 es el territorio; 1 y 3 son tableros; 4 es el flujograma y la instrucción</div>
+        <div class="capa-leg">bajar = cambia la pregunta y la unidad · subir ≠ atrás · el nivel 2 es el territorio; 1 es la sesión del directorio; 3 es la sala de cada área; 4 el flujograma y la instrucción</div>
       </div>
       <div class="rail-sec">
         <span class="eyebrow">Gobierno</span>
@@ -47,11 +47,13 @@
             <div class="sub-leg" data-leg="digital"></div>
             <button class="sub-t" data-sub="conf"><span class="r"></span><span class="sl"><b>Confianza del dato</b><span class="q">¿cuánto le creo al AS-IS? (provenance) · pinta todo</span></span></button>
             <div class="sub-leg" data-leg="conf"></div>
-            <button class="sub-t" data-sub="madurez"><span class="r"></span><span class="sl"><b>Madurez</b><span class="q">¿qué tan lejos del TO-BE? (COBIT) · pinta áreas</span></span></button>
+            <button class="sub-t" data-sub="madurez"><span class="r"></span><span class="sl"><b>Madurez</b><span class="q">¿cuánto falta para donde queremos estar? · pinta capacidades, procesos y áreas</span></span></button>
             <div class="sub-leg" data-leg="madurez"></div>
           </div>
           <button class="capa on" data-capa="brechas"><span class="sw"></span><span class="lab"><b>Brechas</b><span>pin sobre lo que ataca</span></span><span class="oc">O6</span></button>
           <div class="capa-leg">▲ color = severidad · etiqueta = costo de no hacer</div>
+          <button class="capa on" data-capa="plan"><span class="sw"></span><span class="lab"><b>Plan del ciclo</b><span>metas bajadas · compromisos · contramedidas</span></span><span class="oc">O2·7</span></button>
+          <div class="capa-leg">pinta el CÓMO sobre el twin del área (nivel 3) — apagada, la sala muestra solo la organización</div>
           <button class="capa" data-capa="cinetica"><span class="sw"></span><span class="lab"><b>Cinética</b><span>brecha → proyecto → KPI</span></span><span class="oc">O7</span></button>
           <div class="capa-leg">● proyecto en curso · etiqueta = fase PDCA</div>
           <button class="capa" data-capa="trabajo"><span class="sw"></span><span class="lab"><b>Trabajo</b><span>arneses por puesto</span></span><span class="oc">N15·17</span></button>
@@ -87,7 +89,7 @@
       <span class="count" id="count"></span>
       <label class="search"><span class="ic">⌕</span><input id="search" type="text" placeholder="Buscar área o proceso"><kbd>⌘K</kbd></label>
       <div class="piel-toggle" id="pieltoggle">
-        <button class="on" data-piel="valor" title="Mapa de valor: estrategia → cadena → apoyo → gente → sistemas">Mapa de valor</button>
+        <button class="on" data-piel="valor" title="Mapa de valor — se lee de arriba a abajo: a dónde vamos (estrategia) → cómo nos gobernamos (dirección) → qué sabemos hacer (capacidades) → cómo lo hacemos (cadena) → qué nos sostiene (apoyo) → quién lo opera (gente) → sobre qué corre (sistemas)">Mapa de valor</button>
         <button data-piel="org" title="La estructura como lente: quién responde por qué">Organigrama</button>
       </div>
     </div>
@@ -104,11 +106,11 @@
 
     <div class="viewctl">
       <div class="zoomctl"><button id="zout" title="Alejar">−</button><span class="zlevel" id="zlevel">100%</span><button id="zin" title="Acercar">+</button><button id="zfit" title="Encajar">⤢</button></div>
-      <div class="lodctl" id="lodctl"><span class="lab">Niveles</span><button data-lod="1">1</button><button data-lod="2">2</button><button class="on" data-lod="3">3</button><button data-lod="4" title="puestos — la nómina completa sobre la estructura">4</button></div>
+      <div class="lodctl" id="lodctl" title="atajos de mano gruesa: abrir todo hasta N — cada nodo también se abre por rama (⊕) y empuja a sus vecinas"><span class="lab">Niveles</span><button data-lod="1">1</button><button data-lod="2">2</button><button class="on" data-lod="3">3</button><button data-lod="4" title="puestos — la nómina completa sobre la estructura">4</button></div>
     </div>
     <div class="minimap" id="minimap"><div id="mmdots"></div><div class="vw" id="mmview"></div></div>
 
-    <div class="hint" id="hint">El mapa de valor = el plano de los <b>roles</b>: quién opera qué proceso · toca un objetivo y su hilo cruza las bandas · doble-click un proceso abre su lienzo · piel <b>Organigrama</b> = el plano de los <b>puestos</b>: quién ocupa, quién reporta, quién supervisa agentes</div>
+    <div class="hint" id="hint">Se lee de arriba a abajo: <b>a dónde vamos → cómo nos gobernamos → qué sabemos hacer → cómo lo hacemos → quién lo opera</b> · toca un objetivo y su hilo cruza las bandas por la capacidad que lo sostiene · doble-click un proceso abre su lienzo</div>
   </main>
 
   <aside class="inspector" id="inspector">

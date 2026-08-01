@@ -505,3 +505,156 @@ planilla del área que prometió. (2) **Lo verifica finanzas, jamás quien apost
 cero engañoso (ERROR si hay `cobrado` con estado `por-sellar`). (4) El ciclo sólo cierra en `cumplida`
 con valor cobrado verificado. Misma disciplina que la auditoría de beneficios del proyecto formal
 (M42, doble firma sponsor+finanzas) un nivel arriba.
+
+---
+
+# v19 · El hilo medido, la madurez con vara y la bajada al gerente (D-31…D-36)
+
+> **Origen:** auditoría 2026-07-29 del nivel 1 contra `/metodo` y el esquema (bloque **K** del tablero
+> `dossier/07` de la historia `cockpit/twin-territorio-mapa-zoomable`). Las seis fichas responden una
+> sola pregunta del operador: *los usuarios son el gerente general y los gerentes — todo lo que el
+> directorio muestra tiene que resolverse con acciones diarias*. Un tablero de gobierno que no baja a
+> un rol con una acción es un reproche mensual.
+
+## D-31 · La dirección del indicador es un dato, no una inferencia — `clavada` (M21 · M30 · M48)
+El semáforo del KPI deducía el sentido del orden de la banda (`target < rojo` ⇒ menos-es-mejor). D-26
+ya había declarado `direccion` **requerido** en `periodo.cifra` con el argumento exacto ("sin esto un
++7% de gasto se pintaría verde") — y el hilo de oro, que es la superficie más vista del producto,
+seguía colgando de la heurística.
+
+Se agrega: **`kpi.direccion`** (enum `direccion_cifra`, **requerido**) · `frecuencia` gana
+**`por-evento`** (la serie que avanza por expediente/lote/contrato, no por calendario) ·
+**`kpi.referencia_externa{unidad_nicho_ref, rango, conf, vigencia}`**.
+
+**Doctrina:** (1) **un solo mecanismo para la misma semántica** a los dos lados de la costura contable.
+(2) La inferencia se rompe en bandas de dos colas (una temperatura, un nivel de inventario) y con
+umbrales iguales; el hilo de oro no puede depender de eso. (3) La frescura de una serie `por-evento` se
+juzga contra el último evento, jamás contra el reloj — así una métrica por expediente deja de aparecer
+vencida por no tener movimiento en el mes. (4) **La vara externa sale del eje vertical**
+(`nichos/<vertical>.yaml`) y **hereda su confianza**: si la unidad dice `hipotesis`, el tablero no
+afirma un rango de pares. Un rango escrito a mano, sin unidad de nicho detrás, es un error de
+procedencia (M23) — es literalmente lo que el método prohíbe en `N-IMM-03`.
+
+## D-32 · Dos escaleras de madurez, cada una en su cancha — `clavada` (M15 · M31 · M47)
+Convivían tres: la de capacidad (COBIT 0-5, `capability.assessment`), una escalera 1-5 del sistema de
+gestión (ISO 9004) sin lugar en el esquema, y un `madurez` de tres colores colgado del área — que
+además se pintaba bajo una leyenda que prometía niveles COBIT. Un color no es un nivel.
+
+Se agrega: enum **`escala_madurez`** (`cobit-0-5` · `iso9004-1-5`), que **viaja con el número**;
+`capability.assessment` se explicita (`nivel_actual` · `nivel_deseado` · `escala` ·
+`evaluado_por_ref` · `evidencia_refs`). **No existe `area.madurez`**: la madurez de un área es el
+**rollup** de las capabilities de su subárbol, igual que su digitalización se deriva de sus procesos.
+
+**Doctrina:** (1) un `3` de COBIT no significa lo mismo que un `3` de ISO 9004 — el número sin su
+escala es ruido, y promediarlas es peor. (2) **Sin `nivel_deseado` hay nivel, jamás brecha**: la capa
+promete una distancia; cuando no la tiene, lo dice (warning) en vez de pintar un color que miente.
+(3) Lo que el objetivo EXIGE de una capability se lee de los KR que empuja, no se copia a mano.
+
+## D-33 · `empresa.autoevaluacion_madurez` — la escalera del sistema de gestión — `clavada` (M47)
+La escalera de cinco dimensiones (liderazgo · estrategia · recursos · procesos · mejora) se dibujaba en
+la sala del directorio sin ficha, sin procedencia y declarada a mano — mientras el propio respaldo
+predicaba *"el nivel se DERIVA de evidencia con su confianza, jamás se declara a mano"*.
+
+Se agrega: **`empresa.autoevaluacion_madurez[]`** (subesquema `dimension_madurez`: `dimension` (enum
+**`dimension_gestion`**) · `escala` · `nivel_actual` · `nivel_deseado` · **`evidencia_refs[]`** ·
+`evaluado_en_ref`→sesion · `fuente`/`conf`).
+
+**Doctrina:** (1) la autoevaluación es un **acto de gobierno con fecha** (`evaluado_en_ref`), no un
+campo que envejece en silencio. (2) **`evidencia_refs` vacío ⇒ opinión**: `conf` baja y visible; una
+autoevaluación declarada no se presenta como medición. (3) Es la única escalera que gradúa la
+organización ENTERA (finanzas y personas incluidas); COBIT gradúa una capacidad. Conviven, no compiten.
+
+## D-34 · La cifra del periodo lleva SU procedencia, y no duplica al indicador — `clavada` (M55 · M23)
+`periodo` tenía un solo `fuente`/`conf` para las seis cifras — pero la caja sale de la posición
+bancaria y el margen del ERP. Y `cifra.kpi_ref` (declarado en D-26 justamente como anti-duplicación)
+no impedía guardar el `valor` dos veces.
+
+Se agrega: **`cifra.fuente`/`cifra.conf`** propios · invariante **ERROR** `cifra.valor` guardado
+cuando existe `kpi_ref` (el valor se LEE de la última medición) · el espejo del mismo invariante en
+`key_result.current` cuando existe `kr.kpi_ref`.
+
+**Doctrina:** dos copias del mismo número es **cómo el tablero del directorio y el del gerente empiezan
+a decir cosas distintas**. Un hecho, un lugar — sobre todo cuando el hecho cruza una costura de
+sistemas.
+
+## D-35 · La bajada — de meta del directorio a meta de un gerente — `clavada` (M26 · M41 · M58)
+`objetivo.parent_ref` existía desde v2 y **no se usaba**: los objetivos eran una lista plana. Sin
+cascada, el nivel 1 muestra siete metas de empresa que ningún rol tiene asignadas, y el gerente que
+abre Cockpit no encuentra la pregunta que de verdad se hace: *¿qué me bajaron a mí?*
+
+Se agrega: **`objetivo.area_ref`** · **`objetivo.acordado_en_ref`**→sesion ·
+**`periodo.cifra.resuelve_en_ref`** · acciones **`bajar-objetivo`** y **`acordar-bajada`**.
+
+**Doctrina:** (1) **acordada ≠ asignada** — el catchball de Hoshin es un acto con traza; sin
+`acordado_en_ref` la meta está impuesta, y eso predice su incumplimiento mejor que cualquier semáforo.
+(2) `ancla_ref` dice quién **produce** una cifra (estructura); `resuelve_en_ref` dice quién la **mueve**
+esta semana (trabajo): sin lo segundo, una variación es un reproche sin destinatario. (3) Meta del
+directorio sin hijos = *sin bajar*, y es la primera pregunta de la revisión — no un dato faltante.
+
+## D-36 · Los pesos del hilo y la contramedida como acción — `clavada` (M21 · M41 · M16 cl.9.3)
+Los `peso` de `kpi.contribuye_a` sumaban 0.7 u 0.8 en tres de siete KR sin que nada lo dijera — o falta
+un indicador, o el peso está sin normalizar, y las dos cosas cambian la lectura del hilo. Y la regla de
+la reunión de resultados ("indicador fuera de banda EXIGE contramedida comprometida") vivía como texto
+en pantalla, sin acción declarada que la ejecute.
+
+Se agrega: invariante **warning** de pesos que no suman 1 · warning `key_result` sin `accountable_ref`
+· acción **`comprometer-contramedida`** (entidad `kpi`, táctico, revisión-dueño) · y se declaran las
+seis acciones que el mockup usaba sin catálogo: `sellar-apuesta` · `re-apostar` · `retirar-apuesta` ·
+`corregir-instruccion` · `convocar-rendicion` · `comprometer-contramedida`.
+
+**Doctrina:** (1) ninguna de las dos anomalías de peso se completa sola — se **declaran**. (2) La
+contramedida es la unidad de trabajo que conecta el indicador rojo del directorio con la semana del
+gerente: es *la* acción diaria del producto, y no estaba en el catálogo. (3) Una acción que la interfaz
+ofrece y el esquema no declara es una promesa sin dónde guardarse (misma regla que A1/CK-30).
+
+## D-37 · `proceso.tipo` — el mapa de procesos es dato declarado, no un resto — `clavada` (M16 · M12 · M48)
+El objeto tenía `clasificacion` (APQC PCF, M12) y nada más, así que el **mapa de procesos** de ISO 9001
+cl.4.4 — dirección · negocio · apoyo — no existía como dato. Dos consecuencias medidas en el twin de
+Terranova: (a) "apoyo" no era una clasificación sino un **resto** (todo lo que no entraba en la cadena
+de valor caía ahí por descarte, y cualquier proceso nuevo también), y (b) los procesos de **dirección**
+—planear, revisar, decidir, controlar— no tenían casilla: la empresa los ejercía (la sesión del
+directorio, el presupuesto, el registro de riesgos, el ciclo de mejora, la cola de cambios) pero se
+producían **fuera del mapa**, como tableros paralelos, sin dueño declarado, sin nivel de
+digitalización y sin madurez.
+
+Se agrega el enum `tipo_proceso: [direccion, negocio, apoyo]` y el campo `proceso.tipo`.
+
+**Doctrina:** (1) **No se deriva de APQC.** La categoría 1.0 del PCF ("desarrollar visión y
+estrategia") es *operating* en APQC y dirección pura en el mapa ISO: la inferencia se rompe en la
+primera fila. Misma regla que `kpi.dir` (D-31) — donde la inferencia falla, el dato manda. (2) **Las
+dos clasificaciones conviven y son ortogonales:** el `tipo` es para **leer** (la geografía del mapa),
+el id APQC es para **comparar** (clave de join del benchmark externo, M48). Ninguna se infiere de la
+otra; el arbitraje quedó escrito como arista `combina_con` M12↔M16 en el catálogo del método, que
+hasta hoy no existía pese a que las dos cartas anclan la misma dimensión (`procesos-clasificacion`).
+(3) Un proceso sin `tipo` no rompe nada, pero **cae fuera de las tres bandas del mapa** — la ausencia
+se ve, que es exactamente lo que un resto por descarte impedía.
+
+## D-38 · `documento` — el archivo del twin: la pirámide documental + los contratos — `clavada` (M38 · M16 · M23 · 2026-08-01)
+Un organization twin sin sus papeles es un dashboard con organigrama. La empresa real corre sobre
+procedimientos, registros, **contratos**, pólizas y expedientes — y dos brechas del twin de Terranova
+lo gritaban sin entidad detrás: `g-prov` ("no se evalúa a los subcontratistas… cuando el avance
+falla, no hay con qué sostener un reclamo" = un **contrato** sin criterios de evaluación anexos,
+cl.8.4) y `g-doc` ("no existe procedimiento escrito de permisos" = un proceso sin **papel que lo
+rija**). Ambas señalaban a una entidad que no existía.
+
+Se agrega el nodo **`documento`** (T3 · Business Object/representation · `documentos/doc-*.yaml`) con:
+`tipo` (`tipo_documento: politica · procedimiento · instruccion · registro · contrato · expediente`),
+`relacion` (`relacion_documento: rige · produce · sustenta` — M38/cl.7.5), ancla (`proceso_ref` o
+`area_ref`, opc. `rol_ref` de quien lo mantiene vigente), `estado` (`estado_documento: borrador ·
+vigente · obsoleto · en-tramite`), `version`, `vence`, `contraparte` (el tercero del contrato),
+`brecha_ref` y `ruta` (puntero al Depósito). Dos acciones kinéticas: `aprobar-version-documento`
+(táctico · revisión-dueño) y `renovar-contrato-documento` (estratégico · gestión-de-cambios).
+
+**Doctrina:** (1) **`vencido` NO es estado** — se DERIVA de `vence` contra el periodo vigente del
+twin, jamás se guarda; un contrato vencido o por vencer es un riesgo que se ve solo (misma familia
+que `semaforo()`/`arnesEstado()`: computa, jamás persiste). (2) **D-08 intacta:** el `manual` y la
+instrucción de trabajo (z3) que el twin GENERA son **proyecciones**, no documentos del archivo; la
+entidad registra la pieza del **corpus del cliente** levantada en M1, con su procedencia. (3) **El
+binario vive en el Depósito (N12)** — la entidad es el REGISTRO navegable (qué rige a qué proceso,
+qué evidencia produce, qué contrato lo sustenta), nunca el archivo embebido. (4) **El hueco se
+dibuja:** proceso de negocio/apoyo sin documento `rel=rige` = "se opera de memoria" (invariante
+warning), que es exactamente lo que g-doc denunciaba sin dónde vivir.
+
+**Superficie (twin v21):** banda "El archivo" en la sala del área (nivel 3) + grupo "El archivo" en
+la ficha de proceso + ficha `openDocumento` con vencimiento derivado. Conector real al corpus del
+cliente = horizonte (F3).

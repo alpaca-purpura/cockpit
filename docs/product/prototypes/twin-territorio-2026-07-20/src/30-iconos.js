@@ -1,4 +1,4 @@
-const S={ok:'var(--ok)',warn:'var(--warn)',crit:'var(--crit)'};
+const S={ok:'var(--ok)',warn:'var(--warn)',crit:'var(--crit)',faint:'#5c6b68'};
 const health={verde:'var(--ok)',ambar:'var(--warn)',rojo:'var(--crit)'};
 /* badge de ícono por tipo (M13 ArchiMate, ancla SOLO-TIPOS — objeto.schema.yaml campo `archimate:`).
    Pictograma DIBUJADO, no forma abstracta ni letra — se lee sin leyenda. SVG inline, cero dep nueva. */
@@ -25,6 +25,10 @@ const TICO={
 TICO.dinero='<svg viewBox="0 0 14 14"><rect x="1" y="3.2" width="12" height="7.6" rx="1.4" fill="none" stroke-width="1.3"/><circle class="fl" cx="7" cy="7" r="1.9"/><path d="M3.1 7h.8M10.1 7h.8" stroke-width="1.2" stroke-linecap="round"/></svg>';
 TICO.cifra=TICO.dinero; TICO.caja=TICO.dinero; TICO.presupuesto=TICO.dinero;
 TICO.riesgo=TICO.brecha; TICO.inversion=TICO.proyecto; TICO.acuerdo=TICO.respaldo; TICO.alcance=TICO.respaldo;
+/* v20 · la ficha de capacidad pasó a llamarse por su nombre común ("Capacidad", GLOSARIO) — el tipo se
+   deriva del primer término del encabezado, así que el alias es lo que mantiene ícono y respaldo en su
+   lugar. `cobertura` = el hueco declarado del mapa de capacidades: mismo tipo, otra pregunta. */
+TICO.capacidad=TICO.capability; TICO.cobertura=TICO.capability;
 const tbadge=(tipo,title)=>`<span class="tbadge" title="${title}">${TICO[tipo]}</span>`;
 const iico=(tipo,title)=>`<span class="eg-ico" title="${title}">${TICO[tipo]}</span>`;
 const confCol=c=>({alta:S.ok,media:S.warn,baja:S.crit}[c]||'var(--tx-faint)');

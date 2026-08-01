@@ -16,7 +16,7 @@
 _meta:
   vertical: inmobiliario
   cod: IMM
-  total: 6
+  total: 8
   seed: "2026-06-26 · deck Prospera (copy.md, FUNDAMENTO verificado) + razonamiento de finanzas RE"
 
 N-IMM-01:
@@ -96,3 +96,38 @@ N-IMM-06:
   objeto: T3
   combina_con:
     - { m: M16, como: "M16 es la ficha transversal ISO 9001 (contexto/PDCA); esta unidad la especializa al rubro inmobiliario" }
+
+# ---- v19 (2026-07-29) · las dos cifras de directorio que el tablero afirmaba SIN unidad detrás.
+# Origen: auditoría K22/K23 — el mockup pintaba "pares 15–22%" de margen y "pares 50+" de NPS con
+# fuentes en prosa, y un rango de DSO que N-IMM-03 prohíbe afirmar. Se registran como CATEGORÍAS del
+# rubro (qué se mide y por qué), sin rango: el rango se LEVANTA por cliente. Una categoría honesta
+# vale más que un benchmark inventado — y es lo único que deja al tablero decir "sin vara" en vez de
+# mentir. Patrón idéntico a N-IMM-03.
+
+N-IMM-07:
+  nicho: inmobiliario
+  tipo: kpi
+  nombre: "Margen bruto por proyecto"
+  que: "Cuánto queda de cada sol vendido en un proyecto, antes de gastos de estructura, medido por proyecto y no sólo consolidado."
+  por_que: "Es la cifra con que el directorio juzga si el modelo de negocio funciona; el consolidado esconde el proyecto que se está comiendo el margen de los demás. Se lee junto al avance real de obra: el sobrecosto llega al margen con meses de retraso."
+  mide: "(Ingreso reconocido del proyecto − costo de obra y terreno atribuible) / ingreso reconocido (%), por proyecto y acumulado del año."
+  confianza: baja
+  derivado_de: hipotesis
+  condiciones: "⚠ NO afirmar un rango de pares sin fuente sectorial seria: el margen depende del segmento (social · media · premium), del modelo de suelo (compra vs aporte) y del ciclo. Esta unidad define la CATEGORÍA a medir; el rango se levanta por cliente contra su propio histórico. Requiere costo atribuible por proyecto — sin contabilidad por proyecto el KPI no es medible (gap a levantar en M1)."
+  objeto: O2
+  combina_con:
+    - { m: M55, como: "el margen se LEE del cierre contable con su estado; el twin lo baja al proyecto y al proceso de obra que lo produce, jamás lo reexpresa" }
+
+N-IMM-08:
+  nicho: inmobiliario
+  tipo: kpi
+  nombre: "Satisfacción del propietario (postventa)"
+  que: "Qué tan bien queda el comprador después de la entrega: satisfacción declarada y tiempo de cierre de los reclamos de garantía."
+  por_que: "En vivienda media el referido y la reputación de entrega sostienen la venta del proyecto siguiente; la postventa se deteriora en silencio porque suele no tener meta que la mida. Es entrada obligatoria de la revisión por la dirección (ISO 9001 cl.9.3) y casi nunca sube al directorio."
+  mide: "Satisfacción de propietarios entregados (encuesta post-entrega) + días promedio hasta cerrar un reclamo de garantía."
+  confianza: baja
+  derivado_de: hipotesis
+  condiciones: "⚠ Sin benchmark sectorial validado para desarrollo inmobiliario LATAM: el rango se levanta por cliente contra su propia serie. La escala de la encuesta la fija el cliente — comparar dos escalas distintas es peor que no comparar. Exige población de entregados; en preventa pura la unidad no aplica todavía."
+  objeto: T2
+  combina_con:
+    - { m: M16, como: "satisfacción del cliente es entrada obligatoria de la revisión por la dirección (cl.9.3) — el nivel 1 la muestra o declara que no la mide" }

@@ -81,7 +81,7 @@ function openPresupuesto(){ const p=DATA.presupuesto, f=DATA.facultades;
    ${prov(p.fuente,p.conf)}
    <div class="dgroup"><div class="gt">Acciones (decide la Dirección)</div>
      <button class="btn" data-acc="aprobar-presupuesto">Aprobar el presupuesto del año › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>
-     <button class="btn" data-acc="fijar-mezcla">Fijar la mezcla de ambición › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button></div>`); }
+     <button class="btn" data-acc="fijar-mezcla-ambicion">Fijar la mezcla de ambición › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button></div>`); }
 
 /* ===== RIESGO — la contraparte del apetito que ya existía ===== */
 function openRiesgo(r){ if(!r)return; const n=nivelRiesgo(r), ct=riesgoVsApetito(r);
@@ -101,7 +101,7 @@ function openRiesgo(r){ if(!r)return; const n=nivelRiesgo(r), ct=riesgoVsApetito
    ${prov(r.fuente,r.conf)}
    <div class="dgroup"><div class="gt">Acciones</div>
      <button class="btn" data-acc="asignar-riesgo">Cambiar responsable o mitigación › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · revisión-dueño</span></button>
-     <button class="btn" data-acc="fijar-apetito">Fijar el apetito de ${CATNM[r.cat]} › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button></div>`); }
+     <button class="btn" data-acc="fijar-apetito-riesgo">Fijar el apetito de ${CATNM[r.cat]} › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button></div>`); }
 
 /* ===== ACUERDO — el punto que abre toda sesión de directorio ===== */
 function openAcuerdo(a){ if(!a)return; const c=ACUC[a.estado]||'var(--tx-mut)';

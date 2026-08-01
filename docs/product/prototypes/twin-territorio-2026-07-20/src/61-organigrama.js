@@ -29,7 +29,7 @@ function renderOrganigrama(){
       if(lit.has(a.id)) n.classList.add('hot');
     }
     let dotColor='#2a3733';
-    if(state.capas.has('salud')) dotColor = state.sub==='digital'?(procs.length?health[worstDig(procs)]:'#2a3733') : state.sub==='conf'?confCol(a.conf) : health[a.madurez];
+    if(state.capas.has('salud')) dotColor = state.sub==='digital'?(procs.length?health[worstDig(procs)]:'#2a3733') : state.sub==='conf'?confCol(a.conf) : (health[madurezSalud(madurezArea(a.id))]||'#2a3733');   // D-32: derivada de sus capabilities; sin evaluar = sin color
     let heat='<div class="heatwrap"><i style="flex:1;background:#22302d"></i></div>';
     if(state.capas.has('salud') && state.sub==='digital' && procs.length){
       const mi=procs.filter(p=>p.digital==='manual').length, me=procs.filter(p=>p.digital==='externo').length, ma=procs.filter(p=>p.digital==='integrado').length;
@@ -37,19 +37,36 @@ function renderOrganigrama(){
     }
     const setD=new Set(folded?descendants(a.id):[a.id]);
     const pusAll=PUESTOS.filter(p=>setD.has(p.area));
+    const pusProp=PUESTOS.filter(p=>p.area===a.id);
     const hs=state.capas.has('trabajo')?DATA.arneses.filter(h=>{const q=puestoByNm(h.deriva_de.puesto);return q&&setD.has(q.area);}):null;
     const hChip=hs?`<span class="cnt" style="color:${hs.some(h=>arnesEstado(h)==='desactualizado')?'var(--warn)':(hs.length?'var(--brand-hi)':'var(--tx-faint)')}" title="arneses compilados en el subtree / puestos del área">⛨ ${hs.length}/${pusAll.length}${hs.some(h=>arnesEstado(h)==='desactualizado')?' ⚠':''}</span>`:'';
-    const pus=state.lod>=4?pusAll:[];
-    n.innerHTML=`<div class="area-node"${state.lod>=4?' style="width:190px"':''}>
+    /* v21 · abrir-y-empujar POR RAMA: cada nodo trae sus dos manijas — la rama (hijas) y la nómina
+       (sus puestos, EN el nodo). Abrir agranda este nodo/fila y el layout corre a los demás. */
+    const pusOpen=state.puestosOpen.has(a.id);
+    const pus=pusOpen?pusProp:[];
+    const ramaChip=kids(a.id).length
+      ? (folded?`<span class="cnt fold abrir" data-rama="${a.id}" title="abrir la rama — sus ${hidden} área${hidden>1?'s':''} aparecen y las vecinas se corren">+${hidden} ⊕</span>`
+               :`<span class="cnt fold abrir" data-rama="${a.id}" title="plegar la rama">⊖</span>`)
+      : '';
+    const pusChip=pusProp.length
+      ? `<span class="cnt abrir" data-nomina="${a.id}" title="${pusOpen?'plegar la nómina':'abrir la nómina — los '+pusProp.length+' puestos del área, en su lugar'}">${pusOpen?'⊖ puestos':'⊕ '+pusProp.length+' puestos'}</span>`
+      : '';
+    n.innerHTML=`<div class="area-node"${pusOpen?' style="width:190px"':''}>
       <div class="hd"><div><div class="nm">${tbadge('area','área · Business Actor organizacional (M13 ArchiMate)')}${a.nm}</div><div class="lider plnk" title="ficha de la persona">${a.lider.split(' · ')[0]}</div>${a.vacante?'<span class="vac">rol vacante</span>':''}</div>
         <span class="health-dot" style="background:${dotColor}"></span></div>
-      <div class="stat">${heat}<span class="cnt">${procs.length}</span>${hChip}${folded?`<span class="cnt fold">+${hidden} áreas</span>`:(subVis?`<span class="cnt">+${subVis}</span>`:'')}</div>
+      <div class="stat">${heat}<span class="cnt">${procs.length}</span>${hChip}${ramaChip}${pusChip}</div>
       ${pus.length?`<div class="prows">${pus.map(p=>{ const occ=puestoOcupantes(p.nm).length;
         return `<button class="prow" data-pu="${p.nm}" title="puesto — ${occ||'sin'} ocupante${occ===1?'':'s'}"><span class="pnm">${p.nm}</span><span class="pocc ${p.vac?'vc':''}">${p.vac?'vac':(occ||'—')}</span>${state.capas.has('trabajo')?rosterBadge(p.nm):''}</button>`; }).join('')}</div>`:''}
     </div>`;
     n.querySelector('.area-node').onclick=()=>openArea(a);
-    n.querySelector('.area-node').ondblclick=()=>drillArea(a.id);
+    /* v21 (firma D): doble click = BAJAR a la sala del área (nivel 3). El foco z1 sigue vivo como
+       acción nombrada de la ficha ("Enfocar en el mapa de valor ›"). */
+    n.querySelector('.area-node').ondblclick=()=>abrirSala(a.id);
     n.querySelector('.lider').onclick=e=>{ e.stopPropagation(); openPersona(a.lider.split(' · ')[0]); };
+    const rb=n.querySelector('[data-rama]'); if(rb) rb.onclick=e=>{ e.stopPropagation();
+      if(state.expandidas.has(a.id)) state.expandidas.delete(a.id); else state.expandidas.add(a.id); render(); };
+    const nb=n.querySelector('[data-nomina]'); if(nb) nb.onclick=e=>{ e.stopPropagation();
+      if(state.puestosOpen.has(a.id)) state.puestosOpen.delete(a.id); else state.puestosOpen.add(a.id); render(); };
     wireLinks(n);
     $nodes.appendChild(n);
   });
@@ -62,7 +79,7 @@ function renderOrganigrama(){
       (byArea[area.id]=byArea[area.id]||[]).push(g); });
     Object.keys(byArea).forEach(aid=>{ const area=byId(DATA.areas,aid), gs=byArea[aid].sort((x,y)=>rank[y.sev]-rank[x.sev]), g=gs[0];
       const pin=el('div','pin '+(g.sev==='alta'?'':g.sev==='media'?'med':'low'));
-      const lift=state.lod>=4?40+Math.round(PUESTOS.filter(q=>q.area===aid).length*8.5):40;   // lod4: el nodo crece hacia arriba también — el pin no pisa el título
+      const lift=state.puestosOpen.has(aid)?40+Math.round(PUESTOS.filter(q=>q.area===aid).length*8.5):40;   // nómina abierta: el nodo crece — el pin no pisa el título
       pin.style.left=(area.x+52)+'px'; pin.style.top=(area.y-lift)+'px';
       pin.innerHTML=`<div class="body" style="white-space:nowrap">▲ ${g.sev}${gs.length>1?` +${gs.length-1}`:''} · ${g.costo}</div><div class="stem"></div><div class="head"></div>`;
       pin.title=gs.map(x=>x.nm).join('  ·  ');

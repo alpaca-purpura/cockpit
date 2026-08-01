@@ -353,6 +353,34 @@ un sistema interconectado. Sal de la caja y proponme algo mejor."
     nuevo encogía la letra de todos — se separó el gesto (una página es un documento: encaje al ancho,
     anclado arriba, la rueda recorre). Detalle completo: `dossier/03` decisión 27.
 
+## v19 · El directorio decide, la gerencia resuelve (2026-07-29) — el hilo medido de verdad
+
+19. **Auditoría de la estrategia contra el método (40 hallazgos, K1-K40) y su corrección.** Pedido del
+    operador: comparar la estrategia con `/metodo`, verificar la coherencia de los objetivos del
+    directorio, con foco en **KPIs y niveles de madurez**; después, corregir todo *"sabiendo que los
+    usuarios son el gerente general y los gerentes, y que a través de nuestras acciones diarias debemos
+    resolver todo lo que se muestra en directorio"*. Ese encargo fijó la doctrina que ordena el resto:
+    **el directorio decide, la gerencia resuelve, y nada del nivel 1 se queda sin bajada.**
+    - **La bajada es dato** (D-35): las metas del directorio se abren como metas de UNA gerencia, con
+      el rol que responde y la sesión donde el gerente las aceptó. *Sin bajar* y *asignada sin acordar*
+      son dos estados visibles que llegan solos a la bandeja — antes eran un contador escrito a mano.
+    - **El hilo ancla al contrato, no al objetivo** (cierra A2, abierto desde julio): `kpi.kr` en vez de
+      `kpi.obj`, `krs[]` como lista, y el valor del contrato **leído de la serie** (D-34). El caso que
+      lo prueba: «caja sana» leía verde con la caja cayendo bajo el piso.
+    - **La vara externa sale del eje vertical** (D-31): el tablero afirmaba un rango de cobranza que el
+      propio método prohíbe afirmar. Ahora cada indicador apunta a su unidad de nicho y hereda su
+      confianza; sin rango validado se muestra la condición.
+    - **Dos escaleras de madurez, cada una con su vara** (D-32/D-33): muere `area.madurez` (se deriva),
+      sin `nivel_deseado` no hay brecha, y la escalera del sistema de gestión gana ficha, evidencia del
+      twin y sesión de evaluación.
+    - **Lo que bajó a lo táctico:** el portafolio completo, las alertas en detalle, el registro de
+      avance de inversiones y el seguimiento semanal de acuerdos. El nivel 1 sigue por excepción y cada
+      fila dice por qué sube — o por qué se queda abajo.
+    - **M52 promovida** `horizonte → ancla` (cierra H15): una carta que contradice al producto vigente
+      no es un horizonte, es drift.
+    Detalle completo: `dossier/07 § K` (tablero de 40 filas) · `dossier/08 § 0.bis` (la regla de
+    construcción) · fichas **D-31…D-36** en `sistema/schema/DECISIONES.md`.
+
 ## ⚠ PENDIENTE — ajustes del operador (continuar en conversación nueva)
 
 **El operador sigue iterando el mockup.** Estado tras la sesión 2 (shell v2):
@@ -562,3 +590,15 @@ tabs actual. Ratificación del operador + (si es decisión de fondo) ficha CK-NN
   trazabilidad). Barrido de conteos stale (12/13 entidades · 31/54 cartas) en CLAUDE.md, las 2 reglas,
   el seam, VISION, M32, el mockup y su suite. Suite **34/34**. Abierto y con firma pendiente: la
   promoción de M52 `horizonte → ancla`.
+- v19 2026-07-29 — **el directorio decide, la gerencia resuelve** (decisión 19 · auditoría K1-K40 en
+  `dossier/07 § K`, 28 de 40 hallazgos cerrados): **la bajada como dato** (5 bajadas con gerencia, rol
+  y sesión de acuerdo; los casos *sin bajar* y *asignada sin acordar* llegan solos a la bandeja) ·
+  **el hilo ancla al contrato** (`krs[]` lista · `kpi.kr` · el valor se lee de la serie · pesos que
+  suman 1 · 3 indicadores nuevos para los contratos que no tenían serie) · **dirección declarada** y
+  banda de tres tramos · **la vara externa sale del nicho** (muere `DATA.peers`; N-IMM-07/08 nuevas) ·
+  **dos escaleras de madurez con su vara** (muere `area.madurez`, se deriva; autoevaluación con
+  evidencia y sesión) · **todo lo del nivel 1 declara dónde se resuelve** (cifras, alertas, riesgos,
+  portafolio) y **el nivel 3 abre con lo que el directorio dejó** · catálogo de acciones alineado
+  (6 declaradas, 5 renombradas, 13 cableadas) · **M52 promovida a `ancla`**. Esquema **D-31…D-36**
+  (20 nodos · 47 relaciones · 40 acciones) · método 59 cartas con M15/M21/M26/M47/M48/M52 enriquecidas ·
+  nichos 17→19 unidades. Suite **40/40** con 6 checks nuevos que impiden que cada corrección vuelva.

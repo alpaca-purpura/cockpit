@@ -99,6 +99,15 @@ def validar_metodologias(met: dict, schema: dict, errors: list[str]) -> None:
         for s in c.get("objetos_secundarios") or []:
             if s not in en["objeto"]:
                 errors.append(f"{w}: objeto_secundario `{s}` ∉ enums.objeto")
+        # eje NIVEL (CK-33) — en qué piso de la organización se usa la card
+        np_ = c.get("nivel_primario")
+        if np_ not in en["nivel"]:
+            errors.append(f"{w}: nivel_primario `{np_}` ∉ enums.nivel {en['nivel']}")
+        for s in c.get("niveles_secundarios") or []:
+            if s not in en["nivel"]:
+                errors.append(f"{w}: nivel_secundario `{s}` ∉ enums.nivel")
+            elif s == np_:
+                errors.append(f"{w}: nivel_secundario `{s}` repite nivel_primario")
         ps = c.get("principios") or []
         if not ps:
             errors.append(f"{w}: principios vacío")
@@ -383,6 +392,7 @@ def render_indice(met: dict) -> str:
 def render_cards(met: dict) -> str:
     fam = met["_meta"]["familias"]
     obj = met["_meta"]["backbone_labels"]
+    niv = met["_meta"]["nivel_labels"]
     out: list[str] = []
     for L, mids in by_family(met).items():
         out.append(f"### Familia {L} · {fam[L]}\n")
@@ -394,12 +404,17 @@ def render_cards(met: dict) -> str:
             sec = c.get("objetos_secundarios") or []
             if sec:
                 objeto += " · sec: " + ", ".join(sec)
+            nivel = niv[c["nivel_primario"]] + " (ancla)"
+            nsec = c.get("niveles_secundarios") or []
+            if nsec:
+                nivel += " · también: " + ", ".join(niv[n] for n in nsec)
             combina = " · ".join(f"{x['m']} ({x['como']})" for x in c["combina_con"])
             blocks.append(
                 f'<a id="{m.lower()}"></a>**{m} · {c["nombre"]}**\n'
                 f"- **Qué:** {c['que']}\n"
                 f"- **Fuente:** {fu['autor']} — {fu['obra']}. [{fu['url']}]({fu['url']})\n"
                 f"- **Objeto:** {objeto}\n"
+                f"- **Nivel:** {nivel}\n"
                 f"- **Aporte único:** {c['aporte_unico']}\n"
                 f"- **Cuándo:** {c['cuando_usar']}\n"
                 f"- **Combina:** {combina}\n"
@@ -433,6 +448,11 @@ def replace_block(text: str, tag: str, body: str) -> str:
 
 
 # ─────────────── render GRAFO.md (índice-grafo del cerebro · 2026-07-22) ───────────────
+# Abreviaturas del eje NIVEL para la línea compacta de §1 (CK-33). El §6 imprime el rótulo
+# completo del GLOSARIO — la abreviatura vive SOLO acá dentro, nunca en texto de producto.
+NIV_ABBR = {"directorio": "D", "estrategico": "E", "tactico": "T", "operativo": "O"}
+
+
 def trunc(s, n: int = 110) -> str:
     s = " ".join(str(s).split())
     return s if len(s) <= n else s[: n - 1].rstrip() + "…"
@@ -463,12 +483,17 @@ def render_grafo(met: dict, modulos: dict, etapas: dict, pasos: dict, nichos: di
             dims = tw.get("dimensiones") or []
             twl = tw["rol_ancla"] + (f"[{','.join(dims)}]" if dims else "")
             comb = ",".join(x["m"] for x in c["combina_con"]) or "—"
+            # eje NIVEL (CK-33): ancla + los otros pisos donde se usa — "D" es el ancla, "+E,T" los demás
+            niv = NIV_ABBR[c["nivel_primario"]]
+            nsec = c.get("niveles_secundarios") or []
+            if nsec:
+                niv += "+" + ",".join(NIV_ABBR[n] for n in nsec)
             mark = ""
             if estado[m] == "superseded":
                 mark = f" ⛔SUPERSEDED→{c.get('superseded_by')}"
             elif estado[m] == "descartada":
                 mark = " 🗑DESCARTADA"
-            s1.append(f"- **{m}** {c['nombre']}{mark} · {objs} · {c['modo']}·{mods} · {twl} · ⇄{comb} · usar: {trunc(c['cuando_usar'])}")
+            s1.append(f"- **{m}** {c['nombre']}{mark} · {objs} · niv:{niv} · {c['modo']}·{mods} · {twl} · ⇄{comb} · usar: {trunc(c['cuando_usar'])}")
         s1.append("")
 
     # §2 — grafo inverso: dónde se operacionaliza cada card
@@ -536,6 +561,18 @@ def render_grafo(met: dict, modulos: dict, etapas: dict, pasos: dict, nichos: di
     s5 = [f"- **{code}** {label}: " + (", ".join(m for m in orden if C[m]['objeto_primario'] == code) or "—")
           for code, label in obj.items()]
 
+    # §6 — eje NIVEL (CK-33): en qué piso de la organización se usa cada card.
+    # Dos listas por piso: ANCLA (se decide/firma ahí) y también-se-usa (bajada/consumo).
+    niv_labels = met["_meta"]["nivel_labels"]
+    s6: list[str] = []
+    for code, label in niv_labels.items():
+        ancla = [m for m in orden if C[m]["nivel_primario"] == code]
+        tambien = [m for m in orden if code in (C[m].get("niveles_secundarios") or [])]
+        s6.append(f"### {label}")
+        s6.append(f"- **ancla** ({len(ancla)}): " + (", ".join(f"{m} {short_name(C[m])}" for m in ancla) or "—"))
+        s6.append(f"- también se usa ({len(tambien)}): " + (", ".join(tambien) or "—"))
+        s6.append("")
+
     return f"""<!-- GENERADO por sistema/metodo/gen_metodo.py desde methodologies.yaml + proceso/** + nichos/*.yaml — NO editar a mano. Gate anti-drift en pre-commit. -->
 # GRAFO — índice-grafo del cerebro metodológico (GENERADO)
 
@@ -553,7 +590,8 @@ Recetas (desde la raíz del repo):
 - Agregar/reemplazar conocimiento: skill `metodo-aprende` (protocolo anti-contradicción)
 
 Totales: **{len(orden)} M-cards** (_meta.total) · **{len(pasos)} pasos** poblados / **{len(stubs)} etapas stub** · **{total_unidades} unidades** de nicho en **{len(nichos)} verticales**.
-Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensiones] · ⇄combina_con · usar:`
+Leyenda card: `Mnn nombre · objeto(+sec) · niv:ancla(+otros pisos) · modo·módulos · rol_twin[dimensiones] · ⇄combina_con · usar:`
+`niv:` = eje nivel (§6) — **D**irectorio · **E**stratégico · **T**áctico · **O**perativo; el primero es el ancla.
 
 ## §1 M-cards por familia
 
@@ -575,8 +613,17 @@ Leyenda card: `Mnn nombre · objeto(+sec) · modo·módulos · rol_twin[dimensio
 
 {chr(10).join(s5)}
 
+## §6 Nivel — en qué piso de la organización se usa cada card
+
+Eje ORTOGONAL al objeto (§5 = QUÉ toca) y al módulo (§3 = CUÁNDO del engagement). Acá: DÓNDE se usa.
+`ancla` = el piso donde se DECIDE o SE FIRMA lo que la card produce · `también se usa` = los pisos que
+la consumen (bajada de la cascada, insumo, ejecución). Ruteo: primero filtrá por el piso de la
+pregunta, después leé la card. La escalera baja 1→4.
+
+{chr(10).join(s6).rstrip()}
+
 ---
-SSoT: `methodologies.yaml` · `proceso/**` · `nichos/*.yaml` · contratos: `methodology.schema.yaml` (v3, ciclo de vida) + `nichos/nicho.schema.yaml`.
+SSoT: `methodologies.yaml` · `proceso/**` · `nichos/*.yaml` · contratos: `methodology.schema.yaml` (v4, eje nivel) + `nichos/nicho.schema.yaml`.
 Gate: `python3 sistema/metodo/gen_metodo.py --check` (pre-commit). Este archivo se REGENERA, no se edita.
 """
 

@@ -40,6 +40,18 @@
   regional); Bain Management Tools: región conservadora en frameworks; Hoshin = nicho manufactura
   (automotriz MX); adopción OKR corporativa no-tech sin encuesta seria (stats circulantes =
   marketing de vendors).
+- **★ Corrección de alcance (2026-07-29 · CK-33): «Brasil = GPD» aplica al sector PRIVADO.** En el
+  **sector público brasileño** el BSC es el estándar de facto — mapas estratégicos institucionales
+  exigidos en el poder judicial, órganos de control y ministerios. Un cliente estatal brasileño
+  habla BSC, no GPD; el veredicto estructural (mismo grafo, distinta cadencia/acople) no cambia,
+  cambia qué vocabulario se le muestra. Cableado en M30 ⇄ M41 (arista de arbitraje de mercado).
+- **★ Hueco cerrado en la misma ficha: la vara de MADUREZ brasileña.** Faltaba **MEG/FNQ** (Modelo
+  de Excelência da Gestão, linaje Baldrige, con premio PNQ) — el par brasileño de EFQM/ISO 9004, y
+  el nombre que un directorio con historia FNQ ya usó para autoevaluarse. Entró como **M60**
+  (gateada por demanda: se LEE su ciclo como evidencia, no se corre uno nuevo).
+- **★ Hueco cerrado: cómo se CONSTRUYE el presupuesto.** **OBZ (Orçamento Base Zero)** — cultura de
+  costos 3G/AmBev difundida en LATAM: presupuesto reconstruido cada ciclo, por paquete, con dueño
+  nombrado. M57 guardaba el reparto ya armado; el *cómo* faltaba. Entró como **M61**.
 - **Veredicto estructural:** GPD y OKR son EL MISMO grafo de cascada; difieren en **cadencia**
   (anual vs 90 días) y **acople a compensación** (permitido vs prohibido). Un solo modelo de
   datos cubre los 3 mercados; el modo es configuración, no entidades distintas.

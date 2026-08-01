@@ -21,7 +21,7 @@ vista GENERADA → **gate anti-drift** en cada commit.
 |---|---|---|
 | SSoT · catálogo de 59 metodologías (M-cards) | `sistema/metodo/methodologies.yaml` | a mano |
 | SSoT · Definición del engagement (plantilla) | `sistema/metodo/proceso/**` (`_modulo.md`·`_etapa.md`·`<paso>.md`, front-matter) | a mano |
-| SSoT · objeto de negocio normalizado (20 entidades) | `sistema/schema/objeto.schema.yaml` | a mano |
+| SSoT · objeto de negocio normalizado (21 entidades) | `sistema/schema/objeto.schema.yaml` | a mano |
 | SSoT · verticales (nichos) | `sistema/metodo/nichos/*.yaml` (conforman `nicho.schema.yaml`) | a mano |
 | Contrato (la forma) | `sistema/metodo/methodology.schema.yaml` | a mano |
 | Vista · §4 catálogo | `sistema/metodo/METODOLOGIA.md` (bloques `GEN:indice`/`GEN:cards`/`GEN:tabla`) | **GENERADO** (NO editar) |
@@ -44,6 +44,12 @@ El método NO se carga entero ni se cita de memoria. Dos skills project-layer:
   mano lo pisa el gate. La prosa §1–§3/§5-narrativa sí es a mano (fuera de los bloques GEN).
 - **Backbone = el objeto** (O1-O7 hilo · T1-T3 transversal). Cada M-card ancla a un objeto; `combina_con[]`
   es el grafo de composición; `principios[]` tags. Cada campo del objeto lleva `met:` (su metodología).
+- **Eje NIVEL** (contrato v4 · CK-33): cada card declara `nivel_primario` (+ `niveles_secundarios`) sobre
+  la escalera del GLOSARIO — **Directorio · Estratégico · Táctico · Operativo**. Ortogonal al objeto (QUÉ
+  toca) y a `donde.modulos` (CUÁNDO del engagement): dice **DÓNDE se usa**. `nivel_primario` = el piso
+  donde se DECIDE/FIRMA lo que la card produce; secundarios = los pisos que la consumen. Vista generada
+  = `GRAFO.md §6`, y es el **primer filtro de ruteo** del skill `/metodo`. No confundir con `nivel_acceso`
+  de `objeto.schema.yaml` (N13): ése gobierna quién VE el dato; éste, dónde se usa el método.
 - **Provenance obligatorio** en los datos del método: cada dato AS-IS lleva `fuente`+`conf` (M23/grounding);
   cada unidad de nicho lleva `confianza`+`derivado_de`+`condiciones` (anti-alucinación + anti-contaminación
   cross-cliente). Un paso referencia metodologías por token `M\d+` (deben resolver al catálogo).
@@ -54,7 +60,8 @@ El método NO se carga entero ni se cita de memoria. Dos skills project-layer:
 ## El gate (CK-19 · pre-commit)
 
 `.githooks/pre-commit` corre `gen_metodo.py`: valida `methodologies.yaml` contra `methodology.schema.yaml`
-(campos/enums/refs `combina_con` · ciclo de vida `estado`/`superseded_by` v3) + el árbol `proceso/`
+(campos/enums/refs `combina_con` · ciclo de vida `estado`/`superseded_by` v3 · eje `nivel_primario`/
+`niveles_secundarios` v4 — enum + sin repetir el primario) + el árbol `proceso/`
 (frontmatter required · id==ruta · refs módulo/etapa · tokens `M\d+` resuelven) + `nichos/*.yaml`
 (contra `nicho.schema.yaml`: provenance/`derivado_ref`/refs) + coherencia del grafo (WARN arista
 vigente→superseded · INFO asimetrías), y regenera `METODOLOGIA.md §4` + `NOTACIONES.html` + `GRAFO.md`;

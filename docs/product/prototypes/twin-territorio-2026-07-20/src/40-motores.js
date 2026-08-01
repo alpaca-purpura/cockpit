@@ -13,14 +13,91 @@ function descendants(id){ const o=[id]; kids(id).forEach(c=>o.push(...descendant
 function subtreeProcs(id){ const set=new Set(descendants(id)); return DATA.procesos.filter(p=>p.areas.some(a=>set.has(a))); }
 const worstDig=procs=>procs.reduce((w,p)=>{const h=digHealth(p.digital);return (h==='rojo'||w==='rojo')?'rojo':((h==='ambar'||w==='ambar')?'ambar':'verde');},'verde');
 
-/* motor de indicadores (derivado al leer, nunca persistido — doctrina cruce-estructura) */
+/* motor de indicadores (derivado al leer, nunca persistido — doctrina cruce-estructura).
+   v19 (D-31): la DIRECCIÓN es dato (`k.dir`: +1 más es mejor · −1 menos es mejor), ya no se infiere
+   del orden de la banda. La inferencia se rompía en cuanto una banda fuera de dos colas o con umbrales
+   iguales, y es el mismo campo que las cifras del periodo ya llevaban obligatorio desde v18: un solo
+   mecanismo para la misma semántica a los dos lados de la costura contable.
+   La banda es de TRES tramos (`target` · `amar` · `rojo`): con el ámbar declarado, "ámbar" deja de ser
+   lo que sobra entre dos números. */
 const SEMC={verde:'var(--ok)',ambar:'var(--warn)',rojo:'var(--crit)',gris:'#5c6b68'};
 const kcur=k=>k.mediciones.length?k.mediciones[k.mediciones.length-1].v:null;
+const mejorQue=(a,b,dir)=>dir>=0?a>=b:a<=b;      // ¿`a` está al menos tan bien como `b`?
 function semaforo(k){ const c=kcur(k); if(c==null) return 'gris';           // sin dato = GRIS, nunca rojo
-  const menor=k.banda.target<k.banda.rojo;
-  if(menor){ if(c<=k.banda.target)return 'verde'; if(c>=k.banda.rojo)return 'rojo'; }
-  else     { if(c>=k.banda.target)return 'verde'; if(c<=k.banda.rojo)return 'rojo'; }
+  const d=k.dir||1;
+  if(mejorQue(c,k.banda.target,d)) return 'verde';
+  if(!mejorQue(c,k.banda.rojo,d))  return 'rojo';
+  if(k.banda.amar!=null) return mejorQue(c,k.banda.amar,d)?'ambar':'rojo';
   return 'ambar'; }
+/* madurez — DERIVADA (D-32): de las capabilities que realizan los procesos, jamás un campo guardado.
+   v20 (D-c, firmada 2026-07-30): lo que se pinta es la BRECHA (cuánto falta), no el peldaño alcanzado.
+   Un área con todo en 4 de 4 y otra en 4 de 5 no pueden ser el mismo color: la primera llegó, la
+   segunda no. Y una capacidad SIN nivel deseado no tiñe a nadie — no existe la distancia que nadie
+   fijó (era el caso de `c-permisos`, que hundía a Desarrollo en rojo por una meta que no existe).
+   Sin ninguna capacidad con deseado ⇒ null y la vista dice "sin meta fijada", jamás un color. */
+const capsDeProc=pid=>DATA.capabilities.filter(c=>c.via.includes(pid));
+const capDeProc=pid=>capsDeProc(pid)[0]||null;
+function capsDeArea(id){ const ps=subtreeProcs(id).map(p=>p.id), set=new Map();
+  ps.forEach(pid=>capsDeProc(pid).forEach(c=>set.set(c.id,c))); return [...set.values()]; }
+/* brecha de madurez de una capability: existe SÓLO si alguien fijó el deseado (D-32) */
+const capBrecha=c=>c.des==null?null:c.des-c.act;
+const brechaSalud=b=>b==null?null:(b<=0?'verde':b===1?'ambar':'rojo');
+const capSalud=c=>brechaSalud(capBrecha(c));
+const peorBrecha=cs=>{ const bs=cs.map(capBrecha).filter(b=>b!=null); return bs.length?Math.max(...bs):null; };
+const madurezArea=id=>peorBrecha(capsDeArea(id));
+const madurezProc=pid=>peorBrecha(capsDeProc(pid));
+const madurezSalud=brechaSalud;
+/* qué metas se apoyan en una capacidad — DERIVADO por DOS caminos, jamás tecleado. Con uno solo se
+   producían falsos negativos que se ven a simple vista: "ver la caja al día" (1 de 5, la peor brecha
+   del mapa) declaraba "ninguna meta se apoya en ella" porque el proceso que la realiza —caja chica de
+   obra— no declara driver… mientras su brecha bloquea el contrato "caja visible al día" del directorio.
+     1 · el proceso que la realiza declara la meta que mueve (`proceso.sirve`)
+     2 · una brecha sobre lo que la realiza bloquea el contrato de una meta (`brecha.kr` → su objetivo)
+   Vacío después de los dos = capacidad que hoy no sostiene ninguna meta, y eso se DICE: es el caso de
+   "atender al propietario" (se deteriora, y ningún KR la mide — la brecha existe pero sin ancla). */
+const objsDeCap=c=>{ const set=new Map();
+  DATA.procesos.forEach(p=>{ if(!c.via.includes(p.id))return;
+    p.sirve.forEach(id=>{ const o=byId(DATA.objetivos,id); if(o)set.set(o.id,o); }); });
+  DATA.brechas.forEach(g=>{ if(!g.kr)return;
+    if(!(c.via.includes(g.against)||g.against===c.id))return;
+    const o=objDeKr(g.kr); if(o)set.set(o.id,o); });
+  return [...set.values()]; };
+/* cobertura del mapa de capacidades: lo que NO está declarado se muestra, no se calla (M31 · M23) */
+const procsSinCap=()=>DATA.procesos.filter(p=>!capsDeProc(p.id).length);
+const procsTipo=t=>DATA.procesos.filter(p=>p.tipo===t);
+/* la escalera de puntos — UN idioma para las dos escaleras que conviven y jamás se promedian (D-32):
+   ● alcanzado · ○ lo que falta hasta el deseado · · fuera de la meta. La usa la autoevaluación del
+   sistema de gestión (nivel 1 · ISO 9004) y la madurez de una capacidad (nivel 2 · COBIT); cada una
+   viaja con SU escalera declarada al lado, que es lo que impide confundir un 3 con otro 3. */
+function escDots(act,des,max){ max=max||5; let s='';
+  for(let i=1;i<=max;i++) s+= i<=act?'<b>●</b>' : (des!=null&&i<=des?'<span class="want">○</span>':'<span class="off">·</span>');
+  return s; }
+/* frase de la brecha de madurez, en el idioma del gerente (cero jerga) */
+const brechaTxt=b=>b==null?'sin meta fijada':b<=0?'en el nivel deseado':`falta${b>1?'n':''} ${b} peldaño${b>1?'s':''}`;
+/* el color de un proceso según la lente activa — UNA definición para las TRES bandas de procesos
+   (dirección · cadena · apoyo). v20: `madurez` deja de caer en silencio a digitalización. Ese era el
+   bug que hacía que el botón del directorio ("ver el mapa por madurez de capacidades") prometiera un
+   mapa que no existía: la lente sólo estaba implementada en la piel Organigrama. */
+const procColor=p=>!state.capas.has('salud')?'#2a3733'
+  :state.sub==='conf'?confCol(p.conf)
+  :state.sub==='madurez'?(health[madurezSalud(madurezProc(p.id))]||'#2a3733')
+  :health[digHealth(p.digital)];
+/* v19 · el hilo se cierra ACÁ, no en el dato: la salud del objetivo y su KR principal se DERIVAN una
+   vez que existe el motor de indicadores (el KR lee la serie de su KPI — D-34). Antes `kr.cur` era un
+   número tecleado al lado de la medición; ahora hay un solo lugar donde vive el hecho. */
+DATA.objetivos.forEach(o=>{ o.salud=objSalud(o); o.kr=o.krs[0]; });
+/* v19 · el objetivo (y su meta de directorio) desde un KR — el hilo ya no ancla al objetivo entero
+   sino al CONTRATO, así que todo lo que antes leía `.obj` ahora sube por el KR (A2 · D-35). */
+const objDeKr=krid=>{ const R=krid&&krById(krid); return R?R.obj:null; };
+const raizDe=o=>{ let x=o; while(x&&x.parent) x=byId(DATA.objetivos,x.parent); return x; };
+const objRaizDeKr=krid=>{ const o=objDeKr(krid); return o?raizDe(o):null; };
+/* ¿el hilo de este KR pasa por el objetivo `oid`? Cuenta el objetivo dueño del contrato Y toda su
+   línea hacia arriba: encender la meta del directorio debe encender lo que la sostiene, que es
+   justo lo que la bajada agregó (antes el hilo era plano y esta pregunta no existía). */
+function hiloTocaObj(krid,oid){ let o=objDeKr(krid);
+  while(o){ if(o.id===oid) return true; o=o.parent?byId(DATA.objetivos,o.parent):null; }
+  return false; }
+const hiloTocaAp=(krid,a)=>a.objetivos.some(oid=>hiloTocaObj(krid,oid));
 const kpisByProc=id=>DATA.kpis.filter(k=>k.proc===id);
 const krowHTML=k=>{ const s=semaforo(k), c=kcur(k);
   return `<button class="krow" data-k="${k.id}"><span class="kd" style="background:${SEMC[s]}"></span><span class="kn">${k.nm}${k.stale?' ⌛':''}</span><span class="kv">${c==null?'s/d':c+(k.unidad||'')} → ${k.banda.target}${k.unidad||''}</span></button>`; };

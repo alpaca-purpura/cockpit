@@ -21,6 +21,14 @@ DATA.pasosMini ={
   'p-conc':['descargar','cruzar','ajustar'],
   'p-perm':['expedientar','tramitar','levantar'],
   'p-sop': ['atender','resolver','mantener'],
+  /* v20 · los de dirección también tienen pasos macro: gobernar es un proceso, no una ceremonia.
+     Sin esto su lienzo abriría en blanco — y un lienzo vacío se lee como error, no como "sin levantar". */
+  'p-plan':['revisar','fijar','bajar','acordar'],
+  'p-rev': ['convocar','revisar','decidir','registrar'],
+  'p-pres':['proyectar','asignar','aprobar','controlar'],
+  'p-ries':['identificar','evaluar','mitigar','revisar'],
+  'p-mej': ['detectar','priorizar','ejecutar','verificar'],
+  'p-camb':['solicitar','evaluar','aprobar','publicar'],
 };
 
 // SIPOC = proyección de bordes (ISO 9001 4.4.1 · SOMA C3/C5) — se DERIVA, jamás se edita.

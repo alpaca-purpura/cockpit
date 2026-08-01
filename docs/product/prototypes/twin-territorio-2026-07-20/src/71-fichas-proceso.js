@@ -1,25 +1,43 @@
+/* v20 · el tipo del proceso en el idioma del mapa (D-a). No es decoración: dice en qué banda vive y
+   qué pregunta contesta — y el de dirección trae además QUÉ PRODUCE y dónde se ejerce. */
+const TIPO_PROC={ direccion:['Dirección','planear · revisar · decidir — produce lo que la sala del directorio revisa'],
+  negocio:['Del negocio','produce y entrega lo que el cliente compra — vive en la cadena, en su orden'],
+  apoyo:['De apoyo','sostiene a los otros dos sin tocar al cliente'] };
 function openProceso(p){ const objs=p.sirve.map(id=>byId(DATA.objetivos,id));
   const caps=DATA.capabilities.filter(c=>c.via.includes(p.id));
+  const dir=p.tipo==='direccion', ti=TIPO_PROC[p.tipo]||TIPO_PROC.apoyo;
   openDrawer('Proceso · '+byId(DATA.areas,p.areas[0]).nm, p.nm,
-    `<div class="dgroup">
+    `${dir?`<div style="font-size:12.5px;color:var(--tx-mut);line-height:1.5">${p.detalle}</div>`:''}
+     <div class="dgroup">
+      <div class="drow"><dt>Tipo de proceso</dt><dd><span class="chip" title="${ti[1]}">${ti[0]}</span></dd></div>
+      ${dir?`<div class="drow"><dt>Produce</dt><dd style="color:var(--brand-hi)">${p.produce}</dd></div>`:''}
       <div class="drow"><dt>Dueño (rol)</dt><dd><span class="plnk" data-rol="${p.dueno}">${p.dueno}</span> ${harnBadge(arnesDe(p.dueno,p.id))}</dd></div>
       <div class="drow"><dt>Áreas que cruza</dt><dd><div class="chips" style="justify-content:flex-end">${p.areas.map(a=>`<span class="chip lk" data-area="${a}">${byId(DATA.areas,a).nm}</span>`).join('')}</div></dd></div>
       <div class="drow"><dt>Digitalización</dt><dd><span class="chip"><span class="health-dot" style="width:8px;height:8px;background:${health[digHealth(p.digital)]}"></span>${p.digital}</span></dd></div>
       <div class="drow"><dt>Sistemas</dt><dd>${p.sist.map(s=>sisByName(s)?`<span class="plnk" data-sis="${s}">${s}</span>`:s).join(' · ')}</dd></div>
-      ${caps.length?`<div class="drow"><dt>Realiza</dt><dd><div class="chips" style="justify-content:flex-end">${caps.map(c=>`<span class="chip lk" data-cap="${c.id}">${iico('capability','capability · Business Capability (M13 ArchiMate, Strategy)')}${c.nm}</span>`).join('')}</div></dd></div>`:''}</div>
+      ${caps.length?`<div class="drow"><dt>Realiza</dt><dd><div class="chips" style="justify-content:flex-end">${caps.map(c=>`<span class="chip lk" data-cap="${c.id}">${iico('capability','capacidad · lo que la empresa sabe hacer (M13 ArchiMate, Strategy)')}${c.nm} <b class="mono" style="font-size:9px">${c.act}/${c.des==null?'—':c.des}</b></span>`).join('')}</div></dd></div>`
+        :`<div class="drow"><dt>Realiza</dt><dd><span style="color:var(--warn);font-size:12px">ninguna capacidad declarada</span><br><span style="font-size:10.5px;color:var(--tx-faint)">el mapa de capacidades todavía no lo cubre — se dice, no se calla</span></dd></div>`}</div>
+     ${dir?`<button class="btn" style="justify-content:center;margin-bottom:10px" onclick="irTablero(byId(DATA.procesos,'${p.id}'))">${p.tablero.t} ›</button>`:''}
      ${sipocHTML(p)}
      <div class="dgroup"><div class="gt">KPIs del proceso — semáforo por banda</div>
       ${kpisByProc(p.id).length?kpisByProc(p.id).map(krowHTML).join(''):'<span style="font-size:12px;color:var(--tx-faint)">Sin KPI declarado — candidato del levantamiento.</span>'}</div>
-     <div class="dgroup"><div class="gt">Objetivos que sostiene (hilo de oro)</div>
-      ${objs.length?`<div class="chips">${objs.map(o=>`<span class="chip teal lk" data-obj="${o.id}">${o.nm}</span>`).join('')}</div>`
+     <div class="dgroup"><div class="gt">${dir?'Metas que PRODUCE — no que mueve':'Objetivos que sostiene (hilo de oro)'}</div>
+      ${dir?`<div class="chips">${objRaiz().map(o=>`<span class="chip teal lk" data-obj="${o.id}">${o.nm}</span>`).join('')}</div>
+        <div style="font-size:11px;color:var(--tx-faint);margin-top:5px">Un proceso de dirección queda FUERA del hilo de oro a propósito: no mueve un indicador — produce la meta que otros mueven. Meterlo en el hilo confundiría gobierno con ejecución.</div>`
+      :objs.length?`<div class="chips">${objs.map(o=>`<span class="chip teal lk" data-obj="${o.id}">${o.nm}</span>`).join('')}</div>`
       :`<span style="color:var(--warn);font-size:13px">Huérfano — no sube a ningún objetivo del directorio.${p.star?' <b>'+p.star+'</b>':''}</span>`}</div>
+     <div class="dgroup"><div class="gt">El archivo — qué lo rige, qué produce, qué lo sustenta</div>
+      ${docsDeProc(p.id).length?docsDeProc(p.id).map(d=>{ const vc=docVence(d);
+        return `<button class="loop-it" data-doc="${d.id}">${iico('documento',TIPO_DOC[d.tipo][1])}<span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${TIPO_DOC[d.tipo][0]} · ${d.nm}</span><span class="mono" style="font-size:9.5px;color:${vc?vc.c:(DOC_EST[d.estado]||'var(--tx-faint)')}">${vc?vc.t:(d.estado==='en-tramite'?'en trámite':d.estado)}</span></button>`; }).join('')
+       :(p.tipo==='direccion'?'<span style="font-size:12px;color:var(--tx-faint)">lo que produce vive en el nivel 1 (acuerdos · acta · presupuesto)</span>'
+         :'<span style="font-size:12px;color:var(--warn)">ningún documento lo rige ni lo registra — se opera de memoria (candidato del levantamiento)</span>')}</div>
      ${conocimientoHTML(p.id)}
      ${prov(p.conf==='alta'?'Sistema leído':'Entrevista',p.conf)}
      <div class="dgroup"><div class="gt">Acciones (kinética)</div>
       <button class="btn" data-acc="publicar-mapa-proceso">Publicar versión del mapa › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · gestión-de-cambios · desarrollo→pruebas→producción</span></button></div>
      <button class="btn" style="justify-content:center" onclick="drillLienzo('${p.id}')">Abrir lienzo del proceso (flujograma) ›</button>`);
 }
-function openBrecha(g){ const o=g.obj?byId(DATA.objetivos,g.obj):null; const proc=byId(DATA.procesos,g.against);
+function openBrecha(g){ const o=objDeKr(g.kr); const proc=byId(DATA.procesos,g.against);
   const sc={alta:S.crit,media:S.warn,baja:'var(--tx-mut)'}[g.sev];
   const est={'accionable':'accionable','sin-ancla-de-valor':'sin ancla de valor','a-corroborar':'a corroborar','off-thread':'off-thread'}[g.estado]||g.estado;
   openDrawer('Brecha · O6 assessment', g.nm,

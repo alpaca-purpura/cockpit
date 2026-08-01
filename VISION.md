@@ -75,7 +75,7 @@ analistas es **DTO** (Digital Twin of an Organization, Gartner). SOTA completo +
 capacidades en [`docs/research/organization-as-code/`](./docs/research/organization-as-code/).
 
 - **Organization as Code (la tesis):** procesos, roles, objetivos, personas/puestos y funciones
-  viven como **dato versionado en git** (el objeto normalizado, 20 entidades — schema v2 · CK-26 · D-23 · D-24..D-29 — + provenance
+  viven como **dato versionado en git** (el objeto normalizado, 21 entidades — schema v2 · CK-26 · D-23 · D-24..D-29 · D-38 — + provenance
   `fuente`+`conf` por hecho); todo cambio viaja por **propuesta → revisión → merge** con tres
   entornos (**dev → UAT → prod**: borrador / aprobado / vigente por gerencia) — la Gestión de
   Cambios ISO es ese pipeline con UI que oculta git.
@@ -92,7 +92,7 @@ capacidades en [`docs/research/organization-as-code/`](./docs/research/organizat
   trabajo diario de todos con ese hilo: cada puesto opera apuntando al OKR de su nivel.
   Posicionamiento: **el twin de ejecución estratégica** — "del objetivo del directorio al clic del
   analista, y de vuelta".
-- **Ontología operable (doctrina Palantir adoptada):** las 20 entidades son la capa **semántica**;
+- **Ontología operable (doctrina Palantir adoptada):** las 21 entidades son la capa **semántica**;
   CK-21 agrega la capa **kinética** — acciones válidas por entidad (quién modifica qué, con qué
   aprobación) declaradas en `objeto.schema.yaml`. Twin que solo se lee = foto; con acciones =
   volante. Naming navegable por agentes, anti-patterns vigilados, historia = git

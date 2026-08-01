@@ -78,6 +78,10 @@ operador firma y pasa a `firmado`. Nada se usa en pantalla estando `propuesto`.
 | piso de caja | mínimo de liquidez, cash floor | v18 · es una vara que el directorio firma, como el apetito |
 | ya comprometido | backlog, cartera vendida, pipeline contratado | v18 · sirve igual en obra, planta, tiendas o contratos |
 | inversiones en curso | CAPEX, portafolio de inversión | v18 · el renglón es el mismo en cualquier industria |
+| la sala del área | war-room, tablero del área, area dashboard | v21 (firmada 2026-08-01 al aprobar la propuesta) — gemela de "la sala del directorio"; nivel 3 = una sala por gerencia/jefatura |
+| el archivo (del área) | DMS, gestor documental, repositorio documental | v21 (firmada 2026-08-01) — la pirámide documental + contratos, anclada a procesos; el binario vive en el Depósito |
+| abrir ⊕ · plegar ⊖ (una rama, una nómina, un proceso) | expandir/colapsar, drill-down, zoom semántico | v21 — aplica la fila "abrir / plegada" ya firmada; abrir algo EMPUJA a sus vecinos, jamás los tapa |
+| papeles que rigen · evidencia que produce · contrato que sustenta | information documentada (en UI), records | v21 · el lenguaje de la pirámide (ISO 10013) en el idioma del gerente |
 | acuerdo (del directorio) | action item, compromiso de acta | v18 · lleva responsable, plazo y estado |
 | acta de la sesión | minuta, board pack | v18 |
 | lo prometido / lo cobrado (de una apuesta) | benefits realization, valor capturado | v18 · lo cobrado lo verifica finanzas, jamás quien apostó |

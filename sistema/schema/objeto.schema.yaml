@@ -60,6 +60,7 @@ enums:
   fuente:      [repo, "Sistema leído", Entrevista, Declarado, Inferido, Observado]  # met: M23 provenance · Observado = mining/telemetría (M29; drift saldado en v2)
   sirve_a:     [interno, cliente-final]                                    # met: D-02 audiencia
   tipo_actividad: [humana, sistema, reunion, decision, espera]             # met: BPMN-lite (M11) — alineado con el `tipo_tarea` del frontmatter de sistema/metodo/proceso/** (metodologia-as-code)
+  tipo_proceso: [direccion, negocio, apoyo]                                # met: M16 mapa de procesos (ISO 9001 cl.4.4) — D-37. DECLARADO, jamás derivado del id APQC (`clasificacion`, M12): la categoría 1.0 de APQC es "operating" ahí y dirección pura acá
   raci_letra:  [R, A, C, I]                                                # met: RACI (M25) — A exactamente 1
   gap_tipo:    [nonconformity, target_variance, assessment_finding]        # met: ISO 9000 3.6.9 / OKR / gap-analysis
   estado_brecha: [accionable, a-corroborar, off-thread, sin-ancla-de-valor] # met: sin-ancla-de-valor = brecha real sin KR que la mida (≠ off-thread) — insumo 3
@@ -74,7 +75,7 @@ enums:
   # --- kpi ---
   tipologia_kpi: [kpi, dpi, kri]                                           # met: demo SOMA — indicador de desempeño / diagnóstico / riesgo
   tipo_kpi:    [lead, lag]                                                 # met: BSC/OKR — indicador adelantado vs de resultado
-  frecuencia:  [diaria, semanal, mensual, trimestral]                      # met: refresco esperado (frescura del twin)
+  frecuencia:  [diaria, semanal, mensual, trimestral, por-evento]          # met: refresco esperado (frescura del twin). `por-evento` (D-31) = la serie avanza por hecho, no por calendario (un expediente, un lote, un contrato): la frescura se juzga contra el último evento, no contra el reloj
   rollup:      [peor-hijo, promedio, ponderado]                            # met: función DECLARADA del semáforo (insumo 8) — se computa, no se guarda
   # --- mejora (research C: PDCA paraguas · DMAIC · MASP · kaizen teian) ---
   tipo_beneficio: [hard-saving, soft-saving, cost-avoidance, aumento-ingresos]  # met: Six Sigma financial benefits — finanzas valida hard
@@ -106,7 +107,14 @@ enums:
   tipo_sesion: [directorio, comite-gerencia, revision-direccion]           # met: M58 · ISO 9001 cl.9.3
   estado_presupuesto: [borrador, aprobado, cerrado]                        # met: M57 — presupuesto sin aprobar se MUESTRA sin aprobar
   tipo_inversion: [obra, planta, local, contrato, linea-producto, sistema, otro]  # met: M59 — la misma fila en cualquier industria: obra (inmobiliario) · planta (manufactura) · local (retail) · contrato (servicios) · línea de producto (software)
+  # --- v21 · el archivo (D-38) ---
+  tipo_documento: [politica, procedimiento, instruccion, registro, contrato, expediente]  # met: M38 pirámide documental + la obligación/trámite con terceros. El `manual` NO es tipo: es proyección GENERADA (D-08 intacta); la instrucción de acá es la del corpus del CLIENTE, no la z3 generada
+  relacion_documento: [rige, produce, sustenta]                             # met: M38 · M16 cl.7.5 — rige (dice cómo se hace) · produce (la evidencia) · sustenta (la obligación sobre la que corre)
+  estado_documento: [borrador, vigente, obsoleto, en-tramite]               # met: M38 (D-38) — `vencido` NO es estado: se DERIVA de `vence` contra el periodo vigente, jamás se guarda
   materia_facultad: [inversion, endeudamiento, contrato, venta-activo, contratacion-clave, otro]  # met: M58 — qué decisión sube al órgano de gobierno
+  # --- madurez (D-32/D-33 · v19) — DOS escaleras, cada una en su cancha; jamás se promedian ---
+  escala_madurez: [cobit-0-5, iso9004-1-5]                                 # met: D-32 — la escalera se DECLARA con el nivel: un "3" no significa lo mismo en las dos. COBIT gradúa una CAPACIDAD (M15/M31); ISO 9004 gradúa el SISTEMA DE GESTIÓN entero (M47)
+  dimension_gestion: [liderazgo, estrategia, recursos, procesos, mejora]   # met: M47 ISO 9004:2018 — las dimensiones de la autoevaluación del sistema de gestión
   # --- kinética (N13 niveles de acceso · BL-24 motor) ---
   nivel_acceso: [gobernanza, estrategico, tactico, operativo]              # met: N13 — auth-niveles los gobierna
   tipo_aprobacion: [directa, revision-dueño, gestion-cambios]              # met: BL-24 = motor que ejecuta
@@ -133,6 +141,7 @@ nodos:
       rubro_ref:    { tipo: ref, a: "nichos (slug, I-39)", requerido: false, met: "cross-context por contrato" }
       config_estrategia: { tipo: obj, requerido: false, met: "research A/B — GPD y OKR = mismo grafo, distinta cadencia/acople (RN-14) · mezcla_objetivo = M54 (D-22) · apetito_riesgo = M52 (D-23)", forma: "{ modo: enum modo_estrategia (default okr-trimestral), mezcla_objetivo: { operar: num, expandir: num, transformar: num } (default 70/20/10 — M54; suma 100; varía por industria: industrial ≈70/20/10 · consumo masivo ≈80/18/2 · tech ≈45/40/15), apetito_riesgo: [ { categoria: str (liquidez|reputación|expansión — abierta por cliente), nivel: enum nivel_riesgo } ] (M52 · D-23 — el directorio fija cuánto riesgo acepta por categoría; categoría sin registro se MUESTRA 'sin definir', jamás se inventa) }" }
       config_gobierno: { tipo: obj, requerido: false, met: "M58 (D-25) — cómo gobierna este cliente: cadencia de la sesión y qué monto/materia obliga a que decida el órgano de gobierno. Sin registro NO hay default inventado: se muestra 'sin definir'", forma: "{ cadencia_sesion: str (mensual|trimestral|…), organo: str (directorio|junta|comité), facultades: [ { materia: enum materia_facultad, umbral: str (monto con moneda, o 'cualquier monto'), nota } ] }" }
+      autoevaluacion_madurez: { tipo: list, requerido: false, met: "M47 ISO 9004:2018 (D-33) — la escalera del SISTEMA DE GESTIÓN completo, distinta de la de una capability (M15 COBIT, `capability.assessment`). Las dos conviven y JAMÁS se promedian: ésta responde '¿qué tan maduro es cómo nos gestionamos?', aquélla '¿qué tan lista está esta capacidad?'. El nivel se SOSTIENE en evidencia del twin; sin `evidencia_refs` el nivel es una opinión y se muestra como tal", subesquema: dimension_madurez }
       unidades:     { tipo: list, requerido: false, met: "D-07 — unidad de ejecución (proceso definido UNA vez, medido POR unidad)", subesquema: unidad }
       entidades_legales: { tipo: list, requerido: false, met: "D-07 — el SPV legal = atributo, no partición del twin", subesquema: entidad_legal }
       fuente:       { tipo: enum, enum: fuente, requerido: false, met: M23 }
@@ -147,6 +156,16 @@ nodos:
         id:           { tipo: str, requerido: true }
         razon_social: { tipo: str, requerido: true }
         tax_id:       { tipo: str, requerido: false }
+      dimension_madurez:                                    # weak-entity inline; id local `empresa#mN` (D-33 · M47)
+        id:            { tipo: str, requerido: true }
+        dimension:     { tipo: enum, enum: dimension_gestion, requerido: true, met: "M47 — las cinco del sistema de gestión" }
+        escala:        { tipo: enum, enum: escala_madurez, requerido: true, met: "D-32 — siempre `iso9004-1-5` acá; el campo existe para que el número NUNCA viaje sin su vara" }
+        nivel_actual:  { tipo: num, requerido: true, met: "M47 — dónde estás" }
+        nivel_deseado: { tipo: num, requerido: false, met: "M47 — dónde querés estar. Sin deseado hay nivel, NO hay brecha: el tablero muestra el nivel y lo dice" }
+        evidencia_refs: { tipo: list, requerido: false, a: "brecha|proceso|capability|kpi", met: "M47 · M23 — en qué del twin se apoya el nivel. Lista vacía ⇒ autoevaluación declarada, `conf` baja y visible (anti-opinión)" }
+        evaluado_en_ref: { tipo: ref, a: sesion, requerido: false, met: "M58 — la autoevaluación es un acto de gobierno con fecha, no un campo que envejece en silencio" }
+        fuente:        { tipo: enum, enum: fuente, requerido: false, met: M23 }
+        conf:          { tipo: enum, enum: conf, requerido: false, met: M23 }
 
   # ---------- O4 · persona (Business Actor) ----------
   persona:
@@ -198,6 +217,9 @@ nodos:
       fuente:     { tipo: enum, enum: fuente, requerido: false, met: M23 }
       conf:       { tipo: enum, enum: conf, requerido: false, met: M23 }
     # hub chico: NO guarda sus procesos ni sus roles → inverso por scan. La N:M area↔proceso vive en `proceso.areas_ref`.
+    # NO existe `area.madurez` (D-32): la madurez del área se DERIVA de las capabilities de su subárbol
+    # (`capability.assessment`), igual que su digitalización se deriva de sus procesos. Un campo propio
+    # sería un tercer semáforo guardado, sin marco que lo respalde y sin forma de auditarlo.
 
   # ---------- O3 · proceso (Business Process) — la "tortuga", embebe actividades ----------
   proceso:
@@ -207,7 +229,8 @@ nodos:
     campos:
       id:             { tipo: str, requerido: true }
       nombre:         { tipo: str, requerido: true }
-      clasificacion:  { tipo: str, requerido: false, met: "APQC PCF L3 (nº jerárquico) — M12" }
+      tipo:           { tipo: enum, enum: tipo_proceso, requerido: false, met: "M16 — el mapa de procesos (ISO 9001 cl.4.4): dirección · negocio · apoyo. D-37: es DATO, no se infiere de `clasificacion` (APQC). Sin él, 'apoyo' es el RESTO de lo que no entró en la cadena y los procesos de dirección no existen en el mapa aunque la empresa los ejerza" }
+      clasificacion:  { tipo: str, requerido: false, met: "APQC PCF L3 (nº jerárquico) — M12. Ortogonal a `tipo`: éste es para LEER (geografía), aquél para COMPARAR (clave de join del benchmark M48) — D-37" }
       proposito:      { tipo: str, requerido: false, met: "ISO 9001 cl.4.4.1" }
       disparador:     { tipo: str, requerido: false, met: "BPMN (trigger) — M11" }
       ciclo:          { tipo: str, requerido: false, met: "frecuencia / etapa del ciclo de vida" }
@@ -292,7 +315,9 @@ nodos:
       dueño_ref:   { tipo: ref, a: rol, requerido: false }
       consistente_con_politica: { tipo: bool, requerido: false, met: "ISO 6.2.1b" }
       plan:        { tipo: obj, requerido: false, met: "ISO 6.2.2 a-e", forma: "{ que, recursos[], responsable_ref→rol, fecha, como_evaluado }" }
-      parent_ref:  { tipo: ref, a: objetivo, requerido: false, met: "M26 Hoshin / GPD desdobramento (cascada multi-nivel)" }
+      parent_ref:  { tipo: ref, a: objetivo, requerido: false, met: "M26 Hoshin / GPD desdobramento (cascada multi-nivel). D-35: es la BAJADA — la meta del directorio se vuelve meta de una gerencia con nombre. Un objetivo de directorio sin hijos es una promesa que nadie ejecuta; un objetivo de gerencia sin padre es trabajo que no sostiene nada" }
+      acordado_en_ref: { tipo: ref, a: sesion, requerido: false, met: "M26 catchball · M58 (D-35) — el ida-y-vuelta que CIERRA la bajada: el gerente aceptó la meta y su factibilidad, en sesión y con traza. Sin esto la meta está ASIGNADA, no acordada — y la diferencia es exactamente por qué las bajadas no se cumplen. `sin acordar` se muestra, jamás se asume" }
+      area_ref:    { tipo: ref, a: area, requerido: false, met: "D-35 — de qué gerencia es esta meta (los objetivos del directorio no llevan área: son de la empresa). Habilita la pregunta que el gerente hace de verdad: «¿qué me bajaron a mí?»" }
       key_results: { tipo: list, requerido: false, met: "EMBEBIDO — OKR (M21). v2: OPCIONAL (RN-4′) — ausencia = warning `sin-ancla-de-valor`, no error (cliente sin OKR no vacía el diagnóstico)", subesquema: key_result }
       fuente:      { tipo: enum, enum: fuente, requerido: false, met: M23 }
       conf:        { tipo: enum, enum: conf, requerido: false, met: M23 }
@@ -347,8 +372,10 @@ nodos:
       proceso_ref: { tipo: ref, a: proceso, requerido: false, met: "ancla de la cascada canónica ('KPI de proceso'); ausente = warning hilo-incompleto" }
       dueño_ref:   { tipo: ref, a: "rol|area", requerido: true, met: "CK-24 (RN-8): dueño = ROL o ÁREA, JAMÁS persona — la persona lo hereda como ocupante" }
       unidad_medida: { tipo: str, requerido: false }
-      banda:       { tipo: obj, requerido: false, met: "health metric (research A — Castro): dentro de banda NO exige acción", forma: "{ target: num, umbral_amarillo: num?, umbral_rojo: num? }" }
-      frecuencia:  { tipo: enum, enum: frecuencia, requerido: false, met: "refresco esperado — frescura" }
+      direccion:   { tipo: enum, enum: direccion_cifra, requerido: true, met: "D-31 — el MISMO campo que `periodo.cifra.direccion` (M55), y por la misma razón: sin él el sentido del semáforo se INFIERE del orden de target/rojo, y la inferencia se rompe en cuanto una banda es de dos colas (una temperatura, un nivel de inventario) o los dos umbrales coinciden. El hilo de oro no puede colgar de una heurística" }
+      banda:       { tipo: obj, requerido: false, met: "health metric (research A — Castro): dentro de banda NO exige acción. `umbral_rojo` sin `umbral_amarillo` = dos tramos (la forma mínima); con los tres el ámbar deja de ser 'lo que sobra'. La DIRECCIÓN no vive acá — vive en `direccion` (D-31)", forma: "{ target: num, umbral_amarillo: num?, umbral_rojo: num? }" }
+      referencia_externa: { tipo: obj, requerido: false, met: "M48 · D-31 — contra qué se compara la meta afuera. Apunta a una unidad del eje vertical (`nichos/<vertical>.yaml`) y HEREDA su `confianza`/`condiciones`: si la unidad dice `hipotesis` o no existe, el tablero NO afirma un rango de pares. Prohibido escribir un rango libre acá (M23 anti-alucinación)", forma: "{ unidad_nicho_ref: ref→nichos (slug, I-39), rango: str, conf: enum conf, vigencia: str? }" }
+      frecuencia:  { tipo: enum, enum: frecuencia, requerido: false, met: "refresco esperado — frescura. `por-evento` (D-31) para las series que avanzan por hecho (expediente, lote, contrato) y no por calendario" }
       contribuye_a: { tipo: list, requerido: false, met: "arista KPI→KR del hilo, N:M con peso (insumo 2)", item: "{ kr_ref: ref→key_result, peso? }" }
       en_tension_con: { tipo: list, requerido: false, a: kpi, met: "counter-metric (insumo 8) — el grafo también tiene aristas de tensión; guardar lado min-id" }
       rollup:      { tipo: enum, enum: rollup, requerido: false, met: "función DECLARADA del semáforo (insumo 8) — el motor computa, jamás guarda el resultado" }
@@ -428,10 +455,13 @@ nodos:
       descripcion: { tipo: str, requerido: false, met: "la habilidad, independiente de org/cómo. ⚠ TOGAF ≠ capability-de-producto (ledger)" }
       categoria:   { tipo: str, requerido: false, met: "APQC L1 (M12)" }
       parent_ref:  { tipo: ref, a: capability, requerido: false }
-      assessment:  { tipo: obj, requerido: false, met: "M15 COBIT (niveles 0-5) · M31 heatmap", forma: "{ nivel_actual, nivel_deseado, escala, evaluado_por, fecha }" }
+      assessment:  { tipo: obj, requerido: false, met: "M15 COBIT (niveles 0-5) · M31 heatmap (D-32). `nivel_deseado` NO es opcional en la práctica: sin él hay un nivel, jamás una BRECHA de madurez — y la brecha es lo único que la capa promete. `escala` viaja SIEMPRE con el número (un 3 de COBIT ≠ un 3 de ISO 9004). Lo que el objetivo EXIGE se lee de los KR que la capability empuja, no se copia acá", forma: "{ nivel_actual: num, nivel_deseado: num?, escala: enum escala_madurez, evaluado_por_ref: ref→rol?, fecha?, evidencia_refs: [ref→brecha|proceso|kpi]? }" }
       fuente:      { tipo: enum, enum: fuente, requerido: false, met: M23 }
       conf:        { tipo: enum, enum: conf, requerido: false, met: M23 }
     # hub chico: NO guarda sus referrers → inverso por scan.
+    # D-32: la madurez de un ÁREA no es un campo — es el ROLLUP de las capabilities que el área realiza
+    # (peor-hijo, la misma función declarada que el semáforo del KPI). Guardarla en `area` la desconecta
+    # de su marco (M15/M31) y la vuelve opinión: la escalera se pinta desde acá o no se pinta.
 
   # ---------- O6 · brecha/gap (Assessment) ----------
   brecha:
@@ -549,8 +579,11 @@ nodos:
         unidad:     { tipo: str, requerido: true, met: "moneda o `%`" }
         direccion:  { tipo: enum, enum: direccion_cifra, requerido: true, met: "M55 — sin esto, un +7% de gasto se pintaría verde" }
         ancla_ref:  { tipo: ref, a: "proceso|objetivo|area|inversion", requerido: false, met: "M55 — EL APORTE: la cifra del libro baja a lo que la produce. Ningún tablero contable lo hace: no conoce el proceso" }
-        kpi_ref:    { tipo: ref, a: kpi, requerido: false, met: "anti-duplicación: si la organización ya sigue esa cifra como indicador, se REFERENCIA — no se crea un gemelo" }
+        kpi_ref:    { tipo: ref, a: kpi, requerido: false, met: "anti-duplicación: si la organización ya sigue esa cifra como indicador, se REFERENCIA — no se crea un gemelo. D-34: cuando existe, `valor` NO se guarda acá — se LEE de la última medición del KPI (un-hecho-un-lugar). Guardar los dos es cómo el tablero del directorio y el del gerente empiezan a decir números distintos" }
+        resuelve_en_ref: { tipo: ref, a: "objetivo|proceso|area|inversion|proyecto_mejora", requerido: false, met: "D-35 — DÓNDE se trabaja la variación de esta cifra. `ancla_ref` dice quién la PRODUCE (estructura); esto dice quién la MUEVE esta semana (trabajo). Sin esto la cifra es un reproche sin destinatario" }
         nota:       { tipo: str, requerido: false, met: "por qué se movió — el directorio pregunta eso, no el número" }
+        fuente:     { tipo: enum, enum: fuente, requerido: false, met: "M23 (D-34) — PROPIA de la cifra, no heredada del periodo: la caja sale de la posición bancaria y el margen del ERP; un solo `fuente` a nivel periodo miente sobre la mitad de las filas" }
+        conf:       { tipo: enum, enum: conf, requerido: false, met: "M23 (D-34) — idem; una cifra estimada al cierre no tiene la confianza de una conciliada" }
 
   # ---------- O2 · proyeccion_caja (liquidez) (D-27) ----------
   proyeccion_caja:
@@ -631,6 +664,33 @@ nodos:
       conf:              { tipo: enum, enum: conf,   requerido: false, met: M23 }
     # desvío avance (declarado − real), % de presupuesto gastado y atraso de entrega son DERIVADOS al leer.
 
+  # ---------- T3 · documento (Business Object · representation) — el archivo del twin (D-38) ----------
+  # Un organization twin sin sus papeles es un dashboard: la empresa real corre sobre procedimientos,
+  # registros, CONTRATOS, pólizas y expedientes — y dos brechas lo gritaban sin entidad (g-prov: contrato
+  # sin evaluación anexa = reclamo sin sustento · g-doc: proceso sin procedimiento = se opera de memoria).
+  # La entidad registra la pieza del corpus del CLIENTE; lo que el twin GENERA (manual, instrucción z3)
+  # sigue siendo proyección (D-08 intacta). El binario vive en el Depósito (N12); acá vive el REGISTRO.
+  documento:
+    o_code: T3
+    archimate: "Business Object (representation)"
+    archivo: "documentos/doc-*.yaml"
+    campos:
+      id:           { tipo: str, requerido: true }
+      tipo:         { tipo: enum, enum: tipo_documento, requerido: true, met: "M38 — la pirámide + contrato/expediente" }
+      nombre:       { tipo: str, requerido: true }
+      relacion:     { tipo: enum, enum: relacion_documento, requerido: true, met: "M38 · M16 cl.7.5 — rige · produce · sustenta" }
+      proceso_ref:  { tipo: ref, a: proceso, requerido: false, met: "M38 — el ancla natural; sin proceso, ancla a un área" }
+      area_ref:     { tipo: ref, a: area, requerido: false }
+      rol_ref:      { tipo: ref, a: rol, requerido: false, met: "M25 — quién responde por mantenerlo vigente" }
+      estado:       { tipo: enum, enum: estado_documento, requerido: true, met: "M38 — borrador → vigente → obsoleto · en-tramite = expediente vivo ante un tercero" }
+      version:      { tipo: str, requerido: false, met: "M38 — versionado como todo el twin" }
+      vence:        { tipo: date, requerido: false, met: "M23 — contratos · pólizas · licencias: `vencido`/`por vencer` se COMPUTAN contra el periodo vigente, jamás se guardan" }
+      contraparte:  { tipo: str, requerido: false, met: "ISO 9001 cl.8.4 — el tercero del contrato/convenio; sin criterios de evaluación anexos, un reclamo no tiene sustento (caso g-prov)" }
+      brecha_ref:   { tipo: ref, a: brecha, requerido: false, met: "el papel que falta o falla entra al ciclo como brecha (g-doc · g-aud · g-prov)" }
+      ruta:         { tipo: str, requerido: false, met: "puntero al Depósito (N12) — la entidad NO embebe el archivo" }
+      fuente:       { tipo: enum, enum: fuente, requerido: false, met: M23 }
+      conf:         { tipo: enum, enum: conf,   requerido: false, met: M23 }
+
 
 acciones:
   niveles: [gobernanza, estrategico, tactico, operativo]
@@ -640,9 +700,12 @@ acciones:
     - { id: registrar-medicion-kpi,    entidad: kpi,             nivel_min: operativo,   aprobacion: directa,          efecto: "agrega una medición con provenance al KPI", validaciones: [fuente-y-conf-presentes] }
     - { id: ajustar-banda-kpi,         entidad: kpi,             nivel_min: tactico,     aprobacion: revision-dueño,   efecto: "cambia target/umbrales de la banda de salud" }
     - { id: promover-kpi-a-kr,         entidad: kpi,             nivel_min: estrategico, aprobacion: gestion-cambios,  efecto: "KPI fuera de banda entra como KR del ciclo (kr.kpi_ref lo referencia)", validaciones: [kpi-fuera-de-banda] }
+    - { id: comprometer-contramedida,  entidad: kpi,             nivel_min: tactico,     aprobacion: revision-dueño,   efecto: "el dueño del indicador fuera de banda compromete la respuesta, con plazo — la anomalía sin contramedida es alerta, no excusa (D-36 · GPD/M41)", validaciones: [kpi-fuera-de-banda, responsable-y-plazo-presentes] }
     - { id: decantar-kr-a-kpi,         entidad: objetivo,        nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "KR logrado vuelve a KPI monitoreado (fin de ciclo)" }
-    # --- objetivo / cascada ---
+    # --- objetivo / cascada (D-35 — la bajada al gerente: sin ella el nivel 1 no se resuelve nunca) ---
     - { id: aprobar-version-objetivo,  entidad: objetivo,        nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "publica/deprecia una versión del objetivo (estado + superseded_by)" }
+    - { id: bajar-objetivo,            entidad: objetivo,        nivel_min: estrategico, aprobacion: gestion-cambios,  efecto: "abre la meta del directorio como meta de una gerencia (parent_ref + area_ref + accountable del KR) — el desdobramento de M26/M41" }
+    - { id: acordar-bajada,            entidad: objetivo,        nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "el gerente ACEPTA la meta bajada y su factibilidad, en sesión (acordado_en_ref) — el catchball que separa una meta acordada de una asignada", validaciones: [responsable-y-plazo-presentes] }
     # --- embudo de ideas (research C) ---
     - { id: enviar-idea,               entidad: idea,            nivel_min: operativo,   aprobacion: directa,          efecto: "alta de idea en el embudo (autoría reconocida)" }
     - { id: evaluar-idea,              entidad: idea,            nivel_min: tactico,     aprobacion: revision-dueño,   efecto: "comité evalúa (criterios + feedback al proponente)" }
@@ -656,6 +719,11 @@ acciones:
     - { id: cerrar-brecha,             entidad: brecha,          nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "brecha resuelta (evidencia + proyecto que la cerró)" }
     - { id: publicar-mapa-proceso,     entidad: proceso,         nivel_min: tactico,     aprobacion: gestion-cambios,  efecto: "versión del proceso publicada (dev→UAT→prod, D5/D8)" }
     - { id: corregir-verbo-actividad,  entidad: proceso,         nivel_min: tactico,     aprobacion: revision-dueño,   efecto: "consultor corrige el verbo asignado por el ingest — auditado (provenance, anti-gaming)" }
+    - { id: corregir-instruccion,      entidad: proceso,         nivel_min: tactico,     aprobacion: gestion-cambios,  efecto: "quien HACE la tarea corrige la instrucción de trabajo (L5): el piso del twin se mantiene desde el piso, no desde la gerencia" }
+    # --- apuesta (D-23) — el gesto de peso del directorio; `sellar` es el gate humano-irreducible ---
+    - { id: sellar-apuesta,            entidad: apuesta,         nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "por-sellar → sellada: el accountable apuesta con nombre y fecha (sello{}) — m3.e0.p5", validaciones: [supera-umbral-facultad] }
+    - { id: re-apostar,                entidad: apuesta,         nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "RE-VERSIONA una apuesta sellada (cambia meta, tope o riesgo) — jamás edita ni borra la anterior" }
+    - { id: retirar-apuesta,           entidad: apuesta,         nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "sellada → retirada, con evidencia de por qué se abandona (cerrar sin cobrar TAMBIÉN es un resultado)" }
     # --- gobierno del directorio (D-24..D-30 · M52·M55-M59) — las decisiones que un órgano de gobierno
     #     firma de verdad. Sin ellas la bandeja del nivel 1 sólo configura el propio modelo y, en régimen,
     #     queda vacía. Lo que las hace recurrentes es el UMBRAL: empresa.config_gobierno.facultades.
@@ -667,12 +735,16 @@ acciones:
     - { id: comprometer-acuerdo,       entidad: acuerdo,         nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "el responsable asume el acuerdo con plazo (pendiente → en-curso)", validaciones: [responsable-y-plazo-presentes] }
     - { id: cerrar-acuerdo,            entidad: acuerdo,         nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "acuerdo cumplido con evidencia (o anulado con razón)" }
     - { id: cerrar-sesion,             entidad: sesion,          nivel_min: gobernanza,  aprobacion: directa,          efecto: "cierra la sesión y GENERA el acta con lo decidido y los acuerdos abiertos; queda versionada (la sesión siguiente abre con ella)" }
+    - { id: convocar-rendicion,        entidad: sesion,          nivel_min: gobernanza,  aprobacion: directa,          efecto: "convoca al responsable a rendir cuentas de un acuerdo vencido o de una meta fuera de banda en la próxima sesión (queda como punto de agenda, no como reproche verbal)" }
     - { id: aprobar-presupuesto,       entidad: presupuesto,     nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "borrador → aprobado, en sesión y con traza (aprobado_en_ref)", validaciones: [bolsas-suman-total] }
     - { id: comprometer-bolsa,         entidad: presupuesto,     nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "compromete importe de una bolsa contra una apuesta o proyecto (el futuro se compra al comprometer)" }
     - { id: fijar-piso-caja,           entidad: proyeccion_caja, nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "fija el mínimo de caja que no se cruza (vara del mismo tipo que el apetito)" }
     - { id: aprobar-endeudamiento,     entidad: proyeccion_caja, nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "autoriza tomar o ampliar deuda por encima del umbral de facultades", validaciones: [supera-umbral-facultad, resguardos-revisados] }
     - { id: aprobar-inversion,         entidad: inversion,       nivel_min: gobernanza,  aprobacion: gestion-cambios,  efecto: "autoriza una inversión nueva o presupuesto adicional por encima del umbral", validaciones: [supera-umbral-facultad] }
     - { id: registrar-avance-inversion, entidad: inversion,      nivel_min: tactico,     aprobacion: directa,          efecto: "registra avance real y/o declarado con su fuente — SEPARADOS, jamás fundidos", validaciones: [fuente-y-conf-presentes] }
+    # --- v21: el archivo (D-38) ---
+    - { id: aprobar-version-documento, entidad: documento,       nivel_min: tactico,     aprobacion: revision-dueño,   efecto: "publica una versión del documento (borrador → vigente; la anterior queda obsoleta)" }
+    - { id: renovar-contrato-documento, entidad: documento,      nivel_min: estrategico, aprobacion: gestion-cambios,  efecto: "inicia la renovación de un contrato/póliza por vencer — el vencimiento derivado deja de acusar al cerrarse" }
     - { id: registrar-cifras-periodo,  entidad: periodo,         nivel_min: tactico,     aprobacion: directa,          efecto: "ingesta de las cifras del cierre desde el sistema contable, con estado de cierre y fuente", validaciones: [estado-cierre-presente, fuente-y-conf-presentes] }
     - { id: cerrar-periodo,            entidad: periodo,         nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "preliminar → cerrado (o cerrado → auditado al recibir dictamen); el twin NO recalcula: refleja el estado del libro" }
     - { id: verificar-valor-cobrado,   entidad: apuesta,         nivel_min: estrategico, aprobacion: revision-dueño,   efecto: "finanzas escribe lo efectivamente cobrado de la apuesta contra la fuente contable (M22 realización)", validaciones: [verificador-no-es-quien-apostó] }
@@ -707,6 +779,13 @@ relaciones:
   - { de: area,      a: rol,        tipo: assignment,  dueño: area.lider_ref,            met: "el área la encabeza un rol (cl.5.3 · D-12)" }
   - { de: area,      a: area,       tipo: composition, dueño: area.parent_ref,           met: "anidación organizativa (TOGAF · D-12)" }
   - { de: empresa,   a: "*",        tipo: composition, dueño: "la carpeta (partición)",  met: "scope/ownership — scan, sin listas" }
+  # --- v19: la bajada y las varas de madurez (D-32/D-33/D-35) ---
+  - { de: objetivo,  a: objetivo,   tipo: composition, dueño: objetivo.parent_ref,       met: "la BAJADA (M26 Hoshin · M41 GPD): meta del directorio → meta de gerencia (D-35)" }
+  - { de: objetivo,  a: area,       tipo: association, dueño: objetivo.area_ref,         met: "de qué gerencia es la meta bajada (D-35)" }
+  - { de: objetivo,  a: sesion,     tipo: association, dueño: objetivo.acordado_en_ref,  met: "catchball cerrado: acordada, no asignada (D-35 · M58)" }
+  - { de: empresa,   a: sesion,     tipo: association, dueño: empresa.autoevaluacion_madurez.evaluado_en_ref, met: "la autoevaluación del sistema de gestión es un acto de gobierno con fecha (D-33 · M47)" }
+  - { de: capability, a: "brecha|proceso|kpi", tipo: association, dueño: capability.assessment.evidencia_refs, met: "en qué se apoya el nivel de madurez (D-32 · M23)" }
+  - { de: kpi,       a: "nichos (slug, I-39)", tipo: association, dueño: kpi.referencia_externa.unidad_nicho_ref, met: "la vara externa sale del eje vertical con su confianza — jamás de un rango escrito a mano (D-31 · M48 · M23)" }
   # --- v2: el hilo MEDIBLE ---
   - { de: kpi,       a: proceso,    tipo: association, dueño: kpi.proceso_ref,           met: "KPI de proceso (cascada canónica)" }
   - { de: kpi,       a: "rol|area", tipo: assignment,  dueño: kpi.dueño_ref,             met: "dueño del KPI — JAMÁS persona (CK-24 · RN-8)" }
@@ -759,6 +838,21 @@ invariantes:
   # --- v2: warnings ---
   - "warning objetivo sin key_results = `sin-ancla-de-valor` (RN-4′ — ya NO es error; cliente sin OKR no vacía el diagnóstico)"
   - "warning kpi sin proceso_ref = hilo-incompleto"
+  # --- v19: el hilo medido de verdad, la madurez con vara y la bajada al gerente (D-31..D-36) ---
+  - "ERROR kpi sin `direccion` (D-31) — sin ella el semáforo infiere el sentido del orden de la banda, y la inferencia se rompe en bandas de dos colas o con umbrales iguales"
+  - "ERROR key_result.current guardado cuando existe kr.kpi_ref — el valor se LEE de la última medición del KPI (un-hecho-un-lugar); dos copias del mismo número es cómo el directorio y la gerencia empiezan a discrepar"
+  - "ERROR periodo.cifra.valor guardado cuando existe cifra.kpi_ref (D-34) — mismo motivo que el anterior, del otro lado de la costura contable"
+  - "warning key_result sin kpi_ref = KR sin serie: el contrato de cambio no se puede verificar contra ninguna medición (M21 · frontera permeable). Se muestra como meta declarada, jamás como meta medida"
+  - "warning los `peso` de los kpi.contribuye_a de un mismo KR no suman 1 (D-36) ⇒ o falta un KPI, o el peso está sin normalizar: las dos cosas se declaran, ninguna se completa sola"
+  - "warning key_result sin accountable_ref (M21 · CK-24) — un KR sin ROL que responda es una cifra sin dueño"
+  - "warning objetivo con horizonte anual|3a sin objetivos hijo (parent_ref) ⇒ meta del directorio que nadie bajó: se muestra `sin bajar`, y es la primera pregunta de la revisión"
+  - "warning objetivo con parent_ref y sin acordado_en_ref (D-35) ⇒ meta ASIGNADA, no acordada — el catchball de M26 quedó abierto"
+  - "warning objetivo con parent_ref y sin area_ref ⇒ bajada sin gerencia destinataria"
+  - "warning capability.assessment sin nivel_deseado (D-32) ⇒ hay nivel, NO hay brecha de madurez: el heatmap lo dice en vez de pintar un color que promete una distancia inexistente"
+  - "warning capability.assessment sin escala ⇒ el número viaja sin vara (un 3 de COBIT ≠ un 3 de ISO 9004)"
+  - "warning empresa.autoevaluacion_madurez[].evidencia_refs vacío (D-33) ⇒ autoevaluación DECLARADA: `conf` baja y visible, jamás presentada como medición"
+  - "warning kpi.referencia_externa cuya unidad de nicho tiene `confianza: baja`/`derivado_de: hipotesis` ⇒ el rango NO se afirma como vara de pares; se muestra la condición de la unidad (M23 · M48). Rango escrito a mano, sin unidad de nicho detrás = ERROR de procedencia"
+  - "warning periodo.cifra sin `resuelve_en_ref` (D-35) ⇒ variación sin destinatario: el directorio la ve y nadie la trabaja"
   # --- v18: gobierno del directorio (D-24..D-30) ---
   - "ERROR riesgo.responsable_ref o acuerdo.responsable_ref o inversion.responsable_ref resuelve a persona (CK-24 — responde el ROL; la persona lo ocupa)"
   - "ERROR periodo.cifra sin `direccion` (sin ella un +7% de gasto se pintaría como mejora)"
@@ -775,6 +869,10 @@ invariantes:
   - "warning inversion.avance_declarado > avance_real ⇒ candidato a brecha: gobierna entrega, margen y cómo el libro valoriza lo construido en curso (M55 · M59)"
   - "warning presupuesto.bolsas[].comprometido > asignado (bolsa sobre-comprometida)"
   - "warning sesion cerrada sin acta.generada (M58 — la sesión siguiente abre con ella)"
+  # --- v21: el archivo (D-38) ---
+  - "warning documento tipo=contrato|expediente sin contraparte ⇒ obligación sin tercero declarado (D-38)"
+  - "warning documento con `vence` anterior al periodo vigente ⇒ se pinta VENCIDO (derivado, jamás guardado) y es candidato a riesgo (D-38 · M23)"
+  - "warning proceso de negocio/apoyo sin documento rel=rige ⇒ hueco del archivo: se opera de memoria (caso g-doc) — el hueco se dibuja, no se calla (M38)"
   - "warning actividad.verbo fuera de sistema/schema/verbos.yaml (con sugerencia si matchea sinónimo) · verbo corregido sin fuente/conf/evidencia_ref = warning anti-gaming (RN-13)"
   - "warning medición sin fuente/conf (RN-9) · proyecto sin origen (brecha NI idea) = proyecto-sin-diagnóstico"
   - "bloque ext: se IGNORA-Y-PRESERVA en toda entidad (open/closed — duda 1); jamás valida, jamás rompe"

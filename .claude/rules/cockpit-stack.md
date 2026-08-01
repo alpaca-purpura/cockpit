@@ -31,7 +31,7 @@
 ## Live-verify (DoD) — `live_verify_infra`
 
 `cd go && go run ./cmd/directorio` (o `./start.sh`) → ejercer **de verdad** (no "GET 200"):
-`GET /api/portfolio` · `GET /api/negocio?empresa=<id>` · `GET /api/objeto?empresa=<id>` (las 20 entidades juntas — D-23 · D-24..D-29).
+`GET /api/portfolio` · `GET /api/negocio?empresa=<id>` · `GET /api/objeto?empresa=<id>` (las 21 entidades juntas — D-23 · D-24..D-29 · D-38).
 Evidencia = runtime-logs + el efecto observado en la respuesta/UI.
 
 ## Idioma
@@ -41,7 +41,7 @@ Evidencia = runtime-logs + el efecto observado en la respuesta/UI.
 
 ## Modelo de dominio
 
-El objeto de negocio normalizado (20 entidades — CK-26 + `apuesta` D-23 + el gobierno del directorio D-24..D-29: `riesgo`·`sesion`·`acuerdo`·`periodo`·`proyeccion_caja`·`presupuesto`·`inversion`; +`puesto`/`arnes` al materializar D-19/D-20) es **`sistema/schema/objeto.schema.yaml`** (SSoT), servido por
+El objeto de negocio normalizado (21 entidades — CK-26 + `apuesta` D-23 + el gobierno del directorio D-24..D-29: `riesgo`·`sesion`·`acuerdo`·`periodo`·`proyeccion_caja`·`presupuesto`·`inversion` + el archivo D-38: `documento`; +`puesto`/`arnes` al materializar D-19/D-20) es **`sistema/schema/objeto.schema.yaml`** (SSoT), servido por
 `go/objeto.go` → `/api/objeto`. `negocio.yaml` es proyección curada a mano hoy (D-13; voltear a generado = historia
 `sistema/negocio-yaml-proyeccion-generada`). Ver `[[metodologia-as-code]]`.
 

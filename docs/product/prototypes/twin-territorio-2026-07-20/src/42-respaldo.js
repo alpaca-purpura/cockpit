@@ -1,6 +1,6 @@
 /* ===== v14.3 · capa RESPALDO DEL MÉTODO — cada panel cita la metodología que lo sostiene =====
    Espejo del `met:` que ya llevan el schema (222 campos) y los pasos del proceso: el panel declara
-   sus fuentes igual que todo lo demás. SSoT real = sistema/metodo/methodologies.yaml (59 cartas).
+   sus fuentes igual que todo lo demás. SSoT real = sistema/metodo/methodologies.yaml (61 cartas).
    En superficie: nombre común de la fuente (cero jerga). El código M-NN = procedencia, SOLO en la ficha. */
 const RESPALDO={
   'dir-varas':{ cita:'apetito · ambición', t:'Las varas del directorio', items:[
@@ -15,19 +15,20 @@ const RESPALDO={
   'dir-alertas':{ cita:'GPD · pares', t:'Alertas que escalaron', items:[
     {f:'GPD (Falconi) — tratamiento de anomalías', uso:'al directorio solo sube lo que quedó fuera de banda sin contramedida — la excepción, jamás el detalle.', m:'M41'},
     {f:'ISO 9001 — seguimiento y medición', uso:'qué es "fuera" lo decide la banda definida de cada indicador, no una opinión.', m:'M16'},
-    {f:'Pares del sector (benchmark APQC · Hackett)', uso:'¿mi número es malo… comparado con quién? — el chip de pares dimensiona la alerta contra el rango externo, con fuente, segmento y vigencia (pasa el cursor).', m:'M48'},
-    {f:'Procedencia del dato', uso:'sin fuente seria el rango de pares no se afirma — alerta sin benchmark serio va sin chip, jamás con uno inventado.', m:'M23'} ]},
+    {f:'Pares del sector (benchmark APQC · Hackett)', uso:'¿mi número es malo… comparado con quién? La vara externa NO se afirma en el tablero: vive en la ficha del indicador, sale del eje vertical (la unidad de nicho del rubro) y hereda su confianza y sus condiciones.', m:'M48'},
+    {f:'Procedencia del dato', uso:'si la unidad de nicho dice "hipótesis", se muestra la CONDICIÓN ("sin vara comparable"), jamás un rango inventado. Un rango tecleado a mano, sin unidad detrás, es error de procedencia.', m:'M23'},
+    {f:'Hoshin Kanri — la alerta tiene destinatario', uso:'cada alerta declara de qué gerencia es y qué meta bajada la trabaja: el directorio no arregla la alerta, pregunta por ella a quien la tiene. Sin destinatario es un reproche mensual.', m:'M26'} ]},
   'dir-apuestas':{ cita:'Shape Up · FinOps', t:'Las apuestas', items:[
     {f:'Shape Up — apostar, no planear en exceso', uso:'pocas apuestas selladas, con riesgo y apetito explícitos: la ficha declara cuánto se apuesta (tiempo fijo · tope de gasto — "Apostamos"). Sellar es un acto con firma (paso 5 · etapa 0 del método).', m:'M04'},
     {f:'FinOps — valor cuantificado', uso:'cada apuesta declara el valor que persigue en dinero, no en adjetivos — la línea "persigue S/…" de la tarjeta, con el supuesto visible en la ficha.', m:'M22'} ]},
   'dir-rumbo':{ cita:'plan de 3 años', t:'El rumbo', items:[
     {f:'Hoshin Kanri — despliegue de la estrategia', uso:'visión a 3-5 años → breakthroughs del año → metas del trimestre: una sola cascada, 3 renglones. Cada meta baja con acuerdo ida-y-vuelta — la negociación pendiente vive como decisión en la bandeja, no aquí (management-by-exception: el header no carga detalle de gestión).', m:'M26'},
     {f:'Balanced Scorecard — perspectivas', uso:'chequeo de completitud silencioso: las 4 perspectivas se derivan de los objetivos vigentes cada vez que se lee. Si alguna queda sin meta, la brecha sube como alerta — no se re-narra aquí (una sola vez, un solo lugar). Es una lista de control, no un marco a implantar.', m:'M30'},
-    {f:'GPD (Falconi)', uso:'en modo anual o mixto, el despliegue del año manda y ciertas metas pagan bono ★.', m:'M41'} ],
-    gap:'El campo "acuerdo de bajada" (ida-y-vuelta por nivel) aún no existe en el esquema — la acción de cerrarlo ya vive en la bandeja del directorio, pero sigue siendo dato simulado (la apuesta y el apetito ya son D-23; este campo espera su ficha).' },
+    {f:'GPD (Falconi)', uso:'en modo anual o mixto, el despliegue del año manda y ciertas metas pagan bono ★.', m:'M41'},
+    {f:'La bajada como dato (D-35)', uso:'cada meta del directorio se abre como meta de UNA gerencia (parent + área + rol que responde) y el catchball se cierra con traza en una sesión. Meta sin hijos = "sin bajar"; con hijos y sin sesión = asignada, no acordada. Las dos llegan solas a la bandeja.', m:'M26'} ]},
   'dir-madurez':{ cita:'escalera 1–5', t:'¿El sistema aguanta?', items:[
-    {f:'Madurez del sistema de gestión (ISO 9004)', uso:'autoevaluación 1-5 por dimensión (liderazgo · estrategia · recursos · procesos · mejora): dónde estás vs dónde quieres estar. El nivel se DERIVA de evidencia con su confianza — jamás se declara a mano.', m:'M47'},
-    {f:'COBIT — arbitraje de escaleras', uso:'el mapa por nodo se pinta con la escalera de gobierno/TI; esta gradúa el sistema de gestión completo (finanzas y personas incluidas) — dos varas, cada una en su cancha.', m:'M15'},
+    {f:'Madurez del sistema de gestión (ISO 9004)', uso:'autoevaluación 1-5 por dimensión (liderazgo · estrategia · recursos · procesos · mejora): dónde estás vs dónde quieres estar. Cada nivel se apoya en nodos reales del twin y es un acto de gobierno con fecha y sesión; sin evidencia anclada es una opinión, y se dice.', m:'M47'},
+    {f:'COBIT — arbitraje de escaleras (D-32)', uso:'dos escaleras que conviven y JAMÁS se promedian: COBIT gradúa UNA CAPACIDAD (el mapa por nodo), ISO 9004 gradúa el sistema de gestión completo. Por eso el número viaja siempre pegado a su escalera — un 3 no significa lo mismo en las dos. Sin nivel deseado hay nivel, no brecha.', m:'M15'},
     {f:'Frontera persona ↔ twin', uso:'la madurez de "personas" se agrega por rol y área — jamás evaluación de una persona nombrada.', m:'M40'} ]},
   /* — v18: los panels de gobierno del directorio (resultado · caja · presupuesto · riesgos ·
        acuerdos · inversiones). Donde el catálogo AÚN no tiene carta, se declara en `gap` — el
@@ -71,7 +72,8 @@ const RESPALDO={
     {f:'Matriz de responsabilidades (RACI) — autoridad', uso:'quién firma cada decisión está declarado por nivel: nada espera a la persona equivocada.', m:'M25'} ]},
   'dir-cambio30':{ cita:'ISO 9001 §9.3', t:'Qué cambió desde la última sesión', items:[
     {f:'ISO 9001 — revisión por la dirección (§9.3)', uso:'la sesión compara contra la anterior: qué se degradó, qué cerró con veredicto, qué espera firma.', m:'M16'} ]},
-  'dir-portafolio':{ cita:'PDCA · costo de esperar', t:'Proyectos en curso', items:[
+  'dir-portafolio':{ cita:'PDCA · costo de esperar', t:'Proyectos que el directorio sigue', items:[
+    {f:'Gobierno por excepción', uso:'al directorio suben los proyectos que mueven una meta del AÑO o que superan una facultad, y cada fila dice por qué sube. El resto lo gobierna la gerencia en su nivel — y también se dice, para que no parezca un olvido.', m:'M58'},
     {f:'Ciclo PDCA (ISO 9001 — mejora)', uso:'cada proyecto declara su fase y cierra con el cambio observado en el indicador, no con un acta.', m:'M16'},
     {f:'WSJF — costo de esperar', uso:'el orden del portafolio sale de cuánto cuesta NO hacer cada cosa por mes — el "esperar: S/…" de cada fila, heredado de la brecha que ataca; cerrado va al final.', m:'M28'},
     {f:'FinOps — valor cuantificado', uso:'el retorno esperado acompaña a cada proyecto; el real se escribe al cierre.', m:'M22'} ]},
@@ -88,8 +90,9 @@ const RESPALDO={
   'sala-trabajo':{ cita:'arnés del puesto', t:'El twin compila trabajo', items:[
     {f:'Arnés por rol×proceso — el trabajo compilado', uso:'el twin compila el trabajo de cada puesto; cuando el twin cambia, el arnés se recompila — jamás se edita a mano.', m:'M46'},
     {f:'Frontera persona ↔ twin', uso:'se mide el rol y el puesto, jamás la persona.', m:'M40'} ]},
-  'tac-metas':{ cita:'OKR · GPD', t:'Metas del ciclo', items:[
-    {f:'OKR — metas del trimestre', uso:'cada compromiso del nivel declara a qué meta aporta.', m:'M21'},
+  'tac-metas':{ cita:'OKR · GPD · Hoshin', t:'Lo que baja del directorio', items:[
+    {f:'Hoshin Kanri — catchball', uso:'la meta del directorio se abre acá como meta de UNA gerencia, con el rol que responde y el contrato que se compromete a mover. Acordada ≠ asignada: sin el ida-y-vuelta registrado, la cascada es un reparto de números.', m:'M26'},
+    {f:'OKR — el contrato de cambio', uso:'cada compromiso del nivel declara a qué meta aporta, y su valor se LEE de la serie del indicador — nunca se teclea al lado.', m:'M21'},
     {f:'GPD (Falconi)', uso:'en modo anual las metas bajan en cascada y ★ marca las que pagan bono.', m:'M41'} ]},
   'tac-contramedida':{ cita:'GPD', t:'Regla de la reunión', items:[
     {f:'GPD (Falconi) — tratamiento de anomalías', uso:'indicador fuera de banda EXIGE contramedida comprometida; sin ella, escala sola al directorio.', m:'M41'},
@@ -97,6 +100,28 @@ const RESPALDO={
   'tac-brechas':{ cita:'costo de no actuar', t:'Aquí nacen los compromisos', items:[
     {f:'WSJF — costo de esperar', uso:'cada brecha lleva cuánto cuesta no actuar — ese número ordena qué se compromete primero.', m:'M28'},
     {f:'FinOps — valor cuantificado', uso:'toda brecha lleva su costo en dinero, no en adjetivos.', m:'M22'} ]},
+  /* — v21: el nivel 3 como sala del área (selector · twin del área · plan · archivo) — */
+  'tac-selector':{ cita:'despliegue por área', t:'La sala de cada área', items:[
+    {f:'Hoshin Kanri — despliegue de la estrategia', uso:'la cascada no termina en un tablero global: cada gerencia arma y revisa SU plan con su gente. La sala es ese nivel — la empresa entera en una sola vista sería inmensa e ilegible, y elegir el área ES la primera decisión de lectura.', m:'M26'},
+    {f:'Matriz de responsabilidades (RACI)', uso:'la sala es de quien responde: el líder del área y sus jefaturas. Lo transversal (acuerdos, riesgos, metas sin bajar) vive en la portada, con salto a la sala que responde.', m:'M25'} ]},
+  'sala-twin':{ cita:'el twin del área', t:'La sala del área', items:[
+    {f:'Ontología del twin — semántica + acción', uso:'la sala no es un dashboard del área: es su twin. Primero lo que el área ES (estructura · procesos · sistemas · archivo); lo que debe MOVER se pinta encima como capa Plan del ciclo — apagada, queda la organización.', m:'M32'},
+    {f:'ISO 9001 — la organización y su contexto', uso:'la misma gramática del twin completo, recortada al área: nada se re-modela, todo se filtra.', m:'M16'} ]},
+  'sala-plan':{ cita:'ruta meta→papel', t:'El plan — cómo llegamos', items:[
+    {f:'Mapa de capacidades del negocio', uso:'la ruta pasa por la capacidad cuando existe: "no es que el proceso falle — no sabemos hacerlo al nivel que la meta exige" es la frase con que se pide presupuesto.', m:'M31'},
+    {f:'WSJF — costo de esperar', uso:'las brechas sin respuesta se ordenan por cuánto cuesta no actuar.', m:'M28'},
+    {f:'GPD (Falconi) — tratamiento de anomalías', uso:'indicador fuera de banda EXIGE contramedida comprometida — "la reunión va a preguntar por esto" es exactamente esa lista.', m:'M41'},
+    {f:'Ciclo PDCA (ISO 9001 — mejora)', uso:'el compromiso es un proyecto con fase y veredicto contra la serie del indicador — no una lista de tareas.', m:'M16'} ]},
+  'sala-procesos':{ cita:'mapa por área', t:'Los procesos del área', items:[
+    {f:'ISO 9001 — el mapa de procesos', uso:'el mapa del área conserva los tres tipos (negocio en su orden · apoyo · dirección) — es el mismo mapa del nivel 2, recortado y con el detalle abierto.', m:'M16'},
+    {f:'Clasificación de procesos (APQC)', uso:'cada proceso conserva su código del catálogo universal — comparable contra pares aunque se mire desde el área.', m:'M12'},
+    {f:'Mapa de flujo de valor (VSM)', uso:'abrir un proceso EN SU LUGAR muestra roles × actividades con sus tiempos — el zoom no te saca del mapa.', m:'M09'},
+    {f:'BPMN — carriles', uso:'cada fila del proceso abierto es un rol; la actividad vive en el carril de quien la ejecuta.', m:'M11'} ]},
+  'sala-archivo':{ cita:'pirámide documental', t:'El archivo del área', items:[
+    {f:'ISO 10013 — pirámide documental', uso:'procedimientos que RIGEN, instrucciones que detallan, registros que EVIDENCIAN: la pirámide completa del área, anclada a sus procesos. Lo que ningún papel rige se dibuja como hueco — no se calla.', m:'M38'},
+    {f:'ISO 9001 — información documentada y proveedores externos', uso:'el contrato con un tercero es parte del sistema: sin criterios de evaluación anexos, cuando el desempeño falla no hay con qué sostener un reclamo (cl.8.4 — la brecha del subcontratista de Marina).', m:'M16'},
+    {f:'Procedencia del dato', uso:'el vencimiento de un contrato o una póliza se DERIVA contra el periodo vigente del twin — jamás un semáforo guardado. Vencido = riesgo que se ve solo.', m:'M23'} ],
+    gap:'La entidad `documento` es la decisión D-38 (2026-08-01): registra la pieza del corpus del CLIENTE con tipo, ancla, vigencia y contraparte. Las proyecciones que el twin GENERA (manual, instrucción z3) siguen siendo proyecciones (D-08 intacta). El archivo binario vive en el Depósito; el conector real al corpus es horizonte.' },
   'ideas':{ cita:'kaizen', t:'Embudo de ideas', items:[
     {f:'Gestión de ideas (kaizen)', uso:'el personal propone; idea y proyecto viven separados; la evaluación siempre responde al autor.', m:'M44'},
     {f:'Frontera persona ↔ twin', uso:'la autoría se reconoce — jamás se usa para medir a la persona.', m:'M40'} ]},
@@ -113,13 +138,29 @@ const RESPALDO={
   'z0-estrategia':{ cita:'OKR · BSC', t:'Estrategia — la banda de objetivos', items:[
     {f:'Balanced Scorecard — perspectivas', uso:'las cuatro perspectivas (financiera · cliente · procesos · aprendizaje) ordenan la banda; las flechas dentro de la banda son causa → efecto.', m:'M30'},
     {f:'OKR — objetivos con meta del trimestre', uso:'cada objetivo carga su meta del ciclo; el semáforo es la banda de esa meta.', m:'M21'},
-    {f:'Hoshin Kanri — despliegue de la estrategia', uso:'lo que aquí se ve baja del directorio y sigue bajando a áreas y equipos — una sola cascada.', m:'M26'} ]},
-  'z0-cadena':{ cita:'VSM · APQC', t:'Cadena de valor', items:[
+    {f:'Hoshin Kanri — despliegue de la estrategia', uso:'la banda muestra los dos peldaños de la misma cascada: las metas del directorio y las bajadas a cada gerencia. Una meta del directorio sin bajada se delata como tal — es la primera pregunta de la revisión.', m:'M26'} ]},
+  'z0-direccion':{ cita:'revisión por la dirección', t:'Dirección — cómo se gobierna la empresa', items:[
+    {f:'ISO 9001 — el mapa de procesos y la revisión por la dirección', uso:'la norma pide identificar TODOS los procesos y sus interacciones, y son de tres tipos: dirección, del negocio y de apoyo. Los de dirección son procesos como cualquier otro — tienen dueño, frecuencia, entradas y salidas. La sesión del directorio es uno de ellos (§9.3): entra el desempeño del periodo, la caja, los riesgos y lo acordado antes; salen decisiones con responsable y plazo.', m:'M16'},
+    {f:'Gobierno de la sesión — acuerdos, acta y facultades', uso:'lo que la sesión produce es dato del twin, no un archivo suelto: cada acuerdo con su responsable y su plazo, el acta versionada, y hasta qué monto decide cada quien.', m:'M58'},
+    {f:'Hoshin Kanri — despliegue de la estrategia', uso:'planear no es fijar números: es bajarlos con acuerdo de ida y vuelta. Una meta sin ese acuerdo queda asignada, no acordada — y eso predice el incumplimiento mejor que cualquier semáforo.', m:'M26'},
+    {f:'Presupuesto y control presupuestario', uso:'la ambición se vuelve plata asignada, y lo comprometido se sigue contra lo aprobado. Toda apuesta pasa por acá antes de existir.', m:'M57'},
+    {f:'Apetito de riesgo por categoría', uso:'el directorio fija cuánto riesgo acepta; la gerencia ejecuta la mitigación. Un riesgo sin mitigación comprometida es una preocupación, no un riesgo gestionado.', m:'M52'} ],
+    gap:'El tipo de proceso (dirección · negocio · apoyo) es DATO declarado, no se deduce del código del catálogo estándar: la categoría 1.0 de ese catálogo ("desarrollar visión y estrategia") queda del lado operativo allá y es dirección pura acá. Los dos conviven — uno para leer el mapa, el otro para comparar contra pares (decisión D-37 del contrato del objeto).' },
+  'z0-capacidades':{ cita:'mapa de capacidades', t:'Capacidades — qué sabemos hacer', items:[
+    {f:'Mapa de capacidades del negocio', uso:'QUÉ sabe hacer la empresa, no CÓMO lo hace. Por eso es estable frente al organigrama: una reorganización cambia quién responde, no lo que la empresa sabe hacer — y por eso se agrupa por familia y no por gerencia. La gerencia entra como lente, no como dueña.', m:'M31'},
+    {f:'COBIT — la escalera de capacidad', uso:'cada capacidad se gradúa de 0 a 5 y viaja SIEMPRE con su vara al lado: un 3 acá no es un 3 de la escalera del sistema de gestión que el directorio se autoevalúa. Sin nivel deseado hay nivel, jamás brecha — y eso se dice en vez de pintar una distancia que nadie fijó.', m:'M15'},
+    {f:'Clasificación de procesos (APQC)', uso:'una capacidad no flota: se sostiene en procesos concretos. La lista de "se realiza en" es lo que permite pasar de "nos falta músculo" a "hay que trabajar este proceso".', m:'M12'},
+    {f:'Pares del sector (benchmark)', uso:'¿mi nivel es malo… comparado con quién? La vara externa vive en la ficha, sale del rubro y hereda su confianza — jamás un rango tecleado.', m:'M48'},
+    {f:'Procedencia del dato', uso:'el nivel se apoya en nodos reales del twin (brechas, indicadores, proyectos). Sin evidencia anclada es una opinión asistida, y la confianza baja lo declara.', m:'M23'} ],
+    gap:'La cobertura todavía no es total: hay procesos que ninguna capacidad realiza y por eso quedan fuera de la lectura por madurez. El hueco se muestra al final de la banda con nombre y apellido — cerrarlo es trabajo del levantamiento, no una decisión de tablero.' },
+  'z0-cadena':{ cita:'VSM · ISO 9001', t:'Cadena de valor', items:[
     {f:'Mapa de flujo de valor (VSM)', uso:'la cadena en el orden del negocio; cada proceso trae sus pasos y sus tiempos de toque y espera.', m:'M09'},
-    {f:'Clasificación de procesos (APQC)', uso:'qué es proceso del negocio y qué es apoyo no es gusto: se clasifica contra un catálogo estándar.', m:'M12'},
+    {f:'ISO 9001 — el mapa de procesos', uso:'"del negocio" quiere decir que produce y entrega lo que el cliente compra. Es un tipo declarado, no un gusto ni un resto: por eso un proceso puede empujar una meta y aun así ser de apoyo.', m:'M16'},
+    {f:'Clasificación de procesos (APQC)', uso:'además del tipo, cada proceso lleva su código del catálogo universal — que es la llave con que se compara contra pares del sector.', m:'M12'},
     {f:'Descubrimiento por eventos del negocio', uso:'el AS-IS se levantó recorriendo los hechos con la gente, no copiando el organigrama.', m:'M07'} ]},
-  'z0-apoyo':{ cita:'APQC', t:'Procesos de apoyo', items:[
-    {f:'Clasificación de procesos (APQC)', uso:'apoyo = sostiene la cadena sin tocar al cliente; el ancho muestra cuántas áreas cruza.', m:'M12'} ]},
+  'z0-apoyo':{ cita:'ISO 9001', t:'Procesos de apoyo', items:[
+    {f:'ISO 9001 — el mapa de procesos', uso:'apoyo = sostiene a los otros dos sin tocar al cliente. Hasta v20 esta banda era el RESTO (todo lo que no entraba en la cadena caía acá por descarte); ahora es una clasificación declarada, y lo que no la tiene se nota.', m:'M16'},
+    {f:'Clasificación de procesos (APQC)', uso:'el ancho muestra cuántas áreas cruza; el código del catálogo permite compararlo con el mismo proceso en otra empresa.', m:'M12'} ]},
   'z0-gente':{ cita:'RACI · arnés', t:'Gente & arneses', items:[
     {f:'Matriz de responsabilidades (RACI)', uso:'dueño del proceso y carril que ejecuta son roles declarados — los pares rol×proceso se derivan, no se inventan.', m:'M25'},
     {f:'Frontera persona ↔ twin', uso:'la persona ocupa el puesto; se mide el puesto y el rol, jamás la persona.', m:'M40'},
@@ -179,7 +220,7 @@ const RESPALDO={
     {f:'Procedencia del dato', uso:'el historial es la traza que hace auditable cada cambio del twin.', m:'M23'} ]},
   /* — v14.5: respaldo DENTRO de las fichas de entidad (pie automático en openDrawer, por tipo) */
   'ent-empresa':{ cita:'ontología del twin', t:'Empresa — el twin completo', items:[
-    {f:'Ontología del twin — semántica + acción', uso:'las 20 entidades y sus relaciones son una gramática declarada; cada cosa que ves es una instancia con su ficha.', m:'M32'},
+    {f:'Ontología del twin — semántica + acción', uso:'las 21 entidades y sus relaciones son una gramática declarada; cada cosa que ves es una instancia con su ficha.', m:'M32'},
     {f:'ISO 9001 — la organización y su contexto', uso:'la empresa como sistema: procesos, roles, objetivos y su mejora, bajo un mismo vocabulario.', m:'M16'} ]},
   'ent-objetivo':{ cita:'OKR · BSC', t:'Objetivo', items:[
     {f:'OKR — objetivos con meta del trimestre', uso:'el objetivo carga su meta del ciclo (de → a); el semáforo se lee contra esa banda.', m:'M21'},
@@ -188,9 +229,9 @@ const RESPALDO={
   'ent-kpi':{ cita:'ISO 9001 · procedencia', t:'Indicador', items:[
     {f:'ISO 9001 — seguimiento y medición', uso:'indicador con banda definida y responsable; fuera de banda exige contramedida comprometida.', m:'M16'},
     {f:'Procedencia del dato', uso:'cada medición lleva fuente, confianza y frescura — sin dato NO es rojo: es gris.', m:'M23'} ]},
-  'ent-proceso':{ cita:'APQC · ISO 9001', t:'Proceso', items:[
-    {f:'Clasificación de procesos (APQC)', uso:'clasificado contra el catálogo estándar — del negocio o de apoyo, con su código.', m:'M12'},
-    {f:'ISO 9001 — caracterización', uso:'propósito, cuándo inicia y termina, criterios de control: la ficha 4.4 del proceso.', m:'M16'},
+  'ent-proceso':{ cita:'ISO 9001 · APQC', t:'Proceso', items:[
+    {f:'ISO 9001 — el mapa de procesos y la caracterización', uso:'su TIPO (dirección · del negocio · de apoyo) dice en qué banda vive y qué pregunta contesta; el resto de la ficha —propósito, cuándo inicia y termina, criterios de control— es la caracterización 4.4.', m:'M16'},
+    {f:'Clasificación de procesos (APQC)', uso:'su código del catálogo universal, que es la llave para compararlo con el mismo proceso en otra empresa. Ortogonal al tipo: uno para leer, el otro para comparar.', m:'M12'},
     {f:'Mapa de flujo de valor (VSM)', uso:'sus pasos y sus tiempos de toque y espera salen del mapa, no de memoria.', m:'M09'} ]},
   'ent-actividad':{ cita:'APQC · verbos', t:'Actividad', items:[
     {f:'Clasificación APQC — nivel de actividad', uso:'paso clave dentro del proceso; sus tareas son el último peldaño del catálogo.', m:'M12'},
@@ -216,16 +257,21 @@ const RESPALDO={
     {f:'FinOps — valor cuantificado', uso:'el costo se declara en dinero, con supuestos visibles.', m:'M22'} ]},
   'ent-capability':{ cita:'mapa de capacidades', t:'Capacidad', items:[
     {f:'Mapa de capacidades del negocio', uso:'QUÉ sabe hacer la empresa (estable) — distinto del proceso (CÓMO); el semáforo es madurez contra lo que los objetivos exigen.', m:'M31'},
+    {f:'COBIT — la escalera de capacidad', uso:'el nivel viaja con tres cosas o no se pinta: la vara, dónde estás y a dónde querés llegar. Sin el deseado hay nivel, no brecha.', m:'M15'},
+    {f:'Frontera del dato — qué se deriva y qué se guarda', uso:'las metas que se apoyan en esta capacidad NO se teclean: se derivan de los procesos que la realizan. Si la lista sale vacía, es un hallazgo (nadie le pide nada a algo que la empresa sabe hacer), no un campo sin llenar.', m:'M23'},
     {f:'Mapa de evolución (Wardley)', uso:'cómo evoluciona cada capacidad (a medida → producto → commodity) informa el plan a 3 años.', m:'M27'} ]},
 };
 /* v14.5: tipo de ficha (primer término del eyebrow, sin acentos) → entrada de respaldo */
 const RESP_TIPO={ empresa:'ent-empresa', objetivo:'ent-objetivo', kpi:'ent-kpi', proceso:'ent-proceso',
   actividad:'ent-actividad', area:'ent-area', puesto:'ent-puesto', rol:'ent-rol', persona:'ent-persona',
   sistema:'z0-sistemas', brecha:'ent-brecha', capability:'ent-capability', proyecto:'mej-proyectos',
+  /* v20 · la ficha se llama "Capacidad" en superficie (GLOSARIO) y el tipo sale del encabezado */
+  capacidad:'ent-capability', cobertura:'z0-capacidades',
   idea:'ideas', apuesta:'dir-apuestas', arnes:'sala-trabajo',
   /* v18 · gobierno del directorio */
   cifra:'dir-resultado', alcance:'dir-resultado', caja:'dir-caja', presupuesto:'dir-presupuesto',
-  riesgo:'dir-riesgos', acuerdo:'dir-acuerdos', inversion:'dir-inversiones' };
+  riesgo:'dir-riesgos', acuerdo:'dir-acuerdos', inversion:'dir-inversiones',
+  documento:'sala-archivo' };   /* v21 · D-38 */
 /* v14.4: aplica en TODO el twin; onclick inline = funciona también en el lienzo ($nodes) sin wireLinks */
 function respBadge(id){ const r=RESPALDO[id]; if(!r||!state.capas.has('respaldo')) return '';
   return `<button class="resp" data-resp="${id}" onclick="event.stopPropagation();openRespaldo('${id}')" title="Respaldo del método: ${r.items.map(i=>i.f).join(' · ')} — clic = la ficha">§ ${r.cita}</button>`; }
@@ -235,4 +281,4 @@ function openRespaldo(id){ const r=RESPALDO[id]; if(!r) return;
     + r.items.map(i=>`<div class="dgroup"><div class="gt">${i.f}<span class="mono" style="float:right;font-weight:400;font-size:9px;color:var(--tx-faint)">${i.m}</span></div>
         <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">${i.uso}</div></div>`).join('')
     + (r.gap?`<div class="dgroup"><div class="gt" style="color:var(--warn)">Donde el respaldo aún es horizonte</div><div style="font-size:12px;color:var(--tx-mut);line-height:1.5">${r.gap}</div></div>`:'')
-    + `<div style="font-size:11px;color:var(--tx-faint);border-top:1px solid var(--border);padding-top:8px;margin-top:4px">El método es dato versionado (59 cartas) — la misma fuente que respalda cada campo del twin y cada paso del engagement. <span class="plnk" onclick="state.mod='metodo';state.insp='home';render()">Ver la trazabilidad completa — módulo Método ›</span></div>`); }
+    + `<div style="font-size:11px;color:var(--tx-faint);border-top:1px solid var(--border);padding-top:8px;margin-top:4px">El método es dato versionado (61 cartas) — la misma fuente que respalda cada campo del twin y cada paso del engagement. <span class="plnk" onclick="state.mod='metodo';state.insp='home';render()">Ver la trazabilidad completa — módulo Método ›</span></div>`); }

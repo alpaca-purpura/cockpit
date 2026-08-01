@@ -3,10 +3,11 @@
    ============================================================ */
 document.getElementById('back').onclick=()=>{
   if(state.escala==='z3'){ state.escala='z2'; state.insp='home'; render(); return; }   // la escalera se sube de a un peldaño
+  if(state.mod==='territorio'&&state.nivel===3&&state.area3){ state.area3=null; state.insp='home'; render(); return; }   // v21: sala → selector
   state.nivel=2; state.escala='z0'; state.foco=null; state.insp='home'; render(); };
 document.querySelectorAll('#modulos .esc').forEach(b=>b.onclick=()=>{ state.mod=b.dataset.mod;
   /* v17: Territorio = HOME del mapa — desde cualquier profundidad (lienzo/instrucción/foco) vuelve al mapa */
-  if(state.mod==='territorio'){ state.nivel=2; state.escala='z0'; state.foco=null; state.act=null; }
+  if(state.mod==='territorio'){ state.nivel=2; state.escala='z0'; state.foco=null; state.act=null; state.area3=null; }
   else { state.escala='z0'; state.foco=null; }
   state.insp='home'; render(); });
 document.getElementById('itAsis').onclick=()=>{ state.corrida=false; idmenu.classList.remove('open'); state.insp='home'; render(); };
@@ -26,7 +27,7 @@ document.querySelectorAll('.capa').forEach(b=>b.onclick=()=>{ const c=b.dataset.
   if(state.capas.has(c)){ state.capas.delete(c); b.classList.remove('on'); } else { state.capas.add(c); b.classList.add('on'); } render(); });
 document.querySelectorAll('.sub-t').forEach(b=>b.onclick=()=>{ document.querySelectorAll('.sub-t').forEach(x=>x.classList.remove('on')); b.classList.add('on'); state.sub=b.dataset.sub; render(); });
 document.querySelectorAll('.lodctl button').forEach(b=>b.onclick=()=>{ document.querySelectorAll('.lodctl button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
-  state.lod=+b.dataset.lod; render(); });
+  presetNiveles(+b.dataset.lod); render(); });   // v21: el botón es un PRESET — abre todo hasta N; la expansión fina vive por rama
 
 /* identidad As-Is / corridas (teaser del eje simular) */
 const idmenu=document.getElementById('idmenu');

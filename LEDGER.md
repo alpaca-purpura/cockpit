@@ -1214,6 +1214,134 @@ apuesta, que esta ficha completa con presupuesto y valor cobrado) · `dossier/07
 
 <!-- Próximas: CK-32, … -->
 
+### CK-32 · El directorio decide, la gerencia resuelve — el hilo medido al contrato, la madurez con vara y la bajada como dato — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-29):* primero — "revisa … el estado actual de la estrategia y compáralo con
+nuestro `/metodo` … dime qué cosas estamos omitiendo o estamos haciendo mal … revisa que los objetivos
+de directorio que estén en la estrategia sean los mismos que directorio, que haya coherencia … **mete
+foco a KPIs y niveles de madurez**". Después, al ordenar la corrección — "realiza todos los cambios,
+pero revisando el estado actual para que hagan total sentido con todo lo existente, **a menos que haya
+algo que consideres que debe desaparecer e ir a lo táctico** … aquí **los usuarios son el gerente
+general y los gerentes**, y debemos a través de nuestras acciones diarias **resolver todo lo que se
+muestra en directorio**".
+
+*Lo que la auditoría encontró (40 hallazgos K1-K40 — `dossier/07 § K`).* CK-31 dejó el nivel 1
+completo como **agenda** y **inejecutable como sistema de gestión**: siete metas de empresa que ningún
+rol tenía asignadas, alertas sin destinatario, cifras que nadie movía, y `objetivo.parent_ref` — el
+campo de la cascada, en el esquema desde v2 — con **cero usos**. La segunda frase del operador nombró
+lo que faltaba y se vuelve la doctrina del nivel:
+
+> **El directorio decide; la gerencia resuelve. Nada del nivel 1 se queda sin bajada.**
+
+*Las cinco decisiones de fondo.*
+
+1. **La bajada es dato, no lámina (D-35).** La meta del directorio se abre como meta de UNA gerencia,
+   con el rol que responde, y el catchball de Hoshin se **cierra contra una sesión**. Los dos estados
+   que gobiernan de verdad — *sin bajar* y *asignada sin acordar* — se derivan del grafo y llegan solos
+   a la bandeja. Meta asignada ≠ acordada: esa diferencia predice el incumplimiento mejor que cualquier
+   semáforo, y era exactamente lo que un contador escrito a mano no podía decir.
+2. **El hilo ancla al contrato, no al objetivo (A2, abierto desde julio · D-34).** `kpi.kr` reemplaza a
+   `kpi.obj`, `krs[]` es lista, y el valor del contrato **se lee de la serie** en vez de teclearse al
+   lado. El caso testigo: «caja sana» leía **verde** —su único contrato, la cobranza consolidada, había
+   llegado a la meta— con la caja cruzando el piso, un riesgo alto y 18 % de valor cobrado. Con dos
+   contratos y el **gris pesando por encima del verde**, el objetivo dice lo que pasa.
+3. **Una escalera nunca viaja sin su vara (D-32/D-33).** Convivían tres sin arbitraje, y una leyenda
+   prometía niveles 0-5 sobre un campo de tres colores. COBIT gradúa **una capacidad**; ISO 9004, el
+   **sistema de gestión** entero: conviven y jamás se promedian. Sin `nivel_deseado` hay nivel y **no
+   hay brecha** — la capa lo declara en vez de pintar una distancia que nadie fijó. La madurez del área
+   se **deriva** de sus capabilities; su autoevaluación gana ficha, evidencia del twin y sesión.
+4. **La vara externa sale del eje vertical (D-31).** El tablero afirmaba «pares 45-60 días» de cobranza
+   contra una unidad de nicho que dice, textual, que **ese benchmark no existe validado** y que el
+   rango se levanta por cliente. El producto acusaba a otros de indicador sin ancla y afirmaba sin
+   fuente en su propia portada. Ahora el indicador apunta a su unidad y **hereda su confianza**: sin
+   rango validado se muestra la condición — que es información, no un hueco.
+5. **Lo que baja a lo táctico** (respuesta al permiso explícito del operador): el portafolio completo,
+   el detalle de alertas, el registro de avance de inversiones y el seguimiento semanal de acuerdos. El
+   nivel 1 sigue **por excepción** y cada fila declara por qué sube; el panel declara por qué el resto
+   se queda abajo. Duplicar la lista en dos niveles era la forma más rápida de que empezaran a
+   discrepar. Y el nivel 3 **abre** con lo que el directorio dejó.
+
+*Ratificación pendiente de CK-31, ejecutada acá:* **M52 promovida `horizonte → ancla`** (`modo:
+situacional → columna`). Una carta que contradice al producto vigente no es un horizonte: es drift. No
+cambia lo demás — sigue sin aparato ERM y sin certificación (VISION §ISO intacta).
+
+*Precio pagado, explícito.* El pulso pasa de «1 de 7 en banda» a 5 metas (1 verde · 2 ámbar · 1 gris ·
+1 roja): el tablero se lee peor porque ahora dice la verdad. Un objetivo con un contrato sin serie ya
+no se disfraza de verde.
+
+*Materializado el mismo día:* esquema **D-31…D-36** (20 nodos · 47 relaciones · **40 acciones** · 16
+invariantes nuevos) · método con **M15/M21/M26/M47/M48/M52** enriquecidas (catálogo 59) y el eje de
+nichos 17→**19 unidades** · mockup **v19** con la suite en **40/40** y 6 checks nuevos que impiden que
+cada corrección vuelva · contrato de build `dossier/08 § 0.bis` con 8 escenarios de aceptación nuevos.
+
+*Sigue abierto y con dueño* (12 filas del tablero K): indicadores adelantados y de riesgo (K18) ·
+contra-métricas (K19) · la vara por cifra, hoy en el código (K21) · el sello de la apuesta (K37) ·
+auditoría interna y proveedores como superficie (K36) · y **K33, el más caro**: las cartas M55-M59 no
+tienen **ni un paso de proceso** — nadie sabe todavía cómo LEVANTAR este nivel en un cliente.
+
+### CK-33 · Cada metodología dice en qué piso se usa — el eje nivel, y el dialecto brasileño completo — `decidida` · `vig:vigente`
+
+*Cruda (operador, 2026-07-29):* "si metelo en `/metodo-aprende` pero **de forma inteligente para saber
+dónde usarlo** separando lo que es **directorio, estratégico, táctico y operativo**".
+
+*De dónde salió.* Una consulta de mercado — ¿se usa el Balanced Scorecard en LATAM, y en Brasil? — que
+el propio catálogo ya tenía respondida para la **cascada** (M41 GPD = el modo brasileño de Hoshin,
+research `00-research-latam-br`). El barrido mostró que faltaban tres cosas, y la tercera era la de fondo.
+
+*Las dos que faltaban del dialecto brasileño.* No eran teoría nueva: eran **nodos de acceso** que el
+consultor necesita para hablar el idioma del cliente en vez de traducirlo a un marco que el cliente no usa.
+
+1. **M60 · MEG/FNQ** — la vara brasileña de madurez (linaje Baldrige, premio PNQ). Gemela exacta de lo
+   que M41 es para M26: misma pregunta que ISO 9004/EFQM, otro vocabulario y otro aparato. Un directorio
+   con historia FNQ **ya se autoevaluó** — sin este nodo esa evidencia se tira y se corre un ciclo nuevo
+   encima. Arbitraje cableado en tres aristas (9004 sigue siendo el default; una escalera por dimensión,
+   nunca dos — D-32); entra `horizonte`, se LEE el ciclo del cliente, no se corre uno.
+2. **M61 · OBZ (Orçamento Base Zero)** — la cultura de costos 3G/AmBev. M57 guardaba el reparto **ya
+   armado**; el hueco era **cómo se arma**. Y su aporte real no es la planilla: es el **dueño del
+   paquete** — el gasto se vuelve algo que alguien defiende con nombre propio, que es exactamente la
+   rendija por la que un presupuesto heredado nunca se discute. División cardinal: un solo presupuesto
+   en el twin, OBZ es método de construcción, no una segunda bolsa.
+3. **BSC público brasileño — corrección de alcance, sin card.** «Brasil = GPD» vale para el sector
+   **privado**; en el Estado brasileño el BSC es el estándar de facto (mapas estratégicos exigidos en
+   judicial, control y ministerios). No es conocimiento nuevo: es un veredicto nuestro con el alcance
+   mal escrito. Corregido en M30, en la arista M30⇄M41 y en el research.
+
+*La decisión de fondo — el eje NIVEL (contrato v3→**v4**).* El operador no pidió tres cards: pidió
+**saber dónde se usa cada cosa**. El catálogo sabía QUÉ toca una metodología (objeto O1-O7/T1-T3) y
+CUÁNDO del engagement (`donde.modulos`), pero **no en qué piso de la organización se usa** — y lo
+sabía a medias, en prosa: cinco cartas del clúster de gobierno decían "encuadre del nivel directorio"
+dentro de un campo de texto que ninguna consulta puede filtrar.
+
+> **Cada M-card declara su piso. `nivel_primario` = donde se DECIDE o SE FIRMA lo que produce ·
+> `niveles_secundarios` = los pisos que la consumen.**
+
+- **Rótulos: los del `GLOSARIO.md`** — *Directorio · Estratégico · Táctico · Operativo*. No se inventó
+  vocabulario: la escalera ya estaba escrita ahí (y "capa D/E/T/O" ya estaba marcada como jerga a evitar).
+- **No es `nivel_acceso`** (`objeto.schema.yaml`, N13). Misma escalera, dos preguntas distintas: aquél
+  gobierna **quién VE** el dato; éste, **dónde se usa** el método. El primer peldaño se llama
+  `directorio` y no `gobernanza` porque manda el glosario, no el motor de acceso.
+- **El eje obliga a nombrar el ancla.** No admite "todos": una carta transversal (M23 provenance, M32
+  metamodelo, M40 frontera de persona) declara su ancla y lista los otros tres. Sin esa obligación el
+  campo se habría llenado de "aplica a todo", que es no decir nada.
+- **Ortogonal, no una cuarta taxonomía.** Objeto = QUÉ toca · módulo = CUÁNDO · dimensión twin = QUÉ
+  ancla · **nivel = DÓNDE**. Cuatro preguntas, cuatro ejes, cero solapamiento.
+- **Sirve para algo el mismo día:** `GRAFO.md §6` (generado, ancla + vecindario por piso) y el **primer
+  filtro de ruteo** del skill `/metodo` — corta el catálogo a ~¼ y ataca el error que el eje existe para
+  matar: **contestar una pregunta de directorio con una herramienta de piso, o al revés.**
+
+*Materializado.* Contrato **v4** (enum `nivel` + `nivel_primario` requerido + invariante "el secundario
+no repite el primario") · **las 61 cartas** con su piso asignado bajo una regla escrita y defendible, no
+por gusto (13 Directorio · 16 Estratégico · 18 Táctico · 14 Operativo) · generador con validación +
+`GRAFO §6` + el nivel en la ficha de `METODOLOGIA.md §4` · M60/M61 con sus 10 aristas recíprocas ·
+`/metodo` con el nivel como primer salto · regla `metodologia-as-code` y README del método al día.
+Gate verde: **61 M-cards**, 0 error, cero asimetría nueva en el grafo.
+
+*Lo que este eje deja ver (y queda abierto):* el piso **Directorio** tiene 13 cartas ancla y **cero
+pasos de proceso** que lo levanten — es K33 de CK-32 visto desde el otro eje, ahora con número. Y el
+piso **Operativo** concentra 14 anclas de triage/arneses contra 3 de construcción: la asimetría es real
+y esperable en el MVP, pero conviene mirarla antes de poblar `proceso/`.
+
+
 ## Log
 
 | Fecha | Decisión | Fichas |
@@ -1240,3 +1368,5 @@ apuesta, que esta ficha completa con presupuesto y valor cobrado) · `dossier/07
 | 2026-07-25 | Puesto ≠ rol · el arnés se compila por rol×proceso · las personas SUPERVISAN a los agentes: (1) tesis de inversión (el agente ejecuta, la persona supervisa) + contrapeso obligatorio — la supervisión se especifica y se mide, o es "moral crumple zone" (Elish/Green); (2) se parte el Misnomer M32 `rol`(=cargo) → `puesto` (posición, N personas, N roles) + `rol` (papel en proceso = carril BPMN/RACI) — el modelo del operador ya era la doctrina de N15/N17/harness-studio, el schema era el desfasado; (3) tres unidades del arnés — se COMPILA por rol×proceso, se ENSAMBLA por puesto, se CORRE por persona → la frontera CK-24 cae entre entregar y correr, intacta; (4) `arnes` = entidad REGISTRO en el twin (`deriva_de` = el campo que ningún registro del mercado tiene), contenido en N15 contra el contrato `arnes.l0.json` que ya existe; (5) granularidad = actividad hoy, tarea con D-21; (6) guardrail sin mecanismo declarado no es guardrail; (7) autonomía CSA L0-L5 derivada del riesgo del puesto, default L1-L2; (8) EU AI Act Annex III 4(b) resuelto por el camino agregado (CK-24 ya nos había puesto ahí). SOTA: negativo limpio en ~20 productos + Challenge C1 del *Agentic BPM Manifesto* (Information Systems, 2026). D-19/D-20/D-21 + M46; SOTA archivado en `docs/research/organization-as-code/09` (DTO desde el Market Guide primario + la cita de The Open Group que defiende el sustrato as-code) y `10` (arnés-as-code: anatomía, gobernanza, identidad, autonomía CSA). Barrido de coherencia: "9 entidades" stale corregido a 12 en 7 archivos vivos (CLAUDE.md, 2 reglas, seam, arquitectura.yaml, M32, contrato del método). | CK-30 |
 | 2026-07-24 | El twin es un cerebro que compila trabajo: tesis unificadora (una doctrina, tres escalas — el arnés = vista generada del twin por puesto, compilada por Arnesia, entregada por Colab Studio); twin = estructura (12 entidades) × conocimiento (know-how/data histórica, gateado F3, conectado — los arneses saben dónde buscar) × pulso (N16); fin-estado: el colaborador orquesta agentes, no ejecuta; Cockpit = cabina del cerebro. Aclaración repos: cada app en su repo (consultio existe; colab-studio por crear); en cockpit solo historias. Fix stale 9→12 entidades en VISION. | CK-29 |
 | 2026-07-29 | El nivel Directorio es de primera clase y Cockpit LEE el libro contable, jamás lo reexpresa: (1) auditoría sin defender lo hecho — el nivel 1 gobernaba la ejecución de la estrategia (segunda mitad de la agenda) y no tenía resultado, caja, presupuesto ni acuerdos; la bandeja configuraba el propio modelo y la apuesta prometía plata sin cobrarla nunca (el "sin ancla de valor" cometido arriba); (2) la página pasa a ser la SESIÓN en 4 movimientos (cómo nos fue · a dónde vamos · qué puede impedirlo · qué decidimos); (3) frontera firmada: se leen cifras con estado de cierre y se BAJAN al proceso que las produce — no se arman estados financieros, no se corre el cierre, no se emite opinión; el código de la norma vive sólo en la ficha, como procedencia (gate en la suite); (4) el puente libro↔operación con su caso testigo: avance declarado > real ES el input de la valorización de lo construido — indetectable para un sistema contable; (5) la generalidad se declara (equivalencias por industria; `inversion.tipo` es el único campo del rubro); (6) el UMBRAL de facultades es lo que hace que la bandeja no se vacíe. Materializado el mismo día: M55-M59 + M52/M22/M16 enriquecidas (catálogo 59) · D-24…D-30 (schema 20 nodos) · mockup v18 (34/34) · contrato de build `dossier/08`. Pendiente de firma: promoción de M52 horizonte→ancla. | CK-31 |
+| 2026-07-29 | El directorio decide, la gerencia resuelve — la corrección de fondo que CK-31 dejó pendiente: (1) auditoría de la estrategia contra el método, 40 hallazgos K1-K40 con foco en indicadores y madurez; (2) **la bajada es dato** (D-35): la meta del directorio se abre como meta de una gerencia con su rol, y el catchball se cierra contra una sesión — «sin bajar» y «asignada sin acordar» se derivan del grafo y llegan solas a la bandeja; (3) **el hilo ancla al contrato, no al objetivo** (cierra A2 · D-34): el valor del KR se LEE de la serie, y «caja sana» deja de leerse verde con la caja bajo el piso — el gris pesa por encima del verde; (4) **una escalera nunca viaja sin su vara** (D-32/D-33): muere `area.madurez` (se deriva), sin nivel deseado no hay brecha, y la autoevaluación del sistema de gestión gana ficha, evidencia y sesión; (5) **la vara externa sale del eje vertical** (D-31): el tablero afirmaba un rango de cobranza que el propio método prohíbe afirmar; (6) **lo que baja a lo táctico** (permiso explícito del operador): portafolio completo, detalle de alertas, avance de inversiones y seguimiento semanal de acuerdos — el nivel 1 sigue por excepción y cada fila dice por qué sube; (7) **M52 promovida horizonte→ancla** (cierra la firma pendiente de CK-31). Materializado: D-31…D-36 (40 acciones · 16 invariantes nuevos) · 6 cartas enriquecidas · nichos 17→19 · mockup v19 con suite 40/40 (6 checks nuevos). Abierto con dueño: 12 filas del tablero K, la más cara K33 — M55-M59 sin un solo paso de proceso. | CK-32 |
+| 2026-07-29 | Cada metodología dice en qué piso se usa — el eje **nivel** (contrato v3→v4) + el dialecto brasileño completo: (1) el operador pide "saber dónde usarlo, separando directorio/estratégico/táctico/operativo" — el catálogo sabía QUÉ toca una carta (objeto) y CUÁNDO del engagement (módulo), no en qué piso se usa, y lo sabía a medias en prosa (5 cartas de gobierno decían "encuadre del nivel directorio" dentro de un campo de texto infiltrable); (2) `nivel_primario` (donde se DECIDE/FIRMA lo que produce) + `niveles_secundarios` (los pisos que la consumen), rótulos del GLOSARIO, **obligando a nombrar el ancla** — el eje no admite "aplica a todo"; (3) NO es `nivel_acceso` (N13): misma escalera, aquél gobierna quién VE el dato, éste dónde se usa el método; (4) ortogonal a objeto/módulo/dimensión-twin — cuatro preguntas, cuatro ejes; (5) **M60 MEG/FNQ** (la vara brasileña de madurez, linaje Baldrige/PNQ — el par de M41 para la madurez; se LEE el ciclo del cliente, no se corre uno, y 9004 sigue siendo el default: una escalera por dimensión, D-32); (6) **M61 OBZ** (base cero — M57 guardaba el reparto ya armado, faltaba el CÓMO; su aporte real es el **dueño del paquete**, no la planilla; un solo presupuesto en el twin); (7) corrección de alcance sin card: «Brasil = GPD» vale para el **privado** — en el Estado brasileño manda el BSC (M30 ⇄ M41 + research). Materializado: las **61 cartas** con piso asignado bajo regla escrita (13 D · 16 E · 18 T · 14 O) · `GRAFO §6` generado + nivel como **primer filtro** de ruteo en `/metodo` · gate verde 0 error, cero asimetría nueva. Deja ver: Directorio tiene 13 anclas y **cero pasos de proceso** (K33 de CK-32 por el otro eje). | CK-33 |

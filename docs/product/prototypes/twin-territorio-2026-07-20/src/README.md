@@ -66,7 +66,7 @@ corre `node --check` sobre el resultado, no sobre cada archivo).
 |---|---|
 | `60-render.js` | `render()` = el dispatch (qué vista corresponde al estado) + `pageView` |
 | `61-organigrama.js` | z0 · piel Organigrama |
-| `62-valor.js` | z0/z1 · piel Mapa de Valor — 5 bandas + el hilo + foco de área |
+| `62-valor.js` | z0/z1 · piel Mapa de Valor — **7 bandas** (estrategia · dirección · capacidades · cadena · apoyo · gente · sistemas) + el hilo (que pasa por la capacidad) + foco de área |
 | `63-lienzo.js` | z2 · el lienzo del proceso |
 | `64-instruccion.js` | z3 · la instrucción de trabajo |
 | `65-directorio.js` | nivel 1 · sala del directorio — la sesión en **4 movimientos** (resultado y caja · rumbo/apuestas/varas · riesgos e inversiones · decisiones, acuerdos y acta) |
@@ -91,8 +91,12 @@ corre `node --check` sobre el resultado, no sobre cada archivo).
 2. **Parte nueva → alta en `MANIFEST`** de `build.py`, en la posición correcta. Un archivo en `src/`
    que `MANIFEST` no nombra hace fallar el build (nadie lo concatena = isla).
 3. **El orden es la cascada.** Reordenar CSS sin revisar qué pisa a qué rompe el pintado en silencio.
-4. **La suite manda:** `./verify.sh` reconstruye y corre 34 pruebas con hit-testing real. Verde antes
+4. **La suite manda:** `./verify.sh` reconstruye y corre 44 pruebas con hit-testing real. Verde antes
    y después de cualquier reorganización.
+5. **La suite no ve el layout.** Verde ≠ bien: los solapes, los desbordes y los textos tapados sólo
+   aparecen mirando. Tras tocar geometría de bandas, capturar y **ver** (v20 encontró así tres cosas
+   que las 44 pruebas daban por buenas). Un contador o un `hint` largo empuja controles fuera de la
+   pantalla y eso SÍ rompe la suite, pero como "intercepta", no como "se ve feo".
 5. **Cero color a mano** en una parte nueva — sale de `10-tokens.css`.
 
 ## Deuda conocida

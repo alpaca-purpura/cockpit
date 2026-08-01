@@ -46,7 +46,47 @@
 | **H12** | Personas a nivel directorio sólo como una vacante | 🟡 | abierto — sucesión, rotación, planilla sobre ingresos, contingencia laboral (respetando CK-24) | operador |
 | **H13** | `fit()` encajaba una página en ancho **y** alto → cada panel nuevo encogía la letra de todos | 🟠 | **✅ v18** — `fitPagina` (encaje al ancho, anclado arriba) + la rueda recorre; aplica también a Mejora/Método/Cambios | — |
 | **H14** | La deuda de método y esquema que abrió H1-H13 | 🔴 fondo | **✅ 2026-07-29** — M55-M59 + M52/M22/M16 enriquecidas (catálogo 59) · D-24…D-30 (schema 20 nodos) · contrato de build `08`. Ambos gates verdes | — |
-| **H15** | M52 declarada `horizonte` mientras el nivel 1 la materializa | 🟠 | abierto — promoción `horizonte → ancla` = decisión de dogma (ficha CK) | **operador** |
+| **H15** | M52 declarada `horizonte` mientras el nivel 1 la materializa | 🟠 | **✅ v19 2026-07-29** — promovida a `ancla` + `modo: columna`. Una carta que contradice al producto vigente no es horizonte: es drift. Sin aparato ERM ni certificación (VISION §ISO intacta) | — |
+| **K1** | Dos visiones contradictorias: «2029 · Perú» vs «2030 · Lima Metropolitana» | 🔴 fondo | **✅ v19** — la visión vive SOLO en `empresa`; el rumbo la lee | — |
+| **K2** | Meta de viviendas imposible con la operación del propio mockup (16 años) | 🔴 fondo | **✅ v19** — 480→900 al 2030 (~105/año contra 84 de hoy: exigente y alcanzable) | — |
+| **K3** | La banda rotulaba «KR del trimestre» sobre metas a 3 años | 🟠 | **✅ v19** — `horiz` por objetivo (3a·anual·trimestre), visible en la ficha | — |
+| **K4** | Cero cascada: `parent_ref` con 0 usos, catchball como contador | 🔴 fondo | **✅ v19 · D-35** — 5 bajadas reales con área y rol; el catchball se cierra contra una sesión | — |
+| **K5** | `sesion` (D-25) con cero instancias; acuerdos citando «junio» como string | 🟠 | **✅ v19** — 3 sesiones; acuerdos, bajadas y autoevaluación apuntan a ellas | — |
+| **K6** | `o-cob` dibujada como meta del directorio sin serlo | 🟡 | **✅ v19** — es una bajada de «caja sana», con su gerencia | — |
+| **K7** | Apuesta sellada sobre metas fuera del rumbo del año | 🟡 | abierto — decisión de guion: ¿el rumbo lista 2 metas o las 5? | operador |
+| **K8** | Tres mezclas de ambición que no se hablaban (70/20/10 · 70/25/5 · conteo) | 🟡 | **✅ v19** — cada una declara su unidad; el presupuesto contrasta contra la vara y avisa dónde no coincide | — |
+| **K9** | Presupuesto (6.0) e inversiones (33.9) sin relación declarada | 🟡 | **✅ v19** — el presupuesto declara su alcance y qué NO incluye: son dos plata distintas | — |
+| **K10** | El dictamen decía «2 hallazgos viven como brechas» y no existían | 🟡 | **✅ v19** — `g-aud` con su origen en el dictamen | — |
+| **K11** | La meta cliente #1 sin ningún indicador | 🔴 fondo | **✅ v19** — `k-viv` (viviendas entregadas acumuladas) | — |
+| **K12** | 3 de 7 contratos sin serie que los midiera | 🔴 fondo | **✅ v19** — `k-mar`, `k-dsoc`, `k-viv`; todo KR cuelga de una serie | — |
+| **K13** | El valor del contrato tecleado al lado de la medición | 🔴 fondo | **✅ v19 · D-34** — `krCur()` lee la serie; ningún KR guarda `cur` (check en la suite) | — |
+| **K14** | «Caja sana» leía VERDE mientras la caja se hundía | 🔴 fondo | **✅ v19** — 2º contrato (caja visible al día) sin serie ⇒ el objetivo lee GRIS, y el gris pesa más que el verde en el rollup | — |
+| **K15** | Pesos que no sumaban 1 en 3 de 7 contratos | 🟠 | **✅ v19 · D-36** — normalizados + invariante + check | — |
+| **K16** | A2 replicado en v18: las cifras anclaban al objetivo, `cifra.kpi_ref` sin usar | 🟠 | **✅ v19** — `kpi` + `res` (dónde se resuelve) en las cifras | — |
+| **K17** | `frecuencia` fuera del enum en 2 KPIs («por expediente») | 🟠 | **✅ v19 · D-31** — enum gana `por-evento` | — |
+| **K18** | `tipologia_kpi` (kpi/dpi/**kri**) y lead/lag: 0 usos en 12 KPIs | 🟠 | abierto — el registro de riesgos sigue sin un solo indicador adelantado | operador |
+| **K19** | `en_tension_con` (contra-métrica): 0 usos pese a predicar anti-gaming | 🟠 | abierto — candidatas: cobranza dura ↔ ventas · avance ↔ postventa | operador |
+| **K20** | La dirección del semáforo se infería del orden de la banda | 🟠 | **✅ v19 · D-31** — `dir` obligatorio + banda de tres tramos + check con el caso que rompía la inferencia | — |
+| **K21** | Tolerancia de las 6 cifras hardcodeada (±2/±10) e igual para todas | 🟠 | abierto — la vara por cifra la fija el directorio, no el código | operador |
+| **K22** | Bandas de KPI sin vara externa; la absorción contradecía el único rango sectorial | 🟠 | **✅ v19** — `nicho` por KPI; `k-abs` cita ASEI 1.7 %/mes | — |
+| **K23** | El eje NICHO bypasseado y **contradicho**: se afirmaba un rango de cobranza que el método prohíbe afirmar | 🔴 fondo | **✅ v19 · D-31** — `DATA.peers` eliminado; la vara sale de la unidad de nicho y hereda su confianza; N-IMM-07/08 nuevas; check que impide que vuelva | — |
+| **K24** | Ocho motores de veredicto sin rollup declarado | 🟡 | **◐ parcial v19** — `objSalud` declara su rollup (peor-hijo, gris incluido); los del gobierno siguen sueltos | operador |
+| **K25** | `cifra` sin `fuente`/`conf` propios (heredaba una del periodo) | 🟡 | **✅ v19 · D-34** — campos propios en esquema y dato | — |
+| **K26** | La satisfacción del cliente nunca subía al directorio (entrada obligatoria cl.9.3) | 🟠 | **✅ v19** — sube como alerta derivada, con la brecha que la cubre y la acción de promoverla a meta | — |
+| **K27** | La leyenda prometía niveles 0-5 sobre un campo de tres colores | 🔴 fondo | **✅ v19 · D-32** — `area.madurez` eliminado; se deriva de las capabilities; 4º tramo «sin evaluar» | — |
+| **K28** | Sin `nivel_deseado` no se podía calcular ninguna brecha de madurez | 🔴 fondo | **✅ v19 · D-32** — `act`/`des`/`esc`/`evid` en las 10 capabilities; `c-permisos` sin deseado = caso declarado | — |
+| **K29** | La escalera del directorio era la única superficie sin ficha de esquema | 🟠 | **✅ v19 · D-33** — `empresa.autoevaluacion_madurez` | — |
+| **K30** | Predicaba «se deriva de evidencia» y era canned sin procedencia | 🟠 | **✅ v19 · D-33** — `evid` por dimensión + sesión de evaluación + conf | — |
+| **K31** | `estrategia 3→3` (sin brecha) el mismo mes de 13 hallazgos de gobierno | 🟠 | **✅ v19** — 2→4 con la evidencia real, y `frena` | — |
+| **K32** | El arbitraje entre escaleras vivía sólo como prosa | 🟡 | **✅ v19 · D-32** — enum `escala_madurez`, el número viaja con su vara | — |
+| **K33** | M55-M59 con **cero pasos de proceso**: nadie sabe levantar el nivel 1 | 🔴 fondo | abierto — `m1.b2`/`m1.b3`/`m2.mant` siguen stub (historia `sistema/poblar-metodo-m1-m3`) | operador |
+| **K34** | A5 empeoró: 4 → 15 acciones declaradas sin superficie | 🔴 fondo | **✅ v19** — catálogo del mockup alineado al del esquema + check que falla si una acción se ofrece sin declarar | — |
+| **K35** | Drift de nombres mockup↔esquema en 5 acciones + 6 sin declarar | 🟠 | **✅ v19 · D-36** — renombradas; `sellar-apuesta`·`re-apostar`·`retirar-apuesta`·`corregir-instruccion`·`convocar-rendicion`·`comprometer-contramedida` declaradas | — |
+| **K36** | ISO 9001 cl.9.3 incompleta (auditorías, proveedores, satisfacción) | 🟠 | **◐ parcial v19** — `g-aud` (control interno) y `g-prov` (cl.8.4) entran al twin; auditoría interna como superficie propia sigue abierta | operador |
+| **K37** | 3 apuestas «selladas» sin el sello (quién, con qué autoridad, cuándo) | 🟡 | abierto — el gate humano-irreducible sigue siendo un string de estado | operador |
+| **K38** | Responsables como texto libre: los invariantes CK-24/RACI no son verificables | 🟡 | abierto — se resuelve al portar al golden fixture (refs reales) | operador |
+| **K39** | Facultades como strings libres contra el enum `materia_facultad` | 🟡 | abierto — idem K38 | operador |
+| **K40** | `r-dat` anclado al área teniendo la brecha `g-tes`; `g-cvis` sin riesgo | 🟡 | abierto — dato, no diseño | operador |
 
 > **Sync del tracker 2026-07-28 (v17.2):** filas A3/B5/D1/D2 estaban resueltas por v12/v15.2 y el
 > tablero seguía diciéndolas abiertas (el sync esperaba la firma visual del operador sobre v12 —
@@ -366,7 +406,8 @@ Ocho números corregidos en esta misma sesión (sincronía documental pura, cero
 | C7 | `02:97` | módulos "Territorio·Mejora·**Cambios·Método**" | DOM real: **Territorio·Mejora·Método·Cambios** (`index.html:538-541`) |
 | C8 | `02:89` · `03:291` | "fit por defecto **58%**" | relativo al viewport: **~58% stage ancho · ~46% @1568px** |
 
-**Lo que SÍ cuadraba** (verificado, no tocar): 7 objetivos · 14 áreas · 17 procesos · 8 brechas ·
+**Lo que SÍ cuadraba en su momento** (cifras de julio 25; **v19 las movió** — ver el recuadro al pie
+del bloque K): 7 objetivos · 14 áreas · 17 procesos · 8 brechas ·
 12 KPIs · 11 sistemas · 4 capabilities · 4 arneses · 4 ideas · 86 `personasExtra` · 11 lienzos plenos
 (10 en `DATA.lienzos` + flagship `p-cob`) + 6 stub · 14 instrucciones z3 · 17 SIPOC · la matriz
 `CAPAS_APLICAN` **idéntica** a la tabla de `02 § 3` · el "Pulso 1/7 en banda" (1 objetivo verde de 7).
@@ -519,3 +560,99 @@ grep -oE '\{ id: [a-z-]+, +entidad: [a-z_]+' sistema/schema/objeto.schema.yaml
 
 **Regla de la casa:** ningún número de este doc se escribe "a ojo". Si un hallazgo no tiene
 `file:line` o una medición reproducible, no entra al tablero.
+
+---
+
+# K · El hilo medido, la madurez con vara y la bajada al gerente (auditoría 2026-07-29 · v19)
+
+**Qué se pidió.** El operador: *"compará la estrategia contra nuestro método y decime qué estamos
+omitiendo o haciendo mal; revisá que los objetivos del directorio sean coherentes; foco en KPIs y
+niveles de madurez"*. Después, al ordenar la corrección: *"los usuarios son el gerente general y los
+gerentes, y a través de nuestras acciones diarias debemos resolver todo lo que se muestra en
+directorio"*.
+
+**Qué se midió.** El `DATA` vivo × `objeto.schema.yaml` (20 nodos) × el catálogo de 59 cartas vía
+GRAFO × `nichos/inmobiliario.yaml`. Cuarenta hallazgos (K1-K40); **28 cerrados en v19**, 12 abiertos y
+declarados en el tablero con su dueño.
+
+## La decisión de fondo que ordenó todo lo demás
+
+> **El directorio decide; la gerencia resuelve. Nada del nivel 1 se queda sin bajada.**
+
+El nivel 1 estaba completo como *agenda* (v18) y era **inejecutable como sistema de gestión**: siete
+metas de empresa que ningún rol tenía asignadas, alertas sin destinatario, cifras sin nadie que las
+moviera. Un tablero así se mira una vez al mes y no cambia nada.
+
+De ahí salen las tres cosas que cambiaron de forma, no de contenido:
+
+1. **La bajada es dato** (D-35). La meta del directorio se abre como meta de UNA gerencia, con el rol
+   que responde y la sesión donde el gerente la aceptó. Meta sin hijos = *sin bajar*; con hijos y sin
+   sesión = *asignada, no acordada*. Las dos llegan solas a la bandeja, derivadas del grafo.
+2. **Todo lo que el nivel 1 muestra declara dónde se resuelve.** Cifras (`res`), alertas ("lo resuelve
+   Comercial · meta bajada: …"), riesgos (rol + mitigación comprometida), proyectos (por qué sube al
+   directorio, o por qué se queda en la gerencia).
+3. **El nivel 3 abre con lo que el directorio dejó** — metas bajadas, acuerdos abiertos, riesgos con
+   dueño — y sigue con el trabajo que las mueve. Cero duplicación: lo que sube dice que se resuelve
+   abajo, y lo que se queda abajo dice por qué no sube.
+
+## Qué BAJÓ del directorio a lo táctico (y por qué)
+
+| Bajó | Antes | Ahora |
+|---|---|---|
+| **El portafolio de proyectos** | el nivel 1 listaba los 3 y el nivel 3 los volvía a listar por área | el nivel 1 sigue **sólo** lo que mueve una meta del año o cerró con veredicto, y cada fila dice por qué sube; el resto se gobierna en el nivel 3, y el panel lo declara |
+| **Las alertas completas** | 4 filas escritas a mano | se derivan; al directorio sube lo que nadie resolvió abajo, con su destinatario. El detalle vive en «aquí nacen los compromisos» (nivel 3) |
+| **Registrar el avance de una inversión** | acción de nivel táctico ofrecida en la sala | el directorio *aprueba* la inversión; el avance lo registra quien la ejecuta |
+| **Los acuerdos, entre sesión y sesión** | sólo se veían en el directorio, una vez al mes | el gerente los ve todas las semanas; cuando la sesión abre preguntando, ya están cerrados o ya se sabe por qué no |
+
+## Las dos correcciones de fondo sobre KPIs
+
+- **El hilo ancla al contrato, no al objetivo** (A2, abierto desde julio). `kpi.kr` reemplaza a
+  `kpi.obj`; el valor del contrato se **lee** de la serie (D-34) en vez de teclearse al lado. El caso
+  que lo prueba: «caja sana» leía **verde** porque su único contrato (cobranza consolidada) llegó a la
+  meta — con la caja cayendo bajo el piso, un riesgo alto y 18 % de valor cobrado. Con dos contratos y
+  el gris pesando por encima del verde, el objetivo dice lo que pasa.
+- **La vara externa sale del eje vertical.** El tablero afirmaba «pares 45-60 días» de cobranza contra
+  una unidad de nicho que dice, textual, que ese benchmark **no existe validado** y que el rango se
+  levanta por cliente. El producto acusaba a otros de indicador sin ancla y afirmaba sin fuente en su
+  propia portada. Ahora el KPI apunta a su unidad y **hereda su confianza**: sin rango validado se
+  muestra la condición, que es información — no un hueco.
+
+## Y las dos sobre madurez
+
+Convivían **tres** escaleras sin arbitraje en el dato: la de capacidad (COBIT 0-5), la del sistema de
+gestión (ISO 9004 1-5, sin ficha) y un `madurez` de tres colores en el área — pintado bajo una leyenda
+que prometía niveles 0-5. Un color no es un nivel.
+
+- **D-32:** el número viaja con su escalera (`escala_madurez`), la del área se **deriva** de las
+  capabilities de su subárbol, y sin `nivel_deseado` hay nivel pero **no hay brecha** — la capa lo dice
+  en vez de pintar una distancia que nadie fijó.
+- **D-33:** la escalera del sistema de gestión gana ficha, evidencia del twin por dimensión y sesión de
+  evaluación. Su dimensión `estrategia` bajó de 3 a 2: declararse sin brecha el mismo mes en que la
+  auditoría encontró trece hallazgos de gobierno era el síntoma exacto de una autoevaluación sin
+  evidencia.
+
+## Lo que la suite ahora impide que vuelva (6 checks nuevos · 40/40)
+
+`v19-hilo-al-contrato` (ningún KR guarda su valor · pesos que suman 1 · sin-ancla con su brecha) ·
+`v19-direccion-y-banda` (dirección declarada · enum de frecuencia · el caso donde la inferencia vieja
+se equivocaba) · `v19-bajada` (metas con gerencia y rol · los dos casos honestos · el nivel 3 abre con
+ellas) · `v19-madurez-con-vara` (sin campo en el área · sin deseado no hay brecha · autoevaluación con
+evidencia y sesión) · `v19-acciones-declaradas` (ninguna acción ofrecida fuera del catálogo) ·
+`v19-alertas-con-destinatario` (toda alerta con quién la resuelve · la cifra sin destinatario se
+declara).
+
+## Cardinalidades vigentes tras v19 (medidas, no estimadas)
+
+| Qué | Antes (v18) | Ahora (v19) | Por qué cambió |
+|---|---|---|---|
+| objetivos | 7 planos | **10** = 5 del directorio + 5 bajadas | D-35: la cascada existe como dato |
+| contratos de cambio (KR) | 7 (uno por objetivo) | **11** | «caja sana» tiene dos: cobranza y caja visible |
+| indicadores | 12 | **15** | los 3 contratos que no tenían serie (`k-mar`·`k-dsoc`·`k-viv`) |
+| brechas | 8 | **10** | `g-aud` (hallazgos del dictamen) · `g-prov` (proveedores externos, cl.8.4) |
+| capacidades | 4 | **10** | la madurez del área se deriva de ellas: con 4 el mapa quedaba casi sin pintar |
+| unidades de nicho (inmobiliario) | 6 | **8** | N-IMM-07 margen · N-IMM-08 satisfacción del propietario |
+| acciones del esquema | 32 | **40** | 6 declaradas + `bajar-objetivo` + `acordar-bajada` |
+| checks de la suite | 34 | **40** | uno por doctrina corregida |
+
+Sin cambios (verificado): 14 áreas · 17 procesos · 11 sistemas · 4 arneses · 4 ideas · 86
+`personasExtra` · 11 lienzos plenos · 14 instrucciones z3 · 17 SIPOC · 20 nodos del esquema.

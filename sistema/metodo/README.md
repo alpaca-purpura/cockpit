@@ -36,6 +36,12 @@ operacionaliza cada card" + backbone + recetas grep). Entrada canónica de consu
 gate). Ciclo de vida en el contrato v3: `estado: vigente|superseded|descartada` (+`superseded_by`,
 `razon_estado`) — el conocimiento reemplazado queda como memoria con puntero, no se borra.
 
+**Eje NIVEL (contrato v4 · CK-33)** — cada card declara en qué piso de la organización se usa:
+**Directorio · Estratégico · Táctico · Operativo** (rótulos del `GLOSARIO.md`). `nivel_primario` = donde
+se DECIDE/FIRMA lo que produce · `niveles_secundarios` = los pisos que la consumen. Vista: **`GRAFO.md §6`**,
+y es el **primer filtro** del ruteo de `/metodo` (una pregunta de directorio no se contesta con una
+herramienta de piso). Ortogonal al objeto (§5, QUÉ toca) y al módulo (§3, CUÁNDO del engagement).
+
 ## El método operable
 
 - [`M1-LEVANTAMIENTO.md`](./M1-LEVANTAMIENTO.md) — "Diagnóstico Digital": AS-IS de sistemas y

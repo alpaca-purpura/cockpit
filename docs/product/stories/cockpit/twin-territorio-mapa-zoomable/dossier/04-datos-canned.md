@@ -120,3 +120,29 @@ Cada fila de esta casuística responde a una pregunta de demo ("¿y si el KPI no
 el rol está vacante?", "¿y si nadie escribió el procedimiento?"). Al construir el twin real sobre
 el golden fixture: **verificar que cada caso siga teniendo un ejemplar** — perder la casuística =
 perder el guion de venta.
+
+---
+
+## v19 (2026-07-29) — lo que cambió en el dato y por qué
+
+Las cifras vigentes están en `07 § Cardinalidades vigentes tras v19`. Acá, lo que un builder tiene que
+entender del **contenido**, no del conteo:
+
+| Dato | Qué pasó |
+|---|---|
+| `objetivos` | dejaron de ser una lista plana: 5 del directorio + 5 bajadas unidas por `parent`, cada bajada con su `area` y el rol que responde (`krs[].acc`). `o-cob` y `o-vis` no son metas del directorio — son las bajadas que siempre fueron |
+| `krs[]` | lista, no objeto. Cada contrato apunta a la serie de un KPI (`kpi`) y **no guarda su valor**: se lee de la última medición. `esperado` es el punto del plan a hoy, de donde sale la salud |
+| `kpis` | ganan `dir` (dirección declarada), `amar` (tercer tramo de banda), `kr` en vez de `obj`, `nicho` (la vara externa) y `gap` (para los que no tienen ancla). Tres nuevos: `k-mar`, `k-dsoc`, `k-viv` — los contratos que antes no tenían con qué medirse |
+| `areas` | **pierden** `madurez`: se deriva del rollup de capabilities de su subárbol |
+| `capabilities` | ganan `esc` (escalera), `act`/`des` (nivel y deseado) y `evid` (en qué del twin se apoya). `c-permisos` **no tiene deseado** a propósito: hay nivel, no hay brecha |
+| `sesiones` | entidad nueva (3): a ella apuntan acuerdos, bajadas acordadas y la autoevaluación |
+| `autoevaluacion` | reemplaza a `DATA.madurez`: con escalera declarada, evidencia por dimensión y sesión de evaluación |
+| `nicho` | reemplaza a `DATA.peers`: las unidades del rubro con su confianza. Tres de las cuatro **no afirman rango** — y eso es el dato |
+| `cifras` del periodo | ganan `res` (qué meta bajada las mueve), `kpi` (de dónde se lee el valor) y `fuente`/`conf` propios. `f-gas` queda **sin `res` a propósito** |
+| `brechas` | `obj` → `kr`; dos nuevas: `g-aud` (los hallazgos del dictamen, que el texto prometía y no existían) y `g-prov` (proveedores externos, cl.8.4) |
+
+**Casuística que hay que conservar al portar al golden fixture** (además de la de v18): meta del
+directorio sin bajar (`o-hog`, `o-eq`) · bajada sin acuerdo (`o-vis`, Comercial) · objetivo con dos
+contratos, uno en meta y otro sin serie (`o-caja`) · indicador sin ancla con la brecha que lo cubre
+(`k-nps`→`g-post`) · capacidad sin nivel deseado (`c-permisos`) · área sin capability evaluada ·
+unidad de nicho con rango validado (`N-IMM-02`) y otras sin él · cifra sin destinatario (`f-gas`).

@@ -4,7 +4,7 @@
 /* ===== v14 · APUESTA — la unidad del directorio (entidad real desde D-23: 13º nodo del schema) ===== */
 function openApuesta(a){ const objs=a.objetivos.map(id=>byId(DATA.objetivos,id));
   const pms=DATA.proyectos.filter(pm=>{ const k=byId(DATA.kpis,pm.mueve); const g=pm.brecha&&byId(DATA.brechas,pm.brecha);
-    return (k&&a.objetivos.includes(k.obj))||(g&&a.objetivos.includes(g.obj)); });
+    return (k&&hiloTocaAp(k.kr,a))||(g&&hiloTocaAp(g.kr,a)); });
   const ct=contraste(a);
   openDrawer('Apuesta · directorio', a.nm, `
     <div class="dgroup">
@@ -16,38 +16,56 @@ function openApuesta(a){ const objs=a.objetivos.map(id=>byId(DATA.objetivos,id))
       <div style="font-family:var(--font-mono);font-size:14px;color:var(--brand-hi)">${a.valor.s}</div>
       <div style="font-size:11px;color:var(--tx-faint);margin-top:3px">Supuesto visible: ${a.valor.supuesto}</div></div>
     <div class="dgroup"><div class="gt">La sostienen — objetivos del ciclo</div>
-      ${objs.map(o=>`<button class="loop-it" data-obj="${o.id}"><span style="width:8px;height:8px;border-radius:50%;background:${health[o.salud]};flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.nm}</span><span class="mono" style="font-size:10px;color:var(--tx-mut)">${o.kr.cur} → ${o.kr.to} ${o.kr.u}</span></button>`).join('')}</div>
+      ${objs.map(o=>`<button class="loop-it" data-obj="${o.id}"><span style="width:8px;height:8px;border-radius:50%;background:${health[o.salud]};flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.nm}</span><span class="mono" style="font-size:10px;color:var(--tx-mut)">${krCur(o.kr)==null?'s/d':krCur(o.kr)} → ${o.kr.to} ${o.kr.u}</span></button>`).join('')}</div>
     ${pms.length?`<div class="dgroup"><div class="gt">Proyectos que le aportan</div>
       ${pms.map(pm=>`<button class="loop-it" data-pm2="${pm.id}"><span class="pdca">${pm.pdca}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pm.nm}</span><span class="mono" style="font-size:10px;color:var(--brand-hi)">${pm.roi}</span></button>`).join('')}</div>`:''}
     <div class="dgroup"><div class="gt">Acciones (kinética — decide la Dirección)</div>
       ${a.estado!=='por-sellar'?'':'<button class="btn" data-acc="sellar-apuesta">Sellar la apuesta › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>'}
       <button class="btn" data-acc="re-apostar">Re-apostar (cambiar meta o riesgo) › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>
       <button class="btn" data-acc="retirar-apuesta">Retirar la apuesta › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · gestión-de-cambios</span></button>
-      <button class="btn" data-acc="convocar-cuentas">Convocar rendición de cuentas › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · directa</span></button></div>`);
+      <button class="btn" data-acc="convocar-rendicion">Convocar rendición de cuentas › <span class="mono" style="font-size:9px;color:var(--tx-faint)">dirección · directa</span></button></div>`);
 }
 function openObjetivo(o){
   const drivers=DATA.procesos.filter(p=>p.sirve.includes(o.id));
-  const gaps=DATA.brechas.filter(g=>g.obj===o.id);
-  const ks=DATA.kpis.filter(k=>k.obj===o.id);
+  const krIds=krsDe(o).map(k=>k.id);
+  const gaps=DATA.brechas.filter(g=>krIds.includes(g.kr));
+  const ks=DATA.kpis.filter(k=>krIds.includes(k.kr));
+  const baj=bajada(o), padre=o.parent?byId(DATA.objetivos,o.parent):null, ar=o.area?byId(DATA.areas,o.area):null;
   /* v17.1: el hilo tampoco se corta hacia ARRIBA — la apuesta del directorio que este objetivo sostiene
      (inversa de openApuesta § "La sostienen"); sin apuesta = se dice, no se oculta */
   const aps=DATA.apuestas.filter(a=>a.objetivos.includes(o.id));
   const apDot={'por-sellar':'var(--warn)','sellada':'var(--brand-hi)','cumplida':'var(--ok)','retirada':'var(--tx-faint)'};
   openDrawer('Objetivo · '+o.persp+' (BSC)', o.nm, `
     <div class="dgroup">
-      <div class="drow"><dt>Salud</dt><dd><span class="chip" style="border-color:${health[o.salud]};color:${health[o.salud]}" title="derivada del KR (avance vs esperado a hoy) — se computa, jamás se guarda">${o.salud}</span></dd></div>
-      <div class="drow"><dt>KR del trimestre</dt><dd class="mono" style="font-size:11px">${o.kr.m}: ${o.kr.from} → <b style="color:var(--brand-hi)">${o.kr.cur}</b> → ${o.kr.to} ${o.kr.u}</dd></div>
-      <div class="drow"><dt>Esperado a hoy</dt><dd class="mono" style="font-size:11px">${o.kr.esperado} ${o.kr.u} <span style="font-size:10px;color:var(--tx-faint)">— la salud se deriva de esto, jamás se pinta a mano</span></dd></div>
-      <div class="drow"><dt>Cadencia</dt><dd style="font-size:12px">OKR trimestral (modo_estrategia)</dd></div></div>
+      <div class="drow"><dt>Salud</dt><dd><span class="chip" style="border-color:${health[o.salud]};color:${health[o.salud]}" title="peor de sus contratos de cambio (avance vs esperado a hoy) — se computa, jamás se guarda">${o.salud}</span>${krsDe(o).length>1?`<span style="font-size:10.5px;color:var(--tx-faint)"> — peor de sus ${krsDe(o).length} contratos: uno cumplido no tapa a otro roto</span>`:''}</dd></div>
+      <div class="drow"><dt>De quién es</dt><dd style="font-size:12px">${ar?`<span class="plnk" data-area="${ar.id}">${ar.nm}</span> — la responde ${krsDe(o)[0].acc}`:'<b>del directorio</b> — es de la empresa, no de una gerencia'}</dd></div>
+      <div class="drow"><dt>Horizonte</dt><dd style="font-size:12px">${({'3a':'plan a 3 años','anual':'el año','trimestre':'el trimestre'})[o.horiz]||'—'} <span style="font-size:10px;color:var(--tx-faint)">— no todo lo que el directorio mira es trimestral</span></dd></div></div>
+    <div class="dgroup"><div class="gt">Los contratos de cambio (${krsDe(o).length})</div>
+      ${krsDe(o).map(kr=>{ const sk=saludKr(kr), c=krCur(kr), kk=krKpi(kr), pk=pesoKr(kr.id);
+        return `<div style="border-left:2px solid ${health[sk]};padding-left:8px;margin-bottom:7px">
+          <div style="font-size:12.5px">${kr.m}</div>
+          <div class="mono" style="font-size:11px;color:var(--tx-mut)">${kr.from} → <b style="color:var(--brand-hi)">${c==null?'s/d':c}</b> → ${kr.to} ${kr.u} · esperado a hoy ${kr.esperado} ${kr.u}</div>
+          <div style="font-size:10.5px;color:var(--tx-faint)">responde <b>${kr.acc}</b> · ${kk?`lee la serie de <span class="plnk" data-k="${kk.id}">${kk.nm}</span>`:'<span style="color:var(--warn)">sin serie: meta declarada, no medida</span>'}${pk!=null&&Math.abs(pk-1)>0.001?` · <span style="color:var(--warn)">sus indicadores pesan ${pk}, no 1</span>`:''}</div></div>`; }).join('')}</div>
     <div class="dgroup"><div class="gt">Hacia arriba — qué lo sostiene</div>
-      ${aps.length?aps.map(a=>`<button class="loop-it" data-ap="${a.id}"><span style="width:8px;height:8px;border-radius:50%;background:${apDot[a.estado]||'var(--tx-faint)'};flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.nm}</span><span class="mono" style="font-size:10px;color:var(--tx-mut)">apuesta · ${a.estado}</span></button>`).join(''):'<span style="font-size:12px;color:var(--tx-faint)">ninguna apuesta del directorio lo sostiene — se decide en el nivel 1</span>'}</div>
+      ${padre?`<button class="loop-it" data-obj="${padre.id}"><span style="width:8px;height:8px;border-radius:50%;background:${health[padre.salud]};flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${padre.nm}</span><span class="mono" style="font-size:10px;color:var(--tx-mut)">baja de esta meta</span></button>
+        <div style="font-size:11.5px;margin:4px 0 6px;color:${o.acordado?'var(--tx-mut)':'var(--warn)'}">${o.acordado?`acordada con la gerencia en la <b>${sesNm(o.acordado)}</b> — el ida y vuelta quedó cerrado`:'⚠ <b>asignada, no acordada</b>: nadie registró que la gerencia la aceptara ni que fuera factible. Esa diferencia predice el incumplimiento mejor que cualquier semáforo.'}</div>`:''}
+      ${aps.length?aps.map(a=>`<button class="loop-it" data-ap="${a.id}"><span style="width:8px;height:8px;border-radius:50%;background:${apDot[a.estado]||'var(--tx-faint)'};flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.nm}</span><span class="mono" style="font-size:10px;color:var(--tx-mut)">apuesta · ${a.estado}</span></button>`).join(''):(padre?'':'<span style="font-size:12px;color:var(--tx-faint)">ninguna apuesta del directorio lo sostiene — se decide en el nivel 1</span>')}</div>
+    <div class="dgroup"><div class="gt">La bajada — quién la trabaja</div>
+      ${baj.hijos.length?baj.hijos.map(h=>{ const ha=byId(DATA.areas,h.area);
+        return `<button class="loop-it" data-obj="${h.id}"><span style="width:8px;height:8px;border-radius:50%;background:${health[h.salud]};flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${h.nm}</span><span class="mono" style="font-size:10px;color:${h.acordado?'var(--tx-mut)':'var(--warn)'}">${ha?ha.nm:'—'}${h.acordado?'':' · sin acordar'}</span></button>`; }).join('')
+        +`<div style="font-size:11px;color:${baj.sin.length?'var(--warn)':'var(--tx-faint)'};margin-top:5px">${baj.acordados} de ${baj.hijos.length} gerencias cerraron el acuerdo de bajada</div>`
+       :(esDirectorio(o)?`<div style="font-size:12px;color:var(--warn)">⚠ <b>Sin bajar.</b> Ninguna gerencia la tiene abierta como suya: el directorio la mira todos los meses y nadie la trabaja.</div>
+        <button class="btn" data-acc="bajar-objetivo" style="margin-top:6px">Bajarla a una gerencia › <span class="mono" style="font-size:9px;color:var(--tx-faint)">estratégico · gestión-de-cambios</span></button>`
+        :'<span style="font-size:12px;color:var(--tx-faint)">es el último peldaño: debajo hay procesos y actividades, no más metas</span>')}</div>
     <div class="dgroup"><div class="gt">Hacia abajo — qué lo mueve</div>
       ${ks.map(krowHTML).join('')}
       <div class="chips">${drivers.map(p=>`<span class="chip lk" data-proc="${p.id}">${p.nm}</span>`).join('')||'<span style="font-size:12px;color:var(--tx-faint)">sin drivers declarados</span>'}</div></div>
     ${gaps.length?`<div class="dgroup"><div class="gt">Qué lo bloquea</div>${gaps.map(g=>`<button class="loop-it" data-g2="${g.id}"><span style="color:var(--crit)">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.nm}</span></button>`).join('')}</div>`:''}
     ${prov(o.fuente,o.conf)}
     <div class="dgroup"><div class="gt">Acciones (kinética)</div>
-      <button class="btn" data-acc="aprobar-version-objetivo">Aprobar nueva versión › <span class="mono" style="font-size:9px;color:var(--tx-faint)">gobernanza · gestión-de-cambios</span></button></div>
+      <button class="btn" data-acc="aprobar-version-objetivo">Aprobar nueva versión › <span class="mono" style="font-size:9px;color:var(--tx-faint)">gobernanza · gestión-de-cambios</span></button>
+      ${o.parent&&!o.acordado?'<button class="btn" data-acc="acordar-bajada">Cerrar el acuerdo de bajada con la gerencia › <span class="mono" style="font-size:9px;color:var(--tx-faint)">estratégico · revisión-dueño</span></button>':''}
+      ${esDirectorio(o)&&baj.hijos.length?'<button class="btn" data-acc="bajar-objetivo">Abrirla en otra gerencia › <span class="mono" style="font-size:9px;color:var(--tx-faint)">estratégico · gestión-de-cambios</span></button>':''}</div>
     <button class="btn" style="justify-content:center" id="objHilo">Encender su hilo en el mapa ›</button>`);
   const b=inBody.querySelector('#objHilo'); if(b) b.onclick=()=>{ state.mod='territorio'; state.nivel=2; state.escala='z0'; setPiel('valor'); state.activeObj=o.id;
     if(!state.capas.has('hilo')){state.capas.add('hilo');document.querySelector('[data-capa=hilo]').classList.add('on');} render(); };
@@ -181,9 +199,18 @@ function openArea(a){ if(!a)return;
    <div class="dgroup"><div class="gt">Procesos del subtree</div>
      <div class="chips">${procs.map(p=>{ const mis=DATA.cadena.includes(p.id);
        return `<span class="chip lk" data-proc="${p.id}"><span class="health-dot" style="width:7px;height:7px;background:${health[digHealth(p.digital)]}"></span>${p.nm} <span style="color:var(--tx-faint);font-size:9px">${mis?'misional':'apoyo'} · ${coreNm(p.dueno)}</span></span>`; }).join('')||'—'}</div></div>
+   ${(()=>{ /* v20 · D-32 cumplida: la madurez del área NO es un campo — es el rollup de las capacidades
+        que su subárbol realiza. Estaba declarado en el modelo desde v19 y no se pintaba en ningún lado. */
+     const caps=capsDeArea(a.id), br=madurezArea(a.id), sal=madurezSalud(br);
+     if(!caps.length) return `<div class="dgroup"><div class="gt">Capacidades que sostiene</div>
+       <span style="font-size:12px;color:var(--tx-faint)">Ninguna capacidad declarada sobre sus procesos — el área no entra todavía a la lectura por madurez. <span class="plnk" onclick="openCobertura()">ver la cobertura ›</span></span></div>`;
+     return `<div class="dgroup"><div class="gt">Capacidades que sostiene — su madurez es el rollup de éstas</div>
+       ${caps.map(c=>`<button class="madrow lk" data-cap="${c.id}" title="${c.cat}"><span class="lbl">${c.nm}</span><span class="dots">${escDots(c.act,c.des)}</span><span class="lv" style="color:${health[capSalud(c)]||'var(--tx-faint)'}">${brechaTxt(capBrecha(c))}</span></button>`).join('')}
+       <div style="font-size:11px;color:var(--tx-faint);margin-top:6px">Peor de sus capacidades: <b style="color:${health[sal]||'var(--tx-faint)'}">${brechaTxt(br)}</b>. Se DERIVA de acá — guardar un semáforo propio en el área lo desconectaría de su marco y lo volvería opinión. <span class="plnk" onclick="verMapaPorMadurez()">verlo en el mapa ›</span></div></div>`; })()}
    ${ks.length?`<div class="dgroup"><div class="gt">Indicadores — por banda</div>${ks.slice(0,6).map(krowHTML).join('')}${ks.length>6?`<div style="font-size:10px;color:var(--tx-faint)">+${ks.length-6} más en la vista del área</div>`:''}</div>`:''}
    ${gaps.length?`<div class="dgroup"><div class="gt">Brechas abiertas</div>
      ${gaps.map(g=>`<button class="loop-it" data-g2="${g.id}"><span style="color:${g.sev==='alta'?'var(--crit)':'var(--warn)'}">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.nm}</span></button>`).join('')}</div>`:''}
+   <button class="btn" style="justify-content:center;border-color:var(--teal-700)" onclick="abrirSala('${a.id}')">Entrar a la sala del área (nivel 3) › <span class="mono" style="font-size:9px;color:var(--tx-faint)">bajada · plan · estructura · procesos · archivo</span></button>
    <button class="btn" style="justify-content:center" onclick="drillArea('${a.id}')">Enfocar en el mapa de valor ›</button>
    <button class="btn" style="justify-content:center" onclick="setPiel('org');state.escala='z0';render()">Ver en el organigrama ›</button>`);
 }
@@ -215,13 +242,68 @@ function openIdea(i){ if(!i)return; const pm=i.a?byId(DATA.proyectos,i.a):null;
      ${i.estado==='promovida'?'<span style="font-size:11px;color:var(--tx-faint)">promovida — el charter y los beneficios viven en el proyecto (separación idea ↔ proyecto, M44)</span>':''}</div>`);
 }
 function openCapability(c){ if(!c)return; const gap=c.gap?byId(DATA.brechas,c.gap):null;
-  const mc=c.madurez>=4?'var(--ok)':c.madurez>=2?'var(--warn)':'var(--crit)';
-  openDrawer('Capability · qué sabe hacer la empresa', c.nm, `
-   <div class="dgroup"><div class="drow"><dt>Madurez (COBIT)</dt><dd><span class="chip" style="border-color:${mc};color:${mc}">${c.madurez} / 5</span></dd></div></div>
-   <div class="dgroup"><div class="gt">Realizada por (procesos · sistemas)</div>
-     <div class="chips">${c.via.map(v=>v.startsWith('p-')?`<span class="chip lk" data-proc="${v}">${byId(DATA.procesos,v).nm}</span>`:`<span class="chip lk" data-sis="${v}">${byId(DATA.sistemas,v).nm}</span>`).join('')}</div></div>
-   ${gap?`<div class="dgroup"><div class="gt">Brecha sobre esta capability</div><button class="loop-it" data-g2="${gap.id}"><span style="color:var(--warn)">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${gap.nm}</span></button></div>`:''}
-   ${prov(c.fuente,c.conf)}`);
+  const br=capBrecha(c), sal=capSalud(c), mc=sal?health[sal]:'var(--tx-faint)';
+  const metas=objsDeCap(c);   // DERIVADO: qué metas se apoyan en esta capacidad (jamás tecleado)
+  openDrawer('Capacidad · qué sabe hacer la empresa', c.nm, `
+   <div class="dgroup">
+     <div class="drow"><dt>Familia</dt><dd><span class="chip">${c.cat}</span></dd></div>
+     <div class="drow"><dt>Dónde está y a dónde va</dt><dd><span class="dots" style="font-family:var(--font-mono);letter-spacing:2px;color:var(--brand-hi)">${escDots(c.act,c.des)}</span>
+       <span class="chip" style="border-color:${mc};color:${mc};margin-left:6px">${br==null?'sin meta fijada':brechaTxt(br)}</span>
+       <div style="font-size:10.5px;color:var(--tx-faint);margin-top:4px">${br==null
+         ? '<b style="color:var(--warn)">nadie fijó a dónde debería llegar</b> — hay nivel, no hay brecha: sin deseado, el color prometería una distancia que nadie decidió'
+         : br<=0 ? `está en el nivel deseado (${c.des} de 5)` : `hoy ${c.act} de 5 · deseado ${c.des} de 5`}</div></dd></div>
+     <div class="drow"><dt>La vara</dt><dd><span style="font-size:11px;color:var(--tx-faint)">escalera de capacidad (COBIT 0-5) — un 3 acá NO es un 3 de la escalera del sistema de gestión que el directorio se autoevalúa. Las dos conviven y jamás se promedian.</span></dd></div>
+     <div class="drow"><dt>En qué se apoya</dt><dd>${c.evid&&c.evid.length
+        ? c.evid.map(e=>`<span class="chip lk" data-${e.startsWith('g-')?'g2':e.startsWith('k-')?'k':'pm2'}="${e}">${e}</span>`).join(' ')
+        : '<span style="color:var(--warn)">sin evidencia anclada</span><br><span style="font-size:10.5px;color:var(--tx-faint)">el nivel es una opinión asistida — por eso la confianza es baja y se dice</span>'}</dd></div></div>
+   <div class="dgroup"><div class="gt">Metas que se apoyan en ella — el eslabón que faltaba</div>
+     ${metas.length?`<div class="chips">${metas.map(o=>`<span class="chip teal lk" data-obj="${o.id}">${o.nm}</span>`).join('')}</div>
+       <div style="font-size:11px;color:var(--tx-faint);margin-top:5px">Se DERIVA por dos caminos —el proceso que la realiza declara la meta que mueve, o una brecha sobre ese proceso bloquea el contrato de una meta—, jamás se teclea. Si la meta no llega, acá se ve si el problema es el proceso o el músculo${br!=null&&br>0?` — y a esta capacidad le ${br>1?'faltan':'falta'} ${br} peldaño${br>1?'s':''}`:''}.</div>`
+     :`<span style="color:var(--warn);font-size:13px">Ninguna meta se apoya hoy en esta capacidad.</span>
+       <div style="font-size:11px;color:var(--tx-faint);margin-top:5px">O sobra, o falta la meta que debería exigirla — la segunda es lo habitual, y es exactamente la pregunta que el directorio no está haciendo.</div>`}</div>
+   <div class="dgroup"><div class="gt">Se realiza en (procesos · sistemas)</div>
+     <div class="chips">${c.via.map(v=>{ if(!v.startsWith('p-')) return `<span class="chip lk" data-sis="${v}">${byId(DATA.sistemas,v).nm}</span>`;
+       const pr=byId(DATA.procesos,v); return `<span class="chip lk" data-proc="${v}">${pr.nm}<span style="color:var(--tx-faint);font-size:9px"> · ${(TIPO_PROC[pr.tipo]||[''])[0].toLowerCase()}</span></span>`; }).join('')}</div></div>
+   ${gap?`<div class="dgroup"><div class="gt">Brecha sobre esta capacidad</div><button class="loop-it" data-g2="${gap.id}"><span style="color:var(--warn)">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${gap.nm}</span></button></div>`:''}
+   ${prov(c.fuente,c.conf)}
+   <button class="btn" style="justify-content:center" onclick="verMapaPorMadurez()">Ver el mapa entero por madurez ›</button>`);
+}
+/* v20 · el hueco declarado del mapa de capacidades. Un proceso que ninguna capacidad realiza no es un
+   dato faltante silencioso: es cobertura pendiente del levantamiento, y se muestra con nombre propio. */
+function openCobertura(){ const sin=procsSinCap(), tot=DATA.procesos.length;
+  openDrawer('Cobertura · mapa de capacidades', `${tot-sin.length} de ${tot} procesos cubiertos`, `
+   <div style="font-size:12.5px;color:var(--tx-mut);line-height:1.5">El mapa de capacidades responde QUÉ sabe hacer la empresa; el de procesos, CÓMO lo hace. Mientras uno no cubra al otro, la lectura por madurez tiene puntos ciegos — y se dicen, no se tapan.</div>
+   <div class="dgroup"><div class="gt">Procesos sin capacidad declarada · ${sin.length}</div>
+     ${sin.map(p=>`<button class="cambio-row" data-proc="${p.id}"><span class="sc" style="color:var(--warn)">·</span>
+       <div><div class="tt">${p.nm}</div><div class="ap">${(TIPO_PROC[p.tipo]||[''])[0]} · ${coreNm(p.dueno)}</div></div></button>`).join('')}</div>
+   <div class="dgroup"><div class="gt">Qué significa</div>
+     <div style="font-size:12px;color:var(--tx-mut);line-height:1.5">Ninguno de estos procesos entra hoy a la lectura por madurez: no hay capacidad que graduar. Cerrar la cobertura es trabajo del levantamiento (M1), no una decisión de tablero.</div></div>`);
+}
+/* prende la lente de madurez sobre el mapa de valor — el mismo botón que el directorio ya ofrecía,
+   ahora con un mapa detrás que sabe pintarla (antes caía en silencio a digitalización) */
+function verMapaPorMadurez(){ state.mod='territorio'; state.nivel=2; state.escala='z0'; state.insp='home'; setPiel('valor');
+  if(!state.capas.has('salud')){ const cs=document.querySelector('[data-capa=salud]'); if(cs) cs.click(); }
+  const st=document.querySelector('.sub-t[data-sub=madurez]'); if(st) st.click(); else render(); }
+/* ===== v21 · DOCUMENTO — la pieza del archivo (D-38 · M38): rige, produce evidencia o sustenta ===== */
+function openDocumento(d){ if(!d)return;
+  const p=d.proc&&byId(DATA.procesos,d.proc), ar=d.area&&byId(DATA.areas,d.area), g=d.g&&byId(DATA.brechas,d.g);
+  const vc=docVence(d), ti=TIPO_DOC[d.tipo]||['Documento',''];
+  const REL={rige:'RIGE al proceso — dice quién hace qué y en qué orden', produce:'lo PRODUCE el proceso — es su evidencia', sustenta:'lo SUSTENTA — la obligación con un tercero sobre la que corre'};
+  openDrawer('Documento · '+ti[0].toLowerCase(), d.nm, `
+   <div class="dgroup">
+     <div class="drow"><dt>Tipo</dt><dd><span class="chip" title="${ti[1]}">${ti[0]}</span></dd></div>
+     <div class="drow"><dt>Estado</dt><dd><span class="chip" style="border-color:${DOC_EST[d.estado]||'var(--border)'};color:${DOC_EST[d.estado]||'var(--tx)'}">${d.estado==='en-tramite'?'en trámite':d.estado}</span>${d.v?` <span class="mono" style="font-size:10px;color:var(--tx-faint)">${d.v}</span>`:''}</dd></div>
+     ${p?`<div class="drow"><dt>Ancla</dt><dd><span class="plnk" data-proc="${p.id}">${p.nm}</span><div style="font-size:10px;color:var(--tx-faint)">${REL[d.rel]||''}</div></dd></div>`:''}
+     ${ar?`<div class="drow"><dt>Ancla</dt><dd><span class="plnk" data-area="${ar.id}">${ar.nm}</span><div style="font-size:10px;color:var(--tx-faint)">${REL[d.rel]||''}</div></dd></div>`:''}
+     ${d.contraparte?`<div class="drow"><dt>Contraparte</dt><dd>${d.contraparte}</dd></div>`:''}
+     ${d.vence?`<div class="drow"><dt>Vencimiento</dt><dd><span class="mono" style="color:${vc.c}">${vc.t}</span><div style="font-size:10px;color:var(--tx-faint)">se DERIVA contra el periodo vigente del twin (${DATA.periodo.nm}) — jamás se guarda un semáforo</div></dd></div>`:''}</div>
+   ${d.nota?`<div style="font-size:12.5px;color:${vc&&vc.est!=='al-dia'?'var(--warn)':'var(--tx-mut)'};line-height:1.5">${d.nota}</div>`:''}
+   ${g?`<div class="dgroup"><div class="gt">Brecha anclada a este papel</div><button class="loop-it" data-g2="${g.id}"><span style="color:${g.sev==='alta'?'var(--crit)':'var(--warn)'}">▲</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.nm}</span></button></div>`:''}
+   ${prov(d.fuente,d.conf)}
+   <div class="dgroup"><div class="gt">Acciones (kinética)</div>
+     <button class="btn" data-acc="aprobar-version-documento">Aprobar nueva versión › <span class="mono" style="font-size:9px;color:var(--tx-faint)">táctico · revisión-dueño</span></button>
+     ${d.tipo==='contrato'?'<button class="btn" data-acc="renovar-contrato-documento">Renovar el contrato › <span class="mono" style="font-size:9px;color:var(--tx-faint)">estratégico · gestión-de-cambios</span></button>':''}</div>
+   <div style="font-size:11px;color:var(--tx-faint);line-height:1.5">El twin guarda el <b style="color:var(--tx-mut)">REGISTRO</b> del documento (tipo · ancla · versión · vigencia · contraparte); el archivo en sí vive en el Depósito. Las proyecciones que el twin GENERA (el manual, la instrucción de trabajo) no son documentos del archivo — se regeneran, jamás se archivan.</div>`);
 }
 function openEmpresa(){ const e=DATA.empresa;
   openDrawer('Empresa · el twin completo', e.razon, `

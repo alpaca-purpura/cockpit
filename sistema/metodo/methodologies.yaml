@@ -13,7 +13,7 @@
 
 _meta:
   fuente_humana: "sistema/metodo/METODOLOGIA.md §4 (compendio narrativo)"
-  total: 59
+  total: 61
   backbone: "objeto (capa de contexto / Hilo de Oro)"
   # Etiquetas de familias y del backbone — SSoT de los rótulos que el generador imprime en §4.
   familias:
@@ -26,6 +26,14 @@ _meta:
     G: "IA: Grounding & Anti-alucinación"
     H: "Diseño de Servicio & Experiencia"
     I: "Twin & automatización del trabajo"
+  # Rótulos del eje NIVEL (CK-33) — en qué piso de la organización se usa la card.
+  # SSoT de los nombres visibles: GLOSARIO.md («nivel 1 Directorio · 2 Estratégico · 3 Táctico ·
+  # 4 Operativo»). El número ordena la escalera de arriba hacia abajo; el generador lo imprime.
+  nivel_labels:
+    directorio:  "1 · Directorio"
+    estrategico: "2 · Estratégico"
+    tactico:     "3 · Táctico"
+    operativo:   "4 · Operativo"
   backbone_labels:
     O1: "Oportunidad / Apuesta"
     O2: "Objetivo & Valor"
@@ -49,6 +57,8 @@ M01:
   cuando_usar: "decidir el límite entre exploración y construcción"
   objeto_primario: O1
   objetos_secundarios: [O7]
+  nivel_primario: tactico
+  niveles_secundarios: [operativo]
   principios: [P1, P7]
   combina_con:
     - { m: M02, como: "el discovery alimenta el delivery" }
@@ -71,6 +81,8 @@ M02:
   cuando_usar: "etapa 1 — exploración de valor; artefacto central del cockpit"
   objeto_primario: O1
   objetos_secundarios: [O2]
+  nivel_primario: estrategico
+  niveles_secundarios: [tactico]
   principios: [P1, P2]
   combina_con:
     - { m: M05, como: "JTBD ancla la oportunidad en el trabajo real" }
@@ -93,6 +105,8 @@ M03:
   cuando_usar: "encuadre del modus operandi de M3"
   objeto_primario: T3
   objetos_secundarios: [O1]
+  nivel_primario: estrategico
+  niveles_secundarios: [directorio, tactico]
   principios: [P1]
   combina_con:
     - { m: M02, como: "su discovery es continuo" }
@@ -115,6 +129,8 @@ M04:
   cuando_usar: "etapa 0/3 — apostar y dar forma al pitch"
   objeto_primario: O1
   objetos_secundarios: [O6]
+  nivel_primario: directorio
+  niveles_secundarios: [estrategico, tactico]
   principios: [P1, P7]
   combina_con:
     - { m: M02, como: "la oportunidad a apostar sale del OST" }
@@ -140,6 +156,8 @@ M05:
   cuando_usar: "etapa 1, junto al OST, para anclar la oportunidad"
   objeto_primario: O1
   objetos_secundarios: [T2, O2]
+  nivel_primario: estrategico
+  niveles_secundarios: [tactico]
   principios: [P1]
   combina_con:
     - { m: M02, como: "alimenta el árbol de oportunidades" }
@@ -162,6 +180,8 @@ M06:
   cuando_usar: "Hilo de Oro; etapa 1; loop de valor"
   objeto_primario: O2
   objetos_secundarios: [O1]
+  nivel_primario: estrategico
+  niveles_secundarios: [tactico]
   principios: [P1, P2]
   combina_con:
     - { m: M21, como: "el impact aterriza en KR trimestral" }
@@ -187,6 +207,8 @@ M07:
   cuando_usar: "AS-IS de procesos (paso 4) y descomposición (etapa 3)"
   objeto_primario: O3
   objetos_secundarios: [O5]
+  nivel_primario: tactico
+  niveles_secundarios: [operativo]
   principios: [P3, P4]
   combina_con:
     - { m: M08, como: "los eventos revelan los bounded contexts" }
@@ -209,6 +231,8 @@ M08:
   cuando_usar: "etapa 3; arquitectura de sistemas"
   objeto_primario: O5
   objetos_secundarios: [O3]
+  nivel_primario: tactico
+  niveles_secundarios: [operativo]
   principios: [P4]
   combina_con:
     - { m: M07, como: "del event storming salen los contexts" }
@@ -231,6 +255,8 @@ M09:
   cuando_usar: "AS-IS de procesos y modelado de future-state (etapa 3)"
   objeto_primario: O3
   objetos_secundarios: [O6]
+  nivel_primario: tactico
+  niveles_secundarios: [operativo]
   principios: [P3, P1]
   combina_con:
     - { m: M10, como: "el blueprint dice dónde duele; VSM optimiza el proceso detrás" }
@@ -254,6 +280,8 @@ M10:
   cuando_usar: "AS-IS de procesos (paso 4)"
   objeto_primario: O3
   objetos_secundarios: [T2]
+  nivel_primario: tactico
+  niveles_secundarios: [operativo]
   principios: [P3, P4]
   combina_con:
     - { m: M09, como: "tras el dolor, VSM optimiza el proceso detrás" }
@@ -276,6 +304,8 @@ M11:
   cuando_usar: "documentación de procesos (M1/M2); opcional sobre Event Storming/VSM"
   objeto_primario: O3
   objetos_secundarios: []
+  nivel_primario: operativo
+  niveles_secundarios: [tactico]
   principios: [P4]
   combina_con:
     - { m: M07, como: "formaliza lo que emergió en el storming" }
@@ -298,19 +328,22 @@ M12:
   cuando_usar: "AS-IS de procesos — clasificar cada proceso hallado"
   objeto_primario: O3
   objetos_secundarios: []
+  nivel_primario: tactico
+  niveles_secundarios: [estrategico, operativo]
   principios: [P4]
   combina_con:
     - { m: M07, como: "esqueleto donde cuelgan los eventos" }
     - { m: M10, como: "clasifica los procesos del blueprint" }
     - { m: M48, como: "el ID PCF es la clave de join del benchmark externo — la taxonomía abre la comparación sin metamodelo nuevo" }
+    - { m: M16, como: "ARBITRAJE de la dimensión que las dos anclan (D-a · 2026-07-30): no compiten porque clasifican para cosas distintas — APQC clasifica para COMPARAR (id universal = clave de join del benchmark), el mapa de procesos de M16 clasifica para LEER (dirección · negocio · apoyo). El tipo NO se deriva del id APQC: la categoría 1.0 ('desarrollar visión y estrategia') es operating en APQC y dirección pura en el mapa ISO — la inferencia se rompe en la primera fila. Se declaran las dos" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
   modo: columna
   twin:
     rol_ancla: ancla
     proyecciones: []
     dimensiones: [procesos-clasificacion]
-    cuando_si: "ancla de CLASIFICACIÓN: cada proceso hallado se clasifica en la taxonomía universal (esqueleto anti-pérdida + cobertura)"
-    cuando_no: "clasifica, no narra — el flujo es de BPMN-lite (M11) y el detalle de actividades de la taxonomía de verbos (M37)"
+    cuando_si: "ancla de CLASIFICACIÓN COMPARABLE: cada proceso hallado recibe su id de la taxonomía universal (esqueleto anti-pérdida + cobertura + la clave con que M48 trae la vara externa)"
+    cuando_no: "clasifica, no narra — el flujo es de BPMN-lite (M11) y el detalle de actividades de la taxonomía de verbos (M37). Y clasifica para COMPARAR, no dicta la geografía: el tipo del mapa (dirección · negocio · apoyo) es dato declarado de M16, jamás derivado del id APQC (D-a)"
 
 M29:
   nombre: "Process / Task Mining"
@@ -322,6 +355,8 @@ M29:
   cuando_usar: "etapa 1 (mapeo automático del AS-IS) + etapa 3 (detectar puestos/tareas automatizables con IA)"
   objeto_primario: T1
   objetos_secundarios: [O3, O6]
+  nivel_primario: operativo
+  niveles_secundarios: [tactico]
   principios: [P5, P3]
   combina_con:
     - { m: M12, como: "clasifica los procesos hallados en la taxonomía APQC" }
@@ -349,6 +384,8 @@ M13:
   cuando_usar: "AS-IS de sistemas (paso 3)"
   objeto_primario: O5
   objetos_secundarios: [O3]
+  nivel_primario: tactico
+  niveles_secundarios: [estrategico]
   principios: [P4, P2]
   combina_con:
     - { m: M14, como: "da el marco que el SYSTEM-MAP puebla" }
@@ -371,6 +408,8 @@ M14:
   cuando_usar: "AS-IS de sistemas (paso 3); plano Análisis"
   objeto_primario: O5
   objetos_secundarios: [T1]
+  nivel_primario: tactico
+  niveles_secundarios: [operativo]
   principios: [P5, P3]
   combina_con:
     - { m: M13, como: "ArchiMate da el marco; el bot lo puebla" }
@@ -393,6 +432,8 @@ M31:
   cuando_usar: "etapa 1 — el mapa de la organización + heatmap de gaps alineado a los objetivos"
   objeto_primario: O5
   objetos_secundarios: [O3, O6]
+  nivel_primario: estrategico
+  niveles_secundarios: [directorio, tactico]
   principios: [P4, P3]
   combina_con:
     - { m: M13, como: "vive en la capa-negocio de ArchiMate/TOGAF" }
@@ -419,19 +460,21 @@ M15:
   cuando_usar: "Hilo de Oro + Gap Analysis (madurez digital). Modo lite, sin certificación"
   objeto_primario: O6
   objetos_secundarios: [O2]
+  nivel_primario: estrategico
+  niveles_secundarios: [directorio, tactico]
   principios: [P2, P3]
   combina_con:
     - { m: M21, como: "cascade + OKR = el hilo hacia arriba" }
     - { m: M06, como: "comparten la cadena objetivo→valor" }
-    - { m: M47, como: "dos escaleras con arbitraje: COBIT 0-5 = gobierno/IT + semáforo del heatmap de capacidades; 9004 1-5 = sistema de gestión y funciones de negocio" }
+    - { m: M47, como: "dos escaleras con arbitraje (D-32): COBIT 0-5 gradúa UNA CAPACIDAD (`capability.assessment`); ISO 9004 1-5 gradúa el SISTEMA DE GESTIÓN entero. Conviven y JAMÁS se promedian — por eso la escala viaja SIEMPRE pegada al número" }
   donde: { modulos: [m1], etapas: [], capa_contexto: true }
   modo: columna
   twin:
     rol_ancla: ancla
     proyecciones: []
     dimensiones: [estrategia, madurez-brecha]
-    cuando_si: "niveles 0-5 como semáforo de madurez + goals cascade como cascade DE ANCLAJE del hilo (objetivos.md §6)"
-    cuando_no: "modo lite, sin aparato COBIT completo ni certificación; la precedencia entre marcos estratégicos la fija objetivos.md §6"
+    cuando_si: "niveles 0-5 como semáforo de madurez + goals cascade como cascade DE ANCLAJE del hilo (objetivos.md §6). El nivel se pinta desde `capability.assessment` (con su `escala` declarada) o no se pinta: un color de tres estados NO es un nivel de cinco (D-32)"
+    cuando_no: "modo lite, sin aparato COBIT completo ni certificación; la precedencia entre marcos estratégicos la fija objetivos.md §6. **Sin `nivel_deseado` hay NIVEL, jamás BRECHA de madurez** — la capa promete una distancia; cuando no la tiene, lo declara en vez de pintar un color que la insinúa. Un ÁREA no lleva madurez propia: es el rollup de las capabilities de su subárbol (misma regla que su digitalización, derivada de sus procesos)"
 
 M16:
   nombre: "ISO 9001"
@@ -442,6 +485,8 @@ M16:
   cuando_usar: "capa de contexto (vocabulario) y M2/M3 (mejora continua)"
   objeto_primario: T3
   objetos_secundarios: [O4]
+  nivel_primario: tactico
+  niveles_secundarios: [directorio, estrategico, operativo]
   principios: [P4, P7]
   combina_con:
     - { m: M21, como: "objetivos cl.6.2 se expresan como OKR" }
@@ -450,13 +495,14 @@ M16:
     - { m: M47, como: "9004 GRADÚA (1-5) lo que 9001 releva (conformidad binaria) — la escalera de madurez sin certificación que la doctrina permite" }
     - { m: M51, como: "cl.7.2 competencia: 10015 la gradúa (requerida vs actual por rol) y cierra la brecha — el seam ya existe en el schema" }
     - { m: M58, como: "cl.9.3 revisión por la dirección se materializa como entidades del twin (sesión · acuerdo con responsable y plazo · acta generada); 9001 dice QUÉ entra y sale, M58 agrega lo que no cubre: facultades por monto y el acta versionada" }
+    - { m: M12, como: "cl.4.4 pide identificar los procesos y sus interacciones; APQC aporta el id universal con que se COMPARAN. Conviven sin jerarquía: el tipo del mapa (dirección · negocio · apoyo) se declara acá, el id APQC se asigna allá — ninguno se infiere del otro (D-a)" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
   twin:
     rol_ancla: ancla
-    proyecciones: []
+    proyecciones: [mapa-de-procesos]
     dimensiones: [calidad-loop, riesgo-controles, procesos-clasificacion, organizacion, documentacion-qms, mejora-proyectos]
-    cuando_si: "el PARAGUAS: ontología cl.4 + PDCA (loop de mejora) · cl.6.1 risk-based thinking (riesgos[] tipados por proceso) · tortuga 4.4 · cl.5.3 roles · cl.7.2 competencia (seam competencias_req/competencias del schema — gradúa M51) · cl.7.5 información documentada · cl.10 mejora (10.2 NC/acción correctiva · 10.3 mejora continua — el compliance-paraguas de proyecto_mejora)"
+    cuando_si: "el PARAGUAS: ontología cl.4 + PDCA (loop de mejora) · cl.6.1 risk-based thinking (riesgos[] tipados por proceso) · tortuga 4.4 · cl.5.3 roles · cl.7.2 competencia (seam competencias_req/competencias del schema — gradúa M51) · cl.7.5 información documentada · cl.10 mejora (10.2 NC/acción correctiva · 10.3 mejora continua — el compliance-paraguas de proyecto_mejora) · el MAPA DE PROCESOS de tres tipos (dirección · negocio · apoyo) como geografía de lectura del twin: `proceso.tipo` es DATO declarado (D-a), con lo que 'apoyo' deja de ser el resto de lo que no entró en la cadena y los procesos de dirección — planear, revisar, decidir, controlar — dejan de producirse fuera del mapa"
     cuando_no: "sin aparato de certificación (VISION §ISO); COSO / ISO 31000 = horizonte materializado en M52, no MVP"
 
 M17:
@@ -468,6 +514,8 @@ M17:
   cuando_usar: "situacional — solo si el cliente opera servicios IT. NO es la columna"
   objeto_primario: T3
   objetos_secundarios: []
+  nivel_primario: operativo
+  niveles_secundarios: [tactico]
   principios: [P7]
   combina_con:
     - { m: M16, como: "service value system sobre el ciclo PDCA" }
@@ -489,6 +537,8 @@ M25:
   cuando_usar: "encuadre (autoridad) y en cada gate (quién ratifica/apuesta/acepta)"
   objeto_primario: O4
   objetos_secundarios: [T3]
+  nivel_primario: tactico
+  niveles_secundarios: [directorio, estrategico, operativo]
   principios: [P7, P2]
   combina_con:
     - { m: M16, como: "formaliza roles/autoridad ISO cl.5.3" }
@@ -497,6 +547,7 @@ M25:
     - { m: M36, como: "humano-por-diseño ancla a la A (accountability, firma, responsabilidad legal)" }
     - { m: M46, como: "la A define quién supervisa el arnés y qué gates humanos lleva adentro; C/I = contexto de lectura, no generan skills" }
     - { m: M58, como: "la autoridad también se declara arriba: el umbral por monto dice qué decisión firma el directorio y cuál la gerencia — RACI a nivel de gobierno" }
+    - { m: M61, como: "dueño de paquete de gasto = A del RACI sobre ese gasto; paquete sin dueño nombrado se muestra SIN DUEÑO (es el hallazgo, no un campo vacío)" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -516,6 +567,8 @@ M38:
   cuando_usar: "clasificar manuales/procedimientos/instrucciones/registros del cliente en el levantamiento y su mantenimiento"
   objeto_primario: T3
   objetos_secundarios: [O3]
+  nivel_primario: operativo
+  niveles_secundarios: [tactico]
   principios: [P4, P7]
   combina_con:
     - { m: M16, como: "instancia cl.7.5 (información documentada) del paraguas ISO 9001" }
@@ -541,6 +594,8 @@ M18:
   cuando_usar: "etapas 4–5 (contrato → construcción); núcleo del harness"
   objeto_primario: O7
   objetos_secundarios: [O2]
+  nivel_primario: operativo
+  niveles_secundarios: [tactico]
   principios: [P6, P2]
   combina_con:
     - { m: M19, como: "los criterios EARS pueblan el spec" }
@@ -563,6 +618,7 @@ M19:
   cuando_usar: "etapa 4 — escribir criterios de aceptación"
   objeto_primario: O7
   objetos_secundarios: []
+  nivel_primario: operativo
   principios: [P6]
   combina_con:
     - { m: M18, como: "puebla el contrato/spec" }
@@ -585,6 +641,7 @@ M20:
   cuando_usar: "etapas 4–5; complementa EARS"
   objeto_primario: O7
   objetos_secundarios: []
+  nivel_primario: operativo
   principios: [P6]
   combina_con:
     - { m: M19, como: "ejemplos sobre los criterios EARS" }
@@ -609,6 +666,8 @@ M21:
   cuando_usar: "encuadre (paso 1) + Hilo de Oro"
   objeto_primario: O2
   objetos_secundarios: []
+  nivel_primario: estrategico
+  niveles_secundarios: [directorio, tactico]
   principios: [P1, P2]
   combina_con:
     - { m: M15, como: "el KR baja del goals cascade" }
@@ -621,8 +680,8 @@ M21:
     rol_ancla: ancla
     proyecciones: []
     dimensiones: [estrategia]
-    cuando_si: "el MOTOR de 90 días — eslabón KR de la cascada canónica (plan 3a → plan anual → objetivo → KR → KPI → actividad)"
-    cuando_no: "alignment + catchball, NO cascada estricta (objetivos.md §8); sin OKR individual — la persona entra como ocupante del rol"
+    cuando_si: "el MOTOR de 90 días — eslabón KR de la cascada canónica (plan 3a → plan anual → objetivo → KR → KPI → actividad). **El KR cuelga de una SERIE** (`kr.kpi_ref`): es un contrato de cambio sobre un indicador que ya se mide — misma serie, distinto contrato. Su valor actual se LEE de la última medición, jamás se teclea al lado (D-34); y responde un ROL (`accountable_ref`), nunca una persona"
+    cuando_no: "alignment + catchball, NO cascada estricta (objetivos.md §8); sin OKR individual — la persona entra como ocupante del rol. **KR sin serie = meta declarada, no medida**: se muestra así, no se disfraza de medición. Los `peso` de los KPI que contribuyen a un mismo KR **suman 1**; si no, o falta un indicador o el peso está sin normalizar — las dos se declaran, ninguna se completa sola (D-36). El sentido del semáforo lo lleva el dato (`kpi.direccion`), jamás se infiere del orden de la banda (D-31)"
 
 M22:
   nombre: "FinOps — Quantify Business Value"
@@ -633,6 +692,8 @@ M22:
   cuando_usar: "loop de valor (aceptación, paso 11) y cada sesión de revisión: prometido vs cobrado por apuesta y por proyecto cerrado"
   objeto_primario: O2
   objetos_secundarios: [T3]
+  nivel_primario: directorio
+  niveles_secundarios: [estrategico, tactico]
   principios: [P1, P2]
   combina_con:
     - { m: M21, como: "el aporte sube al KR" }
@@ -659,6 +720,8 @@ M26:
   cuando_usar: "etapa 1 — alinear el TO-BE a los objetivos del directorio; plan a 3 años → slice anual → OKR trimestral"
   objeto_primario: O2
   objetos_secundarios: [O4, T3]
+  nivel_primario: directorio
+  niveles_secundarios: [estrategico, tactico]
   principios: [P1, P2]
   combina_con:
     - { m: M21, como: "Hoshin da la dirección multi-año; OKR ejecuta el trimestre dentro de ella" }
@@ -671,8 +734,8 @@ M26:
     rol_ancla: ancla
     proyecciones: []
     dimensiones: [estrategia]
-    cuando_si: "el MAPA 3-5 años → anual, con catchball (alignment bidireccional) — cabecera de la cascada canónica"
-    cuando_no: "X-matrix ceremonial NO; la precedencia entre marcos la fija objetivos.md §6"
+    cuando_si: "el MAPA 3-5 años → anual, con catchball (alignment bidireccional) — cabecera de la cascada canónica. **La BAJADA es dato, no lámina** (D-35): la meta del directorio se abre como meta de una gerencia (`objetivo.parent_ref` + `area_ref` + el rol accountable de su KR), y el catchball se CIERRA con traza (`acordado_en_ref`→sesion). Meta del directorio sin hijos = *sin bajar*: es la primera pregunta de la revisión, no un dato faltante"
+    cuando_no: "X-matrix ceremonial NO; la precedencia entre marcos la fija objetivos.md §6. **Meta ASIGNADA ≠ acordada**: sin el ida-y-vuelta registrado, la cascada es un reparto de números — y eso predice el incumplimiento mejor que cualquier semáforo. Nunca se baja a una PERSONA: se baja a una gerencia y responde un rol (CK-24)"
 
 M27:
   nombre: "Wardley Mapping"
@@ -683,6 +746,8 @@ M27:
   cuando_usar: "etapa 1 — el plan a 3 años; cómo la 'maquinaria' (procesos·sistemas) evoluciona según los objetivos"
   objeto_primario: O5
   objetos_secundarios: [O2, O6]
+  nivel_primario: estrategico
+  niveles_secundarios: [directorio]
   principios: [P3, P2]
   combina_con:
     - { m: M31, como: "el mapa de capacidades alimenta la cadena de valor" }
@@ -706,6 +771,8 @@ M28:
   cuando_usar: "etapa 2 — priorizar los gaps detectados antes de pasarlos a discovery/delivery"
   objeto_primario: O6
   objetos_secundarios: [O1, O2]
+  nivel_primario: tactico
+  niveles_secundarios: [estrategico]
   principios: [P1]
   combina_con:
     - { m: M22, como: "FinOps cuantifica el valor/ahorro que entra al CoD" }
@@ -727,15 +794,18 @@ M30:
   fuente: { autor: "Robert Kaplan & David Norton", obra: "The Balanced Scorecard (HBR 1992 · libro 1996)", url: "https://balancedscorecard.org/bsc-basics-overview/" }
   que: "traduce la estrategia a objetivos+métricas ligados en 4 perspectivas (financiera · cliente · procesos · aprendizaje), vía un strategy map"
   aporte_unico: "el STRATEGY MAP — liga aprendizaje→procesos→cliente→finanzas y cascada a unidades/personas (el 'por qué' detrás de cada KPI)"
-  cuando_usar: "etapa 1 — traducir la estrategia del directorio a KPIs por perspectiva; complementa OKR/Hoshin"
+  cuando_usar: "etapa 1 — traducir la estrategia del directorio a KPIs por perspectiva; complementa OKR/Hoshin. **Es el marco reconocible en LATAM hispano** (escuelas de negocio, literatura regional) y **el estándar de facto del sector público brasileño** (mapas estratégicos institucionales exigidos en el poder judicial, control y ministerios) — el veredicto «Brasil = GPD» del research 00-research-latam-br aplica al sector PRIVADO; en gobierno brasileño manda el BSC (CK-33)"
   objeto_primario: O2
   objetos_secundarios: [T3]
+  nivel_primario: directorio
+  niveles_secundarios: [estrategico, tactico]
   principios: [P1, P2]
   combina_con:
     - { m: M26, como: "Hoshin despliega la estrategia; BSC la mide por perspectiva" }
     - { m: M21, como: "los KR se anclan a los objetivos del scorecard" }
     - { m: M06, como: "Impact conecta objetivo→entregable" }
     - { m: M55, como: "la perspectiva financiera deja de ser un rótulo: sus objetivos se contrastan contra el resultado real y cerrado del periodo" }
+    - { m: M41, como: "arbitraje de mercado (research 00-research-latam-br + CK-33): cliente brasileño PRIVADO habla GPD (cascada anual + PLR) · gobierno brasileño y LATAM hispano hablan BSC (mapa por perspectivas). Mismo hilo de oro, dos vocabularios: se elige el que el cliente ya usa, jamás los dos encima" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -756,6 +826,8 @@ M23:
   cuando_usar: "todo el AS-IS (paso 2) y como regla transversal"
   objeto_primario: T1
   objetos_secundarios: []
+  nivel_primario: operativo
+  niveles_secundarios: [directorio, estrategico, tactico]
   principios: [P5]
   combina_con:
     - { m: M14, como: "el drift código↔docs es una señal de confianza" }
@@ -780,6 +852,8 @@ M24:
   cuando_usar: "productizar cada etapa (interfaces frontend + actores + experiencia del sponsor)"
   objeto_primario: T2
   objetos_secundarios: [O3, O4]
+  nivel_primario: tactico
+  niveles_secundarios: [estrategico, operativo]
   principios: [P3, P4, P1]
   combina_con:
     - { m: M10, como: "extiende el service blueprint a frontstage/backstage" }
@@ -811,9 +885,11 @@ M32:
   fuente: { autor: "Palantir", obra: "Foundry Ontology — best practices (adoptada CK-21)", url: "https://www.palantir.com/docs/foundry/ontology/" }
   que: "la GRAMÁTICA del objeto.schema: semántica (entidades + relaciones) + kinética (acciones/cambio) + provenance structs + principio open/closed (extensible sin fork)"
   aporte_unico: "el METAMODELO PROPIO as-code en git — entidad-primero (no notation-first), con provenance y extensión por cliente como propiedades de la gramática"
-  cuando_usar: "siempre — es la gramática de las 20 entidades del twin (CK-26 + `apuesta` D-23 + el gobierno del directorio D-24..D-29: riesgo · sesion · acuerdo · periodo · proyeccion_caja · presupuesto · inversion; +`puesto`/`arnes` al materializar D-19/D-20 · CK-30); toda evolución del schema la respeta"
+  cuando_usar: "siempre — es la gramática de las 21 entidades del twin (CK-26 + `apuesta` D-23 + el gobierno del directorio D-24..D-29 + el archivo `documento` D-38; +`puesto`/`arnes` al materializar D-19/D-20 · CK-30); toda evolución del schema la respeta"
   objeto_primario: O7
   objetos_secundarios: [T1]
+  nivel_primario: estrategico
+  niveles_secundarios: [directorio, tactico, operativo]
   principios: [P4, P5]
   combina_con:
     - { m: M23, como: "los provenance structs (fuente+conf) son parte de la gramática" }
@@ -837,6 +913,8 @@ M33:
   cuando_usar: "todavía no — horizonte D9; se activa solo con la decisión de formalizar transacciones"
   objeto_primario: O3
   objetos_secundarios: [O4]
+  nivel_primario: tactico
+  niveles_secundarios: [operativo]
   principios: [P4]
   combina_con:
     - { m: M07, como: "los eventos del storming son la semilla informal de sus transacciones" }
@@ -859,6 +937,8 @@ M34:
   cuando_usar: "todavía no — horizonte D9; requiere twin base + datos de operación + demanda real"
   objeto_primario: O3
   objetos_secundarios: [O6]
+  nivel_primario: tactico
+  niveles_secundarios: [operativo]
   principios: [P3, P4]
   combina_con:
     - { m: M11, como: "parametriza el modelo BPMN-lite ya existente" }
@@ -882,6 +962,8 @@ M35:
   cuando_usar: "triage de actividades (diagnóstico M1 y mejora M3), antes de correr los scores"
   objeto_primario: O3
   objetos_secundarios: [O6]
+  nivel_primario: operativo
+  niveles_secundarios: [tactico]
   principios: [P1, P3]
   combina_con:
     - { m: M09, como: "VSM revela el flujo/desperdicio; ECRS ordena el veredicto por actividad" }
@@ -906,6 +988,8 @@ M36:
   cuando_usar: "triage de actividades tras ECRS: puntuar candidatos y emitir veredicto con incertidumbre visible"
   objeto_primario: O3
   objetos_secundarios: [O6, O4]
+  nivel_primario: operativo
+  niveles_secundarios: [tactico]
   principios: [P3, P5, P7]
   combina_con:
     - { m: M37, como: "la clase ALM×MGI del verbo es input de ambos scores" }
@@ -932,6 +1016,8 @@ M37:
   cuando_usar: "narrativa de actividades y de sus tareas (D-17: tareas[] = APQC L5, mismo vocabulario) — levantamiento y mantenimiento"
   objeto_primario: O3
   objetos_secundarios: [O4, T1]
+  nivel_primario: operativo
+  niveles_secundarios: [tactico]
   principios: [P4, P5]
   combina_con:
     - { m: M36, como: "la clase ALM×MGI alimenta los dos scores" }
@@ -957,6 +1043,8 @@ M39:
   cuando_usar: "SOLO actividades pre-flageadas por el triage (densidad de espera/decisión, %excepciones alto, queja espontánea en entrevista) — jamás censal"
   objeto_primario: O4
   objetos_secundarios: [O3]
+  nivel_primario: operativo
+  niveles_secundarios: [tactico]
   principios: [P3, P5]
   combina_con:
     - { m: M36, como: "el triage pre-flagea qué actividades medir (gatillo explícito)" }
@@ -980,6 +1068,8 @@ M40:
   cuando_usar: "transversal — cada vez que un indicador, score o medición pueda atribuirse a una persona nombrada"
   objeto_primario: O4
   objetos_secundarios: [T1, T3]
+  nivel_primario: directorio
+  niveles_secundarios: [estrategico, tactico, operativo]
   principios: [P7, P5]
   combina_con:
     - { m: M23, como: "gemela transversal: provenance del dato ↔ gobernanza del dato de persona" }
@@ -1007,11 +1097,15 @@ M41:
   cuando_usar: "cliente brasileño / config_estrategia.modo = gpd-anual o mixto (research 00-research-latam-br de la historia schema-v2)"
   objeto_primario: O2
   objetos_secundarios: [O4]
+  nivel_primario: directorio
+  niveles_secundarios: [estrategico, tactico, operativo]
   principios: [P1, P2]
   combina_con:
     - { m: M26, como: "GPD ES hoshin adaptado — el mapa 3-5a→anual es el mismo" }
     - { m: M21, como: "convive con cadencia OKR en áreas digitales (modo mixto — el patrón corporativo BR real)" }
     - { m: M16, como: "el giro PDCA por nivel es el motor del desdobramento" }
+    - { m: M30, como: "arbitraje de mercado (CK-33): GPD es el dialecto del privado brasileño; el BSC es el del gobierno brasileño y de LATAM hispano — mismo hilo, dos vocabularios" }
+    - { m: M60, como: "la otra mitad del dialecto brasileño: GPD es la cascada, MEG es la vara de madurez — el cliente Falconi suele traer historia FNQ" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
   modo: situacional
   twin:
@@ -1031,6 +1125,8 @@ M42:
   cuando_usar: "proyecto_mejora con caso de negocio formal (metodologia: dmaic)"
   objeto_primario: O7
   objetos_secundarios: [O6, O2]
+  nivel_primario: tactico
+  niveles_secundarios: [estrategico, operativo]
   principios: [P1, P3]
   combina_con:
     - { m: M35, como: "ECRS primero: no se automatiza (ni proyectiza) el desperdicio" }
@@ -1056,6 +1152,8 @@ M43:
   cuando_usar: "proyecto_mejora en cliente brasileño / cultura Falconi (metodologia: masp)"
   objeto_primario: O7
   objetos_secundarios: [O6]
+  nivel_primario: tactico
+  niveles_secundarios: [operativo]
   principios: [P1, P3]
   combina_con:
     - { m: M42, como: "mismo ciclo de datos, dialecto distinto (MASP = QC Story; DMAIC = Six Sigma)" }
@@ -1080,6 +1178,8 @@ M44:
   cuando_usar: "entidad idea del objeto — programas de participación del personal (los CCQ migrados a plataforma: AEVO 400+ empresas, Ambev 450+ ideas en 2 semanas)"
   objeto_primario: O7
   objetos_secundarios: [O4]
+  nivel_primario: operativo
+  niveles_secundarios: [tactico]
   principios: [P1, P7]
   combina_con:
     - { m: M42, como: "la idea promovida recibe charter DMAIC (promovida_a_ref)" }
@@ -1105,6 +1205,8 @@ M45:
   cuando_usar: "cliente que exija certificación de innovación o quiera formalizar el embudo como sistema de gestión (gateado por demanda)"
   objeto_primario: O7
   objetos_secundarios: []
+  nivel_primario: estrategico
+  niveles_secundarios: [directorio, tactico]
   principios: [P7]
   combina_con:
     - { m: M44, como: "el embudo de ideas ES el corazón operativo que 56002 formaliza" }
@@ -1130,6 +1232,8 @@ M46:
   cuando_usar: "al compilar, versionar o auditar el trabajo de un puesto; al decidir la granularidad de un skill (actividad hoy, tarea con id); al fijar autonomía y puertas de aprobación de un agente que opera en nombre de un trabajador"
   objeto_primario: O4
   objetos_secundarios: [O3, O7, T3]
+  nivel_primario: operativo
+  niveles_secundarios: [tactico]
   principios: [P7, P5, P4]
   combina_con:
     - { m: M25, como: "la A del RACI define quién supervisa y qué gates humanos existen dentro del arnés; C/I = contexto de lectura, NO generan skills" }
@@ -1165,6 +1269,8 @@ M47:
   cuando_usar: "diagnóstico M1 y mantenimiento M2 — nivel actual vs deseado por dimensión del sistema de gestión que M16 releva; descriptores por nivel para capacidades no-IT del heatmap"
   objeto_primario: O6
   objetos_secundarios: [T3, O4]
+  nivel_primario: estrategico
+  niveles_secundarios: [directorio, tactico]
   principios: [P3, P4]
   combina_con:
     - { m: M16, como: "hermana HLS: 9001 releva el QMS (conformidad), 9004 lo GRADÚA (madurez 1-5) — sin aparato de certificación, alineado a VISION §ISO" }
@@ -1172,14 +1278,15 @@ M47:
     - { m: M31, como: "presta descriptores por nivel a capacidades no-IT del heatmap — el nivel sigue siendo DERIVADO de evidencia, jamás pintado a mano" }
     - { m: M38, como: "gradúa cobertura/vigencia del corpus documental (pirámide 10013) — madurez de la información documentada" }
     - { m: M40, como: "la madurez de 'personas' se agrega por rol/área — jamás evaluación de persona nombrada (CK-24)" }
+    - { m: M60, como: "arbitraje de la vara, ampliado a Brasil: 9004 es el DEFAULT; si el cliente brasileño ya se mide con MEG/FNQ, entra su puntaje como evidencia y NO se corre 9004 en paralelo (una escalera por dimensión — D-32)" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
   modo: columna
   twin:
     rol_ancla: ancla
     proyecciones: []
     dimensiones: [madurez-brecha, calidad-loop, organizacion]
-    cuando_si: "nivel 1-5 por dimensión del sistema de gestión con evidencia+conf (M23); autoevaluación asistida por el consultor; actual vs deseado alimenta brechas del twin"
-    cuando_no: "NO se busca sello (es guía, no certificable — coherente con VISION §ISO); jamás nivel por persona nombrada; el nivel no se declara — se deriva de evidencia con provenance"
+    cuando_si: "nivel 1-5 por dimensión del sistema de gestión con evidencia+conf (M23); autoevaluación asistida por el consultor; actual vs deseado alimenta brechas del twin. **El número viaja SIEMPRE con su escala declarada** (D-32: `iso9004-1-5` ≠ `cobit-0-5`) y con las referencias del twin en que se apoya (`evidencia_refs`); la autoevaluación es un acto de gobierno con fecha y sesión (`evaluado_en_ref` — D-33), no un campo que envejece"
+    cuando_no: "NO se busca sello (es guía, no certificable — coherente con VISION §ISO); jamás nivel por persona nombrada; el nivel no se declara — se deriva de evidencia con provenance. **Sin `evidencia_refs` el nivel es una OPINIÓN**: se muestra con `conf` baja y se dice, jamás se presenta como medición (D-33). Una dimensión con `deseado == actual` no significa 'sin brecha': significa que nadie fijó a dónde quiere llegar — y eso se declara igual"
 
 M48:
   nombre: "Benchmarking externo de procesos y funciones (APQC Open Standards · Hackett DWC)"
@@ -1191,6 +1298,8 @@ M48:
   cuando_usar: "dimensionar brechas (¿cuánto peor que el peer?) y validar metas de KPI (¿el to-be es alcanzable?) — diagnóstico M1 y seguimiento M2"
   objeto_primario: O6
   objetos_secundarios: [O3, O2]
+  nivel_primario: estrategico
+  niveles_secundarios: [directorio, tactico]
   principios: [P1, P3]
   combina_con:
     - { m: M12, como: "la taxonomía PCF ya adoptada ES la clave del benchmark — acople de datos, no de metamodelo" }
@@ -1204,8 +1313,8 @@ M48:
     rol_ancla: ancla
     proyecciones: []
     dimensiones: [madurez-brecha]
-    cuando_si: "rango externo con fuente+vigencia+unidad comparable declarada (industria, tamaño, región); dimensiona la brecha y valida el to-be"
-    cuando_no: "el benchmark NO reemplaza el levantamiento: la línea base y el rango se LEVANTAN por cliente (doctrina nichos anti-alucinación); no fija la meta solo (la firma el ciclo M21/M41); jamás ranking de personas (CK-24)"
+    cuando_si: "rango externo con fuente+vigencia+unidad comparable declarada (industria, tamaño, región); dimensiona la brecha y valida el to-be. **La vara entra por el eje VERTICAL** (D-31): el KPI apunta a una unidad de `nichos/<vertical>.yaml` (`kpi.referencia_externa.unidad_nicho_ref`) y HEREDA su `confianza`/`condiciones`/`vigencia` — el rango no se escribe en la pantalla ni en el dato del cliente"
+    cuando_no: "el benchmark NO reemplaza el levantamiento: la línea base y el rango se LEVANTAN por cliente (doctrina nichos anti-alucinación); no fija la meta solo (la firma el ciclo M21/M41); jamás ranking de personas (CK-24). **Un rango tecleado a mano, sin unidad de nicho detrás, es error de procedencia** — y si la unidad dice `hipotesis` o `confianza: baja`, el tablero muestra la CONDICIÓN, no un rango de pares (caso N-IMM-03: no hay DSO inmobiliario peruano validado, y afirmarlo igual fue el hallazgo K23)"
 
 M49:
   nombre: "EFQM 2025 — excelencia organizacional (RADAR)"
@@ -1217,11 +1326,14 @@ M49:
   cuando_usar: "situacional — cliente orientado a reconocimiento/premio EFQM, o que exige graduar la experiencia de cliente (T2) con escala formal"
   objeto_primario: O6
   objetos_secundarios: [T2, T3]
+  nivel_primario: estrategico
+  niveles_secundarios: [directorio]
   principios: [P3]
   combina_con:
     - { m: M47, como: "misma pregunta (madurez organizacional) — arbitraje: 9004 es el default (familia ISO, sin premio); EFQM cuando el cliente pide RADAR/reconocimiento o resultados de percepción graduados" }
     - { m: M10, como: "pone escala al 'dónde duele' del blueprint — resultados de percepción de cliente" }
     - { m: M26, como: "RADAR-Deploy gradúa la calidad del despliegue Hoshin (¿el catchball llegó a todos los niveles?)" }
+    - { m: M60, como: "primos de linaje (premio + peso en resultados): EFQM para reconocimiento europeo · MEG para cliente brasileño. No se acumulan — se elige el que el cliente ya habla" }
   donde: { modulos: [m1], etapas: [], capa_contexto: false }
   modo: situacional
   twin:
@@ -1241,6 +1353,8 @@ M50:
   cuando_usar: "horizonte gateado por demanda (patrón M45): cliente con portafolio de proyectos de mejora grande o PMO formal que pida graduar su gestión"
   objeto_primario: O7
   objetos_secundarios: [O6]
+  nivel_primario: estrategico
+  niveles_secundarios: [tactico]
   principios: [P3, P7]
   combina_con:
     - { m: M42, como: "DMAIC mide el proyecto; P3M3 la capacidad org de ejecutar muchos — la perspectiva 'benefits' empalma con verificar-beneficios del ciclo" }
@@ -1274,6 +1388,8 @@ M51:
   cuando_usar: "levantamiento M1 (quién puede qué, insumo del AS-IS de roles) y mantenimiento M2 (cierre de brechas de competencia); insumo del arnés M46 (quién puede supervisar qué)"
   objeto_primario: O4
   objetos_secundarios: [O6, T3]
+  nivel_primario: tactico
+  niveles_secundarios: [operativo]
   principios: [P3, P7]
   combina_con:
     - { m: M16, como: "operacionaliza cl.7.2: el paraguas releva la competencia, 10015 la gradúa y cierra la brecha" }
@@ -1297,9 +1413,11 @@ M52:
   fuente: { autor: "ISO/TC 262 · COSO", obra: "ISO 31000:2018 — Risk management: guidelines (criterios de riesgo) · COSO ERM 2017 (risk appetite statement formal, alineado a estrategia)", url: "https://www.iso.org/iso-31000-risk-management.html" }
   que: "gestión de riesgos (principios + marco + proceso): la gobernanza fija CRITERIOS de riesgo — cuánto y qué tipo de riesgo se acepta por categoría (el APETITO); y el proceso (identificar → analizar → evaluar → tratar → seguir) produce el REGISTRO: cada riesgo con probabilidad, impacto, responsable, mitigación comprometida y tendencia. COSO ERM aporta la declaración formal de apetito cuando el cliente la exige"
   aporte_unico: "las DOS mitades, que sólo sirven juntas: el APETITO como dato del directorio (la vara contra la que se gradúa cada apuesta/objetivo — el panel 'riesgo vs apetito' deja de ser cualitativo suelto) y el REGISTRO como su contraparte (sin registro, el apetito es una declaración sin nada que medir; sin apetito, el registro es una lista sin veredicto). El nivel se DERIVA de probabilidad × impacto y el veredicto —dentro / al límite / por encima del apetito— se deriva contra la vara de SU categoría: ninguno de los dos se declara a mano. Primera ancla de O1 en el twin"
-  cuando_usar: "horizonte gateado por demanda (promovida del cuando_no de M16): directorio que formaliza apetito por categoría (liquidez, reputación, expansión) o cliente regulado"
+  cuando_usar: "encuadre del nivel directorio (m1) y cada sesión de revisión (m2): el directorio fija el apetito por categoría (liquidez, reputación, expansión, operación, cumplimiento, personas) y mantiene el registro contra esa vara"
   objeto_primario: O1
   objetos_secundarios: [O2, T3]
+  nivel_primario: directorio
+  niveles_secundarios: [estrategico]
   principios: [P3, P7]
   combina_con:
     - { m: M16, como: "cl.6.1 risk-based thinking es el gancho MVP (riesgos[] tipados por proceso); 31000 lo eleva a apetito del directorio cuando se activa" }
@@ -1309,14 +1427,20 @@ M52:
     - { m: M54, como: "la mezcla de ambición es el apetito hecho asignación: el % en transformar = riesgo que el directorio acepta explícito" }
     - { m: M56, como: "el piso de caja es apetito de liquidez hecho número — misma mecánica de vara, expresada en dinero y con fecha" }
     - { m: M58, como: "el registro y su contraste contra el apetito son entrada de la sesión; el riesgo que excede la vara sale como acuerdo con responsable y plazo" }
-  donde: { modulos: [m1, m2], etapas: [], capa_contexto: false }
-  modo: situacional
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
+  modo: columna
   twin:
-    rol_ancla: horizonte
+    rol_ancla: ancla
     proyecciones: []
     dimensiones: [riesgo-controles, estrategia]
-    cuando_si: "el directorio define apetito por categoría con umbral y mantiene el registro (riesgo · probabilidad · impacto · responsable · mitigación · tendencia), cada uno anclado al proceso, área o brecha que lo produce; nivel y veredicto contra el apetito se DERIVAN al leer, con evidencia+conf"
-    cuando_no: "sin aparato ERM completo ni certificación; apetito sin definir se MUESTRA como 'sin definir' — jamás se inventa (anti-alucinación M23); riesgo sin responsable ni mitigación es una preocupación, no un riesgo gestionado. ⚠ TENSIÓN ABIERTA (twin v18): el rol declarado sigue siendo `horizonte` ('cl.6.1 de M16 basta en el MVP') pero el nivel 1 del twin YA materializa apetito + registro como superficie de primera clase — la promoción horizonte→ancla es decisión de dogma y espera firma del operador (ficha CK)"
+    cuando_si: "el directorio define apetito por categoría con umbral y mantiene el registro (riesgo · probabilidad · impacto · responsable · mitigación · tendencia), cada uno anclado al proceso, área o brecha que lo produce; nivel y veredicto contra el apetito se DERIVAN al leer, con evidencia+conf. Todo riesgo por encima de su vara sale de la sesión como acuerdo con responsable y plazo (M58) — el registro que no produce trabajo es un anexo"
+    cuando_no: "sin aparato ERM completo ni certificación (misma línea que VISION §ISO); apetito sin definir se MUESTRA como 'sin definir' — jamás se inventa (anti-alucinación M23); riesgo sin responsable ni mitigación es una preocupación, no un riesgo gestionado; jamás riesgo asignado a una persona nombrada (responde el ROL — CK-24)"
+    # v19 (2026-07-29) · PROMOCIÓN `horizonte → ancla`, con `modo: situacional → columna`.
+    # Razón: la carta decía "gateada por demanda / cl.6.1 de M16 basta en el MVP" mientras el nivel 1
+    # del twin YA materializa apetito + registro como superficie de primera clase (D-24, 6 riesgos con
+    # veredicto derivado contra la vara de su categoría). Una carta que contradice al producto vigente
+    # no es un horizonte: es drift. La tensión estaba declarada dentro de la propia carta desde v18.1.
+    # Lo que NO cambia: sigue sin aparato ERM y sin certificación — se adopta la vara, no la burocracia.
 
 M53:
   nombre: "ISO 8000-61 — madurez de la gestión de calidad de datos"
@@ -1328,6 +1452,8 @@ M53:
   cuando_usar: "horizonte gateado por demanda: cliente cuyo diagnóstico revela el dato como brecha estructural (papel, silos, sin dueño de dato) — típico 'datos de obra en papel'"
   objeto_primario: T1
   objetos_secundarios: [O6, O5]
+  nivel_primario: tactico
+  niveles_secundarios: [estrategico]
   principios: [P3]
   combina_con:
     - { m: M23, como: "división del trabajo: M23 gradúa cada dato AS-IS; 8000-61 gradúa el sistema de gestión que los produce" }
@@ -1354,6 +1480,8 @@ M54:
   cuando_usar: "al crear/triageár idea, proyecto_mejora o KR (m1: clasificar el portafolio hallado en el diagnóstico · m2/m3: mantener la mezcla visible y balanceada)"
   objeto_primario: O2
   objetos_secundarios: [O7, O1]
+  nivel_primario: directorio
+  niveles_secundarios: [estrategico, tactico]
   principios: [P1, P2]
   combina_con:
     - { m: M21, como: "cada KR declara su ambición — la cascada canónica se colorea sin ceremonia nueva" }
@@ -1363,6 +1491,7 @@ M54:
     - { m: M45, como: "es el instrumento concreto del balance de portafolio que ISO 56002 exige en abstracto" }
     - { m: M52, como: "la mezcla ES apetito de riesgo materializado: transformar = riesgo aceptado explícito del directorio" }
     - { m: M57, como: "la mezcla en porcentaje es la intención; el presupuesto por bolsa es la misma decisión con plata y con saldo" }
+    - { m: M61, como: "la mezcla reparte ENTRE bolsas; OBZ disciplina lo que pasa DENTRO de la bolsa de operar — donde el gasto heredado se esconde" }
   donde: { modulos: [m1, m2, m3], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -1390,6 +1519,8 @@ M55:
   cuando_usar: "encuadre del nivel directorio (m1) y cada sesión de revisión (m2): leer el resultado del periodo contra plan y contra el año anterior, con el estado de cierre declarado"
   objeto_primario: O2
   objetos_secundarios: [T1, T3]
+  nivel_primario: directorio
+  niveles_secundarios: [estrategico]
   principios: [P1, P2]
   combina_con:
     - { m: M22, como: "FinOps cuantifica el valor de UNA brecha o apuesta; el reporte financiero es el marcador consolidado contra el que ese valor se cobra — sin él, el beneficio queda declarado y nunca verificado" }
@@ -1416,6 +1547,8 @@ M56:
   cuando_usar: "encuadre del nivel directorio (m1) y cada sesión (m2); obligatorio cuando el diagnóstico revela tensión de cobranza, obra en curso o deuda con resguardos"
   objeto_primario: O2
   objetos_secundarios: [O6, T3]
+  nivel_primario: directorio
+  niveles_secundarios: [estrategico]
   principios: [P1, P3]
   combina_con:
     - { m: M55, como: "la caja al cierre es una cifra del reporte; la proyección es lo que el reporte NO dice — hacia adelante, semana a semana" }
@@ -1441,6 +1574,8 @@ M57:
   cuando_usar: "encuadre anual del directorio (m1) y su seguimiento en cada sesión (m2); al aprobar cualquier apuesta o proyecto que consuma bolsa"
   objeto_primario: O2
   objetos_secundarios: [O7, T3]
+  nivel_primario: directorio
+  niveles_secundarios: [estrategico, tactico]
   principios: [P1, P2]
   combina_con:
     - { m: M54, como: "la mezcla de ambición dice el reparto en porcentaje; el presupuesto lo dice en dinero — misma bolsa, dos unidades. La prioridad se ordena DENTRO de la bolsa, jamás entre bolsas" }
@@ -1448,6 +1583,7 @@ M57:
     - { m: M22, como: "el caso de valor de cada brecha se paga contra una bolsa; el retorno prometido se coteja contra lo efectivamente comprometido" }
     - { m: M58, como: "el presupuesto se APRUEBA en la sesión de directorio y las facultades por monto dicen qué gasto vuelve a subir a ese nivel" }
     - { m: M55, como: "la ejecución real del presupuesto se cierra contra el gasto del reporte financiero, no contra una planilla paralela" }
+    - { m: M61, como: "división cardinal: M57 guarda el reparto y su compromiso; OBZ es CÓMO se arma (desde cero, por paquete con dueño) en vez de heredarlo. Un solo presupuesto en el twin — OBZ es método de construcción, no una segunda bolsa" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -1467,6 +1603,8 @@ M58:
   cuando_usar: "encuadre del nivel directorio (m1) y cada sesión de revisión (m2); al cerrar la sesión, para generar el acta"
   objeto_primario: T3
   objetos_secundarios: [O4, O2]
+  nivel_primario: directorio
+  niveles_secundarios: [estrategico]
   principios: [P7, P4]
   combina_con:
     - { m: M16, como: "cl.9.3: la revisión por la dirección ya exige entradas (desempeño, seguimiento de acciones previas, riesgos) y salidas (decisiones y acciones) — esta card las materializa como entidades y agrega lo que 9001 no cubre: facultades y acta de gobierno" }
@@ -1474,6 +1612,7 @@ M58:
     - { m: M55, como: "el desempeño del periodo es la primera entrada de la sesión" }
     - { m: M52, como: "los riesgos y su contraste contra el apetito son entrada de la sesión y, cuando exceden la vara, salida como acuerdo" }
     - { m: M41, como: "la rendición de cuentas por nivel (GPD) es la misma disciplina un piso abajo: acuerdo con responsable, plazo y verificación" }
+    - { m: M61, como: "cada paquete de gasto OBZ necesita un dueño con autoridad real: sale de las facultades por monto, no de una planilla aparte" }
   donde: { modulos: [m1, m2], etapas: [], capa_contexto: true }
   modo: columna
   twin:
@@ -1493,6 +1632,8 @@ M59:
   cuando_usar: "cliente con inversiones grandes en curso (m1 para levantarlas, m2 para seguirlas en cada sesión)"
   objeto_primario: O2
   objetos_secundarios: [O6, O3]
+  nivel_primario: directorio
+  niveles_secundarios: [estrategico, tactico]
   principios: [P1, P3]
   combina_con:
     - { m: M55, como: "el desvío avance real vs declarado es el input de cómo se valoriza lo construido en curso — la brecha operativa se vuelve hallazgo de reporte" }
@@ -1508,3 +1649,66 @@ M59:
     dimensiones: [estrategia, madurez-brecha]
     cuando_si: "el cliente tiene inversiones de capital en curso (obras · planta · locales · contratos plurianuales · líneas de producto) y el twin guarda por cada una avance real y declarado, gasto contra presupuesto, comprometido, entrega y margen proyectado"
     cuando_no: "NO reemplaza el sistema de control de obra ni calcula índices EVM completos (CPI/SPI) en el MVP — guarda las cinco varas comparables y su procedencia. Cliente sin inversiones grandes: la banda no se dibuja (disable honesto), jamás se rellena"
+
+# ====================== Ingesta LATAM/BR 2026-07-29 (CK-33) — el dialecto brasileño que faltaba ======
+# El research 00-research-latam-br (historia schema-v2) fijó el veredicto de la CASCADA (GPD = M41).
+# Faltaban las dos varas que el corporativo brasileño nombra de verdad y que el catálogo no tenía
+# nodo para recibir: la de MADUREZ (MEG/FNQ — el par brasileño de EFQM/9004) y la de CÓMO SE CONSTRUYE
+# el presupuesto (OBZ — la cultura de costos 3G/Ambev, que M57 supone ya construido).
+# Ambas entran gateadas por demanda (patrón M45/M49/M50): son nodos de acceso, no aparato del MVP.
+
+M60:
+  nombre: "MEG / FNQ — Modelo de Excelência da Gestão (la vara brasileña de madurez)"
+  nombre_corto: "MEG (FNQ · Brasil)"
+  familia: D
+  fuente: { autor: "Fundação Nacional da Qualidade (FNQ) · linaje Baldrige", obra: "Modelo de Excelência da Gestão (MEG) — fundamentos + temas + processos/resultados; ciclo de avaliação do PNQ e trilha «Rumo à Excelência»", url: "https://fnq.org.br/modelo-de-excelencia-da-gestao/" }
+  que: "modelo de excelencia brasileño: fundamentos de gestión evaluados por ciclo con puntaje (procesos gerenciales + resultados), con trayectoria de niveles hacia el premio nacional (PNQ)"
+  aporte_unico: "el MODO BRASILEÑO de la vara de madurez — gemelo exacto de lo que M41 es para M26: misma pregunta que 9004/EFQM, distinto vocabulario y distinto aparato de reconocimiento. Es el nombre que un directorio brasileño reconoce y contra el que ya se autoevaluó; sin este nodo el consultor traduce a un marco que el cliente no usa y pierde la evidencia que el cliente YA tiene"
+  cuando_usar: "gateado por demanda: cliente brasileño con historia FNQ/PNQ o con autoevaluación MEG previa — se LEE su ciclo como evidencia del diagnóstico, no se corre un ciclo nuevo"
+  objeto_primario: O6
+  objetos_secundarios: [T3, O4]
+  nivel_primario: estrategico
+  niveles_secundarios: [directorio, tactico]
+  principios: [P3, P4]
+  combina_con:
+    - { m: M47, como: "arbitraje de la vara de madurez, ampliado: 9004 es el DEFAULT (familia ISO, sin premio) · MEG cuando el cliente brasileño ya se mide con MEG — entonces su puntaje entra como evidencia (M23) y 9004 no se corre en paralelo. Jamás dos escaleras sobre la misma dimensión: el número viaja con su escala declarada (D-32)" }
+    - { m: M49, como: "primos de linaje (ambos con aparato de premio y peso en resultados): EFQM cuando el cliente pide RADAR/reconocimiento europeo · MEG cuando el cliente es brasileño. No se acumulan — se elige el que el cliente ya habla" }
+    - { m: M41, como: "el par natural: el cliente Falconi/GPD es el mismo que suele tener historia FNQ — la cascada anual (M41) y la vara de madurez (MEG) son las dos mitades del dialecto brasileño de gestión" }
+    - { m: M23, como: "el puntaje MEG del cliente es dato AS-IS con fuente y vigencia (qué ciclo, qué año): un puntaje de hace cuatro años se muestra con su fecha, jamás como el estado de hoy" }
+    - { m: M16, como: "los fundamentos MEG cubren el mismo terreno que el QMS releva; el mapeo se declara donde exista, no se inventa equivalencia criterio por criterio" }
+  donde: { modulos: [m1], etapas: [], capa_contexto: false }
+  modo: situacional
+  twin:
+    rol_ancla: horizonte
+    proyecciones: []
+    dimensiones: [madurez-brecha]
+    cuando_si: "cliente brasileño que YA tiene autoevaluación o ciclo MEG/PNQ: el twin guarda ese puntaje por fundamento como evidencia de madurez, con escala y ciclo declarados, y lo usa para dimensionar la brecha"
+    cuando_no: "NO es el default de madurez (ese rol es de M47) y NO se corre un ciclo MEG desde el twin: el aparato de banca examinadora / assessor externo / candidatura al premio queda fuera del MVP. Sin ciclo declarado no hay puntaje: se muestra 'sin evaluación', jamás un nivel estimado"
+
+M61:
+  nombre: "OBZ — Orçamento Base Zero (presupuesto reconstruido, paquete con dueño)"
+  nombre_corto: "OBZ (base cero)"
+  familia: F
+  fuente: { autor: "Zero-Based Budgeting (Peter Pyhrr, Texas Instruments 1970) · práctica brasileña difundida por AmBev/3G Capital y consultoras de gestión", obra: "Orçamento Base Zero — pacotes de gasto con dono, matriz de gasto y meta de redução reconstruida cada ciclo", url: "https://hbr.org/2017/03/how-3g-capital-uses-zero-based-budgeting" }
+  que: "construye el presupuesto desde cero cada ciclo en vez de heredar la base histórica: el gasto se agrupa en paquetes, cada paquete tiene un dueño nombrado que lo justifica línea por línea, y se compara entre pares antes de asignar"
+  aporte_unico: "ataca la HERENCIA del presupuesto: lo que M57 guarda como reparto, OBZ dice cómo se ARMÓ — sin base histórica + inflación. Su aporte real no es la planilla sino el DUEÑO del paquete: convierte el gasto en algo que alguien defiende con nombre propio, que es exactamente el hueco por el que un presupuesto heredado nunca se discute"
+  cuando_usar: "gateado por demanda: cliente con cultura de costos (brasileño 3G/Falconi, o cualquiera que declare meta de reducción de gasto) o diagnóstico que revela gasto heredado sin dueño; encuadre anual (m1) y su defensa en cada sesión (m2)"
+  objeto_primario: O2
+  objetos_secundarios: [O7, T3]
+  nivel_primario: estrategico
+  niveles_secundarios: [directorio, tactico]
+  principios: [P1, P2]
+  combina_con:
+    - { m: M57, como: "división cardinal: M57 guarda el reparto y su compromiso (asignado vs comprometido); OBZ es CÓMO se arma ese reparto — desde cero, por paquete con dueño, en vez de heredarlo. Un solo presupuesto en el twin: OBZ es el método de construcción, no una segunda bolsa" }
+    - { m: M54, como: "la mezcla de ambición fija el reparto entre bolsas; OBZ disciplina lo que pasa DENTRO de la bolsa de operar (el 70) — que es donde el gasto heredado se esconde" }
+    - { m: M58, como: "cada paquete necesita un dueño con autoridad real: el dueño se lee del RACI y de las facultades por monto, no se declara en una planilla aparte" }
+    - { m: M55, como: "la meta de reducción se cierra contra el gasto del reporte financiero, jamás contra la planilla que la prometió" }
+    - { m: M25, como: "dueño de paquete = A del RACI sobre ese gasto: si el paquete no tiene dueño nombrado, el twin lo muestra SIN DUEÑO (que es el hallazgo, no un campo vacío)" }
+  donde: { modulos: [m1, m2], etapas: [], capa_contexto: false }
+  modo: situacional
+  twin:
+    rol_ancla: ancla
+    proyecciones: []
+    dimensiones: [estrategia]
+    cuando_si: "modo de construcción del presupuesto declarado por el cliente: el twin guarda cada paquete de gasto con su DUEÑO (ref a rol) y su meta de reducción, sobre las mismas bolsas de M57 — no una estructura paralela"
+    cuando_no: "NO reemplaza a M57 ni duplica el presupuesto; NO es el default (el presupuesto incremental es lo que la mayoría hace y se guarda igual); el twin NO corre el ejercicio OBZ ni construye la matriz de gasto — guarda el paquete, su dueño y su meta. Paquete sin dueño se muestra sin dueño"

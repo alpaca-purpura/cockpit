@@ -56,6 +56,7 @@ MANIFEST = [
     lit("<style>"),
     p("19-apendice-v14.css"),
     p("19b-directorio.css"),  # v18 · sala del directorio: movimientos · cifras · caja · riesgos · acuerdos
+    p("19c-sala-area.css"),   # v21 · nivel 3: portada-selector + la sala del área (bandas · abrir-y-empujar · archivo)
     lit("</style>"),
 
     p("20-shell.html"),       # markup estático de la app
@@ -69,6 +70,7 @@ MANIFEST = [
     p("34-data-instruccion.js"),  # DATA.* — z3 instrucción de trabajo + proceso insignia
     p("35-data-directorio.js"),   # apuestas · rumbo · varas + helpers derivados (krProg/saludKr/contraste)
     p("36-data-gobierno.js"),     # v18 · resultado · caja · presupuesto · riesgos · acuerdos · inversiones · puente contable
+    p("37-data-archivo.js"),      # v21 · el archivo (D-38): documentos · contratos · vencimiento derivado · área de riesgos/acuerdos
     p("40-motores.js"),       # motores derivados: semáforo · PUESTOS (D-19) · arnés (D-20)
     p("41-acciones.js"),      # capa de acción: ACC · autoridad · toast · solicitudes
     p("42-respaldo.js"),      # capa Respaldo del método (cita § fuente por panel)

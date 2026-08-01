@@ -64,22 +64,51 @@ DATA.sistemas =[  // pulso: cada sistema declara su conector al lakehouse (N16)
   {id:'s-nub', nm:'Nubecont ERP',    digital:'integrado', conector:'dlt → lakehouse · sync diaria 06:00 · 14 tablas', caps:['c-cobrar','c-cerrar'], fuente:'inventario TI + entrevistas de proceso', conf:'alta'},
   {id:'s-crm', nm:'CRM Vendo',       digital:'integrado', conector:'dlt → lakehouse · sync horaria (leads · visitas)', caps:['c-vender'], fuente:'inventario TI + entrevistas de proceso', conf:'alta'},
   {id:'s-exc', nm:'Excel caja obra', digital:'manual',    conector:'SIN conector — captura manual, rezago s/d', caps:['c-caja'], fuente:'inventario TI + entrevistas de proceso', conf:'media'},
-  {id:'s-val', nm:'ValorizApp',      digital:'integrado', conector:'dlt → lakehouse · sync semanal (valorizaciones)', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'alta'},
+  {id:'s-val', nm:'ValorizApp',      digital:'integrado', conector:'dlt → lakehouse · sync semanal (valorizaciones)', caps:['c-construir'], fuente:'inventario TI + entrevistas de proceso', conf:'alta'},
   {id:'s-ban', nm:'Banca Empresas',  digital:'externo',   conector:'extracto CSV manual · candidato a conector', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'media'},
-  {id:'s-bim', nm:'BIM',             digital:'integrado', conector:'sin conector (documentos de diseño)', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'alta'},
+  {id:'s-bim', nm:'BIM',             digital:'integrado', conector:'sin conector (documentos de diseño)', caps:['c-diseñar'], fuente:'inventario TI + entrevistas de proceso', conf:'alta'},
   {id:'s-ose', nm:'OSE FacturaLima', digital:'externo',   conector:'API del OSE · CDR por comprobante', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'media'},
   {id:'s-meta',nm:'Meta Ads',        digital:'externo',   conector:'export CSV semanal — candidato a conector (CPL)', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'media'},
-  {id:'s-por', nm:'Portal clientes', digital:'integrado', conector:'dlt → lakehouse · tickets postventa + NPS', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'alta'},
+  {id:'s-por', nm:'Portal clientes', digital:'integrado', conector:'dlt → lakehouse · tickets postventa + NPS', caps:['c-atender'], fuente:'inventario TI + entrevistas de proceso', conf:'alta'},
   {id:'s-mun', nm:'Portal municipal',digital:'externo',   conector:'SIN conector — seguimiento a mano por distrito (SM · PL · Surquillo)', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'media'},
-  {id:'s-leg', nm:'Estudio legal',   digital:'externo',   conector:'proceso provisto externamente (ISO 8.4) — correo + expediente físico', caps:[], fuente:'inventario TI + entrevistas de proceso', conf:'media'},
+  {id:'s-leg', nm:'Estudio legal',   digital:'externo',   conector:'proceso provisto externamente (ISO 8.4) — correo + expediente físico', caps:['c-permisos'], fuente:'inventario TI + entrevistas de proceso', conf:'media'},
 ];
 
-DATA.capabilities =[  // qué SABE hacer la empresa (M31) — madurez COBIT
-  {id:'c-cobrar', nm:'Cobrar cuotas',            madurez:3, via:['p-cob','s-nub'], fuente:'autoevaluación asistida (COBIT)', conf:'media'},
-  {id:'c-vender', nm:'Vender inmuebles',         madurez:4, via:['p-vta','s-crm'], fuente:'autoevaluación asistida (COBIT)', conf:'media'},
-  {id:'c-cerrar', nm:'Cerrar el mes financiero', madurez:4, via:['p-cierre','s-nub'], fuente:'autoevaluación asistida (COBIT)', conf:'media'},
-  {id:'c-caja',   nm:'Ver la caja al día',       madurez:1, via:['p-caja','s-exc'], gap:'g-cvis', fuente:'autoevaluación asistida (COBIT)', conf:'media'},
+/* qué SABE hacer la empresa (M31) — madurez con la escalera de capacidad (M15 COBIT 0-5).
+   v19 (D-32): el nivel viaja con TRES cosas o no se pinta — `esc` (la escalera: un 3 de COBIT no es un
+   3 de ISO 9004), `act` (dónde estás) y `des` (a dónde querés llegar). SIN `des` hay nivel, JAMÁS
+   brecha de madurez: el heatmap lo dice en vez de pintar un color que promete una distancia que nadie
+   fijó — es el caso de `c-permisos`, deliberado. `evid` = en qué del twin se apoya el nivel (M23): sin
+   evidencia el nivel es una opinión y la confianza baja. La madurez de un ÁREA se DERIVA de acá
+   (rollup peor-hijo del subárbol) — por eso hay una capability por cada gerencia que se pinta. */
+/* v20 · `cat` = la familia con que se agrupa la banda de Capacidades del mapa (en el esquema es
+   `capability.categoria` — APQC L1 · M12). Se agrupa por FAMILIA y no por gerencia a propósito: una
+   capacidad es estable frente al organigrama (ése es su aporte), y las que cruzan dos gerencias no
+   tendrían dónde ir. La gerencia entra como LENTE (foco de área), no como dueña. */
+DATA.capabilities =[
+  {id:'c-cobrar', cat:'Cobrar y administrar', nm:'Cobrar cuotas',    esc:'cobit-0-5', act:3, des:4, via:['p-cob','s-nub'],    evid:['g-dso','k-dso'],  fuente:'autoevaluación asistida (COBIT)', conf:'media'},
+  {id:'c-vender', cat:'Vender y atender', nm:'Vender inmuebles',     esc:'cobit-0-5', act:4, des:4, via:['p-vta','s-crm'],    evid:['k-abs'],          fuente:'autoevaluación asistida (COBIT)', conf:'media'},
+  {id:'c-cerrar', cat:'Cobrar y administrar', nm:'Cerrar el mes financiero', esc:'cobit-0-5', act:4, des:5, via:['p-cierre','s-nub'], evid:['k-cie','pm-cie'], fuente:'autoevaluación asistida (COBIT)', conf:'alta'},
+  {id:'c-caja',   cat:'Cobrar y administrar', nm:'Ver la caja al día',esc:'cobit-0-5', act:1, des:4, via:['p-caja','s-exc'],   evid:['g-cvis','g-tes'], gap:'g-cvis', fuente:'autoevaluación asistida (COBIT)', conf:'media'},
+  {id:'c-construir',cat:'Desarrollar y construir', nm:'Construir la obra en plazo y costo', esc:'cobit-0-5', act:2, des:4, via:['p-ejec','s-val'], evid:['g-avc','g-prov','k-avc'], gap:'g-avc', fuente:'autoevaluación asistida (COBIT)', conf:'alta'},
+  {id:'c-permisos',cat:'Desarrollar y construir', nm:'Obtener licencias y permisos', esc:'cobit-0-5', act:1, des:null, via:['p-perm','s-leg'], evid:['g-dep','g-doc','k-lic'], gap:'g-doc', fuente:'autoevaluación asistida (COBIT)', conf:'media'},
+  {id:'c-atender',cat:'Vender y atender', nm:'Atender al propietario después de la entrega', esc:'cobit-0-5', act:2, des:4, via:['p-post','s-por'], evid:['g-post','k-nps','k-sla'], gap:'g-post', fuente:'autoevaluación asistida (COBIT)', conf:'media'},
+  {id:'c-contratar',cat:'Sostener la organización', nm:'Contratar y retener al equipo', esc:'cobit-0-5', act:2, des:3, via:['p-rec','p-nom'], evid:['k-rot','g-tes'], fuente:'autoevaluación asistida (COBIT)', conf:'media'},
+  {id:'c-diseñar',cat:'Desarrollar y construir', nm:'Diseñar el producto inmobiliario', esc:'cobit-0-5', act:4, des:4, via:['p-dis','s-bim'], evid:[], fuente:'autoevaluación asistida (COBIT) — sin evidencia anclada', conf:'baja'},
+  {id:'c-ti',     cat:'Sostener la organización', nm:'Sostener la operación de sistemas', esc:'cobit-0-5', act:3, des:3, via:['p-sop','s-nub'], evid:[], fuente:'autoevaluación asistida (COBIT) — sin evidencia anclada', conf:'baja'},
+  /* — v20 · las capacidades de la franja de dirección (D-b). Que la empresa "sepa gobernarse" es una
+     capacidad como cualquier otra y se gradúa con la MISMA escalera (COBIT) que las demás — distinta
+     de la escalera del sistema de gestión (ISO 9004) que el directorio se autoevalúa en el nivel 1:
+     las dos conviven y jamás se promedian (D-32). Dos procesos de dirección quedan A PROPÓSITO sin
+     capacidad declarada (riesgos y cambios): el hueco se muestra en la banda, no se tapa. — */
+  {id:'c-gobernar',cat:'Dirigir la empresa', nm:'Gobernar y decidir en sesión', esc:'cobit-0-5', act:2, des:4, via:['p-plan','p-rev'], evid:[], fuente:'autoevaluación asistida (COBIT) — sin evidencia anclada', conf:'baja'},
+  {id:'c-plata',  cat:'Dirigir la empresa', nm:'Planear y controlar la plata', esc:'cobit-0-5', act:2, des:4, via:['p-pres','p-conc'], evid:['g-aud','g-cvis'], gap:'g-aud', fuente:'autoevaluación asistida (COBIT)', conf:'media'},
+  {id:'c-mejorar',cat:'Dirigir la empresa', nm:'Mejorar de forma sostenida', esc:'cobit-0-5', act:2, des:4, via:['p-mej'], evid:['pm-cie'], fuente:'autoevaluación asistida (COBIT) — un proyecto cerrado con indicador movido', conf:'media'},
 ];
+/* el orden de las familias en la banda — se lee como se lee el negocio (dirigir → vender → producir →
+   cobrar → sostener), no como salió del levantamiento. Es la única parte de presentación de la banda;
+   todo lo demás (color, brecha, qué metas sostiene, cobertura) se DERIVA al leer. */
+DATA.capCats =['Dirigir la empresa','Vender y atender','Desarrollar y construir','Cobrar y administrar','Sostener la organización'];
 
 // arneses — REGISTROS del twin (D-20 · CK-30): se COMPILA por rol×proceso · se ENSAMBLA por puesto ·
 // se CORRE por persona. deriva_de = el campo que ningún registro del mercado tiene. estado/drift se

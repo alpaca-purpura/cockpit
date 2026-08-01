@@ -44,11 +44,11 @@ function renderMetodo(){
   const pv=pageView(`
     <div class="pv-hd"><span class="eyebrow">Método · el engagement del consultor — plantilla versionada, instancia por cliente (N6)</span>
       <h2>M1 Levantamiento · M3 Espinazo · M2 Mantenimiento</h2>
-      <div class="sub">El método es <b>dato, no prosa</b>: 59 M-cards versionadas en git (methodologies.yaml) — cada capa del twin cae de una M-card. Los gates conectan el engagement con el ciclo de mejora.</div></div>
+      <div class="sub">El método es <b>dato, no prosa</b>: 61 M-cards versionadas en git (methodologies.yaml) — cada capa del twin cae de una M-card. Los gates conectan el engagement con el ciclo de mejora.</div></div>
     <div class="fcols">
       <div class="fcol"><span class="eyebrow">M1 · Levantamiento — construir el As-Is${respBadge('met-m1')}</span>
         <div class="fitem"><span class="t">Ingesta multi-fuente</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>ERP · CRM · 14 entrevistas</span></span></div>
-        <div class="fitem"><span class="t">Mapa As-Is (objeto normalizado, 20 entidades)</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>14 áreas · 17 procesos · 100 personas</span></span>
+        <div class="fitem"><span class="t">Mapa As-Is (objeto normalizado, 21 entidades)</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>14 áreas · 17 procesos · 100 personas</span></span>
           <div class="stage-row"><span class="mono" style="font-size:9px;color:var(--tx-faint)">provenance</span><span class="prog"><i style="flex:52;background:var(--ok)"></i><i style="flex:30;background:var(--warn)"></i><i style="flex:18;background:var(--crit)"></i></span><span class="mono" style="font-size:9px;color:var(--tx-faint)">52·30·18</span></div></div>
         <div class="fitem"><span class="t">Hilo de oro medido</span><span class="m"><span class="gate-pill">✓ HECHO</span><span>7 objetivos · 9 KPIs con banda</span></span></div>
         <div class="fitem"><span class="t">Validación con dueños (acuses)</span><span class="m"><span class="gate-pill pend">◐ 12/17</span><span>gate G1 → habilita el Espinazo</span></span></div></div>
@@ -82,7 +82,7 @@ function renderMetodo(){
         <div class="fitem"><span class="t"><b class="mono">apostar al futuro</b> — lo nuevo de verdad: mercado y oferta que hoy no tienes (≈10 — suele generar ~70% del valor nuevo)</span></div>
         <div class="fitem"><span class="t" style="color:var(--tx-mut)">se clasifica por NOVEDAD, jamás por plazo · la mezcla objetivo la firma el directorio (varía por industria) · la mezcla real se deriva sola al leer</span></div></div>
     </div>`);
-  counter('M1 ✓ · M3 en curso · M2 activo · 59 M-cards');
+  counter('M1 ✓ · M3 en curso · M2 activo · 61 M-cards');
 }
 
 /* ---------- módulo Cambios: gestión de cambios ISO — el motor versiona por debajo, el usuario jamás lo ve ---------- */

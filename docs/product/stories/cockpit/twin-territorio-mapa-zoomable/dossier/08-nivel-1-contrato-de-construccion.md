@@ -36,6 +36,29 @@ rubro es `inversion.tipo` (obra · planta · local · contrato · linea-producto
 
 ---
 
+## 0.bis · La regla que gobierna todo el nivel (v19)
+
+> **El directorio decide; la gerencia resuelve. Nada del nivel 1 se queda sin bajada.**
+
+Los usuarios de Cockpit son el **gerente general y sus gerentes**: preparan la sesión y ejecutan lo que
+sale de ella. Un panel del nivel 1 que no aterriza en un rol con una acción es un reproche mensual, no
+un sistema de gestión. Por eso, **todo lo que este nivel muestra declara dónde se resuelve**:
+
+| Lo que se muestra | Declara |
+|---|---|
+| una meta del directorio | qué gerencias la tienen abierta (`parent_ref` + `area_ref`) y si la **acordaron** (`acordado_en_ref`) |
+| una cifra del periodo | quién la **produce** (`ancla_ref`) y qué meta bajada la **mueve** (`resuelve_en_ref`) |
+| una alerta | de qué gerencia es y con qué meta bajada se trabaja |
+| un riesgo | el rol que responde y la mitigación comprometida |
+| un proyecto | por qué **sube** al directorio (mueve una meta del año o supera una facultad) — o por qué se queda en la gerencia |
+| un acuerdo | responsable, plazo y sobre qué parte del twin obliga |
+
+Y el corolario de construcción: **lo que se resuelve en el nivel 2/3 no se duplica en el 1**. El nivel 1
+sigue el portafolio por excepción; el detalle vive donde se trabaja. Un builder que replique la lista
+completa en los dos niveles rompe esta regla.
+
+---
+
 ## 1 · El modelo de datos — 7 entidades nuevas + 2 extensiones
 
 SSoT = `sistema/schema/objeto.schema.yaml` (20 nodos). Instancias en `<shell>/empresa/<tipo>/<id>.yaml`
@@ -58,9 +81,20 @@ SSoT = `sistema/schema/objeto.schema.yaml` (20 nodos). Instancias en `<shell>/em
 | `empresa.config_gobierno` | cadencia · órgano · **facultades** (`materia` + `umbral`) — qué decisión sube al órgano de gobierno | D-25 |
 | `apuesta.valor.cobrado` | `{monto, a_fecha, verificado_por_ref→rol, fuente, conf, nota}` — la contraparte de la promesa | D-30 |
 
+**v19 — lo que la auditoría K1-K40 agregó al contrato** (fichas **D-31…D-36**, todas con gate verde):
+
+| Ficha | Qué cambia para quien construye |
+|---|---|
+| **D-31** | `kpi.direccion` **requerido** (el mismo campo que `cifra.direccion`: nunca se infiere del orden de la banda) · `frecuencia` gana `por-evento` · `kpi.referencia_externa` apunta a una unidad de `nichos/<vertical>.yaml` y **hereda su confianza** |
+| **D-32** | enum `escala_madurez`: el nivel viaja con su vara · **no existe `area.madurez`** (rollup de `capability.assessment`) · sin `nivel_deseado` hay nivel, **no** brecha |
+| **D-33** | `empresa.autoevaluacion_madurez[]` — la escalera del sistema de gestión, con `evidencia_refs` y `evaluado_en_ref`→sesion |
+| **D-34** | `cifra.fuente`/`conf` propios · **ERROR** si se guarda `cifra.valor` teniendo `kpi_ref`, o `key_result.current` teniendo `kr.kpi_ref` |
+| **D-35** | `objetivo.area_ref` · `objetivo.acordado_en_ref` · `cifra.resuelve_en_ref` · acciones `bajar-objetivo` y `acordar-bajada` |
+| **D-36** | warning de pesos que no suman 1 · `comprometer-contramedida` · las 6 acciones que la interfaz usaba sin catálogo |
+
 **Enums nuevos:** `marco_contable` · `estado_cierre` · `direccion_cifra` · `holgura` ·
 `tendencia_riesgo` · `estado_acuerdo` · `tipo_sesion` · `estado_presupuesto` · `tipo_inversion` ·
-`materia_facultad`. (Ninguno entra en el test de paridad Go actual — `TestParidadSchema` cubre
+`materia_facultad` · **`escala_madurez`** · **`dimension_gestion`** (v19). (Ninguno entra en el test de paridad Go actual — `TestParidadSchema` cubre
 `fuente`, `estado_proyecto`, `estado_idea`, `estado_brecha`, `modo_estrategia`, `tipo_unidad`. Si
 alguno se lleva a Go, **agregarlo al test en el mismo commit**.)
 
@@ -79,8 +113,24 @@ cualquiera de estos rompe `un_hecho_un_lugar`:
 | desvío de avance · % de presupuesto gastado · atraso de entrega | campos de `inversion` | las 3 barras + la fecha |
 | `acuerdo` vencido | `plazo` (cuando es fecha) vs hoy | estado del acuerdo |
 | mezcla real de ambición | apuestas + proyectos + ideas con `ambicion` | la barra de las varas |
+| valor actual de un KR | la ÚLTIMA MEDICIÓN de `kr.kpi_ref` (v19 · D-34) | el rumbo, la ficha del objetivo, el pulso |
+| salud de un objetivo | peor de sus KRs, con el **gris por encima del verde** (v19) | el pulso y toda tarjeta de objetivo |
+| estado de la bajada | `objetivo.parent_ref` × `acordado_en_ref` (v19 · D-35) | el rumbo, la bandeja, el nivel táctico |
+| madurez de un área | peor-hijo de `capability.assessment` de su subárbol (v19 · D-32) | el lente de madurez |
+| brecha de madurez | `nivel_deseado − nivel_actual`, **sólo si hay deseado** (v19 · D-32) | ficha de capacidad |
+| qué proyecto sube al directorio | mueve una meta del año ∨ supera una facultad ∨ cerró con veredicto (v19) | el panel de portafolio |
 
 ### 1.2 · Invariantes que el builder DEBE respetar
+
+Bloquean (`ERROR`, v19): `kpi` sin `direccion` · `key_result.current` guardado teniendo `kpi_ref` ·
+`cifra.valor` guardado teniendo `kpi_ref` — las tres por la misma razón: **un hecho, un lugar**; dos
+copias del mismo número es cómo el tablero del directorio y el del gerente empiezan a discrepar.
+
+Avisan (`warning`, v19): meta del directorio (`horizonte` anual|3a) **sin objetivos hijo** ⇒ *sin
+bajar* · bajada **sin `acordado_en_ref`** ⇒ *asignada, no acordada* · pesos de los KPI de un KR que no
+suman 1 · `key_result` sin `accountable_ref` · `capability.assessment` sin `nivel_deseado` o sin
+`escala` · dimensión de autoevaluación sin `evidencia_refs` · `kpi.referencia_externa` cuya unidad de
+nicho es `hipotesis` ⇒ **no se afirma un rango de pares** · `cifra` sin `resuelve_en_ref`.
 
 Bloquean (`ERROR`): responsable de `riesgo`/`acuerdo`/`inversion` que resuelve a **persona** (CK-24
 — responde el rol) · `cifra` sin `direccion` · `periodo` auditado sin dictamen · `apuesta.valor.cobrado`
@@ -200,6 +250,31 @@ es `GET /api/objeto?empresa=<id>` con las 20 entidades juntas.
     alcance, como procedencia.
 12. **Generalidad visible.** Cada bloque nuevo declara su equivalente en otra industria.
 
+### v19 — los que el nivel 1 no puede dar por construido sin cumplir
+
+13. **La meta baja o se dice que no bajó.** Una meta del directorio sin objetivos hijo aparece como
+    *sin bajar* y genera la decisión en la bandeja; una bajada sin `acordado_en_ref` aparece como
+    *asignada, no acordada*, en la ficha y en el nivel del gerente. Ninguna de las dos se completa sola.
+14. **El contrato lee su serie.** El valor actual de un KR sale de la última medición de su KPI; si el
+    builder lo guarda aparte, el objeto reporta ERROR. Un KR sin serie se muestra como meta
+    **declarada**, jamás como meta medida.
+15. **Un contrato cumplido no tapa a otro roto.** Un objetivo con un KR en meta y otro sin dato NO lee
+    verde: el gris pesa por encima del verde en el rollup (y jamás rojo — la ausencia de dato no pinta
+    rojo). Escenario de referencia: «caja sana».
+16. **La dirección no se infiere.** Un indicador cuya banda tiene los dos umbrales del mismo lado, o
+    iguales, se pinta por `direccion` y no por el orden de los números.
+17. **La vara externa hereda su confianza.** Si la unidad de nicho no tiene rango validado, la ficha
+    muestra su condición ("sin vara comparable") y **no** un rango de pares. Un rango escrito a mano,
+    sin unidad detrás, es error de procedencia.
+18. **Un nivel de madurez sin escalera no se pinta**, y sin `nivel_deseado` se muestra el nivel
+    diciendo que nadie fijó la meta. La madurez de un área se deriva; si no hay capability evaluada en
+    su subárbol, el lente dice *sin evaluar*.
+19. **Toda alerta tiene destinatario.** Cada fila declara la gerencia que la resuelve y, si existe, la
+    meta bajada que la trabaja. Una cifra sin `resuelve_en_ref` se muestra como *sin nadie que la
+    mueva* — no se oculta.
+20. **Ninguna acción se ofrece sin estar declarada** en `acciones.catalogo`, y ninguna acción declarada
+    del nivel queda sin superficie.
+
 ---
 
 ## 5 · Casuística obligatoria para el golden fixture
@@ -207,6 +282,13 @@ es `GET /api/objeto?empresa=<id>` con las 20 entidades juntas.
 Al portar a `organizacion-ficticia-golden-fixture` (CK-23), **cada caso debe seguir teniendo un
 ejemplar** — perder la casuística es perder el guion de venta y el valor de prueba:
 
+- **una meta del directorio sin bajar** y **una bajada sin acuerdo** (las dos preguntas con que abre
+  toda revisión) — más una meta que sí va bien, para que el tablero no sea un mar de rojo;
+- un objetivo con **dos contratos**, uno en meta y otro **sin serie**, para probar que no lee verde;
+- un indicador **sin ancla de valor** que declara la brecha que sí lo cubre, y su acción de promoverlo;
+- una capacidad **sin nivel deseado** (hay nivel, no hay brecha) y un área **sin capability evaluada**;
+- un indicador con **vara de nicho validada** (rango + fuente) y otro cuya unidad dice *hipótesis*;
+- una **cifra sin destinatario** (`resuelve_en_ref` vacío), para que el tablero sepa declararlo;
 - caja que **cruza el piso** en una semana concreta, con el hito que lo explica;
 - proyección con **confianza baja porque el puesto que la firma está vacante** (une organigrama ↔
   confianza de una cifra de directorio);
@@ -234,6 +316,10 @@ ejemplar** — perder la casuística es perder el guion de venta y el valor de p
 | Inversiones en curso | **M59** · M55 · M57 · M50 · M42 · M23 | **D-29** |
 | Proyectos en curso | M16 · M28 · M22 | — (vigente) |
 | Bandeja de decisiones · acuerdos · acta | **M58** · M16 (cl.9.3) · M25 · M41 | **D-25** |
+| **La bajada** (rumbo → gerencia) · el nivel táctico | **M26** · M41 · M21 · M25 · M58 | **D-35** |
+| **El hilo medido** (contrato ← serie) · pesos · contramedida | **M21** · M06 · M41 | **D-31** · **D-34** · **D-36** |
+| **La madurez** (capacidad · sistema de gestión) | **M15** · **M47** · M31 · M23 | **D-32** · **D-33** |
+| **Las varas externas** de cada indicador | **M48** · M23 · nichos/`<vertical>`.yaml | **D-31** |
 
 ---
 
@@ -253,9 +339,9 @@ ejemplar** — perder la casuística es perder el guion de venta y el valor de p
 
 ## 8 · Deuda abierta que este contrato deja
 
-1. **Promoción de M52** de `horizonte` a `ancla` — el nivel 1 ya materializa apetito + registro como
-   superficie de primera clase; la carta sigue diciendo "no en el MVP". Es **decisión de dogma** y
-   espera **ficha CK + firma del operador**. Está declarada como tensión dentro de la propia carta.
+1. ~~Promoción de M52 de `horizonte` a `ancla`~~ — **cerrada en v19**: promovida a `ancla` con
+   `modo: columna`. Una carta que contradice al producto vigente no es un horizonte, es drift. Lo que
+   NO cambió: sigue sin aparato ERM y sin certificación (VISION §ISO intacta).
 2. **Conectores reales** — hoy las cifras, la caja y las inversiones son dato canned del mockup. La
    app las lee del sistema contable / banca / control de obra, con procedencia (N16).
 3. **`comprometer-bolsa` de verdad** — que sellar una apuesta o aprobar un proyecto descuente de la
@@ -263,6 +349,12 @@ ejemplar** — perder la casuística es perder el guion de venta y el valor de p
 4. **Cartas de método faltantes** — ninguna: M55-M59 cubren el nivel. Lo que falta es el `proceso/**`
    (los pasos del engagement que levantan `periodo`, `caja`, `presupuesto`, `riesgos` y `acuerdos` en
    m1 y los mantienen en m2) — hoy el árbol está poblado parcialmente.
-5. **`01-spec.md` de la historia** — hallazgo **D3** del tablero: la historia sigue en `state: idea`
+6. **Lo que la auditoría K1-K40 dejó abierto** (tablero `07 § K`, 12 filas con dueño): indicadores
+   adelantados y de riesgo (`tipologia_kpi`/`tipo_kpi` sin usar, **K18**) · contra-métricas (**K19**) ·
+   la vara por cifra, hoy hardcodeada en el código (**K21**) · el sello de la apuesta (**K37**) ·
+   auditoría interna y proveedores externos como superficie (**K36**) · y sobre todo **K33**: las
+   cartas M55-M59 no tienen **ni un paso de proceso** — nadie sabe todavía cómo LEVANTAR este nivel en
+   un cliente. Construirlo sin eso deja un tablero que sólo se puede poblar a mano.
+7. **`01-spec.md` de la historia** — hallazgo **D3** del tablero: la historia sigue en `state: idea`
    con 8 documentos de dossier. Este documento es el contrato del **nivel 1**; el spec formal de toda
    la historia sigue pendiente de decisión del operador.

@@ -373,3 +373,127 @@ comentarios puntuales sobre lo que veía — cierra la deuda #1 de `06-pendiente
     (acuerdo/sesión/acta/facultades), registro de riesgos con dueño y tendencia. **No se tocó
     `methodologies.yaml`**: las cartas nuevas se proponen vía `/metodo-aprende` con firma del
     operador, no se inventan desde el mockup.
+
+---
+
+## Decisión 28 (v19 · 2026-07-29) — «el directorio decide, la gerencia resuelve»
+
+**Qué se pidió.** Primero una auditoría de la estrategia contra `/metodo` con foco en KPIs y madurez
+(40 hallazgos, `07 § K`). Después, al ordenar la corrección, el operador fijó el marco que faltaba:
+*"los usuarios son el gerente general y los gerentes, y a través de nuestras acciones diarias debemos
+resolver todo lo que se muestra en directorio"*.
+
+**Por qué eso cambia el diseño y no sólo el dato.** El nivel 1 de v18 era una agenda completa y un
+sistema de gestión inejecutable: siete metas que ningún rol tenía asignadas, alertas sin destinatario,
+cifras que nadie movía. La corrección no es agregar paneles — es que **cada cosa que el nivel 1 muestra
+declare dónde se resuelve**, y que el nivel del gerente abra con eso.
+
+**Las cuatro decisiones de fondo.**
+
+1. **La bajada es dato, no lámina** (D-35). `objetivo.parent_ref` existía desde v2 y tenía **cero
+   usos**. Ahora la meta del directorio se abre como meta de una gerencia con su rol accountable, y el
+   catchball de Hoshin se cierra contra una **sesión** (`acordado_en_ref`). Los dos estados que
+   importan — *sin bajar* y *asignada sin acordar* — se derivan del grafo y llegan solos a la bandeja.
+   *Alternativa rechazada:* un campo `bajada_pendiente` en el rumbo (era el contador que ya había: no
+   navega, no audita, y se desincroniza el primer mes).
+2. **El hilo ancla al contrato** (A2 · D-34). El KPI mueve un KR, no un objetivo entero, y el valor del
+   KR se **lee** de la serie. *Alternativa rechazada:* dejar `kr.cur` como número curado "porque es un
+   mockup" — es justo el error que el producto le señala al cliente (el mismo hecho en dos lugares), y
+   el mockup es el contrato de construcción.
+3. **Una escalera nunca viaja sin su vara** (D-32/D-33). Tres escaleras convivían sin arbitraje y una
+   leyenda prometía niveles 0-5 sobre un campo de tres colores. *Alternativa rechazada:* unificar todo
+   en una sola escalera — COBIT gradúa una capacidad y ISO 9004 el sistema de gestión; fundirlas
+   perdería las dos preguntas.
+4. **La vara externa sale del eje vertical** (D-31). El tablero afirmaba «pares 45-60 días» de cobranza
+   contra una unidad de nicho que dice, textual, que ese benchmark no existe validado. *Alternativa
+   rechazada:* borrar el chip y ya — se habría perdido la información de que **no hay vara**, que es
+   exactamente lo que un director necesita saber antes de fijar una meta.
+
+**Lo que se movió de nivel** (y por qué no es un recorte): el portafolio completo, el detalle de
+alertas, el registro de avance de inversiones y el seguimiento semanal de acuerdos **bajan al nivel
+3**. El directorio los sigue **por excepción** y cada fila declara por qué sube — o el panel declara
+por qué el resto se queda abajo. Duplicar la lista en los dos niveles era la forma más rápida de que
+las dos empezaran a discrepar.
+
+**Precio pagado, explícito.** El pulso del directorio pasó de «1 de 7 en banda» a **5 metas** (1 verde,
+2 ámbar, 1 gris, 1 roja): el tablero se lee peor porque ahora dice la verdad — un objetivo con un
+contrato sin serie ya no se disfraza de verde. Y la banda Estrategia dibuja 10 objetivos en vez de 7,
+porque las bajadas también son metas.
+
+---
+
+## v20 (2026-07-30) — el mapa completa el mapa: Dirección y Capacidades
+
+Origen: el operador leyó el nivel 2 preguntando **"¿esto sirve en una junta de gerentes, sabiendo que
+lo verá el gerente general y es el insumo del directorio?"**. La respuesta era no del todo, por dos
+huecos que se leían como productos distintos pegados.
+
+### Lo que estaba roto (medido, no supuesto)
+
+1. **El mapa prometía tres tipos de proceso y pintaba dos.** El encabezado del propio código citaba el
+   enfoque a procesos de la norma (estratégico/misional/apoyo) y sólo dibujaba cadena + apoyo. Y
+   `apoyo` ni siquiera era una clasificación: era **el resto** (`!DATA.cadena.includes(p.id)`), así que
+   cualquier proceso nuevo caía ahí por descarte.
+2. **Los procesos de dirección existían… fuera del mapa.** La sesión del directorio, el presupuesto, el
+   registro de riesgos, el ciclo de mejora y la cola de cambios se ejercían en el nivel 1 y en los
+   módulos, pero no tenían casilla, dueño declarado, digitalización ni madurez. Por eso el nivel 1 se
+   leía como un tablero paralelo y no como la **salida de un proceso del mapa**.
+3. **El hilo de oro saltaba la capacidad.** Iba meta → proceso. Faltaba la estación donde el gerente
+   contesta *"no es que el proceso falle: no sabemos hacer esto al nivel que la meta exige"* — que es
+   la frase con la que se pide presupuesto.
+4. **La lente de madurez no existía donde la prometían.** El botón del directorio *"ver el mapa por
+   madurez de capacidades"* aterrizaba en el mapa de valor, donde `state.sub==='madurez'` no estaba
+   implementado: el director pedía madurez y veía digitalización. Sólo funcionaba en el organigrama.
+5. **La madurez medía el peldaño, no la distancia.** `min(act)`: un área con todo en 4 de 4 y otra en
+   4 de 5 se pintaban igual, y `c-permisos` (sin nivel deseado) hundía a Desarrollo en rojo por una
+   meta que nadie fijó.
+
+### Las decisiones (firmadas por el operador el 2026-07-30)
+
+**D-a → `proceso.tipo` es dato declarado** (materializada como **D-37** en el contrato del objeto).
+No se deriva del código APQC: la categoría 1.0 del catálogo ("desarrollar visión y estrategia") es
+*operating* allá y dirección pura acá — la inferencia se rompe en la primera fila. Misma doctrina que
+`kpi.dir` (D-31). Las dos clasificaciones conviven y son ortogonales: el tipo es para **leer** (la
+geografía), el código APQC para **comparar** (la llave del benchmark externo).
+*Efecto colateral del scan:* M12 y M16 anclaban la misma dimensión del twin (`procesos-clasificacion`)
+y **no tenían arista entre sí** — nada arbitraba cuál manda. El arbitraje quedó escrito en las dos
+direcciones del catálogo.
+*Alternativa rechazada:* derivar el tipo del id APQC "para no agregar un campo" — habría clasificado
+como operativo el planeamiento estratégico, que es el caso que motivó toda la banda.
+
+**D-b → los seis procesos de dirección entran al mapa.** Ninguno es invención: los seis ya se ejercen
+en el twin. Lo que ganan es casilla, dueño, madurez y un `tablero` que salta a donde se ejercen.
+Quedan **fuera del hilo de oro a propósito**: la dirección no *mueve* un indicador, *produce* la meta
+que otros mueven; meterla en el hilo confundiría gobierno con ejecución (y encendería cinco aristas
+falsas desde cada objetivo). Por lo mismo no se apagan al encender una meta: son el contexto de todas.
+*Alternativa rechazada:* dejarlos sólo en el nivel 1 — es lo que ya pasaba, y es la razón por la que
+el producto se leía como dos cosas.
+
+**D-c → la madurez que se pinta es la BRECHA, no el peldaño.** Rollup por peor distancia, y una
+capacidad **sin nivel deseado no tiñe a nadie**: no existe la distancia que nadie fijó. Cuarto estado
+propio ("sin meta fijada"), sin color.
+*Alternativa rechazada:* pintar el nivel absoluto — es más simple y responde la pregunta equivocada
+(un 4 de 4 y un 4 de 5 no son el mismo estado de gestión).
+
+### Lo que apareció al mirarlo con los ojos (y no lo decía ninguna prueba)
+
+- La banda Estrategia dibujaba **las diez metas en una sola fila**: la décima se salía del lienzo y,
+  peor, nada distinguía la meta de la empresa de la de un gerente. Pasó a **dos filas** — arriba la
+  meta del directorio, abajo la bajada con su gerencia, su rol responsable y si fue acordada. La
+  cascada se dibuja, y **punteada** cuando el gerente todavía no la aceptó en sesión (M26: asignada ≠
+  acordada). Es la lectura que la junta necesita y estaba latente en el dato desde D-35.
+- El derivado "qué metas se apoyan en esta capacidad" tenía un **falso negativo visible**: *"ver la
+  caja al día"* (1 de 5, la peor brecha del mapa) declaraba que ninguna meta se apoyaba en ella,
+  porque el proceso que la realiza no declara driver… mientras su brecha bloquea el contrato *"caja
+  visible al día"* del directorio. Ahora se deriva por **dos caminos** (driver del proceso · brecha que
+  bloquea un contrato), y el caso deliberado de *"atender al propietario"* —sin ancla de valor— se
+  conserva intacto.
+- Un contador de 100 caracteres en una barra `nowrap` empuja la búsqueda y el selector de piel **fuera
+  de la pantalla**: tres pruebas de la suite lo detectaron como "intercepta". El desglose vive ahora
+  en el tooltip; la línea de estado se mantiene corta por regla, no por gusto.
+
+### Cobertura declarada (lo que este cambio NO cierra)
+
+Siete procesos no tienen capacidad declarada y por eso **quedan fuera de la lectura por madurez**. No
+se calla: el hueco se dibuja al final de la banda con su listado navegable. Cerrarlo es trabajo del
+levantamiento, no una decisión de tablero.

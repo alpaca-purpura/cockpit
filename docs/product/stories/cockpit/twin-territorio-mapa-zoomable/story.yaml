@@ -8,7 +8,7 @@ cap_change_type: new
 capability_status: planned
 release: F1
 prioridad: alta
-fichas: [CK-21, CK-23, CK-27, CK-31]   # CK-31 (2026-07-29) = el nivel Directorio de primera clase + la frontera contable (Cockpit LEE el libro, jamás lo reexpresa); el resto de la historia sigue en `idea`
+fichas: [CK-21, CK-23, CK-27, CK-31, CK-32]   # CK-31 = el nivel Directorio de primera clase + la frontera contable · CK-32 (2026-07-29) = el directorio decide y la gerencia resuelve (la bajada como dato, el hilo al contrato, la madurez con vara); el resto de la historia sigue en `idea`
 dependencies:
   # HARD deps (deben existir antes de construir):
   stories:
